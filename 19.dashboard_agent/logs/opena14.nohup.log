@@ -1,0 +1,5 @@
+INFO:__main__:🚀 Starting opena14_HTML on port 12362
+INFO:     Started server process [2908220]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12362 (Press CTRL+C to quit)

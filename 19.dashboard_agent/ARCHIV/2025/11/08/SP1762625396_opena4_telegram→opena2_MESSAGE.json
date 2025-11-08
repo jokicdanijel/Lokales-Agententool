@@ -1,0 +1,15 @@
+{
+  "src": "opena4_telegram",
+  "dst": "opena2",
+  "kind": "MESSAGE",
+  "payload": {
+    "direction": "outgoing",
+    "user_id": 987654321,
+    "chat_id": 123456789,
+    "command": "balance",
+    "response": "💰 Your Portfolio:\n• Accounts: 2\n• Total Balance: €6,050.00",
+    "sent": false,
+    "timestamp": "2025-11-08T18:09:56.640617Z",
+    "strict": true
+  }
+}

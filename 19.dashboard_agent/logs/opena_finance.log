@@ -1,0 +1,21 @@
+2025-11-08 18:24:41,327 - opena_finance - INFO - ✅ Database initialized
+2025-11-08 18:24:41,336 - opena_finance - INFO - 🚀 Starting opena_finance on port 12347
+2025-11-08 18:28:04,773 - opena_finance - INFO - ✅ Database initialized
+2025-11-08 18:28:10,416 - opena_finance - INFO - ✅ Database initialized
+2025-11-08 18:28:10,424 - opena_finance - INFO - 🚀 Starting opena_finance on port 12347
+2025-11-08 18:28:18,413 - opena_finance - INFO - Account created: d62d3fb6-31f8-4519-ba23-40698cd41b30 (Giro)
+2025-11-08 18:28:18,455 - opena_finance - INFO - Archiv write OK: True
+2025-11-08 18:28:23,992 - opena_finance - INFO - Transaction added: 31a2c923-92ee-41e5-a57d-390199d935da ($-50.0) to d62d3fb6-31f8-4519-ba23-40698cd41b30
+2025-11-08 18:28:23,995 - opena_finance - INFO - Archiv write OK: True
+2025-11-08 18:29:01,059 - opena_finance - INFO - Account created: d4c7969f-0e23-4049-a897-bc7192e9fb19 (Savings)
+2025-11-08 18:29:01,061 - opena_finance - INFO - Archiv write OK: True
+2025-11-08 18:29:01,076 - opena_finance - INFO - Listed 2 accounts
+2025-11-08 18:29:01,087 - opena_finance - INFO - Transaction added: 540d8f92-f86d-4afa-8af0-44916379273e ($200.0) to d4c7969f-0e23-4049-a897-bc7192e9fb19
+2025-11-08 18:29:01,089 - opena_finance - INFO - Archiv write OK: True
+2025-11-08 18:29:01,102 - opena_finance - INFO - Transaction added: 05f98ff2-bce4-4ff6-a36d-29bbc08c26ef ($-100.0) to d4c7969f-0e23-4049-a897-bc7192e9fb19
+2025-11-08 18:29:01,104 - opena_finance - INFO - Archiv write OK: True
+2025-11-08 18:29:01,115 - opena_finance - INFO - Listed 2 transactions
+2025-11-08 18:29:01,128 - opena_finance - INFO - Statement generated: 218c4b6d-efee-4f36-9a68-0d6993b379fa for d4c7969f-0e23-4049-a897-bc7192e9fb19
+2025-11-08 18:29:01,130 - opena_finance - INFO - Archiv write OK: True
+2025-11-08 19:10:04,552 - opena_finance - INFO - Listed 2 accounts
+2025-11-08 19:10:48,208 - opena_finance - INFO - Listed 2 accounts

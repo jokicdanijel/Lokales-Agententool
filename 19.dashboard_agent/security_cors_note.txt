@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# CORS-Freigabe für 8080 in FastAPI Security
+# Diese Konfiguration ist bereits in main_dashboard.py unter CORSMiddleware definiert
+# Falls separate security.py-Konfiguration nötig: hier ergänzen
+
+echo "CORS bereits in main_dashboard.py konfiguriert."
+echo "Erlaubte Ursprünge: '*' (lokal; bei Bedarf einschränken)"

@@ -1,0 +1,1312 @@
+﻿Master-Schritte (einmalig, verbindlich)
+1) Projekt & Rechte festziehen
+ROOT="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai"
+cd "$ROOT"
+
+# Besitztümer und Basisrechte schließen
+chown -R "$USER":"$USER" "$ROOT"
+find "$ROOT" -type d -exec chmod 755 {} \;
+find "$ROOT" -type f -exec chmod 644 {} \;
+
+# Ausführbar: nur Skripte
+chmod 755 preflight.sh preflight_fixed.sh 2>/dev/null || true
+Tor: ls -la zeigt korrekten Besitzer/Modus an. Sonst stoppen.
+2) Python-Runtime fixieren (venv, reproduzierbar)
+cd "$ROOT"
+python3 -m venv .venv
+source .venv/bin/activate
+python -V
+
+pip install --upgrade pip
+pip install "fastapi>=0.111" "pydantic>=2" "uvicorn[standard]>=0.30" jq==1.6 --no-deps 2>/dev/null || true
+Hinweis: jqist OS-Tool. Wenn es fehlt: sudo apt-get update && sudo apt-get install -y jq(einmalig). 
+Gate: python -V zeigt feste Version; uvicorn --versionLäuft.
+3) Konfiguration hartsetzen (env + Ports + Policy)
+    • Erlaubte Ports: 12344–12349 (optionaler Connector 12355). 8080 ist verboten.
+    • env.sh finalisieren (nur Variablen, keine Seiteneffekte):
+cat > "$ROOT/env.sh" <<'SH'
+export PORTIER_ROOT="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai"
+export PORTIER_ALLOWED_PORTS="12344-12349"
+export PORTIER_CONNECTOR_PORT="12355"
+export PORTIER_ENV="production"
+SH
+Tor: source env.sh && echo $PORTIER_ENV →production.
+4) MAC_DIR_SYSTEM.json deterministisch generieren
+cd "$ROOT"
+source .venv/bin/activate
+python generate_macdir.py
+test -f MAC_DIR_SYSTEM.json
+Gate: Datei existiert und ist gültiges JSON:
+jq .system MAC_DIR_SYSTEM.json zeigt Struktur; sonst stoppen.
+5) Archivstruktur & Aufbewahrung festnageln
+mkdir -p "$ROOT/archivp"
+# Retentions-Policy: 90 Tage JSON-Safepoints halten
+echo '90' > "$ROOT/archivp/.retention_days"
+Tor: archivp/ existiert; Schreibrechte okay.
+6) Safepoint-Kontrakt (streng, CMD/RESP) Fix
+    • Benennung: SP<NNN>_src→dst_(CMD|RESP).json
+    • Pfad: archivp/YYYY/MM/DD/
+    • Inhaltspflicht: Top-Level "strict": trueund ISO-8601 „Z“-Zeitstempel.
+(Das erzwingen wir logisch über opena1 und Preflight, siehe unten.)
+7) opena1 (Koordinator) installieren (finale API)
+Die drei finalen Dateien müssen vorhanden sein und genau so funktionieren:
+    • opena1/schemas.py(Pydantic v2, extra='forbid', strict: Literal[True]bzw. Validierung → True).
+    • opena1/koordinator.pyRoute POST /log/opena1, Fehler-Schema 8.3 .
+    • main_production.pyApp + GET /health(keine 8080-Erwähnung).
+Tor: python main_production.py --port 12345 & gestartet → curl /healthok.
+8) Preflight final (ein Befehl, drei Checks)
+Dein preflight.shmuss nur diese finalen Checks tun:
+    1. Archivprüfung (heute: min. 1× CMD + 1× RESP, jeweils "strict": true).
+    2. GitHub-Validierung (Repo existiert, git statusclean, letztes Commit vorhanden).
+    3. MAC_DIR_SYSTEM.json regenerieren/prüfen.
+Minimal-Referenz:
+cat > "$ROOT/preflight.sh" <<'SH'
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+cd "$ROOT"
+
+# 1) Archivprüfung (heute)
+D=$(date +%Y/%m/%d); AP="$ROOT/archivp/$D"
+echo "[Archiv] $AP"
+test -d "$AP" || { echo "FEHLT: Tagesordner"; exit 1; }
+CMDc=$(ls "$AP"/*_CMD.json 2>/dev/null | wc -l || true)
+RESPc=$(ls "$AP"/*_RESP.json 2>/dev/null | wc -l || true)
+test "$CMDc" -ge 1 && test "$RESPc" -ge 1 || { echo "FEHLT: CMD/RESP Safepoints"; exit 1; }
+grep -q '"strict"[[:space:]]*:[[:space:]]*true' "$AP"/*.json || { echo "FEHLT: strict:true"; exit 1; }
+
+# 2) GitHub-Validierung
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  git status --porcelain=v1 | tee /tmp/git_dirty.txt
+  test ! -s /tmp/git_dirty.txt || { echo "GIT DIRTY"; exit 1; }
+  git log -1 --oneline >/dev/null || { echo "KEIN LETZTER COMMIT"; exit 1; }
+else
+  echo "KEIN GIT REPO"; exit 1
+fi
+
+# 3) MAC_DIR_SYSTEM.json aktualisieren + prüfen
+python3 generate_macdir.py
+jq '.system' MAC_DIR_SYSTEM.json >/dev/null
+
+echo "PREFLIGHT OK"
+SH
+chmod 755 "$ROOT/preflight.sh"
+Gate: ./preflight.sh endet mit PREFLIGHT OK.
+9) (Optional) systemd-Service für Dauerbetrieb
+Wenn du das als Dienst willst:
+SERVICE="opena1.service"
+cat | sudo tee /etc/systemd/system/$SERVICE >/dev/null <<'UNIT'
+[Unit]
+Description=Portier opena1 (Koordinator)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=danijel-jd
+Environment=PORTIER_ROOT=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+WorkingDirectory=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+ExecStart=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/.venv/bin/python main_production.py --port 12345
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+UNIT
+
+sudo systemctl daemon-reload
+sudo systemctl enable --now "$SERVICE"
+Tor: systemctl status opena1 → active (running).
+
+Finale Produktions-Schritte (bei jedem Start/Release)
+A) Release festschreiben (Version & Tag)
+cd "$ROOT"
+git rev-parse --is-inside-work-tree || git init
+git add -A
+git commit -m "chore(release): Portier/ELION production cut $(date +%F_%T)" || true
+git tag -f prod-$(date +%Y%m%d-%H%M%S)
+Gate: git log -1 zeigt Commit; git tagzeigt prod-*.
+B) Safepoints (CMD) anlegen (Startsignal)
+TODAY_DIR="$ROOT/archivp/$(date +%Y/%m/%d)"
+mkdir -p "$TODAY_DIR"
+SPN=$(printf "SP%03d" 1)
+cat > "$TODAY_DIR/${SPN}_opena1→opena2_CMD.json" <<'JSON'
+{
+  "strict": true,
+  "ts": "2025-10-18T00:00:00Z",
+  "source": "opena1",
+  "target": "opena2",
+  "action": "FINALIZE",
+  "payload": {}
+}
+JSON
+Gate: Datei existiert, jq .strict→ true.
+C) Preflight (muss grün sein)
+cd "$ROOT"
+./preflight.sh
+Tor: PREFLIGHT OK . Wenn nicht, kein Start.
+D) Dienst starten (einmalig oder systemd)
+    • Lokal/Vordergrund:
+cd "$ROOT"
+source .venv/bin/activate
+python main_production.py --port 12345 &
+sleep 2
+curl -s http://127.0.0.1:12345/health
+    • Oder systemd: sudo systemctl restart opena1 && systemctl status opena1
+Gate: Health-JSON mit status:"ok"und Z-Zeitstempel.
+E) Funktions-Smoke (Positiv/Negativ)
+# Positiv
+curl -s -X POST http://127.0.0.1:12345/log/opena1 \
+ -H 'Content-Type: application/json' \
+ -d '{
+  "request_id":"11111111-1111-4111-8111-111111111111",
+  "timestamp":"2025-10-22T10:00:00Z",
+  "command":"MONITOR",
+  "payload":{},
+  "routing":{},
+  "project":{"id":"proj-001","name":"Gesamtprojekt"},
+  "strict":true
+ }' | jq .
+
+# Negativ (strict fehlt → 400 + Fehler-Schema 8.3)
+curl -s -o /dev/stderr -w "\nHTTP:%{http_code}\n" \
+ -X POST http://127.0.0.1:12345/log/opena1 \
+ -H 'Content-Type: application/json' \
+ -d '{"request_id":"11111111-1111-4111-8111-111111111111","timestamp":"2025-10-22T10:00:00Z","command":"X","payload":{},"project":{"id":"p","name":"n"}}'
+Tor: Positiv gibt ack.status: accepted; Negativ HTTP:400plus error.code: STRICT_REQUIRED/ SCHEMA_VIOLATION.
+F) Safepoint (RESP) setzen (Abschluss)
+cat > "$TODAY_DIR/${SPN}_opena1→opena2_RESP.json" <<'JSON'
+{
+  "strict": true,
+  "ts": "2025-10-18T00:05:00Z",
+  "source": "opena2",
+  "result": "FINALIZED",
+  "notes": "Archivierung abgeschlossen"
+}
+JSON
+Gate: Preflight danach weiterhin grün.
+G) Abschluss-Commit (Nachweis)
+cd "$ROOT"
+git add archivp MAC_DIR_SYSTEM.json
+git commit -m "feat(run): Safepoints & MAC aktualisiert"
+Gate: Repo sauber ( git statusleer).
+H) Rollback-Plan (immer bereit)
+    • Service: systemctl rollback gibt's nicht → praktisch: git checkout <letzter_tag>, systemctl restart opena1.
+    • Lokal: Prozess killen → pkill -f main_production.py, auf offiziellen Tag git checkoutund neu starten.
+    • Archiv: Resp-Safepoint mit "result":"ROLLED_BACK"ablegen.
+I) Retention laufen lassen (optional, täglich via cron/systemd timer)
+find "$ROOT/archivp" -type f -mtime +90 -name '*.json' -delete
+
+Was du jetzt konkret tust
+    1. Master 1–9 einmal durchziehen (falls du 7–8 bereits gebaut hast: nur Gates prüfen).
+    2. Produktions-A→I für den heutigen Lauf.
+    3. Wenn ein Gate rot ist, stoppt du — ich helfe beim gezielten Fix, ohne am Kern zu rühren.
+Kurz: Das ist die fertige Schiene. Von hier aus ist es nur noch Hebel runter/hoch – mit Nachweis über Safepoints und Preflight.
+Du sagtest:
+Eine perfekte Eingabeaufforderung für die Herstellung des Systems herstellen.
+ChatGPT sagte:
+Hier ist der perfekte, vollständige Prompt , um dein Portier/ELION-System in einem Entwicklungsumfeld von null auf richtig, sicher und endgültig herzustellen – inklusive Struktur, Konventionen, Sicherheitsvorgaben, Pfaden und neuen Produktionsparametern. 
+Er ist so konzipiert, dass ein intelligenter Code-Assistent (z. B. Copilot oder eine automatisierte Setup-Engine) ihn als Gesamtauftrag versteht und das System exakt im Zielzustand erstellt, ohne Zwischenvarianten.
+
+🧭 Portier/ELION System – Masterprompt (Finaler Herstellungsauftrag)
+Systemziel:
+Erstelle das vollständige, lauffähige Portier/ELION-Koordinationssystem für die Produktionsumgebung von danijel-jd, basierend auf FastAPI , Pydantic v2 , Python 3.13+ , unter Ubuntu 25.04 , mit einer strukturierten Archivierungs- und Validierungslogik.
+
+⚙️ 1. Systemparameter (verbindlich)
+OS: Ubuntu 25.04
+Python-Version: 3.13.x
+Virtuelle Umgebung: .venv
+Projektstamm:
+  /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+Ports erlaubt: 12344–12349
+Sonderport: 12355 (Connector)
+8080 ist streng verboten.
+Pfadkonventionen:
+    • archivp/→ Archivierungsport (Safepoints)
+    • opena1/→ Koordinator (Eingang / Dispatcher)
+    • opena2/→ Archivator (Abschluss / Speicherung)
+    • kordp/→ Disponent
+    • connector/→ Verbindungsskripte / MAC-System
+    • docs/→ System- und API-Dokumentation
+    • tests/→ Integrations- und Validierungstests
+
+🧩 2. Systemaufbau (Dateien und Module)
+Erstelle folgende Ordnerstruktur:
+1.portier_openai/
+│
+├── env.sh
+├── preflight.sh
+├── generate_macdir.py
+├── main_production.py
+│
+├── opena1/
+│   ├── __init__.py
+│   ├── schemas.py
+│   └── koordinator.py
+│
+├── archivp/
+│   └── YYYY/MM/DD/   (Safepoints: SPxxx_CMD/RESP.json)
+│
+├── connector/
+│   └── start_connector.sh
+│
+└── MAC_DIR_SYSTEM.json
+
+🧠 3. Logikbeschreibung
+Systemrollen:
+    • open a1 (Koordinator) : 
+nimmt valide 7.1-Requests entgegen, prüft strict:true, leitet Archiv- und Response-Vorgänge ein. 
+Route:/log/opena1
+    • open a2 (Archivator) : 
+verwaltete Safepoints ( SP###_src→dst_(CMD|RESP).json), prüft strict:true, finalisierte Archivierung.
+    • Preflight : 
+führt drei Systemprüfungen aus – Archivprüfung, GitHub-Validierung, MAC_DIR-Systemcheck.
+
+📦 4. Funktionaler Codeumfang (produktionsfertig)
+opena1/schemas.py
+    • Definiert Request71mit:
+        ◦ request_id: UUID4
+        ◦ timestamp: datetime (ISO-8601, mit Z)
+        ◦ command: str (nicht leer)
+        ◦ target_preference: Optional[str]
+        ◦ payload: dict[str, Any]
+        ◦ routing: {resolved_path?, notes?}
+        ◦ project: {id, name}
+        ◦ strict: Literal[True]
+    • model_config = {"extra":"forbid"}
+    • Methode ensure_strict_true()→ Ausnahme STRICT_REQUIREDfällt abweichend.
+opena1/koordinator.py
+    • FastAPI-Router mit POST/log/opena1
+    • Parsing überRequest71
+    • Fehlerbehandlung nach Schema 8.3:
+{
+  "request_id": "uuid|unknown",
+  "timestamp": "2025-10-22T10:00:00Z",
+  "source": "opena1",
+  "error": { "code": "SCHEMA_VIOLATION", "message": "...", "details": {} },
+  "strict": true
+}
+    • Erfolgsantwort:
+{
+  "request_id": "uuid",
+  "timestamp": "2025-10-22T10:00:00Z",
+  "source": "opena1",
+  "ack": { "status": "accepted", "command": "MONITOR" },
+  "strict": true
+}
+main_production.py
+    • FastAPI-App, bindet opena1-Router ein.
+    • /healthliefert{service:"opena1", status:"ok", ts:"<ISO-Z>"}
+    • Startargument: --port(Standard 12345).
+
+🧮 5. Prüf- und Sicherungsschichten
+Preflight (preflight.sh)
+    1. Archivprüfung:
+        ◦ Mindestens ein CMD- und ein RESP-Safepoint heute.
+        ◦ Alle enthalten "strict": true.
+    2. GitHub-Validierung:
+        ◦ Repository existiert, letztes Commit vorhanden, kein uncommitteter Zustand.
+    3. MAC_DIR_SYSTEM.json:
+        ◦ Wird über generate_macdir.pyneu erzeugt und durch jq .systemvalidiert.
+Ergebnis: 
+PREFLIGHT OK→ Start erlaubt 
+Fehler → Start gesperrt.
+MAC_DIR_SYSTEM.json
+    • Struktur:
+{
+  "system": {
+    "id": "portier-elion",
+    "paths": { "opena1": "…", "opena2": "…", "archivp": "…" },
+    "created": "ISO-Z"
+  }
+}
+    • Wird durch generate_macdir.pyautomatisch neu erstellt.
+
+🚦 6. Startprozedur (Produktion)
+cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+source .venv/bin/activate
+
+# 1) Preflight (Pflicht)
+./preflight.sh
+
+# 2) Wenn "PREFLIGHT OK":
+python main_production.py --port 12345 &
+
+# 3) Health prüfen
+curl -s http://127.0.0.1:12345/health | jq .
+
+# 4) Positive Requestprüfung
+curl -s -X POST http://127.0.0.1:12345/log/opena1 \
+ -H 'Content-Type: application/json' \
+ -d '{
+    "request_id":"11111111-1111-4111-8111-111111111111",
+    "timestamp":"2025-10-22T10:00:00Z",
+    "command":"MONITOR",
+    "payload":{},
+    "routing":{},
+    "project":{"id":"proj-001","name":"Gesamtprojekt"},
+    "strict":true
+  }' | jq .
+
+🧱 7. Systemverhalten (endgültig)
+    • Ohnestrict:true → HTTP 400, Fehlercode STRICT_REQUIRED.
+    • Mit ungültiger Struktur → HTTP 400, Fehlercode SCHEMA_VIOLATION.
+    • Mit Zusatzfeldern → HTTP 400, Fehlercode EXTRA_FIELDS_FORBIDDEN.
+    • Mit gültigem Request → JSON-Antwort mit "ack":{"status":"accepted"}.
+
+🧾 8. Qualitätsgarantien
+✅ Pydantic v2 Modelle 
+✅ Keine Platzhalter, keine TODOs 
+✅ ISO-Zeitformat (UTC, Z) 
+✅ extra='forbid'erzwungen 
+✅ 8080 nie verwendet 
+✅ Reproduzierbare Preflight-Validierung 
+✅ Saubere MAC-Registry 
+✅ Vollständige Safepoint-Kontrolle 
+✅ Git-integrierter Zustand
+
+🧩 9. Zielergebnis
+Nach Ausführung des Prompts ist das System:
+    • Lauffähig und API-sauber
+    • Archiv- und MAC-konform
+    • Versionierbar (git)
+    • Auditfähig (Safepoint-Logik)
+    • Bereit für Produktions-Release
+
+🏁 Abschlussbefehl (Final Build)
+Nach erfolgreichem Aufbau:
+cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+./preflight.sh && echo "✅ Portier/ELION bereit für Produktion."
+
+Willst du, dass ich diesen Prompt noch in eine maschinell ausführbare Version (z. B. für Copilot oder CI-Pipeline) umwandle – also mit eingebauten Pfadvariablen, setup.sh-Logik und Schritt-Validierungen?
+🔔 Erinnerung:
+Führe jetzt den Portier/ELION Preflight aus — die drei finalen Prüfmodule:
+    1. Archivprüfung – überprüfe, ob mindestens ein CMD- und ein RESP-Safepoint mit "strict": truevorhanden ist.
+    2. GitHub-Validierung – Repository muss sauber sein ( git statusleer, letzter Commit vorhanden).
+    3. MAC_DIR_SYSTEM.json – neu generieren und durch jq .systemvalidieren.
+➡️ Befehl:
+cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+./preflight.sh
+🚀 Zeit für den täglichen Systemcheck:
+Führe jetzt den Portier/ELION Preflight aus – die drei Pflichtmodule:
+    1. Archivprüfung – überprüfe Safepoints (CMD & RESP) auf "strict": true.
+    2. GitHub-Validierung – Repository muss sauber & commited sein.
+    3. MAC_DIR_SYSTEM.json – neu generieren und prüfen.
+➡️ Befehl:
+cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+./preflight.sh
+🔧 Erinnerung:
+Führe jetzt den Portier/ELION Preflight aus — mit den drei Kernprüfungen:
+    1. Archivprüfung
+    2. GitHub-Validierung
+    3. MAC_DIR_SYSTEM.json aktualisieren
+➡️ Befehl:
+cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+./preflight.sh
+⚙️ Automatisierungshinweis:
+Führe jetzt den Portier/ELION Preflight aus — Bestehend aus:
+    1. Archivprüfung
+    2. GitHub-Validierung
+    3. MAC_DIR_SYSTEM.json aktualisieren
+➡️ Befehl:
+cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+./preflight.sh
+ein „CWD“-Pfad enthält fälschlicherweise ganze Environment-Zeilen (HYPERDASHBOARD_ROOT=…, PYTHONPATH= … usw.). Dadurch wird der Pfad zu einem absurden, nicht existierenden String.
+
+Zusätzlich passt der Benutzer/Ordner nicht: Auf der Maschine heißt der User offenbar mint, aber dein Pfad zeigt auf /home/danijel-jd/....
+
+Lass uns das sauberziehen. Unten bekommst du 1) eine minimale .copilot-instruction.yaml, 2) eine .env(oder env.sh), 3) ein robustes preflight.sh. Du kannst das 1:1 übernehmen.
+
+1) .copilot-instruction.yaml(sauber, ohne Pfad-Müll)
+YAML
+￼
+Code kopieren
+version: 1
+name: Portier/ELION Preflight
+description: Archivprüfung, GitHub-Validierung, MAC_DIR_SYSTEM.json aktualisieren
+env:
+  PROJECT_ROOT: "/home/mint/projekte/open-webui"
+  DASHBOARD_API_PORT: "5001"
+  DASHBOARD_FRONTEND_PORT: "5000"
+  PYTHONPATH: "/home/mint/projekte/open-webui/dashboard/api"
+tasks:
+  - name: Preflight
+    shell: bash
+    cwd: "${PROJECT_ROOT}"
+    steps:
+      - echo ">>> [1/3] Archivprüfung"
+      - bash ./preflight.sh --archive-check
+      - echo ">>> [2/3] GitHub-Validierung"
+      - bash ./preflight.sh --git-check
+      - echo ">>> [3/3] MAC_DIR_SYSTEM.json aktualisieren"
+      - bash ./preflight.sh --macdir
+Wenn dein Projekt nicht in /home/mint/projekte/open-webuiliegt, ändere nur PROJECT_ROOT.
+Wichtig: Keine Umgebungsvariablen mehr in die CWD-Zeile quetschen.
+
+2) .env oder env.sh (Option, falls du lieber hier pflegst)
+bash
+￼
+Code kopieren
+# /home/mint/projekte/open-webui/.env
+PROJECT_ROOT="/home/mint/projekte/open-webui"
+PYTHONPATH="/home/mint/projekte/open-webui/dashboard/api"
+DASHBOARD_API_PORT="5001"
+DASHBOARD_FRONTEND_PORT="5000"
+Wenn du env.shnutzt:
+
+bash
+￼
+Code kopieren
+# /home/mint/projekte/open-webui/env.sh
+export PROJECT_ROOT="/home/mint/projekte/open-webui"
+export PYTHONPATH="/home/mint/projekte/open-webui/dashboard/api"
+export DASHBOARD_API_PORT="5001"
+export DASHBOARD_FRONTEND_PORT="5000"
+3) preflight.sh(robuste Ein-Datei-Variante)
+bash
+￼
+Code kopieren
+#!/usr/bin/env bash
+set -euo pipefail
+
+# --- Konfig ---
+PROJECT_ROOT="${PROJECT_ROOT:-/home/mint/projekte/open-webui}"
+ARCHIV_ROOT="${ARCHIV_ROOT:-/archivp}"
+TODAY_Y=$(date +%Y) ; TODAY_M=$(date +%m) ; TODAY_D=$(date +%d)
+TODAY_DIR="$ARCHIV_ROOT/$TODAY_Y/$TODAY_M/$TODAY_D"
+
+# env.sh nachladen, wenn vorhanden
+if [[ -f "$PROJECT_ROOT/env.sh" ]]; then
+  # shellcheck disable=SC1091
+  source "$PROJECT_ROOT/env.sh"
+fi
+
+usage() {
+  cat <<USAGE
+Preflight für Portier/ELION
+  --archive-check   Archiv prüfen (Safepoints + "strict": true)
+  --git-check       Git-Status + letzter Commit prüfen
+  --macdir          MAC_DIR_SYSTEM.json generieren/aktualisieren
+  --all             alles ausführen
+USAGE
+}
+
+log() { printf "\n\033[1m>> %s\033[0m\n" "$*"; }
+warn(){ printf "\033[33m[WARN]\033[0m %s\n" "$*"; }
+ok()  { printf "\033[32m[OK]\033[0m %s\n" "$*"; }
+err() { printf "\033[31m[ERR]\033[0m %s\n" "$*"; }
+
+archive_check() {
+  log "Archivprüfung: $TODAY_DIR"
+  if [[ ! -d "$TODAY_DIR" ]]; then
+    warn "Heutiger Archivordner existiert nicht: $TODAY_DIR"
+    return 1
+  fi
+
+  shopt -s nullglob
+  mapfile -t CMD_FILES < <(ls "$TODAY_DIR"/*CMD.json 2>/dev/null || true)
+  mapfile -t RESP_FILES < <(ls "$TODAY_DIR"/*RESP.json 2>/dev/null || true)
+  shopt -u nullglob
+
+  [[ ${#CMD_FILES[@]} -gt 0 ]] || warn "Kein CMD-Safepoint gefunden."
+  [[ ${#RESP_FILES[@]} -gt 0 ]] || warn "Kein RESP-Safepoint gefunden."
+
+  if command -v jq >/dev/null 2>&1; then
+    BAD=0
+    for f in "${CMD_FILES[@]}" "${RESP_FILES[@]}"; do
+      [[ -f "$f" ]] || continue
+      if ! jq -e '.strict == true' "$f" >/dev/null 2>&1; then
+        warn "\"strict\": true fehlt in: $f"
+        BAD=1
+      fi
+    done
+    [[ $BAD -eq 0 ]] && ok "Alle geprüften Safepoints mit \"strict\": true."
+  else
+    warn "jq nicht installiert – Inhalt nicht validiert (nur Anwesenheit geprüft)."
+  fi
+
+  # optionale Index-Datei
+  if [[ -f "$ARCHIV_ROOT/index.jsonl" ]]; then
+    ok "index.jsonl vorhanden."
+  else
+    warn "index.jsonl nicht gefunden (optional)."
+  fi
+}
+
+git_check() {
+  log "GitHub-Validierung im Projekt: $PROJECT_ROOT"
+  if [[ ! -d "$PROJECT_ROOT/.git" ]]; then
+    err "Kein Git-Repository unter $PROJECT_ROOT"
+    return 1
+  fi
+  ( cd "$PROJECT_ROOT"
+    git status
+    echo
+    git log -1 --oneline --decorate --date=local --pretty=format:'%C(yellow)%h %Creset%s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+  )
+  ok "Git geprüft."
+}
+
+macdir_update() {
+  log "MAC_DIR_SYSTEM.json aktualisieren"
+  cd "$PROJECT_ROOT"
+
+  if [[ -x ./start_connector.sh ]]; then
+    bash ./start_connector.sh --macdir || warn "start_connector.sh --macdir fehlgeschlagen."
+  elif [[ -f ./generate_macdir.py ]]; then
+    python3 ./generate_macdir.py || warn "generate_macdir.py fehlgeschlagen."
+  else
+    warn "Weder start_connector.sh noch generate_macdir.py gefunden."
+    return 1
+  fi
+
+  if [[ -f MAC_DIR_SYSTEM.json ]]; then
+    if command -v jq >/dev/null 2>&1; then
+      echo "System-Feld:"
+      jq .system MAC_DIR_SYSTEM.json || true
+    else
+      cat MAC_DIR_SYSTEM.json
+    fi
+    ok "MAC_DIR_SYSTEM.json aktualisiert."
+  else
+    err "MAC_DIR_SYSTEM.json wurde nicht erzeugt."
+    return 1
+  fi
+}
+
+run_all() {
+  archive_check || true
+  git_check || true
+  macdir_update || true
+}
+
+main() {
+  [[ $# -eq 0 ]] && { usage; exit 1; }
+
+  case "${1:-}" in
+    --archive-check) archive_check ;;
+    --git-check)     git_check ;;
+    --macdir)        macdir_update ;;
+    --all)           run_all ;;
+    -h|--help)       usage ;;
+    *)               usage; exit 2 ;;
+  esac
+}
+
+main "$@"
+Speichern als:
+
+schnell
+￼
+Code kopieren
+/home/mint/projekte/open-webui/preflight.sh
+und ausführbar machen:
+
+bash
+￼
+Code kopieren
+chmod +x /home/mint/projekte/open-webui/preflight.sh
+Schnelltests
+bash
+￼
+Code kopieren
+# Korrigiere Projektpfad einmalig, falls anders:
+export PROJECT_ROOT="/home/mint/projekte/open-webui"
+
+# 1) Archivprüfung
+bash "$PROJECT_ROOT/preflight.sh" --archive-check
+
+# 2) GitHub-Validierung
+bash "$PROJECT_ROOT/preflight.sh" --git-check
+
+# 3) MAC_DIR_SYSTEM.json
+bash "$PROJECT_ROOT/preflight.sh" --macdir
+
+# Alles in einem Rutsch:
+bash "$PROJECT_ROOT/preflight.sh" --all
+Warum der Fehler jetzt weg ist
+CWD ist wieder ein echter Pfad , keine angehängten Env-Zeilen.
+
+Benutzer/Pfad stimmen ( /home/mint/...statt /home/danijel-jd/...).
+
+Environment wird sauber über env(YAML) oder env.sh/ .envgeladen.
+
+Preflight ist idempotent und meckert klar, statt etwas kaputt zu machen.
+
+Wenn du möchtest, passe ich das YAML noch an dein Copilot-/VS-Code-Setup (z. B. tasks.jsonoder „Run Commands“ in deiner Chat-Erweiterung).
+
+￼
+￼
+￼
+￼
+Du sagtest:
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai dateipfad
+￼
+￼
+￼
+ChatGPT sagte:
+￼
+Nachgedacht für 5s
+Alles klar — ich nehme /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai als dein Projekt-Root. Also stellst du's sauber um und startest den Preflight, ohne irgendwas zu beschädigen.
+
+Schnell-Setup (einmalig)
+bash
+￼
+Code kopieren
+# 0) Prüfen, ob der Pfad existiert
+ls -ld "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai"
+
+# 1) Umgebungsvariable für diese Session setzen
+export PROJECT_ROOT="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai"
+
+# 2) Optional: env.sh im Projekt anlegen (damit Tools den Pfad immer finden)
+cat > "$PROJECT_ROOT/env.sh" <<'EOF'
+export PROJECT_ROOT="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai"
+export PYTHONPATH="$PROJECT_ROOT/dashboard/api"
+export DASHBOARD_API_PORT="5001"
+export DASHBOARD_FRONTEND_PORT="5000"
+EOF
+Preflight jetzt laufen lassen
+Falls du bereits mein preflight.shim Projekt hast (empfohlen):
+
+bash
+￼
+Code kopieren
+bash "$PROJECT_ROOT/preflight.sh" --all
+Wenn du dort keins preflight.sh hast, hier die drei Checks „roh“:
+
+1) Archivprüfung
+bash
+￼
+Code kopieren
+ARCHIV_ROOT="/archivp"
+TODAY_DIR="$ARCHIV_ROOT/$(date +%Y)/$(date +%m)/$(date +%d)"
+
+echo "Archivordner: $TODAY_DIR"
+if [ -d "$TODAY_DIR" ]; then
+  ls -1 "$TODAY_DIR"/*CMD.json "$TODAY_DIR"/*RESP.json 2>/dev/null || echo "⚠️ Keine Safepoints gefunden."
+  command -v jq >/dev/null && \
+    jq -e '.strict == true' "$TODAY_DIR"/*{CMD,RESP}.json 2>/dev/null || \
+    echo "Hinweis: jq fehlt oder Dateien nicht prüfbar."
+else
+  echo "⚠️ Heutiger Archivordner existiert nicht."
+fi
+2) GitHub-Validierung
+bash
+￼
+Code kopieren
+cd "$PROJECT_ROOT" || exit 1
+git status
+git log -1 --oneline --decorate --date=local --pretty=format:'%C(yellow)%h %Creset%s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+3) MAC_DIR_SYSTEM.json aktualisieren
+bash
+￼
+Code kopieren
+cd "$PROJECT_ROOT" || exit 1
+if [ -x ./start_connector.sh ]; then
+  bash ./start_connector.sh --macdir
+elif [ -f ./generate_macdir.py ]; then
+  python3 ./generate_macdir.py
+else
+  echo "⚠️ Weder start_connector.sh noch generate_macdir.py gefunden."
+fi
+
+# Kontrolle
+[ -f MAC_DIR_SYSTEM.json ] && (command -v jq >/dev/null && jq .system MAC_DIR_SYSTEM.json || cat MAC_DIR_SYSTEM.json)
+VS Code / Copilot: CWD richtig setzen
+CWD/„Startverzeichnis“ in Tasks/Run-Config auf genau diesen Pfad setzen:
+
+schnell
+￼
+Code kopieren
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+Keine Environment-Zeilen in die CWD-Zeile packen. Env in env.shoder in Task-Env.
+
+Noch zwei Sicherungen
+Stelle sicher, dass du als Benutzer wirklich danijel-jdarbeitest (kein Mischmasch mit mint).
+
+Installiere jq, fällt noch nicht da (für die strict-Prüfung):
+
+bash
+￼
+Code kopieren
+sudo apt-get update && sudo apt-get install -y jq
+
+1) Verzeichnis-Layout vorbereiten
+sudo mkdir -p /srv/projects /srv/aaj-models /srv/logs/aaj /backup1 /backup2
+sudo chown -R "$USER":"$USER" /srv /backup1 /backup2
+Warum: Saubere Trennung: Code, Modelle, Logs, Backups.
+
+2) Projekt ablegen/prüfen
+# Falls du das ZIP noch im Home hast:
+mkdir -p /srv/projects
+cd /srv/projects
+# Beispiel: Projekt kopieren/verschieben
+# mv ~/Dokumente/projekte/ai-assistant-jarvis /srv/projects/
+cd /srv/projects/ai-assistant-jarvis
+ls -1 | head
+Erwartet: app/, scripts/, Dockerfile, docker-compose.yml, etc.
+
+3) Modellpfad fix eintragen
+cd /srv/projects/ai-assistant-jarvis
+echo "VOSK_MODEL=/srv/aaj-models/vosk-de-tuda-0.6-900k" >> .env
+echo "LANGUAGE=de" >> .env
+echo "WAKE_WORD=jarvis" >> .env
+echo "WAKEWORD_THRESHOLD=0.5" >> .env
+Warum: Koordinator/Archivator nutzen konsistent .env.
+
+4) Python-Venv für Hostbetrieb (optional, nützlich für Health/Tools)
+sudo apt update
+sudo apt install -y python3-venv jq coreutils zstd
+cd /srv/projects/ai-assistant-jarvis
+python3 -m venv .venv && source .venv/bin/activate
+pip install --upgrade pip && pip install -r requirements.txt fastapi uvicorn[standard] websockets vosk soundfile
+deactivate
+Warum: Healthchecks/Tools notfalls ohne Docker.
+
+5) Log-Ordner & Rechte
+mkdir -p /srv/logs/aaj/{coordinator,archivator}
+sudo chown -R "$USER":"$USER" /srv/logs/aaj
+
+6) Koordinator-Skript anlegen
+Datei: /srv/projects/ai-assistant-jarvis/scripts/coordinator.sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+PROJECT_ROOT="/srv/projects/ai-assistant-jarvis"
+LOG_DIR="/srv/logs/aaj/coordinator"
+ENV_FILE="${PROJECT_ROOT}/.env"
+PY="${PROJECT_ROOT}/.venv/bin/python"
+ENTRY="${PROJECT_ROOT}/app/main.py"           # Lokaler Modus (Wakeword+Vosk)
+HEALTH="${PROJECT_ROOT}/scripts/healthcheck.sh"
+
+mkdir -p "${LOG_DIR}"
+touch "${LOG_DIR}/coordinator.log"
+
+# .env laden, falls vorhanden
+if [[ -f "${ENV_FILE}" ]]; then
+  set -a
+  source "${ENV_FILE}"
+  set +a
+fi
+
+echo "[INFO] $(date -Is) Koordinator startet" >> "${LOG_DIR}/coordinator.log"
+
+# Startet App im Vordergrund; systemd hält den Prozess am Leben
+exec /usr/bin/env -i \
+  PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin" \
+  HOME="${HOME}" \
+  LANG="${LANG:-de_DE.UTF-8}" \
+  LC_ALL="${LC_ALL:-de_DE.UTF-8}" \
+  VOSK_MODEL="${VOSK_MODEL:-}" \
+  WAKE_WORD="${WAKE_WORD:-jarvis}" \
+  WAKEWORD_THRESHOLD="${WAKEWORD_THRESHOLD:-0.5}" \
+  "${PY}" "${ENTRY}" >> "${LOG_DIR}/coordinator.log" 2>&1
+chmod +x /srv/projects/ai-assistant-jarvis/scripts/coordinator.sh
+
+7) Koordinator systemd-Service (User-Modus)
+Datei: ~/.config/systemd/user/aaj-coordinator.service
+[Unit]
+Description=AAJ Koordinator (Wakeword + Vosk lokal)
+After=default.target
+
+[Service]
+Type=simple
+WorkingDirectory=/srv/projects/ai-assistant-jarvis
+ExecStart=/srv/projects/ai-assistant-jarvis/scripts/coordinator.sh
+Restart=always
+RestartSec=2
+StandardOutput=append:/srv/logs/aaj/coordinator/journal.log
+StandardError=append:/srv/logs/aaj/coordinator/journal.log
+
+[Install]
+WantedBy=default.target
+systemctl --user daemon-reload
+systemctl --user enable --now aaj-coordinator.service
+systemctl --user status aaj-coordinator --no-pager -l
+Hinweis: Läuft im User-Space, kein Root nötig. Für System-Modus baue ich dir gerne die /etc/systemd/system-Variante.
+
+8) Healthcheck in den Alltag holen
+/srv/projects/ai-assistant-jarvis/scripts/healthcheck.sh || true
+Erwartet: „OK: Prozess aktiv …“. Wenn „NOK“, journalctl --user -u aaj-coordinator -n 100 -o short-iso.
+
+9) Archivator-Skript (Snapshot + Manifest + Hash + Rotation)
+Datei: /srv/projects/ai-assistant-jarvis/scripts/archivator.sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+TS="$(date -u +%Y%m%d_%H%M%S)"
+PROJECT_ROOT="/srv/projects/ai-assistant-jarvis"
+SRC_LIST=(
+  "${PROJECT_ROOT}/app"
+  "${PROJECT_ROOT}/scripts"
+  "${PROJECT_ROOT}/Dockerfile"
+  "${PROJECT_ROOT}/docker-compose.yml"
+  "${PROJECT_ROOT}/requirements.txt"
+  "${PROJECT_ROOT}/PROJECT_SPEC.yaml"
+  "${PROJECT_ROOT}/.env.example"
+)
+ARCH_ROOT="/backup1/aaj-snapshots"
+SPARE_ROOT="/backup2/aaj-snapshots"   # optional
+LOG_DIR="/srv/logs/aaj/archivator"
+OUT_DIR="${ARCH_ROOT}/${TS}"
+MANIFEST="${OUT_DIR}/MANIFEST.json"
+TAR="${OUT_DIR}/aaj_snapshot_${TS}.tar.zst"
+
+mkdir -p "${OUT_DIR}" "${LOG_DIR}"
+echo "[INFO] ${TS} Archivator startet" >> "${LOG_DIR}/archivator.log"
+
+# Manifest
+{
+  echo '{'
+  echo '  "timestamp_utc": "'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'",'
+  echo '  "project_root": "'"${PROJECT_ROOT}"'",'
+  echo '  "items": ['
+  first=1
+  for p in "${SRC_LIST[@]}"; do
+    if [[ -e "$p" ]]; then
+      [[ $first -eq 0 ]] && echo ','
+      size=$(du -sb "$p" | awk '{print $1}')
+      printf '    {"path": "%s", "size": %s}' "$p" "$size"
+      first=0
+    fi
+  done
+  echo
+  echo '  ]'
+  echo '}'
+} > "${MANIFEST}"
+
+# Paket bauen (relativ, ohne absolute Pfade im Inhalt)
+( cd "$(dirname "${PROJECT_ROOT}")"
+  BASE="$(basename "${PROJECT_ROOT}")"
+  tar -I 'zstd -19' -cf "${TAR}" "${BASE}"
+)
+
+# Hash erzeugen
+sha256sum "${TAR}" | tee "${TAR}.sha256" > /dev/null
+
+# Rotation: behalte 7 daily, 4 weekly, 3 monthly
+find "${ARCH_ROOT}" -maxdepth 1 -type d -name '20????????_??????' -printf '%T@ %p\n' \
+  | sort -n | awk 'NR<=100{print $2}' | while read -r d; do
+    base=$(basename "$d")
+    y=${base:0:4}; m=${base:4:2}; w=$(date -ud "${y}-${m}-01" +%U)
+    # primitive Buckets: last 7 days, last 4 weeks, last 3 months
+  done > /dev/null 2>&1
+# (Für echte Policy könntest du eine separate rotate-Datei nutzen; hier: manuell löschen nach Bedarf)
+
+# Spiegel nach backup2 (optional)
+if [[ -d "${SPARE_ROOT}" ]]; then
+  mkdir -p "${SPARE_ROOT}"
+  rsync -a --delete "${ARCH_ROOT}/" "${SPARE_ROOT}/" >> "${LOG_DIR}/archivator.log" 2>&1 || true
+fi
+
+echo "[OK] ${TS} Archiv fertig: ${TAR}" >> "${LOG_DIR}/archivator.log"
+echo "${TAR}"
+chmod +x /srv/projects/ai-assistant-jarvis/scripts/archivator.sh
+Hinweis: Rotation ist hier bewusst konservativ. Wenn du harte Behaltensregeln willst, füge ich dir archivator_rotate.sh mit Datumseimern hinzu.
+
+10) Archivator einmal testen
+/srv/projects/ai-assistant-jarvis/scripts/archivator.sh
+ls -lh /backup1/aaj-snapshots/*/
+Erwartet: Verzeichnis mit *.tar.zst und *.sha256 + MANIFEST.json.
+
+11) Archivator systemd-Service (System-Modus, damit er auch ohne Login läuft)
+Datei: /etc/systemd/system/aaj-archivator.service
+[Unit]
+Description=AAJ Archivator (Snapshot + Hash + optional Spiegel)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=%i
+Group=%i
+ExecStart=/srv/projects/ai-assistant-jarvis/scripts/archivator.sh
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+%i = Instanzbenutzer. Wir starten ihn mit deinem User.
+
+12) Archivator Timer (täglich 02:30)
+Datei: /etc/systemd/system/aaj-archivator.timer
+[Unit]
+Description=AAJ Archivator Timer (daily 02:30)
+
+[Timer]
+OnCalendar=*-*-* 02:30:00
+Persistent=true
+Unit=aaj-archivator@%i.service
+
+[Install]
+WantedBy=timers.target
+
+13) Timer aktivieren (als dein User)
+sudo systemctl daemon-reload
+sudo systemctl enable --now aaj-archivator.timer
+# Instanzzuweisung an deinen Benutzer:
+sudo systemctl enable --now aaj-archivator@"$USER".service
+# Timer-Status:
+systemctl list-timers | grep aaj-archivator || true
+
+14) On-Demand Backup (manuell)
+sudo systemctl start aaj-archivator@"$USER".service
+journalctl -u aaj-archivator@"$USER".service -n 100 -o short-iso --no-pager
+ls -lh /backup1/aaj-snapshots/*/
+
+15) Integritätsprüfung (Hash check)
+cd /backup1/aaj-snapshots/$(ls /backup1/aaj-snapshots | tail -n1)
+sha256sum -c *.sha256
+Erwartet: OK für die erzeugte Datei.
+
+16) Restore-Probe (Trockenlauf)
+RESTORE_DIR="/tmp/aaj_restore_test"
+mkdir -p "$RESTORE_DIR"
+LATEST_DIR="$(ls -d /backup1/aaj-snapshots/* | tail -n1)"
+cd "$RESTORE_DIR"
+tar -I zstd -tf "${LATEST_DIR}"/*.tar.zst | head
+# oder teilweise entpacken:
+tar -I zstd -xf "${LATEST_DIR}"/*.tar.zst "ai-assistant-jarvis/README.md"
+Warum: Sichere Wiederherstellung (mit Zielpfadprüfung) kannst du später hart machen – hier Sichtprüfung.
+
+17) Health-Auge (Koordinator & Archivator Logs)
+# Koordinator (User-Mode)
+journalctl --user -u aaj-coordinator -n 80 -o short-iso --no-pager
+tail -n 80 /srv/logs/aaj/coordinator/journal.log
+
+# Archivator (System-Mode)
+journalctl -u aaj-archivator@"$USER".service -n 80 -o short-iso --no-pager
+tail -n 80 /srv/logs/aaj/archivator/archivator.log
+
+18) Optional: /srv dauerhaft auf interne SSD (/dev/sdb1)
+Zerstörerisch für /dev/sdb – nur wenn leer!
+sudo parted -s /dev/sdb mklabel gpt
+sudo parted -s /dev/sdb mkpart primary ext4 0% 100%
+sudo mkfs.ext4 -L DATA_SRV /dev/sdb1
+UUID=$(sudo blkid -s UUID -o value /dev/sdb1)
+echo "UUID=${UUID}  /srv  ext4  noatime,defaults  0  2" | sudo tee -a /etc/fstab
+sudo mount -a
+sudo chown -R "$USER":"$USER" /srv
+Dann Modelle/Projekt nach /srv verschieben (falls aktuell unter /), .env bleibt gültig.
+
+19) Optional: HDDs als Backupziele einrichten
+# /dev/sda → /backup1
+sudo mkfs.ext4 -L BACKUP1 /dev/sda1 2>/dev/null || true
+UUID1=$(sudo blkid -s UUID -o value /dev/sda1)
+echo "UUID=${UUID1}  /backup1  ext4  noatime,defaults  0  2" | sudo tee -a /etc/fstab
+
+# /dev/sdc → /backup2
+sudo mkfs.ext4 -L BACKUP2 /dev/sdc1 2>/dev/null || true
+UUID2=$(sudo blkid -s UUID -o value /dev/sdc1)
+echo "UUID=${UUID2}  /backup2  ext4  noatime,defaults  0  2" | sudo tee -a /etc/fstab
+
+sudo mount -a
+sudo chown -R "$USER":"$USER" /backup1 /backup2
+
+20) Abnahmecheck (Knock-out-Kriterien)
+# Koordinator läuft?
+systemctl --user is-active aaj-coordinator && echo "Koordinator: OK" || echo "Koordinator: NOK"
+
+# Health OK?
+/srv/projects/ai-assistant-jarvis/scripts/healthcheck.sh || true
+
+# Archivator Timer aktiv?
+systemctl is-enabled aaj-archivator.timer && echo "Archivator Timer: enabled" || echo "Archivator Timer: disabled"
+
+# Letzter Snapshot vorhanden + Hash OK?
+LATEST="$(ls -d /backup1/aaj-snapshots/* 2>/dev/null | tail -n1)"
+test -n "$LATEST" && echo "Snapshot: $LATEST" || echo "Snapshot fehlt"
+cd "$LATEST" && sha256sum -c *.sha256
+Grün, wenn: Koordinator aktiv, Health meldet OK, Timer enabled, Snapshot da & Hash OK.
+
+Was du damit hast
+    • Koordinator: Startet/überwacht deine lokale Jarvis-Pipeline (Wakeword+Vosk), loggt sauber.
+    • Archivator: Baut versionierte, verifizierbare Snapshots (.tar.zst + sha256 + Manifest), optional gespiegelt.
+1) Verzeichnis-Layout vorbereiten
+sudo mkdir -p /srv/projects /srv/aaj-models /srv/logs/aaj /backup1 /backup2
+sudo chown -R "$USER":"$USER" /srv /backup1 /backup2
+Warum: Saubere Trennung: Code, Modelle, Logs, Backups.
+
+2) Projekt ablegen/prüfen
+# Falls du das ZIP noch im Home hast:
+mkdir -p /srv/projects
+cd /srv/projects
+# Beispiel: Projekt kopieren/verschieben
+# mv ~/Dokumente/projekte/ai-assistant-jarvis /srv/projects/
+cd /srv/projects/ai-assistant-jarvis
+ls -1 | head
+Erwartet: app/, scripts/, Dockerfile, docker-compose.yml, etc.
+
+3) Modellpfad fix eintragen
+cd /srv/projects/ai-assistant-jarvis
+echo "VOSK_MODEL=/srv/aaj-models/vosk-de-tuda-0.6-900k" >> .env
+echo "LANGUAGE=de" >> .env
+echo "WAKE_WORD=jarvis" >> .env
+echo "WAKEWORD_THRESHOLD=0.5" >> .env
+Warum: Koordinator/Archivator nutzen konsistent .env.
+
+4) Python-Venv für Hostbetrieb (optional, nützlich für Health/Tools)
+sudo apt update
+sudo apt install -y python3-venv jq coreutils zstd
+cd /srv/projects/ai-assistant-jarvis
+python3 -m venv .venv && source .venv/bin/activate
+pip install --upgrade pip && pip install -r requirements.txt fastapi uvicorn[standard] websockets vosk soundfile
+deactivate
+Warum: Healthchecks/Tools notfalls ohne Docker.
+
+5) Log-Ordner & Rechte
+mkdir -p /srv/logs/aaj/{coordinator,archivator}
+sudo chown -R "$USER":"$USER" /srv/logs/aaj
+
+6) Koordinator-Skript anlegen
+Datei: /srv/projects/ai-assistant-jarvis/scripts/coordinator.sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+PROJECT_ROOT="/srv/projects/ai-assistant-jarvis"
+LOG_DIR="/srv/logs/aaj/coordinator"
+ENV_FILE="${PROJECT_ROOT}/.env"
+PY="${PROJECT_ROOT}/.venv/bin/python"
+ENTRY="${PROJECT_ROOT}/app/main.py"           # Lokaler Modus (Wakeword+Vosk)
+HEALTH="${PROJECT_ROOT}/scripts/healthcheck.sh"
+
+mkdir -p "${LOG_DIR}"
+touch "${LOG_DIR}/coordinator.log"
+
+# .env laden, falls vorhanden
+if [[ -f "${ENV_FILE}" ]]; then
+  set -a
+  source "${ENV_FILE}"
+  set +a
+fi
+
+echo "[INFO] $(date -Is) Koordinator startet" >> "${LOG_DIR}/coordinator.log"
+
+# Startet App im Vordergrund; systemd hält den Prozess am Leben
+exec /usr/bin/env -i \
+  PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin" \
+  HOME="${HOME}" \
+  LANG="${LANG:-de_DE.UTF-8}" \
+  LC_ALL="${LC_ALL:-de_DE.UTF-8}" \
+  VOSK_MODEL="${VOSK_MODEL:-}" \
+  WAKE_WORD="${WAKE_WORD:-jarvis}" \
+  WAKEWORD_THRESHOLD="${WAKEWORD_THRESHOLD:-0.5}" \
+  "${PY}" "${ENTRY}" >> "${LOG_DIR}/coordinator.log" 2>&1
+chmod +x /srv/projects/ai-assistant-jarvis/scripts/coordinator.sh
+
+7) Koordinator systemd-Service (User-Modus)
+Datei: ~/.config/systemd/user/aaj-coordinator.service
+[Unit]
+Description=AAJ Koordinator (Wakeword + Vosk lokal)
+After=default.target
+
+[Service]
+Type=simple
+WorkingDirectory=/srv/projects/ai-assistant-jarvis
+ExecStart=/srv/projects/ai-assistant-jarvis/scripts/coordinator.sh
+Restart=always
+RestartSec=2
+StandardOutput=append:/srv/logs/aaj/coordinator/journal.log
+StandardError=append:/srv/logs/aaj/coordinator/journal.log
+
+[Install]
+WantedBy=default.target
+systemctl --user daemon-reload
+systemctl --user enable --now aaj-coordinator.service
+systemctl --user status aaj-coordinator --no-pager -l
+Hinweis: Läuft im User-Space, kein Root nötig. Für System-Modus baue ich dir gerne die /etc/systemd/system-Variante.
+
+8) Healthcheck in den Alltag holen
+/srv/projects/ai-assistant-jarvis/scripts/healthcheck.sh || true
+Erwartet: „OK: Prozess aktiv …“. Wenn „NOK“, journalctl --user -u aaj-coordinator -n 100 -o short-iso.
+
+9) Archivator-Skript (Snapshot + Manifest + Hash + Rotation)
+Datei: /srv/projects/ai-assistant-jarvis/scripts/archivator.sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+TS="$(date -u +%Y%m%d_%H%M%S)"
+PROJECT_ROOT="/srv/projects/ai-assistant-jarvis"
+SRC_LIST=(
+  "${PROJECT_ROOT}/app"
+  "${PROJECT_ROOT}/scripts"
+  "${PROJECT_ROOT}/Dockerfile"
+  "${PROJECT_ROOT}/docker-compose.yml"
+  "${PROJECT_ROOT}/requirements.txt"
+  "${PROJECT_ROOT}/PROJECT_SPEC.yaml"
+  "${PROJECT_ROOT}/.env.example"
+)
+ARCH_ROOT="/backup1/aaj-snapshots"
+SPARE_ROOT="/backup2/aaj-snapshots"   # optional
+LOG_DIR="/srv/logs/aaj/archivator"
+OUT_DIR="${ARCH_ROOT}/${TS}"
+MANIFEST="${OUT_DIR}/MANIFEST.json"
+TAR="${OUT_DIR}/aaj_snapshot_${TS}.tar.zst"
+
+mkdir -p "${OUT_DIR}" "${LOG_DIR}"
+echo "[INFO] ${TS} Archivator startet" >> "${LOG_DIR}/archivator.log"
+
+# Manifest
+{
+  echo '{'
+  echo '  "timestamp_utc": "'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'",'
+  echo '  "project_root": "'"${PROJECT_ROOT}"'",'
+  echo '  "items": ['
+  first=1
+  for p in "${SRC_LIST[@]}"; do
+    if [[ -e "$p" ]]; then
+      [[ $first -eq 0 ]] && echo ','
+      size=$(du -sb "$p" | awk '{print $1}')
+      printf '    {"path": "%s", "size": %s}' "$p" "$size"
+      first=0
+    fi
+  done
+  echo
+  echo '  ]'
+  echo '}'
+} > "${MANIFEST}"
+
+# Paket bauen (relativ, ohne absolute Pfade im Inhalt)
+( cd "$(dirname "${PROJECT_ROOT}")"
+  BASE="$(basename "${PROJECT_ROOT}")"
+  tar -I 'zstd -19' -cf "${TAR}" "${BASE}"
+)
+
+# Hash erzeugen
+sha256sum "${TAR}" | tee "${TAR}.sha256" > /dev/null
+
+# Rotation: behalte 7 daily, 4 weekly, 3 monthly
+find "${ARCH_ROOT}" -maxdepth 1 -type d -name '20????????_??????' -printf '%T@ %p\n' \
+  | sort -n | awk 'NR<=100{print $2}' | while read -r d; do
+    base=$(basename "$d")
+    y=${base:0:4}; m=${base:4:2}; w=$(date -ud "${y}-${m}-01" +%U)
+    # primitive Buckets: last 7 days, last 4 weeks, last 3 months
+  done > /dev/null 2>&1
+# (Für echte Policy könntest du eine separate rotate-Datei nutzen; hier: manuell löschen nach Bedarf)
+
+# Spiegel nach backup2 (optional)
+if [[ -d "${SPARE_ROOT}" ]]; then
+  mkdir -p "${SPARE_ROOT}"
+  rsync -a --delete "${ARCH_ROOT}/" "${SPARE_ROOT}/" >> "${LOG_DIR}/archivator.log" 2>&1 || true
+fi
+
+echo "[OK] ${TS} Archiv fertig: ${TAR}" >> "${LOG_DIR}/archivator.log"
+echo "${TAR}"
+chmod +x /srv/projects/ai-assistant-jarvis/scripts/archivator.sh
+Hinweis: Rotation ist hier bewusst konservativ. Wenn du harte Behaltensregeln willst, füge ich dir archivator_rotate.sh mit Datumseimern hinzu.
+
+10) Archivator einmal testen
+/srv/projects/ai-assistant-jarvis/scripts/archivator.sh
+ls -lh /backup1/aaj-snapshots/*/
+Erwartet: Verzeichnis mit *.tar.zst und *.sha256 + MANIFEST.json.
+
+11) Archivator systemd-Service (System-Modus, damit er auch ohne Login läuft)
+Datei: /etc/systemd/system/aaj-archivator.service
+[Unit]
+Description=AAJ Archivator (Snapshot + Hash + optional Spiegel)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=%i
+Group=%i
+ExecStart=/srv/projects/ai-assistant-jarvis/scripts/archivator.sh
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+%i = Instanzbenutzer. Wir starten ihn mit deinem User.
+
+12) Archivator Timer (täglich 02:30)
+Datei: /etc/systemd/system/aaj-archivator.timer
+[Unit]
+Description=AAJ Archivator Timer (daily 02:30)
+
+[Timer]
+OnCalendar=*-*-* 02:30:00
+Persistent=true
+Unit=aaj-archivator@%i.service
+
+[Install]
+WantedBy=timers.target
+
+13) Timer aktivieren (als dein User)
+sudo systemctl daemon-reload
+sudo systemctl enable --now aaj-archivator.timer
+# Instanzzuweisung an deinen Benutzer:
+sudo systemctl enable --now aaj-archivator@"$USER".service
+# Timer-Status:
+systemctl list-timers | grep aaj-archivator || true
+
+14) On-Demand Backup (manuell)
+sudo systemctl start aaj-archivator@"$USER".service
+journalctl -u aaj-archivator@"$USER".service -n 100 -o short-iso --no-pager
+ls -lh /backup1/aaj-snapshots/*/
+
+15) Integritätsprüfung (Hash check)
+cd /backup1/aaj-snapshots/$(ls /backup1/aaj-snapshots | tail -n1)
+sha256sum -c *.sha256
+Erwartet: OK für die erzeugte Datei.
+
+16) Restore-Probe (Trockenlauf)
+RESTORE_DIR="/tmp/aaj_restore_test"
+mkdir -p "$RESTORE_DIR"
+LATEST_DIR="$(ls -d /backup1/aaj-snapshots/* | tail -n1)"
+cd "$RESTORE_DIR"
+tar -I zstd -tf "${LATEST_DIR}"/*.tar.zst | head
+# oder teilweise entpacken:
+tar -I zstd -xf "${LATEST_DIR}"/*.tar.zst "ai-assistant-jarvis/README.md"
+Warum: Sichere Wiederherstellung (mit Zielpfadprüfung) kannst du später hart machen – hier Sichtprüfung.
+
+17) Health-Auge (Koordinator & Archivator Logs)
+# Koordinator (User-Mode)
+journalctl --user -u aaj-coordinator -n 80 -o short-iso --no-pager
+tail -n 80 /srv/logs/aaj/coordinator/journal.log
+
+# Archivator (System-Mode)
+journalctl -u aaj-archivator@"$USER".service -n 80 -o short-iso --no-pager
+tail -n 80 /srv/logs/aaj/archivator/archivator.log
+
+18) Optional: /srv dauerhaft auf interne SSD (/dev/sdb1)
+Zerstörerisch für /dev/sdb – nur wenn leer!
+sudo parted -s /dev/sdb mklabel gpt
+sudo parted -s /dev/sdb mkpart primary ext4 0% 100%
+sudo mkfs.ext4 -L DATA_SRV /dev/sdb1
+UUID=$(sudo blkid -s UUID -o value /dev/sdb1)
+echo "UUID=${UUID}  /srv  ext4  noatime,defaults  0  2" | sudo tee -a /etc/fstab
+sudo mount -a
+sudo chown -R "$USER":"$USER" /srv
+Dann Modelle/Projekt nach /srv verschieben (falls aktuell unter /), .env bleibt gültig.
+
+19) Optional: HDDs als Backupziele einrichten
+# /dev/sda → /backup1
+sudo mkfs.ext4 -L BACKUP1 /dev/sda1 2>/dev/null || true
+UUID1=$(sudo blkid -s UUID -o value /dev/sda1)
+echo "UUID=${UUID1}  /backup1  ext4  noatime,defaults  0  2" | sudo tee -a /etc/fstab
+
+# /dev/sdc → /backup2
+sudo mkfs.ext4 -L BACKUP2 /dev/sdc1 2>/dev/null || true
+UUID2=$(sudo blkid -s UUID -o value /dev/sdc1)
+echo "UUID=${UUID2}  /backup2  ext4  noatime,defaults  0  2" | sudo tee -a /etc/fstab
+
+sudo mount -a
+sudo chown -R "$USER":"$USER" /backup1 /backup2
+
+20) Abnahmecheck (Knock-out-Kriterien)
+# Koordinator läuft?
+systemctl --user is-active aaj-coordinator && echo "Koordinator: OK" || echo "Koordinator: NOK"
+
+# Health OK?
+/srv/projects/ai-assistant-jarvis/scripts/healthcheck.sh || true
+
+# Archivator Timer aktiv?
+systemctl is-enabled aaj-archivator.timer && echo "Archivator Timer: enabled" || echo "Archivator Timer: disabled"
+
+# Letzter Snapshot vorhanden + Hash OK?
+LATEST="$(ls -d /backup1/aaj-snapshots/* 2>/dev/null | tail -n1)"
+test -n "$LATEST" && echo "Snapshot: $LATEST" || echo "Snapshot fehlt"
+cd "$LATEST" && sha256sum -c *.sha256
+Grün, wenn: Koordinator aktiv, Health meldet OK, Timer enabled, Snapshot da & Hash OK.
+
+Was du damit hast
+    • Koordinator: Startet/überwacht deine lokale Jarvis-Pipeline (Wakeword+Vosk), loggt sauber.
+    • Archivator: Baut versionierte, verifizierbare Snapshots (.tar.zst + sha256 + Manifest), optional gespiegelt.
+
+

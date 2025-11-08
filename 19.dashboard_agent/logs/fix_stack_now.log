@@ -1,0 +1,875 @@
+[2025-11-07T08:18:40+0100] ╔════════════════════════════════════════╗
+[2025-11-07T08:18:40+0100] ║   ELION fix_stack_now (Phase 4.1)      ║
+[2025-11-07T08:18:40+0100] ║   strict:true | Append-only Logs       ║
+[2025-11-07T08:18:40+0100] ╚════════════════════════════════════════╝
+[2025-11-07T08:18:40+0100] Policy-Check: Pool 12344-12399, Port 8080 verboten
+[2025-11-07T08:18:40+0100] ✅ Port-Policy OK: 8080 frei
+[2025-11-07T08:18:40+0100] 
+[2025-11-07T08:18:40+0100] === System Mode Status ===
+  
+  [0;34m╔════════════════════════════════════════╗[0m
+  [0;34m║      ELION System Mode Status          ║[0m
+  [0;34m╚════════════════════════════════════════╝[0m
+  
+  Current Mode: [0;32mdevelopment[0m
+  
+  Configuration:
+  {
+      "env": "development",
+      "enable_owner_override": true,
+      "enable_admin_bypass": true,
+      "enable_emergency_command": true,
+      "token_storage": "plaintext",
+      "require_ui_auth": false,
+      "require_https": false,
+      "log_level": "DEBUG",
+      "ports": {
+          "dashboard": 12349,
+          "bridge": 12351,
+          "opena1": 12344,
+          "opena2": 12345,
+          "kordp": 12346
+      }
+  }
+  
+  Active Services:
+    ❌ dashboard (port 12349)
+    ❌ bridge (port 12351)
+    ❌ opena1 (port 12344)
+    ✅ opena2 (port 12345)
+    ❌ kordp (port 12346)
+[2025-11-07T08:18:40+0100] 
+[2025-11-07T08:18:40+0100] === Startup Sequence (Reihenfolge: opena2 → opena1 → kordp → dashboard → bridge) ===
+[2025-11-07T08:18:40+0100] ✅ opena2 bereits online (:12345, status: healthy)
+[2025-11-07T08:18:40+0100] ▶️  Starte opena1 …
+[2025-11-07T08:18:41+0100] ❌ Start-Script start_opena1.sh fehlgeschlagen
+[2025-11-07T08:18:41+0100] ▶️  Starte kordp …
+[2025-11-07T08:18:50+0100] ❌ kordp bleibt down nach 10s (:12346, last status: down)
+[2025-11-07T08:18:50+0100] ▶️  Starte dashboard (opena19) …
+[2025-11-07T08:18:51+0100] ❌ Start-Script start_opena19.sh fehlgeschlagen
+[2025-11-07T08:18:51+0100] ▶️  Starte bridge (openwebui-adapter) …
+[2025-11-07T08:19:02+0100] ❌ bridge (openwebui-adapter) bleibt down nach 10s (:12351, last status: down)
+
+╔═══════════════════════════════════════╗
+║        ELION HEALTH MATRIX             ║
+╚═══════════════════════════════════════╝
+  ❌ opena1       :12344 → down
+  ✅ opena2       :12345 → healthy
+  ❌ kordp        :12346 → down
+  ❌ dashboard    :12349 → down
+  ❌ bridge       :12351 → down
+║ strict:true                            ║
+╚═══════════════════════════════════════╝
+[2025-11-07T08:19:02+0100] 
+[2025-11-07T08:19:02+0100] === Port Sanity Check ===
+[2025-11-07T08:19:02+0100] ✅ Port 8080 frei (gut)
+
+=== LOG TAILS ===
+
+--- agent_registry.log (last 40 lines) ---
+
+--- dashboard_runtime.log (last 40 lines) ---
+2025-11-06 05:57:17,709 - security - INFO - Tokenprüfung ok=True
+2025-11-06 05:57:17,709 - dashboard - ERROR - Fehler bei Befehlsausführung: Agent register nicht registriert
+2025-11-06 05:57:17,718 - security - INFO - Tokenprüfung ok=True
+2025-11-06 05:57:18,679 - security - INFO - Tokenprüfung ok=True
+2025-11-06 05:57:18,679 - dashboard - ERROR - Fehler bei Befehlsausführung: Agent register nicht registriert
+2025-11-06 05:57:18,684 - security - INFO - Tokenprüfung ok=True
+2025-11-06 05:57:36,631 - security - INFO - Tokenprüfung ok=True
+2025-11-06 05:58:06,635 - security - INFO - Tokenprüfung ok=True
+2025-11-06 05:58:36,637 - security - INFO - Tokenprüfung ok=True
+2025-11-06 05:59:06,642 - security - INFO - Tokenprüfung ok=True
+2025-11-06 05:59:36,646 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:00:06,649 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:00:36,652 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:01:06,656 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:01:36,658 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:02:06,663 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:02:36,667 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:03:06,673 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:03:36,679 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:04:06,684 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:04:36,688 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:03,305 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:03,317 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:03,317 - dashboard - ERROR - Fehler bei Befehlsausführung: Agent register nicht registriert
+2025-11-06 06:05:03,325 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:20,184 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:20,184 - dashboard - ERROR - Fehler bei Befehlsausführung: Agent register nicht registriert
+2025-11-06 06:05:20,192 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:09,488 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:09,495 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:09,496 - agent_registry - INFO - Agent registriert: opena1 -> http://127.0.0.1:12344
+2025-11-06 09:34:09,503 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:23,917 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:23,917 - agent_registry - INFO - Agent registriert: opena1 -> http://127.0.0.1:12344
+2025-11-06 09:34:23,924 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:35:34,364 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:35:34,364 - agent_registry - INFO - Agent registriert: opena3 -> http://127.0.0.1:8080
+2025-11-06 09:38:47,346 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:40:12,775 - security - INFO - Tokenprüfung ok=False
+2025-11-06 09:40:21,352 - security - INFO - Tokenprüfung ok=False
+
+--- fix_stack_now.log (last 40 lines) ---
+2025-11-06 05:57:17,718 - security - INFO - Tokenprüfung ok=True
+2025-11-06 05:57:18,679 - security - INFO - Tokenprüfung ok=True
+2025-11-06 05:57:18,679 - dashboard - ERROR - Fehler bei Befehlsausführung: Agent register nicht registriert
+2025-11-06 05:57:18,684 - security - INFO - Tokenprüfung ok=True
+2025-11-06 05:57:36,631 - security - INFO - Tokenprüfung ok=True
+2025-11-06 05:58:06,635 - security - INFO - Tokenprüfung ok=True
+2025-11-06 05:58:36,637 - security - INFO - Tokenprüfung ok=True
+2025-11-06 05:59:06,642 - security - INFO - Tokenprüfung ok=True
+2025-11-06 05:59:36,646 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:00:06,649 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:00:36,652 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:01:06,656 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:01:36,658 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:02:06,663 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:02:36,667 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:03:06,673 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:03:36,679 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:04:06,684 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:04:36,688 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:03,305 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:03,317 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:03,317 - dashboard - ERROR - Fehler bei Befehlsausführung: Agent register nicht registriert
+2025-11-06 06:05:03,325 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:20,184 - security - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:20,184 - dashboard - ERROR - Fehler bei Befehlsausführung: Agent register nicht registriert
+2025-11-06 06:05:20,192 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:09,488 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:09,495 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:09,496 - agent_registry - INFO - Agent registriert: opena1 -> http://127.0.0.1:12344
+2025-11-06 09:34:09,503 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:23,917 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:23,917 - agent_registry - INFO - Agent registriert: opena1 -> http://127.0.0.1:12344
+2025-11-06 09:34:23,924 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:35:34,364 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:35:34,364 - agent_registry - INFO - Agent registriert: opena3 -> http://127.0.0.1:8080
+2025-11-06 09:38:47,346 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:40:12,775 - security - INFO - Tokenprüfung ok=False
+2025-11-06 09:40:21,352 - security - INFO - Tokenprüfung ok=False
+
+--- fix_stack_now.log (last 40 lines) ---
+
+--- kordp.nohup.log (last 40 lines) ---
+Traceback (most recent call last):
+  File "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_kordp.py", line 21, in <module>
+    from security import verify_token, RateLimiter, _read_env_token
+ImportError: cannot import name '_read_env_token' from 'security' (/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/security.py)
+
+--- kordp_runtime.log (last 40 lines) ---
+2025-11-06 05:55:35,571 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12345
+2025-11-06 05:55:35,660 - kordp - INFO - Tokenprüfung ok=True
+2025-11-06 05:55:35,662 - kordp - INFO - HTTP Request: POST http://127.0.0.1:12345/store/archivp "HTTP/1.1 404 Not Found"
+2025-11-06 05:55:35,663 - kordp - ERROR - Safepoint-Write fehlgeschlagen: 404 {"detail":"Not Found"}
+2025-11-06 05:57:17,646 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12345
+2025-11-06 05:57:17,730 - kordp - INFO - Tokenprüfung ok=True
+2025-11-06 05:57:17,733 - kordp - INFO - HTTP Request: POST http://127.0.0.1:12345/store/archivp "HTTP/1.1 404 Not Found"
+2025-11-06 05:57:17,734 - kordp - ERROR - Safepoint-Write fehlgeschlagen: 404 {"detail":"Not Found"}
+2025-11-06 06:05:03,271 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12348
+2025-11-06 06:05:03,335 - kordp - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:03,336 - kordp - ERROR - Archivator-Aufruf fehlgeschlagen: All connection attempts failed
+2025-11-06 06:23:48,471 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12348
+2025-11-06 09:32:23,642 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12348
+2025-11-06 09:34:04,484 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12348
+
+--- opena19.nohup.log (last 40 lines) ---
+INFO:     Started server process [324107]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12349 (Press CTRL+C to quit)
+2025-11-06 09:34:09,488 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:09,495 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:09,496 - agent_registry - INFO - Agent registriert: opena1 -> http://127.0.0.1:12344
+2025-11-06 09:34:09,503 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:23,917 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:23,917 - agent_registry - INFO - Agent registriert: opena1 -> http://127.0.0.1:12344
+2025-11-06 09:34:23,924 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:35:34,364 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:35:34,364 - agent_registry - INFO - Agent registriert: opena3 -> http://127.0.0.1:8080
+2025-11-06 09:38:47,346 - security - INFO - Tokenprüfung ok=True
+2025-11-06 09:40:12,775 - security - INFO - Tokenprüfung ok=False
+2025-11-06 09:40:21,352 - security - INFO - Tokenprüfung ok=False
+INFO:     Shutting down
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [324107]
+[2025-11-07T08:19:27+0100] ╔════════════════════════════════════════╗
+[2025-11-07T08:19:27+0100] ║   ELION fix_stack_now (Phase 4.1)      ║
+[2025-11-07T08:19:27+0100] ║   strict:true | Append-only Logs       ║
+[2025-11-07T08:19:27+0100] ╚════════════════════════════════════════╝
+[2025-11-07T08:19:27+0100] Policy-Check: Pool 12344-12399, Port 8080 verboten
+[2025-11-07T08:19:27+0100] ✅ Port-Policy OK: 8080 frei
+[2025-11-07T08:19:27+0100] 
+[2025-11-07T08:19:27+0100] === System Mode Status ===
+  
+  [0;34m╔════════════════════════════════════════╗[0m
+  [0;34m║      ELION System Mode Status          ║[0m
+  [0;34m╚════════════════════════════════════════╝[0m
+  
+  Current Mode: [0;32mdevelopment[0m
+  
+  Configuration:
+  {
+      "env": "development",
+      "enable_owner_override": true,
+      "enable_admin_bypass": true,
+      "enable_emergency_command": true,
+      "token_storage": "plaintext",
+      "require_ui_auth": false,
+      "require_https": false,
+      "log_level": "DEBUG",
+      "ports": {
+          "dashboard": 12349,
+          "bridge": 12351,
+          "opena1": 12344,
+          "opena2": 12345,
+          "kordp": 12346
+      }
+  }
+  
+  Active Services:
+    ❌ dashboard (port 12349)
+    ❌ bridge (port 12351)
+    ❌ opena1 (port 12344)
+    ✅ opena2 (port 12345)
+    ❌ kordp (port 12346)
+[2025-11-07T08:19:28+0100] 
+[2025-11-07T08:19:28+0100] === Startup Sequence (Reihenfolge: opena2 → opena1 → kordp → dashboard → bridge) ===
+[2025-11-07T08:19:28+0100] ✅ opena2 bereits online (:12345, status: healthy)
+[2025-11-07T08:19:28+0100] ▶️  Starte opena1 …
+[2025-11-07T08:25:46+0100] ╔════════════════════════════════════════╗
+[2025-11-07T08:25:46+0100] ║   ELION fix_stack_now (Phase 4.1)      ║
+[2025-11-07T08:25:46+0100] ║   strict:true | Append-only Logs       ║
+[2025-11-07T08:25:46+0100] ╚════════════════════════════════════════╝
+[2025-11-07T08:25:46+0100] Policy-Check: Pool 12344-12399, Port 8080 verboten
+[2025-11-07T08:25:46+0100] ✅ Port-Policy OK: 8080 frei
+[2025-11-07T08:25:46+0100] 
+[2025-11-07T08:25:46+0100] === System Mode Status ===
+  
+  [0;34m╔════════════════════════════════════════╗[0m
+  [0;34m║      ELION System Mode Status          ║[0m
+  [0;34m╚════════════════════════════════════════╝[0m
+  
+  Current Mode: [0;32mdevelopment[0m
+  
+  Configuration:
+  {
+      "env": "development",
+      "enable_owner_override": true,
+      "enable_admin_bypass": true,
+      "enable_emergency_command": true,
+      "token_storage": "plaintext",
+      "require_ui_auth": false,
+      "require_https": false,
+      "log_level": "DEBUG",
+      "ports": {
+          "dashboard": 12349,
+          "bridge": 12351,
+          "opena1": 12344,
+          "opena2": 12345,
+          "kordp": 12346
+      }
+  }
+  
+  Active Services:
+    ❌ dashboard (port 12349)
+    ❌ bridge (port 12351)
+    ❌ opena1 (port 12344)
+    ✅ opena2 (port 12345)
+    ❌ kordp (port 12346)
+[2025-11-07T08:25:46+0100] 
+[2025-11-07T08:25:46+0100] === Startup Sequence (Reihenfolge: opena2 → opena1 → kordp → dashboard → bridge) ===
+[2025-11-07T08:25:46+0100] ✅ opena2 bereits online (:12345, status: healthy)
+[2025-11-07T08:25:46+0100] ▶️  Starte opena1 …
+[2025-11-07T08:36:22+0100] ╔════════════════════════════════════════╗
+[2025-11-07T08:36:22+0100] ║   ELION fix_stack_now (Phase 4.1)      ║
+[2025-11-07T08:36:22+0100] ║   strict:true | Append-only Logs       ║
+[2025-11-07T08:36:22+0100] ╚════════════════════════════════════════╝
+[2025-11-07T08:36:22+0100] Policy-Check: Pool 12344-12399, Port 8080 verboten
+[2025-11-07T08:36:22+0100] ✅ Port-Policy OK: 8080 frei
+[2025-11-07T08:36:22+0100] 
+[2025-11-07T08:36:22+0100] === System Mode Status ===
+  
+  [0;34m╔════════════════════════════════════════╗[0m
+  [0;34m║      ELION System Mode Status          ║[0m
+  [0;34m╚════════════════════════════════════════╝[0m
+  
+  Current Mode: [0;32mdevelopment[0m
+  
+  Configuration:
+  {
+      "env": "development",
+      "enable_owner_override": true,
+      "enable_admin_bypass": true,
+      "enable_emergency_command": true,
+      "token_storage": "plaintext",
+      "require_ui_auth": false,
+      "require_https": false,
+      "log_level": "DEBUG",
+      "ports": {
+          "dashboard": 12349,
+          "bridge": 12351,
+          "opena1": 12344,
+          "opena2": 12345,
+          "kordp": 12346
+      }
+  }
+  
+  Active Services:
+    ❌ dashboard (port 12349)
+    ❌ bridge (port 12351)
+    ❌ opena1 (port 12344)
+    ✅ opena2 (port 12345)
+    ❌ kordp (port 12346)
+[2025-11-07T08:36:22+0100] 
+[2025-11-07T08:36:22+0100] === Startup Sequence (Reihenfolge: opena2 → opena1 → kordp → dashboard → bridge) ===
+[2025-11-07T08:36:22+0100] ✅ opena2 bereits online (:12345, status: healthy)
+[2025-11-07T08:36:22+0100] ▶️  Starte opena1 …
+[2025-11-08T20:49:52+0100] ❌ Start-Script start_opena1.sh fehlgeschlagen
+[2025-11-08T20:49:52+0100] ✅ kordp bereits online (:12346, status: healthy)
+[2025-11-08T20:49:52+0100] ℹ️  Port :12349 belegt (vermutlich von dashboard (opena19) selbst). Überspringe Start.
+[2025-11-08T20:49:53+0100] ▶️  Starte bridge (openwebui-adapter) …
+[2025-11-08T20:50:04+0100] ❌ bridge (openwebui-adapter) bleibt down nach 10s (:12351, last status: down)
+
+╔═══════════════════════════════════════╗
+║        ELION HEALTH MATRIX             ║
+╚═══════════════════════════════════════╝
+  ❌ opena1       :12344 → down
+  ❌ opena2       :12345 → down
+  ❌ kordp        :12346 → down
+  ❌ dashboard    :12349 → down
+  ❌ bridge       :12351 → down
+║ strict:true                            ║
+╚═══════════════════════════════════════╝
+[2025-11-08T20:50:04+0100] 
+[2025-11-08T20:50:04+0100] === Port Sanity Check ===
+[2025-11-08T20:50:04+0100] ✅ Port 8080 frei (gut)
+
+=== LOG TAILS ===
+
+--- agent_registry.log (last 40 lines) ---
+
+--- dashboard_runtime.log (last 40 lines) ---
+2025-11-08 20:49:38,619 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:38,970 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:39,323 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:39,674 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:40,025 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:40,377 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:40,732 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:41,082 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:41,433 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:41,786 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:42,138 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:42,491 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:42,842 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:43,193 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:43,550 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:43,900 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:44,252 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:44,604 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:44,954 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:45,308 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:45,659 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:46,011 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:46,361 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:46,712 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:47,063 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:47,414 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:47,764 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:48,115 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:48,466 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:48,817 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:49,168 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:49,519 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:49,869 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:50,221 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:50,573 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:50,925 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:51,276 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:51,627 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:51,979 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:52,334 - watchfiles.main - INFO - 2 changes detected
+
+--- fix_stack_now.log (last 40 lines) ---
+2025-11-08 20:49:39,323 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:39,674 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:40,025 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:40,377 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:40,732 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:41,082 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:41,433 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:41,786 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:42,138 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:42,491 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:42,842 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:43,193 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:43,550 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:43,900 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:44,252 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:44,604 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:44,954 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:45,308 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:45,659 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:46,011 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:46,361 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:46,712 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:47,063 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:47,414 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:47,764 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:48,115 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:48,466 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:48,817 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:49,168 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:49,519 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:49,869 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:50,221 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:50,573 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:50,925 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:51,276 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:51,627 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:51,979 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:52,334 - watchfiles.main - INFO - 2 changes detected
+
+--- fix_stack_now.log (last 40 lines) ---
+
+--- kordp.nohup.log (last 40 lines) ---
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_kordp.py:66: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+INFO:     Started server process [1223922]
+INFO:     Waiting for application startup.
+2025-11-07 08:39:34,445 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12348
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12346 (Press CTRL+C to quit)
+INFO:     127.0.0.1:58982 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58598 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39550 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54966 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57064 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57072 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47080 - "GET /health HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1223922]
+
+--- kordp_runtime.log (last 40 lines) ---
+2025-11-06 05:55:35,571 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12345
+2025-11-06 05:55:35,660 - kordp - INFO - Tokenprüfung ok=True
+2025-11-06 05:55:35,662 - kordp - INFO - HTTP Request: POST http://127.0.0.1:12345/store/archivp "HTTP/1.1 404 Not Found"
+2025-11-06 05:55:35,663 - kordp - ERROR - Safepoint-Write fehlgeschlagen: 404 {"detail":"Not Found"}
+2025-11-06 05:57:17,646 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12345
+2025-11-06 05:57:17,730 - kordp - INFO - Tokenprüfung ok=True
+2025-11-06 05:57:17,733 - kordp - INFO - HTTP Request: POST http://127.0.0.1:12345/store/archivp "HTTP/1.1 404 Not Found"
+2025-11-06 05:57:17,734 - kordp - ERROR - Safepoint-Write fehlgeschlagen: 404 {"detail":"Not Found"}
+2025-11-06 06:05:03,271 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12348
+2025-11-06 06:05:03,335 - kordp - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:03,336 - kordp - ERROR - Archivator-Aufruf fehlgeschlagen: All connection attempts failed
+2025-11-06 06:23:48,471 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12348
+2025-11-06 09:32:23,642 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12348
+2025-11-06 09:34:04,484 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12348
+2025-11-07 08:39:34,445 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12348
+
+--- opena19.nohup.log (last 40 lines) ---
+2025-11-08 20:49:40,377 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:40,732 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:41,082 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:41,433 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:41,786 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:42,138 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:42,491 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:42,842 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:43,193 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:43,550 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:43,900 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:44,252 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:44,604 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:44,954 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:45,308 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:45,659 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:46,011 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:46,361 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:46,712 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:47,063 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:47,414 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:47,764 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:48,115 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:48,466 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:48,817 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:49,168 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:49,519 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:49,869 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:50,221 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:50,573 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:50,925 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:51,276 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:51,627 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:51,979 - watchfiles.main - INFO - 2 changes detected
+2025-11-08 20:49:52,334 - watchfiles.main - INFO - 2 changes detected
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2848349]
+INFO:     Stopping reloader process [2812380]
+
+--- opena1.nohup.log (last 40 lines) ---
+INFO:     Started server process [324161]
+INFO:     Waiting for application startup.
+2025-11-06 09:34:05,447 - opena2 - INFO - opena2 gestartet, Archivpfad: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12344 (Press CTRL+C to quit)
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [324161]
+
+--- opena1_registry.log (last 40 lines) ---
+2025-11-06 05:55:36,609 - WARNING - Handshake Dashboard Status 500: {"detail":"Agent register nicht registriert"}
+2025-11-06 05:55:36,613 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:56:06,617 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:56:36,621 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:57:06,626 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:57:18,681 - WARNING - Handshake Dashboard Status 500: {"detail":"Agent register nicht registriert"}
+2025-11-06 05:57:36,632 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:58:06,636 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:58:36,640 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:59:06,643 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:59:36,647 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:00:06,651 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:00:36,654 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:01:06,657 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:01:36,659 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:02:06,665 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:02:36,671 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:03:06,676 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:03:36,681 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:04:06,687 - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:04:36,689 - INFO - Status-Sync mit Dashboard ok.
+
+--- opena1_runtime.log (last 40 lines) ---
+2025-11-06 05:55:36,612 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:55:36,613 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:56:06,617 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:56:06,617 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:56:36,620 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:56:36,621 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:57:06,626 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:57:06,626 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:57:18,680 - httpx - INFO - HTTP Request: POST http://127.0.0.1:12349/api/command/register "HTTP/1.1 500 Internal Server Error"
+2025-11-06 05:57:18,681 - opena1.registry - WARNING - Handshake Dashboard Status 500: {"detail":"Agent register nicht registriert"}
+2025-11-06 05:57:36,632 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:57:36,632 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:58:06,635 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:58:06,636 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:58:36,638 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:58:36,640 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:59:06,643 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:59:06,643 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:59:36,647 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:59:36,647 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:00:06,650 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:00:06,651 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:00:36,653 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:00:36,654 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:01:06,657 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:01:06,657 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:01:36,659 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:01:36,659 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:02:06,665 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:02:06,665 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:02:36,670 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:02:36,671 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:03:06,675 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:03:06,676 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:03:36,680 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:03:36,681 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:04:06,686 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:04:06,687 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:04:36,689 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:04:36,689 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+
+--- opena2.nohup.log (last 40 lines) ---
+2025-11-08 20:41:58,613 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630918_opena9_call_tracking→opena2_ANALYTICS_OP.json
+INFO:     127.0.0.1:40578 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:41:58,616 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630918_opena9_call_tracking→opena2_ANALYTICS_OP.json
+INFO:     127.0.0.1:40586 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:42:01,700 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630921_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:40588 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:42:01,703 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630921_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:40596 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:42:01,706 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630921_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:40608 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:42:01,709 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630921_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:40616 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:42:01,712 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630921_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:40632 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:42:01,715 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630921_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:40640 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:42:01,783 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630921_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:40656 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:42:01,787 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630921_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:40666 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:42:11,258 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630931_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:40460 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:42:11,261 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630931_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:40464 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:42:11,264 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630931_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:40472 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:42:11,268 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630931_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:40474 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:42:11,271 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630931_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:40488 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:42:11,275 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630931_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:40502 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:42:11,343 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630931_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:40510 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:42:11,346 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630931_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:40520 - "POST /store/archivp HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1214850]
+
+--- opena2_runtime.log (last 40 lines) ---
+2025-11-06 06:05:04,321 - opena2 - INFO - opena2 gestartet, Archivpfad: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp
+2025-11-06 06:23:49,380 - opena2 - INFO - opena2 gestartet, Archivpfad: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp
+2025-11-06 09:32:24,575 - opena2 - INFO - opena2 gestartet, Archivpfad: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp
+2025-11-06 09:34:05,447 - opena2 - INFO - opena2 gestartet, Archivpfad: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp
+2025-11-07 08:19:29,422 - opena2 - INFO - opena2 gestartet, Archivpfad: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp
+2025-11-07 08:25:47,634 - opena2 - INFO - opena2 gestartet, Archivpfad: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp
+2025-11-07 08:29:36,138 - opena2 - INFO - opena2 gestartet, Archivpfad: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp
+2025-11-07 08:36:23,970 - opena2 - INFO - opena2 gestartet, Archivpfad: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp
+
+--- opena4_telegram.log (last 40 lines) ---
+2025-11-08 19:09:49,607 - opena4_telegram - INFO - 🚀 Starting opena4_telegram on port 12348
+2025-11-08 19:09:49,607 - opena4_telegram - INFO - Webhook Secret length: 31
+2025-11-08 19:09:49,607 - opena4_telegram - INFO - Allowed users: 2
+2025-11-08 19:09:56,462 - opena4_telegram - INFO - Telegram message from 987654321: /balance
+2025-11-08 19:09:56,530 - opena4_telegram - INFO - Archive write OK
+2025-11-08 19:09:56,640 - opena4_telegram - ERROR - Telegram send failed: HTTP Error 401: Unauthorized
+2025-11-08 19:09:56,642 - opena4_telegram - INFO - Archive write OK
+2025-11-08 19:10:04,543 - opena4_telegram - INFO - Telegram message from 987654321: /accounts
+2025-11-08 19:10:04,551 - opena4_telegram - INFO - Archive write OK
+2025-11-08 19:10:04,660 - opena4_telegram - ERROR - Telegram send failed: HTTP Error 401: Unauthorized
+2025-11-08 19:10:04,667 - opena4_telegram - INFO - Archive write OK
+2025-11-08 19:10:47,976 - opena4_telegram - INFO - Telegram message from 987654321: /help
+2025-11-08 19:10:47,979 - opena4_telegram - INFO - Archive write OK
+2025-11-08 19:10:48,079 - opena4_telegram - ERROR - Telegram send failed: HTTP Error 401: Unauthorized
+2025-11-08 19:10:48,082 - opena4_telegram - INFO - Archive write OK
+2025-11-08 19:10:48,091 - opena4_telegram - INFO - Telegram message from 987654321: /balance
+2025-11-08 19:10:48,094 - opena4_telegram - INFO - Archive write OK
+2025-11-08 19:10:48,189 - opena4_telegram - ERROR - Telegram send failed: HTTP Error 401: Unauthorized
+2025-11-08 19:10:48,192 - opena4_telegram - INFO - Archive write OK
+2025-11-08 19:10:48,204 - opena4_telegram - INFO - Telegram message from 987654321: /accounts
+2025-11-08 19:10:48,206 - opena4_telegram - INFO - Archive write OK
+2025-11-08 19:10:48,307 - opena4_telegram - ERROR - Telegram send failed: HTTP Error 401: Unauthorized
+2025-11-08 19:10:48,310 - opena4_telegram - INFO - Archive write OK
+2025-11-08 19:10:48,319 - opena4_telegram - WARNING - Invalid webhook secret!
+2025-11-08 19:10:48,333 - opena4_telegram - ERROR - Archive fetch error: HTTP Error 404: Not Found
+2025-11-08 19:11:04,723 - opena4_telegram - ERROR - Telegram send failed: HTTP Error 401: Unauthorized
+2025-11-08 20:28:15,527 - opena4_telegram - WARNING - Invalid webhook secret!
+
+--- opena4_vscode.nohup.log (last 40 lines) ---
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena4_vscode.py:80: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena4_vscode.py:92: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("shutdown")
+INFO:__main__:🚀 Starting opena4_VSCode on port 12352
+INFO:__main__:SSH Target: root@167.235.207.100
+INFO:     Started server process [2829385]
+INFO:     Waiting for application startup.
+ERROR:vscode_ssh:❌ SSH connection failed: [Errno 13] Permission denied: '/root/.ssh/id_rsa'
+ERROR:__main__:❌ Startup failed: Failed to initialize SSH connection
+ERROR:    Traceback (most recent call last):
+  File "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/lib/python3.12/site-packages/starlette/routing.py", line 693, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+  File "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/lib/python3.12/site-packages/starlette/routing.py", line 569, in __aenter__
+    await self._router.startup()
+  File "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/lib/python3.12/site-packages/starlette/routing.py", line 670, in startup
+    await handler()
+  File "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena4_vscode.py", line 85, in startup
+    ssh = await init_ssh(SSH_HOST, SSH_USER, SSH_KEY_PATH)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/vscode_ssh.py", line 183, in init_ssh
+    raise RuntimeError("Failed to initialize SSH connection")
+RuntimeError: Failed to initialize SSH connection
+
+ERROR:    Application startup failed. Exiting.
+
+--- opena5_browser.nohup.log (last 40 lines) ---
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena5_browser.py:80: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena5_browser.py:92: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("shutdown")
+INFO:__main__:🚀 Starting opena5_Browser on port 12353
+INFO:     Started server process [2832926]
+INFO:     Waiting for application startup.
+INFO:browser_selenium:✅ Chrome WebDriver initialized
+INFO:__main__:✅ opena5_Browser startup complete
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12353 (Press CTRL+C to quit)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena5_browser.py:157: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:51174 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43872 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42858 - "GET /health HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena5_browser.py:369: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:42874 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60084 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60088 - "GET /health HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:browser_selenium:✅ Browser closed
+INFO:__main__:✅ opena5_Browser shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2832926]
+
+--- opena6_email.nohup.log (last 40 lines) ---
+INFO:__main__:🚀 Starting opena6_Email on port 12354
+INFO:     Started server process [2833081]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12354 (Press CTRL+C to quit)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena6_email.py:162: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:45836 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40772 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40760 - "GET /health HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena6_email.py:263: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:40774 - "GET /templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36556 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36558 - "GET /health HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2833081]
+
+--- opena7_whatsapp.nohup.log (last 40 lines) ---
+INFO:__main__:🚀 Starting opena7_WhatsApp on port 12355
+INFO:     Started server process [2833178]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12355 (Press CTRL+C to quit)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena7_whatsapp.py:113: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:41194 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37592 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59548 - "GET /health HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena7_whatsapp.py:209: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:59550 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53226 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53232 - "GET /health HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2833178]
+
+--- opena_finance.log (last 40 lines) ---
+2025-11-08 18:24:41,327 - opena_finance - INFO - ✅ Database initialized
+2025-11-08 18:24:41,336 - opena_finance - INFO - 🚀 Starting opena_finance on port 12347
+2025-11-08 18:28:04,773 - opena_finance - INFO - ✅ Database initialized
+2025-11-08 18:28:10,416 - opena_finance - INFO - ✅ Database initialized
+2025-11-08 18:28:10,424 - opena_finance - INFO - 🚀 Starting opena_finance on port 12347
+2025-11-08 18:28:18,413 - opena_finance - INFO - Account created: d62d3fb6-31f8-4519-ba23-40698cd41b30 (Giro)
+2025-11-08 18:28:18,455 - opena_finance - INFO - Archiv write OK: True
+2025-11-08 18:28:23,992 - opena_finance - INFO - Transaction added: 31a2c923-92ee-41e5-a57d-390199d935da ($-50.0) to d62d3fb6-31f8-4519-ba23-40698cd41b30
+2025-11-08 18:28:23,995 - opena_finance - INFO - Archiv write OK: True
+2025-11-08 18:29:01,059 - opena_finance - INFO - Account created: d4c7969f-0e23-4049-a897-bc7192e9fb19 (Savings)
+2025-11-08 18:29:01,061 - opena_finance - INFO - Archiv write OK: True
+2025-11-08 18:29:01,076 - opena_finance - INFO - Listed 2 accounts
+2025-11-08 18:29:01,087 - opena_finance - INFO - Transaction added: 540d8f92-f86d-4afa-8af0-44916379273e ($200.0) to d4c7969f-0e23-4049-a897-bc7192e9fb19
+2025-11-08 18:29:01,089 - opena_finance - INFO - Archiv write OK: True
+2025-11-08 18:29:01,102 - opena_finance - INFO - Transaction added: 05f98ff2-bce4-4ff6-a36d-29bbc08c26ef ($-100.0) to d4c7969f-0e23-4049-a897-bc7192e9fb19
+2025-11-08 18:29:01,104 - opena_finance - INFO - Archiv write OK: True
+2025-11-08 18:29:01,115 - opena_finance - INFO - Listed 2 transactions
+2025-11-08 18:29:01,128 - opena_finance - INFO - Statement generated: 218c4b6d-efee-4f36-9a68-0d6993b379fa for d4c7969f-0e23-4049-a897-bc7192e9fb19
+2025-11-08 18:29:01,130 - opena_finance - INFO - Archiv write OK: True
+2025-11-08 19:10:04,552 - opena_finance - INFO - Listed 2 accounts
+2025-11-08 19:10:48,208 - opena_finance - INFO - Listed 2 accounts
+
+--- openwebui_adapter.nohup.log (last 40 lines) ---
+Traceback (most recent call last):
+  File "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/openwebui_adapter.py", line 6, in <module>
+    import requests
+ModuleNotFoundError: No module named 'requests'
+
+--- registry.log (last 40 lines) ---
+
+--- security.log (last 40 lines) ---
+2025-11-08 20:08:48,004 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:48,006 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:08:48,015 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:48,015 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:08:48,027 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:48,027 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:08:48,037 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:48,038 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:08:48,049 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:48,049 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:26:51,437 - INFO - Tokenprüfung ok=True
+2025-11-08 20:26:51,438 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:27:45,508 - INFO - Tokenprüfung ok=True
+2025-11-08 20:27:45,508 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:28:15,587 - INFO - Tokenprüfung ok=True
+2025-11-08 20:28:15,588 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:31:46,427 - INFO - Tokenprüfung ok=True
+2025-11-08 20:31:46,428 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:31:46,442 - INFO - Tokenprüfung ok=True
+2025-11-08 20:31:46,442 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:31:46,459 - INFO - Tokenprüfung ok=True
+2025-11-08 20:31:46,460 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:31:56,943 - INFO - Tokenprüfung ok=True
+2025-11-08 20:31:56,943 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:32:01,638 - INFO - Tokenprüfung ok=True
+2025-11-08 20:32:01,638 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:32:42,853 - INFO - Tokenprüfung ok=True
+2025-11-08 20:32:42,853 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:32:42,862 - INFO - Tokenprüfung ok=True
+2025-11-08 20:32:42,862 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:37:42,212 - INFO - Tokenprüfung ok=True
+2025-11-08 20:37:42,213 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:37:42,229 - INFO - Tokenprüfung ok=True
+2025-11-08 20:37:42,229 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:37:42,241 - INFO - Tokenprüfung ok=True
+2025-11-08 20:37:42,241 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:37:48,314 - INFO - Tokenprüfung ok=True
+2025-11-08 20:37:48,314 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:37:58,350 - INFO - Tokenprüfung ok=True
+2025-11-08 20:37:58,350 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+
+--- status_changes.log (last 40 lines) ---
+[2025-11-08T20:50:04+0100] 
+[2025-11-08T20:50:04+0100] === FIX COMPLETE ===
+[2025-11-08T20:50:04+0100] Logs append-only: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/logs/fix_stack_now.log
+[2025-11-08T20:50:04+0100] strict:true

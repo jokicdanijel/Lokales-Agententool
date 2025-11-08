@@ -1,0 +1,42 @@
+2025-11-06 05:55:36,608 - httpx - INFO - HTTP Request: POST http://127.0.0.1:12349/api/command/register "HTTP/1.1 500 Internal Server Error"
+2025-11-06 05:55:36,609 - opena1.registry - WARNING - Handshake Dashboard Status 500: {"detail":"Agent register nicht registriert"}
+2025-11-06 05:55:36,612 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:55:36,613 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:56:06,617 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:56:06,617 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:56:36,620 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:56:36,621 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:57:06,626 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:57:06,626 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:57:18,680 - httpx - INFO - HTTP Request: POST http://127.0.0.1:12349/api/command/register "HTTP/1.1 500 Internal Server Error"
+2025-11-06 05:57:18,681 - opena1.registry - WARNING - Handshake Dashboard Status 500: {"detail":"Agent register nicht registriert"}
+2025-11-06 05:57:36,632 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:57:36,632 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:58:06,635 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:58:06,636 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:58:36,638 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:58:36,640 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:59:06,643 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:59:06,643 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 05:59:36,647 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 05:59:36,647 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:00:06,650 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:00:06,651 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:00:36,653 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:00:36,654 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:01:06,657 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:01:06,657 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:01:36,659 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:01:36,659 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:02:06,665 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:02:06,665 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:02:36,670 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:02:36,671 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:03:06,675 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:03:06,676 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:03:36,680 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:03:36,681 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:04:06,686 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:04:06,687 - opena1.registry - INFO - Status-Sync mit Dashboard ok.
+2025-11-06 06:04:36,689 - httpx - INFO - HTTP Request: GET http://127.0.0.1:12349/api/status/all "HTTP/1.1 200 OK"
+2025-11-06 06:04:36,689 - opena1.registry - INFO - Status-Sync mit Dashboard ok.

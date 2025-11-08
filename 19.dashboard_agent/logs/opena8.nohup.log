@@ -1,0 +1,6 @@
+INFO:__main__:🚀 Starting opena8_Telephone on port 12356
+INFO:__main__:SIP Server: sip.provider.com
+INFO:     Started server process [2908016]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12356 (Press CTRL+C to quit)

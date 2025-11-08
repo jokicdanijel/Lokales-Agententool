@@ -1,0 +1,101 @@
+INFO:__main__:🚀 Starting opena8_Telephone on port 12356
+INFO:__main__:SIP Server: sip.provider.com
+INFO:     Started server process [2838723]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12356 (Press CTRL+C to quit)
+WARNING:  Invalid HTTP request received.
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena8_telephone.py:127: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:39902 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55272 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55282 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58580 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58588 - "POST /call/make HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:58602 - "POST /call/make HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:58608 - "POST /call/make HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:58618 - "POST /call/make HTTP/1.1" 422 Unprocessable Entity
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena8_telephone.py:245: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "date": (datetime.utcnow() - timedelta(hours=i)).isoformat(),
+INFO:__main__:📁 Listing 5 recordings
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena8_telephone.py:91: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "payload": {**payload, "ts": datetime.utcnow().isoformat() + "Z"}
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena8_telephone.py:263: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:58628 - "GET /recordings HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena8_telephone.py:303: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:58634 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58640 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45298 - "GET /health HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena8_telephone.py:144: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "start_time": datetime.utcnow(),
+INFO:__main__:☎️ Call initiated: CALL_FDB69B4E06C8 → +49123456789
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena8_telephone.py:162: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:45306 - "POST /call/make HTTP/1.1" 200 OK
+INFO:__main__:☎️ Call initiated: CALL_B46729BEE191 → +49123456789
+INFO:     127.0.0.1:45312 - "POST /call/make HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena8_telephone.py:283: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "duration_sec": (datetime.utcnow() - info["start_time"]).total_seconds()
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena8_telephone.py:287: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:45314 - "GET /calls/active HTTP/1.1" 200 OK
+INFO:__main__:☎️ Call initiated: CALL_8D90B5D54E44 → +49123456789
+INFO:     127.0.0.1:45330 - "POST /call/make HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena8_telephone.py:179: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  duration = (datetime.utcnow() - call_info["start_time"]).total_seconds()
+INFO:__main__:☎️ Call hangup: CALL_8D90B5D54E44 (Duration: 1s)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena8_telephone.py:195: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:45332 - "POST /call/hangup HTTP/1.1" 200 OK
+INFO:__main__:☎️ Call initiated: CALL_2184B0E2EDEF → +49123456789
+INFO:     127.0.0.1:45338 - "POST /call/make HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45340 - "POST /dtmf/send HTTP/1.1" 422 Unprocessable Entity
+INFO:__main__:📁 Listing 5 recordings
+INFO:     127.0.0.1:45344 - "GET /recordings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45350 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45352 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57052 - "GET /health HTTP/1.1" 200 OK
+INFO:__main__:☎️ Call initiated: CALL_3B5D43A87A20 → +49123456789
+INFO:     127.0.0.1:57068 - "POST /call/make HTTP/1.1" 200 OK
+INFO:__main__:☎️ Call initiated: CALL_4848FE8694FB → +49123456789
+INFO:     127.0.0.1:57084 - "POST /call/make HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57096 - "GET /calls/active HTTP/1.1" 200 OK
+INFO:__main__:☎️ Call initiated: CALL_BE397913CAA1 → +49123456789
+INFO:     127.0.0.1:57104 - "POST /call/make HTTP/1.1" 200 OK
+INFO:__main__:☎️ Call hangup: CALL_BE397913CAA1 (Duration: 1s)
+INFO:     127.0.0.1:57120 - "POST /call/hangup HTTP/1.1" 200 OK
+INFO:__main__:☎️ Call initiated: CALL_125C17B5D2FA → +49123456789
+INFO:     127.0.0.1:57136 - "POST /call/make HTTP/1.1" 200 OK
+INFO:__main__:📞 DTMF sent: CALL_125C17B5D2FA → 123*#
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena8_telephone.py:228: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:57148 - "POST /dtmf/send HTTP/1.1" 200 OK
+INFO:__main__:📁 Listing 5 recordings
+INFO:     127.0.0.1:57156 - "GET /recordings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57162 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57168 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33622 - "GET /health HTTP/1.1" 200 OK
+INFO:__main__:☎️ Call initiated: CALL_EA5B6AE6AA5B → +49123456789
+INFO:     127.0.0.1:33636 - "POST /call/make HTTP/1.1" 200 OK
+INFO:__main__:☎️ Call initiated: CALL_712172DF154C → +49123456789
+INFO:     127.0.0.1:33638 - "POST /call/make HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33648 - "GET /calls/active HTTP/1.1" 200 OK
+INFO:__main__:☎️ Call initiated: CALL_52AA66877872 → +49123456789
+INFO:     127.0.0.1:33650 - "POST /call/make HTTP/1.1" 200 OK
+INFO:__main__:☎️ Call hangup: CALL_52AA66877872 (Duration: 1s)
+INFO:     127.0.0.1:33654 - "POST /call/hangup HTTP/1.1" 200 OK
+INFO:__main__:☎️ Call initiated: CALL_7313BD006C6E → +49123456789
+INFO:     127.0.0.1:33656 - "POST /call/make HTTP/1.1" 200 OK
+INFO:__main__:📞 DTMF sent: CALL_7313BD006C6E → 123*#
+INFO:     127.0.0.1:33668 - "POST /dtmf/send HTTP/1.1" 200 OK
+INFO:__main__:📁 Listing 5 recordings
+INFO:     127.0.0.1:33676 - "GET /recordings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33684 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33690 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60900 - "GET /health HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2838723]

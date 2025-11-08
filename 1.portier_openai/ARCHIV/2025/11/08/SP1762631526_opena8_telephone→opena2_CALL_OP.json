@@ -1,0 +1,10 @@
+{
+  "src": "opena8_telephone",
+  "dst": "opena2",
+  "kind": "CALL_OP",
+  "payload": {
+    "op": "LIST_RECORDINGS",
+    "count": 5,
+    "ts": "2025-11-08T19:52:06.366648Z"
+  }
+}

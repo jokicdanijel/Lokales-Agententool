@@ -1,0 +1,50 @@
+nohup: Eingabe wird ignoriert
+INFO:__main__:🚀 Starting opena9_CallTracking on port 12357
+INFO:     Started server process [2851871]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12357 (Press CTRL+C to quit)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:136: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:53156 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53162 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52914 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33698 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35780 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55902 - "GET /health HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:152: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "timestamp": datetime.utcnow().isoformat(),
+INFO:__main__:📊 Call logged: call_001 (120s)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:88: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "payload": {**payload, "ts": datetime.utcnow().isoformat() + "Z"}
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:172: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:55904 - "POST /call/log HTTP/1.1" 200 OK
+INFO:__main__:📝 Transcription retrieved: test_call_001
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:207: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:55918 - "POST /transcription/get HTTP/1.1" 200 OK
+INFO:__main__:😊 Sentiment analyzed: call_002 → neutral
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:237: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:55928 - "POST /sentiment/analyze HTTP/1.1" 200 OK
+INFO:__main__:🔄 CRM sync: Contact CRM_12345
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:263: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:55930 - "POST /crm/sync HTTP/1.1" 200 OK
+INFO:__main__:📊 Call logged: call_hist_0 (60s)
+INFO:     127.0.0.1:55936 - "POST /call/log HTTP/1.1" 200 OK
+INFO:__main__:📊 Call logged: call_hist_1 (70s)
+INFO:     127.0.0.1:55942 - "POST /call/log HTTP/1.1" 200 OK
+INFO:__main__:📊 Call logged: call_hist_2 (80s)
+INFO:     127.0.0.1:55954 - "POST /call/log HTTP/1.1" 200 OK
+INFO:__main__:📋 History retrieved: 4 calls
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:283: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:55958 - "GET /history?limit=5 HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:306: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:55974 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55980 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35182 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35382 - "GET /health HTTP/1.1" 200 OK

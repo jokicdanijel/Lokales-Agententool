@@ -1,0 +1,5 @@
+INFO:__main__:🚀 Starting opena10_Unlock on port 12358
+INFO:     Started server process [2908075]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12358 (Press CTRL+C to quit)

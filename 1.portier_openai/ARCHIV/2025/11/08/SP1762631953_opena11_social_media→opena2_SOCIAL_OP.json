@@ -1,0 +1,12 @@
+{
+  "src": "opena11_social_media",
+  "dst": "opena2",
+  "kind": "SOCIAL_OP",
+  "payload": {
+    "op": "POST_SCHEDULE",
+    "post_id": "POST_2DC339FD24E7F2EF",
+    "scheduled_time": "2025-11-08T20:59:13.378429Z",
+    "platform": "facebook",
+    "ts": "2025-11-08T19:59:13.380199Z"
+  }
+}

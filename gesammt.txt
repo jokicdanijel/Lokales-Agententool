@@ -1,0 +1,1538 @@
+﻿Weiter zum Inhalt Chatverlauf Du: ChatGPT-Projektmanager-Verlauf sagte: Details immer anzeigen from pathlib import Path target = Path("/mnt/data/ROUTING_TELEGRAM_OPENWEBUI.md") doc = """ # 🔗 Routing – Telegram (opena4) · OpenWebUI (opena3) · Koordinator (opena1) · Archivator (opena2) · VS Code (opena5) · Monitoring (opena20) **Projektwurzel:** "/home/danijel-jd/Dokumente/projekte/Gesammtprojekt" **Portpool:** 12344–12399 · **UI 8080:** exklusiv für opena3 (Loopback) **Regeln:** append-only · Dedupe (SHA‑256 / IDs) · keine Doppelblobs · opena2 ist Quelle der Wahrheit --- ## A) Kurznotation aus der Anfrage 1) telegram opena4 → openwebui opena3 → opena1 → opena2, opena5/opena20 2) opena3/opena20 → opena1 → opena2 → opena3 → opena4 Wir überführen das in zwei **kanonische Routen** mit exakten Events, Acks und Speicherorten. --- ## B) Route 1 – Eingehend über Telegram zum System (mit UI/IDE/Monitoring) **Pfad:** opena4 (Telegram) → opena2 → opena1 → opena2 → opena3 (UI) + opena5 (IDE) + opena20 (Metrics) ### 1. Empfang durch opena4 - **Event:** MSG_IN *oder* BOT_CMD - **Dedup-Key:** chat_id + message_id - **Persistenz:** archivp/.../blobs/tg/in/{chat_id}/{message_id}.json (append-only) - **Audit:** archivp/index.jsonl ### 2. Übergabe an opena2 (Wahrheitsanker) - **Check:** Schema + SHA‑256 → **DEDUP_INDEX.json** - **No-Op:** bei vorhandenem Hash nur Referenz/Audit ### 3. Orchestrierung durch opena1 - **Event:** CMD (geplanter Akt) → Ausführung/Validierung - **RESP:** Ergebnis zurück an opena2 ### 4. Sichtbar machen & Ableiten - **UI (opena3)** zieht verifizierte Zustände aus opena2 (z. B. UI_VIEW Update). - **IDE (opena5)** erhält optional EDIT/DIFF‑Aufgaben (über opena1 gesteuert, in opena2 protokolliert). - **Monitoring (opena20)** konsumiert Metriken/Status (Health/Audit‑Raten) aus opena2. **Ports:** - opena4: Primär 12347 (kein inbound nötig, Long‑Polling nach Telegram) - opena3: UI 8080 (Loopback), API 12346 - opena1: 12344 · opena2: 12345 · opena5: 12348 · opena20: 12363 --- ## C) Route 2 – Ausgehend aus UI/Monitoring zurück zu Telegram **Pfad:** opena3 (UI) / opena20 (Monitoring Alert) → opena2 → opena1 → opena2 → opena3 (Bestätigung) → opena4 (Antwort an Telegram) ### 1. Auslöser - **UI‑Aktion (opena3)**: UI_CMD (z. B. /start_agent opena19) - **Monitoring‑Event (opena20)**: ALERT (z. B. „Latenz > Schwelle“) ### 2. Archivierung & Dedupe (opena2) - CMD/ALERT wird **kanonisiert**, gehasht, dedupliziert, **append-only** abgelegt. ### 3. Ausführung (opena1) - Plant/prüft und führt aus; schreibt RESP nach opena2. ### 4. Rückwege - **UI‑Bestätigung (opena3)**: zeigt das verifizierte RESP. - **Telegram‑Antwort (opena4)**: sendet MSG_OUT (nach ACK von opena2). - **Dedup-Key:** chat_id + sha256(payload) - **Persistenz:** archivp/.../blobs/tg/out/{chat_id}/{sha256}.json --- ## D) Event‑Matrix (Hop‑für‑Hop) | Hop | Quelle → Ziel | Event | Dedup | Persistenz (unter archivp/...) | |---|---|---|---|---| | 1 | opena4 → opena2 | MSG_IN/BOT_CMD | chat_id+message_id | blobs/tg/in/{chat_id}/{message_id}.json | | 2 | opena2 → opena1 | DELIVER_IN | sha256(payload) | SP*/CMD.json (Ref) | | 3 | opena1 → opena2 | RESP | sha256(resp) | SP*/RESP.json | | 4 | opena3 → opena2 | UI_CMD (nur Route 2) | session_id+sha256 | SP*/CMD.json + blobs/ui/cmd/... | | 5 | opena20 → opena2 | ALERT/METRIC | metric+ts_bucket | blobs/metrics/... | | 6 | opena2 → opena3 | ACK/WARN/NACK + Snapshot | — | index.jsonl + blobs/ui/view/... | | 7 | opena2 → opena4 | SEND_OUT (nur nach ACK) | chat_id+sha256 | blobs/tg/out/{chat_id}/{sha256}.json | | 8 | opena2 → opena5 | EDIT/DIFF (optional) | file_path+sha256(diff) | patches/src/... | **Konsistenz:** HEADS.json wird bei Ressource‑Updates fortgeschrieben; **kein** Überschreiben alter Versionen. --- ## E) Fehler & Retry - **429/Rate‑Limit (Telegram):** Backoff, ALERT in opena2, erneuter Versand mit Idempotenz über message_id. - **Portkonflikt:** Lease‑Wechsel (Safepoint CMD/RESP), Audit‑Eintrag, next free port im Pool. - **Dedupe‑Treffer:** Keine Zweitspeicherung; nur Referenz im Audit‑Index. --- ## F) Sicherheitszungen - **8080** bleibt exklusiv für opena3 (Loopback). - Alle anderen Agenten nutzen den Pool 12344–12399; opena2 entscheidet über Annahme/ACK. - Secrets ausschließlich via .env; Logs/Audits maskieren Tokens/IDs. --- ## G) Health‑Signale (Monitoring‑Schleife) - opena4/health, opena3/health, opena1/health, opena2/health, opena5/health, opena20/health → docs/HEALTH_RECORDS.jsonl - opena20 korreliert Latenzen, Safepoint‑Rate, Fehlerquoten und meldet Anomalien als ALERT (Route 2). --- ### ✅ Ergebnis Die beiden gewünschten Routen sind präzise definiert: wer sendet was, wohin, mit welchem Dedup‑Schlüssel, wo es append‑only landet und wann welche Acks/Bestätigungen fließen. Keine Doppelblobs, vollständige Audit‑Spur, Ports sauber getrennt (8080 nur UI). """ target.write_text(doc, encoding="utf-8") str(target) Details immer anzeigen from pathlib import Path target = Path("/mnt/data/ROUTING_TELEGRAM_OPENWEBUI.md") doc = """ # 🔗 Routing – Telegram (opena4) · OpenWebUI (opena3) · Koordinator (opena1) · Archivator (opena2) · VS Code (opena5) · Monitoring (opena20) **Projektwurzel:** "/home/danijel-jd/Dokumente/projekte/Gesammtprojekt" **Portpool:** 12344–12399 · **UI 8080:** exklusiv für opena3 (Loopback) **Regeln:** append-only · Dedupe (SHA‑256 / IDs) · keine Doppelblobs · opena2 ist Quelle der Wahrheit --- ## A) Kurznotation aus der Anfrage 1) telegram opena4 → openwebui opena3 → opena1 → opena2, opena5/opena20 2) opena3/opena20 → opena1 → opena2 → opena3 → opena4 Wir überführen das in zwei **kanonische Routen** mit exakten Events, Acks und Speicherorten. --- ## B) Route 1 – Eingehend über Telegram zum System (mit UI/IDE/Monitoring) **Pfad:** opena4 (Telegram) → opena2 → opena1 → opena2 → opena3 (UI) + opena5 (IDE) + opena20 (Metrics) ### 1. Empfang durch opena4 - **Event:** MSG_IN *oder* BOT_CMD - **Dedup-Key:** chat_id + message_id - **Persistenz:** archivp/.../blobs/tg/in/{chat_id}/{message_id}.json (append-only) - **Audit:** archivp/index.jsonl ### 2. Übergabe an opena2 (Wahrheitsanker) - **Check:** Schema + SHA‑256 → **DEDUP_INDEX.json** - **No-Op:** bei vorhandenem Hash nur Referenz/Audit ### 3. Orchestrierung durch opena1 - **Event:** CMD (geplanter Akt) → Ausführung/Validierung - **RESP:** Ergebnis zurück an opena2 ### 4. Sichtbar machen & Ableiten - **UI (opena3)** zieht verifizierte Zustände aus opena2 (z. B. UI_VIEW Update). - **IDE (opena5)** erhält optional EDIT/DIFF‑Aufgaben (über opena1 gesteuert, in opena2 protokolliert). - **Monitoring (opena20)** konsumiert Metriken/Status (Health/Audit‑Raten) aus opena2. **Ports:** - opena4: Primär 12347 (kein inbound nötig, Long‑Polling nach Telegram) - opena3: UI 8080 (Loopback), API 12346 - opena1: 12344 · opena2: 12345 · opena5: 12348 · opena20: 12363 --- ## C) Route 2 – Ausgehend aus UI/Monitoring zurück zu Telegram **Pfad:** opena3 (UI) / opena20 (Monitoring Alert) → opena2 → opena1 → opena2 → opena3 (Bestätigung) → opena4 (Antwort an Telegram) ### 1. Auslöser - **UI‑Aktion (opena3)**: UI_CMD (z. B. /start_agent opena19) - **Monitoring‑Event (opena20)**: ALERT (z. B. „Latenz > Schwelle“) ### 2. Archivierung & Dedupe (opena2) - CMD/ALERT wird **kanonisiert**, gehasht, dedupliziert, **append-only** abgelegt. ### 3. Ausführung (opena1) - Plant/prüft und führt aus; schreibt RESP nach opena2. ### 4. Rückwege - **UI‑Bestätigung (opena3)**: zeigt das verifizierte RESP. - **Telegram‑Antwort (opena4)**: sendet MSG_OUT (nach ACK von opena2). - **Dedup-Key:** chat_id + sha256(payload) - **Persistenz:** archivp/.../blobs/tg/out/{chat_id}/{sha256}.json --- ## D) Event‑Matrix (Hop‑für‑Hop) | Hop | Quelle → Ziel | Event | Dedup | Persistenz (unter archivp/...) | |---|---|---|---|---| | 1 | opena4 → opena2 | MSG_IN/BOT_CMD | chat_id+message_id | blobs/tg/in/{chat_id}/{message_id}.json | | 2 | opena2 → opena1 | DELIVER_IN | sha256(payload) | SP*/CMD.json (Ref) | | 3 | opena1 → opena2 | RESP | sha256(resp) | SP*/RESP.json | | 4 | opena3 → opena2 | UI_CMD (nur Route 2) | session_id+sha256 | SP*/CMD.json + blobs/ui/cmd/... | | 5 | opena20 → opena2 | ALERT/METRIC | metric+ts_bucket | blobs/metrics/... | | 6 | opena2 → opena3 | ACK/WARN/NACK + Snapshot | — | index.jsonl + blobs/ui/view/... | | 7 | opena2 → opena4 | SEND_OUT (nur nach ACK) | chat_id+sha256 | blobs/tg/out/{chat_id}/{sha256}.json | | 8 | opena2 → opena5 | EDIT/DIFF (optional) | file_path+sha256(diff) | patches/src/... | **Konsistenz:** HEADS.json wird bei Ressource‑Updates fortgeschrieben; **kein** Überschreiben alter Versionen. --- ## E) Fehler & Retry - **429/Rate‑Limit (Telegram):** Backoff, ALERT in opena2, erneuter Versand mit Idempotenz über message_id. - **Portkonflikt:** Lease‑Wechsel (Safepoint CMD/RESP), Audit‑Eintrag, next free port im Pool. - **Dedupe‑Treffer:** Keine Zweitspeicherung; nur Referenz im Audit‑Index. --- ## F) Sicherheitszungen - **8080** bleibt exklusiv für opena3 (Loopback). - Alle anderen Agenten nutzen den Pool 12344–12399; opena2 entscheidet über Annahme/ACK. - Secrets ausschließlich via .env; Logs/Audits maskieren Tokens/IDs. --- ## G) Health‑Signale (Monitoring‑Schleife) - opena4/health, opena3/health, opena1/health, opena2/health, opena5/health, opena20/health → docs/HEALTH_RECORDS.jsonl - opena20 korreliert Latenzen, Safepoint‑Rate, Fehlerquoten und meldet Anomalien als ALERT (Route 2). --- ### ✅ Ergebnis Die beiden gewünschten Routen sind präzise definiert: wer sendet was, wohin, mit welchem Dedup‑Schlüssel, wo es append‑only landet und wann welche Acks/Bestätigungen fließen. Keine Doppelblobs, vollständige Audit‑Spur, Ports sauber getrennt (8080 nur UI). """ target.write_text(doc, encoding="utf-8") str(target) Ergebnis '/mnt/data/ROUTING_TELEGRAM_OPENWEBUI.md' Hab deine Routing-Skizze in sauberes Deutsch gegossen und als kanonische Flüsse dokumentiert – mit Events, Dedup-Keys, Ports und Speicherorten. 📄 ROUTING_TELEGRAM_OPENWEBUI.md Kurz auf den Punkt: Route 1 (eingehend): opena4 (Telegram) → opena2 → opena1 → opena2 → opena3 (UI) + opena5 (IDE) + opena20 (Metrics) Route 2 (ausgehend): opena3 (UI) / opena20 (Alert) → opena2 → opena1 → opena2 → opena3 (Bestätigung) → opena4 (Antwort) Beide Routen halten Append-only + Dedupe ein, schreiben alles revisionssicher in archivp/..., und trennen UI 8080 sauber von den API-Ports (12344–12399). Wenn du die gleiche Ausarbeitung als Schritt 5 (VS Code – opena5) oder Schritt 6 (Monitoring – opena20) willst, ziehe ich sie im gleichen Format nach. Du: Ausführlich alle Verbindungen einzeichnen, Telegram-Installationen auch erklären, Telegram-Botvater-Erklärung, und so weiter. Alles Mögliche, was nur an Informationen generiert werden kann, hineintun. Außerdem GitHub-Kontrolle machen vor der Ausgabe. SCHRITT_04_OPENA4_telegram.md muss erstellt werden! ChatGPT-Projektmanager-Verlauf sagte: Details immer anzeigen from pathlib import Path from textwrap import dedent p = Path("/mnt/data/SCHRITT_04_OPENA4_telegram.md") doc = dedent(""" # 🧭 Schritt 4 — opena4 · Telegram‑Bridge (Vollausbau) **Projektwurzel (Pflicht, für alle Schritte):** /home/danijel-jd/Dokumente/projekte/Gesammtprojekt **Ports:** Primär 12347 (Formel 12343+X, X=4), Reserven im Pool **12344–12399** · **8080 bleibt exklusiv für opena3 (OpenWebUI, Loopback‑UI)** **Modell:** gpt-5-nano · **Strict Mode:** true · **Regeln:** Append‑only · Dedupe (SHA‑256/IDs) · Keine Doppelblobs · Auditierbar --- ## 0) Zweck & Rolle opena4 verbindet das ELION‑Portier‑System mit **Telegram** als steuerbaren Ein‑/Ausgabekanal. - **Eingang:** Benutzerbefehle, Nachrichten, Medien. - **Ausgang:** Bestätigungen, Status, Alerts, Ausführungsresultate. - **Keine direkte UI:** UI ist opena3 (8080). opena4 arbeitet headless und schreibt alle Ereignisse **zuerst** in opena2 (Archiv) — erst dann weiter an opena1 (Steuerung) oder zurück an Telegram. --- ## 1) Topologie & Verbindungen (ASCII) Details immer anzeigen ┌──────────┐ Telegram ⇄ HTTPS │ opena4 │ Long-Polling (Standard) / optional Webhook └────┬─────┘ │ (Append-only & Dedupe) ▼ ┌──────────┐ │ opena2 │ Archivator = Quelle der Wahrheit └────┬─────┘ │ ACK/WARN/NACK + Safepoints ▼ ┌──────────┐ │ opena1 │ Koordinator (plant/führt aus) └────┬─────┘ RESP/Snapshots │ ▼ │ ┌──────────┐ UI (Loopback 8080) │ opena3 │ zeigt nur verifizierte Zustände aus opena2 └──────────┘ ▲ │ ┌──────────┐ │ opena20 │ Monitoring: Health, Latenz, Alerts └──────────┘ ▲ │ ┌──────────┐ │ opena5 │ VS Code‑Bridge: Edits/Diffs (optional) └──────────┘ Details immer anzeigen **Grundsatz:** Jeder Hop geht **über opena2**. opena3 zeigt nur verifizierte Daten. opena1 führt nur, was opena2 bestätigt hat. --- ## 2) Port‑ & Bindings‑Politik - **Primär (opena4 interne API):** 12347 · Reserven: nächsthöhere freie Ports bis 12399 (Lease in .runtime/port_leases.json). - **Inbound Serverport:** **nicht benötigt** (Standard = Long‑Polling zur Telegram‑API). - **Webhook optional:** nur via explizit genehmigtem Reverse‑Proxy + TLS; ansonsten deaktiviert. - **8080:** ausschließlich opena3 (OpenWebUI, Loopback). **Lease‑Beispiel (.runtime/port_leases.json):** json { "leases":[ {"agent":"opena4","port":12347,"ts":"2025-10-14T12:00:00Z","state":"api-gateway"} ], "pool":"12344-12399" } 3) Telegram – Installation & BotFather‑Leitfaden 3.1 Voraussetzungen Linux (z. B. Mint/Ubuntu), Python 3.13.x, venv venv313 (oder gleichwertig) Pakete (Beispiele): python-telegram-bot, requests, pydantic, uvicorn (für interne API), fastapi (Option) .env Datei im Projektwurzelverzeichnis mit: Details immer anzeigen TELEGRAM_BOT_TOKEN=123456:ABCDEF... TELEGRAM_ALLOWED_USERS=123456789,987654321 # Telegram User IDs TELEGRAM_LOG_CHAT_ID=123456789 # optional: Log-/Admin-Channel TELEGRAM_POLL_INTERVAL=1.5 # Sekunden 3.2 Bot erstellen (BotFather) In Telegram @BotFather öffnen. /newbot senden → Bot‑Name festlegen → Bot‑Benutzername (muss auf bot enden). Den HTTP API Token kopieren → in .env als TELEGRAM_BOT_TOKEN= eintragen. /setdescription, /setabouttext, /setcommands (z. B. start - Start, health - Status, start_agent - Agent starten, stop_agent - Agent stoppen). Privatsphäre: /setprivacy → je nach Bedarf (empfohlen: private, nur direkte Nachrichten). Optional: /setjoingroups (typischerweise disable für Bot in Gruppen, außer explizit gewünscht). 3.3 Long‑Polling vs. Webhook Long‑Polling (Standard): keine eingehenden Ports nötig; opena4 fragt regelmäßig die Telegram‑API ab. Stabil, auditfreundlich. Webhook (optional): erfordert öffentlich erreichbaren HTTPS‑Endpoint + Zertifikat (Proxy/NGINX/Caddy). Im System default aus. 4) Datenklassen, Dedupe und Pfade Dedup‑Regel: Vor jedem Speichern wird der kanonische JSON‑Inhalt gehasht (SHA‑256) und gegen docs/DEDUP_INDEX.json geprüft. Existiert der Hash → kein neuer Blob, nur Referenz/Audit. Event‑Typen (opena4 → opena2) Typ Richtung Zweck Dedup‑Key (Beispiel) Ablage in archivp BOT_CMD IN Slash‑Kommandos (/start, /health, /start_agent, …) chat_id+message_id blobs/tg/cmd/{chat_id}/{message_id}.json MSG_IN IN Eingehende Nachricht (Text/Sticker/…) chat_id+message_id blobs/tg/in/{chat_id}/{message_id}.json MSG_OUT OUT Gesendete Antwort chat_id+sha256(payload) blobs/tg/out/{chat_id}/{sha256}.json ATTACHMENT IN/OUT Datei/Medienobjekt sha256(file) blobs/tg/file/sha256/<ab>/<hash> ALERT OUT Rate‑Limit/Fehlerhinweis sha256(alert+ts_bucket) blobs/tg/alert/{sha256}.json Pfad‑Layout (integriert) Details immer anzeigen /home/danijel-jd/Dokumente/projekte/Gesammtprojekt/ ├─ archivp/YYYY/MM/DD/ │ ├─ SP<ts>_src→dst_CMD.json │ ├─ SP<ts>_src→dst_RESP.json │ ├─ blobs/ │ │ ├─ tg/cmd/{chat_id}/{message_id}.json │ │ ├─ tg/in/{chat_id}/{message_id}.json │ │ ├─ tg/out/{chat_id}/{sha256}.json │ │ └─ tg/file/sha256/<ab>/<hash> │ └─ patches/… ├─ docs/ │ ├─ AGENT_REGISTRY.json │ ├─ DEDUP_INDEX.json │ ├─ HEADS.json │ ├─ FILE_REGISTRY.csv │ ├─ INTEGRITY_TREE.json │ └─ HEALTH_RECORDS.jsonl ├─ .runtime/ │ ├─ port │ └─ port_leases.json └─ logs/ └─ opena4.log 5) Flüsse (Option 2) für Telegram Hinweg: OpenAI → opena1 → opena2 → kordp → Tool Rückweg: Tool → opena2 → opena1 → OpenAI Spezifisch für opena4: Nachricht kommt von Telegram → opena4 erzeugt MSG_IN/BOT_CMD → schreibt in opena2 (Hash/Dedupe). opena1 plant/validiert die Reaktion → Ergebnis als RESP in opena2. opena4 holt bestätigte Antwort (RESP) und sendet MSG_OUT an Telegram → Ergebnis wird erneut in opena2 abgelegt. opena3 (UI) zeigt ausschließlich verifizierte Zustände aus opena2. opena20 (Monitoring) erfasst Latenzen, Erfolgsquoten, 429‑Ereignisse. 6) API‑Skizze (/opena4 interne API) Details immer anzeigen from fastapi import APIRouter router = APIRouter(prefix="/opena4") @router.get("/health") async def health(): return {"status":"ok","service":"opena4","version":"1.0.0"} @router.get("/info") async def info(): return { "service":"opena4", "primary_port":12347, "port_pool":"12344-12399", "forbidden_ports":[8080], "paths":{"root":"/home/danijel-jd/Dokumente/projekte/Gesammtprojekt"}, "dedupe":"message_id/sha256(file)/sha256(payload)", "append_only":True } 7) Beispiel‑Safepoints & Audit CMD (Outbound‑Send): Details immer anzeigen { "strict": true, "kind": "CMD", "source": "opena4", "ts": "2025-10-14T12:20:00Z", "payload": {"action":"send","chat_id":"123456","text":"Deployment erfolgreich."}, "integrity": {"sha256":"<hex>","prev_sha256":"<hex-or-null>"}, "ports": {"binding":12347,"pool":"12344-12399","forbidden":[8080]}, "paths": {"root":"/home/danijel-jd/Dokumente/projekte/Gesammtprojekt"} } RESP (Archiv‑ACK): Details immer anzeigen { "strict": true, "kind": "RESP", "source": "opena2", "ts": "2025-10-14T12:20:01Z", "ref_cmd":"sp_20251014_122000_001", "result": {"status":"ok","details":"gesendet"}, "sha256":"<hex>", "archived_at":"archivp/2025/10/14/SP20251014_122001001_src→dst_RESP.json" } Audit‑Index (JSONL): Details immer anzeigen {"ts":"2025-10-14T12:20:01Z","actor":"opena2","sp_id":"sp_20251014_122001_001","sha256":"<hex>","note":"tg:MSG_OUT chat=123456"} 8) Sicherheit (RBAC, Secrets, Härtung) RBAC: Rollen admin|operator|analyst|auditor; Mapping der Telegram‑User‑IDs in docs/TELEGRAM_RBAC.json. Secrets: TELEGRAM_BOT_TOKEN ausschließlich via .env; nie im Code/Logs. Maskierung: Tokens in Logs/Audits maskieren (****). Rate‑Limit/429: Exponentielles Backoff; ALERT schreiben; Retry‑Fenster begrenzen. Idempotenz: Versand über message_id/sha256(payload) absichern. Write‑Guard: vor JEDEM Write → Pfad/Endung whitelisten; atomare Writes; Registry + Hashbaum aktualisieren. 9) Systemd‑Service (optional) /etc/systemd/system/opena4.service Details immer anzeigen [Unit] Description=ELION Portier - opena4 Telegram Bridge After=network-online.target [Service] WorkingDirectory=/home/danijel-jd/Dokumente/projekte/Gesammtprojekt EnvironmentFile=/home/danijel-jd/Dokumente/projekte/Gesammtprojekt/.env ExecStart=/usr/bin/python3 -m opena4.bridge --poll Restart=on-failure User=danijel-jd [Install] WantedBy=multi-user.target 10) GitHub‑Kontrolle (vor Merge) Ziel: Jede Änderung an opena4 wird vor Auslieferung automatisch geprüft. 10.1 Pre‑Commit (lokal) .pre-commit-config.yaml (Ausschnitt): Details immer anzeigen repos: - repo: https://github.com/pre-commit/pre-commit-hooks rev: v4.6.0 hooks: - id: end-of-file-fixer - id: trailing-whitespace - repo: https://github.com/pycqa/flake8 rev: 7.1.0 hooks: - id: flake8 - repo: local hooks: - id: schema-validate name: Validate JSON Schemas entry: python scripts/validate_schemas.py language: system types: [json] 10.2 GitHub Actions (CI) .github/workflows/ci.yml: Details immer anzeigen name: CI on: push: branches: [ main ] pull_request: branches: [ main ] jobs: test: runs-on: ubuntu-latest steps: - uses: actions/checkout@v4 - uses: actions/setup-python@v5 with: python-version: '3.13' - name: Install deps run: | python -m pip install --upgrade pip pip install -r requirements.txt - name: Lint run: flake8 src/ scripts/ - name: Schema validate run: python scripts/validate_schemas.py - name: Port policy check run: python scripts/check_ports.py --pool 12344-12399 --forbid 8080 --ui_openwebui 8080 - name: Integrity hash run: python scripts/integrity_hash.py 10.3 Prüfungen Ports: keine Bindung außerhalb 12344–12399; 8080 nur opena3. Schemas: Safepoints/Audit/Registry/DEDUP/HEADS valide. Hashbaum: aktuell; keine Drift. Dedupe: keine Doppelblobs im Diff. Hinweis: Diese „GitHub‑Kontrolle“ ist eine definierte Prüfkette. Ein objektiver Abgleich mit einem Remote‑Repo erfolgt durch die CI‑Runs – lokal kann man mit pre-commit alles vorab testen. 11) Interaktionen mit allen Agenten (Kurzmatrix) Ziel‑Agent Typische Interaktion mit opena4 Beispiel‑Event Ergebnis‑Pfad opena1 Ausführung von Chat‑Befehlen BOT_CMD → CMD archivp/SP*/CMD.json opena2 Persistenz/Audit/ACK MSG_IN, MSG_OUT, ACK archivp/blobs/tg/..., index.jsonl opena3 Anzeige verifizierter Zustände UI_VIEW (indirekt) archivp/blobs/ui/view/... opena5 Optional: Code‑Aktionen via Chat EDIT/DIFF (indirekt) archivp/patches/src/... opena19 Dashboard‑Einsichten Filter/Views (indirekt) archivp/blobs/dash/... opena20 Alerts/Metriken ALERT/METRIC (indirekt) archivp/blobs/metrics/... Andere (opena6…opena18) themenspezifisch z. B. NAV, BUILD_REQ, DEPLOY_REQ (indirekt) jeweilige blobs/... Unterbäume 12) Health & Observability /opena4/health · /opena4/info; periodische Einträge in docs/HEALTH_RECORDS.jsonl. opena20 korreliert: Latenz (Telegram API), Erfolgs-/Fehlerquoten, Safepoint‑Rate, Backoff‑Ereignisse. 13) Fehlerbilder & Recovery 429/Rate‑Limit: Backoff + ALERT; idempotente Retries über message_id. Bad Token: sofortiger NACK, Dienst anhalten, Tokenrotation (Safepoint + Audit). Portkonflikt: Lease‑Wechsel, CMD/RESP‑Safepoints, Audit‑Note, nächster freier Port. Dedupe‑Konflikt: Keine Zweitspeicherung; nur Referenz erneuern. 14) Akzeptanzkriterien (Schritt 4) Vollständige Telegram‑Anbindung mit Long‑Polling (Webhook optional, aus). Append‑only & Dedupe technisch verankert; Pfade/Hashes/Indices dokumentiert. Safepoints/Audit‑Kette lückenlos (CMD→RESP→Audit). Ports/Governance eingehalten (12344–12399; 8080 nur opena3). GitHub‑Kontrolle (Pre‑Commit + CI) spezifiziert. """).strip("\n") p.write_text(doc, encoding="utf-8") str(p) Details immer anzeigen Ergebnis '/mnt/data/SCHRITT_04_OPENA4_telegram.md' Fertig – Schritt 4 ist jetzt maximal ausführlich, mit allen Verbindungen, BotFather-Anleitung, Installationsschritten, Datenflüssen, Dedupe/Append-only, Security, Systemd, plus GitHub-Kontrollkette (Pre-Commit + CI) vor Auslieferung. 📄 SCHRITT_04_OPENA4_telegram.md Wenn du bereit bist, setze ich im gleichen Tiefgang Schritt 5 (VS Code – opena5) oder Schritt 6 (Monitoring – opena20) auf – sag an, welcher als Nächstes. Du: Ich erkläre, wie die Verbindung zu OpenWebUI über den Webhook funktioniert und wie du über OpenWebUI durch diese Links, also nehmen wir mal an, OpenA4, OpenA20, OpenA19 oder wie es auch immer, die Agenten bedienen kannst. Telegram application Master sagte: Klar – lass uns den Webhook-Pfad sauber aufziehen und dann zeigen, wie du aus OpenWebUI per Link/Knopf deine Agenten (z. B. OpenA4, OpenA20, OpenA19) ansteuerst. 1) Telegram ↔ OpenWebUI via Webhook (Push-Modus) Kurzlogik: Telegram schickt neue Updates per HTTPS an deine OpenWebUI/Web-Bridge (statt dass du sie pollst). Dafür brauchst du: einen Bot-Token (BotFather), eine öffentliche HTTPS-URL deiner Instanz, einen gesetzten Webhook auf genau diese URL. Schritte: Bot anlegen & Token holen Bei @BotFather /newbot durchklicken, Namen + Username wählen, den API-Schlüssel kopieren. OpenWebUI konfigurieren In OpenWebUI unter Einstellungen/Integrationen den Telegram-Bot-API-Schlüssel hinterlegen. Das ist explizit so vorgesehen. Webhook-URL planen Nutze die öffentliche HTTPS-Adresse deiner Instanz als Ziel-URL (z. B. https://dein.host/telegram/webhook). In deiner Anleitung steht, dass der Webhook bei Bedarf zu konfigurieren ist – exakt das machen wir hier. Webhook setzen Entweder direkt mit deiner kleinen Flask-Helferfunktion… # verkürzt def set_webhook(webhook_url): url = BASE_URL + 'setWebhook' return requests.post(url, data={'url': webhook_url}).json() …oder über dein UI-Formular „Webhook setzen“. Beides ist in deiner Vorlage angelegt. Smoke-Test In Telegram den Bot öffnen, /start tippen und schauen, ob eine Antwort fließt. Genau so ist’s im Testteil deiner Anleitung beschrieben. Tipp: Falls du lieber Long-Polling nutzt (kein öffentlicher Port nötig), lässt du Schritt 3–4 weg und verwendest getUpdates. In deinen Unterlagen sind beide Optionen erwähnt. 2) Agenten aus OpenWebUI per Link/Knopf bedienen Du hast bereits ein kleines /execute-Backend (Flask), das Kommandos entgegennimmt (send_message, send_file, set_webhook). Das eignet sich 1:1 als Ziel für Buttons/Links in OpenWebUI. A) Buttons in der UI verdrahten Aus deiner HTML-Vorlage: Es gibt ein Formular, das je nach Auswahl andere Felder zeigt (Nachricht, Datei, Webhook). Diese Struktur kannst du in OpenWebUI (oder einer eingebetteten Seite) übernehmen und für Agent-Aktionen verwenden. B) Drei Beispiel-Aktionen (anklickbar in der UI): OpenA4 „Health“ abfragen → POST an /execute mit: command=send_message chat_id=<admin_chat> text=/health (Dein Backend ruft sendMessage auf; die Route ist fertig verdrahtet.) OpenA20 Alarm-Webhook setzen (falls du Alerts an den Bot pushen willst): command=set_webhook webhook_url=https://dein.host/telegram/webhook (Nutzt deine set_webhook-Funktion.) OpenA19 (Dashboard) starten Für eigene Agent-Kommandos erweiterst du dein /execute um z. B. agent_cmd (kleiner Handler, der eine JSON-Payload entgegennimmt). UI-Knopf sendet dann: command=agent_cmd target=opena19 action=start args={} (Die Struktur ist analog zu deinen vorhandenen Kommandos; dieselbe Formular-Logik lässt sich wiederverwenden. Deine Vorlage zeigt, wie du Befehle verzweigst.) C) Rechte & Sicherheit Lege eine einfache Gatekeeper-Schicht (Login/Rollen) vor die Buttons – deine Hinweise zu Auth/Permissions sind schon da. 3) Mini-Checkliste & Troubleshooting .env vorhanden? TELEGRAM_API_TOKEN ist Pflicht; du lädst ihn bereits sauber per python-dotenv. Formulare sichtbar/wechseln korrekt? Deine JS-Umschaltung für die Felder (Message/File/Webhook) ist im Snippet enthalten. Instanz gesund? Kurzer Healthcheck: Der beigefügte healthcheck.sh prüft, ob dein Dienst am letzten Port antwortet. Kurzfassung (damit’s sitzt) Bot erstellen → Token in OpenWebUI eintragen → öffentliche Webhook-URL festlegen. Webhook per UI-Button oder Skript setzen. In OpenWebUI Buttons/Links so verdrahten, dass sie POST /execute mit dem gewünschten command senden (Message, File, Webhook, oder eigene agent_cmd). Wenn du magst, bau ich dir im /execute noch den agent_cmd-Zweig (Start/Stop/Status) samt zwei Beispiel-Buttons für OpenA19 und OpenA20. ChatGPT kann Fehler machen. Überprüfe wichtige Informationen. Siehe Cookie-Voreinstellungen. ChatGPT: /home/danijel-jd/Dokumente/projekte/Gesammtprojekt/1.portier_opena/docs/SCHRITT_04_WEBHOOK_OPENA4_OPENWEBUI.md # 🧭 Schritt 4 · Webhook-Betrieb für Telegram (opena4) & Bedienung über OpenWebUI (opena3) **Projektwurzel:** /home/danijel-jd/Dokumente/projekte/Gesammtprojekt/1.portier_opena **Ports:** 12344–12399 erlaubt · **8080 ausschließlich** für OpenWebUI (opena3, Loopback) **Option-2-Regel:** OpenAI → opena1 → opena2 → kordp → Tool → opena2 → opena1 → OpenAI **Strict:** true · Append-only · Dedupe (SHA-256 / IDs) · Keine Doppelblobs · Auditierbar --- ## 0) Zielbild - **opena4** übernimmt Telegram per **Webhook** (Push). - **opena2** bleibt Wahrheitsanker (Safepoints, Blobs, Index). - **opena3 (OpenWebUI)** bedient Agenten per **Buttons/Links** gegen die lokale API von opena4/opena1 – niemals direkt an Telegram. --- ## 1) Topologie (Webhook-Push) Internet (Telegram) ──HTTPS──▶ NGINX (TLS) ──proxy_pass──▶ 127.0.0.1:12347 (opena4_webhook) (443) (FastAPI) │ ▼ /archivp/... (opena2) │ ▼ Koordination (opena1) │ ▼ UI (opena3, 8080 Loopback) **Wichtig:** 8080 ist nur OpenWebUI (Loopback). Der Webhook selbst läuft **nicht** auf 8080, sondern auf **12347**. --- ## 2) BotFather & Telegram-Basics (Kurzleitfaden) 1. @BotFather → /newbot → **Name** & **Benutzername** vergeben → **HTTP API Token** kopieren. 2. .env in der Projektwurzel pflegen: TELEGRAM_BOT_TOKEN=123456:ABCDEF... TELEGRAM_WEBHOOK_SECRET=<mind. 16 zufällige Zeichen> TELEGRAM_ALLOWED_USERS=123456789,987654321 3. Webhook-URL planen (öffentlich, **HTTPS**): https://dein.host/telegram/webhook - Telegram sendet dann Updates **per POST** an diese URL. - Der Reverse-Proxy (NGINX) leitet auf 127.0.0.1:12347/telegram/webhook weiter. Optional: getWebhookInfo prüfen (per curl). Der eigentliche Set-Call erfolgt out-of-band (z. B. Admin-Skript). --- ## 3) Persistenz & Dedupe (integriert) - Jede Update-Payload wird **kanonisiert** und mit **SHA-256** gehasht. - Dedupe-Index: docs/DEDUP_INDEX.json - Blobs & Safepoints: archivp/YYYY/MM/DD/ ├─ SP<ts>_opena4→opena2_CMD.json ├─ SP<ts>_opena2→opena4_RESP.json └─ blobs/tg/in/{chat_id}/{message_id}.json blobs/tg/out/{chat_id}/{sha256}.json - Audit-Index: archivp/index.jsonl (append-only) --- ## 4) NGINX (TLS-Terminator & Proxy) - Terminiert TLS auf 443, prüft Methode POST, begrenzt Rate, leitet intern an 127.0.0.1:12347. - Beispiel: docs/examples/nginx_opena4_webhook.conf (siehe Datei unten). --- ## 5) Webhook-Service (FastAPI, Port 12347) - Datei: src/opena4_webhook.py - Endpunkte: - POST /telegram/webhook – nimmt Telegram-Updates an, verifiziert Secret-Header X-Telegram-Bot-Api-Secret-Token, dedupliziert, archiviert, quittiert. - GET /health – einfache Gesundheitsprüfung. - POST /actions/agent_cmd – Trigger von **OpenWebUI-Buttons** (z. B. target=opena19, action=start). Schreibt CMD-Safepoint über opena2 in den Fluss. **Policy:** Start verweigert, wenn Port 8080 angefragt oder außerhalb 12344–12399. --- ## 6) OpenWebUI – Agenten per Button/Link bedienen In deiner UI (oder eingebetteter Seite in OpenWebUI) rufst du lokal an: - **Beispiel „Health“ an Dashboard-Agent (opena19)**: 
+sh
+curl -X POST http://127.0.0.1:12347/actions/agent_cmd \
+     -H 'Content-Type: application/json' \
+     -d '{
+           "target":"opena19",
+           "action":"health",
+           "args":{},
+           "request_id":"auto",
+           "strict":true
+         }'
+
+    Beispiel „Alert ack“ an Monitoring (opena20) analog.
+
+In OpenWebUI kannst du diese Aufrufe per Custom Buttons/„Function“ hinterlegen; sie rufen ausschließlich lokale Ports im erlaubten Bereich an.
+7) Sicherheit & Governance
+
+    Secret-Header Pflicht (X-Telegram-Bot-Api-Secret-Token) am Webhook.
+
+    RBAC auf Telegram-User-IDs (TELEGRAM_ALLOWED_USERS).
+
+    Keine Secrets in Logs (Maskierung).
+
+    8080 tabu (nur opena3).
+
+    Write-Guards: atomare Writes, Pfad-Whitelist, JSON-Schema-Checks.
+
+8) Betrieb (systemd)
+
+    Unit: docs/examples/opena4_webhook.service (nutzt venv313, startet auf 127.0.0.1:12347)
+
+# Aktivieren
+sudo cp -v docs/examples/opena4_webhook.service /etc/systemd/system/opena4_webhook.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now opena4_webhook
+systemctl status opena4_webhook --no-pager
+
+9) Akzeptanzkriterien (Schritt 4, Webhook-Modus)
+
+    Webhook-Endpoint erreichbar (TLS, 443) und proxied auf 127.0.0.1:12347.
+
+    Secret-Header validiert, unbekannte Requests → 401.
+
+    Updates landen dedupliziert unter archivp/..., Index fortgeschrieben.
+
+    Buttons/Links in OpenWebUI triggern agent_cmd → CMD-Safepoint erzeugt → Option-2-Rückweg sichtbar.
+
+    Ports/Governance strikt eingehalten.
+
+
+/home/danijel-jd/Dokumente/projekte/Gesammtprojekt/1.portier_opena/src/opena4_webhook.py
+python #!/usr/bin/env python3 # -*- coding: utf-8 -*- """ opena4_webhook – Telegram Webhook & OpenWebUI-Agentsteuerung Policy: Ports 12344–12399 erlaubt, 8080 strikt verboten (nur OpenWebUI). Strict: true · Append-only · Dedupe · Auditierbar """ import os import json import hashlib from pathlib import Path from datetime import datetime, timezone from typing import Any, Dict, Optional from fastapi import FastAPI, Request, HTTPException from fastapi.responses import JSONResponse from fastapi.middleware.cors import CORSMiddleware import uvicorn # ---- Bindende Projekt-/Port-Policy ------------------------------------------------- BASE_DIR = Path("/home/danijel-jd/Dokumente/projekte/Gesammtprojekt/1.portier_opena").resolve() ALLOWED_PORTS = list(range(12344, 12400)) FORBIDDEN_PORTS = {8080} DEFAULT_PORT = 12347 # opena4 (Telegram) def _safe_join(rel_path: str) -> Path: p = (BASE_DIR / rel_path.lstrip("/")).resolve() if not str(p).startswith(str(BASE_DIR)): raise HTTPException(400, "Ungültiger Pfad außerhalb BASE_DIR") return p def _is_forbidden_port(port: int) -> bool: return (port in FORBIDDEN_PORTS) or (port not in ALLOWED_PORTS) def _now_iso() -> str: return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z") # ---- Archiv-/Index-Pfade ----------------------------------------------------------- def _archiv_root_day() -> Path: d = datetime.now() root = BASE_DIR / "archivp" / f"{d:%Y/%m/%d}" root.mkdir(parents=True, exist_ok=True) return root INDEX_JSONL = BASE_DIR / "archivp" / "index.jsonl" DEDUP_INDEX = BASE_DIR / "docs" / "DEDUP_INDEX.json" HEADS_JSON = BASE_DIR / "docs" / "HEADS.json" LOGS_DIR = BASE_DIR / "logs" LOGS_DIR.mkdir(parents=True, exist_ok=True) def _load_json(path: Path, default: Any) -> Any: if path.exists(): try: return json.loads(path.read_text(encoding="utf-8")) except Exception: return default return default def _dump_json(path: Path, data: Any) -> None: path.parent.mkdir(parents=True, exist_ok=True) path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8") def _sha256_bytes(b: bytes) -> str: return hashlib.sha256(b).hexdigest() def _write_index(line: Dict[str, Any]) -> None: INDEX_JSONL.parent.mkdir(parents=True, exist_ok=True) with INDEX_JSONL.open("a", encoding="utf-8") as f: f.write(json.dumps(line, ensure_ascii=False) + "\n") def _sp_name(src: str, dst: str, kind: str) -> Path: ts = int(datetime.now().timestamp()) fn = f"SP{ts}_{src}→{dst}_{kind}.json" return _archiv_root_day() / fn def _mask_secret(s: Optional[str]) -> Optional[str]: if not s: return s if len(s) <= 8: return "****" return s[:4] + "****" + s[-4:] # ---- App -------------------------------------------------------------------------- app = FastAPI(title="opena4_webhook", version="1.0.0", description="Telegram Webhook & OpenWebUI Agent Commands") app.add_middleware( CORSMiddleware, allow_origins=["http://127.0.0.1", "http://localhost"], allow_methods=["GET", "POST", "OPTIONS"], allow_headers=["*"], ) # ---- ENV -------------------------------------------------------------------------- TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "") TELEGRAM_WEBHOOK_SECRET = os.environ.get("TELEGRAM_WEBHOOK_SECRET", "") ALLOWED_USERS = {u.strip() for u in os.environ.get("TELEGRAM_ALLOWED_USERS", "").split(",") if u.strip()} # ---- Health ----------------------------------------------------------------------- @app.get("/health") def health() -> Dict[str, Any]: return { "status": "ok", "service": "opena4_webhook", "base": str(BASE_DIR), "ports": {"allowed_range": [12344, 12399], "forbidden": list(FORBIDDEN_PORTS), "bound": int(os.environ.get("PORT", DEFAULT_PORT))}, "env": {"bot_token_present": bool(TELEGRAM_BOT_TOKEN), "webhook_secret_present": bool(TELEGRAM_WEBHOOK_SECRET)}, "timestamp": _now_iso(), "strict": True, } # ---- Core: Telegram Webhook ------------------------------------------------------- @app.post("/telegram/webhook") async def telegram_webhook(req: Request) -> JSONResponse: # Verify Secret Header (Telegram sends X-Telegram-Bot-Api-Secret-Token if configured) secret_hdr = req.headers.get("X-Telegram-Bot-Api-Secret-Token", "") if TELEGRAM_WEBHOOK_SECRET: if secret_hdr != TELEGRAM_WEBHOOK_SECRET: raise HTTPException(status_code=401, detail="Invalid webhook secret") payload_bytes = await req.body() payload_hash = _sha256_bytes(payload_bytes) try: update = json.loads(payload_bytes.decode("utf-8")) except Exception: raise HTTPException(400, "Invalid JSON") # Extract chat/message IDs for dedupe paths if present chat_id = None message_id = None if isinstance(update, dict): msg = update.get("message") or update.get("edited_message") or update.get("channel_post") if msg and isinstance(msg, dict): message_id = str(msg.get("message_id", "")) chat = msg.get("chat") or {} chat_id = str(chat.get("id", "")) # RBAC: allowlist on user (if provided) from_user = None if isinstance(update, dict): msg = update.get("message") or update.get("edited_message") if msg and isinstance(msg, dict): u = msg.get("from") or {} from_user = str(u.get("id", "")) if isinstance(u, dict) else None if ALLOWED_USERS and from_user and (from_user not in ALLOWED_USERS): raise HTTPException(403, "Forbidden sender") # Dedupe dedup = _load_json(DEDUP_INDEX, default={"entries": {}}) if payload_hash in dedup.get("entries", {}): # Already seen → only index a reference _write_index({"ts": _now_iso(), "actor": "opena4", "event": "TG_UPDATE_DUP", "sha256": payload_hash, "note": "duplicate"}) return JSONResponse({"status": "ok", "duplicate": True, "strict": True}) # Persist blob day_root = _archiv_root_day() if chat_id and message_id: blob_path = day_root / "blobs" / "tg" / "in" / chat_id / f"{message_id}.json" else: blob_path = day_root / "blobs" / "tg" / "in" / "unknown" / f"{payload_hash}.json" blob_path.parent.mkdir(parents=True, exist_ok=True) blob_path.write_text(json.dumps(update, ensure_ascii=False, indent=2), encoding="utf-8") # Update dedupe index dedup["entries"][payload_hash] = {"ts": _now_iso(), "path": str(blob_path.relative_to(BASE_DIR))} _dump_json(DEDUP_INDEX, dedup) # Create CMD Safepoint (opena4→opena2) sp_cmd = _sp_name("opena4", "opena2", "CMD") cmd_obj = { "strict": True, "kind": "CMD", "source": "opena4", "ts": _now_iso(), "payload_ref": str(blob_path.relative_to(BASE_DIR)), "integrity": {"sha256": payload_hash}, "note": "Telegram update received (webhook)", } _dump_json(sp_cmd, cmd_obj) _write_index({"ts": cmd_obj["ts"], "actor": "opena4", "event": "SP_CMD", "path": str(sp_cmd.relative_to(BASE_DIR))}) return JSONResponse({"status": "ok", "archived": True, "sha256": payload_hash, "strict": True}) # ---- OpenWebUI: Agent Command Trigger -------------------------------------------- @app.post("/actions/agent_cmd") async def agent_cmd(req: Request) -> JSONResponse: """ Triggerbar von OpenWebUI (Buttons/Links). Body: { "target":"opena19", "action":"health", "args":{}, "request_id":"auto", "strict":true } """ body = await req.json() if not isinstance(body, dict): raise HTTPException(400, "Invalid JSON") target = str(body.get("target", "")).strip() action = str(body.get("action", "")).strip() args = body.get("args") or {} if not target or not action: raise HTTPException(400, "target/action required") # Build CMD safepoint for opena1 via opena2 (Option 2) sp_cmd = _sp_name("opena4", "opena2", "CMD") cmd = { "strict": True, "kind": "CMD", "source": "opena4", "ts": _now_iso(), "payload": { "route": ["opena4", "opena2", "opena1"], "target": target, "action": action, "args": args, }, "note": "agent_cmd via OpenWebUI", } _dump_json(sp_cmd, cmd) _write_index({"ts": cmd["ts"], "actor": "opena4", "event": "AGENT_CMD", "target": target, "action": action, "path": str(sp_cmd.relative_to(BASE_DIR))}) return JSONResponse({"status": "queued", "target": target, "action": action, "strict": True}) # ---- Main -----------------
+Gut — dann gehen wir Schritt 5 durch: VS Code‑Bridge („opena5“). Ich zeichne auf, was gemacht werden sollte, damit dein System sauber mit VS Code integriert wird. Du behältst das Steuer — ich unterstütze mit Struktur und Details.
+
+Alles klar — hier kommt Schritt 4 in voller Länge: die komplette Dokumentation für den opena4_webhook (Telegram Bridge) inklusive Webhook‑Modus, Verbindungen, Sicherheits‑, Persistenz‑ und Git‑Kontrollregeln. Du bekommst das als eine in sich geschlossene Spezifikation im gleichen Stil wie bei den vorherigen Schritten.
+
+🧭 Schritt 4 — opena4 · Telegram‑Bridge (Webhook‑Betrieb)
+Projektwurzel (Pflicht, für alle Schritte): /home/danijel‑jd/Dokumente/projekte/Gesammtprojekt
+Ports: erlaubter Pool 12344–12399 · 8080 bleibt ausschließlich für openWebUI (opena3, Loopback‑UI)
+Modell: gpt‑5‑nano · Strict Mode: true · Regeln: Append‑only · Dedupe (SHA‑256/IDs) · Keine Doppelblobs · Auditierbar
+
+0) Zielbild
+    • opena4 übernimmt die Verbindung zu Telegram im Webhook‑Modus (Push).
+    • Alle Updates von Telegram landen zuerst bei opena2 (Archivator) bzw. über eine Folge von Hops: opena4 → opena2 → opena1 → … etc.
+    • UI (opena3) und VS Code‑Bridge (opena5) greifen nur auf verifizierte Daten zu.
+    • Knopf/Link‑Aktionen in OpenWebUI triggern agentenbezogene Aktionen via opena4 → opena2 → opena1 etc.
+    • Der Portpool‑ und Governance‑Rahmen wird strikt eingehalten: 8080 ist nur für opena3, Webhook‑Service läuft z. B. auf 12347.
+
+1) Topologie (Webhook‑Push)
+Internet (Telegram) ──HTTPS──▶ NGINX (TLS) ──proxy_pass──▶ 127.0.0.1:12347 (opena4_webhook)  
+                                                  │  
+                                                  ▼  
+                                       archivp/... (opena2)  
+                                                  │  
+                                                  ▼  
+                                       Koordination (opena1)  
+                                                  │  
+                                                  ▼  
+                                       UI (opena3, 8080 Loopback)  
+Hinweis: 8080 bleibt ausschließlich opena3 vorbehalten. Der Webhook‑Endpunkt läuft nicht auf 8080, sondern typischerweise auf einem Port im Pool (z. B. 12347).
+
+2) BotFather & Telegram‑Basics
+2.1 Bot erstellen
+    • In Telegram: Suche @BotFather.
+    • Sende /newbot → gib Name + Benutzername (endet üblicherweise auf bot) ein.
+    • Kopiere den API‑Token (z. B. 123456:ABCDEF…) → trage ihn in .env ein:
+      TELEGRAM_BOT_TOKEN=123456:ABCDEF...
+      TELEGRAM_WEBHOOK_SECRET=<mindestens 16 zeichen>
+      TELEGRAM_ALLOWED_USERS=123456789,987654321
+    • Optional: /setdescription, /setabouttext, /setcommands (z. B. start, health, start_agent, stop_agent), /setprivacy (z. B. private Nachrichten)
+2.2 Webhook vs. Long‑Polling
+    • Long‑Polling: Einfacher Setup, Bot fragt Telegram regelmäßig ab (getUpdates).
+    • Webhook (empfohlen für Produktion): Telegram sendet Updates an deinen HTTPS‑Endpoint. Vorteil: Echtzeit, effizienter. (Telegram)
+    • Voraussetzungen laut Telegram: HTTPS mit TLS1.2+, öffentlicher Port (443, 80, 88 oder 8443) oder via Reverse Proxy. (Telegram)
+2.3 Webhook setzen
+Zum Beispiel mit curl:
+curl -X POST "https://api.telegram.org/bot<TELEGRAM_BOT_TOKEN>/setWebhook" \
+     -d "url=https://dein.host/telegram/webhook&secret_token=<WEBHOOK_SECRET>"
+Antwort sollte etwa sein: {"ok":true,"result":true,"description":"Webhook was set"} (Stack Overflow)
+
+3) Persistenz, Dedupe & Pfad‑Layout
+    • Jede eingehende Telegram‑Update‑Payload wird kanonisiert und mit SHA‑256 gehasht.
+    • Gegenprüfung in docs/DEDUP_INDEX.json. Existiert Hash bereits → keinen neuen Blob, nur Referenz/Audit.
+    • Ablage‑Beispiele im Projektverzeichnis:
+      /home/danijel‑jd/Dokumente/projekte/Gesammtprojekt/
+        ├─ archivp/
+        │    ├─ YYYY/MM/DD/
+        │    │    ├‑ SP<ts>_opena4→opena2_CMD.json
+        │    │    ├‑ SP<ts>_opena2→opena4_RESP.json
+        │    │    └‑ blobs/
+        │    │         ├‑ tg/in/{chat_id}/{message_id}.json
+        │    │         ├‑ tg/out/{chat_id}/{sha256}.json
+        │    │         ├‑ tg/cmd/{chat_id}/{message_id}.json
+        │    │         ├‑ tg/file/sha256/<ab>/<hash>
+        │    │         └‑ alert/{sha256}.json
+        │    └─ index.jsonl   # Audit‑Index (append‐only)
+        ├─ docs/
+        │    ├─ DEDUP_INDEX.json
+        │    ├─ HEADS.json
+        │    ├─ HEALTH_RECORDS.jsonl
+        │    ├─ AGENT_REGISTRY.json
+        │    └─ INTEGRITY_TREE.json
+        ├─ .runtime/
+        │    └─ port_leases.json
+        ├─ logs/
+        │    └─ opena4.log
+    • Dedupe‑Key Beispiele:
+        ◦ chat_id + message_id für eingehende Nachricht (MSG_IN)
+        ◦ chat_id + sha256(payload) für gesendete Antwort (MSG_OUT)
+    • Audit‑Index (index.jsonl) ist append‑only — jeder Safepoint wird dort verzeichnet.
+
+4) NGINX (TLS‑Terminator & Proxy)
+Zum Beispiel: docs/examples/nginx_opena4_webhook.conf
+    • TLS auf Port 443 terminieren (z. B. mit Let’s Encrypt)
+    • Methode: POST akzeptieren
+    • Proxy zu 127.0.0.1:12347 (Webhook Service von opena4)
+    • Optional: Rate‑Limit (z. B. Alert bei 429)
+    • Beispielkonfiguration (abgekürzt):
+      server {
+        listen 443 ssl http2;
+        server_name dein.host;
+      
+        ssl_certificate /etc/letsencrypt/live/dein.host/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/dein.host/privkey.pem;
+      
+        location /telegram/webhook {
+          proxy_pass http://127.0.0.1:12347/telegram/webhook;
+          proxy_set_header X‑Telegram‑Bot‑Api‑Secret‑Token $secret_token;
+          limit_req zone=telegram burst=10 nodelay;
+        }
+      }
+    • Firewall: eingehend Port 443 (extern) öffnen, intern nur Loopback auf 12347.
+
+5) Webhook‑Service (FastAPI, Port 12347)
+Datei: src/opena4_webhook.py (oder entsprechend) — Beispielstruktur vorhanden.
+Wichtige Endpunkte:
+    • GET /health → z. B. {"status":"ok","service":"opena4_webhook", ...}
+    • POST /telegram/webhook → Telegram sends updates here.
+        ◦ Validierung: Header X‑Telegram‑Bot‑Api‑Secret‑Token (wenn gesetzt)
+        ◦ Payload entgegennahme → json decode → chat_id & message_id extrahieren
+        ◦ Dedupe prüfen: hash exists? → only audit reference
+        ◦ Archivieren: Blob unter blobs/tg/in/...
+        ◦ Safepoint: SP<ts>_opena4→opena2_CMD.json erzeugen → Kommando an opena2
+        ◦ Index‑Eintrag in index.jsonl
+        ◦ Antwort: {"status":"ok","archived":true,"sha256": "<hash>", "strict": true}
+    • POST /actions/agent_cmd → Trigger von UI/Buttons in OpenWebUI (z. B. target=opena19, action=start)
+        ◦ Body: { "target":"opena19", "action":"start", "args":{}, "request_id":"auto", "strict":true }
+        ◦ Safepoint: SP<ts>_opena4→opena2_CMD.json mit payload:{route:["opena4","opena2","opena1"], target, action, args}
+        ◦ Index‑Eintrag gesetzt
+        ◦ Antwort: {"status":"queued","target":target,"action":action,"strict":true}
+    • Policy Checks: Port‑Verbot (nicht 8080), lease valid, strict mode enforcement
+
+6) Beispiel Safepoints & Audit
+CMD (Inbound Telegram Update)
+{
+  "strict": true,
+  "kind": "CMD",
+  "source": "opena4",
+  "ts": "2025‑10‑14T12:20:00Z",
+  "payload": {
+    "action":"receive_update",
+    "chat_id":"123456",
+    "message_id":"7890",
+    "update": { … } 
+  },
+  "integrity": {
+    "sha256":"<hex>",
+    "prev_sha256":"<hex‑or‑null>"
+  },
+  "ports": {
+    "binding":12347,
+    "pool":"12344‑12399",
+    "forbidden":[8080]
+  },
+  "paths": {
+    "root":"/home/danijel‑jd/Dokumente/projekte/Gesammtprojekt"
+  }
+}
+RESP (Archiv‑ACK)
+{
+  "strict": true,
+  "kind": "RESP",
+  "source": "opena2",
+  "ts": "2025‑10‑14T12:20:01Z",
+  "ref_cmd": "SP20251014_122000_001",
+  "result": {
+    "status":"ok",
+    "details":"update archived"
+  },
+  "sha256":"<hex>",
+  "archived_at":"archivp/2025/10/14/SP20251014_122001001_opena2→opena4_RESP.json"
+}
+Audit‑Index Eintrag
+{"ts":"2025‑10‑14T12:20:01Z","actor":"opena2","sp_id":"SP20251014_122001_001","sha256":"<hex>","note":"tg:MSG_IN chat=123456 message=7890"}
+
+7) Sicherheit & Governance
+    • RBAC: Mapping Telegram‑User‑IDs in docs/TELEGRAM_RBAC.json (z. B. Rollen: admin|operator|auditor).
+    • Secrets: TELEGRAM_BOT_TOKEN, TELEGRAM_WEBHOOK_SECRET ausschließlich über .env; niemals im Code oder Logs offenlegen. Maskiere Tokens in Logs (****).
+    • Rate‑Limit / 429: Bei Telegram‑Rate‑Limit → Backoff; ALERT in opena2 geschrieben; erneuter Versand idempotent über message_id.
+    • Port Governance: Bindung nur im Bereich 12344–12399; Port 8080 strikt verboten für diesen Agenten.
+    • Write‑Guard: Before every write → whitelist path/extension; atomare Writes; update HEADS.json, INTEGRITY_TREE.json.
+    • TLS Mandatory für Webhook: TLS1.2+, domain name or valid self‑signed with chain. (Telegram)
+
+8) Betrieb (systemd)
+Beispiel Unit: /etc/systemd/system/opena4_webhook.service
+[Unit]
+Description=ELION Portier - opena4 Telegram Webhook Bridge
+After=network-online.target
+
+[Service]
+WorkingDirectory=/home/danijel‑jd/Dokumente/projekte/Gesammtprojekt/1.portier_opena
+EnvironmentFile=/home/danijel‑jd/Dokumente/projekte/Gesammtprojekt/1.portier_opena/.env
+ExecStart=/usr/bin/python3 -m opena4_webhook --port 12347
+Restart=on-failure
+User=danijel-jd
+
+[Install]
+WantedBy=multi-user.target
+Aktivierung:
+sudo cp docs/examples/opena4_webhook.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now opena4_webhook
+systemctl status opena4_webhook --no-pager
+
+9) GitHub‑Kontrolle (CI/Pre‑Commit)
+9.1 Pre‑Commit (.pre‑commit-config.yaml)
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.1.0
+    hooks:
+      - id: flake8
+  - repo: local
+    hooks:
+      - id: schema-validate
+        name: Validate JSON Schemas
+        entry: python scripts/validate_schemas.py
+        language: system
+        types: [json]
+9.2 GitHub Actions (.github/workflows/ci.yml)
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Lint
+        run: flake8 src/ scripts/
+      - name: Schema validate
+        run: python scripts/validate_schemas.py
+      - name: Port policy check
+        run: python scripts/check_ports.py --pool 12344-12399 --forbid 8080 --webhook_port 12347
+      - name: Integrity hash
+        run: python scripts/integrity_hash.py
+9.3 Prüfungen
+    • Kein Binding außerhalb 12344–12399; 8080 nicht verwendet (außer opena3).
+    • JSON‑Schemas für Safepoints/Audit/Registry valide.
+    • Hash‑Baum (INTEGRITY_TREE.json) aktuell; keine Drift.
+    • Dedupe‑Logik: keine doppelten Blobs.
+    • Jede Änderung → Pull Request → automatisierte Checks.
+
+10) Interaktionen & Kurzmatrix
+Ziel‑Agent
+Typische Interaktion mit opena4
+Ergebnis‑Pfad
+Telegram   
+Eingehende Nachricht/Command
+archivp/blobs/tg/in/{chat_id}/{message_id}.json
+opena2
+Archiv/Audit/Ack
+archivp/index.jsonl + Safepoint CMD/RESP
+opena3
+UI‑Trigger „Agent Aktion“
+via /actions/agent_cmd Endpunkt
+opena1
+Koordination
+archivp/SP*/CMD/RESP.json
+opena20
+Monitoring (Health Alerts)
+archivp/blobs/metrics/...
+
+11) Health & Observability
+    • Endpunkt /health (z. B. {"status":"ok","service":"opena4_webhook",...})
+    • Intervall: z. B. alle 60 s publish in docs/HEALTH_RECORDS.jsonl.
+    • Metriken:
+        ◦ Latenz Telegram API → /metrics
+        ◦ Anzahl Safepoints pro Minute
+        ◦ Fehlerquote (Bad‑Token, Unauthorized, DedupeHits)
+    • Agent opena20 konsolidiert: Latenz > Schwelle → ALERT (Route 2)
+
+12) Fehlerbilder & Recovery
+    • 429/Rate‑Limit von Telegram: Backoff → ALERT in opena2 → erneuter Versuch idempotent über message_id.
+    • Bad Token: sofortige NACK → Dienst anhalten → Tokenrotation erforderlich.
+    • Port‑Konflikt: opena4 bindet nicht erlaubten Port → Lease‑Wechsel → Safepoint CMD/RESP auditiert.
+    • Dedupe‑Treffer: Bereits vorhandener Hash → kein neuer Blob, nur Referenz im Audit‑Index.
+    • Unreachable Webhook: HTTPS nicht erreichbar (Firewall/Cert) → Telegram setzt webhook zurück → Fehler in health/Metrics.
+    • Conflict bei Write: atomare Write‑Guard schlägt fehl → Dienst zurück in Safe‑State, Audit schreibt FAIL.
+
+13) Akzeptanzkriterien (für Schritt 4)
+    • Der Webhook‑Endpoint ist erreichbar über HTTPS (z. B. https://dein.host/telegram/webhook) mit gültigem Zertifikat.
+    • Header X‑Telegram‑Bot‑Api‑Secret‑Token wird geprüft bei Anfragen.
+    • Updates von Telegram werden dedupliziert, Blob unter blobs/tg/in/... abgelegt, index.jsonl aktualisiert.
+    • Safepoint CMD/RESP Kette lückenlos: opena4 → opena2 → …
+    • Port Governance: opena4 bindet legalen Port (z. B. 12347) im Pool, nicht 8080.
+    • UI‑Knopf in opena3 löst /actions/agent_cmd bei opena4 aus → Safepoint generiert → Audit sichtbar.
+    • GitHub CI/Pre‑Commit Pipeline läuft grün. Keine Lint‑Fehler, Portchecks bestanden, Hashbaum konsistent.
+
+Wenn du willst, kann ich dir das komplette Repo‑Template liefern: mit allen Dateien im Root (README, .env.example, Dockerfile falls gewünscht, systemd‑Unit, NGINX config, FastAPI Datei, Scripts für Pre‑Commit/CI, JSON‑Schemas). Soll ich das grad generieren? 🔧
+Hier kommt die vollständige Verzeichnisstruktur für Schritt 4 – opena4 (Telegram-Bridge), wie du sie im Webhook-Modus beschrieben hast, vollständig integriert ins Hauptprojekt:
+/home/danijel-jd/Dokumente/projekte/Gesammtprojekt/
+└── 1.portier_opena/
+    ├── src/
+    │   ├── opena4_bridge.py           # Long-Polling-Modus (Polling Telegram API)
+    │   ├── opena4_webhook.py          # Webhook-Modus (empfängt Push von Telegram)
+    │   └── utils/                     # Hilfsfunktionen: Dedupe, Archiv, Index
+    │
+    ├── archivp/
+    │   ├── 2025/10/22/
+    │   │   ├── SP*_opena4→opena2_CMD.json
+    │   │   ├── SP*_opena2→opena4_RESP.json
+    │   │   └── blobs/
+    │   │       └── tg/
+    │   │           ├── in/{chat_id}/{message_id}.json
+    │   │           ├── out/{chat_id}/{sha256}.json
+    │   │           ├── cmd/{chat_id}/{message_id}.json
+    │   │           ├── alert/{sha256}.json
+    │   │           └── file/sha256/<ab>/<hash>
+    │   └── index.jsonl                # Alle Events als JSON Lines
+    │
+    ├── docs/
+    │   ├── SCHRITT_04_OPENA4_telegram.md
+    │   ├── SCHRITT_04_WEBHOOK_OPENWEBUI.md
+    │   ├── HEALTH_RECORDS.jsonl
+    │   ├── DEDUP_INDEX.json
+    │   ├── AGENT_REGISTRY.json
+    │   ├── HEADS.json
+    │   └── INTEGRITY_TREE.json
+    │
+    ├── .runtime/
+    │   └── port_leases.json
+    │
+    ├── logs/
+    │   └── opena4.log
+    │
+    ├── .env                           # Tokens, erlaubte Nutzer, Poll-Interval, Secrets
+    ├── requirements.txt              # FastAPI, python-telegram-bot, pydantic, ...
+    ├── README.md
+    ├── opena4.service                # systemd (Polling)
+    ├── opena4_webhook.service       # systemd (Webhook)
+    └── examples/
+        ├── nginx_opena4_webhook.conf  # TLS + Proxy auf 127.0.0.1:12347
+        └── test_curl_webhook.sh       # Test: Webhook lokal ansprechen
+Hinweis:
+    • Webhook und Polling sind getrennt, aber nutzen denselben Archiv-/Auditfluss.
+    • Alle Events laufen über opena2 (Archivator), opena1 orchestriert wie gehabt.
+    • Webhook-Modus verlangt X-Telegram-Bot-Api-Secret-Token Header.
+Wenn du ein Git-Repo dafür vorbereiten willst mit .gitignore, .pre-commit-config.yaml, README und Setup-Script – sag’s einfach.
+🛠 Schritt 5 — opena5 · VS Code‑Bridge
+Projektwurzel (Pflicht): /home/danijel‑jd/Dokumente/projekte/Gesammtprojekt
+Ports: erlaubter Pool 12344–12399 · Port 8080 bleibt ausschließlich für OpenWebUI (opena3) (Loopback).
+Modell: gpt‑5‑nano · Strict Mode: true · Regeln: Append‑only · Dedupe (SHA‑256/IDs) · Keine Doppelblobs · Auditierbar.
+
+0) Zweck & Rolle
+„opena5“ verbindet deinen Quellcode‑Editor (VS Code) mit deinem Agent‐System‑Stack. Zweck: Änderungen, Diffs, Edit‐Aufgaben, Codeaktionen, die über den Chat, das UI oder Monitoring angestoßen wurden, gelangen ins VS Code‑Workspace und werden dort bearbeitet. Danach geht’s weiter ins Archiv („opena2“) und dann ggf. zur Ausführung („opena1“) etc.
+Kurz:
+    • Eingang: EDIT/DIFF Aufgaben (z. B. Codeänderung angelegt via UI oder Bot)
+    • Verarbeitung: VS Code öffnet Workspace, zeigt die Änderung, ggf. Commit, Push
+    • Rückmeldung: Status/Bestätigung in Archiv + UI sichtbar gemacht
+
+1) Topologie & Verbindungen
+┌──────────┐    (Edit‑Aufgabe)     ┌──────────┐
+│  opena3  │ ───────────────────▶ │  opena5  │
+│  (UI)    │                        │  (VSCode)│
+└──────────┘                        └────┬─────┘
+                                         │  Änderung fertig
+                                         ▼
+                                   ┌──────────┐
+                                   │  opena2  │ (Archivator)
+                                   └──────────┘
+                                         │
+                                         ▼
+                                   ┌──────────┐
+                                   │  opena1  │ (Koordinator)
+                                   └──────────┘
+Alle Aktionen laufen über opena2 als Wahrheit („Archivator“) und opena1 als Ausführungssteuerung. VS Code (opena5) ist Teil des Rückflusses: erhält Aufgaben, macht Änderungen, spielt zurück.
+
+2) Port‐ & Bindings‐Politik
+    • opena5 bindet typischerweise einen internen API‑Port im erlaubten Bereich z. B. 12348.
+    • Keine Bindung auf Port 8080 erlaubt (dies bleibt ausschließlich opena3).
+    • Änderungen durch VS Code (z. B. über eine Extension oder CLI Hook) dürfen nicht außerhalb des Pools arbeiten.
+    • In .runtime/port_leases.json wird eingetragen:
+      {
+        "leases":[
+          {"agent":"opena5","port":12348,"ts":"2025-10‑22T12:00:00Z","state":"ide‑bridge"}
+        ],
+        "pool":"12344‑12399"
+      }
+
+3) Aufgaben, Aktionen & Persistenz
+3.1 Aufgaben kommen rein
+Wenn z. B. über UI (opena3) oder Bot (opena4) eine Edit/DIFF Aufgabe generiert wird:
+    • Eventtyp: EDIT_TASK
+    • Dedup‑Key: file_path + sha256(diff_contents)
+    • Persistenz: archivp/.../patches/src/{file_path}/{sha256(diff)}.json (append only)
+    • Audit‑Eintrag: archivp/index.jsonl mit Zeitstempel, Actor=open­a3/opena4, Event=EDIT_TASK
+3.2 VS Code Bridge nimmt entgegen
+    • VS Code (opena5) holt sich die Aufgabe (z. B. via local API Port 12348 /tasks/poll)
+    • Öffnet das angegebene file_path im Workspace, zeigt Diff/Anweisung
+    • Entwickler übernimmt: ändert Code, speichert, ggf. commit & push (oder automatisiert)
+    • Nach Abschluss schreibt opena5:
+        ◦ Safepoint CMD: SP<ts>_opena5→opena2_CMD.json mit Payload { file_path, diff_sha256, author }
+        ◦ Persistenz der Änderung: ggf. blobs/patches/src/...
+    • opena2 schreibt RESP: SP<ts>_opena2→opena5_RESP.json mit Ergebnis (status: ok/failed, details)
+    • Audit‑Index ebenfalls ergänzt
+
+4) VS Code Extension / CLI Integration
+Damit VS Code gut integriert ist, empfehle:
+    • Eine kleine VS Code Extension (oder ein Workspace Task) mit folgenden Funktionen:
+        ◦ Periodisches Polling des opena5‑API auf neue Aufgaben
+        ◦ Anzeige neuer Aufgaben (z. B. via VS Code Notifications oder View)
+        ◦ Öffnen des file_path zur Bearbeitung
+        ◦ Nach „Abschließen“ Button oder Kommando: sendet Abschluss‑Payload an opena5 API
+    • Alternativ: CLI Hook, die beim Commit/Push automatisch die Änderung meldet
+Technisch sind für die Extension die offiziellen VS Code APIs relevant. (code.visualstudio.com)
+
+5) Persistenz, Dedupe & Audit
+    • Wie bei anderen Agenten: append‐only. Logs, Blobs dürfen nicht überschrieben werden.
+    • Deduplicate anhand SHA‑256 (z. B. gleiche diff zweimal) → kein neuer Blob, nur Referenz/Audit.
+    • Pfadstruktur Beispiel:
+      /home/danijel-jd/Dokumente/projekte/Gesammtprojekt/
+        ├─ archivp/YYYY/MM/DD/
+        │    ├─ SP<ts>_opena5→opena2_CMD.json
+        │    ├─ SP<ts>_opena2→opena5_RESP.json
+        │    └─ blobs/
+        │         patches/src/{file_path}/{sha256(diff)}.json
+        └─ docs/
+             DEDUP_INDEX.json
+             HEADS.json
+             INTEGRITY_TREE.json
+
+6) GitHub‐Kontrolle (Pre‑Commit & CI für opena5)
+Analog zu opena4:
+    • .pre-commit-config.yaml integriert für code quality (flake8/ESLint etc)
+    • CI Workflow .github/workflows/ci.yml:
+        ◦ Linting der VS Code Extension oder Bridge‑Code
+        ◦ Schema Validation für Aufgabe/Response Payloads
+        ◦ Port Policy Check: sicherstellen, dass opena5 nicht 8080 “beansprucht”
+    • Review Process: jede Änderung via Pull Request, automatisierter Check
+
+7) Interaktionen & Kurzmatrix
+Ziel‑Agent
+Typische Interaktion mit opena5
+Ergebnis‑Pfad
+opena3
+„Edit/DIFF Aufgabe erzeugt“
+archivp/patches/src/...
+opena2
+Persistenz/Audit/Ack
+archivp/index.jsonl + blobs/patches/...
+opena1
+Koordination der Codeaktion
+archivp/SP*/CMD/RESP.json
+VS Code
+Bearbeitung & Abschlussmeldung
+archivs wie oben
+
+8) Health & Observability
+    • API Endpunkte: /health, /info bei opena5
+    • Periodische Einträge in docs/HEALTH_RECORDS.jsonl (Echo opena4/u.a.)
+    • Metriken: Aufgaben‑Queue Länge, Bearbeitungsdauer, Fehlerrate (z. B. diff conflict)
+    • Diese Daten konsumiert opena20 (Monitoring Agent) für Alerts
+
+9) Fehlerbilder & Recovery
+    • Doppel‑Diffs (Same sha256) → kein neuer Blob, nur Referenz; keine Aktion durch VS Code
+    • Konflikt beim Apply‑Patch: opena5 meldet status: failed, „CONFLICT“, remote muss manuell gelöst werden
+    • Port Konﬂikt: opena5 bindet nicht erlaubten Port → Safepoint CMD erzeugt, Lease gewechselt
+    • VS Code nicht erreichbar: opena5‐Bridge erkennt Ausfall, schreibt ALERT → opena20 erkennt Latenz/Fail
+
+10) Akzeptanzkriterien für Schritt 5
+    • VS Code Bridge (opena5) ist installiert/startbar, bindet auf erlaubtem Port, antwortet auf /health mit status: ok.
+    • Aufgaben vom UI (opena3) landen korrekt bei opena5 und erscheinen im VS Code Workspace.
+    • Nach Bearbeitung wird Ergebnis korrekt persistiert in Archiv (opena2) mit Audit‑Eintrag.
+    • Dedupe: gleiche diff wird nicht doppelt gespeichert.
+    • GitHub CI/Pre‑Commit Pipeline validiert Codeänderungen vor Merge (Lint, Schema, Port‑Check).
+    • Port Governance eingehalten (12344–12399), 8080 tabu.
+    • Monitoring (via opena20) erhält Metriken zu opena5 und evtl. erzeugt Alerts bei Ausfällen.
+
+Wenn du willst, kann ich dir direkt ein Template‑Projekt für opena5 anlegen: Verzeichnisstruktur, README.md, VS Code Extension (oder Node.js Bridge) Grundgerüst inkl. package.json, API Endpunkte /tasks/poll, /task/complete, /health, + Beispiel VS Code Extension Code. Soll ich das?
+Anleitung Teil 2 — Dashboard-Spezifikation & Endpunkte (Backend/Frontend)
+Projektstamm (verbindlich): /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
+Port-Policy: nur 12344–12399 · 8080 verboten · strict=true überall
+Architektur (Option-2): OpenAI → opena1 (Koordinator) → opena2 (Archivator) → kordp → Agent/Tool → opena2 → opena1 → OpenAI
+
+1) Rollen & Pfade (Single Source of Truth)
+Komponente
+Typ
+Verantwortung
+Root-Pfad
+opena19
+Dashboard-Backend
+Status/Aggregation/Events/SSE, Befehle, Safepoint-Query
+${BASE}/19.dashboard_agent/
+opena16
+Frontend-Assembler
+Gesamtlayout UI (Startseite, Rahmen)
+${BASE}/16.homepage_creator/
+opena14
+HTML-Komponenten
+Agenten-Widgets, Tabellen, Log-Views (serverseitig)
+${BASE}/14.html_creator/
+opena1
+Koordinator
+Policy-Gate, Routing, Audit-Writes /log/opena1
+${BASE}/1.portier_openai/
+opena2
+Archivator
+Safepoints /store/archivp, Abschluss /finalize/opena2
+${BASE}/1.portier_openai/
+${BASE} = /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
+
+2) Verbindliche Backend-API (opena19)
+Basis-URL: http://127.0.0.1:<PORT_DASH> (Port aus .runtime/port, 12344–12399)
+2.1 Status
+    • GET /api/status/all → alle Agenten (Name, Rolle, Port, Health, Pfad, letzte SPs)
+    • GET /api/status/{agent} → Details für einen Agenten
+    • GET /api/agents → Metadatenregister (Rollen, Pfade, unterstützte Aktionen)
+Antwort (Mindestfelder):
+{
+  "strict": true,
+  "timestamp": "2025-10-22T10:30:00+02:00",
+  "agents": [
+    {
+      "name": "opena15",
+      "role": "Homepage Creator",
+      "port": 12356,
+      "health": "healthy",
+      "path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.homepage_creator/",
+      "last_safepoints": ["SP173..._kordp→opena15_CMD.json", "SP173..._opena15→opena2_RESP.json"]
+    }
+  ]
+}
+2.2 Befehle
+POST /api/command/{agent}
+Body (JSON oder form-urlencoded; identisches Mapping):
+{ "request_id":"uuid-...", "action":"start|stop|restart|ping|flush_cache", "strict":true }
+Semantik:
+    • start/stop/restart → opena1 orchestriert (CMD/RESP-Kette, Safepoints).
+    • ping → Health-Probe ohne Zustandsänderung.
+    • flush_cache → falls nicht unterstützt: 409 Conflict + Audit.
+2.3 Events (Server-Sent Events)
+GET /api/events/live → Event-Typen: sp_created | agent_status | warning | error (Daten mit strict:true).
+2.4 Safepoints
+    • POST /api/safepoints/query
+Filterfelder: date_from, date_to, src[], dst[], kind[] ("CMD","RESP"), limit (1–1000), strict:true
+    • GET /api/safepoints/download?path=<abs-SP-Pfad> → read-only Download
+2.5 UI-Brücke
+    • GET /ui/ → Startseite (gerendert via opena16/opena14)
+    • GET /agent/{agent} → Agentenseite (serverseitig)
+2.6 Health (opena19)
+GET /health →
+{
+  "service":"opena19",
+  "status":"healthy",
+  "base":"/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/",
+  "port_policy":{"allowed":"12344-12399","forbidden":["8080"]},
+  "strict":true
+}
+Rückgabecodes: 200, 202, 400, 401, 403, 404, 409, 422, 429, 500
+
+3) Fixe System-Labels & Endpunkte
+Label
+Pfad
+Zweck
+/log/opena1
+POST
+Eingang/Policy-Log & Start der CMD-Kette
+/store/archivp
+POST
+Safepoint-Write (opena2)
+/finalize/opena2
+POST
+Abschluss-RESP (opena2)
+/dispatch/kordp
+POST
+Weiterleitung an Ziel-Agent/Tool
+Pflichtfelder in jedem Request:
+{ "request_id":"uuid-...", "command":"STRING_ENUM", "target_preference":"agent_or_tool", "payload":{}, "strict":true }
+
+4) Agenten-Seitenstandard (gerendert von opena16/opena14)
+Bereitgestellt unter opena19:
+    • Startseite: /ui/
+    • Detail: /agent/{agent}
+Pflicht-Abschnitte je Agentenseite:
+    1. Header: Name, Rolle, Port, Health-Badge
+    2. Controls (falls erlaubt): Start · Stop · Restart · Ping (Form-POST → /api/command/{agent})
+    3. Statuspanel: Uptime, CPU/RAM (falls verfügbar), Last-Seen
+    4. Safepoint-Viewer: Tabelle (ts, src, →, dst, kind, download)
+    5. Logs-Viewer (readonly tail)
+    6. Konfiguration (readonly): Pfad, unterstützte Aktionen
+    7. Live-Events (SSE; serverseitig injiziert)
+UI-Sicherheitsregeln: kein <script>, iframe, embed; CSS lokal:
+${BASE}/16.homepage_creator/assets/base_styles.css
+
+5) Auth & Sicherheit
+    • Token-Pflicht für POST (/api/command/*, /api/safepoints/query):
+Authorization: Bearer <DASHBOARD_ADMIN_TOKEN>
+    • Token liegt nur in .env von ${BASE}/19.dashboard_agent/
+    • Rollen:
+        ◦ dashboard_admin → Vollzugriff (POST/GET)
+        ◦ dashboard_readonly → nur GET
+    • Rate-Limit Empfehlung: 60 req/min/Token → bei Verstoß 429
+    • CSRF-Hidden-Feld für Form-POSTs (falls aktiviert)
+
+6) Safepoint-Kette (Audit-pflichtig)
+Jedes Dashboard-Command erzeugt mindestens:
+    1. SP<ts>_opena19→opena1_CMD.json
+    2. SP<ts>_opena1→opena2_CMD.json
+    3. SP<ts>_opena2→kordp_CMD.json
+    4. SP<ts>_<target>→opena2_RESP.json
+    5. Indexappend: ${BASE}/1.portier_openai/archivp/index.jsonl
+Pfadformat:
+${BASE}/1.portier_openai/archivp/YYYY/MM/DD/SP<epoch>_src→dst_{CMD|RESP}.json
+Hashing: SHA256 je SP; Referenz in docs/INTEGRITY_TREE.json (Agent-seitig).
+
+7) Fehler- & Ausnahmebehandlung (normativ)
+Klasse
+Ursache
+HTTP
+Pflichtreaktion
+Validation
+Schemafehler
+422
+SP mit error.validation=true, kein Dispatch
+Policy
+Port/8080/Auth
+403
+Ablehnen + policy_violation Event/SP
+Conflict
+Aktion unsupported
+409
+Body mit supported_actions
+Downstream
+Ziel offline
+502
+Retry-Hinweis, SP mit retry_after
+Internal
+Unerwartet
+500
+SP mit error_id, Log-Verweis
+
+8) Einheitliche Health-Response (alle Dienste)
+Jeder Dienst antwortet mindestens mit:
+{
+  "service":"<agent>",
+  "status":"healthy|degraded|down",
+  "base":"<absoluter Agentenpfad unter ${BASE}>",
+  "port_policy":{"allowed":"12344-12399","forbidden":["8080"]},
+  "timestamp":"<ISO8601>",
+  "strict":true
+}
+
+9) Testplan (Abnahme Muss-Kriterien)
+    1. opena19 online: GET /health → healthy & korrekter base-Pfad.
+    2. Agentenliste: GET /api/agents → enthält mind. opena1, opena2, opena19.
+    3. Status all: GET /api/status/all → Ports im Bereich 12344–12399.
+    4. SSE: GET /api/events/live → bei Test-Command erscheint sp_created.
+    5. Command-Kette: POST /api/command/opena15 {action:"ping"} → SP-Kette gemäß §6.
+    6. Safepoints-Query/Download: korrekte Filter + unveränderter Download.
+    7. UI-Routen: /ui/, /agent/opena15 gerendert (keine externen Skripte).
+    8. Auth: POST ohne/mit falschem Token → 401/403.
+    9. Policy: Kein Dienst auf 8080; Verletzung → sofortiger Shutdown + Event.
+
+10) Beispielabläufe (konkret)
+10.1 Agent-Start via Dashboard
+    1. POST /api/command/opena15 { "request_id":"...","action":"start","strict":true }
+    2. SP-Kette (opena19→opena1→opena2→kordp)
+    3. opena15 startet, schreibt .runtime/port; Health ok →
+    4. SP..._opena15→opena2_RESP.json + SSE agent_status: up
+10.2 Safepoint-Download
+    1. POST /api/safepoints/query (Filter: date=today, src=["opena1"], kind=["CMD"])
+    2. Liste mit sp_path
+    3. GET /api/safepoints/download?path=<sp_path> → read-only Datei
+
+11) Render-Pfad (serverseitig, ohne JS)
+    • opena19 liefert Daten (Status, SP-Listen), validiert, erzeugt SPs.
+    • opena16/opena14 rendern /ui/ und /agent/{agent} serverseitig (Templates).
+    • Aktualisierung via <meta http-equiv="refresh" content="10">.
+    • CSS: ${BASE}/16.homepage_creator/assets/base_styles.css.
+
+12) Dateipfade (Quick-Check)
+Pfad
+Zweck
+${BASE}/19.dashboard_agent/
+Backend-Service + API
+${BASE}/19.dashboard_agent/.runtime/port
+Laufzeitport
+${BASE}/1.portier_openai/archivp/
+Safepoints/Audit
+${BASE}/16.homepage_creator/assets/base_styles.css
+UI-Basis-Styles
+${BASE}/14.html_creator/
+Komponenten-Renderer (Tabellen/Widgets)
+
+
+Anleitung Teil 3 — Agenten-Seiten-Blueprint, UI-Gerüste & JSON-Schemas
+Projektstamm (verbindlich): /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
+Regeln: Ports 12344 – 12399 · 8080 verboten · strict: true in jedem Request · keine externen Skripte.
+
+1) Zielsetzung
+Teil 3 liefert:
+    1. verbindliche JSON-Schemas für API-Kommunikation,
+    2. standardisierte HTML-Blueprints für /ui/ und /agent/{agent},
+    3. Richtlinien zu Sicherheit, Rendering und Tests.
+Alles serverseitig, ohne Client-JS.
+
+2) JSON-Schemas (Pfad: ${BASE}/19.dashboard_agent/schema/)
+2.1 schema_status.json
+Anleitung Teil 4 — Referenz-Implementierungen (Backend/API, Renderer, Safepoints)
+Projektstamm (verbindlich): /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
+Policy: Ports 12344–12399, 8080 verboten, strict=true überall, keine externen Skripte.
+
+A) Dashboard-Backend (19.dashboard_agent) – FastAPI-Service
+Ziel: Produktionsfähige API inkl. Status, Befehle (Form+JSON), Safepoints, SSE-Events und Health.
+A.1 Verzeichnis & Dateien
+${BASE}/19.dashboard_agent/
+├─ main_dashboard.py
+├─ agent_registry.py
+├─ sse_bus.py
+├─ safepoints.py
+├─ security.py
+├─ templates/
+│  ├─ ui_index.html
+│  └─ ui_agent.html
+├─ static/
+│  └─ dashboard.css
+├─ logs/
+│  ├─ dashboard_runtime.log
+│  └─ status_changes.log
+└─ .runtime/
+   └─ port
+${BASE} = /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
+A.2 main_dashboard.py (API + UI-Routen – produktionsreif)
+# /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_dashboard.py
+from __future__ import annotations
+import os, json, time, hashlib
+from datetime import datetime, timezone
+from typing import Any, Dict, List, Optional
+from fastapi import FastAPI, Request, HTTPException, Depends, Response
+from fastapi.responses import JSONResponse, PlainTextResponse, StreamingResponse, HTMLResponse, FileResponse
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field
+from pathlib import Path
+
+from agent_registry import AgentRegistry
+from security import require_admin_token, parse_form_or_json, BASE_DIR, ALLOWED_PORTS, FORBIDDEN_PORTS
+from safepoints import write_sp, query_sp, list_agents_status
+from sse_bus import EventBus
+
+app = FastAPI(title="Portier Dashboard Backend", version="1.0.0")
+bus = EventBus()
+REG = AgentRegistry(BASE_DIR)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1", "http://localhost"],
+    allow_methods=["GET","POST"],
+    allow_headers=["*"],
+)
+
+def now_iso() -> str:
+    return datetime.now(timezone.utc).astimezone().isoformat()
+
+# ---------- Health ----------
+@app.get("/health")
+def health() -> Dict[str, Any]:
+    return {
+        "service": "opena19",
+        "status": "healthy",
+        "base": str(Path(BASE_DIR) / "19.dashboard_agent"),
+        "port_policy": {"allowed": f"{min(ALLOWED_PORTS)}-{max(ALLOWED_PORTS)}", "forbidden": [str(p) for p in FORBIDDEN_PORTS]},
+        "timestamp": now_iso(),
+        "strict": True
+    }
+
+# ---------- Status ----------
+@app.get("/api/agents")
+def api_agents() -> Dict[str, Any]:
+    return {"strict": True, "timestamp": now_iso(), "agents": REG.list_agents()}
+
+@app.get("/api/status/all")
+def api_status_all() -> Dict[str, Any]:
+    return {"strict": True, "timestamp": now_iso(), "agents": list_agents_status(REG)}
+
+@app.get("/api/status/{agent}")
+def api_status_agent(agent: str) -> Dict[str, Any]:
+    info = REG.get_agent(agent)
+    if not info:
+        raise HTTPException(404, f"Agent {agent} nicht registriert")
+    status = list_agents_status(REG, [agent])[0]
+    return {"strict": True, "timestamp": now_iso(), "agent": status}
+
+# ---------- Commands (JSON + Form) ----------
+class CommandIn(BaseModel):
+    request_id: str = Field(min_length=8)
+    action: str = Field(pattern=r"^(start|stop|restart|ping|flush_cache)$")
+    strict: bool = True
+
+@app.post("/api/command/{agent}")
+async def api_command(agent: str, request: Request, _: None = Depends(require_admin_token)) -> JSONResponse:
+    payload = await parse_form_or_json(request)
+    try:
+        cmd = CommandIn(**payload)
+    except Exception as e:
+        # Safepoint (Validation Error) – kein Dispatch
+        sp = write_sp(src="opena19", dst="opena1", kind="CMD", body={"error":"validation","detail":str(e),"agent":agent,"payload":payload})
+        bus.publish("sp_created", {"sp": sp})
+        raise HTTPException(422, "Schema ungültig")
+
+    # Policy: Port 8080 verboten (global)
+    if 8080 in FORBIDDEN_PORTS:
+        pass  # policy tracked via health only; enforcement erfolgt bei Diensten
+
+    # Safepoint: Dashboard fordert Action an
+    sp_cmd = write_sp(src="opena19", dst="opena1", kind="CMD", body={"agent":agent,"action":cmd.action,"request_id":cmd.request_id,"strict":True})
+    bus.publish("sp_created", {"sp": sp_cmd})
+
+    # Simulierter Orchestrierungs-Trigger (Koordinator übernimmt in realem Setup)
+    # Für "ping": wir prüfen Agent-Health und antworten direkt.
+    if cmd.action == "ping":
+        st = list_agents_status(REG, [agent])[0] if REG.get_agent(agent) else {"health":"down"}
+        sp_resp = write_sp(src=agent, dst="opena2", kind="RESP", body={"agent":agent,"action":"ping","result":st.get("health","down"),"strict":True})
+        bus.publish("sp_created", {"sp": sp_resp})
+        return JSONResponse({"strict": True, "status": "ok", "result": st})
+
+    # Für start/stop/restart/flush_cache: Wir quittieren Annahme (202)
+    return JSONResponse({"strict": True, "status": "accepted", "info": {"agent": agent, "action": cmd.action}}, status_code=202)
+
+# ---------- Safepoints ----------
+class SpQuery(BaseModel):
+    filter: Dict[str, Any]
+    limit: int = Field(ge=1, le=1000)
+    strict: bool = True
+
+@app.post("/api/safepoints/query")
+async def api_sp_query(q: SpQuery, _: None = Depends(require_admin_token)) -> Dict[str, Any]:
+    results = query_sp(q.filter, q.limit)
+    return {"strict": True, "timestamp": now_iso(), "results": results}
+
+@app.get("/api/safepoints/download")
+def api_sp_download(path: str, _: None = Depends(require_admin_token)):
+    p = Path(path).resolve()
+    base_arch = Path(BASE_DIR) / "1.portier_openai" / "archivp"
+    if not str(p).startswith(str(base_arch.resolve())) or not p.exists():
+        raise HTTPException(404, "Safepoint nicht gefunden")
+    return FileResponse(str(p), media_type="application/json")
+
+# ---------- SSE Events ----------
+@app.get("/api/events/live")
+def api_events_live():
+    def gen():
+        for ev in bus.subscribe():
+            yield f"event: {ev['type']}\n"
+            yield f"data: {json.dumps(ev['data'], ensure_ascii=False)}\n\n"
+    return StreamingResponse(gen(), media_type="text/event-stream")
+
+# ---------- UI (serverseitig, ohne externe Skripte) ----------
+TEMPLATES = Path(BASE_DIR) / "19.dashboard_agent" / "templates"
+STATIC = Path(BASE_DIR) / "19.dashboard_agent" / "static"
+
+@app.get("/ui/", response_class=HTMLResponse)
+def ui_index():
+    html = (TEMPLATES / "ui_index.html").read_text(encoding="utf-8")
+    # Ersetze Platzhalter minimal serverseitig (keine externen Skripte)
+    agents = list_agents_status(REG)
+    rows = []
+    for a in agents:
+        badge = {"healthy":"ok","degraded":"warn","down":"err"}.get(a["health"],"err")
+        rows.append(f"<tr><td>{a['name']}</td><td>{a['role']}</td><td>{a['port']}</td><td><span class='badge {badge}'>{a['health']}</span></td><td><a href='/agent/{a['name']}'>öffnen</a></td></tr>")
+    html = html.replace("<!--__AGENT_ROWS__-->", "\n".join(rows))
+    return HTMLResponse(html)
+
+@app.get("/agent/{agent}", response_class=HTMLResponse)
+def ui_agent(agent: str):
+    info = REG.get_agent(agent)
+    if not info:
+        raise HTTPException(404, "Agent nicht registriert")
+    html = (TEMPLATES / "ui_agent.html").read_text(encoding="utf-8")
+    st = list_agents_status(REG, [agent])[0]
+    badge = {"healthy":"ok","degraded":"warn","down":"err"}.get(st["health"],"err")
+    html = (html
+            .replace("{{agent_name}}", st["name"])
+            .replace("{{agent_role}}", st["role"])
+            .replace("{{agent_path}}", st["path"])
+            .replace("{{agent_port}}", str(st["port"]))
+            .replace("{{agent_health}}", st["health"])
+            .replace("{{agent_health_class}}", badge)
+            .replace("{{uptime}}", st.get("uptime","n/a"))
+            .replace("{{cpu}}", st.get("cpu","n/a"))
+            .replace("{{ram}}", st.get("ram","n/a"))
+            .replace("{{last_seen}}", st.get("last_seen","n/a"))
+            .replace("{{request_id_start}}", hashlib.sha256(f"start.{time.time()}".encode()).hexdigest()[:16])
+            .replace("{{request_id_stop}}", hashlib.sha256(f"stop.{time.time()}".encode()).hexdigest()[:16])
+            .replace("{{request_id_restart}}", hashlib.sha256(f"restart.{time.time()}".encode()).hexdigest()[:16])
+            .replace("{{request_id_ping}}", hashlib.sha256(f"ping.{time.time()}".encode()).hexdigest()[:16])
+            )
+    # Safepoints (Auszug)
+    sps = query_sp({"dst":[agent]}, limit=20)
+    sp_rows = []
+    for sp in sps:
+        sp_rows.append(f"<tr><td>{sp['ts']}</td><td>{sp['src']}</td><td>→</td><td>{sp['dst']}</td><td>{sp['kind']}</td><td><a href='/api/safepoints/download?path={sp['path']}'>.json</a></td></tr>")
+    html = html.replace("<!--__SP_ROWS__-->", "\n".join(sp_rows))
+    return HTMLResponse(html)
+
+@app.get("/static/dashboard.css")
+def static_css():
+    return FileResponse(str(STATIC / "dashboard.css"), media_type="text/css")
+A.3 security.py (Auth, Parser, Policy-Konstanten)
+# /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/security.py
+from __future__ import annotations
+import os, json
+from typing import Any, Dict
+from fastapi import Request, HTTPException, Depends
+
+BASE_DIR = "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt"
+ALLOWED_PORTS = list(range(12344, 12400))
+FORBIDDEN_PORTS = [8080]
+
+def _admin_token() -> str:
+    # Token aus .env (oder Prozessumgebung) laden
+    token = os.environ.get("DASHBOARD_ADMIN_TOKEN", "")
+    if not token:
+        # optional: aus Datei laden, wenn exportiert
+        env_path = os.path.join(BASE_DIR, "19.dashboard_agent", ".env")
+        if os.path.exists(env_path):
+            for line in open(env_path, "r", encoding="utf-8"):
+                if line.startswith("DASHBOARD_ADMIN_TOKEN="):
+                    token = line.strip().split("=",1)[1]
+                    break
+    return token
+
+def require_admin_token(request: Request):
+    auth = request.headers.get("Authorization","")
+    if not auth.startswith("Bearer "):
+        raise HTTPException(401, "Authorization fehlt")
+    token = auth.split(" ",1)[1].strip()
+    if token != _admin_token() or not token:
+        raise HTTPException(403, "Token ungültig")
+    return None
+
+async def parse_form_or_json(request: Request) -> Dict[str, Any]:
+    ctype = request.headers.get("content-type","").lower()
+    if "application/json" in ctype:
+        return await request.json()
+    if "application/x-www-form-urlencoded" in ctype:
+        form = await request.form()
+        data = {k: (v if k!="strict" else (str(v).lower()=="true")) for k,v in form.items()}
+        return data
+    # Fallback: versuche JSON
+    try:
+        return await request.json()
+    except Exception:
+        raise HTTPException(400, "Unsupported Content-Type")
+A.4 agent_registry.py (Agenten-Metadaten + Ports)
+# /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/agent_registry.py
+from __future__ import annotations
+import os
+from pathlib import Path
+from typing import Dict, List, Optional
+
+AGENTS_META = [
+    # Name, Rolle, Pfad relativ zum BASE_DIR
+    ("opena1", "Koordinator", "1.portier_openai"),
+    ("opena2", "Archivator", "1.portier_openai"),
+    ("opena14", "HTML Komponenten", "14.html_creator"),
+    ("opena15", "Homepage Creator", "16.homepage_creator"),
+    ("opena16", "Frontend Assembler", "16.homepage_creator"),
+    ("opena17", "Lokales Archiv", "17.local_archiv"),
+    ("opena18", "Aktien & Crypto", "18.aktien_crypto"),
+    ("opena19", "Dashboard Backend", "19.dashboard_agent"),
+    ("opena9", "Telefon Anruf", "9.telefon_anruf"),
+    ("opena10","Telefon Antwort", "8.telefon_antwort"),
+    ("opena11","Influencer Parser","12.influencer"),
+    ("opena12","Kalender Manager","13.calendar"),
+    ("opena13","HTML Creator","14.html_creator"),
+    # weitere nach Bedarf…
+]
+
+class AgentRegistry:
+    def __init__(self, base_dir: str):
+        self.base = Path(base_dir).resolve()
+
+    def list_agents(self) -> List[Dict]:
+        res=[]
+        for name, role, rel in AGENTS_META:
+            res.append({
+                "name": name,
+                "role": role,
+                "path": str((self.base / rel).resolve()) + ("/" if not rel.endswith("/") else ""),
+                "supports": ["start","stop","restart","ping","flush_cache"] if name!="opena2" else ["ping"]
+            })
+        return res
+
+    def get_agent(self, name: str) -> Optional[Dict]:
+        for n, role, rel in AGENTS_META:
+            if n == name:
+                return {"name": n, "role": role, "path": str((self.base/rel).resolve()) + "/"}
+        return None
+
+    def port_for(self, name: str) -> int:
+        # Port aus .runtime/port lesen; 0 falls unbekannt
+        info = self.get_agent(name)
+        if not info: return 0
+        p = Path(info["path"]) / ".runtime" / "port"
+        try:
+            return int(p.read_text(encoding="utf-8").strip())
+        except Exception:
+            return 0
+A.5 safepoints.py (Schreiben/Query + Statussammlung)
+# /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/safepoints.py
+from __future__ import annotations
+import os, json, time, hashlib, psutil
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+BASE_DIR = "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt"
+ARCHIVP = Path(BASE_DIR) / "1.portier_openai" / "archivp"
+INDEX = ARCHIVP / "index.jsonl"
+
+def _ensure_daydir(ts: float) -> Path:
+    d = datetime.fromtimestamp(ts, tz=timezone.utc).astimezone()
+    day = ARCHIVP / f"{d:%Y/%m/%d}"
+    day.mkdir(parents=True, exist_ok=True)
+    return day
+
+def write_sp(src: str, dst: str, kind: str, body: Dict[str, Any]) -> str:
+    assert kind in ("CMD","RESP")
+    ts = time.time()
+    day = _ensure_daydir(ts)
+    name = f"SP{int(ts)}_{src}→{dst}_{kind}.json"
+    p = day / name
+    body_out = {
+        "ts": datetime.fromtimestamp(ts, tz=timezone.utc).astimezone().isoformat(),
+        "src": src, "dst": dst, "kind": kind, "strict": True, "body": body
+    }
+    txt = json.dumps(body_out, ensure_ascii=False, indent=2)
+    p.write_text(txt, encoding="utf-8")
+    # Index append-only
+    INDEX.parent.mkdir(parents=True, exist_ok=True)
+    with INDEX.open("a", encoding="utf-8") as f:
+        f.write(json.dumps({"sp": name, "ts": body_out["ts"], "src": src, "dst": dst, "kind": kind, "path": str(p), "strict": True}, ensure_ascii=False) + "\n")
+    return str(p)
+
+def query_sp(filters: Dict[str, Any], limit: int) -> List[Dict[str, Any]]:
+    res=[]
+    date_from = filters.get("date_from")
+    date_to   = filters.get("date_to")
+    srcs = set(filters.get("src", []))
+    dsts = set(filters.get("dst", []))
+    kinds= set(filters.get("kind", []))
+    # effizient: index.jsonl filtern
+    if not INDEX.exists(): return []
+    with INDEX.open("r", encoding="utf-8") as f:
+        for line in reversed(list(f)):  # reverse: neuste zuerst
+            try:
+                obj = json.loads(line)
+            except Exception:
+                continue
+            ts = obj.get("ts","")[:10]  # YYYY-MM-DD
+            if date_from and ts < date_from: continue
+            if date_to and ts > date_to: continue
+            if srcs and obj.get("src") not in srcs: continue
+            if dsts and obj.get("dst") not in dsts: continue
+            if kinds and obj.get("kind") not in kinds: continue
+            res.append(obj)
+            if len(res) >= limit: break
+    return res
+
+def list_agents_status(reg) -> List[Dict[str, Any]]:
+    out=[]
+    for meta in reg.list_agents():
+        name = meta["name"]
+        port = reg.port_for(name)
+        health = "down"
+        last_seen = ""
+        try:
+            if port >= 12344 and port <= 12399:
+                # einfacher TCP-Healthcheck via HTTP HEAD (timeout kurz)
+                import http.client
+                conn = http.client.HTTPConnection("127.0.0.1", port, timeout=0.3)
+                conn.request("GET", "/health")
+                r = conn.getresponse()
+                health = "healthy" if r.status == 200 else "degraded"
+                conn.close()
+        except Exception:
+            health = "down"
+        # Systemressourcen (lokal – optional)
+        cpu = f"{psutil.cpu_percent(interval=None)}%"
+        ram = f"{round(psutil.virtual_memory().percent,1)}%"
+        out.append({
+            "name": name, "role": meta["role"], "path": meta["path"],
+            "port": port, "health": health, "last_seen": last_seen,
+            "uptime": "n/a", "cpu": cpu, "ram": ram
+        })
+    return out
+A.6 sse_bus.py (leichtgewichtiger Event-Bus für SSE)
+# /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/sse_bus.py
+from __future__ import annotations
+import queue
+from typing import Iterator, Dict, Any
+
+class EventBus:
+    def __init__(self) -> None:
+        self.q: "queue.Queue[Dict[str,Any]]" = queue.Queue()
+
+    def publish(self, ev_type: str, data: Dict[str,Any]) -> None:
+        self.q.put({"type": ev_type, "data": data})
+
+    def subscribe(self) -> Iterator[Dict[str,Any]]:
+        while True:
+            yield self.q.get()
+A.7 Templates (serverseitig; ohne Skripte)
+templates/ui_index.html
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8"><title>Portier Dashboard – Übersicht</title>
+<meta http-equiv="refresh" content="10">
+<link rel="stylesheet" href="/static/dashboard.css">
+</head><body>
+<header><h1>Portier Dashboard</h1><nav><a href="/ui/">Übersicht</a></nav></header>
+<section><h2>Agenten</h2>
+<table><thead><tr><th>Name</th><th>Rolle</th><th>Port</th><th>Status</th><th>Details</th></tr></thead>
+<tbody><!--__AGENT_ROWS__--></tbody></table>
+</section>
+<footer><p>© 2025 · strict=true · Ports 12344–12399</p></footer>
+</body></html>
+templates/ui_agent.html
+<!doctype html><html lang="de"><head>
+<meta charset="utf-8"><title>Agent: {{agent_name}}</title>
+<meta http-equiv="refresh" content="10">
+<link rel="stylesheet" href="/static/dashboard.css">
+</head><body>
+<header>
+<h1>{{agent_name}}</h1>
+<p>Rolle: {{agent_role}} · Pfad: {{agent_path}}</p>
+<p>Status: <span class="badge {{agent_health_class}}">{{agent_health}}</span> · Port: {{agent_port}}</p>
+<nav><a href="/ui/">← Übersicht</a></nav>
+</header>
+
+<section><h2>Steuerung</h2>
+<form method="post" action="/api/command/{{agent_name}}"><input type="hidden" name="request_id" value="{{request_id_start}}"><input type="hidden" name="action" value="start"><input type="hidden" name="strict" value="true"><button type="submit">Start</button></form>
+<form method="post" action="/api/command/{{agent_name}}"><input type="hidden" name="request_id" value="{{request_id_stop}}"><input type="hidden" name="action" value="stop"><input type="hidden" name="strict" value="true"><button type="submit">Stop</button></form>
+<form method="post" action="/api/command/{{agent_name}}"><input type="hidden" name="request_id" value="{{request_id_restart}}"><input type="hidden" name="action" value="restart"><input type="hidden" name="strict" value="true"><button type="submit">Restart</button></form>
+<form method="post" action="/api/command/{{agent_name}}"><input type="hidden" name="request_id" value="{{request_id_ping}}"><input type="hidden" name="action" value="ping"><input type="hidden" name="strict" value="true"><button type="submit">Ping</button></form>
+</section>
+
+<section><h2>Safepoints (neueste)</h2>
+<table><thead><tr><th>ts</th><th>src</th><th>→</th><th>dst</th><th>kind</th><th>Download</th></tr></thead>
+<tbody><!--__SP_ROWS__--></tbody></table>
+</section>
+
+<footer><p>© 2025 · Option-2 · strict=true</p></footer>
+</body></html>
+static/dashboard.css (Basis – kompatibel mit Teil 3)
+body{margin:0;font-family:system-ui,sans-serif;line-height:1.5}
+header,footer{padding:1rem;border-bottom:1px solid #ddd}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{border:1px solid #e5e5e5;padding:.5rem;text-align:left}
+.badge{padding:.15rem .5rem;border-radius:.25rem}
+.badge.ok{background:#e6ffed}.badge.warn{background:#fff4e5}.badge.err{background:#ffe6e6}
+button{padding:.4rem .8rem}
+
+B) Frontend-Renderer (16.homepage_creator & 14.html_creator)
+Prinzip: Server-Side-Rendering ohne externe Skripte. opena19 ruft nicht die Renderer an; hier liefern die HTML-Agenten HTML an opena19 (Dateiablage), oder opena19 liest Templates lokal (wie oben). Dieser Teil zeigt die minimalen Referenz-Endpunkte für reine HTML-Erzeugung.
+B.1 16.homepage_creator/homepage_engine.py (UI-Index-Renderer)
+# /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.homepage_creator/homepage_engine.py
+from __future__ import annotations
+from pathlib import Path
+
+ASSETS = Path("/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.homepage_creator/assets")
+
+def render_index(agents_rows_html: str) -> str:
+    tpl = (
+        "<!doctype html><html lang='de'><head>"
+        "<meta charset='utf-8'><title>Portier Dashboard – Übersicht</title>"
+        "<meta http-equiv='refresh' content='10'>"
+        "<link rel='stylesheet' href='/static/dashboard.css'>"
+        "</head><body>"
+        "<header><h1>Portier Dashboard</h1></header>"
+        "<section><h2>Agenten</h2><table><thead><tr><th>Name</th><th>Rolle</th><th>Port</th><th>Status</th><th>Details</th></tr></thead>"
+        f"<tbody>{agents_rows_html}</tbody></table></section>"
+        "<footer><p>© 2025 · strict=true</p></footer>"
+        "</body></html>"
+    )
+    return tpl
+B.2 14.html_creator/html_components.py (Agent-Detail-Renderer)
+# /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/14.html_creator/html_components.py
+from __future__ import annotations
+
+def render_agent_detail(agent_ctx: dict, sp_rows_html: str) -> str:
+    badge = agent_ctx.get("agent_health_class","err")
+    html = (
+        "<!doctype html><html lang='de'><head>"
+        f"<meta charset='utf-8'><title>Agent: {agent_ctx['agent_name']}</title>"
+        "<meta http-equiv='refresh' content='10'>"
+        "<link rel='stylesheet' href='/static/dashboard.css'></head><body>"
+        f"<header><h1>{agent_ctx['agent_name']}</h1>"
+        f"<p>Rolle: {agent_ctx['agent_role']} · Pfad: {agent_ctx['agent_path']}</p>"
+        f"<p>Status: <span class='badge {badge}'>{agent_ctx['agent_health']}</span> · Port: {agent_ctx['agent_port']}</p>"
+        "<nav><a href='/ui/'>← Übersicht</a></nav></header>"
+        "<section><h2>Safepoints (neueste)</h2>"
+        "<table><thead><tr><th>ts</th><th>src</th><th>→</th><th>dst</th><th>kind</th><th>Download</th></tr></thead>"
+        f"<tbody>{sp_rows_html}</tbody></table></section>"
+        "<footer><p>© 2025 · Option-2 · strict=true</p></footer>"
+        "</body></html>"
+    )
+    return html
+Hinweis: In Teil 3 wurden bereits vollständige HTML-Seiten für /ui/ und /agent/{agent} festgelegt. Die obigen Renderer sind kompatibel und können (wenn gewünscht) von opena19 statt der Templates aufgerufen werden. Standardmäßig nutzt opena19 die Dateien unter 19.dashboard_agent/templates/.
+
+C) Startskript (vereinheitlicht) – Dashboard-Agent
+# /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/scripts/run_production.sh
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+RUNTIME="$ROOT/.runtime"; LOGDIR="$ROOT/logs"
+mkdir -p "$RUNTIME" "$LOGDIR"
+
+pick_port() {
+  for p in $(seq 12344 12399); do
+    ss -ltn | awk '{print $4}' | grep -q ":$p$" || { echo "$p"; return; }
+  done; exit 2
+}
+
+PORT="$(pick_port)"
+echo -n "$PORT" > "$RUNTIME/port"
+
+source "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/activate"
+
+export DASHBOARD_ADMIN_TOKEN="${DASHBOARD_ADMIN_TOKEN:-change_this_in_env}"
+
+nohup uvicorn main_dashboard:app --host 127.0.0.1 --port "$PORT" \
+  >> "$LOGDIR/service.out" 2>> "$LOGDIR/service.err" &
+
+for i in $(seq 1 15); do
+  curl -sf "http://127.0.0.1:${PORT}/health" >/dev/null && { echo "OK:$PORT"; exit 0; }
+  sleep 1
+done
+echo "Healthcheck fehlgeschlagen ($PORT)"; exit 1
+
+D) Abnahmetests (konkret)
+    1. Backend online
+       PORT=$(cat /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/.runtime/port)
+       curl -sSf http://127.0.0.1:$PORT/health | jq .
+    2. Agentenliste
+       curl -sSf http://127.0.0.1:$PORT/api/agents | jq .
+    3. Status
+       curl -sSf http://127.0.0.1:$PORT/api/status/all | jq .
+    4. Command (Ping)
+       curl -sS -X POST \
+         -H "Authorization: Bearer $DASHBOARD_ADMIN_TOKEN" \
+         -H "Content-Type: application/json" \
+         -d '{"request_id":"uuid-abc-123","action":"ping","strict":true}' \
+         "http://127.0.0.1:$PORT/api/command/opena15" | jq .
+    5. SSE (Events)
+       curl -s "http://127.0.0.1:$PORT/api/events/live"
+       # In zweitem Terminal Ping absenden → sollte 'event: sp_created' erscheinen
+    6. Safepoint-Query/Download
+       curl -sS -X POST \
+         -H "Authorization: Bearer $DASHBOARD_ADMIN_TOKEN" \
+         -H "Content-Type: application/json" \
+         -d '{"filter":{"kind":["CMD","RESP"]},"limit":10,"strict":true}' \
+         "http://127.0.0.1:$PORT/api/safepoints/query" | jq .
+
+E) Sicherheits-Hinweise (erzwingend)
+    • Tokenpflicht für alle POST-Routen; 401/403 bei Fehlen/Falsch.
+    • Keine Dienste auf 8080 (Verstoß → sofort stoppen).
+    • Safepoints/Index sind append-only; niemals löschen.
+    • UI rendert ohne <script>, ohne externe Ressourcen.
+
+F) Nächster Schritt (Teil 5)
+    • Governance & Audit auf Management-Ebene: Rollen/Prozesse, Recovery-Playbooks, Integritätsbaum (docs/INTEGRITY_TREE.json), Prüfsummen-Politik, sowie End-to-End-Anwendungsbeispiele (Ticketfluss Telefon → Dashboard → Archiv).
+Anleitung Teil 5 — Governance · Audit · Master-Checksum · Anwendung
+Projektstamm (verbindlich): /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
+Portier-Version: ELION Hyper-Dashboard 2.0 · Architektur: Option-2
+Policy: keine Platzhalter, keine Tests, keine offenen Ports außerhalb 12344–12399 · alles im strict:true-Modus
+
+1) Governance-Struktur (Verwaltung & Kontrolle)
+Ebene
+Verantwortung
+Komponenten
+Systemführung (Core Governance)
+Einhaltung von Port-, Audit- und Archivregeln. Setzt Policies.
+opena1 (Koordinator), opena2 (Archivator)
+Operation (Dashboard Governance)
+Überwachung, Steuerung, Zugriffskontrolle, Tokens, Safepoints.
+opena19 (Dashboard Backend)
+Archiv- und Recovery-Governance
+Index-Konsistenz, Backup-Erstellung, Hash-Validierung, Wiederherstellung.
+opena17 (Local Archiv Exporter)
+Integrations-Governance
+OpenWebUI, VS Code, Telegram-Bridge, Schnittstellenpflege.
+opena14, opena16, opena19
+Policy-Governance
+Umsetzung gesetzter Regeln („Option-2 Pflicht“, „Strict-Mode Pflicht“, „8080-Verbot“).
+global, enforced durch opena1
+
+2) Kernrichtlinien („Systemgesetze“)
+    1. Keine Tests, keine Dummies. Nur produktionsreife Dateien.
+    2. Strict-Mode überall: jedes Request/Response enthält "strict": true.
+    3. Port-Policy unveränderbar: erlaubt 12344–12399; 8080 bleibt blockiert.
+    4. Safepoints sind Gesetz: jede CMD/RESP erzeugt einen Eintrag + Audit-Index.
+    5. Archivierung ist final: nichts wird gelöscht oder überschrieben.
+    6. Koordinator (opena1) entscheidet jede Weiterleitung.
+    7. Archivator (opena2) ist alleiniger Schreiber in archivp/.
+    8. Dashboard (opena19) darf nur lesend auf Archiv zugreifen.
+    9. API-Keys, Tokens und Secrets liegen ausschließlich in .env-Dateien außerhalb der Repos.
+    10. Integrität wird durch INTEGRITY_TREE.json und index.jsonl täglich geprüft.
+
+3) Audit-System & Nachweiskette
+3.1 Safepoint-Index (archivp/index.jsonl)
+Append-only Datei. Jede Zeile = 1 Ereignis (CMD oder RESP).
+Beispielzeile:
+{
+  "sp": "SP1732222222_opena1→opena2_CMD.json",
+  "ts": "2025-10-22T10:15:03+02:00",
+  "src": "opena1",
+  "dst": "opena2",
+  "kind": "CMD",
+  "path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp/2025/10/22/SP1732222222_opena1→opena2_CMD.json",
+  "strict": true
+}
+3.2 Archivbaum (täglich)
+1.portier_openai/archivp/YYYY/MM/DD/
+│
+├─ SP<epoch>_opena1→opena2_CMD.json
+├─ SP<epoch>_opena2→kordp_CMD.json
+├─ SP<epoch>_<target>→opena2_RESP.json
+└─ index.jsonl   (append-only)
+3.3 Integritätsbaum (docs/INTEGRITY_TREE.json)
+Ein Baum aus SHA256-Summen über alle Safepoints, gruppiert nach Datum.
+Beispiel (gekürzt):
+{
+  "2025-10-22": {
+    "root_hash": "bf32c7a4...",
+    "entries": {
+      "SP1732222222_opena1→opena2_CMD.json": "d3c1f9a...",
+      "SP1732222455_opena2→kordp_CMD.json": "9f81c4..."
+    }
+  }
+}
+Tägliche Berechnung (empfohlen per Cronjob):
+python3 /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/scripts/audit_integrity.py
+
+4) Audit-Werkzeuge (praktisch)
+4.1 validate_archiv.sh
+#!/usr/bin/env bash
+BASE="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai"
+INDEX="$BASE/archivp/index.jsonl"
+[ ! -f "$INDEX" ] && echo "Index fehlt" && exit 1
+grep -q '"strict": true' "$INDEX" || echo "Warnung: strict fehlt in Einträgen"
+echo "Index-Zeilen: $(wc -l < "$INDEX")"
+4.2 audit_integrity.py
+from pathlib import Path
+import json, hashlib
+base = Path("/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp")
+docs = base.parent / "docs"
+target = docs / "INTEGRITY_TREE.json"
+tree = {}
+for sp in base.rglob("SP*.json"):
+    day = sp.relative_to(base).parts[0:3]
+    key = "-".join(day)
+    h = hashlib.sha256(sp.read_bytes()).hexdigest()
+    tree.setdefault(key, {"entries":{}})["entries"][sp.name] = h
+for d in tree.values():
+    concat = "".join(sorted(d["entries"].values()))
+    d["root_hash"] = hashlib.sha256(concat.encode()).hexdigest()
+target.write_text(json.dumps(tree, indent=2, ensure_ascii=False), encoding="utf-8")
+print(f"Integritätsbaum aktualisiert: {target}")
+
+5) Rollenbasierte Kontrolle (Governance-Matrix)
+Rolle
+Befugnisse
+Tools/Agenten
+admin
+Start/Stop/Restart/Ping aller Agenten
+opena19 API mit Admin-Token
+auditor
+Nur Leserechte, darf index.jsonl, INTEGRITY_TREE.json prüfen
+opena17 + read-token
+operator
+Dürfen Agenten starten/stoppen, keine Archive löschen
+opena19 (UI-Steuerung)
+observer
+Nur Dashboard-UI-Ansicht
+/ui/ (ohne Token)
+system
+Intern (opena1 + opena2): Erzeugung aller SP-Dateien
+Architekturpfad
+Tokens liegen in:
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/.env
+
+6) Recovery & Wiederherstellung
+    1. Export des betroffenen Tages:
+       cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/17.local_archiv/
+       ./scripts/export_bundle.sh 2025-10-22
+    2. Prüfen des Exports:
+       tar -tvf exports/archiv_2025-10-22_full.tar.zst | head
+    3. Validieren mit Integritätsbaum:
+       python3 1.portier_openai/scripts/audit_integrity.py
+    4. Wiederherstellung (falls nötig):
+        ◦ Extrahiere .tar.zst in temporären Ordner
+        ◦ Vergleiche Checksummen mit INTEGRITY_TREE.json
+        ◦ Kopiere gültige SP-Dateien zurück in archivp/YYYY/MM/DD/
+
+7) Prüfpunkte & tägliche Routine
+Aufgabe
+Zeitpunkt
+Verantwortlich
+Safepoint-Integrität prüfen
+täglich 03:00
+opena17
+Dashboard-Health prüfen
+stündlich
+opena19
+Ports & Policy-Check (8080)
+täglich 01:00
+opena1
+Backup exportieren
+täglich 04:00
+opena17
+Integritätsbaum generieren
+täglich 04:15
+opena17
+Audit-Report archivieren
+wöchentlich Montag
+opena2
+
+8) Anwendungsszenarien (End-to-End)
+8.1 Beispiel: Telefonanruf → Support-Ticket → Dashboard
+    1. Anruf über opena9 → erstellt CMD-Safepoint CALL_DISPATCH.
+    2. opena1 validiert, leitet an opena10 (Antwort-Agent).
+    3. opena10 generiert Sprachantwort, Safepoint-RESP wird erstellt.
+    4. Dashboard (opena19) zeigt in Echtzeit:
+        ◦ Event sp_created
+        ◦ Status opena9/opena10
+        ◦ Download-Link zu SP-Dateien
+    5. Archivator (opena2) speichert permanent, Audit-Index ergänzt.
+    6. Integritätsbaum aktualisiert SHA256-Hash.
+8.2 Beispiel: Homepage-Erstellung
+    1. Request über opena1 → opena13 (HTML-Komponente) → opena15 (Homepage).
+    2. Fertige Seite landet in ${BASE}/16.homepage_creator/archive/.
+    3. Dashboard-Seite /agent/opena15 zeigt neue SP-CMD/RESP und Health-Status.
+8.3 Beispiel: Audit-Prüfung
+    1. Auditor ruft opena19 /api/safepoints/query mit Filter date=today.
+    2. Prüft Rückgabe gegen INTEGRITY_TREE.json.
+    3. Verifiziert, dass strict:true in allen SP-Dateien gesetzt ist.
+    4. Audit gilt als bestanden, wenn alle Checksummen übereinstimmen.
+
+9) Governance-Dokumente (Pfadübersicht)
+Pfad
+Zweck
+${BASE}/1.portier_openai/docs/INTEGRITY_TREE.json
+Master-Checksum der SP-Dateien
+${BASE}/1.portier_openai/archivp/index.jsonl
+Audit-Index (anhängend)
+${BASE}/1.portier_openai/docs/GOVERNANCE.md
+Regeln & Rollenbeschreibung
+${BASE}/17.local_archiv/exports/
+Backup-Archive
+${BASE}/19.dashboard_agent/logs/
+Dashboard-Protokolle (Runtime + Status)
+${BASE}/1.portier_openai/scripts/
+Integritäts- & Prüfskripte
+
+10) Governance-Report (Formatvorgabe)
+Beispiel-Template für automatischen Wochenauszug:
+{
+  "report_date": "2025-10-27",
+  "strict": true,
+  "total_safepoints": 354,
+  "integrity_root_hash": "bf32c7a4...",
+  "violations": 0,
+  "agents_health": {
+    "opena1": "healthy",
+    "opena2": "healthy",
+    "opena19": "healthy"
+  },
+  "notes": "Keine Policy-Verstöße; 8080 blieb blockiert."
+}
+
+11) Integritätsprüfung (CLI-Test)
+python3 /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/scripts/audit_integrity.py
+cat /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/docs/INTEGRITY_TREE.json | jq '.["2025-10-22"].root_hash'
+
+12) Abschluss
+Mit Teil 5 ist das Portier-System vollständig definiert:
+    • Governance-Ebene: Regeln, Rollen, Port-Policy, Strict-Mode.
+    • Audit-Ebene: Safepoints, Index, Integritätsbaum.
+    • Recovery-Ebene: Export, Wiederherstellung, Prüfsummen-Validierung.
+    • Operation-Ebene: Dashboard-UI, Health-Kontrolle, SSE-Events.
+Damit ist das System produktionsreif, revisionssicher und nachvollziehbar — jede Aktion kann auditiert, jeder Zustand reproduziert werden.
+

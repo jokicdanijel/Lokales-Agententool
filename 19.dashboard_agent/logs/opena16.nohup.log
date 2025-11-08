@@ -1,0 +1,19 @@
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena16_crm.py:442: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "created_at": datetime.utcnow().isoformat(),
+INFO:__main__:🚀 Starting opena16_CRM on port 12364
+INFO:__main__:📦 Pre-loaded 1 test customer
+INFO:     Started server process [2908296]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12364 (Press CTRL+C to quit)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena16_crm.py:179: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "created_at": datetime.utcnow().isoformat(),
+INFO:__main__:👤 Customer created: CUST_5BD3A3A1ED0D (Test Corp)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena16_crm.py:103: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "payload": {**payload, "ts": datetime.utcnow().isoformat() + "Z"}
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena16_crm.py:200: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:51916 - "POST /customer/create HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena16_crm.py:420: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:51918 - "GET /status HTTP/1.1" 200 OK

@@ -1,0 +1,105 @@
+INFO:__main__:🚀 Starting opena9_CallTracking on port 12357
+INFO:     Started server process [2838766]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12357 (Press CTRL+C to quit)
+WARNING:  Invalid HTTP request received.
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:136: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:56476 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56488 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56490 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50264 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50276 - "POST /call/log HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:50290 - "GET /transcription/get?call_id=test_call_001 HTTP/1.1" 405 Method Not Allowed
+INFO:     127.0.0.1:50306 - "POST /sentiment/analyze HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:50308 - "POST /crm/sync HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:50318 - "POST /call/log HTTP/1.1" 422 Unprocessable Entity
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:306: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:50320 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50328 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48026 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48030 - "POST /call/log HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:48042 - "GET /transcription/get?call_id=test_call_001 HTTP/1.1" 405 Method Not Allowed
+INFO:     127.0.0.1:48052 - "POST /sentiment/analyze HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:48060 - "POST /crm/sync HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:48066 - "POST /call/log HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:48068 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48076 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58324 - "GET /health HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:152: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "timestamp": datetime.utcnow().isoformat(),
+INFO:__main__:📊 Call logged: call_001 (120s)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:88: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "payload": {**payload, "ts": datetime.utcnow().isoformat() + "Z"}
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:172: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:58336 - "POST /call/log HTTP/1.1" 200 OK
+INFO:__main__:📝 Transcription retrieved: test_call_001
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:207: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:58346 - "POST /transcription/get HTTP/1.1" 200 OK
+INFO:__main__:😊 Sentiment analyzed: call_002 → neutral
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:237: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:58356 - "POST /sentiment/analyze HTTP/1.1" 200 OK
+INFO:__main__:🔄 CRM sync: Contact CRM_12345
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:263: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:58366 - "POST /crm/sync HTTP/1.1" 200 OK
+INFO:__main__:📊 Call logged: call_hist_0 (60s)
+INFO:     127.0.0.1:58378 - "POST /call/log HTTP/1.1" 200 OK
+INFO:__main__:📊 Call logged: call_hist_1 (70s)
+INFO:     127.0.0.1:58382 - "POST /call/log HTTP/1.1" 200 OK
+INFO:__main__:📊 Call logged: call_hist_2 (80s)
+INFO:     127.0.0.1:58386 - "POST /call/log HTTP/1.1" 200 OK
+INFO:__main__:📋 History retrieved: 4 calls
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena9_call_tracking.py:283: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:58402 - "GET /history?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58414 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58428 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58430 - "GET /health HTTP/1.1" 200 OK
+INFO:__main__:📊 Call logged: call_001 (120s)
+INFO:     127.0.0.1:58432 - "POST /call/log HTTP/1.1" 200 OK
+INFO:__main__:📝 Transcription retrieved: test_call_001
+INFO:     127.0.0.1:58448 - "POST /transcription/get HTTP/1.1" 200 OK
+INFO:__main__:😊 Sentiment analyzed: call_002 → neutral
+INFO:     127.0.0.1:58454 - "POST /sentiment/analyze HTTP/1.1" 200 OK
+INFO:__main__:🔄 CRM sync: Contact CRM_12345
+INFO:     127.0.0.1:58462 - "POST /crm/sync HTTP/1.1" 200 OK
+INFO:__main__:📊 Call logged: call_hist_0 (60s)
+INFO:     127.0.0.1:58472 - "POST /call/log HTTP/1.1" 200 OK
+INFO:__main__:📊 Call logged: call_hist_1 (70s)
+INFO:     127.0.0.1:58478 - "POST /call/log HTTP/1.1" 200 OK
+INFO:__main__:📊 Call logged: call_hist_2 (80s)
+INFO:     127.0.0.1:58484 - "POST /call/log HTTP/1.1" 200 OK
+INFO:__main__:📋 History retrieved: 5 calls
+INFO:     127.0.0.1:58488 - "GET /history?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58496 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58512 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37276 - "GET /health HTTP/1.1" 200 OK
+INFO:__main__:📊 Call logged: call_001 (120s)
+INFO:     127.0.0.1:37278 - "POST /call/log HTTP/1.1" 200 OK
+INFO:__main__:📝 Transcription retrieved: test_call_001
+INFO:     127.0.0.1:37284 - "POST /transcription/get HTTP/1.1" 200 OK
+INFO:__main__:😊 Sentiment analyzed: call_002 → neutral
+INFO:     127.0.0.1:37290 - "POST /sentiment/analyze HTTP/1.1" 200 OK
+INFO:__main__:🔄 CRM sync: Contact CRM_12345
+INFO:     127.0.0.1:37302 - "POST /crm/sync HTTP/1.1" 200 OK
+INFO:__main__:📊 Call logged: call_hist_0 (60s)
+INFO:     127.0.0.1:37306 - "POST /call/log HTTP/1.1" 200 OK
+INFO:__main__:📊 Call logged: call_hist_1 (70s)
+INFO:     127.0.0.1:37312 - "POST /call/log HTTP/1.1" 200 OK
+INFO:__main__:📊 Call logged: call_hist_2 (80s)
+INFO:     127.0.0.1:37326 - "POST /call/log HTTP/1.1" 200 OK
+INFO:__main__:📋 History retrieved: 5 calls
+INFO:     127.0.0.1:37342 - "GET /history?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37350 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37366 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46106 - "GET /health HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2838766]

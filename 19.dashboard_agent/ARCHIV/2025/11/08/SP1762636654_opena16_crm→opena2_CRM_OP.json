@@ -1,0 +1,13 @@
+{
+  "src": "opena16_crm",
+  "dst": "opena2",
+  "kind": "CRM_OP",
+  "payload": {
+    "op": "CUSTOMER_CREATE",
+    "customer_id": "CUST_5BD3A3A1ED0D",
+    "name": "Test Corp",
+    "company": "Test Corporation",
+    "lifecycle_stage": "prospect",
+    "ts": "2025-11-08T21:17:34.873026Z"
+  }
+}

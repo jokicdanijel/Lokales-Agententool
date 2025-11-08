@@ -1,0 +1,232 @@
+2025-11-05 15:33:58,527 - INFO - Neuer Token generiert und in .env gespeichert.
+2025-11-05 15:42:13,669 - INFO - Tokenprüfung ok=True
+2025-11-05 18:46:30,229 - INFO - Tokenprüfung ok=True
+2025-11-05 18:51:05,805 - INFO - Tokenprüfung ok=True
+2025-11-05 19:21:37,832 - INFO - Tokenprüfung ok=True
+2025-11-05 19:21:47,767 - INFO - Tokenprüfung ok=True
+2025-11-05 19:25:18,249 - INFO - Neuer Token generiert und in .env gespeichert.
+2025-11-06 05:55:35,634 - INFO - Tokenprüfung ok=True
+2025-11-06 05:55:35,642 - INFO - Tokenprüfung ok=True
+2025-11-06 05:55:35,650 - INFO - Tokenprüfung ok=True
+2025-11-06 05:55:35,660 - INFO - Tokenprüfung ok=True
+2025-11-06 05:55:36,607 - INFO - Tokenprüfung ok=True
+2025-11-06 05:55:36,612 - INFO - Tokenprüfung ok=True
+2025-11-06 05:56:06,616 - INFO - Tokenprüfung ok=True
+2025-11-06 05:56:36,620 - INFO - Tokenprüfung ok=True
+2025-11-06 05:57:06,625 - INFO - Tokenprüfung ok=True
+2025-11-06 05:57:17,694 - INFO - Tokenprüfung ok=True
+2025-11-06 05:57:17,709 - INFO - Tokenprüfung ok=True
+2025-11-06 05:57:17,718 - INFO - Tokenprüfung ok=True
+2025-11-06 05:57:17,730 - INFO - Tokenprüfung ok=True
+2025-11-06 05:57:18,679 - INFO - Tokenprüfung ok=True
+2025-11-06 05:57:18,684 - INFO - Tokenprüfung ok=True
+2025-11-06 05:57:36,631 - INFO - Tokenprüfung ok=True
+2025-11-06 05:58:06,635 - INFO - Tokenprüfung ok=True
+2025-11-06 05:58:36,637 - INFO - Tokenprüfung ok=True
+2025-11-06 05:59:06,642 - INFO - Tokenprüfung ok=True
+2025-11-06 05:59:36,646 - INFO - Tokenprüfung ok=True
+2025-11-06 06:00:06,649 - INFO - Tokenprüfung ok=True
+2025-11-06 06:00:36,652 - INFO - Tokenprüfung ok=True
+2025-11-06 06:01:06,656 - INFO - Tokenprüfung ok=True
+2025-11-06 06:01:36,658 - INFO - Tokenprüfung ok=True
+2025-11-06 06:02:06,663 - INFO - Tokenprüfung ok=True
+2025-11-06 06:02:36,667 - INFO - Tokenprüfung ok=True
+2025-11-06 06:03:06,673 - INFO - Tokenprüfung ok=True
+2025-11-06 06:03:36,679 - INFO - Tokenprüfung ok=True
+2025-11-06 06:04:06,684 - INFO - Tokenprüfung ok=True
+2025-11-06 06:04:36,688 - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:03,305 - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:03,317 - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:03,325 - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:03,335 - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:20,184 - INFO - Tokenprüfung ok=True
+2025-11-06 06:05:20,192 - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:09,488 - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:09,495 - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:09,503 - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:23,917 - INFO - Tokenprüfung ok=True
+2025-11-06 09:34:23,924 - INFO - Tokenprüfung ok=True
+2025-11-06 09:35:34,364 - INFO - Tokenprüfung ok=True
+2025-11-06 09:38:47,346 - INFO - Tokenprüfung ok=True
+2025-11-06 09:40:12,775 - INFO - Tokenprüfung ok=False
+2025-11-06 09:40:21,352 - INFO - Tokenprüfung ok=False
+2025-11-08 19:45:03,263 - INFO - Tokenprüfung ok=False
+2025-11-08 19:45:03,264 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=False
+2025-11-08 19:45:03,277 - INFO - Tokenprüfung ok=False
+2025-11-08 19:45:03,278 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=False
+2025-11-08 19:45:03,289 - INFO - Tokenprüfung ok=False
+2025-11-08 19:45:03,289 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=False
+2025-11-08 19:45:03,299 - INFO - Tokenprüfung ok=False
+2025-11-08 19:45:03,299 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=False
+2025-11-08 19:45:03,309 - INFO - Tokenprüfung ok=False
+2025-11-08 19:45:03,309 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=False
+2025-11-08 19:45:42,834 - INFO - Tokenprüfung ok=False
+2025-11-08 19:45:42,834 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=False
+2025-11-08 19:55:15,153 - INFO - Tokenprüfung ok=False
+2025-11-08 19:55:15,153 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=False
+2025-11-08 19:55:44,836 - INFO - Tokenprüfung ok=False
+2025-11-08 19:55:44,836 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=False
+2025-11-08 19:56:39,868 - INFO - Tokenprüfung ok=True
+2025-11-08 19:56:39,868 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:03:17,323 - INFO - Tokenprüfung ok=True
+2025-11-08 20:03:17,325 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:03:17,361 - INFO - Tokenprüfung ok=True
+2025-11-08 20:03:17,361 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:03:17,383 - INFO - Tokenprüfung ok=True
+2025-11-08 20:03:17,383 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:03:17,404 - INFO - Tokenprüfung ok=True
+2025-11-08 20:03:17,404 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:03:17,428 - INFO - Tokenprüfung ok=True
+2025-11-08 20:03:17,428 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:03:49,009 - INFO - Tokenprüfung ok=True
+2025-11-08 20:03:49,009 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:03:55,787 - INFO - Tokenprüfung ok=True
+2025-11-08 20:03:55,788 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:07:10,314 - INFO - Tokenprüfung ok=True
+2025-11-08 20:07:10,315 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:08:01,358 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:01,358 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:08:08,459 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:08,459 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:08:08,487 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:08,488 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:08:08,503 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:08,503 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:08:08,515 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:08,516 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:08:08,528 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:08,528 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:08:08,542 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:08,544 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:08:40,728 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:40,728 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:08:41,740 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:41,740 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:08:48,004 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:48,006 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:08:48,015 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:48,015 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:08:48,027 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:48,027 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:08:48,037 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:48,038 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:08:48,049 - INFO - Tokenprüfung ok=True
+2025-11-08 20:08:48,049 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:26:51,437 - INFO - Tokenprüfung ok=True
+2025-11-08 20:26:51,438 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:27:45,508 - INFO - Tokenprüfung ok=True
+2025-11-08 20:27:45,508 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:28:15,587 - INFO - Tokenprüfung ok=True
+2025-11-08 20:28:15,588 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:31:46,427 - INFO - Tokenprüfung ok=True
+2025-11-08 20:31:46,428 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:31:46,442 - INFO - Tokenprüfung ok=True
+2025-11-08 20:31:46,442 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:31:46,459 - INFO - Tokenprüfung ok=True
+2025-11-08 20:31:46,460 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:31:56,943 - INFO - Tokenprüfung ok=True
+2025-11-08 20:31:56,943 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:32:01,638 - INFO - Tokenprüfung ok=True
+2025-11-08 20:32:01,638 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:32:42,853 - INFO - Tokenprüfung ok=True
+2025-11-08 20:32:42,853 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:32:42,862 - INFO - Tokenprüfung ok=True
+2025-11-08 20:32:42,862 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 20:37:42,212 - INFO - Tokenprüfung ok=True
+2025-11-08 20:37:42,213 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:37:42,229 - INFO - Tokenprüfung ok=True
+2025-11-08 20:37:42,229 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:37:42,241 - INFO - Tokenprüfung ok=True
+2025-11-08 20:37:42,241 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:37:48,314 - INFO - Tokenprüfung ok=True
+2025-11-08 20:37:48,314 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 20:37:58,350 - INFO - Tokenprüfung ok=True
+2025-11-08 20:37:58,350 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 21:50:24,369 - INFO - Tokenprüfung ok=True
+2025-11-08 21:50:24,369 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 21:50:35,117 - INFO - Tokenprüfung ok=True
+2025-11-08 21:50:35,117 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:02,756 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:02,757 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:02,770 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:02,770 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:02,781 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:02,781 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:02,793 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:02,793 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:02,808 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:02,808 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:02,820 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:02,821 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:02,833 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:02,834 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:02,847 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:02,847 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:02,866 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:02,866 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:02,880 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:02,882 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:02,900 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:02,900 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:02,919 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:02,919 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:07,447 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:07,447 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:07,465 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:07,465 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:07,477 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:07,478 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:07,491 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:07,492 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:07,513 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:07,514 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:07,525 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:07,526 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:07,539 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:07,539 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:07,555 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:07,556 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:07,571 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:07,571 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:07,585 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:07,585 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:07,596 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:07,596 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:07,610 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:07,611 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:17:07,646 - INFO - Tokenprüfung ok=True
+2025-11-08 22:17:07,646 - INFO - Access: token=MEIN_SUP endpoint=/api/status/all allowed=True
+2025-11-08 22:39:28,169 - INFO - Tokenprüfung ok=True
+2025-11-08 22:39:28,170 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:39:34,093 - INFO - Tokenprüfung ok=True
+2025-11-08 22:39:34,093 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:39:34,105 - INFO - Tokenprüfung ok=True
+2025-11-08 22:39:34,105 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:39:34,116 - INFO - Tokenprüfung ok=True
+2025-11-08 22:39:34,116 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:39:34,131 - INFO - Tokenprüfung ok=True
+2025-11-08 22:39:34,131 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:39:44,573 - INFO - Tokenprüfung ok=True
+2025-11-08 22:39:44,573 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:39:44,585 - INFO - Tokenprüfung ok=True
+2025-11-08 22:39:44,585 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:39:44,597 - INFO - Tokenprüfung ok=True
+2025-11-08 22:39:44,598 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:39:44,615 - INFO - Tokenprüfung ok=True
+2025-11-08 22:39:44,615 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:39:44,630 - INFO - Tokenprüfung ok=True
+2025-11-08 22:39:44,630 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:39:44,646 - INFO - Tokenprüfung ok=True
+2025-11-08 22:39:44,646 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:39:44,660 - INFO - Tokenprüfung ok=True
+2025-11-08 22:39:44,660 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:39:44,672 - INFO - Tokenprüfung ok=True
+2025-11-08 22:39:44,672 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:39:44,683 - INFO - Tokenprüfung ok=True
+2025-11-08 22:39:44,683 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:39:44,692 - INFO - Tokenprüfung ok=True
+2025-11-08 22:39:44,692 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:39:44,703 - INFO - Tokenprüfung ok=True
+2025-11-08 22:39:44,703 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True
+2025-11-08 22:39:44,713 - INFO - Tokenprüfung ok=True
+2025-11-08 22:39:44,713 - INFO - Access: token=MEIN_SUP endpoint=/api/agent/register allowed=True

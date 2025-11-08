@@ -1,0 +1,11 @@
+{
+  "src": "opena10_unlock",
+  "dst": "opena2",
+  "kind": "SECURITY_OP",
+  "payload": {
+    "op": "BACKUP_CODES_GENERATE",
+    "user_id": "user_backup_001",
+    "count": 10,
+    "ts": "2025-11-08T19:52:12.981008Z"
+  }
+}

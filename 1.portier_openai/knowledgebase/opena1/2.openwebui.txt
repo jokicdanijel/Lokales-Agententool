@@ -1,0 +1,15 @@
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ tree
+.
+├── data
+│   ├── README.md
+│   └── Unbenanntes Dokument
+├── docker-agent.sh
+├── docker-compose.yml
+├── README.md
+├── start.sh
+├── status.sh
+└── stop.sh
+
+2 directories, 8 files
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ 
+

@@ -1,0 +1,5 @@
+INFO:__main__:🚀 Starting opena7_WhatsApp on port 12355
+INFO:     Started server process [2907997]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12355 (Press CTRL+C to quit)

@@ -1,0 +1,16 @@
+nohup: Eingabe wird ignoriert
+2025-11-08 20:50:12,957 - opena_finance - INFO - ✅ Database initialized
+2025-11-08 20:50:12,964 - opena_finance - INFO - 🚀 Starting opena_finance on port 12347
+INFO:     Started server process [2851546]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12347 (Press CTRL+C to quit)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena_finance.py:161: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:53916 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53922 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41368 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48142 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49862 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33570 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53596 - "GET /health HTTP/1.1" 200 OK

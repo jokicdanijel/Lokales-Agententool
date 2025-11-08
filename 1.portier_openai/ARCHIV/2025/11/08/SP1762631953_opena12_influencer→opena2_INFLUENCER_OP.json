@@ -1,0 +1,12 @@
+{
+  "src": "opena12_influencer",
+  "dst": "opena2",
+  "kind": "INFLUENCER_OP",
+  "payload": {
+    "op": "ROI_CALCULATE",
+    "campaign_id": "CMP_46B063829CD5",
+    "roi_percentage": -100.0,
+    "revenue": 0.0,
+    "ts": "2025-11-08T19:59:13.439253Z"
+  }
+}

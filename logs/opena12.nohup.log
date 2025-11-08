@@ -1,0 +1,38 @@
+INFO:__main__:🚀 Starting opena12_Influencer on port 12360
+INFO:     Started server process [2861086]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12360 (Press CTRL+C to quit)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena12_influencer.py:142: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:52862 - "GET /health HTTP/1.1" 200 OK
+INFO:__main__:📋 Influencers listed: 1
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena12_influencer.py:162: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:52878 - "GET /influencers/list HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena12_influencer.py:184: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "created_at": datetime.utcnow().isoformat(),
+INFO:__main__:🎯 Campaign created: CMP_A6D757DAB112 (reach: 100000)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena12_influencer.py:92: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "payload": {**payload, "ts": datetime.utcnow().isoformat() + "Z"}
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena12_influencer.py:205: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:52880 - "POST /campaign/create HTTP/1.1" 200 OK
+INFO:__main__:🎯 Campaign created: CMP_46B063829CD5 (reach: 100000)
+INFO:     127.0.0.1:52884 - "POST /campaign/create HTTP/1.1" 200 OK
+INFO:__main__:💰 ROI calculated: CMP_46B063829CD5 (ROI: -100.0%)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena12_influencer.py:293: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:52896 - "POST /roi/calculate HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena12_influencer.py:356: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:52908 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37598 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37608 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50020 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42804 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42816 - "GET /health HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2861086]

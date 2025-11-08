@@ -1,0 +1,61 @@
+{
+  "strict": true,
+  "system": {
+    "id": "portier-elion",
+    "name": "Portier / ELION Hyper-Dashboard 2.0",
+    "created": "2025-11-05T17:23:26Z",
+    "environment": {
+      "os": "Linux Mint",
+      "python": "3.12+ (empf. 3.13)",
+      "venv": "venv",
+      "mode": "production"
+    },
+    "paths": {
+      "root": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai",
+      "archivp": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp",
+      "opena1": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/opena1",
+      "opena2": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/opena2",
+      "kordp": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/kordp",
+      "connector": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/connector",
+      "docs": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/docs"
+    },
+    "endpoints": {
+      "opena1": {
+        "label": "Koordinator",
+        "route": "/log/opena1"
+      },
+      "opena2": {
+        "label": "Archivator",
+        "route": "/finalize/opena2"
+      },
+      "kordp": {
+        "label": "Kordinatport",
+        "route": "/dispatch/kordp"
+      },
+      "archivp": {
+        "label": "Archivport",
+        "route": "/store/archivp"
+      }
+    },
+    "ports": {
+      "allowed_range": "12344-12399",
+      "connector": 12355,
+      "forbidden": [
+        8080
+      ],
+      "note": "8080 ausschließlich OpenWebUI (Loopback)"
+    },
+    "safepoints": {
+      "pattern": "SP<number>_src→dst_(CMD|RESP).json",
+      "daily_dir": "archivp/YYYY/MM/DD",
+      "index_file": "archivp/index.jsonl",
+      "timezone": "UTC"
+    },
+    "integrity": {
+      "git_required": true,
+      "pydantic_v2_required": true,
+      "fastapi_required": true
+    },
+    "notes": "Zeitformat stets ISO-8601 (UTC, 'Z')."
+  }
+}

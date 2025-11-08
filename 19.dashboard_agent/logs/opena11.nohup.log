@@ -1,0 +1,5 @@
+INFO:__main__:🚀 Starting opena11_SocialMedia on port 12359
+INFO:     Started server process [2908120]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12359 (Press CTRL+C to quit)

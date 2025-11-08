@@ -1,0 +1,61 @@
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$ tree
+.
+├── agent_registry_opena1.py
+├── agent_registry.py
+├── api
+│   └── core.py
+├── bin
+│   ├── README_STACK_START.txt
+│   ├── start_all.sh
+│   ├── start_kordp.sh
+│   ├── start_opena19.sh
+│   ├── start_opena1.sh
+│   ├── start_opena2.sh
+│   ├── stop_all.sh
+│   ├── Unbenanntes Dokument
+│   └── verify_stack.sh
+├── config.py
+├── logs
+│   ├── agent_registry.log
+│   ├── dashboard_runtime.log
+│   ├── kordp.nohup.log
+│   ├── kordp_runtime.log
+│   ├── opena19.nohup.log
+│   ├── opena1.nohup.log
+│   ├── opena1_registry.log
+│   ├── opena1_runtime.log
+│   ├── opena2.nohup.log
+│   ├── opena2_runtime.log
+│   ├── registry.log
+│   ├── security.log
+│   └── status_changes.log
+├── main_dashboard.py
+├── main_kordp.py
+├── main_opena1.py
+├── main.py
+├── __pycache__
+│   ├── agent_registry.cpython-312.pyc
+│   ├── agent_registry_opena1.cpython-312.pyc
+│   ├── main_dashboard.cpython-312.pyc
+│   ├── main_kordp.cpython-312.pyc
+│   ├── main_opena1.cpython-312.pyc
+│   ├── safepoints.cpython-312.pyc
+│   ├── security.cpython-312.pyc
+│   └── sse_bus.cpython-312.pyc
+├── requirements.txt
+├── safepoints.py
+├── scripts
+│   └── run_production.sh
+├── security.py
+├── sse_bus.py
+├── start_opena2.sh
+├── templates
+│   ├── agent.html
+│   ├── base.html
+│   ├── dashboard.html
+│   └── error.html
+├── ui_agent.html
+└── Unbenanntes Dokument
+
+7 directories, 50 files
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.das

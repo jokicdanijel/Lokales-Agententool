@@ -1,0 +1,12 @@
+{
+  "src": "opena13_calendar",
+  "dst": "opena2",
+  "kind": "CALENDAR_OP",
+  "payload": {
+    "op": "AVAILABILITY_CHECK",
+    "calendar": "default",
+    "duration": 60,
+    "available": true,
+    "ts": "2025-11-08T19:59:13.504636Z"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "src": "opena11_social_media",
+  "dst": "opena2",
+  "kind": "SOCIAL_OP",
+  "payload": {
+    "op": "POST_CREATE",
+    "post_id": "POST_F05508FB1D9A9675",
+    "platform": "twitter",
+    "content_len": 9,
+    "sentiment": "neutral",
+    "ts": "2025-11-08T20:07:34.559811Z"
+  }
+}

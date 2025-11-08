@@ -1,0 +1,977 @@
+Alles klar — hier kommt **Schritt 1** komplett ausgearbeitet für dein Projekt. Du bekommst ein Dokument, das du direkt einsetzen oder weiter anpassen kannst. Wenn du möchtest, können wir im Anschluss noch ein Template in Markdown oder direkt als Datei liefern.
+
+---
+
+# 🧭 Schritt 1 — Projekt­initialisierung & Rahmenbedingungen
+
+**Projektwurzel:** `/home/danijel‑jd/Dokumente/Workspace/Projekte/Gesamtprojekt`
+**Erstellt am:** *(Datum eintragen)*
+**Verantwortlich:** *(Team/Person eintragen)*
+**Version:** 1.0
+**Regeln:** Append‑only · Dedupe (SHA‑256/IDs) · keine Doppelblobs · Auditierbarkeit durchgängig
+
+---
+
+## 1) Ziel & Kontext
+
+**Ziel des Projekts:**
+Dieses Projekt zielt darauf ab, ein durchgängig auditierbares Agenten‑System mit mehreren Modulen (z. B. Telegram‑Bridge, OpenWebUI, Monitoring, VS Code‑Bridge) zu etablieren, das nach klar definierten Routen funktioniert, keine Doppelblobs erzeugt, vollständige Audit‑Spur wahrt und konsistente Port‑/Governance‑Regeln einhält.
+
+**Kontext:**
+
+* Der Nutzer (du) betreibt ein Agenten‑Ökosystem mit Schnittstellen zu Telegram, UI/IDE, Monitoring.
+* Module wie „opena4“ (Telegram‑Bridge), „opena3“ (UI), „opena2“ (Archivator) etc. sollen sauber zusammenwirken.
+* Infrastruktur: Projektverzeichnis unter oben genannter Projektwurzel, Ports im Pool 12344‑12399, 8080 exklusiv für UI.
+* Qualitätsanforderungen: Append‑only‑Speicherung, SHA‑256‑Dedupe, keine Überschreibungen, Audit‑Index, HEADS/INTEGRITY Struktur.
+
+---
+
+## 2) Umfang (Scope)
+
+**Was das Projekt umfasst:**
+
+* Einrichtung der Projektstruktur (Datei/Verzeichnislayout) unter der Projektwurzel.
+* Definition und Dokumentation aller Agenten‑Routen und ihrer Verantwortlichkeiten.
+* Implementierung der Governance‑Regeln für Ports, Logging, Secrets, Dedupe.
+* Aufbau der Persistenz‑ und Archiv‑Mechanismen: Safepoints, Blobs, Indexe.
+* Einrichtung von CI/Pre‑Commit/QC (Linting, Schema‑Prüfung, Port‑Check).
+* Dokumentation: Schritt‑Weise Spezifikationen für jeden Agent (z. B. Schritt 4 für opena4, Schritt 5 für opena5).
+
+**Was *nicht* im aktuellen Scope enthalten ist:**
+
+* Vollständige Implementierung der Logik aller Agenten oder Funktionen (z. B. spezialisierte Business‑Agenten außerhalb der Infrastruktur).
+* Umfangreiche UI/UX‑Designs oder externe Dienstintegrationen, die nicht Teil der Kerninfrastruktur sind.
+* Migration bestehender Systeme (falls vorhanden) – Fokus liegt auf Neubau.
+
+---
+
+## 3) Hauptakteure & Rollen
+
+| Rolle                    | Verantwortlich             | Aufgaben                                      |
+| ------------------------ | -------------------------- | --------------------------------------------- |
+| Projektleitung           | *(Name eintragen)*         | Gesamtverantwortung, Ressourcen, Zeitplan     |
+| Infrastruktur‑Lead       | *(Name)*                   | Aufbau Verzeichnisstruktur, Governance‑Regeln |
+| Archivator (opena2)      | Modul “opena2”             | Persistenz, Dedupe, Audit‑Index               |
+| Bridge Telegram (opena4) | Modul “opena4”             | Telegram‑Anbindung (Webhook/Long‑Polling)     |
+| UI/IDE (opena3/opena5)   | Module “opena3” & “opena5” | UI/IDE Schnittstellen, Edit/Diff Tasks        |
+| Monitoring (opena20)     | Modul “opena20”            | Health/Metrics/Alerting                       |
+| Qualitätssicherung       | *(Name)*                   | Code‑Reviews, CI/Pre‑Commit, Tests            |
+
+---
+
+## 4) Meilensteine & Zeitplan
+
+| Meilenstein                      | Beschreibung                                          | Zieltermin |
+| -------------------------------- | ----------------------------------------------------- | ---------- |
+| M1 – Projektstruktur             | Verzeichnislayout, README, .env‑Beispiele erstellt    | *(Datum)*  |
+| M2 – Governance Regeln           | Port‑Pool definiert, Sekret‑Handhabung, Dedupe Regeln | *(Datum)*  |
+| M3 – Archivator Setup            | Modul opena2 mit Persistenz, Indexstruktur            | *(Datum)*  |
+| M4 – Bridge Telegram (Schritt 4) | Telegram‑Webhook & Routing dokumentiert               | *(Datum)*  |
+| M5 – VS Code Bridge (Schritt 5)  | IDE‑Integration vorbereitet                           | *(Datum)*  |
+| M6 – Monitoring Modul            | Health‑/Alerting‑Pipeline implementiert               | *(Datum)*  |
+| M7 – Release Infrastruktur       | Erste End‑to‑End Funktion (Telegram → UI)             | *(Datum)*  |
+
+---
+
+## 5) Qualitäts‑ & Sicherheitsanforderungen
+
+* **Append‑only Speicherung:** Keine Überschreibungen von Blobs/Indexen.
+* **Dedupe mittels SHA‑256:** Vor jedem Write Hash prüfen; bei Treffer: keine neue Datei, nur Audit‑Vermerk.
+* **Port‑Governance:** Ports nur im Bereich `12344–12399`. Port 8080 ausschließlich für opena3.
+* **Secrets:** Nur über `.env`‑Datei; keine Tokens in Logs; Maskierung bei Ausgaben.
+* **Audit‑Spur:** Jeder Safepoint (CMD/RESP), jeder Blob, Indexeintrag muss dokumentiert und nachvollziehbar sein.
+* **CI/Pre‑Commit Regelwerk:** Linting, JSON‑Schema Prüfung, Port‑Policy Check, Hash‑Integrität Check.
+* **RBAC & Auth:** Telegram User IDs in erlaubter Liste; Webhook‑Secret‑Header Pflicht; Rollenhaften Zugriff.
+* **TLS/HTTPS für Webhook:** Mindestens TLS 1.2; Reverse‑Proxy bei Webhook Eingangs‑Endpoint.
+
+---
+
+## 6) Risiken & Annahmen
+
+**Annahmen:**
+
+* Der Host hat öffentlich erreichbaren Domain/Nginx für Webhook (falls Webhook‑Modus gewählt).
+* Entwickler haben Zugriff auf Projektverzeichnis und nötige Rechte (Lesen/Schreiben).
+* Aggregierte Module (opena2, opena3, opena4, opena5, opena20) werden einzeln entwickelt aber im selben Governance‑Rahmen.
+
+**Risiken:**
+
+* Portkonflikte (unberechtigter Bind auf 8080) → Umgehung Governance.
+* Doppel‑Writes/Blobs ohne Dedupe → Speicher‑/Audit‑Probleme.
+* Telegram API Limitierungen/Rate‑Limits bei Webhook/Long‑Polling.
+* Unsichere Secrets/Logs → Sicherheitslücke.
+* Fehlende oder unzureichende CI/Pre‑Commit → Qualitätseinbruch.
+
+---
+
+## 7) Dokumentation & Artefakte
+
+* README.md im Projektwurzel mit Übersicht & Setup‑Hinweisen
+* `docs/` Ordner mit: Spezifikationsdokumente für jeden Schritt (z. B. SCHRITT_04_OPENA4_telegram.md, SCHRITT_05_OPENA5.md)
+* `.pre‑commit‑config.yaml`, `.github/workflows/ci.yml`
+* Beispiel‑Konfigurationsdateien: `.env.example`, `port_leases.json` Template
+* Systemd Service Units unter `docs/examples/` + ggf. Produktions‑Service Files
+
+---
+
+Wenn du möchtest, kann ich **eine sofort ausfüllbare Markdown‑Datei** liefern für Schritt 1, inkl. Platzhaltern (Datum, Verantwortliche etc.), die du direkt in dein `docs/`‑Verzeichnis legen kannst. Soll ich die generieren? 🔧
+
+
+
+Gut — dann gehen wir Schritt 5 durch: VS Code‑Bridge („opena5“). Ich zeichne auf, was gemacht werden sollte, damit dein System sauber mit VS Code integriert wird. Du behältst das Steuer — ich unterstütze mit Struktur und Details.
+
+---
+
+## 🛠 Schritt 5 — opena5 · VS Code‑Bridge
+
+**Projektwurzel (Pflicht):** `/home/danijel‑jd/Dokumente/projekte/Gesammtprojekt`
+**Ports:** erlaubter Pool `12344–12399` · **Port 8080 bleibt ausschließlich** für OpenWebUI (opena3) (Loopback).
+**Modell:** gpt‑5‑nano · **Strict Mode:** true · **Regeln:** Append‑only · Dedupe (SHA‑256/IDs) · Keine Doppelblobs · Auditierbar.
+
+---
+
+### 0) Zweck & Rolle
+
+„opena5“ verbindet deinen Quellcode‑Editor (VS Code) **mit** deinem Agent‐System‑Stack. Zweck: Änderungen, Diffs, Edit‐Aufgaben, Codeaktionen, die über den Chat, das UI oder Monitoring angestoßen wurden, gelangen ins VS Code‑Workspace und werden dort bearbeitet. Danach geht’s weiter ins Archiv („opena2“) und dann ggf. zur Ausführung („opena1“) etc.
+
+Kurz:
+
+* Eingang: EDIT/DIFF Aufgaben (z. B. Codeänderung angelegt via UI oder Bot)
+* Verarbeitung: VS Code öffnet Workspace, zeigt die Änderung, ggf. Commit, Push
+* Rückmeldung: Status/Bestätigung in Archiv + UI sichtbar gemacht
+
+---
+
+### 1) Topologie & Verbindungen
+
+```
+┌──────────┐    (Edit‑Aufgabe)     ┌──────────┐
+│  opena3  │ ───────────────────▶ │  opena5  │
+│  (UI)    │                        │  (VSCode)│
+└──────────┘                        └────┬─────┘
+                                         │  Änderung fertig
+                                         ▼
+                                   ┌──────────┐
+                                   │  opena2  │ (Archivator)
+                                   └──────────┘
+                                         │
+                                         ▼
+                                   ┌──────────┐
+                                   │  opena1  │ (Koordinator)
+                                   └──────────┘
+```
+
+Alle Aktionen laufen über opena2 als Wahrheit („Archivator“) und opena1 als Ausführungssteuerung. VS Code (opena5) ist Teil des Rückflusses: erhält Aufgaben, macht Änderungen, spielt zurück.
+
+---
+
+### 2) Port‐ & Bindings‐Politik
+
+* opena5 bindet typischerweise einen **internen API‑Port** im erlaubten Bereich z. B. `12348`.
+* **Keine** Bindung auf Port 8080 erlaubt (dies bleibt ausschließlich opena3).
+* Änderungen durch VS Code (z. B. über eine Extension oder CLI Hook) dürfen nicht außerhalb des Pools arbeiten.
+* In `.runtime/port_leases.json` wird eingetragen:
+
+  ```json
+  {
+    "leases":[
+      {"agent":"opena5","port":12348,"ts":"2025-10‑22T12:00:00Z","state":"ide‑bridge"}
+    ],
+    "pool":"12344‑12399"
+  }
+  ```
+
+---
+
+### 3) Aufgaben, Aktionen & Persistenz
+
+#### 3.1 Aufgaben kommen rein
+
+Wenn z. B. über UI (opena3) oder Bot (opena4) eine Edit/DIFF Aufgabe generiert wird:
+
+* Eventtyp: `EDIT_TASK`
+* Dedup‑Key: `file_path + sha256(diff_contents)`
+* Persistenz: `archivp/.../patches/src/{file_path}/{sha256(diff)}.json` (append only)
+* Audit‑Eintrag: `archivp/index.jsonl` mit Zeitstempel, Actor=open­a3/opena4, Event=EDIT_TASK
+
+#### 3.2 VS Code Bridge nimmt entgegen
+
+* VS Code (opena5) holt sich die Aufgabe (z. B. via local API Port 12348 `/tasks/poll`)
+* Öffnet das angegebene `file_path` im Workspace, zeigt Diff/Anweisung
+* Entwickler übernimmt: ändert Code, speichert, ggf. commit & push (oder automatisiert)
+* Nach Abschluss schreibt opena5:
+
+  * Safepoint CMD: `SP<ts>_opena5→opena2_CMD.json` mit Payload `{ file_path, diff_sha256, author }`
+  * Persistenz der Änderung: ggf. `blobs/patches/src/...`
+* opena2 schreibt RESP: `SP<ts>_opena2→opena5_RESP.json` mit Ergebnis (`status: ok/failed`, details)
+* Audit‑Index ebenfalls ergänzt
+
+---
+
+### 4) VS Code Extension / CLI Integration
+
+Damit VS Code gut integriert ist, empfehle:
+
+* Eine kleine VS Code Extension (oder ein Workspace Task) mit folgenden Funktionen:
+
+  * Periodisches Polling des opena5‑API auf neue Aufgaben
+  * Anzeige neuer Aufgaben (z. B. via VS Code Notifications oder View)
+  * Öffnen des `file_path` zur Bearbeitung
+  * Nach „Abschließen“ Button oder Kommando: sendet Abschluss‑Payload an opena5 API
+* Alternativ: CLI Hook, die beim Commit/Push automatisch die Änderung meldet
+
+Technisch sind für die Extension die offiziellen VS Code APIs relevant. ([code.visualstudio.com][1])
+
+---
+
+### 5) Persistenz, Dedupe & Audit
+
+* Wie bei anderen Agenten: *append‐only*. Logs, Blobs dürfen **nicht** überschrieben werden.
+* Deduplicate anhand SHA‑256 (z. B. gleiche diff zweimal) → kein neuer Blob, nur Referenz/Audit.
+* Pfadstruktur Beispiel:
+
+  ```
+  /home/danijel-jd/Dokumente/projekte/Gesammtprojekt/
+    ├─ archivp/YYYY/MM/DD/
+    │    ├─ SP<ts>_opena5→opena2_CMD.json
+    │    ├─ SP<ts>_opena2→opena5_RESP.json
+    │    └─ blobs/
+    │         patches/src/{file_path}/{sha256(diff)}.json
+    └─ docs/
+         DEDUP_INDEX.json
+         HEADS.json
+         INTEGRITY_TREE.json
+  ```
+
+---
+
+### 6) GitHub‐Kontrolle (Pre‑Commit & CI für opena5)
+
+Analog zu opena4:
+
+* `.pre-commit-config.yaml` integriert für code quality (flake8/ESLint etc)
+* CI Workflow `.github/workflows/ci.yml`:
+
+  * Linting der VS Code Extension oder Bridge‑Code
+  * Schema Validation für Aufgabe/Response Payloads
+  * Port Policy Check: sicherstellen, dass opena5 nicht 8080 “beansprucht”
+* Review Process: jede Änderung via Pull Request, automatisierter Check
+
+---
+
+### 7) Interaktionen & Kurzmatrix
+
+| Ziel‑Agent | Typische Interaktion mit opena5 | Ergebnis‑Pfad                           |
+| ---------- | ------------------------------- | --------------------------------------- |
+| opena3     | „Edit/DIFF Aufgabe erzeugt“     | archivp/patches/src/...                 |
+| opena2     | Persistenz/Audit/Ack            | archivp/index.jsonl + blobs/patches/... |
+| opena1     | Koordination der Codeaktion     | archivp/SP*/CMD/RESP.json               |
+| VS Code    | Bearbeitung & Abschlussmeldung  | archivs wie oben                        |
+
+---
+
+### 8) Health & Observability
+
+* API Endpunkte: `/health`, `/info` bei opena5
+* Periodische Einträge in `docs/HEALTH_RECORDS.jsonl` (Echo opena4/u.a.)
+* Metriken: Aufgaben‑Queue Länge, Bearbeitungsdauer, Fehlerrate (z. B. diff conflict)
+* Diese Daten konsumiert opena20 (Monitoring Agent) für Alerts
+
+---
+
+### 9) Fehlerbilder & Recovery
+
+* Doppel‑Diffs (Same sha256) → kein neuer Blob, nur Referenz; keine Aktion durch VS Code
+* Konflikt beim Apply‑Patch: opena5 meldet `status: failed`, „CONFLICT“, remote muss manuell gelöst werden
+* Port Konﬂikt: opena5 bindet nicht erlaubten Port → Safepoint CMD erzeugt, Lease gewechselt
+* VS Code nicht erreichbar: opena5‐Bridge erkennt Ausfall, schreibt ALERT → opena20 erkennt Latenz/Fail
+
+---
+
+### 10) Akzeptanzkriterien für Schritt 5
+
+* VS Code Bridge (opena5) ist installiert/startbar, bindet auf erlaubtem Port, antwortet auf `/health` mit `status: ok`.
+* Aufgaben vom UI (opena3) landen korrekt bei opena5 und erscheinen im VS Code Workspace.
+* Nach Bearbeitung wird Ergebnis korrekt persistiert in Archiv (opena2) mit Audit‑Eintrag.
+* Dedupe: gleiche diff wird nicht doppelt gespeichert.
+* GitHub CI/Pre‑Commit Pipeline validiert Codeänderungen vor Merge (Lint, Schema, Port‑Check).
+* Port Governance eingehalten (12344–12399), 8080 tabu.
+* Monitoring (via opena20) erhält Metriken zu opena5 und evtl. erzeugt Alerts bei Ausfällen.
+
+---
+
+Wenn du willst, kann ich dir **direkt** ein Template‑Projekt für opena5 anlegen: Verzeichnisstruktur, `README.md`, VS Code Extension (oder Node.js Bridge) Grundgerüst inkl. `package.json`, API Endpunkte `/tasks/poll`, `/task/complete`, `/health`, + Beispiel VS Code Extension Code. Soll ich das?
+
+[1]: https://code.visualstudio.com/api/references/vscode-api?utm_source=chatgpt.com "VS Code API | Visual Studio Code Extension API"
+
+
+
+Hier ist eine robuste und CI-fähige Verzeichnisstruktur für Schritt 5 – **opena5 (VS Code‑Bridge)**, sauber integriert ins Projekt „Gesammtprojekt“:
+
+```
+/home/danijel-jd/Dokumente/projekte/Gesammtprojekt/
+└── 5.vscode_opena5/
+    ├── src/                         # Quellcode der Bridge / API / CLI
+    │   ├── api/                     # FastAPI oder Node Express Endpunkte
+    │   │   ├── routes.py            # z.B. /tasks/poll, /task/complete, /health
+    │   │   └── ...
+    │   ├── utils/                   # Hilfsfunktionen (Dedupe, Pfade, Archiv)
+    │   ├── main.py                  # Entry Point (z.B. uvicorn main:app)
+    │   └── bridge_core.py           # Kernlogik zur Aufgabenannahme & Verarbeitung
+    │
+    ├── vscode-extension/           # Optional: eigene VS Code Extension
+    │   ├── src/
+    │   │   ├── extension.ts         # VS Code Activation + Webview
+    │   │   └── commands.ts          # registerCommand('opena5.completeTask', ...)
+    │   ├── package.json
+    │   └── tsconfig.json
+    │
+    ├── archivp/                    # Append‑only Archiv: CMDs, DIFFs, RESP
+    │   ├── YYYY/MM/DD/
+    │   │   ├── SP*_CMD.json
+    │   │   ├── SP*_RESP.json
+    │   │   └── blobs/patches/src/...
+    │   └── index.jsonl             # Eventverlauf
+    │
+    ├── docs/                       # Spezifikationen, JSON‑Schemas, HEADS
+    │   ├── HEADS.json              # Letzte gültige Datei‑Heads
+    │   ├── DEDUP_INDEX.json        # SHA‑256 Übersicht
+    │   ├── FILE_REGISTRY.csv       # Mapping: Files → Pfade → Hashes
+    │   └── HEALTH_RECORDS.jsonl
+    │
+    ├── .runtime/
+    │   └── port_leases.json        # Portbindung (z. B. 12348 für opena5)
+    │
+    ├── .github/
+    │   └── workflows/
+    │       └── ci.yml              # GitHub Actions: Portcheck, Lint, Dedupe-Check
+    │
+    ├── .pre-commit-config.yaml     # Pre‑Commit Hook: flake8, JSON Schema etc.
+    ├── requirements.txt            # Python‑Deps (oder package.json bei Node)
+    ├── README.md                   # Dokumentation für opena5
+    └── opena5.service              # Systemd‑Unit zur Bridge
+```
+
+Wenn du’s lieber in Python oder NodeJS aufziehst, sag Bescheid – dann bau ich dir gleich das passende Template weiter.
+
+
+
+Alles klar — hier kommt **Schritt 4** in voller Länge: die komplette Dokumentation für den opena4_webhook (Telegram Bridge) inklusive Webhook‑Modus, Verbindungen, Sicherheits‑, Persistenz‑ und Git‑Kontrollregeln. Du bekommst das als eine in sich geschlossene Spezifikation im gleichen Stil wie bei den vorherigen Schritten.
+
+---
+
+# 🧭 Schritt 4 — opena4 · Telegram‑Bridge (Webhook‑Betrieb)
+
+**Projektwurzel (Pflicht, für alle Schritte):** `/home/danijel‑jd/Dokumente/projekte/Gesammtprojekt`
+**Ports:** erlaubter Pool `12344–12399` · **8080 bleibt ausschließlich** für openWebUI (opena3, Loopback‑UI)
+**Modell:** `gpt‑5‑nano` · **Strict Mode:** `true` · **Regeln:** Append‑only · Dedupe (SHA‑256/IDs) · Keine Doppelblobs · Auditierbar
+
+---
+
+## 0) Zielbild
+
+* opena4 übernimmt die Verbindung zu Telegram im **Webhook‑Modus** (Push).
+* Alle Updates von Telegram landen **zuerst** bei opena2 (Archivator) bzw. über eine Folge von Hops: opena4 → opena2 → opena1 → … etc.
+* UI (opena3) und VS Code‑Bridge (opena5) greifen nur auf verifizierte Daten zu.
+* Knopf/Link‑Aktionen in OpenWebUI triggern agentenbezogene Aktionen via opena4 → opena2 → opena1 etc.
+* Der Portpool‑ und Governance‑Rahmen wird strikt eingehalten: 8080 ist **nur** für opena3, Webhook‑Service läuft z. B. auf 12347.
+
+---
+
+## 1) Topologie (Webhook‑Push)
+
+```
+Internet (Telegram) ──HTTPS──▶ NGINX (TLS) ──proxy_pass──▶ 127.0.0.1:12347 (opena4_webhook)  
+                                                  │  
+                                                  ▼  
+                                       archivp/... (opena2)  
+                                                  │  
+                                                  ▼  
+                                       Koordination (opena1)  
+                                                  │  
+                                                  ▼  
+                                       UI (opena3, 8080 Loopback)  
+```
+
+**Hinweis:** 8080 bleibt **ausschließlich** opena3 vorbehalten. Der Webhook‑Endpunkt läuft **nicht** auf 8080, sondern typischerweise auf einem Port im Pool (z. B. 12347).
+
+---
+
+## 2) BotFather & Telegram‑Basics
+
+### 2.1 Bot erstellen
+
+* In Telegram: Suche `@BotFather`.
+* Sende `/newbot` → gib **Name** + **Benutzername** (endet üblicherweise auf *bot*) ein.
+* Kopiere den API‑Token (z. B. `123456:ABCDEF…`) → trage ihn in `.env` ein:
+
+  ```env
+  TELEGRAM_BOT_TOKEN=123456:ABCDEF...
+  TELEGRAM_WEBHOOK_SECRET=<mindestens 16 zeichen>
+  TELEGRAM_ALLOWED_USERS=123456789,987654321
+  ```
+* Optional: `/setdescription`, `/setabouttext`, `/setcommands` (z. B. `start`, `health`, `start_agent`, `stop_agent`), `/setprivacy` (z. B. private Nachrichten)
+
+### 2.2 Webhook vs. Long‑Polling
+
+* **Long‑Polling**: Einfacher Setup, Bot fragt Telegram regelmäßig ab (`getUpdates`).
+* **Webhook (empfohlen für Produktion):** Telegram sendet Updates an deinen HTTPS‑Endpoint. Vorteil: Echtzeit, effizienter. ([Telegram][1])
+* Voraussetzungen laut Telegram: HTTPS mit TLS1.2+, öffentlicher Port (443, 80, 88 oder 8443) oder via Reverse Proxy. ([Telegram][1])
+
+### 2.3 Webhook setzen
+
+Zum Beispiel mit `curl`:
+
+```bash
+curl -X POST "https://api.telegram.org/bot<TELEGRAM_BOT_TOKEN>/setWebhook" \
+     -d "url=https://dein.host/telegram/webhook&secret_token=<WEBHOOK_SECRET>"
+```
+
+Antwort sollte etwa sein: `{"ok":true,"result":true,"description":"Webhook was set"}` ([Stack Overflow][2])
+
+---
+
+## 3) Persistenz, Dedupe & Pfad‑Layout
+
+* Jede eingehende Telegram‑Update‑Payload wird **kanonisiert** und mit SHA‑256 gehasht.
+* Gegenprüfung in `docs/DEDUP_INDEX.json`. Existiert Hash bereits → **keinen neuen Blob**, nur Referenz/Audit.
+* Ablage‑Beispiele im Projektverzeichnis:
+
+  ```
+  /home/danijel‑jd/Dokumente/projekte/Gesammtprojekt/
+    ├─ archivp/
+    │    ├─ YYYY/MM/DD/
+    │    │    ├‑ SP<ts>_opena4→opena2_CMD.json
+    │    │    ├‑ SP<ts>_opena2→opena4_RESP.json
+    │    │    └‑ blobs/
+    │    │         ├‑ tg/in/{chat_id}/{message_id}.json
+    │    │         ├‑ tg/out/{chat_id}/{sha256}.json
+    │    │         ├‑ tg/cmd/{chat_id}/{message_id}.json
+    │    │         ├‑ tg/file/sha256/<ab>/<hash>
+    │    │         └‑ alert/{sha256}.json
+    │    └─ index.jsonl   # Audit‑Index (append‐only)
+    ├─ docs/
+    │    ├─ DEDUP_INDEX.json
+    │    ├─ HEADS.json
+    │    ├─ HEALTH_RECORDS.jsonl
+    │    ├─ AGENT_REGISTRY.json
+    │    └─ INTEGRITY_TREE.json
+    ├─ .runtime/
+    │    └─ port_leases.json
+    ├─ logs/
+    │    └─ opena4.log
+  ```
+* Dedupe‑Key Beispiele:
+
+  * `chat_id + message_id` für eingehende Nachricht (`MSG_IN`)
+  * `chat_id + sha256(payload)` für gesendete Antwort (`MSG_OUT`)
+* Audit‑Index (`index.jsonl`) ist append‑only — jeder Safepoint wird dort verzeichnet.
+
+---
+
+## 4) NGINX (TLS‑Terminator & Proxy)
+
+Zum Beispiel: `docs/examples/nginx_opena4_webhook.conf`
+
+* TLS auf Port 443 terminieren (z. B. mit Let’s Encrypt)
+* Methode: `POST` akzeptieren
+* Proxy zu `127.0.0.1:12347` (Webhook Service von opena4)
+* Optional: Rate‑Limit (z. B. Alert bei 429)
+* Beispielkonfiguration (abgekürzt):
+
+  ```
+  server {
+    listen 443 ssl http2;
+    server_name dein.host;
+
+    ssl_certificate /etc/letsencrypt/live/dein.host/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/dein.host/privkey.pem;
+
+    location /telegram/webhook {
+      proxy_pass http://127.0.0.1:12347/telegram/webhook;
+      proxy_set_header X‑Telegram‑Bot‑Api‑Secret‑Token $secret_token;
+      limit_req zone=telegram burst=10 nodelay;
+    }
+  }
+  ```
+* Firewall: eingehend Port 443 (extern) öffnen, intern nur Loopback auf 12347.
+
+---
+
+## 5) Webhook‑Service (FastAPI, Port 12347)
+
+Datei: `src/opena4_webhook.py` (oder entsprechend) — Beispielstruktur vorhanden.
+Wichtige Endpunkte:
+
+* `GET /health` → z. B. `{"status":"ok","service":"opena4_webhook", ...}`
+* `POST /telegram/webhook` → Telegram sends updates here.
+
+  * Validierung: Header `X‑Telegram‑Bot‑Api‑Secret‑Token` (wenn gesetzt)
+  * Payload entgegennahme → json decode → chat_id & message_id extrahieren
+  * Dedupe prüfen: hash exists? → only audit reference
+  * Archivieren: Blob unter `blobs/tg/in/...`
+  * Safepoint: `SP<ts>_opena4→opena2_CMD.json` erzeugen → Kommando an opena2
+  * Index‑Eintrag in `index.jsonl`
+  * Antwort: `{"status":"ok","archived":true,"sha256": "<hash>", "strict": true}`
+* `POST /actions/agent_cmd` → Trigger von UI/Buttons in OpenWebUI (z. B. target=opena19, action=start)
+
+  * Body: `{ "target":"opena19", "action":"start", "args":{}, "request_id":"auto", "strict":true }`
+  * Safepoint: `SP<ts>_opena4→opena2_CMD.json` mit `payload:{route:["opena4","opena2","opena1"], target, action, args}`
+  * Index‑Eintrag gesetzt
+  * Antwort: `{"status":"queued","target":target,"action":action,"strict":true}`
+* Policy Checks: Port‑Verbot (nicht 8080), lease valid, strict mode enforcement
+
+---
+
+## 6) Beispiel Safepoints & Audit
+
+### CMD (Inbound Telegram Update)
+
+```json
+{
+  "strict": true,
+  "kind": "CMD",
+  "source": "opena4",
+  "ts": "2025‑10‑14T12:20:00Z",
+  "payload": {
+    "action":"receive_update",
+    "chat_id":"123456",
+    "message_id":"7890",
+    "update": { … } 
+  },
+  "integrity": {
+    "sha256":"<hex>",
+    "prev_sha256":"<hex‑or‑null>"
+  },
+  "ports": {
+    "binding":12347,
+    "pool":"12344‑12399",
+    "forbidden":[8080]
+  },
+  "paths": {
+    "root":"/home/danijel‑jd/Dokumente/projekte/Gesammtprojekt"
+  }
+}
+```
+
+### RESP (Archiv‑ACK)
+
+```json
+{
+  "strict": true,
+  "kind": "RESP",
+  "source": "opena2",
+  "ts": "2025‑10‑14T12:20:01Z",
+  "ref_cmd": "SP20251014_122000_001",
+  "result": {
+    "status":"ok",
+    "details":"update archived"
+  },
+  "sha256":"<hex>",
+  "archived_at":"archivp/2025/10/14/SP20251014_122001001_opena2→opena4_RESP.json"
+}
+```
+
+### Audit‑Index Eintrag
+
+```json
+{"ts":"2025‑10‑14T12:20:01Z","actor":"opena2","sp_id":"SP20251014_122001_001","sha256":"<hex>","note":"tg:MSG_IN chat=123456 message=7890"}
+```
+
+---
+
+## 7) Sicherheit & Governance
+
+* RBAC: Mapping Telegram‑User‑IDs in `docs/TELEGRAM_RBAC.json` (z. B. Rollen: admin|operator|auditor).
+* Secrets: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_WEBHOOK_SECRET` ausschließlich über `.env`; **niemals** im Code oder Logs offenlegen. Maskiere Tokens in Logs (`****`).
+* Rate‑Limit / 429: Bei Telegram‑Rate‑Limit → Backoff; `ALERT` in opena2 geschrieben; erneuter Versand idempotent über message_id.
+* Port Governance: Bindung nur im Bereich `12344–12399`; Port 8080 strikt verboten für diesen Agenten.
+* Write‑Guard: Before every write → whitelist path/extension; atomare Writes; update `HEADS.json`, `INTEGRITY_TREE.json`.
+* TLS Mandatory für Webhook: TLS1.2+, domain name or valid self‑signed with chain. ([Telegram][1])
+
+---
+
+## 8) Betrieb (systemd)
+
+Beispiel Unit: `/etc/systemd/system/opena4_webhook.service`
+
+```ini
+[Unit]
+Description=ELION Portier - opena4 Telegram Webhook Bridge
+After=network-online.target
+
+[Service]
+WorkingDirectory=/home/danijel‑jd/Dokumente/projekte/Gesammtprojekt/1.portier_opena
+EnvironmentFile=/home/danijel‑jd/Dokumente/projekte/Gesammtprojekt/1.portier_opena/.env
+ExecStart=/usr/bin/python3 -m opena4_webhook --port 12347
+Restart=on-failure
+User=danijel-jd
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Aktivierung:
+
+```bash
+sudo cp docs/examples/opena4_webhook.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now opena4_webhook
+systemctl status opena4_webhook --no-pager
+```
+
+---
+
+## 9) GitHub‑Kontrolle (CI/Pre‑Commit)
+
+### 9.1 Pre‑Commit (`.pre‑commit-config.yaml`)
+
+```yaml
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.1.0
+    hooks:
+      - id: flake8
+  - repo: local
+    hooks:
+      - id: schema-validate
+        name: Validate JSON Schemas
+        entry: python scripts/validate_schemas.py
+        language: system
+        types: [json]
+```
+
+### 9.2 GitHub Actions (`.github/workflows/ci.yml`)
+
+```yaml
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Lint
+        run: flake8 src/ scripts/
+      - name: Schema validate
+        run: python scripts/validate_schemas.py
+      - name: Port policy check
+        run: python scripts/check_ports.py --pool 12344-12399 --forbid 8080 --webhook_port 12347
+      - name: Integrity hash
+        run: python scripts/integrity_hash.py
+```
+
+### 9.3 Prüfungen
+
+* Kein Binding außerhalb `12344–12399`; 8080 nicht verwendet (außer opena3).
+* JSON‑Schemas für Safepoints/Audit/Registry valide.
+* Hash‑Baum (`INTEGRITY_TREE.json`) aktuell; keine Drift.
+* Dedupe‑Logik: keine doppelten Blobs.
+* Jede Änderung → Pull Request → automatisierte Checks.
+
+---
+
+## 10) Interaktionen & Kurzmatrix
+
+| Ziel‑Agent  | Typische Interaktion mit opena4 | Ergebnis‑Pfad                                   |
+| ----------- | ------------------------------- | ----------------------------------------------- |
+| Telegram    | Eingehende Nachricht/Command    | archivp/blobs/tg/in/{chat_id}/{message_id}.json |
+| opena2      | Archiv/Audit/Ack                | archivp/index.jsonl + Safepoint CMD/RESP        |
+| opena3      | UI‑Trigger „Agent Aktion“       | via `/actions/agent_cmd` Endpunkt               |
+| opena1      | Koordination                    | archivp/SP*/CMD/RESP.json                       |
+| opena20     | Monitoring (Health Alerts)      | archivp/blobs/metrics/...                       |
+
+---
+
+## 11) Health & Observability
+
+* Endpunkt `/health` (z. B. `{"status":"ok","service":"opena4_webhook",...}`)
+* Intervall: z. B. alle 60 s publish in `docs/HEALTH_RECORDS.jsonl`.
+* Metriken:
+
+  * Latenz Telegram API → /metrics
+  * Anzahl Safepoints pro Minute
+  * Fehlerquote (Bad‑Token, Unauthorized, DedupeHits)
+* Agent opena20 konsolidiert: Latenz > Schwelle → ALERT (Route 2)
+
+---
+
+## 12) Fehlerbilder & Recovery
+
+* **429/Rate‑Limit** von Telegram: Backoff → ALERT in opena2 → erneuter Versuch idempotent über `message_id`.
+* **Bad Token**: sofortige NACK → Dienst anhalten → Tokenrotation erforderlich.
+* **Port‑Konflikt**: opena4 bindet nicht erlaubten Port → Lease‑Wechsel → Safepoint CMD/RESP auditiert.
+* **Dedupe‑Treffer**: Bereits vorhandener Hash → kein neuer Blob, nur Referenz im Audit‑Index.
+* **Unreachable Webhook**: HTTPS nicht erreichbar (Firewall/Cert) → Telegram setzt webhook zurück → Fehler in health/Metrics.
+* **Conflict bei Write**: atomare Write‑Guard schlägt fehl → Dienst zurück in Safe‑State, Audit schreibt FAIL.
+
+---
+
+## 13) Akzeptanzkriterien (für Schritt 4)
+
+* Der Webhook‑Endpoint ist **erreichbar über HTTPS** (z. B. `https://dein.host/telegram/webhook`) mit gültigem Zertifikat.
+* Header `X‑Telegram‑Bot‑Api‑Secret‑Token` wird geprüft bei Anfragen.
+* Updates von Telegram werden **dedupliziert**, Blob unter `blobs/tg/in/...` abgelegt, `index.jsonl` aktualisiert.
+* Safepoint CMD/RESP Kette lückenlos: opena4 → opena2 → …
+* Port Governance: opena4 bindet legalen Port (z. B. 12347) im Pool, nicht 8080.
+* UI‑Knopf in opena3 löst `/actions/agent_cmd` bei opena4 aus → Safepoint generiert → Audit sichtbar.
+* GitHub CI/Pre‑Commit Pipeline läuft grün. Keine Lint‑Fehler, Portchecks bestanden, Hashbaum konsistent.
+
+---
+
+Wenn du willst, kann ich dir **das komplette Repo‑Template** liefern: mit allen Dateien im Root (README, .env.example, Dockerfile falls gewünscht, systemd‑Unit, NGINX config, FastAPI Datei, Scripts für Pre‑Commit/CI, JSON‑Schemas). Soll ich das grad generieren? 🔧
+
+[1]: https://core.telegram.org/bots/webhooks?utm_source=chatgpt.com "Marvin's Marvellous Guide to All Things Webhook"
+[2]: https://stackoverflow.com/questions/42554548/how-to-set-telegram-bot-webhook?utm_source=chatgpt.com "How to set Telegram bot webhook?"
+
+
+Alles klar – du willst, dass **alle Pfade** in der Ausgabe, speziell im Abschnitt **Schritt 4 / Punkt 3 (Persistenz, Dedupe, Pfadstruktur)**, konsistent mit deinem realen Projektpfad sind:
+
+> `/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/`
+
+Ich korrigiere das jetzt für **alle Vorkommen**.
+
+---
+
+## 3) Persistenz, Dedupe & Pfad‑Layout (korrigiert)
+
+### 3.1 Regeln
+
+* **Append‑only**: Es wird niemals etwas überschrieben oder gelöscht.
+* **Dedupe**: Vor jedem Speichern wird die Nachricht (Telegram Update, File, Alert) **kanonisiert**, dann mit **SHA‑256** gehasht.
+* Wenn der Hash bereits existiert → **kein neuer Blob**, nur ein Eintrag im Audit‑Index (`index.jsonl`).
+* Jeder Speichervorgang erzeugt einen **Safepoint** (CMD oder RESP) unter `archivp/YYYY/MM/DD/`.
+* Die Indexdateien (`DEDUP_INDEX.json`, `HEADS.json`, `INTEGRITY_TREE.json`) bilden die Referenz der Datenintegrität.
+
+---
+
+### 3.2 Dedupe‑Keys (nach Typ)
+
+| Event‑Typ  | Dedupe‑Key                       | Pfad                                       |
+| ---------- | -------------------------------- | ------------------------------------------ |
+| BOT_CMD    | `chat_id + message_id`           | `blobs/tg/cmd/{chat_id}/{message_id}.json` |
+| MSG_IN     | `chat_id + message_id`           | `blobs/tg/in/{chat_id}/{message_id}.json`  |
+| MSG_OUT    | `chat_id + sha256(payload)`      | `blobs/tg/out/{chat_id}/{sha256}.json`     |
+| ATTACHMENT | `sha256(file)`                   | `blobs/tg/file/sha256/<ab>/<hash>.json`    |
+| ALERT      | `sha256(alert_type + ts_bucket)` | `blobs/tg/alert/{sha256}.json`             |
+
+---
+
+### 3.3 Pfadstruktur (Beispiel für einen Tag)
+
+```plaintext
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/
+└── archivp/
+    └── 2025/
+        └── 10/
+            └── 22/
+                ├── SP1697974712_opena4→opena2_CMD.json       # Safepoint: CMD an Archiv
+                ├── SP1697974713_opena2→opena4_RESP.json      # Safepoint: Archiv-Antwort
+                └── blobs/
+                    └── tg/
+                        ├── in/123456789/4711.json            # eingehende Nachricht
+                        ├── out/123456789/a7b3d9e5....json     # gesendete Antwort
+                        ├── cmd/123456789/4711.json           # Slash‑Befehl
+                        ├── alert/9cfba238....json            # Alert
+                        └── file/sha256/3f/e1e10b89....json    # Datei/Anhang
+```
+
+---
+
+### 3.4 DEDUP_INDEX.json (Auszug)
+
+```json
+{
+  "entries": {
+    "a7b3d9e5...": {
+      "ts": "2025-10-22T10:15:33Z",
+      "path": "archivp/2025/10/22/blobs/tg/out/123456789/a7b3d9e5....json"
+    },
+    "e1e10b89...": {
+      "ts": "2025-10-22T10:16:12Z",
+      "path": "archivp/2025/10/22/blobs/tg/file/sha256/3f/e1e10b89....json"
+    }
+  }
+}
+```
+
+---
+
+### 3.5 HEADS.json (Kontext)
+
+```json
+{
+  "latest_tg_out": {
+    "chat_id": "123456789",
+    "sha256": "a7b3d9e5...",
+    "ts": "2025-10-22T10:15:33Z"
+  }
+}
+```
+
+---
+
+### 3.6 index.jsonl (Audit‑Trail, JSON Lines Format)
+
+```json
+{"ts":"2025-10-22T10:15:33Z","actor":"opena4","event":"MSG_OUT","chat_id":"123456789","sha256":"a7b3d9e5..."}
+{"ts":"2025-10-22T10:16:12Z","actor":"opena4","event":"ATTACHMENT","sha256":"e1e10b89...","file":"document.pdf"}
+```
+
+---
+
+### 3.7 Write‑Verhalten
+
+* **Vor jedem Write:**
+
+  * SHA‑256 berechnen
+  * DEDUP_INDEX prüfen
+  * Wenn **nicht vorhanden:** Datei schreiben + Index aktualisieren
+  * Wenn **schon vorhanden:** nur `index.jsonl` erweitern
+* **Pfadvalidierung:** Nur whitelisted extensions + bekannte Unterverzeichnisse (`in`, `out`, `cmd`, `alert`, `file`).
+* **atomare Writes:** Via temp file + move, um Race Conditions zu vermeiden
+
+---
+
+Wenn du willst, kann ich die zugehörige `write_blob()` Funktion mit diesem Layout direkt implementieren – Pfad, Dedupe, Safepoint, Audit inklusive. Gib einfach Bescheid.
+
+
+Alles klar — hier kommt **Schritt 1** komplett ausgearbeitet für dein Projekt. Du bekommst ein Dokument, das du direkt einsetzen oder weiter anpassen kannst. Wenn du möchtest, können wir im Anschluss noch ein Template in Markdown oder direkt als Datei liefern.
+
+---
+
+# 🧭 Schritt 1 — Projekt­initialisierung & Rahmenbedingungen
+
+**Projektwurzel:** `/home/danijel‑jd/Dokumente/Workspace/Projekte/Gesamtprojekt`
+**Erstellt am:** *(Datum eintragen)*
+**Verantwortlich:** *(Team/Person eintragen)*
+**Version:** 1.0
+**Regeln:** Append‑only · Dedupe (SHA‑256/IDs) · keine Doppelblobs · Auditierbarkeit durchgängig
+
+---
+
+## 1) Ziel & Kontext
+
+**Ziel des Projekts:**
+Dieses Projekt zielt darauf ab, ein durchgängig auditierbares Agenten‑System mit mehreren Modulen (z. B. Telegram‑Bridge, OpenWebUI, Monitoring, VS Code‑Bridge) zu etablieren, das nach klar definierten Routen funktioniert, keine Doppelblobs erzeugt, vollständige Audit‑Spur wahrt und konsistente Port‑/Governance‑Regeln einhält.
+
+**Kontext:**
+
+* Der Nutzer (du) betreibt ein Agenten‑Ökosystem mit Schnittstellen zu Telegram, UI/IDE, Monitoring.
+* Module wie „opena4“ (Telegram‑Bridge), „opena3“ (UI), „opena2“ (Archivator) etc. sollen sauber zusammenwirken.
+* Infrastruktur: Projektverzeichnis unter oben genannter Projektwurzel, Ports im Pool 12344‑12399, 8080 exklusiv für UI.
+* Qualitätsanforderungen: Append‑only‑Speicherung, SHA‑256‑Dedupe, keine Überschreibungen, Audit‑Index, HEADS/INTEGRITY Struktur.
+
+---
+
+## 2) Umfang (Scope)
+
+**Was das Projekt umfasst:**
+
+* Einrichtung der Projektstruktur (Datei/Verzeichnislayout) unter der Projektwurzel.
+* Definition und Dokumentation aller Agenten‑Routen und ihrer Verantwortlichkeiten.
+* Implementierung der Governance‑Regeln für Ports, Logging, Secrets, Dedupe.
+* Aufbau der Persistenz‑ und Archiv‑Mechanismen: Safepoints, Blobs, Indexe.
+* Einrichtung von CI/Pre‑Commit/QC (Linting, Schema‑Prüfung, Port‑Check).
+* Dokumentation: Schritt‑Weise Spezifikationen für jeden Agent (z. B. Schritt 4 für opena4, Schritt 5 für opena5).
+
+**Was *nicht* im aktuellen Scope enthalten ist:**
+
+* Vollständige Implementierung der Logik aller Agenten oder Funktionen (z. B. spezialisierte Business‑Agenten außerhalb der Infrastruktur).
+* Umfangreiche UI/UX‑Designs oder externe Dienstintegrationen, die nicht Teil der Kerninfrastruktur sind.
+* Migration bestehender Systeme (falls vorhanden) – Fokus liegt auf Neubau.
+
+---
+
+## 3) Hauptakteure & Rollen
+
+| Rolle                    | Verantwortlich             | Aufgaben                                      |
+| ------------------------ | -------------------------- | --------------------------------------------- |
+| Projektleitung           | *(Name eintragen)*         | Gesamtverantwortung, Ressourcen, Zeitplan     |
+| Infrastruktur‑Lead       | *(Name)*                   | Aufbau Verzeichnisstruktur, Governance‑Regeln |
+| Archivator (opena2)      | Modul “opena2”             | Persistenz, Dedupe, Audit‑Index               |
+| Bridge Telegram (opena4) | Modul “opena4”             | Telegram‑Anbindung (Webhook/Long‑Polling)     |
+| UI/IDE (opena3/opena5)   | Module “opena3” & “opena5” | UI/IDE Schnittstellen, Edit/Diff Tasks        |
+| Monitoring (opena20)     | Modul “opena20”            | Health/Metrics/Alerting                       |
+| Qualitätssicherung       | *(Name)*                   | Code‑Reviews, CI/Pre‑Commit, Tests            |
+
+---
+
+## 4) Meilensteine & Zeitplan
+
+| Meilenstein                      | Beschreibung                                          | Zieltermin |
+| -------------------------------- | ----------------------------------------------------- | ---------- |
+| M1 – Projektstruktur             | Verzeichnislayout, README, .env‑Beispiele erstellt    | *(Datum)*  |
+| M2 – Governance Regeln           | Port‑Pool definiert, Sekret‑Handhabung, Dedupe Regeln | *(Datum)*  |
+| M3 – Archivator Setup            | Modul opena2 mit Persistenz, Indexstruktur            | *(Datum)*  |
+| M4 – Bridge Telegram (Schritt 4) | Telegram‑Webhook & Routing dokumentiert               | *(Datum)*  |
+| M5 – VS Code Bridge (Schritt 5)  | IDE‑Integration vorbereitet                           | *(Datum)*  |
+| M6 – Monitoring Modul            | Health‑/Alerting‑Pipeline implementiert               | *(Datum)*  |
+| M7 – Release Infrastruktur       | Erste End‑to‑End Funktion (Telegram → UI)             | *(Datum)*  |
+
+---
+
+## 5) Qualitäts‑ & Sicherheitsanforderungen
+
+* **Append‑only Speicherung:** Keine Überschreibungen von Blobs/Indexen.
+* **Dedupe mittels SHA‑256:** Vor jedem Write Hash prüfen; bei Treffer: keine neue Datei, nur Audit‑Vermerk.
+* **Port‑Governance:** Ports nur im Bereich `12344–12399`. Port 8080 ausschließlich für opena3.
+* **Secrets:** Nur über `.env`‑Datei; keine Tokens in Logs; Maskierung bei Ausgaben.
+* **Audit‑Spur:** Jeder Safepoint (CMD/RESP), jeder Blob, Indexeintrag muss dokumentiert und nachvollziehbar sein.
+* **CI/Pre‑Commit Regelwerk:** Linting, JSON‑Schema Prüfung, Port‑Policy Check, Hash‑Integrität Check.
+* **RBAC & Auth:** Telegram User IDs in erlaubter Liste; Webhook‑Secret‑Header Pflicht; Rollenhaften Zugriff.
+* **TLS/HTTPS für Webhook:** Mindestens TLS 1.2; Reverse‑Proxy bei Webhook Eingangs‑Endpoint.
+
+---
+
+## 6) Risiken & Annahmen
+
+**Annahmen:**
+
+* Der Host hat öffentlich erreichbaren Domain/Nginx für Webhook (falls Webhook‑Modus gewählt).
+* Entwickler haben Zugriff auf Projektverzeichnis und nötige Rechte (Lesen/Schreiben).
+* Aggregierte Module (opena2, opena3, opena4, opena5, opena20) werden einzeln entwickelt aber im selben Governance‑Rahmen.
+
+**Risiken:**
+
+* Portkonflikte (unberechtigter Bind auf 8080) → Umgehung Governance.
+* Doppel‑Writes/Blobs ohne Dedupe → Speicher‑/Audit‑Probleme.
+* Telegram API Limitierungen/Rate‑Limits bei Webhook/Long‑Polling.
+* Unsichere Secrets/Logs → Sicherheitslücke.
+* Fehlende oder unzureichende CI/Pre‑Commit → Qualitätseinbruch.
+
+---
+
+## 7) Dokumentation & Artefakte
+
+* README.md im Projektwurzel mit Übersicht & Setup‑Hinweisen
+* `docs/` Ordner mit: Spezifikationsdokumente für jeden Schritt (z. B. SCHRITT_04_OPENA4_telegram.md, SCHRITT_05_OPENA5.md)
+* `.pre‑commit‑config.yaml`, `.github/workflows/ci.yml`
+* Beispiel‑Konfigurationsdateien: `.env.example`, `port_leases.json` Template
+* Systemd Service Units unter `docs/examples/` + ggf. Produktions‑Service Files
+
+---
+
+Wenn du möchtest, kann ich **eine sofort ausfüllbare Markdown‑Datei** liefern für Schritt 1, inkl. Platzhaltern (Datum, Verantwortliche etc.), die du direkt in dein `docs/`‑Verzeichnis legen kannst. Soll ich die generieren? 🔧
+
+
+
+
+

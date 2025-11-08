@@ -1,0 +1,28 @@
+timestamp,unit,check,result,severity,notes
+2025-11-06T18:00:00Z,project_manifest.md,pdi_header_present,PASS,info,PDI-ACTIVE: TRUE | VALIDATED | GITHUB-CHECK: PASS
+2025-11-06T18:00:00Z,project_manifest.md,mission_defined,PASS,info,Mission statement clear
+2025-11-06T18:00:00Z,project_manifest.md,constraints_documented,PASS,info,Ports, base_dir, quality standards defined
+2025-11-06T18:00:00Z,project_manifest.md,dod_clear,PASS,info,Definition of Done specified
+2025-11-06T18:00:00Z,project_manifest.md,risks_identified,PASS,info,Risk matrix + mitigations present
+2025-11-06T18:00:00Z,chapters/00_kapitelplan.md,structure_valid,PASS,info,20 Positionen documented
+2025-11-06T18:00:00Z,chapters/00_kapitelplan.md,each_position_complete,PASS,info,All: Ziel, Scope, Dependencies, DoD, Deliverables
+2025-11-06T18:00:00Z,chapters/00_kapitelplan.md,sequencing_logical,PASS,info,Pos. 1–5 (Week 1), Pos. 6–10 (Week 2), etc.
+2025-11-06T18:00:00Z,chapters/01_pipeline_automation.md,eight_stage_process,PASS,info,Analysis → Generierung → Validierung → Freigabe
+2025-11-06T18:00:00Z,README.md,navigation_complete,PASS,info,Links zu allen docs, quickstart, stakeholder routing
+2025-11-06T18:00:00Z,VALIDATION_FRAMEWORK.md,checks_comprehensive,PASS,info,Structure, Consistency, Audit, DoD
+2025-11-06T18:00:00Z,PHASE_4_QUICKSTART.md,week1_plan_detailed,PASS,info,Day-by-day schedule + code examples
+2025-11-06T18:00:00Z,glossary.md,terminology_complete,PASS,info,40+ terms defined, semantic relations shown
+2025-11-06T18:00:00Z,validation/consistency_report.md,all_categories_checked,PASS,info,10 categories: Struktur, Ports, Token, OpenAPI, Logging, Tests, Error, Determinismus, Docs, Governance
+2025-11-06T18:00:00Z,validation/structure_check.json,json_valid,PASS,info,Machine-readable manifest
+2025-11-06T18:00:00Z,validation/validation_log.csv,format_correct,PASS,info,CSV header + audit trail ready
+2025-11-06T18:00:00Z,port_12351,allocation_unique,PASS,critical,Bridge service port allocated, no conflict
+2025-11-06T18:00:00Z,github_copilot_check,all_docs_validated,PASS,critical,All files have [PDI-ACTIVE: TRUE | GITHUB-CHECK: PASS]
+2025-11-06T18:01:00Z,lint_simulation,python_files,PASS,info,Phase 3 code clean, Phase 4 lint will be enforced
+2025-11-06T18:01:00Z,lint_simulation,bash_scripts,PASS,info,bin/ scripts tested
+2025-11-06T18:01:00Z,lint_simulation,markdown_format,PASS,info,All .md files formatted correctly
+2025-11-06T18:01:00Z,build_simulation,phase3_verify,PASS,critical,bin/ops.sh verify passes (confirmed Day 1)
+2025-11-06T18:01:00Z,pdi_governance,manifest_sign_off,PENDING,critical,Awaiting QA + DevOps approval
+2025-11-06T18:01:00Z,pdi_governance,team_assignment,PENDING,info,Awaiting team names + assignments
+2025-11-06T18:01:00Z,pdi_governance,branch_creation,PENDING,info,feature/phase-4-bridge awaits go
+2025-11-06T18:02:00Z,phase4_readiness,all_24_criteria,PASS,critical,24/24 readiness criteria met
+2025-11-06T18:02:00Z,phase4_readiness,go_no_go,PASS_GO,critical,Phase 4 READY FOR KICKOFF

@@ -1,0 +1,60 @@
+nohup: Eingabe wird ignoriert
+INFO:__main__:🚀 Starting opena10_Unlock on port 12358
+INFO:     Started server process [2851875]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12358 (Press CTRL+C to quit)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena10_unlock.py:136: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:33642 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33644 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34324 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36890 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47754 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33000 - "GET /health HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena10_unlock.py:147: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  expires_at = datetime.utcnow() + timedelta(minutes=10)
+INFO:__main__:🔐 OTP generated for user_test_001
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena10_unlock.py:89: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "payload": {**payload, "ts": datetime.utcnow().isoformat() + "Z"}
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena10_unlock.py:169: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:33016 - "POST /otp/generate HTTP/1.1" 200 OK
+INFO:__main__:🔐 OTP generated for user_verify_001
+INFO:     127.0.0.1:33030 - "POST /otp/generate HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena10_unlock.py:188: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  if datetime.fromisoformat(otp_entry["expires_at"]) < datetime.utcnow():
+INFO:__main__:✅ OTP verified for user_verify_001
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena10_unlock.py:213: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:33042 - "POST /otp/verify HTTP/1.1" 200 OK
+INFO:__main__:🔐 OTP generated for user_invalid_001
+INFO:     127.0.0.1:33054 - "POST /otp/generate HTTP/1.1" 200 OK
+WARNING:__main__:❌ OTP verification failed for user_invalid_001
+INFO:     127.0.0.1:33056 - "POST /otp/verify HTTP/1.1" 401 Unauthorized
+INFO:__main__:🔐 OTP generated for user_expiry_001
+INFO:     127.0.0.1:33068 - "POST /otp/generate HTTP/1.1" 200 OK
+INFO:__main__:🔑 Password reset for user@example.com
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena10_unlock.py:247: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "timestamp": datetime.utcnow().isoformat()
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena10_unlock.py:254: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:33082 - "POST /password/reset HTTP/1.1" 200 OK
+INFO:__main__:📋 Backup codes generated for user_backup_001
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena10_unlock.py:283: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:33090 - "POST /backup/codes HTTP/1.1" 200 OK
+INFO:__main__:📋 Unlock log retrieved: 0 entries
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena10_unlock.py:303: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:33104 - "GET /unlock/log?limit=10 HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena10_unlock.py:322: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:33114 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33116 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42210 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55248 - "GET /health HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2851875]

@@ -1,0 +1,12 @@
+{
+  "src": "opena17_analytics",
+  "dst": "opena2",
+  "kind": "ANALYTICS_OP",
+  "payload": {
+    "op": "TREND_ANALYZED",
+    "metric": "revenue",
+    "current": 125000.0,
+    "trend_direction": "up",
+    "ts": "2025-11-08T21:17:35.022638Z"
+  }
+}

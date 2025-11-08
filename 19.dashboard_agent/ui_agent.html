@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"/>
+  <title>ELION Hyper-Dashboard</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; }
+    h1 { margin: 0 0 1rem; }
+    .muted { color: #666; }
+    .row { display: flex; gap: 1rem; align-items: center; }
+    input[type=text] { padding: .5rem; width: 28rem; }
+    code { background: #f4f4f4; padding: .2rem .4rem; border-radius: .25rem; }
+    table { border-collapse: collapse; margin-top: 1rem; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: .5rem .6rem; text-align: left; }
+    th { background: #fafafa; }
+    .ok { color: #0b8a00; }
+    .warn { color: #d98200; }
+    .err { color: #c70000; }
+  </style>
+</head>
+<body>
+  <h1>ELION Hyper-Dashboard</h1>
+  <div class="muted">UI ist minimal. Für volle API bitte <code>/docs</code> verwenden (Authorize ➜ Bearer &lt;TOKEN&gt;).</div>
+
+  <section style="margin-top:1.5rem">
+    <div class="row">
+      <button id="btnRefresh">Status aktualisieren</button>
+      <span id="msg" class="muted"></span>
+    </div>
+    <table id="tbl">
+      <thead>
+        <tr><th>Agent</th><th>Status</th><th>Details</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <script>
+    async function load() {
+      const tok = localStorage.getItem("dash_token") || prompt("Bearer-Token (Inhalt aus .env):");
+      if(!tok){ return; }
+      localStorage.setItem("dash_token", tok);
+      const r = await fetch("/api/status/all", { headers: { "Authorization": "Bearer " + tok }});
+      const elMsg = document.getElementById("msg");
+      const elBody = document.querySelector("#tbl tbody");
+      elBody.innerHTML = "";
+      if(!r.ok){
+        elMsg.textContent = "Fehler " + r.status + " – vermutlich Token ungültig.";
+        return;
+      }
+      const data = await r.json();
+      elMsg.textContent = "OK";
+      const agents = data.agents || {};
+      Object.entries(agents).forEach(([aid, st]) => {
+        const tr = document.createElement("tr");
+        const c = st.status === "online" ? "ok" : (st.status === "offline" ? "err" : "warn");
+        tr.innerHTML = `<td>${aid}</td><td class="${c}">${st.status}</td><td><pre>${JSON.stringify(st.details||st, null, 2)}</pre></td>`;
+        elBody.appendChild(tr);
+      });
+    }
+    document.getElementById("btnRefresh").onclick = load;
+    load();
+  </script>
+</body>
+</html>
+

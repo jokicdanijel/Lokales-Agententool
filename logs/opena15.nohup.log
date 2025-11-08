@@ -1,0 +1,49 @@
+INFO:__main__:🚀 Starting opena15_Shop on port 12363
+INFO:__main__:📦 Pre-loaded 2 sample products
+INFO:     Started server process [2860897]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12363 (Press CTRL+C to quit)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena15_shop.py:174: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:46906 - "GET /health HTTP/1.1" 200 OK
+INFO:__main__:📦 Products listed: 2
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena15_shop.py:199: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:46916 - "GET /product/list HTTP/1.1" 200 OK
+INFO:__main__:📦 Products listed: 2
+INFO:     127.0.0.1:46922 - "GET /product/list HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena15_shop.py:250: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "created_at": datetime.utcnow().isoformat()
+INFO:__main__:🛒 Order created: ORD_33475D5B45F1 (total: $1999.98)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena15_shop.py:102: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "payload": {**payload, "ts": datetime.utcnow().isoformat() + "Z"}
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena15_shop.py:269: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:46928 - "POST /order/create HTTP/1.1" 200 OK
+INFO:__main__:📦 Products listed: 2
+INFO:     127.0.0.1:46942 - "GET /product/list HTTP/1.1" 200 OK
+INFO:__main__:📊 Inventory updated: PRD_18F925ACC52A (8 -> 13)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena15_shop.py:312: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:46946 - "POST /inventory/update HTTP/1.1" 200 OK
+INFO:__main__:📦 Products listed: 2
+INFO:     127.0.0.1:46958 - "GET /product/list HTTP/1.1" 200 OK
+INFO:__main__:💰 Pricing calculated: $971.99 (discount: 10%)
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena15_shop.py:374: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:46960 - "POST /pricing/calculate HTTP/1.1" 200 OK
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena15_shop.py:461: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z"
+INFO:     127.0.0.1:46968 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47798 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47802 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:42448 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40984 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40996 - "GET /health HTTP/1.1" 200 OK
+INFO:__main__:📦 Products listed: 2
+INFO:     127.0.0.1:41012 - "GET /product/list HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2860897]

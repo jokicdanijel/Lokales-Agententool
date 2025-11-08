@@ -1,0 +1,90 @@
+nohup: Eingabe wird ignoriert
+INFO:     Started server process [2851540]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:12345 (Press CTRL+C to quit)
+INFO:     127.0.0.1:37940 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37948 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52878 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46364 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42096 - "GET /health HTTP/1.1" 200 OK
+2025-11-08 20:52:05,316 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631525_opena8_telephone→opena2_CALL_OP.json
+INFO:     127.0.0.1:36644 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:05,327 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631525_opena8_telephone→opena2_CALL_OP.json
+INFO:     127.0.0.1:36658 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:05,341 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631525_opena8_telephone→opena2_CALL_OP.json
+INFO:     127.0.0.1:36664 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:06,350 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631526_opena8_telephone→opena2_CALL_OP.json
+INFO:     127.0.0.1:36680 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:06,355 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631526_opena8_telephone→opena2_CALL_OP.json
+INFO:     127.0.0.1:36684 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:06,362 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631526_opena8_telephone→opena2_CALL_OP.json
+INFO:     127.0.0.1:36692 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:06,369 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631526_opena8_telephone→opena2_CALL_OP.json
+INFO:     127.0.0.1:36708 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:09,622 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631529_opena9_call_tracking→opena2_ANALYTICS_OP.json
+INFO:     127.0.0.1:41346 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:09,626 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631529_opena9_call_tracking→opena2_ANALYTICS_OP.json
+INFO:     127.0.0.1:41350 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:09,630 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631529_opena9_call_tracking→opena2_ANALYTICS_OP.json
+INFO:     127.0.0.1:41364 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:09,633 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631529_opena9_call_tracking→opena2_ANALYTICS_OP.json
+INFO:     127.0.0.1:41376 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:09,636 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631529_opena9_call_tracking→opena2_ANALYTICS_OP.json
+INFO:     127.0.0.1:41388 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:09,638 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631529_opena9_call_tracking→opena2_ANALYTICS_OP.json
+INFO:     127.0.0.1:41402 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:09,641 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631529_opena9_call_tracking→opena2_ANALYTICS_OP.json
+INFO:     127.0.0.1:41406 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:12,872 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631532_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:41408 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:12,876 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631532_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:41414 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:12,895 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631532_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:41424 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:12,899 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631532_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:41438 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:12,903 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631532_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:41450 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:12,907 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631532_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:41462 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:12,978 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631532_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:41476 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:52:12,982 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631532_opena10_unlock→opena2_SECURITY_OP.json
+INFO:     127.0.0.1:41492 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:59:13,374 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena11_social_media→opena2_SOCIAL_OP.json
+INFO:     127.0.0.1:46148 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:59:13,381 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena11_social_media→opena2_SOCIAL_OP.json
+INFO:     127.0.0.1:46162 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:59:13,429 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena12_influencer→opena2_INFLUENCER_OP.json
+INFO:     127.0.0.1:46166 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:59:13,434 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena12_influencer→opena2_INFLUENCER_OP.json
+INFO:     127.0.0.1:46178 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:59:13,440 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena12_influencer→opena2_INFLUENCER_OP.json
+INFO:     127.0.0.1:46194 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:59:13,499 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena13_calendar→opena2_CALENDAR_OP.json
+INFO:     127.0.0.1:46196 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:59:13,505 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena13_calendar→opena2_CALENDAR_OP.json
+INFO:     127.0.0.1:46212 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:59:13,555 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena14_html_generator→opena2_HTML_OP.json
+INFO:     127.0.0.1:46222 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:59:13,561 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena14_html_generator→opena2_HTML_OP.json
+INFO:     127.0.0.1:46236 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:59:13,566 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena14_html_generator→opena2_HTML_OP.json
+INFO:     127.0.0.1:46238 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:59:13,571 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena14_html_generator→opena2_HTML_OP.json
+INFO:     127.0.0.1:46254 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:59:13,617 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena15_shop→opena2_SHOP_OP.json
+INFO:     127.0.0.1:46268 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:59:13,622 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena15_shop→opena2_SHOP_OP.json
+INFO:     127.0.0.1:46274 - "POST /store/archivp HTTP/1.1" 200 OK
+2025-11-08 20:59:13,628 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena15_shop→opena2_SHOP_OP.json
+INFO:     127.0.0.1:46276 - "POST /store/archivp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60242 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38484 - "GET /health HTTP/1.1" 200 OK
+2025-11-08 21:07:34,564 - opena2 - INFO - WRITE(kordp) -> /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ARCHIV/2025/11/08/SP1762632454_opena11_social_media→opena2_SOCIAL_OP.json
+INFO:     127.0.0.1:38496 - "POST /store/archivp HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2851540]

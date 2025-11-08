@@ -1,0 +1,13 @@
+{
+  "src": "opena15_shop",
+  "dst": "opena2",
+  "kind": "SHOP_OP",
+  "payload": {
+    "op": "PRICING_CALCULATE",
+    "items_count": 1,
+    "subtotal": 999.99,
+    "total": 971.99,
+    "discount_code": "SAVE10",
+    "ts": "2025-11-08T19:59:13.627361Z"
+  }
+}

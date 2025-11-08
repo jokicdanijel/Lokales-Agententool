@@ -1,0 +1,12 @@
+{
+  "src": "opena14_html_generator",
+  "dst": "opena2",
+  "kind": "HTML_OP",
+  "payload": {
+    "op": "EXPORT_HTML",
+    "page_id": "PG_297CC47D93097F2E",
+    "format": "html",
+    "size_bytes": 346,
+    "ts": "2025-11-08T19:59:13.569858Z"
+  }
+}

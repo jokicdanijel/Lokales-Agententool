@@ -1,0 +1,101 @@
+import json
+import re
+from pathlib import Path
+from datetime import datetime, timezone
+from collections import defaultdict
+import math
+
+# Anpassen: Pfad zu deinem Archiv-Base-Verzeichnis
+ARCH_BASE = Path("/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp")
+
+def parse_ts(ts_str):
+    if ts_str is None:
+        return None
+    try:
+        s = ts_str.replace("Z", "+00:00")
+        return datetime.fromisoformat(s)
+    except Exception:
+        return None
+
+def iter_day_dirs(base: Path):
+    days = []
+    if not base.exists():
+        return days
+    for day in sorted(base.glob("*/*/*")):  # YYYY/MM/DD
+        if day.is_dir():
+            days.append(day)
+    return days
+
+def collect_pairs(day_dir: Path):
+    pairs = []
+    for cmd_file in day_dir.glob("*CMD.json"):
+        fname = cmd_file.name
+        m = re.match(r"SP(\d+)_([^→]+)→([^_]+)_CMD\.json", fname)
+        if not m:
+            continue
+        epoch = int(m.group(1))
+        src = m.group(2)
+        dst = m.group(3)
+        with open(cmd_file, "r", encoding="utf-8") as f:
+            cmd_obj = json.load(f)
+        ts_cmd = cmd_obj.get("ts")
+        resp_path = day_dir / f"SP{epoch}_{src}→{dst}_RESP.json"
+        resp_obj = None
+        ts_resp = None
+        if resp_path.exists():
+            with open(resp_path, "r", encoding="utf-8") as f:
+                resp_obj = json.load(f)
+            ts_resp = resp_obj.get("ts")
+        pairs.append((epoch, day_dir, src, dst, ts_cmd, ts_resp, cmd_obj, resp_obj, cmd_file, resp_path))
+    return pairs
+
+def hour_start(dt: datetime):
+    if not dt:
+        return None
+    dt = dt.astimezone(timezone.utc)
+    return dt.replace(minute=0, second=0, microsecond=0)
+
+def main():
+    ARCH_BASE_LOCAL = ARCH_BASE
+    windows = defaultdict(lambda: {"cmd":0, "resp":0, "latencies":[]})
+    total_cmd = 0
+    total_resp = 0
+
+    for day_dir in iter_day_dirs(ARCH_BASE_LOCAL):
+        for entry in collect_pairs(day_dir):
+            epoch, day, src, dst, ts_cmd, ts_resp, cmd_obj, resp_obj, cmd_path, resp_path = entry
+            # CMD
+            if ts_cmd:
+                total_cmd += 1
+                w = hour_start(parse_ts(ts_cmd))
+                if w:
+                    windows[w]["cmd"] += 1
+            # RESP
+            if ts_resp:
+                total_resp += 1
+                w = hour_start(parse_ts(ts_resp))
+                if w:
+                    windows[w]["resp"] += 1
+                # Latency
+                t_cmd = parse_ts(ts_cmd)
+                t_resp = parse_ts(ts_resp)
+                if t_cmd and t_resp:
+                    latency_ms = (t_resp - t_cmd).total_seconds() * 1000.0
+                    if w:
+                        windows[w]["latencies"].append(latency_ms)
+
+    print("Total CMD:", total_cmd, "Total RESP:", total_resp)
+    print("Stunden mit Daten:", len(windows))
+    for w in sorted(windows.keys()):
+        rec = windows[w]
+        lat = rec["latencies"]
+        if lat:
+            arr = lat
+            med = float(sorted(arr)[len(arr)//2])
+            p90 = float(sorted(arr)[int(0.9*len(arr))-1])
+            print(f"{w.isoformat()} | CMD={rec['cmd']} | RESP={rec['resp']} | latency_median_ms={med:.1f} | latency_p90_ms={p90:.1f} | samples={len(lat)}")
+        else:
+            print(f"{w.isoformat()} | CMD={rec['cmd']} | RESP={rec['resp']} | latency=n/a")
+
+if __name__ == "__main__":
+    main()

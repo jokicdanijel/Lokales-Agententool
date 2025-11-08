@@ -1,0 +1,1321 @@
+﻿GitHub MCP Server
+The GitHub MCP Server connects AI tools directly to GitHub's platform. This gives AI agents, assistants, and chatbots the ability to read repositories and code files, manage issues and PRs, analyze code, and automate workflows. All through natural language interactions.
+Use Cases
+    • Repository Management: Browse and query code, search files, analyze commits, and understand project structure across any repository you have access to.
+    • Issue & PR Automation: Create, update, and manage issues and pull requests. Let AI help triage bugs, review code changes, and maintain project boards.
+    • CI/CD & Workflow Intelligence: Monitor GitHub Actions workflow runs, analyze build failures, manage releases, and get insights into your development pipeline.
+    • Code Analysis: Examine security findings, review Dependabot alerts, understand code patterns, and get comprehensive insights into your codebase.
+    • Team Collaboration: Access discussions, manage notifications, analyze team activity, and streamline processes for your team.
+Built for developers who want to connect their AI tools to GitHub context and capabilities, from simple natural language queries to complex multi-step agent workflows.
+
+Remote GitHub MCP Server
+ 
+The remote GitHub MCP Server is hosted by GitHub and provides the easiest method for getting up and running. If your MCP host does not support remote MCP servers, don't worry! You can use the local version of the GitHub MCP Server instead.
+Prerequisites
+    1. A compatible MCP host with remote server support (VS Code 1.101+, Claude Desktop, Cursor, Windsurf, etc.)
+    2. Any applicable policies enabled
+Install in VS Code
+For quick installation, use one of the one-click install buttons above. Once you complete that flow, toggle Agent mode (located by the Copilot Chat text input) and the server will start. Make sure you're using VS Code 1.101 or later for remote MCP and OAuth support.
+Alternatively, to manually configure VS Code, choose the appropriate JSON block from the examples below and add it to your host configuration:
+Using OAuth
+Using a GitHub PAT
+VS Code (version 1.101 or greater)
+{
+  "servers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    }
+  }
+}
+
+{
+  "servers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer ${input:github_mcp_pat}"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "github_mcp_pat",
+      "description": "GitHub Personal Access Token",
+      "password": true
+    }
+  ]
+}
+
+Install in other MCP hosts
+    • GitHub Copilot in other IDEs - Installation for JetBrains, Visual Studio, Eclipse, and Xcode with GitHub Copilot
+    • Claude Applications - Installation guide for Claude Web, Claude Desktop and Claude Code CLI
+    • Cursor - Installation guide for Cursor IDE
+    • Windsurf - Installation guide for Windsurf IDE
+Note: Each MCP host application needs to configure a GitHub App or OAuth App to support remote access via OAuth. Any host application that supports remote MCP servers should support the remote GitHub server with PAT authentication. Configuration details and support levels vary by host. Make sure to refer to the host application's documentation for more info.
+Configuration
+Toolset configuration
+See Remote Server Documentation for full details on remote server configuration, toolsets, headers, and advanced usage. This file provides comprehensive instructions and examples for connecting, customizing, and installing the remote GitHub MCP Server in VS Code and other MCP hosts.
+When no toolsets are specified, default toolsets are used.
+Enterprise Cloud with data residency (ghe.com)
+GitHub Enterprise Cloud can also make use of the remote server.
+Example for https://octocorp.ghe.com:
+{
+    ...
+    "proxima-github": {
+      "type": "http",
+      "url": "https://copilot-api.octocorp.ghe.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${input:github_mcp_pat}"
+      }
+    },
+    ...
+}
+
+GitHub Enterprise Server does not support remote server hosting. Please refer to GitHub Enterprise Server and Enterprise Cloud with data residency (ghe.com) from the local server configuration.
+
+Local GitHub MCP Server
+ 
+Prerequisites
+    1. To run the server in a container, you will need to have Docker installed.
+    2. Once Docker is installed, you will also need to ensure Docker is running. The image is public; if you get errors on pull, you may have an expired token and need to docker logout ghcr.io.
+    3. Lastly you will need to Create a GitHub Personal Access Token. The MCP server can use many of the GitHub APIs, so enable the permissions that you feel comfortable granting your AI tools (to learn more about access tokens, please check out the documentation).
+Handling PATs Securely
+    1. 
+        ◦ 
+    • 
+GitHub Enterprise Server and Enterprise Cloud with data residency (ghe.com)
+The flag --gh-host and the environment variable GITHUB_HOST can be used to set the hostname for GitHub Enterprise Server or GitHub Enterprise Cloud with data residency.
+    • For GitHub Enterprise Server, prefix the hostname with the https:// URI scheme, as it otherwise defaults to http://, which GitHub Enterprise Server does not support.
+    • For GitHub Enterprise Cloud with data residency, use https://YOURSUBDOMAIN.ghe.com as the hostname.
+"github": {
+    "command": "docker",
+    "args": [
+    "run",
+    "-i",
+    "--rm",
+    "-e",
+    "GITHUB_PERSONAL_ACCESS_TOKEN",
+    "-e",
+    "GITHUB_HOST",
+    "ghcr.io/github/github-mcp-server"
+    ],
+    "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github_token}",
+        "GITHUB_HOST": "https://<your GHES or ghe.com domain name>"
+    }
+}
+
+Installation
+Install in GitHub Copilot on VS Code
+For quick installation, use one of the one-click install buttons above. Once you complete that flow, toggle Agent mode (located by the Copilot Chat text input) and the server will start.
+More about using MCP server tools in VS Code's agent mode documentation.
+Install in GitHub Copilot on other IDEs (JetBrains, Visual Studio, Eclipse, etc.)
+Add the following JSON block to your IDE's MCP settings.
+{
+  "mcp": {
+    "inputs": [
+      {
+        "type": "promptString",
+        "id": "github_token",
+        "description": "GitHub Personal Access Token",
+        "password": true
+      }
+    ],
+    "servers": {
+      "github": {
+        "command": "docker",
+        "args": [
+          "run",
+          "-i",
+          "--rm",
+          "-e",
+          "GITHUB_PERSONAL_ACCESS_TOKEN",
+          "ghcr.io/github/github-mcp-server"
+        ],
+        "env": {
+          "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github_token}"
+        }
+      }
+    }
+  }
+}
+
+Optionally, you can add a similar example (i.e. without the mcp key) to a file called .vscode/mcp.json in your workspace. This will allow you to share the configuration with other host applications that accept the same format.
+Example JSON block without the MCP key included
+Install in Other MCP Hosts
+For other MCP host applications, please refer to our installation guides:
+    • GitHub Copilot in other IDEs - Installation for JetBrains, Visual Studio, Eclipse, and Xcode with GitHub Copilot
+    • Claude Code & Claude Desktop - Installation guide for Claude Code and Claude Desktop
+    • Cursor - Installation guide for Cursor IDE
+    • Google Gemini CLI - Installation guide for Google Gemini CLI
+    • Windsurf - Installation guide for Windsurf IDE
+For a complete overview of all installation options, see our Installation Guides Index.
+Note: Any host application that supports local MCP servers should be able to access the local GitHub MCP server. However, the specific configuration process, syntax and stability of the integration will vary by host application. While many may follow a similar format to the examples above, this is not guaranteed. Please refer to your host application's documentation for the correct MCP configuration syntax and setup process.
+Build from source
+If you don't have Docker, you can use go build to build the binary in the cmd/github-mcp-server directory, and use the github-mcp-server stdio command with the GITHUB_PERSONAL_ACCESS_TOKEN environment variable set to your token. To specify the output location of the build, use the -o flag. You should configure your server to use the built executable as its command. For example:
+{
+  "mcp": {
+    "servers": {
+      "github": {
+        "command": "/path/to/github-mcp-server",
+        "args": ["stdio"],
+        "env": {
+          "GITHUB_PERSONAL_ACCESS_TOKEN": "<YOUR_TOKEN>"
+        }
+      }
+    }
+  }
+}
+
+Tool Configuration
+The GitHub MCP Server supports enabling or disabling specific groups of functionalities via the --toolsets flag. This allows you to control which GitHub API capabilities are available to your AI tools. Enabling only the toolsets that you need can help the LLM with tool choice and reduce the context size.
+Toolsets are not limited to Tools. Relevant MCP Resources and Prompts are also included where applicable.
+When no toolsets are specified, default toolsets are used.
+Specifying Toolsets
+To specify toolsets you want available to the LLM, you can pass an allow-list in two ways:
+    1. Using Command Line Argument:
+       github-mcp-server --toolsets repos,issues,pull_requests,actions,code_security
+       
+    2. Using Environment Variable:
+       GITHUB_TOOLSETS="repos,issues,pull_requests,actions,code_security" ./github-mcp-server
+       
+The environment variable GITHUB_TOOLSETS takes precedence over the command line argument if both are provided.
+Using Toolsets With Docker
+When using Docker, you can pass the toolsets as environment variables:
+docker run -i --rm \
+  -e GITHUB_PERSONAL_ACCESS_TOKEN=<your-token> \
+  -e GITHUB_TOOLSETS="repos,issues,pull_requests,actions,code_security,experiments" \
+  ghcr.io/github/github-mcp-server
+
+Special toolsets
+"all" toolset
+The special toolset all can be provided to enable all available toolsets regardless of any other configuration:
+./github-mcp-server --toolsets all
+
+Or using the environment variable:
+GITHUB_TOOLSETS="all" ./github-mcp-server
+
+"default" toolset
+The default toolset default is the configuration that gets passed to the server if no toolsets are specified.
+The default configuration is:
+    • context
+    • repos
+    • issues
+    • pull_requests
+    • users
+To keep the default configuration and add additional toolsets:
+GITHUB_TOOLSETS="default,stargazers" ./github-mcp-server
+
+Available Toolsets
+The following sets of tools are available:
+Toolset
+Description
+context
+Strongly recommended: Tools that provide context about the current user and GitHub context you are operating in
+actions
+GitHub Actions workflows and CI/CD operations
+code_security
+Code security related tools, such as GitHub Code Scanning
+dependabot
+Dependabot tools
+discussions
+GitHub Discussions related tools
+experiments
+Experimental features that are not considered stable yet
+gists
+GitHub Gist related tools
+issues
+GitHub Issues related tools
+labels
+GitHub Labels related tools
+notifications
+GitHub Notifications related tools
+orgs
+GitHub Organization related tools
+projects
+GitHub Projects related tools
+pull_requests
+GitHub Pull Request related tools
+repos
+GitHub Repository related tools
+secret_protection
+Secret protection related tools, such as GitHub Secret Scanning
+security_advisories
+Security advisories related tools
+stargazers
+GitHub Stargazers related tools
+users
+GitHub User related tools
+Additional Toolsets in Remote Github MCP Server
+Toolset
+Description
+copilot
+Copilot related tools (e.g. Copilot Coding Agent)
+copilot_spaces
+Copilot Spaces related tools
+github_support_docs_search
+Search docs to answer GitHub product and support questions
+Tools
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+    1. 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+    1. 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+        ◦ 
+Additional Tools in Remote Github MCP Server
+        ◦ 
+        ◦ 
+    • 
+        ◦ 
+Dynamic Tool Discovery
+Note: This feature is currently in beta and may not be available in all environments. Please test it out and let us know if you encounter any issues.
+Instead of starting with all tools enabled, you can turn on dynamic toolset discovery. Dynamic toolsets allow the MCP host to list and enable toolsets in response to a user prompt. This should help to avoid situations where the model gets confused by the sheer number of tools available.
+Using Dynamic Tool Discovery
+When using the binary, you can pass the --dynamic-toolsets flag.
+./github-mcp-server --dynamic-toolsets
+
+When using Docker, you can pass the toolsets as environment variables:
+docker run -i --rm \
+  -e GITHUB_PERSONAL_ACCESS_TOKEN=<your-token> \
+  -e GITHUB_DYNAMIC_TOOLSETS=1 \
+  ghcr.io/github/github-mcp-server
+
+Read-Only Mode
+To run the server in read-only mode, you can use the --read-only flag. This will only offer read-only tools, preventing any modifications to repositories, issues, pull requests, etc.
+./github-mcp-server --read-only
+
+When using Docker, you can pass the read-only mode as an environment variable:
+docker run -i --rm \
+  -e GITHUB_PERSONAL_ACCESS_TOKEN=<your-token> \
+  -e GITHUB_READ_ONLY=1 \
+  ghcr.io/github/github-mcp-server
+
+i18n / Overriding Descriptions
+The descriptions of the tools can be overridden by creating a github-mcp-server-config.json file in the same directory as the binary.
+The file should contain a JSON object with the tool names as keys and the new descriptions as values. For example:
+{
+  "TOOL_ADD_ISSUE_COMMENT_DESCRIPTION": "an alternative description",
+  "TOOL_CREATE_BRANCH_DESCRIPTION": "Create a new branch in a GitHub repository"
+}
+
+You can create an export of the current translations by running the binary with the --export-translations flag.
+This flag will preserve any translations/overrides you have made, while adding any new translations that have been added to the binary since the last time you exported.
+./github-mcp-server --export-translations
+cat github-mcp-server-config.json
+
+You can also use ENV vars to override the descriptions. The environment variable names are the same as the keys in the JSON file, prefixed with GITHUB_MCP_ and all uppercase.
+For example, to override the TOOL_ADD_ISSUE_COMMENT_DESCRIPTION tool, you can set the following environment variable:
+export GITHUB_MCP_TOOL_ADD_ISSUE_COMMENT_DESCRIPTION="an alternative description"
+
+Library Usage
+The exported Go API of this module should currently be considered unstable, and subject to breaking changes. In the future, we may offer stability; please file an issue if there is a use case where this would be valuable.
+License
+This project is licensed under the terms of the MIT open source license. Please refer to MIT for the full terms.
+URL:
+https://api.githubcopilot.com/mcp/
+Transport:
+sse
+
+
+GitHub MCP-Server
+Der GitHub MCP Server verbindet KI-Tools direkt mit der GitHub-Plattform. Dadurch können KI-Agenten, Assistenten und Chatbots Repositories und Codedateien lesen, Probleme und PRs verwalten, Code analysieren und Workflows automatisieren. Alles durch natürliche Sprachinteraktionen.
+Anwendungsfälle
+    • Repository-Verwaltung: Durchsuchen und fragen Sie Code ab, suchen Sie nach Dateien, analysieren Sie Commits und verstehen Sie die Projektstruktur in jedem Repository, auf das Sie Zugriff haben.
+    • Problem- und PR-Automatisierung: Erstellen, aktualisieren und verwalten Sie Probleme und Pull Requests. Lassen Sie sich von KI bei der Fehlersuche, der Überprüfung von Codeänderungen und der Pflege von Projektboards unterstützen.
+    • CI/CD- und Workflow-Intelligenz: Überwachen Sie GitHub Actions-Workflow-Läufe, analysieren Sie Build-Fehler, verwalten Sie Releases und erhalten Sie Einblicke in Ihre Entwicklungspipeline.
+    • Codeanalyse: Untersuchen Sie Sicherheitsbefunde, überprüfen Sie Dependabot-Warnungen, verstehen Sie Codemuster und erhalten Sie umfassende Einblicke in Ihre Codebasis.
+    • Teamzusammenarbeit: Greifen Sie auf Diskussionen zu, verwalten Sie Benachrichtigungen, analysieren Sie Teamaktivitäten und optimieren Sie Prozesse für Ihr Team.
+Entwickelt für Entwickler, die ihre KI-Tools mit dem Kontext und den Funktionen von GitHub verbinden möchten, von einfachen Abfragen in natürlicher Sprache bis hin zu komplexen Agent-Workflows mit mehreren Schritten.
+
+Remote-GitHub-MCP-Server
+ 
+Der Remote-GitHub-MCP-Server wird von GitHub gehostet und bietet die einfachste Methode für den Einstieg. Falls Ihr MCP-Host keine Remote-MCP-Server unterstützt, ist das kein Problem! Sie können stattdessen die lokale Version des GitHub-MCP-Servers verwenden .
+Voraussetzungen
+    1. Ein kompatibler MCP-Host mit Remote-Server-Unterstützung (VS Code 1.101+, Claude Desktop, Cursor, Windsurf usw.)
+    2. Alle anwendbaren Richtlinien sind aktiviert
+In VS Code installieren
+Für eine schnelle Installation verwenden Sie eine der oben stehenden Schaltflächen mit nur einem Klick. Sobald Sie diesen Vorgang abgeschlossen haben, aktivieren Sie den Agentenmodus (zu finden in der Texteingabe des Copilot-Chats), und der Server wird gestartet. Stellen Sie sicher, dass Sie VS Code 1.101 oder höher für Remote-MCP- und OAuth-Unterstützung verwenden.
+Alternativ können Sie VS Code manuell konfigurieren, indem Sie den entsprechenden JSON-Block aus den folgenden Beispielen auswählen und ihn Ihrer Hostkonfiguration hinzufügen:
+Verwenden von OAuth
+Verwenden eines GitHub PAT
+VS Code (Version 1.101 oder höher)
+{
+  "servers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    }
+  }
+}
+{
+  "servers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer ${input:github_mcp_pat}"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "github_mcp_pat",
+      "description": "GitHub Personal Access Token",
+      "password": true
+    }
+  ]
+}
+Auf anderen MCP-Hosts installieren
+    • GitHub Copilot in anderen IDEs – Installation für JetBrains, Visual Studio, Eclipse und Xcode mit GitHub Copilot
+    • Claude Applications – Installationsanleitung für Claude Web, Claude Desktop und Claude Code CLI
+    • Cursor - Installationsanleitung für Cursor IDE
+    • Windsurf - Installationsanleitung für Windsurf IDE
+Hinweis: Jede MCP-Hostanwendung muss eine GitHub-App oder OAuth-App konfigurieren, um den Remotezugriff über OAuth zu unterstützen. Jede Hostanwendung, die Remote-MCP-Server unterstützt, sollte den Remote-GitHub-Server mit PAT-Authentifizierung unterstützen. Konfigurationsdetails und Support-Level variieren je nach Host. Weitere Informationen finden Sie in der Dokumentation der Hostanwendung.
+Konfiguration
+Toolset-Konfiguration
+Ausführliche Informationen zur Remote-Server-Konfiguration, zu Toolsets, Headern und zur erweiterten Nutzung finden Sie in der Remote-Server-Dokumentation . Diese Datei enthält umfassende Anweisungen und Beispiele zum Verbinden, Anpassen und Installieren des Remote-GitHub-MCP-Servers in VS Code und anderen MCP-Hosts.
+Wenn keine Toolsets angegeben sind, werden Standard-Toolsets verwendet.
+Enterprise Cloud mit Datenresidenz (ghe.com)
+Auch GitHub Enterprise Cloud kann den Remote-Server nutzen.
+Beispiel für https://octocorp.ghe.com:
+{
+    ...
+    "proxima-github": {
+      "type": "http",
+      "url": "https://copilot-api.octocorp.ghe.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${input:github_mcp_pat}"
+      }
+    },
+    ...
+}
+GitHub Enterprise Server unterstützt kein Remote-Server-Hosting. Weitere Informationen finden Sie in der lokalen Serverkonfiguration unter GitHub Enterprise Server und Enterprise Cloud mit Datenresidenz (ghe.com) .
+
+Lokaler GitHub MCP-Server
+ 
+Voraussetzungen
+    1. Um den Server in einem Container auszuführen, muss Docker installiert sein.
+    2. Sobald Docker installiert ist, müssen Sie sicherstellen, dass Docker ausgeführt wird. Das Image ist öffentlich. Wenn beim Abrufen Fehler auftreten, ist Ihr Token möglicherweise abgelaufen und Sie müssen docker logout ghcr.io…
+    3. Zuletzt müssen Sie ein persönliches GitHub-Zugriffstoken erstellen . Der MCP-Server kann viele der GitHub-APIs verwenden. Aktivieren Sie daher die Berechtigungen, die Sie Ihren KI-Tools erteilen möchten (weitere Informationen zu Zugriffstoken finden Sie in der Dokumentation ).
+Sicherer Umgang mit PATs
+Umgebungsvariablen (empfohlen)
+So halten Sie Ihr GitHub PAT sicher und wiederverwendbar auf verschiedenen MCP-Hosts:
+    1. Speichern Sie Ihr PAT in Umgebungsvariablen
+       export GITHUB_PAT=your_token_here
+       Oder erstellen Sie eine .envDatei:
+       GITHUB_PAT=your_token_here
+    2. Schützen Sie Ihre .envDatei
+       # Add to .gitignore to prevent accidental commits
+       echo ".env" >> .gitignore
+    3. Verweisen Sie in Konfigurationen auf das Token
+       # CLI usage
+       claude mcp update github -e GITHUB_PERSONAL_ACCESS_TOKEN=$GITHUB_PAT
+       
+       # In config files (where supported)
+       "env": {
+         "GITHUB_PERSONAL_ACCESS_TOKEN": "$GITHUB_PAT"
+       }
+Hinweis : Die Unterstützung von Umgebungsvariablen variiert je nach Host-App und IDE. Einige Anwendungen (wie Windsurf) erfordern fest codierte Token in Konfigurationsdateien.
+Best Practices für die Token-Sicherheit
+    • Mindestumfang : Erteilen Sie nur die erforderlichen Berechtigungen
+        ◦ repo- Repository-Operationen
+        ◦ read:packages- Docker-Image-Zugriff
+        ◦ read:org- Zugriff auf das Organisationsteam
+    • Separate Token : Verwenden Sie unterschiedliche PATs für unterschiedliche Projekte/Umgebungen
+    • Regelmäßige Rotation : Token regelmäßig aktualisieren
+    • Niemals committen : Token aus der Versionskontrolle heraushalten
+    • Dateiberechtigungen : Beschränken Sie den Zugriff auf Konfigurationsdateien, die Token enthalten
+      chmod 600 ~/.your-app/config.json
+GitHub Enterprise Server und Enterprise Cloud mit Datenresidenz (ghe.com)
+Das Flag --gh-hostund die Umgebungsvariable GITHUB_HOSTkönnen verwendet werden, um den Hostnamen für GitHub Enterprise Server oder GitHub Enterprise Cloud mit Datenresidenz festzulegen.
+    • Stellen Sie dem Hostnamen für GitHub Enterprise Server das https://URI-Schema voran, da dieser sonst standardmäßig verwendet wird http://, was von GitHub Enterprise Server nicht unterstützt wird.
+    • Für GitHub Enterprise Cloud mit Datenresidenz https://YOURSUBDOMAIN.ghe.comals Hostnamen verwenden.
+"github": {
+    "command": "docker",
+    "args": [
+    "run",
+    "-i",
+    "--rm",
+    "-e",
+    "GITHUB_PERSONAL_ACCESS_TOKEN",
+    "-e",
+    "GITHUB_HOST",
+    "ghcr.io/github/github-mcp-server"
+    ],
+    "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github_token}",
+        "GITHUB_HOST": "https://<your GHES or ghe.com domain name>"
+    }
+}
+Installation
+Installieren Sie in GitHub Copilot auf VS Code
+Für eine schnelle Installation verwenden Sie eine der oben genannten Schaltflächen mit nur einem Klick. Sobald Sie diesen Vorgang abgeschlossen haben, schalten Sie den Agentenmodus um (zu finden in der Texteingabe des Copilot-Chats), und der Server wird gestartet.
+Weitere Informationen zur Verwendung von MCP-Servertools finden Sie in der Agentenmodus-Dokumentation von VS Code .
+Installieren Sie in GitHub Copilot auf anderen IDEs (JetBrains, Visual Studio, Eclipse usw.)
+Fügen Sie den MCP-Einstellungen Ihrer IDE den folgenden JSON-Block hinzu.
+{
+  "mcp": {
+    "inputs": [
+      {
+        "type": "promptString",
+        "id": "github_token",
+        "description": "GitHub Personal Access Token",
+        "password": true
+      }
+    ],
+    "servers": {
+      "github": {
+        "command": "docker",
+        "args": [
+          "run",
+          "-i",
+          "--rm",
+          "-e",
+          "GITHUB_PERSONAL_ACCESS_TOKEN",
+          "ghcr.io/github/github-mcp-server"
+        ],
+        "env": {
+          "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github_token}"
+        }
+      }
+    }
+  }
+}
+Optional können Sie ein ähnliches Beispiel (also ohne den mcp-Schlüssel) zu einer Datei hinzufügen , die .vscode/mcp.jsonin Ihrem Arbeitsbereich aufgerufen wird. Dadurch können Sie die Konfiguration mit anderen Hostanwendungen teilen, die dasselbe Format akzeptieren.
+Beispiel eines JSON-Blocks ohne den enthaltenen MCP-Schlüssel
+{
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "github_token",
+      "description": "GitHub Personal Access Token",
+      "password": true
+    }
+  ],
+  "servers": {
+    "github": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "ghcr.io/github/github-mcp-server"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github_token}"
+      }
+    }
+  }
+}
+Auf anderen MCP-Hosts installieren
+Informationen zu anderen MCP-Hostanwendungen finden Sie in unseren Installationshandbüchern:
+    • GitHub Copilot in anderen IDEs – Installation für JetBrains, Visual Studio, Eclipse und Xcode mit GitHub Copilot
+    • Claude Code & Claude Desktop – Installationsanleitung für Claude Code und Claude Desktop
+    • Cursor - Installationsanleitung für Cursor IDE
+    • Google Gemini CLI – Installationsanleitung für Google Gemini CLI
+    • Windsurf - Installationsanleitung für Windsurf IDE
+Eine vollständige Übersicht aller Installationsoptionen finden Sie in unserem Installationsanleitungsindex .
+Hinweis: Jede Hostanwendung, die lokale MCP-Server unterstützt, sollte auf den lokalen GitHub MCP-Server zugreifen können. Der spezifische Konfigurationsprozess, die Syntax und die Stabilität der Integration variieren jedoch je nach Hostanwendung. Obwohl viele Anwendungen einem ähnlichen Format wie die obigen Beispiele folgen, ist dies nicht garantiert. Informationen zur korrekten MCP-Konfigurationssyntax und zum Einrichtungsprozess finden Sie in der Dokumentation Ihrer Hostanwendung.
+Aus der Quelle erstellen
+Wenn Sie Docker nicht verwenden, können Sie go builddie Binärdatei im Verzeichnis erstellen cmd/github-mcp-serverund den github-mcp-server stdioBefehl mit der GITHUB_PERSONAL_ACCESS_TOKENUmgebungsvariable auf Ihr Token setzen. Um den Ausgabeort des Builds festzulegen, verwenden Sie das -oFlag. Konfigurieren Sie Ihren Server so, dass die erstellte ausführbare Datei als verwendet wird command. Beispiel:
+{
+  "mcp": {
+    "servers": {
+      "github": {
+        "command": "/path/to/github-mcp-server",
+        "args": ["stdio"],
+        "env": {
+          "GITHUB_PERSONAL_ACCESS_TOKEN": "<YOUR_TOKEN>"
+        }
+      }
+    }
+  }
+}
+Werkzeugkonfiguration
+Der GitHub MCP-Server unterstützt das Aktivieren oder Deaktivieren bestimmter Funktionsgruppen über das --toolsetsFlag. So können Sie steuern, welche GitHub-API-Funktionen für Ihre KI-Tools verfügbar sind. Die Aktivierung nur der benötigten Toolsets erleichtert dem LLM die Toolauswahl und reduziert die Kontextgröße.
+Toolsets sind nicht auf Tools beschränkt. Relevante MCP-Ressourcen und Eingabeaufforderungen sind gegebenenfalls ebenfalls enthalten.
+Wenn keine Toolsets angegeben sind, werden Standard-Toolsets verwendet.
+Festlegen von Toolsets
+Um die Toolsets anzugeben, die dem LLM zur Verfügung stehen sollen, können Sie eine Zulassungsliste auf zwei Arten übergeben:
+    1. Verwenden des Befehlszeilenarguments :
+       github-mcp-server --toolsets repos,issues,pull_requests,actions,code_security
+    2. Verwenden von Umgebungsvariablen :
+       GITHUB_TOOLSETS="repos,issues,pull_requests,actions,code_security" ./github-mcp-server
+Die Umgebungsvariable GITHUB_TOOLSETShat Vorrang vor dem Befehlszeilenargument, wenn beide angegeben sind.
+Verwenden von Toolsets mit Docker
+Wenn Sie Docker verwenden, können Sie die Toolsets als Umgebungsvariablen übergeben:
+docker run -i --rm \
+  -e GITHUB_PERSONAL_ACCESS_TOKEN=<your-token> \
+  -e GITHUB_TOOLSETS="repos,issues,pull_requests,actions,code_security,experiments" \
+  ghcr.io/github/github-mcp-server
+Spezialwerkzeugsätze
+"Alle"-Werkzeugsatz
+Das spezielle Toolset allkann bereitgestellt werden, um alle verfügbaren Toolsets unabhängig von anderen Konfigurationen zu aktivieren:
+./github-mcp-server --toolsets all
+Oder mithilfe der Umgebungsvariable:
+GITHUB_TOOLSETS="all" ./github-mcp-server
+"Standard"-Toolset
+Das Standard-Toolset defaultist die Konfiguration, die an den Server übergeben wird, wenn keine Toolsets angegeben sind.
+Die Standardkonfiguration ist:
+    • Kontext
+    • Repos
+    • Probleme
+    • Pull-Anfragen
+    • Benutzer
+So behalten Sie die Standardkonfiguration bei und fügen zusätzliche Toolsets hinzu:
+GITHUB_TOOLSETS="default,stargazers" ./github-mcp-server
+Verfügbare Toolsets
+Folgende Werkzeugsätze stehen zur Verfügung:
+Werkzeugsatz
+Beschreibung
+context
+Dringend empfohlen : Tools, die Kontext zum aktuellen Benutzer und dem GitHub-Kontext bereitstellen, in dem Sie arbeiten
+actions
+GitHub Actions-Workflows und CI/CD-Vorgänge
+code_security
+Tools zur Codesicherheit, wie z. B. GitHub Code Scanning
+dependabot
+Dependabot-Tools
+discussions
+GitHub-Diskussionen – zugehörige Tools
+experiments
+Experimentelle Funktionen, die noch nicht als stabil gelten
+gists
+GitHub Gist-bezogene Tools
+issues
+Tools im Zusammenhang mit GitHub Issues
+labels
+Tools im Zusammenhang mit GitHub Labels
+notifications
+Tools im Zusammenhang mit GitHub-Benachrichtigungen
+orgs
+Tools im Zusammenhang mit der GitHub-Organisation
+projects
+Tools im Zusammenhang mit GitHub-Projekten
+pull_requests
+Tools im Zusammenhang mit GitHub Pull Request
+repos
+Tools im Zusammenhang mit dem GitHub-Repository
+secret_protection
+Tools zum Schutz von Geheimnissen, wie z. B. GitHub Secret Scanning
+security_advisories
+Tools im Zusammenhang mit Sicherheitshinweisen
+stargazers
+GitHub Stargazers-bezogene Tools
+users
+GitHub-Benutzerbezogene Tools
+Zusätzliche Toolsets im Remote Github MCP Server
+Werkzeugsatz
+Beschreibung
+copilot
+Copilot-bezogene Tools (z. B. Copilot Coding Agent)
+copilot_spaces
+Copilot Spaces-bezogene Tools
+github_support_docs_search
+Durchsuchen Sie Dokumente, um Fragen zu GitHub-Produkten und -Support zu beantworten
+Werkzeuge
+Aktionen
+    • cancel_workflow_run – Workflow-Ausführung abbrechen
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ run_id: Die eindeutige Kennung des Workflow-Laufs (Nummer, erforderlich)
+    • delete_workflow_run_logs – Workflow-Protokolle löschen
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ run_id: Die eindeutige Kennung des Workflow-Laufs (Nummer, erforderlich)
+    • download_workflow_run_artifact – Workflow-Artefakt herunterladen
+        ◦ artifact_id: Die eindeutige Kennung des Artefakts (Nummer, erforderlich)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • get_job_logs - Jobprotokolle abrufen
+        ◦ failed_only: Wenn „true“, werden Protokolle für alle fehlgeschlagenen Jobs in run_id abgerufen (boolesch, optional)
+        ◦ job_id: Die eindeutige Kennung des Workflow-Jobs (erforderlich für einzelne Job-Protokolle) (Zahl, optional)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ return_content: Gibt den tatsächlichen Protokollinhalt anstelle von URLs zurück (boolesch, optional)
+        ◦ run_id: Workflow-Ausführungs-ID (erforderlich bei Verwendung von failed_only) (Zahl, optional)
+        ◦ tail_lines: Anzahl der Zeilen, die vom Ende des Protokolls zurückgegeben werden sollen (Zahl, optional)
+    • get_workflow_run - Workflow-Ausführung abrufen
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ run_id: Die eindeutige Kennung des Workflow-Laufs (Nummer, erforderlich)
+    • get_workflow_run_logs – Workflow-Ausführungsprotokolle abrufen
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ run_id: Die eindeutige Kennung des Workflow-Laufs (Nummer, erforderlich)
+    • get_workflow_run_usage – Workflow-Nutzung abrufen
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ run_id: Die eindeutige Kennung des Workflow-Laufs (Nummer, erforderlich)
+    • list_workflow_jobs – Workflow-Jobs auflisten
+        ◦ filter: Filtert Jobs nach ihrem completed_at-Zeitstempel (Zeichenfolge, optional)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ run_id: Die eindeutige Kennung des Workflow-Laufs (Nummer, erforderlich)
+    • list_workflow_run_artifacts – Workflow-Artefakte auflisten
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ run_id: Die eindeutige Kennung des Workflow-Laufs (Nummer, erforderlich)
+    • list_workflow_runs – Workflow-Ausführungen auflisten
+        ◦ actor: Gibt die Workflow-Ausführungen einer Person zurück. Verwenden Sie die Anmeldung des Benutzers, der den Workflow-Ausführung erstellt hat. (Zeichenfolge, optional)
+        ◦ branch: Gibt die mit einem Zweig verknüpften Workflow-Ausführungen zurück. Verwenden Sie den Namen des Zweigs. (Zeichenfolge, optional)
+        ◦ event: Gibt Workflow-Ausführungen für einen bestimmten Ereignistyp zurück (Zeichenfolge, optional)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ status: Gibt Workflow-Läufe mit dem Prüflaufstatus zurück (Zeichenfolge, optional)
+        ◦ workflow_id: Die Workflow-ID oder der Workflow-Dateiname (Zeichenfolge, erforderlich)
+    • list_workflows – Workflows auflisten
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • rerun_failed_jobs – Fehlgeschlagene Jobs erneut ausführen
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ run_id: Die eindeutige Kennung des Workflow-Laufs (Nummer, erforderlich)
+    • rerun_workflow_run – Workflow-Lauf erneut ausführen
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ run_id: Die eindeutige Kennung des Workflow-Laufs (Nummer, erforderlich)
+    • run_workflow - Workflow ausführen
+        ◦ inputs: Eingaben, die der Workflow akzeptiert (Objekt, optional)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ ref: Die Git-Referenz für den Workflow. Die Referenz kann ein Branch- oder Tag-Name sein. (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ workflow_id: Die Workflow-ID (numerisch) oder der Workflow-Dateiname (z. B. main.yml, ci.yaml) (Zeichenfolge, erforderlich)
+Code-Sicherheit
+    • get_code_scanning_alarm - Code-Scan-Alarm erhalten
+        ◦ alertNumber: Die Nummer der Warnung. (Nummer, erforderlich)
+        ◦ owner: Der Eigentümer des Repository. (Zeichenfolge, erforderlich)
+        ◦ repo: Der Name des Repositorys. (Zeichenfolge, erforderlich)
+    • list_code_scanning_alerts – Listet Code-Scan-Warnungen auf
+        ◦ owner: Der Eigentümer des Repository. (Zeichenfolge, erforderlich)
+        ◦ ref: Die Git-Referenz für die Ergebnisse, die Sie auflisten möchten. (Zeichenfolge, optional)
+        ◦ repo: Der Name des Repositorys. (Zeichenfolge, erforderlich)
+        ◦ severity: Filtern Sie Code-Scan-Warnungen nach Schweregrad (Zeichenfolge, optional)
+        ◦ state: Filtern Sie Code-Scan-Warnungen nach Status. Standardmäßig geöffnet (Zeichenfolge, optional).
+        ◦ tool_name: Der Name des Tools, das zum Scannen des Codes verwendet wird. (Zeichenfolge, optional)
+Kontext
+    • get_me - Mein Benutzerprofil abrufen
+        ◦ Keine Parameter erforderlich
+    • get_team_members - Teammitglieder abrufen
+        ◦ org: Organisations-Login (Eigentümer), der das Team enthält. (Zeichenfolge, erforderlich)
+        ◦ team_slug: Team-Slug (Zeichenfolge, erforderlich)
+    • get_teams - Teams abrufen
+        ◦ user: Benutzername, für den Teams abgerufen werden sollen. Falls nicht angegeben, wird der authentifizierte Benutzer verwendet. (Zeichenfolge, optional)
+Dependabot
+    • get_dependabot_alert - Dependabot-Alarm erhalten
+        ◦ alertNumber: Die Nummer der Warnung. (Nummer, erforderlich)
+        ◦ owner: Der Eigentümer des Repository. (Zeichenfolge, erforderlich)
+        ◦ repo: Der Name des Repositorys. (Zeichenfolge, erforderlich)
+    • list_dependabot_alerts – Liste der Dependabot-Warnungen
+        ◦ owner: Der Eigentümer des Repository. (Zeichenfolge, erforderlich)
+        ◦ repo: Der Name des Repositorys. (Zeichenfolge, erforderlich)
+        ◦ severity: Filtern Sie Dependabot-Warnungen nach Schweregrad (Zeichenfolge, optional)
+        ◦ state: Filtern Sie Dependabot-Warnungen nach Status. Standardmäßig geöffnet (Zeichenfolge, optional).
+Diskussionen
+    • get_discussion - Diskussion abrufen
+        ◦ discussionNumber: Diskussionsnummer (Nummer, erforderlich)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • get_discussion_comments - Diskussionskommentare abrufen
+        ◦ after: Cursor für die Seitennummerierung. Verwenden Sie den Endcursor aus den PageInfos der vorherigen Seite für GraphQL-APIs. (Zeichenfolge, optional)
+        ◦ discussionNumber: Diskussionsnummer (Nummer, erforderlich)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • list_discussion_categories – Diskussionskategorien auflisten
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Name des Repositorys. Falls nicht angegeben, werden Diskussionskategorien auf Organisationsebene abgefragt. (Zeichenfolge, optional)
+    • list_discussions – Listendiskussionen
+        ◦ after: Cursor für die Seitennummerierung. Verwenden Sie den Endcursor aus den PageInfos der vorherigen Seite für GraphQL-APIs. (Zeichenfolge, optional)
+        ◦ category: Optionaler Filter nach Diskussionskategorie-ID. Falls angegeben, werden nur Diskussionen dieser Kategorie aufgelistet. (Zeichenfolge, optional)
+        ◦ direction: Bestellrichtung. (Zeichenfolge, optional)
+        ◦ orderBy: Diskussionen nach Fachgebiet sortieren. Falls angegeben, muss auch die „Richtung“ angegeben werden. (Zeichenfolge, optional)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ repo: Name des Repositorys. Wenn nicht angegeben, werden Diskussionen auf Organisationsebene abgefragt. (Zeichenfolge, optional)
+Kernaussagen
+    • create_gist - Gist erstellen
+        ◦ content: Inhalt für die einfache Erstellung einer einzelnen Gist-Datei (Zeichenfolge, erforderlich)
+        ◦ description: Beschreibung des Kerns (Zeichenfolge, optional)
+        ◦ filename: Dateiname für die einfache Erstellung einer einzelnen Gist-Datei (Zeichenfolge, erforderlich)
+        ◦ public: Ob der Kern öffentlich ist (boolesch, optional)
+    • list_gists – Gists auflisten
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ since: Nur Gists, die nach diesem Zeitpunkt aktualisiert wurden (ISO 8601-Zeitstempel) (Zeichenfolge, optional)
+        ◦ username: GitHub-Benutzername (bei Gists authentifizierter Benutzer weglassen) (Zeichenfolge, optional)
+    • update_gist – Gist aktualisieren
+        ◦ content: Inhalt für die Datei (Zeichenfolge, erforderlich)
+        ◦ description: Aktualisierte Beschreibung des Kerns (Zeichenfolge, optional)
+        ◦ filename: Zu aktualisierender oder zu erstellender Dateiname (Zeichenfolge, erforderlich)
+        ◦ gist_id: ID des zu aktualisierenden Gist (Zeichenfolge, erforderlich)
+Probleme
+    • add_issue_comment – ​​Kommentar zum Problem hinzufügen
+        ◦ body: Kommentarinhalt (Zeichenfolge, erforderlich)
+        ◦ issue_number: Nummer des zu kommentierenden Problems (Nummer, erforderlich)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • assign_copilot_to_issue – Copilot dem Problem zuweisen
+        ◦ issueNumber: Ausgabenummer (Nummer, erforderlich)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • get_label – Holen Sie sich ein bestimmtes Label aus einem Repository.
+        ◦ name: Bezeichnungsname. (Zeichenfolge, erforderlich)
+        ◦ owner: Repository-Eigentümer (Benutzername oder Organisationsname) (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • issue_read – Problemdetails abrufen
+        ◦ issue_number: Die Nummer der Ausgabe (Nummer, erforderlich)
+        ◦ method: Der Lesevorgang, der für ein einzelnes Problem ausgeführt werden soll. Optionen sind:
+    1. get – Erhalten Sie Details zu einem bestimmten Problem.
+    2. get_comments – Problemkommentare abrufen.
+    3. get_sub_issues – Unterprobleme des Problems abrufen.
+    4. get_labels – Ruft die dem Problem zugewiesenen Labels ab. (Zeichenfolge, erforderlich)
+    • owner: Der Eigentümer des Repositorys (Zeichenfolge, erforderlich)
+    • page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+    • perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+    • repo: Der Name des Repositorys (Zeichenfolge, erforderlich)
+    • issue_write – Problem erstellen oder aktualisieren.
+        ◦ assignees: Benutzernamen, die diesem Problem zugewiesen werden sollen (string[], optional)
+        ◦ body: Inhalt des Ausgabetexts (Zeichenfolge, optional)
+        ◦ duplicate_of: Nummer des Problems, von dem dieses Problem ein Duplikat ist. Wird nur verwendet, wenn state_reason „Duplikat“ ist. (Nummer, optional)
+        ◦ issue_number: Zu aktualisierende Problemnummer (Nummer, optional)
+        ◦ labels: Auf dieses Problem anzuwendende Beschriftungen (string[], optional)
+        ◦ method: Schreibvorgang, der für ein einzelnes Problem ausgeführt werden soll. Optionen sind:
+    • „Erstellen“ – erstellt ein neues Problem.
+    • „Update“ – aktualisiert ein vorhandenes Problem. (Zeichenfolge, erforderlich)
+        ◦ milestone: Meilensteinnummer (Zahl, optional)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ state: Neuer Status (Zeichenfolge, optional)
+        ◦ state_reason: Grund für die Statusänderung. Wird ignoriert, sofern der Status nicht geändert wird. (Zeichenfolge, optional)
+        ◦ title: Titel des Problems (Zeichenfolge, optional)
+        ◦ type: Art dieses Problems (Zeichenfolge, optional)
+    • list_issue_types – Liste der verfügbaren Problemtypen
+        ◦ owner: Die Organisation, die Eigentümer des Repositorys ist (Zeichenfolge, erforderlich)
+    • list_issues – Probleme auflisten
+        ◦ after: Cursor für die Seitennummerierung. Verwenden Sie den Endcursor aus den PageInfos der vorherigen Seite für GraphQL-APIs. (Zeichenfolge, optional)
+        ◦ direction: Bestellrichtung. Falls angegeben, muss auch „orderBy“ angegeben werden. (Zeichenfolge, optional)
+        ◦ labels: Filtern nach Labels (string[], optional)
+        ◦ orderBy: Sortiert die Ausgaben nach Feld. Falls angegeben, muss auch die „Richtung“ angegeben werden. (Zeichenfolge, optional)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ since: Filtern nach Datum (ISO 8601-Zeitstempel) (Zeichenfolge, optional)
+        ◦ state: Filtern nach Status, standardmäßig werden sowohl offene als auch geschlossene Probleme zurückgegeben, wenn nicht angegeben (Zeichenfolge, optional)
+    • search_issues – Probleme suchen
+        ◦ order: Sortierreihenfolge (Zeichenfolge, optional)
+        ◦ owner: Optionaler Repository-Besitzer. Falls mit dem Repository angegeben, werden nur Probleme für dieses Repository aufgelistet. (Zeichenfolge, optional)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ query: Suchanfrage mit der Suchsyntax für GitHub-Probleme (Zeichenfolge, erforderlich)
+        ◦ repo: Optionaler Repository-Name. Wenn der Besitzer angegeben ist, werden nur Probleme für dieses Repository aufgelistet. (Zeichenfolge, optional)
+        ◦ sort: Sortiert das Feld nach der Anzahl der Übereinstimmungen der Kategorien, standardmäßig wird die beste Übereinstimmung verwendet (Zeichenfolge, optional)
+    • sub_issue_write – Unterproblem ändern
+        ◦ after_id: Die ID des Unterproblems, nach dem Priorität eingeräumt werden soll (es muss entweder after_id ODER before_id angegeben werden) (Zahl, optional)
+        ◦ before_id: Die ID des Unterproblems, das vor der Priorisierung priorisiert werden soll (es muss entweder after_id ODER before_id angegeben werden) (Zahl, optional)
+        ◦ issue_number: Die Nummer des übergeordneten Problems (Nummer, erforderlich)
+        ◦ method: Die für ein einzelnes Unterproblem auszuführende Aktion. Optionen sind:
+    • „Hinzufügen“ – Fügen Sie einem übergeordneten Problem in einem GitHub-Repository ein Unterproblem hinzu.
+    • „Entfernen“ – Entfernen Sie ein Unterproblem aus einem übergeordneten Problem in einem GitHub-Repository.
+    • „reprioritize“ – Ändert die Reihenfolge der Unterprobleme innerhalb eines übergeordneten Problems in einem GitHub-Repository. Verwenden Sie entweder „after_id“ oder „before_id“, um die neue Position anzugeben. (Zeichenfolge, erforderlich)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ replace_parent: Wenn „true“, wird das aktuelle übergeordnete Problem des Unterproblems ersetzt. Nur mit der Methode „add“ verwenden. (Boolesch, optional)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ sub_issue_id: Die ID des hinzuzufügenden Unterproblems. ID ist nicht identisch mit der Problemnummer (Nummer, erforderlich)
+Labels
+    • get_label – Holen Sie sich ein bestimmtes Label aus einem Repository.
+        ◦ name: Bezeichnungsname. (Zeichenfolge, erforderlich)
+        ◦ owner: Repository-Eigentümer (Benutzername oder Organisationsname) (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • label_write – Schreibvorgänge für Repository-Beschriftungen.
+        ◦ color: Beschriftungsfarbe als 6-stelliger Hexadezimalcode ohne Präfix „#“ (z. B. „f29513“). Erforderlich für „Erstellen“, optional für „Aktualisieren“. (Zeichenfolge, optional)
+        ◦ description: Beschreibungstext des Labels. Optional für „Erstellen“ und „Aktualisieren“. (Zeichenfolge, optional)
+        ◦ method: Auszuführende Operation: „Erstellen“, „Aktualisieren“ oder „Löschen“ (Zeichenfolge, erforderlich)
+        ◦ name: Bezeichnungsname – für alle Vorgänge erforderlich (Zeichenfolge, erforderlich)
+        ◦ new_name: Neuer Name für das Label (wird nur mit der Methode „Update“ zum Umbenennen verwendet) (Zeichenfolge, optional)
+        ◦ owner: Repository-Eigentümer (Benutzername oder Organisationsname) (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • list_label – Etiketten aus einem Repository auflisten
+        ◦ owner: Repository-Eigentümer (Benutzername oder Organisationsname) – für alle Vorgänge erforderlich (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name – für alle Vorgänge erforderlich (Zeichenfolge, erforderlich)
+Benachrichtigungen
+    • dismiss_notification – Benachrichtigung verwerfen
+        ◦ state: Der neue Status der Benachrichtigung (gelesen/erledigt) (Zeichenfolge, optional)
+        ◦ threadID: Die ID des Benachrichtigungsthreads (Zeichenfolge, erforderlich)
+    • get_notification_details - Benachrichtigungsdetails abrufen
+        ◦ notificationID: Die ID der Benachrichtigung (Zeichenfolge, erforderlich)
+    • list_notifications – Benachrichtigungen auflisten
+        ◦ before: Nur Benachrichtigungen anzeigen, die vor der angegebenen Zeit aktualisiert wurden (ISO 8601-Format) (Zeichenfolge, optional)
+        ◦ filter: Filtern Sie Benachrichtigungen nach Standard, sofern nicht anders angegeben. Gelesene Benachrichtigungen sind Benachrichtigungen, die vom Benutzer bereits bestätigt wurden. Teilnehmende Benachrichtigungen sind Benachrichtigungen, an denen der Benutzer direkt beteiligt ist, z. B. Probleme oder Pull Requests, die er kommentiert oder erstellt hat. (Zeichenfolge, optional)
+        ◦ owner: Optionaler Repository-Besitzer. Falls mit Repo angegeben, werden nur Benachrichtigungen für dieses Repository aufgelistet. (Zeichenfolge, optional)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ repo: Optionaler Repository-Name. Wenn der Besitzer angegeben ist, werden nur Benachrichtigungen für dieses Repository aufgelistet. (Zeichenfolge, optional)
+        ◦ since: Nur Benachrichtigungen anzeigen, die nach der angegebenen Zeit aktualisiert wurden (ISO 8601-Format) (Zeichenfolge, optional)
+    • manage_notification_subscription – Benachrichtigungsabonnement verwalten
+        ◦ action: Auszuführende Aktion: Ignorieren, Beobachten oder Löschen des Benachrichtigungsabonnements. (Zeichenfolge, erforderlich)
+        ◦ notificationID: Die ID des Benachrichtigungsthreads. (Zeichenfolge, erforderlich)
+    • manage_repository_notification_subscription – Repository-Benachrichtigungsabonnement verwalten
+        ◦ action: Auszuführende Aktion: Ignorieren, Beobachten oder Löschen des Repository-Benachrichtigungsabonnements. (Zeichenfolge, erforderlich)
+        ◦ owner: Der Kontoinhaber des Repositorys. (Zeichenfolge, erforderlich)
+        ◦ repo: Der Name des Repositorys. (Zeichenfolge, erforderlich)
+    • mark_all_notifications_read – Alle Benachrichtigungen als gelesen markieren
+        ◦ lastReadAt: Beschreibt den letzten Zeitpunkt, an dem Benachrichtigungen geprüft wurden (optional). Standard: Jetzt (Zeichenfolge, optional)
+        ◦ owner: Optionaler Repository-Besitzer. Wenn mit dem Repository angegeben, werden nur Benachrichtigungen für dieses Repository als gelesen markiert. (Zeichenfolge, optional)
+        ◦ repo: Optionaler Repository-Name. Wenn der Besitzer angegeben ist, werden nur Benachrichtigungen für dieses Repository als gelesen markiert. (Zeichenfolge, optional)
+Organisationen
+    • search_orgs – Organisationen suchen
+        ◦ order: Sortierreihenfolge (Zeichenfolge, optional)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ query: Suchabfrage für Organisationen. Beispiele: „Microsoft“, „Standort: Kalifornien“, „Erstellt:>=2025-01-01“. Die Suche wird automatisch auf „Typ: Organisation“ beschränkt. (Zeichenfolge, erforderlich)
+        ◦ sort: Feld nach Kategorie sortieren (Zeichenfolge, optional)
+Projekte
+    • add_project_item – Projektelement hinzufügen
+        ◦ item_id: Die numerische ID des Problems oder Pull Requests, das dem Projekt hinzugefügt werden soll. (Zahl, erforderlich)
+        ◦ item_type: Der Typ des Elements, entweder Problem oder Pull_Request. (Zeichenfolge, erforderlich)
+        ◦ owner: Wenn owner_type == user, ist dies der Handle für das GitHub-Benutzerkonto. Wenn owner_type == org, ist dies der Name der Organisation. Der Name ist nicht groß-/kleinschreibungsabhängig. (Zeichenfolge, erforderlich)
+        ◦ owner_type: Eigentümertyp (Zeichenfolge, erforderlich)
+        ◦ project_number: Die Nummer des Projekts. (Nummer, erforderlich)
+    • delete_project_item – Projektelement löschen
+        ◦ item_id: Die interne Projektelement-ID, die aus dem Projekt gelöscht werden soll (nicht die Problem- oder Pull-Request-ID). (Zahl, erforderlich)
+        ◦ owner: Wenn owner_type == user, ist dies der Handle für das GitHub-Benutzerkonto. Wenn owner_type == org, ist dies der Name der Organisation. Der Name ist nicht groß-/kleinschreibungsabhängig. (Zeichenfolge, erforderlich)
+        ◦ owner_type: Eigentümertyp (Zeichenfolge, erforderlich)
+        ◦ project_number: Die Nummer des Projekts. (Nummer, erforderlich)
+    • get_project - Projekt abrufen
+        ◦ owner: Wenn owner_type == user, ist dies der Handle für das GitHub-Benutzerkonto. Wenn owner_type == org, ist dies der Name der Organisation. Der Name ist nicht groß-/kleinschreibungsabhängig. (Zeichenfolge, erforderlich)
+        ◦ owner_type: Eigentümertyp (Zeichenfolge, erforderlich)
+        ◦ project_number: Die Nummer des Projekts (Nummer, erforderlich)
+    • get_project_field - Projektfeld abrufen
+        ◦ field_id: Die ID des Feldes. (Zahl, erforderlich)
+        ◦ owner: Wenn owner_type == user, ist dies der Handle für das GitHub-Benutzerkonto. Wenn owner_type == org, ist dies der Name der Organisation. Der Name ist nicht groß-/kleinschreibungsabhängig. (Zeichenfolge, erforderlich)
+        ◦ owner_type: Eigentümertyp (Zeichenfolge, erforderlich)
+        ◦ project_number: Die Nummer des Projekts. (Nummer, erforderlich)
+    • get_project_item - Projektelement abrufen
+        ◦ fields: Spezifische Liste von Feld-IDs, die in die Antwort aufgenommen werden sollen (z. B. ["102589", "985201", "169875"]). Wenn nicht angegeben, wird nur das Titelfeld aufgenommen. (string[], optional)
+        ◦ item_id: Die ID des Artikels. (Nummer, erforderlich)
+        ◦ owner: Wenn owner_type == user, ist dies der Handle für das GitHub-Benutzerkonto. Wenn owner_type == org, ist dies der Name der Organisation. Der Name ist nicht groß-/kleinschreibungsabhängig. (Zeichenfolge, erforderlich)
+        ◦ owner_type: Eigentümertyp (Zeichenfolge, erforderlich)
+        ◦ project_number: Die Nummer des Projekts. (Nummer, erforderlich)
+    • list_project_fields – Projektfelder auflisten
+        ◦ owner: Wenn owner_type == user, ist dies der Handle für das GitHub-Benutzerkonto. Wenn owner_type == org, ist dies der Name der Organisation. Der Name ist nicht groß-/kleinschreibungsabhängig. (Zeichenfolge, erforderlich)
+        ◦ owner_type: Eigentümertyp (Zeichenfolge, erforderlich)
+        ◦ per_page: Anzahl der Ergebnisse pro Seite (max. 100, Standard: 30) (Anzahl, optional)
+        ◦ project_number: Die Nummer des Projekts. (Nummer, erforderlich)
+    • list_project_items – Projektelemente auflisten
+        ◦ fields: Spezifische Liste von Feld-IDs, die in die Antwort aufgenommen werden sollen (z. B. ["102589", "985201", "169875"]). Wenn nicht angegeben, wird nur das Titelfeld aufgenommen. (string[], optional)
+        ◦ owner: Wenn owner_type == user, ist dies der Handle für das GitHub-Benutzerkonto. Wenn owner_type == org, ist dies der Name der Organisation. Der Name ist nicht groß-/kleinschreibungsabhängig. (Zeichenfolge, erforderlich)
+        ◦ owner_type: Eigentümertyp (Zeichenfolge, erforderlich)
+        ◦ per_page: Anzahl der Ergebnisse pro Seite (max. 100, Standard: 30) (Anzahl, optional)
+        ◦ project_number: Die Nummer des Projekts. (Nummer, erforderlich)
+        ◦ query: Suchanfrage zum Filtern von Elementen (Zeichenfolge, optional)
+    • list_projects – Projekte auflisten
+        ◦ owner: Wenn owner_type == user, ist dies der Handle für das GitHub-Benutzerkonto. Wenn owner_type == org, ist dies der Name der Organisation. Der Name ist nicht groß-/kleinschreibungsabhängig. (Zeichenfolge, erforderlich)
+        ◦ owner_type: Eigentümertyp (Zeichenfolge, erforderlich)
+        ◦ per_page: Anzahl der Ergebnisse pro Seite (max. 100, Standard: 30) (Anzahl, optional)
+        ◦ query: Projekte nach einer Suchanfrage filtern (entspricht Titel und Beschreibung) (Zeichenfolge, optional)
+    • update_project_item – Projektelement aktualisieren
+        ◦ item_id: Die eindeutige Kennung des Projektelements. Dies ist nicht die Issue- oder Pull-Request-ID. (Zahl, erforderlich)
+        ◦ owner: Wenn owner_type == user, ist dies der Handle für das GitHub-Benutzerkonto. Wenn owner_type == org, ist dies der Name der Organisation. Der Name ist nicht groß-/kleinschreibungsabhängig. (Zeichenfolge, erforderlich)
+        ◦ owner_type: Eigentümertyp (Zeichenfolge, erforderlich)
+        ◦ project_number: Die Nummer des Projekts. (Nummer, erforderlich)
+        ◦ updated_field: Objekt bestehend aus der ID des zu aktualisierenden Projektfelds und dem neuen Wert für das Feld. Um das Feld zu löschen, setzen Sie den Wert auf null. Beispiel: {"id": 123456, "value": "New Value"} (Objekt, erforderlich)
+Pull-Anfragen
+    • add_comment_to_pending_review – Fügen Sie einen Überprüfungskommentar zur letzten ausstehenden Pull-Request-Überprüfung des Anforderers hinzu
+        ◦ body: Der Text des Bewertungskommentars (Zeichenfolge, erforderlich)
+        ◦ line: Die Zeile des Blobs im Pull Request-Diff, auf die sich der Kommentar bezieht. Bei mehrzeiligen Kommentaren die letzte Zeile des Bereichs (Zahl, optional).
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ path: Der relative Pfad zur Datei, die einen Kommentar erfordert (Zeichenfolge, erforderlich)
+        ◦ pullNumber: Pull-Request-Nummer (Nummer, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ side: Die Seite des Diffs, die kommentiert werden soll. LINKS gibt den vorherigen Zustand an, RECHTS den neuen Zustand (Zeichenfolge, optional)
+        ◦ startLine: Bei mehrzeiligen Kommentaren die erste Zeile des Bereichs, auf den sich der Kommentar bezieht (Zahl, optional)
+        ◦ startSide: Bei mehrzeiligen Kommentaren die Startseite des Diffs, auf die sich der Kommentar bezieht. LINKS gibt den vorherigen Zustand an, RECHTS den neuen Zustand (Zeichenfolge, optional)
+        ◦ subjectType: Die Ebene, auf die der Kommentar abzielt (Zeichenfolge, erforderlich)
+    • create_pull_request – Neue Pull-Anfrage öffnen
+        ◦ base: Zweig, in den zusammengeführt werden soll (Zeichenfolge, erforderlich)
+        ◦ body: PR-Beschreibung (Zeichenfolge, optional)
+        ◦ draft: Als PR-Entwurf erstellen (boolesch, optional)
+        ◦ head: Zweig mit Änderungen (Zeichenfolge, erforderlich)
+        ◦ maintainer_can_modify: Bearbeitungen durch den Betreuer zulassen (boolesch, optional)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ title: PR-Titel (Zeichenfolge, erforderlich)
+    • list_pull_requests – Pull-Anfragen auflisten
+        ◦ base: Filtern nach Basiszweig (Zeichenfolge, optional)
+        ◦ direction: Sortierrichtung (Zeichenfolge, optional)
+        ◦ head: Filtern nach Hauptbenutzer/Organisation und Zweigstelle (Zeichenfolge, optional)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ sort: Sortieren nach (Zeichenfolge, optional)
+        ◦ state: Filtern nach Status (Zeichenfolge, optional)
+    • merge_pull_request – Pull-Anfrage zusammenführen
+        ◦ commit_message: Zusätzliche Details zum Merge-Commit (Zeichenfolge, optional)
+        ◦ commit_title: Titel für Merge-Commit (Zeichenfolge, optional)
+        ◦ merge_method: Merge-Methode (Zeichenfolge, optional)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ pullNumber: Pull-Request-Nummer (Nummer, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • pull_request_read – Details zu einem einzelnen Pull Request abrufen
+        ◦ method: Aktion zum Angeben, welche Pull-Request-Daten von GitHub abgerufen werden müssen. Mögliche Optionen:
+    1. get – Details zu einer bestimmten Pull-Anfrage abrufen.
+    2. get_diff – Ruft den Diff einer Pull-Anfrage ab.
+    3. get_status – Ruft den Status eines Head-Commits in einem Pull Request ab. Dies spiegelt den Status von Builds und Prüfungen wider.
+    4. get_files – Ruft die Liste der in einer Pull-Anfrage geänderten Dateien ab. Verwenden Sie diese Option mit Paginierungsparametern, um die Anzahl der zurückgegebenen Ergebnisse zu steuern.
+    5. get_review_comments – Ruft die Review-Kommentare zu einem Pull Request ab. Es handelt sich um Kommentare zu einem Teil des Unified Diff während einer Pull Request-Überprüfung. Verwenden Sie diese Option mit Paginierungsparametern, um die Anzahl der zurückgegebenen Ergebnisse zu steuern.
+    6. get_reviews – Erhalten Sie die Bewertungen zu einem Pull Request. Wenn Sie nach Bewertungskommentaren gefragt werden, verwenden Sie die Methode get_review_comments.
+    7. get_comments – Ruft Kommentare zu einem Pull Request ab. Verwenden Sie diese Option, wenn der Benutzer keine expliziten Review-Kommentare wünscht. Verwenden Sie diese Option mit Paginierungsparametern, um die Anzahl der zurückgegebenen Ergebnisse zu steuern. (Zeichenfolge, erforderlich)
+    • owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+    • page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+    • perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+    • pullNumber: Pull-Request-Nummer (Nummer, erforderlich)
+    • repo: Repository-Name (Zeichenfolge, erforderlich)
+    • pull_request_review_write – Schreibvorgänge (Erstellen, Senden, Löschen) bei Pull-Request-Überprüfungen.
+        ◦ body: Kommentartext überprüfen (Zeichenfolge, optional)
+        ◦ commitID: SHA des Commits zur Überprüfung (Zeichenfolge, optional)
+        ◦ event: Überprüfen Sie die auszuführende Aktion. (Zeichenfolge, optional)
+        ◦ method: Der Schreibvorgang, der bei der Pull-Request-Überprüfung ausgeführt werden soll. (Zeichenfolge, erforderlich)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ pullNumber: Pull-Request-Nummer (Nummer, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • request_copilot_review – Copilot-Bewertung anfordern
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ pullNumber: Pull-Request-Nummer (Nummer, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • search_pull_requests – Pull Requests suchen
+        ◦ order: Sortierreihenfolge (Zeichenfolge, optional)
+        ◦ owner: Optionaler Repository-Besitzer. Falls mit Repo bereitgestellt, werden nur Pull Requests für dieses Repository aufgelistet. (Zeichenfolge, optional)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ query: Suchanfrage mit der Suchsyntax für GitHub-Pull-Requests (Zeichenfolge, erforderlich)
+        ◦ repo: Optionaler Repository-Name. Wenn der Besitzer angegeben ist, werden nur Pull Requests für dieses Repository aufgelistet. (Zeichenfolge, optional)
+        ◦ sort: Sortiert das Feld nach der Anzahl der Übereinstimmungen der Kategorien, standardmäßig wird die beste Übereinstimmung verwendet (Zeichenfolge, optional)
+    • update_pull_request – Pull Request bearbeiten
+        ◦ base: Neuer Basiszweigname (Zeichenfolge, optional)
+        ◦ body: Neue Beschreibung (Zeichenfolge, optional)
+        ◦ draft: Pull-Anfrage als Entwurf (true) oder bereit zur Überprüfung (false) markieren (boolesch, optional)
+        ◦ maintainer_can_modify: Bearbeitungen durch den Betreuer zulassen (boolesch, optional)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ pullNumber: Pull-Request-Nummer zum Aktualisieren (Nummer, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ reviewers: GitHub-Benutzernamen zum Anfordern von Bewertungen (string[], optional)
+        ◦ state: Neuer Status (Zeichenfolge, optional)
+        ◦ title: Neuer Titel (Zeichenfolge, optional)
+    • update_pull_request_branch – Pull-Request-Branch aktualisieren
+        ◦ expectedHeadSha: Der erwartete SHA des HEAD-Refs des Pull Requests (Zeichenfolge, optional)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ pullNumber: Pull-Request-Nummer (Nummer, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+Repositorien
+    • create_branch - Zweig erstellen
+        ◦ branch: Name für neuen Zweig (Zeichenfolge, erforderlich)
+        ◦ from_branch: Quellzweig (standardmäßig Repo-Standard) (Zeichenfolge, optional)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • create_or_update_file - Datei erstellen oder aktualisieren
+        ◦ branch: Zweig zum Erstellen/Aktualisieren der Datei in (Zeichenfolge, erforderlich)
+        ◦ content: Inhalt der Datei (String, erforderlich)
+        ◦ message: Commit-Nachricht (Zeichenfolge, erforderlich)
+        ◦ owner: Repository-Eigentümer (Benutzername oder Organisation) (Zeichenfolge, erforderlich)
+        ◦ path: Pfad, in dem die Datei erstellt/aktualisiert werden soll (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ sha: Erforderlich, wenn eine vorhandene Datei aktualisiert wird. Der Blob-SHA der zu ersetzenden Datei. (Zeichenfolge, optional)
+    • create_repository - Repository erstellen
+        ◦ autoInit: Initialisieren mit README (boolesch, optional)
+        ◦ description: Repository-Beschreibung (Zeichenfolge, optional)
+        ◦ name: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ organization: Organisation, in der das Repository erstellt werden soll (nicht in Ihrem persönlichen Konto erstellen) (Zeichenfolge, optional)
+        ◦ private: Ob das Repo privat sein soll (boolesch, optional)
+    • delete_file - Datei löschen
+        ◦ branch: Zweig, aus dem die Datei gelöscht werden soll (Zeichenfolge, erforderlich)
+        ◦ message: Commit-Nachricht (Zeichenfolge, erforderlich)
+        ◦ owner: Repository-Eigentümer (Benutzername oder Organisation) (Zeichenfolge, erforderlich)
+        ◦ path: Pfad zur zu löschenden Datei (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • fork_repository – Fork-Repository
+        ◦ organization: Organisation, zu der verzweigt werden soll (Zeichenfolge, optional)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • get_commit - Commit-Details abrufen
+        ◦ include_diff: Ob Dateiunterschiede und Statistiken in die Antwort aufgenommen werden sollen. Der Standardwert ist „true“. (Boolesch, optional)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ sha: Commit-SHA, Branch-Name oder Tag-Name (Zeichenfolge, erforderlich)
+    • get_file_contents - Datei- oder Verzeichnisinhalte abrufen
+        ◦ owner: Repository-Eigentümer (Benutzername oder Organisation) (Zeichenfolge, erforderlich)
+        ◦ path: Pfad zur Datei/zum Verzeichnis (Verzeichnisse müssen mit einem Schrägstrich „/“ enden) (Zeichenfolge, optional)
+        ◦ ref: Akzeptiert optionale Git-Referenzen wie refs/tags/{tag}, refs/heads/{branch}oder refs/pull/{pr_number}/head(Zeichenfolge, optional)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ sha: Akzeptiert optionales Commit-SHA. Falls angegeben, wird es anstelle von ref (String, optional) verwendet.
+    • get_latest_release - Neueste Version abrufen
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • get_release_by_tag – Holen Sie sich eine Version nach Tag-Namen
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ tag: Tag-Name (z. B. „v1.0.0“) (Zeichenfolge, erforderlich)
+    • get_tag - Tag-Details abrufen
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ tag: Tag-Name (Zeichenfolge, erforderlich)
+    • list_branches - Filialen auflisten
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • list_commits – Commits auflisten
+        ◦ author: Benutzername oder E-Mail-Adresse des Autors, nach der Commits gefiltert werden sollen (Zeichenfolge, optional)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+        ◦ sha: Commit-SHA, Branch- oder Tag-Name, dessen Commits aufgelistet werden sollen. Falls nicht angegeben, wird der Standard-Branch des Repositorys verwendet. Wenn ein Commit-SHA angegeben ist, werden Commits bis zu diesem SHA aufgelistet. (Zeichenfolge, optional)
+    • list_releases – Releases auflisten
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • list_tags – Tags auflisten
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • push_files - Dateien ins Repository pushen
+        ◦ branch: Zweig, zu dem gepusht werden soll (Zeichenfolge, erforderlich)
+        ◦ files: Array von zu pushenden Dateiobjekten, jedes Objekt mit Pfad (Zeichenfolge) und Inhalt (Zeichenfolge) (Objekt[], erforderlich)
+        ◦ message: Commit-Nachricht (Zeichenfolge, erforderlich)
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • search_code - Suchcode
+        ◦ order: Sortierreihenfolge für Ergebnisse (Zeichenfolge, optional)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ query: Suchanfrage mit der leistungsstarken Code-Suchsyntax von GitHub. Beispiele: „content:Skill language:Java org:github“, „NOT is:archived language:Python OR language:go“, „repo:github/github-mcp-server“. Unterstützt exakte Übereinstimmung, Sprachfilter, Pfadfilter und mehr. (Zeichenfolge, erforderlich)
+        ◦ sort: Sortierfeld (nur „indiziert“) (Zeichenfolge, optional)
+    • search_repositories – Repositories durchsuchen
+        ◦ minimal_output: Gibt minimale Repository-Informationen zurück (Standard: true). Wenn false, werden vollständige GitHub-API-Repository-Objekte zurückgegeben. (Boolesch, optional)
+        ◦ order: Sortierreihenfolge (Zeichenfolge, optional)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ query: Repository-Suchabfrage. Beispiele: „Machine Learning in:Name, Sterne:>1000, Sprache:Python“, „Thema:React“, „Benutzer:Facebook“. Unterstützt erweiterte Suchsyntax für präzises Filtern. (Zeichenfolge, erforderlich)
+        ◦ sort: Repositories nach Feld sortieren, standardmäßig die beste Übereinstimmung (Zeichenfolge, optional)
+Geheimschutz
+    • get_secret_scanning_alarm - Geheime Scan-Warnung erhalten
+        ◦ alertNumber: Die Nummer der Warnung. (Nummer, erforderlich)
+        ◦ owner: Der Eigentümer des Repository. (Zeichenfolge, erforderlich)
+        ◦ repo: Der Name des Repositorys. (Zeichenfolge, erforderlich)
+    • list_secret_scanning_alerts – Liste geheimer Scan-Warnungen
+        ◦ owner: Der Eigentümer des Repository. (Zeichenfolge, erforderlich)
+        ◦ repo: Der Name des Repositorys. (Zeichenfolge, erforderlich)
+        ◦ resolution: Filtern nach Auflösung (Zeichenfolge, optional)
+        ◦ secret_type: Eine durch Kommas getrennte Liste der zurückzugebenden Geheimnistypen. Es werden alle Standard-Geheimnismuster zurückgegeben. Um generische Muster zurückzugeben, übergeben Sie den/die Tokennamen im Parameter. (Zeichenfolge, optional)
+        ◦ state: Filtern nach Status (Zeichenfolge, optional)
+Sicherheitshinweise
+    • get_global_security_advisory – Erhalten Sie einen globalen Sicherheitshinweis
+        ◦ ghsaId: GitHub Security Advisory ID (Format: GHSA-xxxx-xxxx-xxxx). (Zeichenfolge, erforderlich)
+    • list_global_security_advisories – Liste globaler Sicherheitshinweise
+        ◦ affects: Filtern Sie Hinweise nach dem betroffenen Paket oder der Version (z. B. „Paket1,Paket2@1.0.0“). (Zeichenfolge, optional)
+        ◦ cveId: Filtern nach CVE-ID. (Zeichenfolge, optional)
+        ◦ cwes: Filtern nach allgemeinen Schwachstellen-Aufzählungs-IDs (z. B. ["79", "284", "22"]). (Zeichenfolge[], optional)
+        ◦ ecosystem: Filtern nach Paket-Ökosystem. (Zeichenfolge, optional)
+        ◦ ghsaId: Filtern nach GitHub Security Advisory ID (Format: GHSA-xxxx-xxxx-xxxx). (Zeichenfolge, optional)
+        ◦ isWithdrawn: Ob nur zurückgezogene Hinweise zurückgegeben werden sollen. (Boolesch, optional)
+        ◦ modified: Filtern Sie nach Veröffentlichungs- oder Aktualisierungsdatum oder Datumsbereich (ISO 8601-Datum oder -Bereich). (Zeichenfolge, optional)
+        ◦ published: Filtern nach Veröffentlichungsdatum oder Datumsbereich (ISO 8601-Datum oder -Bereich). (Zeichenfolge, optional)
+        ◦ severity: Nach Schweregrad filtern. (Zeichenfolge, optional)
+        ◦ type: Hinweistyp. (Zeichenfolge, optional)
+        ◦ updated: Filtern nach Aktualisierungsdatum oder Datumsbereich (ISO 8601-Datum oder -Bereich). (Zeichenfolge, optional)
+    • list_org_repository_security_advisories – Sicherheitshinweise zum Org-Repository auflisten
+        ◦ direction: Sortierrichtung. (Zeichenfolge, optional)
+        ◦ org: Die Organisationsanmeldung. (Zeichenfolge, erforderlich)
+        ◦ sort: Sortierfeld. (Zeichenfolge, optional)
+        ◦ state: Filtern nach Beratungsstatus. (Zeichenfolge, optional)
+    • list_repository_security_advisories – Listet Sicherheitshinweise für das Repository auf
+        ◦ direction: Sortierrichtung. (Zeichenfolge, optional)
+        ◦ owner: Der Eigentümer des Repository. (Zeichenfolge, erforderlich)
+        ◦ repo: Der Name des Repositorys. (Zeichenfolge, erforderlich)
+        ◦ sort: Sortierfeld. (Zeichenfolge, optional)
+        ◦ state: Filtern nach Beratungsstatus. (Zeichenfolge, optional)
+Sterngucker
+    • list_starred_repositories – Liste markierter Repositories
+        ◦ direction: Die Richtung, nach der die Ergebnisse sortiert werden sollen. (Zeichenfolge, optional)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ sort: Sortierung der Ergebnisse. Möglich sind entweder „Erstellt“ (als das Repository markiert wurde) oder „Aktualisiert“ (als das Repository zuletzt gepusht wurde). (Zeichenfolge, optional)
+        ◦ username: Benutzername, für den markierte Repositories aufgelistet werden sollen. Standardmäßig wird der authentifizierte Benutzer verwendet. (Zeichenfolge, optional)
+    • star_repository – Star-Repository
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+    • unstar_repository – Repository-Stern entfernen
+        ◦ owner: Repository-Eigentümer (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name (Zeichenfolge, erforderlich)
+Benutzer
+    • search_users – Benutzer suchen
+        ◦ order: Sortierreihenfolge (Zeichenfolge, optional)
+        ◦ page: Seitenzahl für die Paginierung (mindestens 1) (Zahl, optional)
+        ◦ perPage: Ergebnisse pro Seite für die Paginierung (min. 1, max. 100) (Anzahl, optional)
+        ◦ query: Suchanfrage des Benutzers. Beispiele: „John Smith“, „Standort: Seattle“, „Follower: > 100“. Die Suche wird automatisch auf den Typ „Benutzer“ beschränkt. (Zeichenfolge, erforderlich)
+        ◦ sort: Sortieren Sie Benutzer nach der Anzahl der Follower oder Repositories oder nach dem Zeitpunkt, zu dem die Person GitHub beigetreten ist. (Zeichenfolge, optional)
+Zusätzliche Tools im Remote Github MCP Server
+Kopilot
+    • create_pull_request_with_copilot – Führen Sie eine Aufgabe mit dem GitHub Copilot-Codierungsagenten aus
+        ◦ owner: Repository-Besitzer. Sie können den Besitzer erraten, sollten ihn aber vor dem Fortfahren mit dem Benutzer abklären. (Zeichenfolge, erforderlich)
+        ◦ repo: Repository-Name. Sie können den Repository-Namen erraten, sollten ihn aber vor dem Fortfahren mit dem Benutzer abklären. (Zeichenfolge, erforderlich)
+        ◦ problem_statement: Detaillierte Beschreibung der auszuführenden Aufgabe (z. B. „Implementieren Sie eine Funktion, die X bewirkt“, „Beheben Sie Fehler Y“ usw.) (Zeichenfolge, erforderlich)
+        ◦ title: Titel für den Pull Request, der erstellt wird (Zeichenfolge, erforderlich)
+        ◦ base_ref: Git-Referenz (z. B. Branch), von der aus der Agent seine Arbeit startet. Falls nicht angegeben, wird standardmäßig der Standard-Branch des Repositorys verwendet (String, optional).
+Copilot-Räume
+    • get_copilot_space - Copilot Space holen
+        ◦ owner: Der Eigentümer des Raums. (Zeichenfolge, erforderlich)
+        ◦ name: Der Name des Bereichs. (Zeichenfolge, erforderlich)
+    • list_copilot_spaces – Copilot-Plätze auflisten
+GitHub Support Docs Suche
+    • github_support_docs_search – Hier finden Sie relevante Dokumentationen zu GitHub-Produkten und Supportfragen. Zu den Supportthemen gehören: GitHub Actions Workflows, Authentifizierung, GitHub-Supportanfragen, Pull Request-Praktiken, Repository-Wartung, GitHub Pages, GitHub Packages, GitHub Discussions, Copilot Spaces.
+        ◦ query: Eingabe des Benutzers zu der Frage, die beantwortet werden soll. Dies ist die letzte unbearbeitete Benutzernachricht. Sie sollten die Benutzernachricht IMMER unverändert lassen und niemals ändern. (Zeichenfolge, erforderlich)
+Dynamische Tool-Erkennung
+Hinweis : Diese Funktion befindet sich derzeit in der Betaphase und ist möglicherweise nicht in allen Umgebungen verfügbar. Testen Sie sie bitte und informieren Sie uns, wenn Probleme auftreten.
+Anstatt mit allen aktivierten Tools zu beginnen, können Sie die dynamische Toolset-Erkennung aktivieren. Dynamische Toolsets ermöglichen es dem MCP-Host, Toolsets als Reaktion auf eine Benutzeraufforderung aufzulisten und zu aktivieren. Dies sollte dazu beitragen, Situationen zu vermeiden, in denen das Modell durch die schiere Anzahl der verfügbaren Tools verwirrt wird.
+Verwenden der dynamischen Toolerkennung
+Wenn Sie die Binärdatei verwenden, können Sie das --dynamic-toolsetsFlag übergeben.
+./github-mcp-server --dynamic-toolsets
+Wenn Sie Docker verwenden, können Sie die Toolsets als Umgebungsvariablen übergeben:
+docker run -i --rm \
+  -e GITHUB_PERSONAL_ACCESS_TOKEN=<your-token> \
+  -e GITHUB_DYNAMIC_TOOLSETS=1 \
+  ghcr.io/github/github-mcp-server
+Schreibgeschützter Modus
+Um den Server im schreibgeschützten Modus auszuführen, können Sie das --read-onlyFlag verwenden. Dadurch werden nur schreibgeschützte Tools angeboten, wodurch Änderungen an Repositories, Problemen, Pull Requests usw. verhindert werden.
+./github-mcp-server --read-only
+Wenn Sie Docker verwenden, können Sie den schreibgeschützten Modus als Umgebungsvariable übergeben:
+docker run -i --rm \
+  -e GITHUB_PERSONAL_ACCESS_TOKEN=<your-token> \
+  -e GITHUB_READ_ONLY=1 \
+  ghcr.io/github/github-mcp-server
+i18n / Überschreiben von Beschreibungen
+Die Beschreibungen der Tools können überschrieben werden, indem eine github-mcp-server-config.jsonDatei im selben Verzeichnis wie die Binärdatei erstellt wird.
+Die Datei sollte ein JSON-Objekt mit den Werkzeugnamen als Schlüssel und den neuen Beschreibungen als Werte enthalten. Beispiel:
+{
+  "TOOL_ADD_ISSUE_COMMENT_DESCRIPTION": "an alternative description",
+  "TOOL_CREATE_BRANCH_DESCRIPTION": "Create a new branch in a GitHub repository"
+}
+Sie können einen Export der aktuellen Übersetzungen erstellen, indem Sie die Binärdatei mit dem --export-translationsFlag ausführen.
+Dieses Flag behält alle von Ihnen vorgenommenen Übersetzungen/Überschreibungen bei und fügt alle neuen Übersetzungen hinzu, die der Binärdatei seit dem letzten Export hinzugefügt wurden.
+./github-mcp-server --export-translations
+cat github-mcp-server-config.json
+Sie können die Beschreibungen auch mit ENV-Variablen überschreiben. Die Namen der Umgebungsvariablen sind dieselben wie die Schlüssel in der JSON-Datei, mit dem Präfix „ GITHUB_MCP_und in Großbuchstaben“.
+Um das TOOL_ADD_ISSUE_COMMENT_DESCRIPTIONTool beispielsweise zu überschreiben, können Sie die folgende Umgebungsvariable festlegen:
+export GITHUB_MCP_TOOL_ADD_ISSUE_COMMENT_DESCRIPTION="an alternative description"
+Bibliotheksnutzung
+Die exportierte Go-API dieses Moduls gilt derzeit als instabil und kann zu schwerwiegenden Änderungen führen. Zukünftig werden wir möglicherweise Stabilität bieten. Bitte melden Sie uns, wenn es einen Anwendungsfall gibt, bei dem dies hilfreich wäre.
+Lizenz
+Dieses Projekt unterliegt den Bedingungen der MIT Open Source-Lizenz. Die vollständigen Bedingungen finden Sie beim MIT .
+

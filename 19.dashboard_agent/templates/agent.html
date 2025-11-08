@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="agent-detail">
+    <section class="agent-header">
+        <h2>Agent: <span id="agent-name">{{ agent.name }}</span></h2>
+        <div class="agent-meta">
+            <span class="badge badge-{{ agent.status }}" id="agent-status">
+                {{ agent.status }}
+            </span>
+            <span class="agent-port">Port: {{ agent.port }}</span>
+        </div>
+    </section>
+
+    <div class="agent-content">
+        <section class="agent-controls card">
+            <h3>Steuerung</h3>
+            <div class="button-group">
+                <button class="button" onclick="sendCommand('start')">Start</button>
+                <button class="button" onclick="sendCommand('stop')">Stop</button>
+                <button class="button" onclick="sendCommand('restart')">Neustart</button>
+                <button class="button" onclick="sendCommand('ping')">Ping</button>
+            </div>
+        </section>
+
+        <section class="agent-stats card">
+            <h3>Status</h3>
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <label>Uptime</label>
+                    <span id="agent-uptime">-</span>
+                </div>
+                <div class="stat-item">
+                    <label>CPU</label>
+                    <span id="agent-cpu">-</span>
+                </div>
+                <div class="stat-item">
+                    <label>RAM</label>
+                    <span id="agent-ram">-</span>
+                </div>
+                <div class="stat-item">
+                    <label>Letzte Anfrage</label>
+                    <span id="agent-last-request">-</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="safepoints card">
+            <h3>Safepoints</h3>
+            <div class="table-container">
+                <table class="table" id="safepoints-table">
+                    <thead>
+                        <tr>
+                            <th>Zeitstempel</th>
+                            <th>Quelle</th>
+                            <th>Ziel</th>
+                            <th>Typ</th>
+                            <th>Aktion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Wird dynamisch gefüllt -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="logs card">
+            <h3>Logs</h3>
+            <div class="log-viewer" id="log-viewer">
+                <!-- Wird dynamisch gefüllt -->
+            </div>
+        </section>
+
+        <section class="config card">
+            <h3>Konfiguration</h3>
+            <div class="config-info">
+                <p><strong>Pfad:</strong> {{ agent.path }}</p>
+                <p><strong>Port:</strong> {{ agent.port }}</p>
+                <p><strong>Unterstützte Befehle:</strong></p>
+                <ul>
+                    {% for command in agent.supported_commands %}
+                    <li>{{ command }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+
+        <section class="events card">
+            <h3>Live Events</h3>
+            <div class="event-stream" id="event-stream">
+                <!-- Event-Stream Output -->
+            </div>
+        </section>
+    </div>
+</div>
+
+<script>
+    const AGENT_NAME = document.getElementById('agent-name').textContent;
+
+    // Befehle senden
+    async function sendCommand(command) {
+        try {
+            const response = await fetch(`/api/command/${AGENT_NAME}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('dashboard_token')}`
+                },
+                body: JSON.stringify({
+                    request_id: crypto.randomUUID(),
+                    action: command,
+                    strict: true
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            console.log('Command result:', result);
+        } catch (error) {
+            console.error('Command error:', error);
+            alert(`Fehler beim Ausführen des Befehls: ${error.message}`);
+        }
+    }
+
+    // Safepoint-Tabelle aktualisieren
+    function updateSafepointTable(safepoints) {
+        const tbody = document.querySelector('#safepoints-table tbody');
+        tbody.innerHTML = safepoints.map(sp => `
+            <tr>
+                <td>${new Date(sp.timestamp).toLocaleString()}</td>
+                <td>${sp.src}</td>
+                <td>${sp.dst}</td>
+                <td>${sp.kind}</td>
+                <td>
+                    <button class="button small" 
+                            onclick="downloadSafepoint('${sp.path}')">
+                        Download
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // Safepoint herunterladen
+    async function downloadSafepoint(path) {
+        try {
+            const response = await fetch(`/api/safepoints/download?path=${encodeURIComponent(path)}`);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = path.split('/').pop();
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        } catch (error) {
+            console.error('Download error:', error);
+            alert(`Fehler beim Download: ${error.message}`);
+        }
+    }
+
+    // Event-Handler
+    function handleEvent(data) {
+        const eventStream = document.getElementById('event-stream');
+        const timestamp = new Date().toLocaleTimeString();
+        
+        eventStream.innerHTML += `<div>[${timestamp}] ${JSON.stringify(data)}</div>`;
+        eventStream.scrollTop = eventStream.scrollHeight;
+
+        // Status-Updates
+        if (data.event === 'agent_status' && data.data.agent === AGENT_NAME) {
+            document.getElementById('agent-status').className = 
+                `badge badge-${data.data.status}`;
+            document.getElementById('agent-status').textContent = 
+                data.data.status;
+        }
+
+        // Metriken-Updates
+        if (data.event === 'agent_metrics' && data.data.agent === AGENT_NAME) {
+            document.getElementById('agent-cpu').textContent = 
+                `${data.data.cpu}%`;
+            document.getElementById('agent-ram').textContent = 
+                `${data.data.ram}MB`;
+            document.getElementById('agent-uptime').textContent = 
+                data.data.uptime;
+        }
+    }
+
+    // Initial-Load
+    async function loadAgentDetails() {
+        try {
+            // Status laden
+            const statusResponse = await fetch(`/api/status/${AGENT_NAME}`);
+            const statusData = await statusResponse.json();
+            
+            // Safepoints laden
+            const safepointsResponse = await fetch('/api/safepoints/query', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('dashboard_token')}`
+                },
+                body: JSON.stringify({
+                    filter: {
+                        agent: AGENT_NAME,
+                        limit: 50
+                    },
+                    strict: true
+                })
+            });
+            const safepointsData = await safepointsResponse.json();
+            
+            updateSafepointTable(safepointsData.safepoints);
+        } catch (error) {
+            console.error('Load error:', error);
+        }
+    }
+
+    // Event-Stream
+    function connectEventStream() {
+        const events = new EventSource('/api/events/live');
+        events.onmessage = (event) => handleEvent(JSON.parse(event.data));
+        events.onerror = (error) => {
+            console.error('EventSource failed:', error);
+            setTimeout(connectEventStream, 3000);
+        };
+    }
+
+    // Start
+    document.addEventListener('DOMContentLoaded', () => {
+        loadAgentDetails();
+        connectEventStream();
+    });
+</script>
+
+<style>
+    .agent-detail {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .agent-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .agent-meta {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .agent-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1rem;
+    }
+
+    .card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+
+    .stat-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .stat-item label {
+        font-size: 0.875rem;
+        color: #666;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .log-viewer {
+        background: #1a1a1a;
+        color: #00ff00;
+        padding: 1rem;
+        border-radius: 4px;
+        font-family: monospace;
+        height: 300px;
+        overflow-y: auto;
+    }
+
+    .button.small {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    @media (max-width: 768px) {
+        .agent-content {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,12 @@
+{
+  "src": "opena9_call_tracking",
+  "dst": "opena2",
+  "kind": "ANALYTICS_OP",
+  "payload": {
+    "op": "LOG_CALL",
+    "call_id": "call_hist_2",
+    "duration_sec": 80,
+    "cost": 0.8,
+    "ts": "2025-11-08T19:52:09.640784Z"
+  }
+}

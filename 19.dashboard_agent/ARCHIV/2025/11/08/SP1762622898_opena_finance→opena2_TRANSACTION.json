@@ -1,0 +1,13 @@
+{
+  "src": "opena_finance",
+  "dst": "opena2",
+  "kind": "TRANSACTION",
+  "payload": {
+    "action": "account_created",
+    "account_id": "d62d3fb6-31f8-4519-ba23-40698cd41b30",
+    "name": "Giro",
+    "type": "checking",
+    "initial_balance": 1000.0,
+    "strict": true
+  }
+}

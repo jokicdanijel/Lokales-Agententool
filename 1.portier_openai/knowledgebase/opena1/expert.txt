@@ -1,0 +1,1328 @@
+﻿🤖 Beginnen mit OpenAI
+Überblick​
+Open WebUI erleichtert die Verbindung und Nutzung von OpenAI und anderen OpenAI-kompatiblen APIs. Diese Anleitung führt Sie durch das Hinzufügen Ihres API-Schlüssels, das Festlegen des richtigen Endpunkts und die Auswahl von Modellen – damit Sie sofort mit dem Chatten beginnen können.
+
+Schritt 1: Holen Sie sich Ihren OpenAI-API-Schlüssel​
+Um OpenAI-Modelle (wie GPT-4 oder o3-mini) zu verwenden, benötigen Sie einen API-Schlüssel von einem unterstützten Anbieter.
+
+Sie können verwenden:
+
+OpenAI direkt ( https://platform.openai.com/account/api-keys )
+Azure OpenAI
+Jeder OpenAI-kompatible Dienst (z. B. LocalAI, FastChat, Helicone, LiteLLM, OpenRouter usw.)
+👉 Sobald Sie den Schlüssel haben, kopieren Sie ihn und halten Sie ihn griffbereit.
+
+Für die meisten OpenAI-Anwendungen lautet die Standard-API-Basis-URL: https://api.openai.com/v1
+
+Andere Anbieter verwenden andere URLs – prüfen Sie die Dokumentation Ihres Anbieters.
+
+Schritt 2: Fügen Sie die API-Verbindung in Open WebUI hinzu​
+Sobald Open WebUI ausgeführt wird:
+
+Gehen Sie zu den ⚙️ Admin-Einstellungen .
+
+Navigieren Sie zu Verbindungen > OpenAI > Verwalten (suchen Sie nach dem Schraubenschlüsselsymbol).
+
+Klicken Sie auf ➕ Neue Verbindung hinzufügen .
+
+Füllen Sie Folgendes aus:
+
+API-URL: https://api.openai.com/v1 (oder die URL Ihres spezifischen Anbieters)
+API-Schlüssel: Fügen Sie Ihren Schlüssel hier ein
+Klicken Sie auf Speichern ✅.
+
+Dadurch werden Ihre Anmeldeinformationen sicher gespeichert und die Verbindung hergestellt.
+
+So sieht es aus:
+
+￼
+
+Schritt 3: Beginnen Sie mit der Verwendung von Modellen​
+Sobald Ihre Verbindung gespeichert ist, können Sie Modelle direkt in Open WebUI verwenden.
+
+🧠 Sie müssen keine Modelle herunterladen – wählen Sie einfach eines aus der Modellauswahl aus und beginnen Sie mit dem Chatten. Wenn ein Modell von Ihrem Anbieter unterstützt wird, können Sie es sofort über dessen API verwenden.
+
+So sieht die Modellauswahl aus:
+
+￼
+
+Wählen Sie einfach GPT-4, o3-mini oder ein anderes kompatibles Modell Ihres Anbieters.
+
+Alles bereit!​
+Das war's! Ihre OpenAI-kompatible API-Verbindung ist einsatzbereit.
+
+Mit Open WebUI und OpenAI erhalten Sie leistungsstarke Sprachmodelle, eine intuitive Benutzeroberfläche und sofortigen Zugriff auf Chatfunktionen – ganz ohne Einrichtungsprobleme.
+
+Wenn Sie auf Probleme stoßen oder zusätzliche Unterstützung benötigen, besuchen Sie unseren Hilfebereich .
+
+Viel Spaß beim Anregen! 🎉
+
+ei Open WebUI arbeiten wir kontinuierlich an der Weiterentwicklung unserer Plattform, um unseren Nutzern das bestmögliche Erlebnis zu bieten. Nachfolgend finden Sie den strukturierten Fahrplan für unsere laufenden und zukünftigen Entwicklungen, kategorisiert in die Bereiche Schnittstelle, Informationsabruf und Community.
+
+Schnittstelle 🖥️​
+Unser Plan für Schnittstelleninnovationen zielt darauf ab, eine äußerst intuitive und zugängliche Plattform zu schaffen. Dies verbessert nicht nur die Benutzerzufriedenheit, sondern steigert auch die Produktivität, indem die kognitive Belastung der Benutzer reduziert wird.
+
+📦 Verpackte einzelne ausführbare Binärdatei : Um die Bereitstellung zu vereinfachen und die Kompatibilität zwischen verschiedenen Plattformen sicherzustellen, bieten wir unsere Schnittstelle als einzelne ausführbare Binärdatei an. Dieser Ansatz ermöglicht eine mühelose Installation und Aktualisierung und verbessert die Benutzerfreundlichkeit für alle Benutzer, insbesondere für Benutzer mit eingeschränktem technischen Fachwissen, erheblich.
+
+👤 Benutzerseite : Eine persönliche Benutzerseite, auf der Benutzer Beiträge erstellen können. Die Funktionalität umfasst auch Funktionen wie Follower, Likes und Kommentare. So können Benutzer ihre Modellkonfigurationen, Eingabeaufforderungen und Dateien effektiv mit einer größeren Community teilen und so ein umfassenderes, vernetzteres Ökosystem rund um die Plattform schaffen.
+
+📝 KI-gestützte Notizen : Inspiriert von Tools wie Notion und Obsidian planen wir die Einführung einer robusten Notizfunktion mit KI-Integration. Von der einfachen Notizenerstellung bis zur vollständigen Dokumenterstellung bietet dieses Tool ein nahtloses Erlebnis, das vollständig in die Plattform integriert ist.
+
+📈 Erweiterte Tools zur Benutzerverfolgung und Kostenverwaltung : Benutzer erhalten Zugriff auf umfassende Tools zur Verfolgung der Anwendungsleistung und Benutzeraktivitäten sowie zur effektiven Kostenverwaltung. Diese Tools liefern den Benutzern die Daten, die sie benötigen, um fundierte Entscheidungen zu treffen, die Benutzererfahrung zu verbessern, die Budgetkontrolle zu behalten und die Ressourcennutzung in ihren KI-Anwendungen zu optimieren.
+
+🧠 KI-Workflow-Tool : Ein knotenbasiertes Tool zur Orchestrierung und Zusammenstellung verschiedener Aspekte von KI-Systemen. Mit diesem Tool können Benutzer verschiedene KI-Module und -Dienste visuell verbinden und so mühelos komplexe Workflows erstellen. Es ermöglicht Benutzern, das volle Potenzial von KI auszuschöpfen, ohne tiefgreifende technische Kenntnisse in der KI-Programmierung zu benötigen.
+
+🔊 Lokale Text-to-Speech-Integration : Diese Funktion ermöglicht die Verarbeitung natürlicher Sprache, um Text in naturgetreue Sprachausgabe umzuwandeln und so die Plattform insbesondere für sehbehinderte Nutzer zugänglicher zu machen. Diese Integration erleichtert die Informationsaufnahme ohne Bildschirminteraktion, erleichtert Multitasking und verbessert die Nutzerinteraktion.
+
+📣 Wakeword-Erkennung : Die Integration der freihändigen Bedienung über Sprachbefehle verbessert nicht nur die Zugänglichkeit, sondern entspricht auch den neuen Trends im IoT und in intelligenten Umgebungen und macht unsere Plattform zukunftsfähig.
+
+💻 Bessere Codeausführung : Die Verbesserung der Codierungsfunktionen innerhalb der Plattform unterstützt eine breite Palette von Entwicklungsaktivitäten und macht sie zu einer Komplettlösung für Entwickler, wodurch ein breiteres technisches Publikum angezogen und eine robuste Entwickler-Community gefördert wird.
+
+🤖 Code-Interpreter-Funktion : Ein in die Plattform eingebetteter flexibler Code-Interpreter kann mehrere Programmiersprachen unterstützen, was die Abhängigkeit von externen Tools reduziert und den Entwicklungsprozess rationalisiert und die Effizienz erhöht.
+
+🔧 Optimierte Feinabstimmungsunterstützung : Open WebUI bietet einen nahtlosen Feinabstimmungsprozess, indem Benutzer automatisch einen Feinabstimmungsdatensatz erstellen können, indem sie einfach die Benutzeroberfläche verwenden und die Antworten bewerten. Wir stellen Python-Notebooks zur Verfügung, um Ihren Datensatz vorzuverarbeiten und ihn direkt aus dem Notebook für die Feinabstimmung vorzubereiten. Dieser Ansatz ist super einfach und integriert die Feinabstimmung elegant in Benutzer-Workflows.
+
+♿ Verbesserungen der Barrierefreiheit : Es ist uns ein großes Anliegen, Open WebUI für alle zugänglich zu machen. Wir entwickeln aktiv Funktionen weiter, die sicherstellen, dass Menschen mit unterschiedlichen Fähigkeiten unsere Plattform optimal nutzen und von ihr profitieren können. Barrierefreiheit ist nicht nur ein Feature – sie ist ein zentraler Wert, der alle unsere Entscheidungen zur Benutzeroberfläche prägt. Um uns dabei zu unterstützen, freuen wir uns über interessierte Mitwirkende, die diese Leidenschaft teilen und über Fachwissen im Bereich Barrierefreiheit verfügen. Wenn Sie uns helfen können, ein inklusiveres Erlebnis zu schaffen, wenden Sie sich bitte an careers@openwebui.com .
+
+Informationsabruf (RAG) 📚​
+Open WebUI bietet derzeit eine Schnittstelle, die die effiziente Nutzung bestehender Information Retrieval (IR)-Modelle ermöglicht. Wir sind jedoch überzeugt, dass es noch großes Verbesserungspotenzial gibt. Wir sind uns der Einschränkungen unserer aktuellen RAG-Implementierung (Retrieval-Augmented Generation) in unserer WebUI bewusst und wissen, dass ein einheitlicher Ansatz nicht alle Benutzeranforderungen erfüllen kann.
+
+Um diesem Problem zu begegnen, entwickeln wir unser Framework so weiter, dass es hochgradig modular und umfassend konfigurierbar ist. Diese neue Ausrichtung ermöglicht es Nutzern, den Informationsabrufprozess mithilfe einer übersichtlichen, interaktiven Oberfläche, die eine einfache Drag-and-Drop-Anpassung ermöglicht, problemlos an ihre spezifischen Anforderungen anzupassen. Diese Weiterentwicklung soll das Benutzererlebnis durch ein flexibleres und personalisierteres IR-Setup deutlich verbessern.
+
+Hier ist unser gezielter Plan zur Verbesserung unserer Informationsabruffunktionen:
+
+🌐 Anpassbares RAG-Framework : Stellen Sie sich eine Zukunft vor, in der Sie Ihr IR-Setup mühelos über eine benutzerfreundliche Oberfläche anpassen können. Dazu gehören modulare Komponenten, die Benutzer per Drag & Drop verschieben und konfigurieren können, ohne dass tiefe technische Kenntnisse erforderlich sind.
+
+🔄 Erweiterte Integration mit SoTA-Methoden : Unser Ziel ist es, die neuesten Entwicklungen bei Abrufmethoden zu integrieren und die Genauigkeit und Effizienz mithilfe fortschrittlicher Techniken und Architekturen zu verbessern.
+
+🔍 Spezielle F&E : Wir verstärken unsere Forschung und Entwicklung, um in Zusammenarbeit mit führenden Forschungseinrichtungen neue Retrievalmethoden zu entdecken und zu integrieren, die die Grenzen aktueller Methoden erweitern.
+
+Gemeinschaft 🤝​
+Unser Ziel ist es, eine lebendige Community zu schaffen, in der jeder zum gemeinsamen Wissen und den Entwicklungen beitragen und davon profitieren kann:
+
+🏆 LLM-Bestenliste : Ein Community-gesteuerter Ansatz zur Bewertung und Einstufung von Modellen gewährleistet Transparenz und kontinuierliche Verbesserung, indem reale Anwendungen zum Benchmarking der Leistung genutzt werden, anstatt sich auf Standarddatensätze zu verlassen, die möglicherweise keinen praktischen Nutzen widerspiegeln.
+
+👥 Untergemeinschaften : Die Ermutigung von Nischengemeinschaften, Datensätze zu kuratieren und Eingabeaufforderungen zu optimieren, kann zu besser abgestimmten Modellen führen, da diese Gemeinschaften über spezifische Erkenntnisse und detailliertes Feedback verfügen, die in umfassenderen Datensätzen normalerweise unbemerkt bleiben.
+
+🔗 Community-Whitepaper : Entdecken Sie in unserem Whitepaper unsere detaillierte Strategie und gestalten Sie gemeinsam mit uns die Zukunft KI-gesteuerter Plattformen .
+
+Vision für die Zukunft 🔭
+Unser unermüdlicher Einsatz entspringt einer klaren Vision, die uns am Herzen liegt: Ihren Alltag zu verbessern, Zeit zu sparen und Ihnen mehr Konzentration auf das Wesentliche zu ermöglichen.
+
+Stellen Sie sich eine Welt vor, in der Sie denken und es passiert. Sie wünschen sich eine Tasse Kaffee, genau so, wie Sie ihn lieben – und er wird für Sie gebrüht. Eine Welt, in der Sie sich einfach einen umfassenden Datenanalysebericht in einem bestimmten Format ausdenken und dieser in Gedankenschnelle erstellt wird. Die Kernidee besteht darin, zeitaufwändige Routineaufgaben an unsere KI-Schnittstelle zu übergeben und Ihnen so mehr Zeit und Aufmerksamkeit zu schenken.
+
+Dies ist keine Science-Fiction-Zukunft; wir arbeiten bereits heute gemeinsam darauf hin. Da unsere KI-Modelle immer leistungsfähiger werden und Ihre spezifischen Bedürfnisse intuitiv verstehen, werden Ihre alltäglichsten Aufgaben automatisiert. Durch diesen tiefgreifenden Wandel kann unsere gemeinsame Zeit für große Unternehmungen umverteilt werden. Denken Sie an die Weltraumforschung, die Langlebigkeitsforschung oder einfach an zusätzliche Momente mit Ihren Lieben.
+
+Die Gestaltung dieser Zukunft wird kein Zuckerschlecken sein, aber mit Ihrer Hilfe glauben wir, dass sie machbar ist. Open WebUI ist mehr als nur Technologie – es soll Ihren Tag verbessern und Ihnen mehr Raum für das Wesentliche geben. Gemeinsam arbeiten wir an einer besseren Zukunft. Vielen Dank, dass Sie uns auf dieser außergewöhnlichen Reise begleiten.
+
+Begleiten Sie uns, wenn wir mit diesen ehrgeizigen und bahnbrechenden Funktionen in unserer Roadmap die Grenzen der Technologie erweitern! 💡🚀 Ihre Teilnahme und Ihr Feedback sind entscheidend, da wir Open WebUI zu einem bahnbrechenden Tool für den technologischen Fortschritt machen möchten.
+
+
+🌟 OpenAPI-Tool-Server
+Dieses Repository bietet Referenzimplementierungen des OpenAPI Tool Servers, die Entwicklern die einfache und sichere Integration externer Tools und Datenquellen in LLM-Agenten und -Workflows ermöglichen. Diese Implementierungen sind auf maximale Benutzerfreundlichkeit und minimalen Lernaufwand ausgelegt und nutzen die weit verbreitete und praxiserprobte OpenAPI-Spezifikation als Standardprotokoll.
+
+Durch die Nutzung von OpenAPI benötigen Sie kein proprietäres oder unbekanntes Kommunikationsprotokoll mehr. So können Sie schnell und sicher Server erstellen oder integrieren. So sparen Sie Zeit bei der Entwicklung benutzerdefinierter Schnittstellen und haben mehr Zeit für die Entwicklung leistungsstarker Tools zur Optimierung Ihrer KI-Anwendungen.
+
+☝️ Warum OpenAPI?​
+Etablierter Standard : OpenAPI ist ein weit verbreiteter, produktionserprobter API-Standard, der von Tausenden von Tools, Unternehmen und Communities unterstützt wird.
+
+Das Rad muss nicht neu erfunden werden : Keine zusätzliche Dokumentation oder Verwirrung durch proprietäre Spezifikationen. Wenn Sie heute REST-APIs erstellen oder OpenAPI verwenden, sind Sie bereits startklar.
+
+Einfache Integration und Hosting : Stellen Sie Ihre Tool-Server extern oder lokal bereit, ohne Anbieterbindung oder komplexe Konfigurationen.
+
+Starker Sicherheitsfokus : OpenAPI basiert auf HTTP/REST-APIs und unterstützt von Natur aus weit verbreitete, sichere Kommunikationsmethoden, einschließlich HTTPS und bewährter Authentifizierungsstandards (OAuth, JWT, API-Schlüssel).
+
+Zukunftssicher und stabil : Im Gegensatz zu weniger ausgereiften oder experimentellen Protokollen verspricht OpenAPI Zuverlässigkeit, Stabilität und langfristige Unterstützung durch die Community.
+
+🚀 Schnellstart​
+Mit unseren FastAPI-basierten Referenzimplementierungen im servers/Verzeichnis können Sie schnell loslegen. (Sie können diese Beispiele nach Bedarf an Ihren bevorzugten Stack anpassen, z. B. mit FastAPI , FastOpenAPI oder einer anderen OpenAPI-kompatiblen Bibliothek.)
+
+git clone https://github.com/open-webui/openapi-servers
+cd openapi-servers
+￼
+Mit Bash​
+
+# Example: Installing dependencies for a specific server 'filesystem'
+cd servers/filesystem
+pip install -r requirements.txt
+uvicorn main:app --host 0.0.0.0 --reload
+￼
+￼
+Der Dateisystemserver sollte von hier aus erreichbar sein: http://localhost:8000
+
+Der Dokumentationspfad lautet: http://localhost:8000
+
+Mit Docker​
+Wenn Sie Docker Compose installiert haben, starten Sie die Server mit:
+
+docker compose up
+￼
+Die Dienste sind erreichbar von:
+
+Dateisystem localhost:8081
+Speicherserver localhost:8082
+Zeitserver localhost:8083
+Richten Sie Ihre OpenAPI-kompatiblen Clients oder KI-Agenten jetzt einfach auf Ihre lokale oder öffentlich bereitgestellte URL – ohne Konfigurationsprobleme und ohne komplizierte Transporte.
+
+🌱 Offene WebUI-Community​
+Allgemeine Diskussionen, technischer Austausch und Ankündigungen finden Sie auf unserer Community- Diskussionsseite.
+Haben Sie Ideen oder Feedback? Bitte melden Sie ein Problem!
+
+
+Offene WebUI-Integration
+Überblick​
+Open WebUI v0.6+ unterstützt die nahtlose Integration mit externen Tools über die OpenAPI-Server – das heißt, Sie können Ihre LLM-Workflows problemlos mithilfe von benutzerdefinierten oder Community-basierten Tool-Servern erweitern 🧰.
+
+In dieser Anleitung erfahren Sie, wie Sie einen OpenAPI-kompatiblen Tool-Server starten und ihn über die intuitive Benutzeroberfläche mit Open WebUI verbinden. Los geht's! 🚀
+
+Schritt 1: Starten Sie einen OpenAPI-Tool-Server​
+Zunächst müssen Sie einen der im OpenAPI-Servers-Repository verfügbaren Referenz-Tool-Server starten . Für einen schnellen Test verwenden wir den Time-Tool-Server als Beispiel.
+
+🛠️ Beispiel: Lokales Starten des timeServers
+
+git clone https://github.com/open-webui/openapi-servers
+cd openapi-servers
+
+# Navigate to the time server
+cd servers/time
+
+# Install required dependencies
+pip install -r requirements.txt
+
+# Start the server
+uvicorn main:app --host 0.0.0.0 --reload
+￼
+Nach der Ausführung wird ein lokaler OpenAPI-Server unter http://localhost:8000 gehostet , auf den Sie Open WebUI verweisen können.
+
+￼
+
+Schritt 2: Tool-Server in Open WebUI verbinden​
+Verbinden Sie als Nächstes Ihren laufenden Tool-Server mit Open WebUI:
+
+Öffnen Sie die WebUI in Ihrem Browser.
+Öffnen Sie ⚙️  Einstellungen .
+Klicken Sie auf ➕ Tools, um einen neuen Tool-Server hinzuzufügen.
+Geben Sie die URL ein, unter der Ihr OpenAPI-Toolserver ausgeführt wird (z. B. http://localhost:8000 ).
+Klicken Sie auf „Speichern“.
+￼
+
+🧑‍💻 Benutzer-Tool-Server vs. 🛠️ Globale Tool-Server​
+Es gibt zwei Möglichkeiten, Tool-Server in Open WebUI zu registrieren:
+
+1. Benutzertool-Server (über die regulären Einstellungen hinzugefügt)​
+Nur für den Benutzer zugänglich, der den Tool-Server registriert hat.
+Die Verbindung wird vom Benutzer direkt vom Browser (Client-Seite) hergestellt.
+Perfekt für persönliche Arbeitsabläufe oder zum Testen benutzerdefinierter/lokaler Tools.
+2. Globale Tool-Server (hinzugefügt über die Admin-Einstellungen)​
+Administratoren können gemeinsam genutzte Toolserver verwalten, die allen oder ausgewählten Benutzern in der gesamten Bereitstellung zur Verfügung stehen:
+
+Gehen Sie zu 🛠️ Admin-Einstellungen > Tools .
+Fügen Sie die Tool-Server-URL genauso hinzu, wie Sie es in den Benutzereinstellungen tun würden.
+Diese Tools werden ähnlich wie die integrierten Tools von Open WebUI behandelt.
+Hauptunterschied: Woher kommen die Anfragen?​
+Der Hauptunterschied zwischen User Tool Servern und Global Tool Servern besteht darin, wo die API-Verbindung und die Anfragen tatsächlich erfolgen:
+
+Benutzer-Tool-Server
+
+Anfragen an den Tool-Server werden direkt von Ihrem Browser (dem Client) ausgeführt .
+Dies bedeutet, dass Sie sich sicher mit Localhost-URLs (wie http://localhost:8000) verbinden können – und dabei sogar private oder nur für die Entwicklung vorgesehene Endpunkte wie Ihr lokales Dateisystem oder Ihre Entwicklungstools offenlegen können – ohne das Risiko einzugehen, dass die Daten im weiteren Internet oder bei anderen Benutzern preisgegeben werden.
+Ihre Verbindung ist isoliert; nur Ihr Browser kann auf diesen Tool-Server zugreifen.
+Globale Tool-Server
+
+Anfragen werden vom Open WebUI-Backend/Server gesendet (nicht von Ihrem Browser).
+Das Backend muss in der Lage sein, die von Ihnen angegebene Tool-Server-URL zu erreichen – also localhostden lokalen Host des Backend-Servers, nicht den Ihres Computers.
+Verwenden Sie dies, um Tools mit anderen Benutzern in der gesamten Bereitstellung zu teilen. Beachten Sie jedoch: Da das Backend die Anforderungen stellt, können Sie über diese Methode nicht auf Ihre persönlichen lokalen Ressourcen (wie Ihr eigenes Dateisystem) zugreifen.
+Denken Sie an die Sicherheit! Geben Sie nur Remote-/globale Endpunkte frei, die sicher sind und für den Zugriff durch mehrere Benutzer vorgesehen sind.
+Übersichtstabelle:
+
+Tool-Servertyp	Anfrageursprung	Localhost verwenden?	Anwendungsfallbeispiel
+Benutzer-Tool-Server	Browser des Benutzers (Client-seitig)	Ja (privat für Sie)	Persönliche Tools, lokale Entwicklung/Tests
+Globaler Tool-Server	WebUI-Backend öffnen (serverseitig)	Nein (es sei denn, es läuft auf dem Backend selbst)	Team-/gemeinsame Tools, Unternehmensintegrationen
+TIPP
+Benutzer-Tool-Server eignen sich am besten für persönliche oder experimentelle Tools, insbesondere solche, die auf Ihrem eigenen Computer ausgeführt werden, während globale Tool-Server ideal für Produktions- oder gemeinsam genutzte Umgebungen sind, in denen jeder Zugriff auf dieselben Tools benötigt.
+
+👉 Optional: Verwenden einer Konfigurationsdatei mit mcpo​
+Wenn Sie mehrere Tools über mcpo mithilfe einer Konfigurationsdatei ausführen, beachten Sie Folgendes:
+
+🧩 Jedes Werkzeug ist unter seinem eigenen einzigartigen Pfad montiert!
+
+Wenn Sie beispielsweise Speicher- und Zeittools gleichzeitig über mcpo verwenden, sind diese jeweils über eine eigene Route verfügbar:
+
+http://localhost:8000/time
+http://localhost:8000/Speicher
+Das heisst:
+
+Wenn Sie ein Tool in Open WebUI verbinden, müssen Sie die vollständige Route zu diesem bestimmten Tool eingeben – geben Sie NICHT nur die Stamm-URL ( http://localhost:8000 ) ein.
+Fügen Sie jedes Tool einzeln in den Open WebUI-Einstellungen mithilfe der jeweiligen Unterpfad-URLs hinzu.
+￼
+
+✅ Gut:
+
+http://localhost:8000/Zeit http://localhost:8000/Speicher
+
+🚫 Ungültig:
+
+http://localhost:8000
+
+Dadurch wird sichergestellt, dass Open WebUI jeden Tool-Server korrekt erkennt und mit ihm kommuniziert.
+
+Schritt 3: Bestätigen Sie, dass Ihr Tool-Server verbunden ist ✅​
+Sobald Ihr Tool-Server erfolgreich verbunden ist, zeigt Open WebUI einen 👇 Tool-Server-Indikator direkt im Nachrichteneingabebereich an:
+
+📍 Unter dem Eingabefeld sehen Sie nun dieses Symbol:
+
+￼
+
+Wenn Sie auf dieses Symbol klicken, wird ein Popup-Fenster geöffnet, in dem Sie Folgendes tun können:
+
+Anzeigen von Informationen zum verbundenen Toolserver
+Sehen Sie, welche Tools verfügbar sind und von welchem ​​Server sie bereitgestellt werden
+Debuggen oder trennen Sie bei Bedarf jedes Tool
+🔍 So sieht das Modal mit den Tool-Informationen aus:
+
+￼
+
+🛠️ Globale Tool-Server sehen anders aus – und sind standardmäßig ausgeblendet!​
+Wenn Sie einen globalen Tool-Server verbunden haben (d. h. einen, der vom Administrator konfiguriert wurde), wird dieser nicht automatisch im Eingabebereich angezeigt, wie dies bei Benutzer-Tool-Servern der Fall ist.
+
+Stattdessen:
+
+Globale Tools sind standardmäßig ausgeblendet und müssen pro Benutzer explizit aktiviert werden.
+Um sie zu aktivieren, müssen Sie im Nachrichteneingabebereich (unten links im Chatfenster) auf die Schaltfläche ➕ klicken und die spezifischen globalen Tools, die Sie verwenden möchten, manuell aktivieren.
+So sieht das aus:
+
+￼
+
+⚠️ Wichtige Hinweise für globale Tool-Server:
+
+Sie werden erst im Popup-Fenster der Werkzeuganzeige angezeigt, wenn sie über das Menü ➕ aktiviert werden.
+Jedes globale Tool muss einzeln aktiviert werden, um in Ihrem aktuellen Chat aktiv zu werden.
+Nach dem Einschalten funktionieren sie auf die gleiche Weise wie Benutzertools.
+Administratoren können den Zugriff auf globale Tools über rollenbasierte Berechtigungen steuern.
+Dies ist ideal für Team-Setups oder gemeinsam genutzte Umgebungen, in denen häufig verwendete Tools (z. B. Dokumentsuche, Speicher oder Websuche) für mehrere Benutzer zentral zugänglich sein sollten.
+
+(Optional) Schritt 4: Verwenden Sie das Tool „Native“ Function Calling (ReACT-Stil) 🧠​
+INFO
+Damit dies effektiv funktioniert, muss Ihr ausgewähltes Modell native Tool-Aufrufe unterstützen . Einige lokale Modelle behaupten zwar, diese zu unterstützen, liefern aber oft schlechte Ergebnisse. Wir empfehlen dringend die Verwendung von GPT-4o oder einem anderen OpenAI-Modell, das Funktionsaufrufe nativ unterstützt, um ein optimales Ergebnis zu erzielen.
+
+Möchten Sie native Funktionsaufrufe im ReACT-Stil (Reasoning + Acting) direkt in Ihren Konversationen aktivieren? Sie können Open WebUI auf die Verwendung nativer Funktionsaufrufe umstellen.
+
+✳️ So aktivieren Sie native Funktionsaufrufe:
+
+Öffnen Sie das Chatfenster.
+Gehen Sie zu ⚙️  Chat-Steuerung > Erweiterte Parameter .
+Ändern Sie den Funktionsaufrufparameter von Defaultin Native.
+￼
+
+Benötigen Sie weitere Tools? Entdecken und erweitern Sie! 🧱​
+Das OpenAPI-Server-Repository enthält eine Vielzahl nützlicher Referenzserver:
+
+📂 Dateisystemzugriff
+🧠 Gedächtnis- und Wissensgraphen
+🗃️ Durchsuchen von Git-Repos
+🌎 Websuche (WIP)
+🛢️ Datenbankabfrage (WIP)
+Sie können alle diese Programme auf die gleiche Weise ausführen und sie mit Open WebUI verbinden, indem Sie die obigen Schritte wiederholen.
+
+Fehlerbehebung und Tipps 🧩​
+❌ Keine Verbindung? Stellen Sie sicher, dass die URL korrekt ist und über den Browser, mit dem Open WebUI ausgeführt wird, darauf zugegriffen werden kann.
+🔒 Wenn Sie Remote-Server verwenden, überprüfen Sie Firewalls und HTTPS-Konfigurationen!
+📝 Um Server dauerhaft zu erhalten, sollten Sie sie in Docker oder mit Systemdiensten bereitstellen.
+Brauchen Sie Hilfe? Besuchen Sie die 👉 Diskussionsseite oder öffnen Sie ein Problem .Hauptfunktionen von Open WebUI ⭐​
+🚀 Mühelose Einrichtung : Nahtlose Installation mit Docker, Kubernetes, Podman, Helm Charts ( kubectl, kustomize, podman, oder helm) für ein problemloses Erlebnis mit Unterstützung sowohl für :ollamaImages mit gebündeltem Ollama als auch :cudamit CUDA-Unterstützung.
+
+🛠️ Geführte Ersteinrichtung : Führen Sie den Einrichtungsprozess übersichtlich durch, einschließlich eines expliziten Hinweises zur Erstellung eines Administratorkontos während der Ersteinrichtung.
+
+🤝 OpenAI-API-Integration : Integrieren Sie mühelos OpenAI-kompatible APIs für vielseitige Konversationen neben Ollama-Modellen. Die OpenAI-API-URL kann angepasst werden, um Open WebUI nahtlos in verschiedene Anwendungen von Drittanbietern zu integrieren.
+
+🛡️ Granulare Berechtigungen und Benutzergruppen : Indem wir Administratoren die Erstellung detaillierter Benutzerrollen, Benutzergruppen und Berechtigungen im gesamten Arbeitsbereich ermöglichen, gewährleisten wir eine sichere Benutzerumgebung für alle beteiligten Benutzer. Diese Granularität erhöht nicht nur die Sicherheit, sondern ermöglicht auch individuelle Benutzererfahrungen und fördert das Verantwortungsbewusstsein der Benutzer.
+
+📱 Responsive Design : Genießen Sie ein nahtloses Erlebnis auf Desktop-PCs, Laptops und Mobilgeräten.
+
+📱 Progressive Web App für Mobilgeräte : Genießen Sie eine native Progressive Web-Anwendung auf Ihrem Mobilgerät mit Offline-Zugriff auf localhostoder über eine persönliche Domain und einer benutzerfreundlichen Benutzeroberfläche. Damit unsere PWA auf Ihrem Gerät installiert werden kann, muss sie in einem sicheren Kontext bereitgestellt werden. Dies bedeutet in der Regel, dass sie über HTTPS bereitgestellt werden muss.
+
+INFO
+Zum Einrichten einer PWA benötigen Sie Kenntnisse von Technologien wie Linux, Docker und Reverse-Proxys wie Nginx, Caddyoder Traefik. Mithilfe dieser Tools können Sie den Prozess der Erstellung und Bereitstellung einer auf Ihre Bedürfnisse zugeschnittenen PWA optimieren. Zwar ist keine Ein-Klick-Installationsoption verfügbar, und die sichere Bereitstellung Ihrer Open WebUI-Instanz über HTTPS erfordert Benutzererfahrung. Mithilfe dieser Ressourcen können Sie jedoch leichter eine auf Ihre Bedürfnisse zugeschnittene PWA erstellen und bereitstellen.
+✒️🔢 Vollständige Markdown- und LaTeX-Unterstützung : Verbessern Sie Ihre LLM-Erfahrung mit umfassenden Markdown-, LaTex- und Rich-Text-Funktionen für eine verbesserte Interaktion.
+
+🧩 Modell-Builder : Erstellen Sie ganz einfach benutzerdefinierte Modelle aus Ollama-Basismodellen direkt aus Open WebUI. Erstellen und fügen Sie benutzerdefinierte Charaktere und Agenten hinzu, passen Sie Modellelemente an und importieren Sie Modelle mühelos durch die Open WebUI Community- Integration.
+
+📚 Lokale und Remote-RAG-Integration : Tauchen Sie ein in die Zukunft der Chat-Interaktion und erkunden Sie Ihre Dokumente mit unserer hochmodernen Retrieval Augmented Generation (RAG)-Technologie in Ihren Chats. Dokumente können in die DocumentsRegisterkarte des Arbeitsbereichs geladen und anschließend mit der Raute-Taste [ ] vor einer Abfrage aufgerufen werden #. Alternativ können Sie die Eingabeaufforderung mit der Raute-Taste [ ] starten #, gefolgt von einer URL zur Integration von Webseiteninhalten.
+
+📄 Dokumentenextraktion : Extrahieren Sie Text und Daten aus verschiedenen Dokumentformaten, darunter PDFs, Word-Dokumente, Excel-Tabellen, PowerPoint-Präsentationen und mehr. Unsere erweiterten Dokumentverarbeitungsfunktionen ermöglichen die nahtlose Integration in Ihre Wissensdatenbank und ermöglichen das präzise Abrufen und Generieren von Informationen aus komplexen Dokumenten unter Beibehaltung ihrer Struktur und Formatierung.
+
+🔍 Websuche für RAG : Sie können Websuchen mit einer Auswahl verschiedener Suchanbieter durchführen und die Ergebnisse direkt in Ihre lokale Retrieval Augmented Generation (RAG)-Erfahrung einfügen.
+
+🌐 Web-Browsing-Funktionen : Integrieren Sie Websites nahtlos in Ihr Chat-Erlebnis, indem Sie den #Befehl gefolgt von einer URL verwenden. Diese Funktion ermöglicht die direkte Einbindung von Webinhalten in Ihre Konversationen und steigert so die Vielfalt und Tiefe Ihrer Interaktionen.
+
+🎨 Integration der Bildgenerierung : Integrieren Sie nahtlos Funktionen zur Bildgenerierung, um Ihr Chat-Erlebnis mit dynamischen visuellen Inhalten zu bereichern.
+
+⚙️ Gleichzeitige Modellnutzung : Nutzen Sie mühelos mehrere Modelle gleichzeitig und nutzen Sie deren einzigartige Stärken für optimale Reaktionen. Nutzen Sie parallel verschiedene Modellmodalitäten, um Ihr Erlebnis zu verbessern.
+
+🔐 Rollenbasierte Zugriffskontrolle (RBAC) : Gewährleisten Sie sicheren Zugriff mit eingeschränkten Berechtigungen. Nur autorisierte Personen können auf Ihr Ollama zugreifen, während die Rechte zum Erstellen und Abrufen von Modellen ausschließlich Administratoren vorbehalten sind.
+
+🌐🌍 Mehrsprachige Unterstützung : Erleben Sie Open WebUI in Ihrer bevorzugten Sprache mit unserer Internationalisierungsunterstützung ( i18n). Wir laden Sie ein, gemeinsam mit uns die Anzahl der unterstützten Sprachen zu erweitern! Wir suchen aktiv nach Mitwirkenden!
+
+🌟 Kontinuierliche Updates : Wir sind bestrebt, Open WebUI mit regelmäßigen Updates, Korrekturen und neuen Funktionen zu verbessern.
+
+Und viele weitere bemerkenswerte Funktionen, darunter ... ⚡️​
+🔧 Pipeline-Unterstützung​
+🔧 Pipelines Framework : Integrieren und individualisieren Sie Ihr Open WebUI-Erlebnis nahtlos mit unserem modularen Plugin-Framework für verbesserte Anpassung und Funktionalität ( https://github.com/open-webui/pipelines ). Unser Framework ermöglicht das einfache Hinzufügen benutzerdefinierter Logik und die Integration von Python-Bibliotheken, von KI-Agenten bis hin zu APIs für die Heimautomatisierung.
+
+📥 Pipeline hochladen : Pipelines können direkt aus dem Menü Admin Panel> Settings> hochgeladen werden Pipelines, was den Pipeline-Verwaltungsprozess optimiert.
+
+Die Möglichkeiten unseres Pipelines-Frameworks sind nahezu unbegrenzt. Beginnen Sie mit einigen vorgefertigten Pipelines, die Ihnen den Einstieg erleichtern!​
+🔗 Funktionsaufruf : Integrieren Sie Funktionsaufrufe nahtlos über Pipelines, um Ihre LLM-Interaktionen mit erweiterten Funktionsaufruffunktionen zu verbessern.
+
+📚 Benutzerdefiniertes RAG : Integrieren Sie nahtlos eine benutzerdefinierte Retrieval Augmented Generation (RAG) -Pipeline, um Ihre LLM-Interaktionen mit benutzerdefinierter RAG-Logik zu verbessern.
+
+📊 Nachrichtenüberwachung mit Langfuse : Überwachen und analysieren Sie Nachrichteninteraktionen in Echtzeit-Nutzungsstatistiken über die Langfuse -Pipeline.
+
+⚖️ Benutzerratenbegrenzung : Verwalten Sie die API-Nutzung effizient, indem Sie den Fluss der an LLMs gesendeten Anfragen steuern, um eine Überschreitung der Ratenbegrenzungen mit der Rate Limit- Pipeline zu verhindern.
+
+🌍 Echtzeit-Übersetzung mit LibreTranslate : Integrieren Sie mithilfe der LibreTranslate- Pipeline Echtzeit-Übersetzungen in Ihre LLM-Interaktionen und ermöglichen Sie so eine sprachübergreifende Kommunikation.
+
+Bitte beachten Sie, dass für die Funktion dieser Pipeline eine weitere Einrichtung mit LibreTranslate in einem Docker-Container erforderlich ist.
+🛡️ Filtern toxischer Nachrichten : Unsere Detoxify- Pipeline filtert automatisch toxische Nachrichten heraus, um eine saubere und sichere Chat-Umgebung aufrechtzuerhalten.
+
+🔒 LLM-Guard : Sorgen Sie für sichere LLM-Interaktionen mit der LLM-Guard -Pipeline. Der Prompt Injection Scanner erkennt und verhindert raffinierte Eingabemanipulationen, die auf große Sprachmodelle abzielen. Dies schützt Ihre LLMs vor Datenlecks und bietet zusätzlichen Schutz gegen Prompt-Injection-Angriffe.
+
+🕒 Gesprächsrundenlimits : Verbessern Sie das Interaktionsmanagement, indem Sie mit der Gesprächsrundenlimit- Pipeline Limits für Gesprächsrunden festlegen.
+
+📈 OpenAI-Generierungsstatistiken : Unsere OpenAI- Pipeline bietet detaillierte Generierungsstatistiken für OpenAI-Modelle.
+
+🚀 Multi-Modell-Unterstützung : Unsere nahtlose Integration mit verschiedenen KI-Modellen verschiedener Anbieter erweitert Ihre Möglichkeiten mit einer breiten Palette an Sprachmodellen, aus denen Sie auswählen und mit denen Sie interagieren können.
+
+Zusätzlich zu den umfangreichen Funktionen und Anpassungsmöglichkeiten bieten wir Ihnen eine Bibliothek mit einsatzbereiten Beispiel-Pipelines sowie eine praktische Beispiel-Scaffold-Pipeline, die Ihnen den Einstieg erleichtert. Diese Ressourcen optimieren Ihren Entwicklungsprozess und ermöglichen Ihnen die schnelle Erstellung leistungsstarker LLM-Interaktionen mit Pipelines und Python. Viel Spaß beim Programmieren! 💡​
+🖥️ Benutzererfahrung​
+🖥️ Intuitive Benutzeroberfläche : Die Chat-Oberfläche wurde mit Blick auf den Benutzer entwickelt und ist von der Benutzeroberfläche von ChatGPT inspiriert.
+
+⚡ Schnelle Reaktionsfähigkeit : Genießen Sie eine zuverlässig schnelle und reaktionsschnelle Leistung.
+
+🎨 Begrüßungsbildschirm : Ein einfacher Begrüßungsbildschirm beim Laden für ein reibungsloseres Benutzererlebnis.
+
+🌐 Personalisierte Benutzeroberfläche : Wählen Sie unter „Einstellungen“ > „Benutzeroberfläche“ zwischen einer neu gestalteten Such-Landingpage und der klassischen Chat-Benutzeroberfläche, um ein maßgeschneidertes Erlebnis zu ermöglichen.
+
+📦 Pip-Installationsmethode : Die Installation von Open WebUI kann über den Befehl erfolgen pip install open-webui, was den Prozess vereinfacht und für neue Benutzer zugänglicher macht. Weitere Informationen finden Sie unter: https://pypi.org/project/open-webui/ .
+
+🌈 Designanpassung : Personalisieren Sie Ihr Open WebUI-Erlebnis mit einer Reihe von Optionen, darunter eine Vielzahl solider und dennoch eleganter Designs, anpassbare Chat-Hintergrundbilder und drei Modusoptionen: Hell, Dunkel oder OLED-Dunkelmodus – oder lassen Sie sie für Sie wählen! ;)
+
+🖼️ Unterstützung für benutzerdefinierten Hintergrund : Legen Sie unter „Einstellungen“ > „Benutzeroberfläche“ einen benutzerdefinierten Hintergrund fest, um Ihr Erlebnis zu personalisieren.
+
+📝 Umfangreiche Banner mit Markdown : Erstellen Sie visuell ansprechende Ankündigungen mit Markdown-Unterstützung in Bannern und ermöglichen Sie so umfangreichere und dynamischere Inhalte.
+
+💻 Hervorhebung der Codesyntax : Unsere Syntaxhervorhebungsfunktion verbessert die Lesbarkeit des Codes und bietet eine klare und prägnante Ansicht Ihres Codes.
+
+🗨️ Markdown-Rendering in Benutzernachrichten : Benutzernachrichten werden jetzt in Markdown gerendert, was die Lesbarkeit und Interaktion verbessert.
+
+🎨 Flexible Texteingabeoptionen : Wechseln Sie für den Chat zwischen Rich-Text-Eingabe und herkömmlicher Textbereichseingabe, um den Benutzerpräferenzen gerecht zu werden und die Wahl zwischen erweiterter Formatierung und einfacherer Texteingabe zu bieten.
+
+👆 Müheloses Teilen von Code : Optimieren Sie den Freigabe- und Zusammenarbeitsprozess mit praktischen Optionen zum Kopieren von Code, einschließlich einer schwebenden Kopierschaltfläche in Codeblöcken und einer Klick-zum-Kopieren-Funktion aus Codebereichen. Das spart Zeit und reduziert Frustration.
+
+🎨 Interaktive Artefakte : Rendern Sie Webinhalte und SVGs direkt in der Benutzeroberfläche und unterstützen Sie schnelle Iterationen und Live-Änderungen für mehr Kreativität und Produktivität.
+
+🖊️ Live-Codebearbeitung : Aufgeladene Codeblöcke ermöglichen die Live-Bearbeitung direkt in der LLM-Antwort, wobei Live-Neuladungen durch Artefakte unterstützt werden, wodurch Codierung und Tests optimiert werden.
+
+🔍 Verbesserte SVG-Interaktion : Schwenk- und Zoomfunktionen für SVG-Bilder, einschließlich Meerjungfrauendiagrammen, ermöglichen eine tiefere Erkundung und ein tieferes Verständnis komplexer Konzepte.
+
+🔍 Schnellaktionen zur Textauswahl : Schwebende Schaltflächen werden angezeigt, wenn Text in LLM-Antworten hervorgehoben wird. Sie ermöglichen tiefergehende Interaktionen wie „Frage stellen“ oder „Erklären“ und verbessern das allgemeine Benutzererlebnis.
+
+↕️ Unterstützung für bidirektionalen Chat : Sie können problemlos zwischen der Chat-Richtung von links nach rechts und von rechts nach links wechseln, um verschiedenen Spracheinstellungen gerecht zu werden.
+
+📱 Mobile Zugänglichkeit : Die Seitenleiste kann auf Mobilgeräten mit einer einfachen Wischgeste geöffnet und geschlossen werden.
+
+🤳 Haptisches Feedback auf unterstützten Geräten : Android-Geräte unterstützen haptisches Feedback für ein immersives taktiles Erlebnis bei bestimmten Interaktionen.
+
+🔍 Suche nach Benutzereinstellungen : Schnelle Suche nach Einstellungsfeldern, was die Benutzerfreundlichkeit und Navigation verbessert.
+
+📜 Offline-Swagger-Dokumentation : Greifen Sie offline auf die entwicklerfreundliche Swagger-API-Dokumentation zu und gewährleisten Sie so von überall aus den vollständigen Zugriff.
+
+💾 Leistungsoptimierungen : Das verzögerte Laden großer Abhängigkeiten minimiert den anfänglichen Speicherverbrauch, steigert die Leistung und verkürzt die Ladezeiten.
+
+🚀 Dauerhafte und skalierbare Konfiguration : Offene WebUI-Konfigurationen werden in einer Datenbank (webui.db) gespeichert, was einen nahtlosen Lastenausgleich, Hochverfügbarkeits-Setups und dauerhafte Einstellungen über mehrere Instanzen hinweg ermöglicht und so den Zugriff auf Ihre Konfigurationen und deren Wiederverwendung erleichtert.
+
+🔄 Portabler Import/Export : Einfaches Importieren und Exportieren von Open WebUI-Konfigurationen, wodurch die Replikation von Einstellungen auf mehreren Systemen vereinfacht wird.
+
+❓ Schnellzugriff auf Dokumentation und Tastenkombinationen : Über die Fragezeichen-Schaltfläche in der unteren rechten Ecke des Hauptbildschirms der Benutzeroberfläche (verfügbar auf größeren Bildschirmen wie Desktop-PCs und Laptops) können Benutzer einfach auf die Dokumentationsseite „Open WebUI“ und die verfügbaren Tastenkombinationen zugreifen.
+
+📜 Änderungsprotokoll und Suche nach Updates : Benutzer können im Menü Settings> About> auf ein umfassendes Änderungsprotokoll zugreifen und nach Updates suchen See What's New. Dies bietet einen schnellen Überblick über die neuesten Funktionen, Verbesserungen und Fehlerbehebungen sowie die Möglichkeit, nach Updates zu suchen.
+
+💬 Gespräche​
+💬 Echter asynchroner Chat : Genießen Sie ununterbrochenes Multitasking mit echter asynchroner Chat-Unterstützung, die es Ihnen ermöglicht, Chats zu erstellen, wegzunavigieren und jederzeit mit bereiten Antworten zurückzukehren.
+
+🔔 Benachrichtigungen zum Chatabschluss : Bleiben Sie mit sofortigen Benachrichtigungen in der Benutzeroberfläche auf dem Laufenden, wenn ein Chat in einem nicht aktiven Tab endet, und stellen Sie sicher, dass Sie nie eine abgeschlossene Antwort verpassen.
+
+🌐 Benachrichtigungs-Webhook-Integration : Erhalten Sie rechtzeitige Updates für lang andauernde Chats oder externe Integrationsanforderungen mit konfigurierbaren Webhook-Benachrichtigungen, auch wenn Ihr Tab geschlossen ist.
+
+📚 Kanäle (Beta) : Erkunden Sie die Echtzeit-Zusammenarbeit zwischen Benutzern und KIs mit Chatrooms im Discord-/Slack-Stil, erstellen Sie Bots für Kanäle und schalten Sie asynchrone Kommunikation für proaktive Multi-Agent-Workflows frei.
+
+🖊️ Tippindikatoren in Kanälen : Verbessern Sie die Zusammenarbeit mit Echtzeit-Tippindikatoren in Kanälen, damit alle eingebunden und informiert bleiben.
+
+👤 Benutzerstatusanzeigen : Zeigen Sie den Status eines Benutzers schnell an, indem Sie in Kanälen auf sein Profilbild klicken. Dies bietet bessere Einblicke in die Koordination und Verfügbarkeit.
+
+💬 Chat-Steuerung : Passen Sie die Parameter für jede Chat-Sitzung einfach an und erhalten Sie so eine präzisere Kontrolle über Ihre Interaktionen.
+
+💖 Verwaltung bevorzugter Antworten : Markieren und organisieren Sie bevorzugte Antworten ganz einfach direkt in der Chat-Übersicht, um das Abrufen und Zugreifen auf bevorzugte Antworten zu erleichtern.
+
+📌 Angeheftete Chats : Unterstützung für angeheftete Chats, sodass Sie wichtige Unterhaltungen leicht zugänglich halten können.
+
+🔍 RAG-Einbettungsunterstützung : Ändern Sie das Retrieval Augmented Generation (RAG)-Einbettungsmodell direkt im Menü Admin Panel> Settings> Documentsund verbessern Sie so die Dokumentverarbeitung. Diese Funktion unterstützt Ollama- und OpenAI-Modelle.
+
+📜 Zitate in der RAG-Funktion : Mit der Retrieval Augmented Generation (RAG)-Funktion können Benutzer den Kontext von Dokumenten, die LLMs zugeführt werden, mit hinzugefügten Zitaten als Referenzpunkte einfach verfolgen.
+
+🌟 Verbesserte RAG-Pipeline : Eine umschaltbare Hybridsuchunterfunktion für unsere RAG-Einbettungsfunktion, die die RAG-Funktionalität über verbessert BM25, mit Neubewertung durch CrossEncoderund konfigurierbaren Schwellenwerten für Relevanzbewertungen.
+
+📹 YouTube RAG-Pipeline : Die dedizierte Retrieval Augmented Generation (RAG)-Pipeline zum Zusammenfassen von YouTube-Videos über Video-URLs ermöglicht eine reibungslose Interaktion direkt mit Videotranskriptionen.
+
+📁 Umfassende Dokumentabfrage : Wechseln Sie zwischen der vollständigen Dokumentabfrage und herkömmlichen Snippets, um umfassende Aufgaben wie Zusammenfassungen zu ermöglichen und erweiterte Dokumentfunktionen zu unterstützen.
+
+🌟 RAG-Zitationsrelevanz : Bewerten Sie die Zitatgenauigkeit ganz einfach durch Hinzufügen von Relevanzprozentsätzen in den RAG-Ergebnissen.
+
+🗂️ Erweitertes RAG : Verbessern Sie die RAG-Genauigkeit durch intelligente Vorverarbeitung des Chatverlaufs, um vor dem Abruf die besten Abfragen zu ermitteln.
+
+📚 Inline-Zitate für RAG : Profitieren Sie von nahtlosen Inline-Zitaten für Retrieval-Augmented Generation (RAG)-Antworten, die die Rückverfolgbarkeit verbessern und für Quellenklarheit bei neu hochgeladenen Dateien sorgen.
+
+📁 Handhabung großer Texte : Optional können Sie großen eingefügten Text in einen Datei-Upload konvertieren, der direkt mit RAG verwendet werden kann, sodass die Chat-Oberfläche übersichtlicher bleibt.
+
+🔄 Multimodale Unterstützung : Mühelose Interaktion mit Modellen, die multimodale Interaktionen unterstützen, einschließlich Bildern ( e.g., LLaVA).
+
+🤖 Unterstützung mehrerer Modelle : Wechseln Sie schnell zwischen verschiedenen Modellen für vielfältige Chat-Interaktionen.
+
+🔀 Antworten im Chat mit vielen Modellen zusammenführen : Verbessert den Dialog, indem Antworten mehrerer Modelle zu einer einzigen, zusammenhängenden Antwort zusammengeführt werden.
+
+✅ Mehrere Instanzen desselben Modells in Chats : Der Chat mit vielen Modellen wurde verbessert, um das Hinzufügen mehrerer Instanzen desselben Modells zu unterstützen.
+
+💬 Temporäre Chat-Funktion : Es wurde eine temporäre Chat-Funktion eingeführt, die die alte Chatverlaufseinstellung außer Kraft setzt, um die Flexibilität der Benutzerinteraktion zu verbessern.
+
+🖋️ Bearbeiten von Benutzernachrichten : Die Funktion zum Bearbeiten des Benutzerchats wurde verbessert, um das Speichern von Änderungen ohne Senden zu ermöglichen.
+
+💬 Effiziente Konversationsbearbeitung : Erstellen Sie schnell und intuitiv neue Nachrichtenpaare mit der Tastenkombination Cmd/Strg+Umschalt+Eingabe und optimieren Sie so die Tests der Konversationslänge.
+
+🖼️ Clientseitige Bildkomprimierung : Sparen Sie Bandbreite und verbessern Sie die Leistung mit der clientseitigen Bildkomprimierung, indem Sie Bilder vor dem Hochladen über „Einstellungen“ > „Schnittstelle“ komprimieren.
+
+👥 '@' Modellintegration : Durch den nahtlosen Wechsel zu jedem verfügbaren lokalen oder externen Modell während der Konversation können Benutzer die kollektive Intelligenz mehrerer Modelle in einem einzigen Chat nutzen. Dies kann durch die Verwendung des @Befehls zur Namensangabe des Modells innerhalb eines Chats erfolgen.
+
+🏷️ Konversations-Tagging : Kategorisieren und finden Sie getaggte Chats mühelos zur schnellen Referenz und optimierten Datenerfassung mit unserem effizienten „tag:“-Abfragesystem. So können Sie Ihre Konversationen verwalten, suchen und organisieren, ohne die Benutzeroberfläche zu überladen.
+
+🧠 Automatisches Tagging : Konversationen können optional automatisch mit Tags versehen werden, um die Organisation zu verbessern, was die Effizienz automatisch generierter Titel widerspiegelt.
+
+👶 Chat-Klonen : Klonen und speichern Sie ganz einfach einen Schnappschuss eines beliebigen Chats für spätere Verwendung oder Fortsetzung. Mit dieser Funktion können Sie ganz einfach dort weitermachen, wo Sie aufgehört haben, oder Ihre Sitzung mit anderen teilen. Um eine Kopie Ihres Chats zu erstellen, klicken Sie einfach auf die CloneSchaltfläche in den Dropdown-Optionen des Chats. Können Sie mit Ihren Klonen Schritt halten?
+
+⭐ Visualisierte Gesprächsverläufe : Interaktives Nachrichtendiagramm zur verbesserten Visualisierung von Gesprächsverläufen, wodurch das Verständnis und die Navigation komplexer Diskussionen verbessert werden.
+
+📁 Chat-Ordner : Organisieren Sie Ihre Chats in Ordnern, verschieben Sie sie per Drag & Drop zur einfachen Verwaltung und exportieren Sie sie nahtlos zum Teilen oder Analysieren.
+
+📤 Einfacher Chat-Import : Importieren Sie Chats in Ihren Arbeitsbereich, indem Sie Chat-Exporte (JSON) einfach per Drag & Drop auf die Seitenleiste ziehen.
+
+📜 Unterstützung für voreingestellte Eingabeaufforderungen : Greifen Sie mit dem Befehl in der Chat-Eingabe sofort auf benutzerdefinierte voreingestellte Eingabeaufforderungen zu /. Laden Sie mühelos vordefinierte Gesprächseinstiege und beschleunigen Sie Ihre Interaktionen. Importieren Sie Eingabeaufforderungen ganz einfach über die Open WebUI Community- Integration oder erstellen Sie Ihre eigenen!
+
+📅 Unterstützung für Eingabeaufforderungsvariablen : Eingabeaufforderungsvariablen wie {{CLIPBOARD}}, {{CURRENT_DATE}}, {{CURRENT_DATETIME}}, {{CURRENT_TIME}}, {{CURRENT_TIMEZONE}}, {{CURRENT_WEEKDAY}}, {{USER_NAME}}, {{USER_LANGUAGE}}, und {{USER_LOCATION}}können in der Systemeingabeaufforderung oder durch Verwendung eines Schrägstrichbefehls verwendet werden, um eine Eingabeaufforderung direkt in einem Chat auszuwählen.
+
+Bitte beachten Sie, dass die {{USER_LOCATION}}Eingabeaufforderungsvariable eine sichere Verbindung über HTTPS erfordert. Um diese spezielle Eingabeaufforderungsvariable zu verwenden, stellen Sie bitte sicher, dass {{USER_LOCATION}}sie im Menü Settings> aktiviert ist Interface.
+Bitte beachten Sie, dass die {{CLIPBOARD}}Eingabeaufforderungsvariablen Zugriff auf die Zwischenablage Ihres Geräts erfordern.
+🧠 ErinnerungsfunktionSettings : Fügen Sie über das Menü > Personalization> manuell Informationen hinzu, die Ihre LLMs speichern sollen Memory. Erinnerungen können hinzugefügt, bearbeitet und gelöscht werden.
+
+💻 Modellverwaltung​
+🛠️ Modellersteller : Alle Modelle können mit einem dauerhaften Modellerstellermodus auf der Modellbearbeitungsseite erstellt und bearbeitet werden.
+
+📚 Wissensunterstützung für Modelle : Die Möglichkeit, Tools, Funktionen und Wissenssammlungen direkt von der Bearbeitungsseite eines Modells an Modelle anzuhängen, wodurch die für jedes Modell verfügbaren Informationen erweitert werden.
+
+🗂️ Modellvoreinstellungen : Erstellen und verwalten Sie Modellvoreinstellungen für die Ollama- und OpenAI-API.
+
+🏷️ Modell-Tagging : Der Modell-Arbeitsbereich ermöglicht es Benutzern, ihre Modelle mithilfe von Tags zu organisieren.
+
+📋 Dropdown-Reihenfolge der Modellauswahl : Modelle können mühelos organisiert werden, indem Sie sie per Drag & Drop an die gewünschten Positionen im Modellarbeitsbereich ziehen. Die Änderungen werden dann im Dropdown-Menü des Modells angezeigt.
+
+🔍 Dropdown-Menü zur Modellauswahl : Finden und wählen Sie Ihre Modelle ganz einfach mit der Fuzzy-Suche und detaillierten Modellinformationen mit Modell-Tags und Modellbeschreibungen aus.
+
+⌨️ Modellauswahl mit Pfeiltasten : Verwenden Sie die Pfeiltasten für eine schnellere Modellauswahl und verbessern Sie so die Zugänglichkeit.
+
+🔧 Schnellaktionen im Modellarbeitsbereich : Verbesserte Schnellaktionen mit der Umschalttaste zum Ausblenden/Anzeigen und Löschen von Modellen im Modellarbeitsbereich.
+
+😄 Transparente Modellnutzung : Bleiben Sie dank sichtbarer Statusanzeigen bei Abfragen mit wissenserweiterten Modellen über den Systemzustand informiert.
+
+⚙️ Feinabgestimmte Steuerung mit erweiterten Parametern : Erhalten Sie eine tiefere Ebene der Kontrolle, indem Sie Modellparameter wie seed, temperature, frequency penalty, context length, seed, und mehr anpassen.
+
+🔄 Nahtlose Integration : Kopieren Sie einen beliebigen ollama run {model:tag}CLI-Befehl direkt von der Seite eines Modells in der Ollama-Bibliothek und fügen Sie ihn in das Modell-Dropdown-Menü ein, um Modelle einfach auszuwählen und abzurufen.
+
+🗂️ Ollama-Modelldatei erstellen : Um eine Modelldatei für Ollama zu erstellen, navigieren Sie zum Menü Admin Panel> Settings> Models> Create a model.
+
+⬆️ GGUF-Dateimodellerstellung : Erstellen Sie mühelos Ollama-Modelle, indem Sie GGUF-Dateien direkt aus der Open WebUI über das Menü Admin Settings> Settings> Model> hochladen Experimental. Der Prozess wurde optimiert, indem Sie die Option zum Hochladen von Ihrem Computer oder zum Herunterladen von GGUF-Dateien von Hugging Face nutzen können.
+
+⚙️ Standardmodelleinstellung : Die Standardmodelleinstellung für neue Chats kann auf Mobilgeräten im Menü Settings> Interfaceoder auf Desktop-PCs und Laptops einfacher in einem neuen Chat im Dropdown-Menü zur Modellauswahl festgelegt werden.
+
+💡 LLM-Antworteinblicke : Details zu jeder generierten Antwort können angezeigt werden, einschließlich Einblicken in die externe Modell-API und umfassende Informationen zum lokalen Modell.
+
+🕒 Modelldetails auf einen Blick : Zeigen Sie wichtige Modelldetails, einschließlich Modell-Hash und Zeitstempel der letzten Änderung, direkt im Modellarbeitsbereich an, um die Nachverfolgung und Verwaltung zu verbessern.
+
+📥🗑️ Modelle herunterladen/löschen : Modelle können problemlos direkt von Open WebUI heruntergeladen oder gelöscht werden.
+
+🔄 Alle Ollama-Modelle aktualisieren : Über eine praktische Schaltfläche können Benutzer alle ihre lokal installierten Modelle in einem Vorgang aktualisieren und so die Modellverwaltung optimieren.
+
+🍻 TavernAI-Charakterkartenintegration : Erleben Sie verbessertes visuelles Storytelling mit der TavernAI-Charakterkartenintegration in unserem Modell-Builder. Benutzer können TavernAI-Charakterkarten-PNGs nahtlos direkt in ihre Modelldateien integrieren und so ein intensiveres und ansprechenderes Benutzererlebnis schaffen.
+
+🎲 Model Playground (Beta) : Probieren Sie Modelle mit dem Model Playground-Bereich ( beta) aus, der es Benutzern ermöglicht, Modellfunktionen und -parameter problemlos in einer Sandbox-Umgebung zu testen und zu erkunden, bevor sie in einer Live-Chat-Umgebung bereitgestellt werden.
+
+👥 Zusammenarbeit​
+🗨️ Lokale Chat-Freigabe : Erstellen und teilen Sie Chat-Links zwischen Benutzern auf effiziente und nahtlose Weise und verbessern Sie so die Zusammenarbeit und Kommunikation.
+
+👍👎 RLHF-Anmerkung : Steigern Sie die Wirkung Ihrer Nachrichten, indem Sie sie mit einem Daumen hoch oder Daumen runter bewerten. AMD bietet eine Bewertung der Antwort auf einer Skala von 1 bis 10, gefolgt von der Option, Textfeedback zu geben. Dies erleichtert die Erstellung von Datensätzen für Reinforcement Learning from Human Feedback ( RLHF). Nutzen Sie Ihre Nachrichten, um Modelle zu trainieren oder zu optimieren, und gewährleisten Sie gleichzeitig die Vertraulichkeit lokal gespeicherter Daten.
+
+🔧 Umfassender Feedback-Export : Exportieren Sie Feedback-Verlaufsdaten in JSON für eine nahtlose Integration mit der RLHF-Verarbeitung und weiteren Analyse, was wertvolle Erkenntnisse für Verbesserungen liefert.
+
+🤝 Community-Sharing : Teilen Sie Ihre Chat-Sitzungen mit der Open WebUI Community, indem Sie auf die Share to Open WebUI CommunitySchaltfläche klicken. Diese Funktion ermöglicht Ihnen die Interaktion mit anderen Benutzern und die Zusammenarbeit auf der Plattform.
+
+Um diese Funktion zu nutzen, melden Sie sich bitte bei Ihrem Open WebUI Community-Konto an. Das Teilen Ihrer Chats fördert eine lebendige Community, den Wissensaustausch und erleichtert die gemeinsame Problemlösung. Bitte beachten Sie, dass das Teilen von Chatsitzungen in der Community optional ist. Nur Administratoren können diese Funktion im Menü Admin Settings> Settings> ein- und ausschalten General.
+🏆 Community-Bestenliste : Treten Sie an und verfolgen Sie Ihre Leistung in Echtzeit mit unserem Bestenlistensystem, das das ELO-Bewertungssystem verwendet und die optionale Weitergabe des Feedbackverlaufs ermöglicht.
+
+⚔️ Arena zur Modellbewertung : Führen Sie blinde A/B-Tests von Modellen direkt über die Administratoreinstellungen durch, um einen echten Nebeneinandervergleich zu ermöglichen und so leichter das beste Modell für Ihre Anforderungen zu finden.
+
+🎯 Themenbasierte Ranglisten : Entdecken Sie genauere Ranglisten mit unserem experimentellen themenbasierten Neurangsystem, das die Ranglistenplatzierungen basierend auf der Tag-Ähnlichkeit im Feedback anpasst.
+
+📂 Einheitlicher und kollaborativer Arbeitsbereich : Greifen Sie auf alle Ihre Modelldateien, Eingabeaufforderungen, Dokumente, Tools und Funktionen an einem praktischen Ort zu und verwalten Sie sie. Gleichzeitig können mehrere Benutzer zusammenarbeiten und zu Modellen, Wissen, Eingabeaufforderungen oder Tools beitragen, wodurch Ihr Arbeitsablauf optimiert und die Teamarbeit verbessert wird.
+
+📚 Geschichte & Archiv​
+📜 Chatverlauf : Greifen Sie über die Chat-Navigationsleiste ganz einfach auf Ihren Gesprächsverlauf zu und verwalten Sie ihn. Deaktivieren Sie den Chatverlauf im Menü Settings> Chats, um zu verhindern, dass bei neuen Interaktionen ein Chatverlauf erstellt wird.
+
+🔄 Zugriff auf den Regenerationsverlauf : Rufen Sie Ihren gesamten LLM-Reaktionsregenerationsverlauf einfach erneut auf und erkunden Sie ihn.
+
+📬 Chats archivieren : Speichern Sie mühelos abgeschlossene Unterhaltungen, die Sie mit Models geführt haben, zur späteren Bezugnahme oder Interaktion und sorgen Sie so für eine übersichtliche und übersichtliche Chat-Oberfläche.
+
+🗃️ Alle Chats archivieren : Mit dieser Funktion können Sie alle Ihre Chats schnell auf einmal archivieren.
+
+📦 Alle archivierten Chats als JSON exportieren : Mit dieser Funktion können Benutzer alle ihre archivierten Chats einfach in eine einzige JSON-Datei exportieren, die für Sicherungs- oder Übertragungszwecke verwendet werden kann.
+
+📄 Chats als JSON/PDF/TXT herunterladen : Laden Sie Ihre Chats einfach einzeln in Ihrem bevorzugten Format herunter .json: .pdf, oder .txt.
+
+📤📥 Chatverlauf importieren/exportieren : Verschieben Sie Ihre Chatdaten nahtlos über die Optionen in die Plattform hinein und aus ihr Import Chatsheraus Export Chats.
+
+🗑️ Alle Chats löschen : Mit dieser Option können Sie alle Ihre Chats dauerhaft löschen und so einen Neustart gewährleisten.
+
+🎙️ Audio, Sprache und Barrierefreiheit​
+🗣️ Spracheingabe-Unterstützung : Interagieren Sie mit Ihrem Modell per Spracheingabe. Genießen Sie den Komfort, direkt mit Ihrem Modell zu sprechen. Nutzen Sie außerdem die Option, nach 3 Sekunden Stille automatisch Spracheingaben zu senden, um ein optimiertes Erlebnis zu gewährleisten.
+
+Damit der Mikrofonzugriff funktioniert, müssen Sie manuell eine sichere Verbindung über HTTPS einrichten oder Ihre URL auf eigene Gefahr manuell auf die Whitelist setzen .
+😊 Emoji-Anruf : Aktivieren Sie diese Funktion im Menü Settings> Interface, damit LLMs während Sprachanrufen Emotionen mithilfe von Emojis ausdrücken können, um eine dynamischere Interaktion zu ermöglichen.
+
+Damit diese Funktion funktioniert, ist für den Mikrofonzugriff eine sichere Verbindung über HTTPS erforderlich.
+🎙️ Freisprechfunktion für Sprachanrufe : Starten Sie Sprachanrufe, ohne Ihre Hände benutzen zu müssen, und gestalten Sie die Interaktionen nahtloser.
+
+Damit diese Funktion funktioniert, ist der Mikrofonzugriff über eine sichere Verbindung über HTTPS erforderlich.
+📹 Videoanruffunktion : Aktivieren Sie Videoanrufe mit unterstützten Bildmodellen wie LlaVA und GPT-4o und verleihen Sie Ihrer Kommunikation eine visuelle Dimension.
+
+Damit diese Funktion funktioniert, ist der Zugriff auf die Kamera und das Mikrofon über eine sichere Verbindung über HTTPS erforderlich.
+👆 Zum Unterbrechen tippen : Stoppen Sie die Sprache der KI während Sprachgesprächen durch einfaches Tippen auf Mobilgeräten und gewährleisten Sie so eine nahtlose Kontrolle über die Interaktion.
+
+🎙️ Sprachunterbrechung : Stoppen Sie die Sprache der KI während Sprachgesprächen mit Ihrer Stimme auf Mobilgeräten und gewährleisten Sie so eine nahtlose Kontrolle über die Interaktion.
+
+🔊 Konfigurierbarer Text-to-Speech-Endpunkt : Passen Sie Ihr Text-to-Speech-Erlebnis mit konfigurierbaren OpenAI-kompatiblen Endpunkten zum Vorlesen von LLM-Antworten an.
+
+🔗 Direkter Zugriff auf den Anrufmodus : Aktivieren Sie den Anrufmodus direkt über eine URL und bieten Sie Benutzern mobiler Geräte eine praktische Verknüpfung.
+
+✨ Anpassbare Text-to-Speech-Funktion : Steuern Sie, wie Nachrichteninhalte für Anfragen zur Text-to-Speech-Generierung (TTS) segmentiert werden, und ermöglichen Sie so flexible Optionen für die Sprachausgabe.
+
+🔊 Azure Speech Services-Integration : Unterstützt Azure Speech-Dienste für Text-to-Speech (TTS) und bietet Benutzern eine größere Auswahl an Optionen zur Sprachsynthese.
+
+🎚️ Anpassbare Audiowiedergabe : Ermöglicht Benutzern, die Audiowiedergabegeschwindigkeit in den Anrufmoduseinstellungen an ihre Vorlieben anzupassen, wodurch die Zugänglichkeit und Benutzerfreundlichkeit verbessert wird.
+
+🎵 Umfassende Audiokompatibilität : Profitieren Sie von der Unterstützung einer großen Bandbreite an Transkriptionen von Audiodateiformaten mit RAG, einschließlich „audio/x-m4a“, um die Kompatibilität mit Audioinhalten innerhalb der Plattform zu erweitern.
+
+🔊 Audiokomprimierung : Durch experimentelle Audiokomprimierung kann die 25-MB-Grenze für die Sprach-zu-Text-Verarbeitung von OpenAI umgangen werden, wodurch die Möglichkeiten für audiobasierte Interaktionen erweitert werden.
+
+🗣️ Experimentelles SpeechT5 TTS : Genießen Sie die lokale SpeechT5-Unterstützung für verbesserte Text-to-Speech-Funktionen.
+
+🐍 Codeausführung​
+🚀 Vielseitiges, UI-unabhängiges, OpenAI-kompatibles Plugin-Framework : Integrieren und passen Sie Open WebUI Pipelines nahtlos an , um eine effiziente Datenverarbeitung und Modellschulung zu gewährleisten und so ein Höchstmaß an Flexibilität und Skalierbarkeit zu gewährleisten.
+
+🛠️ Nativer Python-Funktionsaufruf : Greifen Sie mit nativem Funktionsaufruf direkt in Open WebUI auf die Leistungsfähigkeit von Python zu. Integrieren Sie einfach benutzerdefinierten Code, um einzigartige Funktionen wie benutzerdefinierte RAG-Pipelines, Websuchtools und sogar agentenähnliche Aktionen über einen integrierten Code-Editor zu erstellen und Funktionscode nahtlos im Arbeitsbereich zu entwickeln und zu Toolsintegrieren Functions.
+
+🐍 Python-Codeausführung : Führen Sie Python-Code lokal im Browser über Pyodide mit einer Reihe von von Pyodide unterstützten Bibliotheken aus.
+
+🌊 Mermaid-Rendering : Erstellen Sie optisch ansprechende Diagramme und Flussdiagramme direkt in Open WebUI mit dem Mermaid-Diagramm- und Charting-Tool , das Mermaid-Syntax-Rendering unterstützt.
+
+🔗 Iframe-Unterstützung : Ermöglicht das Rendern von HTML direkt in Ihrer Chat-Oberfläche mithilfe von Funktionen und Tools.
+
+🔒 Integration & Sicherheit​
+✨ Unterstützung mehrerer OpenAI-kompatibler APIs : Integrieren und passen Sie nahtlos verschiedene OpenAI-kompatible APIs an und verbessern Sie so die Vielseitigkeit Ihrer Chat-Interaktionen.
+
+🔑 Vereinfachte API-Schlüsselverwaltung : Generieren und verwalten Sie ganz einfach geheime Schlüssel, um Open WebUI mit OpenAI-Bibliotheken zu nutzen und so Integration und Entwicklung zu optimieren.
+
+🌐 HTTP/S-Proxy-Unterstützung : Konfigurieren Sie Netzwerkeinstellungen einfach mit der Umgebungsvariable http_proxyoder https_proxy. Diese Variablen sollten, falls festgelegt, die URLs für HTTP- bzw. HTTPS-Proxys enthalten.
+
+🌐🔗 Konnektivität mit externem Ollama-Server : Stellen Sie durch Konfigurieren der Umgebungsvariable eine nahtlose Verbindung zu einem externen Ollama-Server her, der an einer anderen Adresse gehostet wird.
+
+🛢️ Flexible Datenbankintegration : Stellen Sie mithilfe von Umgebungsvariablen eine nahtlose Verbindung zu benutzerdefinierten Datenbanken her, darunter SQLite, Postgres und mehrere Vektordatenbanken wie Milvus, für eine flexible und skalierbare Datenverwaltung.
+
+🌐🗣️ Externe Spracherkennungsunterstützung : Die Ergänzung externer Spracherkennungsdienste ( STT) bietet mehr Flexibilität und ermöglicht es Benutzern, ihren bevorzugten Anbieter für eine nahtlose Interaktion auszuwählen.
+
+🌐 Remote-ChromaDB-Support : Erweitern Sie die Funktionen Ihrer Datenbank, indem Sie eine Verbindung zu Remote-ChromaDB-Servern herstellen.
+
+🔀 Lastenausgleich für mehrere Ollama-Instanzen : Verteilen Sie Chat-Anfragen mühelos auf mehrere Ollama-Instanzen, um die Leistung und Zuverlässigkeit zu verbessern.
+
+🚀 Erweiterter Lastenausgleich und Zuverlässigkeit : Nutzen Sie erweiterte Lastenausgleichsfunktionen, zustandslose Instanzen mit vollständiger Redis-Unterstützung und automatische Websocket-Wiederverbindung, um eine bessere Leistung, Zuverlässigkeit und Skalierbarkeit in der WebUI zu erzielen und nahtlose und unterbrechungsfreie Interaktionen über mehrere Instanzen hinweg sicherzustellen.
+
+☁️ Experimentelle S3-Unterstützung : Aktivieren Sie zustandslose WebUI-Instanzen mit S3-Unterstützung für verbesserte Skalierbarkeit und den Ausgleich hoher Arbeitslasten.
+
+🛠️ OAuth-Verwaltung für Benutzergruppen : Verbessern Sie die Kontrolle und Skalierbarkeit in kollaborativen Umgebungen mit Verwaltung auf Gruppenebene über die OAuth-Integration.
+
+👑 Verwaltung​
+👑 Super-Admin-Zuweisung : Weist die erste Anmeldung automatisch als Super-Admin mit einer unveränderlichen Rolle zu, die von niemand anderem geändert werden kann, nicht einmal von anderen Admins.
+
+🛡️ Granulare Benutzerberechtigungen : Beschränken Sie Benutzeraktionen und Zugriff mit anpassbaren rollenbasierten Berechtigungen und stellen Sie sicher, dass nur autorisierte Personen bestimmte Aufgaben ausführen können.
+
+👥 Mehrbenutzerverwaltung : Das intuitive Admin-Panel mit Paginierung ermöglicht Ihnen die nahtlose Verwaltung mehrerer Benutzer, optimiert die Benutzerverwaltung und vereinfacht die Verwaltung des Benutzerlebenszyklus.
+
+🔧 Admin-Panel : Das Benutzerverwaltungssystem ist darauf ausgelegt, die Einarbeitung und Verwaltung von Benutzern zu optimieren und bietet die Möglichkeit, Benutzer direkt oder in großen Mengen per CSV-Import hinzuzufügen.
+
+👥 Indikator für aktive Benutzer : Überwachen Sie die Anzahl der aktiven Benutzer und welche Modelle von wem verwendet werden, um abzuschätzen, wann die Leistung aufgrund einer hohen Benutzeranzahl beeinträchtigt werden kann.
+
+🔒 Standard-Anmelderolle : Geben Sie die Standardrolle für Neuanmeldungen bei pending, user, oder adminan und sorgen Sie so für Flexibilität bei der Verwaltung von Benutzerberechtigungen und Zugriffsebenen für neue Benutzer.
+
+🔒 Neue Anmeldungen verhindern : Aktivieren Sie die Option zum Deaktivieren neuer Benutzeranmeldungen, beschränken Sie den Zugriff auf die Plattform und behalten Sie eine feste Anzahl von Benutzern bei.
+
+🔒 Chat-Löschen verhindern : Administratoren können eine Einstellung aktivieren, die alle Benutzer daran hindert, ihre Chat-Nachrichten zu löschen. So wird sichergestellt, dass alle Chat-Nachrichten zu Prüf- oder Compliance-Zwecken aufbewahrt werden.
+
+🔗 Webhook-Integration : Abonnieren Sie Anmeldeereignisse für neue Benutzer über Webhook (kompatibel mit Discord, Google Chat, Slackund Microsoft Teams), wodurch Echtzeitbenachrichtigungen und Automatisierungsfunktionen bereitgestellt werden.
+
+📣 Konfigurierbare Benachrichtigungsbanner : Administratoren können anpassbare Banner mit Persistenz in der Datei config.json erstellen, mit Optionen für Inhalt, Hintergrundfarbe ( info, warning, error, oder success) und Abschaltbarkeit. Banner sind nur für angemeldete Benutzer zugänglich, wodurch die Vertraulichkeit sensibler Informationen gewährleistet wird.
+
+🛡️ Modell-Whitelisting : Verbessern Sie die Sicherheit und Zugriffskontrolle, indem Sie Administratoren erlauben, Modelle für Benutzer mit der userRolle auf die Whitelist zu setzen und so sicherzustellen, dass nur auf autorisierte Modelle zugegriffen werden kann.
+
+🔑 Admin-Steuerung für Community-Sharing : Administratoren können das Community-Sharing für alle Benutzer über einen Schalter im Menü Admin Panel> aktivieren oder deaktivieren Settings. Mit diesem Schalter können Administratoren Zugänglichkeit und Datenschutz verwalten und so eine sichere Umgebung gewährleisten. Administratoren haben die Möglichkeit, die Schaltfläche für alle Benutzer zu aktivieren oder zu deaktivieren Share on Communityund so das Engagement und die Zusammenarbeit in der Community zu steuern.
+
+📧 Vertrauenswürdige E-Mail-Authentifizierung : Authentifizieren Sie sich optional mit einem vertrauenswürdigen E-Mail-Header und fügen Sie so eine zusätzliche Sicherheits- und Authentifizierungsebene hinzu, um Ihre Open WebUI-Instanz zu schützen.
+
+🔒 Backend-Reverse-Proxy-Unterstützung : Erhöhte Sicherheit durch direkte Kommunikation zwischen dem Backend von Open WebUI und Ollama. Diese wichtige Funktion macht Ollama über das lokale Netzwerk (LAN) überflüssig. Anfragen an die /ollama/apiRoute von Open WebUI werden nahtlos vom Backend an Ollama umgeleitet, was die allgemeine Systemsicherheit erhöht und eine zusätzliche Schutzebene bietet.
+
+🔒 Authentifizierung : Bitte beachten Sie, dass Open WebUI föderierte Authentifizierungsschemata wie SSO, OAuth, SAML oder OIDC nicht nativ unterstützt. Es kann jedoch so konfiguriert werden, dass die Authentifizierung an einen authentifizierenden Reverse-Proxy delegiert wird, wodurch ein Single Sign-On ( SSO)-Erlebnis erreicht wird. Dieses Setup ermöglicht Ihnen die Zentralisierung der Benutzerauthentifizierung und -verwaltung und erhöht so Sicherheit und Benutzerkomfort. Durch die Integration von Open WebUI mit einem authentifizierenden Reverse-Proxy können Sie bestehende Authentifizierungssysteme nutzen und den Benutzerzugriff auf Open WebUI optimieren. Weitere Informationen zur Konfiguration dieser Funktion finden Sie im Abschnitt „ Unterstützung für föderierte Authentifizierung“ .
+
+🔓 Optionale Authentifizierung : Genießen Sie die Flexibilität, die Authentifizierung durch die Einstellung WEBUI_AUTHauf zu deaktivieren False. Dies ist eine ideale Lösung für Neuinstallationen ohne vorhandene Benutzer oder kann zu Demonstrationszwecken nützlich sein.
+
+🚫 Erweiterte API-Sicherheit : Blockieren Sie API-Benutzer basierend auf benutzerdefinierten Modellfiltern und verbessern Sie so die Sicherheit und Kontrolle über den API-Zugriff.
+
+❗ Administrator-Updates : Stellen Sie sicher, dass Administratoren durch sofortige Update-Benachrichtigungen beim Anmelden informiert bleiben und über die neuesten Änderungen und Systemstatus auf dem Laufenden bleiben.
+
+👥 Benutzergruppenverwaltung : Erstellen und verwalten Sie Benutzergruppen für eine nahtlose Organisation und Kontrolle.
+
+🔐 Gruppenbasierte Zugriffskontrolle : Legen Sie basierend auf Benutzergruppen einen granularen Zugriff auf Modelle, Wissen, Eingabeaufforderungen und Tools fest, um kontrolliertere und sicherere Umgebungen zu ermöglichen.
+
+🛠️ Granulare Benutzerberechtigungen : Verwalten Sie mühelos Arbeitsbereichsberechtigungen, einschließlich Datei-Uploads, Löschungen, Bearbeitungen und temporäre Chats sowie Modell-, Wissens-, Eingabeaufforderungs- und Tool-Erstellung.
+
+🔑 LDAP-Authentifizierung : Verbessern Sie Sicherheit und Skalierbarkeit mit LDAP-Unterstützung für die Benutzerverwaltung.
+
+🌐 Anpassbare OpenAI-Verbindungen : Genießen Sie einen reibungslosen Betrieb mit benutzerdefinierten OpenAI-Setups, einschließlich Präfix-ID-Unterstützung und expliziter Modell-ID-Unterstützung für APIs.
+
+🔐 Ollama API-Schlüsselverwaltung : Verwalten Sie Ollama-Anmeldeinformationen, einschließlich Präfix-ID-Unterstützung, für einen sicheren und effizienten Betrieb.
+
+🔄 Verbindungsverwaltung : Aktivieren oder deaktivieren Sie einzelne OpenAI- und Ollama-Verbindungen ganz einfach nach Bedarf.
+
+🎨 Intuitiver Modellarbeitsbereich : Verwalten Sie Modelle benutzer- und gruppenübergreifend mit einer neu gestalteten und benutzerfreundlichen Oberfläche.
+
+🔑 API-Schlüsselauthentifizierung : Erhöhen Sie die Sicherheit, indem Sie die API-Schlüsselauthentifizierung einfach aktivieren oder deaktivieren.
+
+🔄 Einheitliches Zurücksetzen des Modells : Setzen Sie alle Modelle mit einer Ein-Klick-Option zurück und entfernen Sie sie aus den Administratoreinstellungen.
+
+🔓 Flexible Modellzugriffskontrolle : Umgehen Sie Modellzugriffskontrollen für Benutzerrollen einfach, wenn sie nicht benötigt werden, indem Sie die Umgebungsvariable „BYPASS_MODEL_ACCESS_CONTROL“ verwenden und so Arbeitsabläufe in vertrauenswürdigen Umgebungen vereinfachen.
+
+🔒 Konfigurierbare API-Schlüsselauthentifizierungsbeschränkungen : Konfigurieren Sie Endpunktbeschränkungen für die API-Schlüsselauthentifizierung flexibel, jetzt standardmäßig deaktiviert für eine reibungslosere Einrichtung in vertrauenswürdigen Umgebungen.Aktivieren der Community-Freigabe​
+Um die Community-Freigabe zu aktivieren, führen Sie die folgenden Schritte aus:
+
+Navigieren Sie als Administrator zur Admin-Panel -Seite .
+Klicken Sie auf die Registerkarte Einstellungen .
+Aktivieren Sie auf der Registerkarte „Allgemeine Einstellungen“ die Option „Community-Freigabe aktivieren“ .
+NOTIZ
+Hinweis: Nur Administratoren können die Option „Community-Freigabe aktivieren“ aktivieren . Ist diese Option deaktiviert, wird Benutzern und Administratoren die Option „Mit Open WebUI-Community teilen“ zum Teilen ihrer Chats nicht angezeigt. Die Community-Freigabe muss von einem Administrator aktiviert werden, damit Benutzer Chats mit der Open WebUI-Community teilen können.
+
+Dadurch wird die Community-Freigabe für alle Benutzer Ihrer Open WebUI-Instanz aktiviert.
+
+Chats teilen​
+So geben Sie einen Chat frei:
+
+Wählen Sie die Chat-Konversation aus, die Sie teilen möchten.
+Klicken Sie auf die 3 Punkte, die erscheinen, wenn Sie mit dem Mauszeiger über den gewünschten Chat fahren.
+Klicken Sie dann auf die Option „Teilen“ .
+Wählen Sie entweder „Mit Open WebUI-Community teilen“ (wenn „Community-Freigabe aktivieren“ von einem Administrator aktiviert wurde ) oder „Link kopieren“ aus .
+Teilen mit der Open WebUI-Community​
+Wenn Sie auswählen Share to Open WebUI Community:
+
+Es wird eine neue Registerkarte geöffnet, in der Sie Ihren Chat als Schnappschuss auf die Open WebUI-Community-Website ( https://openwebui.com/chats/upload ) hochladen können.
+Sie können steuern, wer Ihren hochgeladenen Chat sehen kann, indem Sie aus den folgenden Zugriffseinstellungen wählen:
+Privat : Nur Sie können auf diesen Chat zugreifen.
+Öffentlich : Jeder im Internet kann die im Chat-Schnappschuss angezeigten Nachrichten sehen.
+Öffentlich, vollständiger Verlauf : Jeder im Internet kann den vollständigen Regenerationsverlauf Ihres Chats anzeigen.
+NOTIZ
+Hinweis: Sie können die Berechtigungsstufe Ihrer freigegebenen Chats auf der Community-Plattform jederzeit über Ihr openwebui.com-Konto ändern.
+
+Derzeit können freigegebene Chats auf der Community-Website nicht über die Suche gefunden werden. Zukünftige Updates sind jedoch geplant, um die Auffindbarkeit öffentlicher Chats zu ermöglichen, wenn die Berechtigung auf Publicoder gesetzt ist Public, Full History.
+
+Beispiel für einen gemeinsamen Chat auf der Website der Community-Plattform: https://openwebui.com/c/iamg30/5e3c569f-905e-4d68-a96d-8a99cc65c90f
+
+Kopieren eines Freigabelinks​
+Wenn Sie auswählen Copy Link, wird ein eindeutiger Freigabelink generiert, der mit anderen geteilt werden kann.
+
+Wichtige Überlegungen:
+
+Der freigegebene Chat enthält nur Nachrichten, die zum Zeitpunkt der Linkerstellung vorhanden waren. Neue Nachrichten, die nach der Linkerstellung im Chat gesendet werden, werden nicht berücksichtigt, es sei denn, der Link wird gelöscht und durch einen neuen Link aktualisiert.
+Der generierte Freigabelink fungiert als statische Momentaufnahme des Chats zum Zeitpunkt der Linkgenerierung.
+Um den freigegebenen Chat anzuzeigen, müssen Benutzer:
+Besitzen Sie ein Konto auf der Open WebUI-Instanz, auf der der Link generiert wurde.
+In dieser Instanz bei ihrem Konto angemeldet sein.
+Wenn ein Benutzer versucht, auf den freigegebenen Link zuzugreifen, ohne angemeldet zu sein, wird er zur Anmeldung auf die Anmeldeseite umgeleitet, bevor er den freigegebenen Chat anzeigen kann.
+Geteilte Chats anzeigen​
+So zeigen Sie einen freigegebenen Chat an:
+
+Stellen Sie sicher, dass Sie bei einem Konto auf der Open WebUI-Instanz angemeldet sind, auf der der Chat geteilt wurde.
+Klicken Sie auf den Ihnen bereitgestellten Freigabelink.
+Der Chat wird in einem schreibgeschützten Format angezeigt.
+Wenn der Administrator der Open WebUI-Instanz, von der aus der freigegebene Link geteilt wurde, Text-to-Speech eingerichtet hat, gibt es möglicherweise eine Audioschaltfläche, mit der Ihnen Nachrichten vorgelesen werden können (situativ).
+Aktualisieren freigegebener Chats​
+So aktualisieren Sie einen freigegebenen Chat:
+
+Wählen Sie die Chat-Konversation aus, die Sie teilen möchten.
+Klicken Sie auf die 3 Punkte, die erscheinen, wenn Sie mit dem Mauszeiger über den gewünschten Chat fahren.
+Klicken Sie auf die Option „Teilen“ .
+Das Modalfenster „Chat teilen“ sollte anders aussehen, wenn Sie zuvor einen Chat geteilt haben.
+Das Chat-Modalfenster „Teilen“ umfasst die folgenden Optionen:
+
+vorher : Öffnet eine neue Registerkarte, um den zuvor freigegebenen Chat über den Freigabelink anzuzeigen.
+Diesen Link löschen : Löscht den freigegebenen Link des Chats und zeigt das anfängliche Chat-Freigabemodal an.
+Mit Open WebUI Community teilen : Öffnet eine neue Registerkarte für https://openwebui.com/chats/upload mit dem Chat, der als Schnappschuss geteilt werden kann.
+Link aktualisieren und kopieren : Aktualisiert den Schnappschuss des Chats des zuvor freigegebenen Chat-Links und kopiert ihn in die Zwischenablage Ihres Geräts.
+Geteilte Chats löschen​
+So löschen Sie einen freigegebenen Chat-Link:
+
+Wählen Sie die Chat-Konversation aus, für die Sie den freigegebenen Link löschen möchten.
+Klicken Sie auf die 3 Punkte, die erscheinen, wenn Sie mit dem Mauszeiger über den gewünschten Chat fahren.
+Klicken Sie auf die Option „Teilen“ .
+Das Modalfenster „Chat teilen“ sollte anders aussehen, wenn Sie zuvor einen Chat geteilt haben.
+Klicken Sie auf „Diesen Link löschen“ .
+Nach dem Löschen ist der freigegebene Link nicht mehr gültig und Benutzer können den freigegebenen Chat nicht mehr anzeigen.
+
+NOTIZ
+Hinweis: Auf der Community-Plattform freigegebene Chats können nicht gelöscht werden. So ändern Sie die Zugriffsebene eines auf der Community-Plattform freigegebenen Chats:
+
+Melden Sie sich bei Ihrem Open WebUI-Konto auf openwebui.com an.
+Klicken Sie oben rechts auf der Website auf Ihren Kontobenutzernamen.
+Klicken Sie auf Chats .
+Klicken Sie auf den Chat, für den Sie die Zugriffsberechtigung ändern möchten.
+Scrollen Sie zum Ende des Chats und aktualisieren Sie die Berechtigungsstufe.
+Klicken Sie auf die Schaltfläche „Chat aktualisieren“ .Webhook-Integrationen
+Überblick
+Open WebUI bietet eine Webhook-Funktion, mit der Sie automatisch Benachrichtigungen erhalten, wenn sich neue Benutzer bei Ihrer Instanz anmelden. Dies geschieht durch die Angabe einer Webhook-URL an Open WebUI. Open WebUI sendet dann Benachrichtigungen an diese URL, wenn ein neues Benutzerkonto erstellt wird.
+
+Konfigurieren von Webhooks in Open WebUI
+Sie benötigen eine Webhook-URL von einem externen Dienst, der Webhooks unterstützt, z. B. einem Discord-Kanal oder einem Slack-Arbeitsbereich. Diese URL wird verwendet, um Benachrichtigungen von Open WebUI zu empfangen.
+
+Um Webhooks in Open WebUI zu konfigurieren, haben Sie zwei Möglichkeiten:
+
+Option 1: Konfigurieren über die Admin-Oberfläche
+Melden Sie sich als Administrator bei Ihrer Open WebUI-Instanz an.
+Navigieren Sie zu Admin Panel.
+Klicken Sie auf die SettingsRegisterkarte oben.
+Navigieren Sie von dort zum GeneralAbschnitt „Einstellungen“ im Admin-Bereich.
+Suchen Sie das Webhook URLFeld und geben Sie die Webhook-URL ein.
+Speichern Sie die Änderungen.
+Option 2: Konfigurieren über Umgebungsvariablen
+Alternativ können Sie die Webhook-URL durch Festlegen der WEBHOOK_URLUmgebungsvariable konfigurieren. Weitere Informationen zu Umgebungsvariablen in Open WebUI finden Sie unter Konfiguration von Umgebungsvariablen .
+
+Schritt 3: Überprüfen Sie den Webhook
+Um zu überprüfen, ob der Webhook korrekt funktioniert, erstellen Sie in Open WebUI ein neues Benutzerkonto. Wenn der Webhook korrekt konfiguriert ist, sollten Sie unter der angegebenen Webhook-URL eine Benachrichtigung erhalten.
+
+Webhook-Nutzlastformat
+Die von Open WebUI gesendete Webhook-Nutzlast liegt im Klartext vor und enthält eine einfache Benachrichtigung über das neue Benutzerkonto. Das Nutzlastformat lautet wie folgt:
+
+New user signed up: <username>
+
+Wenn sich beispielsweise ein Benutzer namens „Tim“ anmeldet, lautet die gesendete Nutzlast:
+
+New user signed up: Tim
+
+Fehlerbehebung
+Stellen Sie sicher, dass die Webhook-URL korrekt und richtig formatiert ist.
+Überprüfen Sie, ob der Webhook-Dienst aktiviert und richtig konfiguriert ist.
+Überprüfen Sie die Open WebUI-Protokolle auf Fehler im Zusammenhang mit dem Webhook.
+Stellen Sie sicher, dass die Verbindung nicht durch eine Firewall oder einen Proxy unterbrochen oder blockiert wurde.
+Der Webhook-Server ist möglicherweise vorübergehend nicht verfügbar oder weist eine hohe Latenz auf.
+Wenn der Webhook-API-Schlüssel über den Webhook-Dienst bereitgestellt wird, überprüfen Sie, ob er ungültig, abgelaufen oder widerrufen ist.Rohre​
+Pipes sind eigenständige Funktionen, die Eingaben verarbeiten und Antworten generieren, möglicherweise durch Aufrufen eines oder mehrerer LLMs oder externer Dienste, bevor sie Ergebnisse an den Benutzer zurückgeben. Beispiele für mögliche Aktionen, die Sie mit Pipes ausführen können, sind Retrieval Augmented Generation (RAG), das Senden von Anfragen an Nicht-OpenAI-LLM-Anbieter (wie Anthropic, Azure OpenAI oder Google) oder das Ausführen von Funktionen direkt in Ihrer Web-Benutzeroberfläche. Pipes können als Funktion oder auf einem Pipelines-Server gehostet werden. Eine Liste mit Beispielen finden Sie im Pipelines-Repository . Der allgemeine Workflow ist in der folgenden Abbildung dargestellt.
+
+￼
+
+In Ihrer WebUI definierte Pipes werden als neues Modell mit der Bezeichnung „Extern“ angezeigt. Ein Beispiel für zwei Pipe-Modelle ( Database RAG Pipelineund DOOM) finden Sie unten neben zwei selbst gehosteten Modellen:
+
+￼Ventile​
+Valves(siehe die spezielle Seite „Valves & UserValves“ ) können auch für festgelegt werden Pipeline. Kurz gesagt Valveshandelt es sich um Eingabevariablen, die pro Pipeline festgelegt werden.
+
+Valveswerden als Unterklasse der PipelineKlasse festgelegt und als Teil der __init__Methode der PipelineKlasse initialisiert.
+
+Wenn Sie Ventile zu Ihrer Pipeline hinzufügen, sollten Sie sicherstellen, dass Administratoren die Ventile in der Web-Benutzeroberfläche neu konfigurieren können. Hierfür gibt es mehrere Optionen:
+
+Legen Sie hiermit os.getenv()eine Umgebungsvariable für die Pipeline und einen Standardwert fest, der verwendet werden soll, wenn die Umgebungsvariable nicht festgelegt ist. Ein Beispiel finden Sie unten:
+self.valves = self.Valves(
+    **{
+        "LLAMAINDEX_OLLAMA_BASE_URL": os.getenv("LLAMAINDEX_OLLAMA_BASE_URL", "http://localhost:11434"),
+        "LLAMAINDEX_MODEL_NAME": os.getenv("LLAMAINDEX_MODEL_NAME", "llama3"),
+        "LLAMAINDEX_EMBEDDING_MODEL_NAME": os.getenv("LLAMAINDEX_EMBEDDING_MODEL_NAME", "nomic-embed-text"),
+    }
+)
+￼
+￼
+Stellen Sie das Ventil auf den OptionalTyp ein, der das Laden der Pipeline ermöglicht, auch wenn für das Ventil kein Wert festgelegt ist.
+class Pipeline:
+    class Valves(BaseModel):
+        target_user_roles: List[str] = ["user"]
+        max_turns: Optional[int] = None
+￼
+Wenn Sie in der Web-Benutzeroberfläche keine Möglichkeit zum Aktualisieren von Ventilen lassen, wird nach dem Versuch, der Web-Benutzeroberfläche eine Pipeline hinzuzufügen, der folgende Fehler im Pipelines-Serverprotokoll angezeigt: WARNING:root:No Pipeline class found in <pipeline name>Filter
+Filter dienen dazu, Aktionen für eingehende Benutzernachrichten und ausgehende Assistentennachrichten (LLM) auszuführen. Mögliche Aktionen eines Filters sind das Senden von Nachrichten an Überwachungsplattformen (wie Langfuse oder DataDog), das Ändern von Nachrichteninhalten, das Blockieren schädlicher Nachrichten, das Übersetzen von Nachrichten in eine andere Sprache oder die Ratenbegrenzung von Nachrichten bestimmter Benutzer. Eine Liste mit Beispielen finden Sie im Pipelines-Repository . Filter können als Funktion oder auf einem Pipelines-Server ausgeführt werden. Der allgemeine Workflow ist in der folgenden Abbildung dargestellt.
+
+Wenn eine Filterpipeline für ein Modell oder eine Pipe aktiviert ist, wird die eingehende Nachricht des Benutzers (oder „Inlet“) zur Verarbeitung an den Filter weitergeleitet. Der Filter führt die gewünschte Aktion für die Nachricht aus, bevor er den Chatabschluss vom LLM-Modell anfordert. Abschließend führt der Filter eine Nachbearbeitung der ausgehenden LLM-Nachricht (oder des „Outlets“) durch, bevor sie an den Benutzer gesendet wird.
+Diese Seite bearbeiten
+
+🏺 Artefakte
+Was sind Artefakte und wie verwende ich sie in Open WebUI?​
+Artefakte in Open WebUI sind eine innovative Funktion, die von den Artefakten von Claude.AI inspiriert wurde. Sie ermöglichen die Interaktion mit wichtigen und eigenständigen Inhalten, die von einem LLM innerhalb eines Chats generiert werden. Sie ermöglichen es Ihnen, wesentliche Inhalte unabhängig von der Hauptkonversation anzuzeigen, zu ändern, zu erweitern oder darauf zu verweisen. Dies erleichtert die Arbeit mit komplexen Ergebnissen und stellt sicher, dass Sie wichtige Informationen später erneut aufrufen können.
+
+Wann verwendet Open WebUI Artefakte?​
+Open WebUI erstellt ein Artefakt, wenn der generierte Inhalt bestimmte, auf unsere Plattform zugeschnittene Kriterien erfüllt:
+
+Renderbar : Um als Artefakt angezeigt zu werden, muss der Inhalt in einem Format vorliegen, das von Open WebUI für die Darstellung unterstützt wird. Dies umfasst:
+Einseitige HTML-Websites
+Skalierbare Vektorgrafiken (SVG)
+Vollständige Webseiten, die HTML, Javascript und CSS in einem Artefakt enthalten. Beachten Sie, dass zum Generieren einer vollständigen Webseite HTML erforderlich ist.
+ThreeJS-Visualisierungen und andere JavaScript-Visualisierungsbibliotheken wie D3.js.
+Andere Inhaltstypen wie Dokumente (Markdown oder einfacher Text), Codeausschnitte und React-Komponenten werden von Open WebUI nicht als Artefakte gerendert.
+
+Wie erstellt das Modell von Open WebUI Artefakte?​
+Um Artefakte in Open WebUI verwenden zu können, muss ein Modell Inhalte bereitstellen, die den Rendering-Prozess zur Erstellung eines Artefakts auslösen. Dazu muss gültiger HTML-, SVG-Code oder andere unterstützte Formate für das Artefakt-Rendering generiert werden. Wenn der generierte Inhalt die oben genannten Kriterien erfüllt, wird er in Open WebUI als interaktives Artefakt angezeigt.
+
+Wie verwende ich Artefakte in Open WebUI?​
+Wenn Open WebUI ein Artefakt erstellt, wird der Inhalt in einem speziellen Artefakt-Fenster rechts neben dem Hauptchat angezeigt. So interagieren Sie mit Artefakten:
+
+Bearbeiten und Iterieren : Bitten Sie einen LLM im Chat, den Inhalt zu bearbeiten oder zu iterieren. Diese Aktualisierungen werden direkt im Artefaktfenster angezeigt. Sie können mit der Versionsauswahl unten links im Artefakt zwischen den Versionen wechseln. Jede Bearbeitung erstellt eine neue Version, sodass Sie Änderungen mit der Versionsauswahl verfolgen können.
+Aktualisierungen : Open WebUI kann ein vorhandenes Artefakt basierend auf Ihren Nachrichten aktualisieren. Das Artefaktfenster zeigt den neuesten Inhalt an.
+Aktionen : Greifen Sie auf zusätzliche Aktionen für das Artefakt zu, z. B. das Kopieren des Inhalts oder das Öffnen des Artefakts im Vollbildmodus. Diese Funktion befindet sich in der unteren rechten Ecke des Artefakts.
+Artefakte bearbeiten​
+Gezielte Updates : Beschreiben Sie, was Sie wo ändern möchten. Zum Beispiel:
+„Ändern Sie die Farbe des Balkens im Diagramm von Blau auf Rot.“
+„Aktualisieren Sie den Titel des SVG-Bildes auf ‚Neuer Titel‘.“
+Vollständige Neufassungen : Fordern Sie größere Änderungen an, die den Großteil des Inhalts betreffen, um eine umfassende Umstrukturierung oder Aktualisierung mehrerer Abschnitte zu ermöglichen. Zum Beispiel:
+„Schreiben Sie diese einseitige HTML-Website so um, dass sie stattdessen eine Zielseite wird.“
+„Gestalten Sie dieses SVG neu, sodass es mit ThreeJS animiert wird.“
+Bewährte Vorgehensweisen :
+
+Geben Sie genau an, welchen Teil des Artefakts Sie ändern möchten.
+Verweisen Sie für gezielte Aktualisierungen auf einen eindeutigen Identifizierungstext rund um Ihre gewünschte Änderung.
+Überlegen Sie, ob für Ihre Anforderungen eine kleine Aktualisierung oder eine vollständige Neufassung besser geeignet ist.
+Anwendungsfälle​
+Artefakte in Open WebUI ermöglichen es verschiedenen Teams, schnell und effizient hochwertige Arbeitsprodukte zu erstellen. Hier sind einige Beispiele, die auf unsere Plattform zugeschnitten sind:
+
+Designer :
+Erstellen Sie interaktive SVG-Grafiken für UI/UX-Design.
+Entwerfen Sie einseitige HTML-Websites oder Zielseiten.
+Entwickler : Erstellen Sie einfache HTML-Prototypen oder generieren Sie SVG-Symbole für Projekte.
+Vermarkter :
+Entwerfen Sie Kampagnen-Landingpages mit Leistungsmetriken.
+Erstellen Sie SVG-Grafiken für Werbekreationen oder Social-Media-Beiträge.
+Beispiele für Projekte, die Sie mit den Artefakten von Open WebUI erstellen können​
+Artefakte in Open WebUI ermöglichen es verschiedenen Teams und Einzelpersonen, schnell und effizient hochwertige Arbeitsergebnisse zu erstellen. Hier sind einige auf unsere Plattform zugeschnittene Beispiele, die die Vielseitigkeit von Artefakten veranschaulichen und Sie inspirieren, ihr Potenzial zu erkunden:
+
+Interaktive Visualisierungen
+Verwendete Komponenten: ThreeJS, D3.js und SVG
+Vorteile: Erstellen Sie immersive Datengeschichten mit interaktiven Visualisierungen. Die Artefakte der offenen WebUI ermöglichen Ihnen den Wechsel zwischen Versionen, wodurch das Testen verschiedener Visualisierungsansätze und das Nachverfolgen von Änderungen vereinfacht wird.
+Beispielprojekt: Erstellen Sie mit ThreeJS ein interaktives Liniendiagramm zur Visualisierung von Aktienkursen im Zeitverlauf. Aktualisieren Sie die Farben und Skalen des Diagramms in separaten Versionen, um verschiedene Visualisierungsstrategien zu vergleichen.
+
+Single-Page-Webanwendungen
+Verwendete Komponenten: HTML, CSS und JavaScript
+Vorteile: Entwickeln Sie einseitige Webanwendungen direkt in Open WebUI. Bearbeiten und iterieren Sie den Inhalt mithilfe gezielter Aktualisierungen und vollständiger Neufassungen.
+Beispielprojekt: Entwerfen Sie eine To-Do-Listen-App mit einer Benutzeroberfläche in HTML und CSS. Nutzen Sie JavaScript für interaktive Funktionen. Aktualisieren Sie das Layout und die UI/UX der App durch gezielte Updates und vollständige Neuentwicklungen.
+
+Animierte SVG-Grafiken
+Verwendete Komponenten: SVG und ThreeJS
+Vorteile: Erstellen Sie ansprechende animierte SVG-Grafiken für Marketingkampagnen, Social Media oder Webdesign. Mit den Artefakten der offenen WebUI können Sie die Grafiken in einem einzigen Fenster bearbeiten und iterieren.
+Beispielprojekt: Entwerfen Sie ein animiertes SVG-Logo für eine Unternehmensmarke. Verwenden Sie ThreeJS, um Animationseffekte hinzuzufügen, und die gezielten Updates von Open WebUI, um die Farben und das Design des Logos zu verfeinern.
+
+Webseiten-Prototypen
+Verwendete Komponenten: HTML, CSS und JavaScript
+Vorteile: Erstellen und testen Sie Webseiten-Prototypen direkt in Open WebUI. Wechseln Sie zwischen Versionen, um verschiedene Designansätze zu vergleichen und den Prototyp zu verfeinern.
+Beispielprojekt: Entwickeln Sie einen Prototyp für eine neue E-Commerce-Website mit HTML, CSS und JavaScript. Nutzen Sie die gezielten Updates von Open WebUI, um Navigation, Layout und UI/UX zu optimieren.
+
+Interaktives Geschichtenerzählen
+Verwendete Komponenten: HTML, CSS und JavaScript
+Vorteile: Erstellen Sie interaktive Storys mit Scrolleffekten, Animationen und anderen interaktiven Elementen. Mit den Artefakten der offenen WebUI können Sie die Story verfeinern und verschiedene Versionen testen.
+Beispielprojekt: Erstellen Sie eine interaktive Geschichte über die Geschichte eines Unternehmens und nutzen Sie Scroll-Effekte und Animationen, um den Leser zu fesseln. Nutzen Sie gezielte Updates, um die Geschichte zu verfeinern, und testen Sie verschiedene Versionen mit der Versionsauswahl der Open WebUI. Python-Codeausführung
+Überblick​
+Open WebUI ermöglicht die clientseitige Ausführung von Python-Code im Browser. Pyodide nutzt dabei Skripte innerhalb eines Codeblocks im Chat. Diese Funktion ermöglicht es Large Language Models (LLMs), Python-Skripte zu generieren, die direkt im Browser ausgeführt werden können. Dabei werden verschiedene von Pyodide unterstützte Bibliotheken genutzt.
+
+Um die Privatsphäre und Flexibilität der Benutzer zu wahren, spiegelt Open WebUI PyPI-Pakete und vermeidet direkte externe Netzwerkanfragen. Dieser Ansatz ermöglicht auch die Nutzung von Pyodide in Umgebungen ohne Internetzugang.
+
+Das Open WebUI-Frontend enthält eine eigenständige WASM (WebAssembly)-Python-Umgebung, die von Pyodide unterstützt wird und grundlegende, von LLMs generierte Python-Skripte ausführen kann. Diese Umgebung ist benutzerfreundlich gestaltet und erfordert keine zusätzliche Einrichtung oder Installation.
+
+Unterstützte Bibliotheken​
+Die Pyodide-Codeausführung ist so konfiguriert, dass nur Pakete geladen werden, die in scripts/prepare-pyodide.js konfiguriert und dann zu "CodeBlock.svelte" hinzugefügt wurden. Die folgenden Pyodide-Pakete werden derzeit in Open WebUI unterstützt:
+
+Mikropipette
+Verpackung
+Anfragen
+beautifulsoup4
+numpy
+Pandas
+matplotlib
+scikit-learn
+scipy
+regulärer Ausdruck
+Diese Bibliotheken können für verschiedene Aufgaben wie Datenmanipulation, maschinelles Lernen und Web Scraping verwendet werden. Wenn das gewünschte Paket nicht in der mit Open WebUIm gelieferten Pyodide kompiliert ist, kann es nicht verwendet werden.
+
+Aufrufen der Python-Codeausführung​
+Um Python-Code auszuführen, bitten Sie einen LLM im Chat, ein Python-Skript für Sie zu schreiben. Sobald der LLM den Code generiert hat, Runerscheint oben rechts im Codeblock eine Schaltfläche. Durch Klicken auf diese Schaltfläche wird der Code mit Pyodide ausgeführt. Um das Ergebnis am Ende eines Codeblocks anzuzeigen, stellen Sie sicher, dass der Code mindestens eine Druckanweisung enthält, um ein Ergebnis anzuzeigen.
+
+Tipps zur Verwendung der Python-Codeausführung​
+Beachten Sie beim Schreiben von Python-Code, dass dieser bei der Ausführung in einer Pyodide-Umgebung ausgeführt wird. Sie können den LLM darüber informieren, indem Sie bei der Codeanforderung die „Pyodide-Umgebung“ angeben.
+Informieren Sie sich in der Pyodide-Dokumentation über die Möglichkeiten und Grenzen der Umgebung.
+Experimentieren Sie mit verschiedenen Bibliotheken und Skripten, um die Möglichkeiten der Python-Codeausführung in Open WebUI zu erkunden.
+Pyodide-Dokumentation​
+Pyodide-Dokumentation
+Codebeispiel​
+Hier ist ein Beispiel für ein einfaches Python-Skript, das mit Pyodide ausgeführt werden kann:
+
+import pandas as pd
+
+# Create a sample DataFrame
+data = {'Name': ['John', 'Anna', 'Peter'],
+        'Age': [28, 24, 35]}
+df = pd.DataFrame(data)
+
+# Print the DataFrame
+print(df)
+￼
+Dieses Skript erstellt mithilfe von Pandas einen Beispiel-DataFrame und druckt ihn unter dem Codeblock in Ihrem Chat.
+
+Erweiterung der Liste unterstützter Bibliotheken​
+Möchten Sie die Grenzen des Möglichen erweitern? Gehen Sie folgendermaßen vor, um die Liste der unterstützten Bibliotheken zu erweitern:
+
+Forken Sie das Pyodide-Repository, um Ihre eigene Version zu erstellen.
+Wählen Sie neue Pakete aus der vorhandenen Paketliste in Pyodide oder erkunden Sie hochwertige Pakete, die Open WebUI derzeit fehlen.
+Integrieren Sie die neuen Pakete in Ihr gegabeltes Repository, um noch mehr Möglichkeiten freizuschalten.🤖 Modelle
+Der ModelsBereich Workspaceinnerhalb der Open WebUI ist ein leistungsstarkes Tool zum Erstellen und Verwalten benutzerdefinierter Modelle für bestimmte Zwecke. Dieser Bereich dient als zentrale Anlaufstelle für alle Ihre Modelldateien und bietet zahlreiche Funktionen zum Bearbeiten, Klonen, Teilen, Exportieren und Ausblenden Ihrer Modelle.
+
+Modelldateiverwaltung​
+In diesem ModelsAbschnitt können Sie die folgenden Aktionen für Ihre Modelldateien ausführen:
+
+Bearbeiten : Tauchen Sie in die Details Ihrer Modelldatei ein und nehmen Sie Änderungen an ihrem Charakter und mehr vor.
+Klonen : Erstellen Sie eine Kopie einer Modelldatei, die -clonean die geklonte Datei angehängt wird Model ID. Beachten Sie, dass Sie ein Basismodell nicht klonen können. Sie müssen zuerst ein Modell erstellen, bevor Sie es klonen können.
+Teilen : Teilen Sie Ihre Modelldatei mit der Open WebUI-Community, indem Sie auf die Schaltfläche klicken , die Sie zu https://openwebui.com/models/createShare weiterleitet .
+Exportieren : Laden Sie den Export der Modelldatei .jsonauf Ihren PC herunter.
+Ausblenden : Blenden Sie die Modelldatei aus dem Dropdown-Menü zur Modellauswahl in Chats aus.
+Modelldateibearbeitung​
+Beim Bearbeiten einer Modelldatei können Sie die folgenden Einstellungen anpassen:
+
+Avatar-Foto : Laden Sie ein Avatar-Foto hoch, um Ihre Modelldatei darzustellen.
+Modellname : Ändern Sie den Namen Ihrer Modelldatei.
+Systemaufforderung : Stellen Sie eine optionale Systemaufforderung für Ihre Modelldatei bereit.
+Modellparameter : Passen Sie die Parameter Ihrer Modelldatei an.
+Eingabeaufforderungsvorschläge : Fügen Sie Eingabeaufforderungen hinzu, die auf einer neuen Chatseite angezeigt werden.
+Dokumente : Fügen Sie der Modelldatei Dokumente hinzu (immer RAG [Retrieval Augmented Generation]).
+Tools, Filter und Aktionen : Wählen Sie die Tools, Filter und Aktionen aus, die für die Modelldatei verfügbar sein sollen.
+Vision : Umschalten, Visionum Multimodalität zu aktivieren.
+Tags : Fügen Sie der Modelldatei Tags hinzu, die neben dem Modellnamen im Dropdown-Menü der Modellauswahl angezeigt werden.
+Modellerkennung und Import/Export​
+Der ModelsAbschnitt enthält auch Funktionen zum Importieren und Exportieren von Modellen:
+
+Modelle importieren : Verwenden Sie diese Schaltfläche, um Modelle aus einer JSON-Datei oder anderen Quellen zu importieren.
+Modelle exportieren : Verwenden Sie diese Schaltfläche, um alle Ihre Modelldateien in eine einzige JSON-Datei zu exportieren.
+Um Modelle herunterzuladen, navigieren Sie zu den Ollama-Einstellungen im Reiter „Verbindungen“. Alternativ können Sie Modelle auch direkt herunterladen, indem Sie einen Befehl wie ollama run hf.co/[model creator]/[model name]in der Dropdown-Liste zur Modellauswahl eingeben. Dadurch wird eine Schaltfläche mit der Bezeichnung „[Modellname] abrufen“ zum Herunterladen erstellt.
+
+Modellwechsel​
+Beispiel : Wechseln zwischen Mistral , LLaVA und GPT-3.5 in einer mehrstufigen Aufgabe
+
+Szenario : Eine mehrstufige Konversation umfasst verschiedene Aufgabentypen, z. B. den Beginn mit einer einfachen FAQ, die Interpretation eines Bildes und die anschließende Generierung einer kreativen Antwort.
+
+Grund für den Wechsel : Der Benutzer kann die spezifischen Stärken jedes Modells für jede Phase nutzen:
+
+Mistral für allgemeine Fragen zur Reduzierung von Rechenzeit und -kosten.
+LLaVA für visuelle Aufgaben, um Erkenntnisse aus bildbasierten Daten zu gewinnen.
+GPT-3.5 zur Generierung anspruchsvollerer und differenzierterer Sprachausgaben.
+Prozess : Der Benutzer wechselt je nach Aufgabentyp zwischen Modellen, um die Effizienz und Antwortqualität zu maximieren.
+
+Wie man :
+
+Modell auswählen : Wählen Sie im Chat-Interface die gewünschten Modelle aus der Dropdown-Liste aus. Sie können bis zu zwei Modelle gleichzeitig auswählen, und es werden beide Antworten generiert. Sie können dann mit den Vorwärts- und Rückwärtspfeilen zwischen den Modellen navigieren.
+Kontexterhaltung : Open WebUI behält den Konversationskontext über Modellwechsel hinweg bei und ermöglicht so reibungslose Übergänge.
+Diese Seite bearbeiten
+
+Der Wissensbereich von Open WebUI ist wie eine Speicherbank, die Ihre Interaktionen noch leistungsfähiger und kontextbezogener macht. Lassen Sie uns aufschlüsseln, was „Wissen“ in Open WebUI wirklich bedeutet, wie es funktioniert und warum es unglaublich hilfreich ist, Ihr Erlebnis zu verbessern.
+
+Kurz gesagt​
+„Wissen“ ist ein Abschnitt in Open WebUI, in dem Sie strukturierte Informationen speichern können, auf die das System während Ihrer Interaktionen zugreifen kann.
+Es ist wie ein Speichersystem für Open WebUI, das es ermöglicht, auf gespeicherte Daten zuzugreifen, wodurch Antworten persönlicher und kontextbezogener werden.
+Sie können Knowledge direkt in Ihren Chats mit Open WebUI verwenden, um jederzeit auf die gespeicherten Daten zuzugreifen.
+Die Einrichtung von Knowledge ist ganz einfach! Gehen Sie einfach zum Bereich „Knowledge“ im Arbeitsbereich und fügen Sie Details oder Daten hinzu. Sie benötigen keine Programmierkenntnisse oder technisches Setup; Knowledge ist im Kernsystem integriert!
+
+Was ist der Bereich „Wissen“?​
+Der Bereich „Wissen“ ist ein Speicherbereich innerhalb von Open WebUI, in dem Sie bestimmte Informationen oder Datenpunkte speichern können. Stellen Sie sich diesen Bereich als eine Art Referenzbibliothek vor , mit der Open WebUI seine Antworten präziser und relevanter auf Ihre Bedürfnisse abstimmen kann.
+
+Warum ist Wissen nützlich?​
+Stellen Sie sich vor, Sie arbeiten an einem Langzeitprojekt und möchten, dass sich das System bestimmte Parameter, Einstellungen oder sogar wichtige Hinweise zum Projekt merkt, ohne dass Sie es jedes Mal erneut daran erinnern müssen. Oder vielleicht möchten Sie, dass es sich bestimmte persönliche Präferenzen für Chats und Antworten merkt. Im Bereich „Wissen“ können Sie diese Informationen dauerhaft speichern , damit Open WebUI in zukünftigen Gesprächen darauf zurückgreifen kann. So entsteht ein stimmigeres, personalisiertes Erlebnis .
+
+Einige Beispiele dafür, was Sie in Knowledge speichern könnten:
+
+Wichtige Projektparameter oder bestimmte Datenpunkte, auf die Sie häufig verweisen.
+Benutzerdefinierte Befehle, Arbeitsabläufe oder Einstellungen, die Sie anwenden möchten.
+Persönliche Vorlieben, Richtlinien oder Regeln, die Open WebUI in jedem Chat befolgen kann.
+So nutzen Sie Wissen in Chats​
+Der Zugriff auf gespeichertes Wissen in Ihren Chats ist ganz einfach! Durch einfaches Verweisen auf das Gespeicherte (mit „#“ vor dem Namen) kann Open WebUI Daten abrufen oder bestimmte Richtlinien befolgen, die Sie im Bereich „Wissen“ festgelegt haben.
+
+Zum Beispiel:
+
+Bei der Besprechung eines Projekts kann Open WebUI Ihre angegebenen Projektdetails automatisch abrufen.
+Es können benutzerdefinierte Einstellungen auf Antworten angewendet werden, beispielsweise Formalitätsstufen oder bevorzugte Formulierungen.
+Um in Ihren Chats auf Wissen zu verweisen, stellen Sie einfach sicher, dass es im Abschnitt „Wissen“ gespeichert ist. Open WebUI weiß dann, wann und wo die relevanten Informationen eingefügt werden müssen!
+
+Administratoren können dem Arbeitsbereich Wissen hinzufügen, auf das Benutzer zugreifen und das sie verwenden können. Benutzer haben jedoch keinen direkten Zugriff auf den Arbeitsbereich selbst.
+
+Einrichten Ihrer Wissensdatenbank​
+Navigieren Sie zum Abschnitt „Wissen“ : Dieser Bereich ist benutzerfreundlich und intuitiv gestaltet.
+Einträge hinzufügen : Geben Sie Informationen ein, die Open WebUI speichern soll. Diese können so spezifisch oder allgemein sein, wie Sie möchten.
+Speichern und anwenden : Nach dem Speichern ist das Wissen zugänglich und bereit, Ihre Chat-Interaktionen zu verbessern.
+Zusammenfassung​
+Der Abschnitt „Wissen“ ist wie die „Speicherbank“ von Open WebUI, in der Sie Daten speichern können, die Sie speichern und verwenden möchten.
+Verwenden Sie Knowledge, um das System über wichtige Details auf dem Laufenden zu halten und so ein personalisiertes Chat-Erlebnis zu gewährleisten.
+Sie können in Chats direkt auf Wissen verweisen, um gespeicherte Daten bei Bedarf mit „#“ + Name des Wissens einzubinden.
+🌟 Denken Sie daran, es gibt immer mehr zu entdecken. Tauchen Sie also ein und machen Sie Open WebUI zu Ihrem ganz eigenen!
+Eingabeaufforderungen
+Der PromptsAbschnitt Workspaceinnerhalb der Open WebUI ermöglicht es Benutzern, benutzerdefinierte Eingabeaufforderungen zu erstellen, zu verwalten und freizugeben. Diese Funktion optimiert die Interaktion mit KI-Modellen, indem Benutzer häufig verwendete Eingabeaufforderungen speichern und über Schrägstrichbefehle einfach darauf zugreifen können.
+
+Schnelles Management​
+Die Eingabeaufforderungsoberfläche bietet mehrere wichtige Funktionen zum Verwalten Ihrer benutzerdefinierten Eingabeaufforderungen:
+
+Erstellen : Entwerfen Sie neue Eingabeaufforderungen mit anpassbaren Titeln, Zugriffsebenen und Inhalten.
+Teilen : Geben Sie Eingabeaufforderungen basierend auf konfigurierten Zugriffsberechtigungen an andere Benutzer weiter.
+Zugriffskontrolle : Legen Sie Sichtbarkeits- und Nutzungsberechtigungen für jede Eingabeaufforderung fest ( weitere Einzelheiten finden Sie unter „Berechtigungen“ ).
+Schrägstrichbefehle : Greifen Sie während Chatsitzungen mithilfe benutzerdefinierter Schrägstrichbefehle schnell auf Eingabeaufforderungen zu.
+Erstellen und Bearbeiten von Eingabeaufforderungen​
+Beim Erstellen oder Bearbeiten einer Eingabeaufforderung können Sie die folgenden Einstellungen konfigurieren:
+
+Titel : Geben Sie Ihrer Eingabeaufforderung einen beschreibenden Namen zur einfachen Identifizierung.
+Zugriff : Legen Sie die Zugriffsebene fest, um zu steuern, wer die Eingabeaufforderung anzeigen und verwenden kann.
+Befehl : Definieren Sie einen Schrägstrichbefehl, der die Eingabeaufforderung auslöst (z. B. /summarize).
+Eingabeaufforderungsinhalt : Schreiben Sie den eigentlichen Eingabeaufforderungstext, der an das Modell gesendet wird.
+Eingabeaufforderungsvariablen​
+Open WebUI unterstützt zwei Arten von Variablen, um Ihre Eingabeaufforderungen dynamischer und leistungsfähiger zu gestalten: Systemvariablen und benutzerdefinierte Eingabevariablen .
+
+Systemvariablen werden bei Verwendung der Eingabeaufforderung automatisch durch den entsprechenden Wert ersetzt. Sie sind nützlich, um dynamische Informationen wie das aktuelle Datum oder Benutzerdetails einzufügen.
+
+Inhalt der Zwischenablage : Verwenden Sie diese Option, {{CLIPBOARD}}um Inhalte aus Ihrer Zwischenablage einzufügen.
+Datum und Uhrzeit :
+{{CURRENT_DATE}}: Aktuelles Datum
+{{CURRENT_DATETIME}}: Aktuelles Datum und Uhrzeit
+{{CURRENT_TIME}}: Aktuelle Uhrzeit
+{{CURRENT_TIMEZONE}}: Aktuelle Zeitzone
+{{CURRENT_WEEKDAY}}: Aktueller Wochentag
+Benutzerinformationen :
+{{USER_NAME}}: Name des aktuellen Benutzers
+{{USER_LANGUAGE}}: Vom Benutzer ausgewählte Sprache
+{{USER_LOCATION}}: Standort des Benutzers (erfordert HTTPS und Einstellungen > Schnittstellenumschalter)
+Benutzerdefinierte Eingabevariablen verwandeln Ihre Eingabeaufforderungen in interaktive Vorlagen. Wenn Sie eine Eingabeaufforderung mit diesen Variablen verwenden, wird automatisch ein modales Fenster angezeigt, in das Sie Ihre Werte eingeben können. Dies ist äußerst hilfreich für die Erstellung komplexer, wiederverwendbarer Eingabeaufforderungen, die wie Formulare funktionieren. Eine ausführliche Erklärung finden Sie in den folgenden Richtlinien.
+
+Durch die Nutzung benutzerdefinierter Eingabevariablen können Sie statischen Text hinter sich lassen und interaktive Tools direkt in der Chat-Oberfläche erstellen. Diese Funktion ist kinderleicht konzipiert und ermöglicht selbst technisch nicht versierten Benutzern die einfache Ausführung komplexer, mehrstufiger Eingabeaufforderungen. Anstatt einen großen Textblock manuell zu bearbeiten, wird den Benutzern ein übersichtliches, strukturiertes Formular angezeigt. Dies optimiert nicht nur den Workflow, sondern reduziert auch Fehler, indem der Benutzer angeleitet wird, genau die richtigen Informationen im richtigen Format einzugeben. Es eröffnet eine neue Ebene der interaktiven Eingabeaufforderungsgestaltung und macht die Nutzung anspruchsvoller KI für jedermann zugänglich.
+
+Richtlinien zur Verwendung von Variablen​
+Schließen Sie alle Variablen in doppelte geschweifte Klammern ein:{{variable}}
+Alle benutzerdefinierten Eingabevariablen sind standardmäßig optional – Benutzer können beim Ausfüllen des Formulars Felder leer lassen
+Verwenden Sie das :requiredFlag, um bestimmte Variablen bei Bedarf obligatorisch zu machen
+Die {{USER_LOCATION}}Systemvariable erfordert:
+Eine sichere HTTPS-Verbindung
+Aktivieren der Funktion in Settings>Interface
+Die {{CLIPBOARD}}Systemvariable erfordert die Berechtigung zum Zugriff auf die Zwischenablage von Ihrem Gerät
+Verwenden benutzerdefinierter Eingabevariablen​
+So funktioniert es
+
+Erstellen Sie eine Eingabeaufforderung mit einer oder mehreren benutzerdefinierten Variablen unter Verwendung der folgenden Syntax.
+Verwenden Sie den Schrägstrichbefehl der Eingabeaufforderung in der Chat-Eingabe.
+Es erscheint ein Popup-Fenster „Eingabevariablen“ mit einem Formularfeld für jede von Ihnen definierte Variable.
+Füllen Sie das Formular aus und klicken Sie auf Save. Beachten Sie, dass standardmäßig alle Felder optional sind, sofern sie nicht ausdrücklich als Pflichtfelder gekennzeichnet sind.
+Die Variablen in Ihrer Eingabeaufforderung werden durch Ihre Eingabe ersetzt und die endgültige Eingabeaufforderung wird an das Modell gesendet.
+Syntax
+
+Es gibt zwei Möglichkeiten, eine benutzerdefinierte Variable zu definieren:
+
+Einfache Eingabe :{{variable_name}}
+
+Dadurch wird im Popup-Fenster ein standardmäßiges einzeiliges textEingabefeld erstellt.
+Das Feld ist standardmäßig optional.
+Eingegebene Eingabe :{{variable_name | [type][:property="value"]}}
+
+Auf diese Weise können Sie den Typ des Eingabefelds (z. B. ein Dropdown-Menü oder eine Datumsauswahl) angeben und seine Eigenschaften konfigurieren.
+Das Feld ist standardmäßig optional, sofern Sie das :requiredFlag nicht hinzufügen.
+Erforderliche und optionale Variablen
+
+Standardmäßig sind alle benutzerdefinierten Eingabevariablen optional , d. h. Benutzer können sie beim Ausfüllen des Formulars leer lassen. Dieser flexible Ansatz ermöglicht vielseitige Eingabevorlagen, bei denen einige Informationen nicht immer benötigt werden.
+
+Um eine Variable erforderlich (obligatorisch) zu machen, fügen Sie das :requiredFlag hinzu:
+
+{{mandatory_field | text:required}}
+{{optional_field | text}}
+￼
+Wenn ein Feld als erforderlich markiert ist:
+
+Das Formular zeigt einen visuellen Indikator (Sternchen) neben der Feldbezeichnung an
+Benutzer können das Formular nicht absenden, ohne einen Wert anzugeben
+Die Browservalidierung verhindert das Absenden des Formulars, wenn die erforderlichen Felder leer sind
+Übersicht über Eingabetypen
+
+Sie können verschiedene Eingabetypen angeben, um umfangreiche, benutzerfreundliche Formulare zu erstellen. Hier finden Sie eine Tabelle mit den verfügbaren Typen und ihren Eigenschaften.
+
+Typ	Beschreibung	Verfügbare Eigenschaften	Syntaxbeispiel
+Text	Ein standardmäßiges einzeiliges Texteingabefeld, ideal für die Erfassung kurzer Informationen wie Namen, Titel oder einzeiliger Zusammenfassungen. Dies ist der Standardtyp, wenn kein anderer angegeben ist .	placeholder, default,required	{{name | text:placeholder="Enter name":required}}
+Textbereich	Ein mehrzeiliger Textbereich zum Erfassen längerer Textblöcke, beispielsweise ausführlicher Beschreibungen, Artikelinhalte oder Codeausschnitte.	placeholder, default,required	{{description | textarea:required}}
+wählen	Ein Dropdown-Menü mit einer vordefinierten Auswahlliste. Dies ist ideal, um konsistente Eingaben für Dinge wie Status, Priorität oder Kategorien sicherzustellen.	options(JSON-Array), default,required	{{priority | select:options=["High","Medium","Low"]:required}}
+Nummer	Ein Eingabefeld, das nur numerische Werte zulässt. Nützlich für Mengen, Bewertungen oder andere numerische Daten.	placeholder, default,required	{{count | number:default=5}}
+Kontrollkästchen	Ein einfaches Kontrollkästchen, das einen (booleschen) Wahr- oder Falsch-Wert darstellt. Es eignet sich perfekt für Ein-/Aus-Schalter wie „Schlussfolgerung einschließen?“ oder „Als dringend markieren?“.	default(Boolesch),required	{{include_details | checkbox}}
+Datum	Ein kalenderbasierter Datumswähler, mit dem Benutzer problemlos einen bestimmten Tag, Monat und ein bestimmtes Jahr auswählen können, wodurch ein standardisiertes Datumsformat gewährleistet wird.	default(JJJJ-MM-TT),required	{{start_date | date:required}}
+Datum/Uhrzeit-Lokal	Ein spezieller Picker, mit dem Benutzer sowohl ein bestimmtes Datum als auch eine bestimmte Uhrzeit auswählen können. Ideal für die Terminplanung oder das Protokollieren von Ereigniszeitstempeln.	default,required	{{appointment | datetime-local}}
+Farbe	Ein visueller Farbwähler, mit dem der Benutzer eine Farbe auswählen oder einen Standard-Hexadezimalcode (z. B. #FF5733) eingeben kann. Nützlich für Design- und Branding-Eingabeaufforderungen.	default(Hexadezimalcode),required	{{brand_color | color:default="#FFFFFF"}}
+E-Mail	Ein speziell für E-Mail-Adressen formatiertes und validiertes Eingabefeld, das sicherstellt, dass der Benutzer eine korrekt strukturierte E-Mail eingibt.	placeholder, default,required	{{recipient_email | email:required}}
+Monat	Ein Picker, mit dem Benutzer einen bestimmten Monat und ein bestimmtes Jahr auswählen können, ohne einen Tag auswählen zu müssen. Nützlich für Abrechnungszyklen, Berichte oder Zeitleisten.	default,required	{{billing_month | month}}
+Reichweite	Ein Schieberegler, mit dem der Benutzer einen numerischen Wert innerhalb eines definierten Mindest- und Höchstbereichs auswählen kann. Ideal für Zufriedenheitswerte oder prozentuale Anpassungen.	min, max, step, default,required	{{satisfaction | range:min=1:max=10}}
+Tel.	Ein Eingabefeld für Telefonnummern. Es gibt semantisch den erwarteten Eingabetyp für Browser und Geräte an.	placeholder, default,required	{{phone_number | tel}}
+Zeit	Ein Picker zum Auswählen einer Zeit. Nützlich zum Planen von Besprechungen, Protokollieren von Ereignissen oder Festlegen von Erinnerungen ohne zugehöriges Datum.	default,required	{{meeting_time | time}}
+URL	Ein Eingabefeld für Webadressen (URLs). Es stellt sicher, dass der Benutzer einen Link bereitstellt. Dies kann für Eingabeaufforderungen nützlich sein, die Websites analysieren oder auf Onlinequellen verweisen.	placeholder, default,required	{{website | url:required}}
+Karte	(Experimentell) Eine interaktive Kartenoberfläche, mit der Benutzer geografische Koordinaten per Klick auswählen können. Dies ist ein leistungsstarkes Tool für standortbasierte Eingabeaufforderungen.	default(zB "51,5,-0,09"),required	{{location | map}}
+Beispiel-Anwendungsfälle​
+1. Flexibler Artikelzusammenfassungstool
+
+Erstellen Sie eine wiederverwendbare Eingabeaufforderung, bei der der Artikelinhalt erforderlich ist, zusätzliche Parameter jedoch optional sind.
+
+Befehl: /summarize_article
+
+Eingabeaufforderungsinhalt:
+
+Please summarize the following article. {{article_text | textarea:placeholder="Paste the full text of the article here...":required}}
+
+{{summary_length | select:options=["Brief (3 bullets)","Detailed (5 bullets)","Executive Summary"]:default="Brief (3 bullets)"}}
+
+{{focus_area | text:placeholder="Any specific aspect to focus on? (optional)"}}
+
+{{include_quotes | checkbox}} Include key quotes from the article
+￼
+￼
+Wenn Sie eingeben /summarize_article, wird ein Modalfenster mit einem erforderlichen Textbereich für den Artikel und optionalen Feldern zum Anpassen des Zusammenfassungsstils angezeigt.
+
+2. Erweiterter Fehlerberichtsgenerator
+
+Diese Eingabeaufforderung stellt sicher, dass wichtige Informationen erfasst werden, während optionale Details zugelassen werden.
+
+Befehl: /bug_report
+
+Eingabeaufforderungsinhalt:
+
+Generate a bug report with the following details:
+
+**Summary:** {{summary | text:placeholder="A brief summary of the issue":required}}
+**Priority:** {{priority | select:options=["Critical","High","Medium","Low"]:default="Medium":required}}
+**Steps to Reproduce:**
+{{steps | textarea:placeholder="1. Go to...\n2. Click on...\n3. See error...":required}}
+
+**Additional Context:** {{additional_context | textarea:placeholder="Browser version, OS, screenshots, etc. (optional)"}}
+**Workaround:** {{workaround | textarea:placeholder="Any temporary solutions found (optional)"}}
+
+Please format this into a clear and complete bug report document.
+￼
+￼
+Dadurch wird ein Formular erstellt, bei dem Titel, Priorität und Schritte obligatorisch sind, zusätzlicher Kontext und Problemumgehungen jedoch optional sind.
+
+3. Social Media Post Generator mit intelligenten Standardeinstellungen
+
+Diese Eingabeaufforderung generiert maßgeschneiderte Inhalte mit erforderlichen Kerninformationen und optionalen Anpassungen.
+
+Befehl: /social_post
+
+Eingabeaufforderungsinhalt:
+
+Generate a social media post for {{platform | select:options=["LinkedIn","Twitter","Facebook","Instagram"]:required}}.
+
+**Topic:** {{topic | text:placeholder="e.g., New feature launch":required}}
+**Key Message:** {{key_message | textarea:placeholder="What are the essential points to communicate?":required}}
+**Tone of Voice:** {{tone | select:options=["Professional","Casual","Humorous","Inspirational"]:default="Professional"}}
+**Call to Action:** {{cta | text:placeholder="e.g., 'Learn more', 'Sign up today'"}}
+**Character Limit:** {{char_limit | number:placeholder="Leave blank for platform default"}}
+**Include Hashtags:** {{include_hashtags | checkbox:default=true}}
+
+Please create an engaging post optimized for the selected platform.
+￼
+￼
+4. Protokollassistent mit flexibler Struktur
+
+Erstellen Sie strukturierte Besprechungsprotokolle mit den erforderlichen Grundlagen und optionalen Details.
+
+Befehl: /meeting_minutes
+
+Eingabeaufforderungsinhalt:
+
+# Meeting Minutes
+
+**Date:** {{meeting_date | date:required}}
+**Time:** {{meeting_time | time:required}}
+**Meeting Title:** {{title | text:placeholder="e.g., Weekly Team Sync":required}}
+**Attendees:** {{attendees | text:placeholder="Comma-separated list of names":required}}
+
+## Agenda / Key Discussion Points
+{{agenda_items | textarea:placeholder="Paste the agenda or list the key topics discussed.":required}}
+
+## Decisions Made
+{{decisions | textarea:placeholder="Key decisions and outcomes (optional)"}}
+
+## Action Items
+{{action_items | textarea:placeholder="List each action item, who it is assigned to, and the deadline."}}
+
+## Next Meeting
+**Date:** {{next_meeting | date}}
+**Topics:** {{next_topics | text:placeholder="Items to discuss next time"}}
+
+Please format the above information into a clean and professional meeting summary.
+￼
+￼
+5. Vorlage zur Inhaltsüberprüfung
+
+Eine flexible Vorlage zum Überprüfen verschiedener Inhaltstypen.
+
+Befehl: /content_review
+
+Eingabeaufforderungsinhalt:
+
+Please review the following {{content_type | select:options=["Blog Post","Marketing Copy","Documentation","Email","Presentation"]:required}}:
+
+**Content Title:** {{title | text:required}}
+**Content:** {{content | textarea:placeholder="Paste the content to be reviewed":required}}
+
+**Review Focus:** {{focus | select:options=["Grammar & Style","Technical Accuracy","Brand Voice","SEO Optimization","General Feedback"]:default="General Feedback"}}
+**Target Audience:** {{audience | text:placeholder="Who is this content for?"}}
+**Specific Concerns:** {{concerns | textarea:placeholder="Any particular areas you'd like me to focus on?"}}
+**Word Count Target:** {{word_count | number:placeholder="Target word count (if relevant)"}}
+
+Please provide detailed feedback and suggestions for improvement.
+￼
+￼
+Zugriffskontrolle und Berechtigungen​
+Die Eingabeaufforderungsverwaltung wird durch die folgenden Berechtigungseinstellungen gesteuert:
+
+Zugriff auf Eingabeaufforderungen : Benutzer benötigen die USER_PERMISSIONS_WORKSPACE_PROMPTS_ACCESSBerechtigung zum Erstellen und Verwalten von Eingabeaufforderungen.
+Ausführliche Informationen zum Konfigurieren von Berechtigungen finden Sie in der Berechtigungsdokumentation .
+Bewährte Methoden​
+Verwenden Sie klare, beschreibende Titel für Ihre Eingabeaufforderungen
+Erstellen Sie intuitive Schrägstrichbefehle, die den Zweck der Eingabeaufforderung widerspiegeln
+Design mit Blick auf Flexibilität : Markieren Sie nur wirklich wichtige Felder als erforderlich und lassen Sie optionale Felder für eine erweiterte Anpassung übrig
+Verwenden Sie für benutzerdefinierte Variablen klare Namen (z. B. {{your_name}}anstelle von {{var1}}) und beschreibenden placeholderText, um die Vorlagen leicht verständlich zu machen
+Geben Sie gegebenenfalls sinnvolle Standardwerte für optionale Felder an, um das Ausfüllen des Formulars zu beschleunigen.
+Verwenden Sie die erforderliche Markierung strategisch – fordern Sie nur Informationen an, die für die ordnungsgemäße Funktion der Eingabeaufforderung unbedingt erforderlich sind.
+Dokumentieren Sie alle spezifischen Anforderungen oder erwarteten Eingaben in der Eingabebeschreibung
+Testen Sie Eingabeaufforderungen mit verschiedenen Variablenkombinationen, einschließlich Szenarien, in denen optionale Felder leer gelassen werden
+Überlegen Sie sich die Zugriffsebenen sorgfältig, wenn Sie Eingabeaufforderungen mit anderen Benutzern teilen. Öffentliches Teilen bedeutet, dass die Eingabeaufforderungen automatisch für alle Benutzer angezeigt werden, wenn sie /in einem Chat darauf klicken. Vermeiden Sie daher die Erstellung zu vieler
+Berücksichtigen Sie Benutzer-Workflows : Überlegen Sie, welche Informationen den Benutzern immer zur Verfügung stehen und welche sie gelegentlich anpassen möchten.
+Migrationshinweise​
+Wenn Sie vor diesem Update Eingabeaufforderungen erstellt haben, funktionieren diese weiterhin wie bisher. Beachten Sie jedoch Folgendes:
+
+Alle vorhandenen Variablen werden jetzt standardmäßig als optional behandelt
+Wenn Sie das erforderliche Verhalten für kritische Felder beibehalten möchten, bearbeiten Sie Ihre Eingabeaufforderungen, um :requireddiesen Variablen das Flag hinzuzufügen
+Diese Änderung bietet eine bessere Benutzererfahrung, indem sie die flexible Verwendung von Eingabevorlagen ermöglicht
+

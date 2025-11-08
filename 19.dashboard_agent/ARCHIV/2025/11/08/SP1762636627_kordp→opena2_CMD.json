@@ -1,0 +1,9 @@
+{
+  "src": "kordp",
+  "dst": "opena2",
+  "kind": "CMD",
+  "payload": {
+    "msg": "hello",
+    "strict": true
+  }
+}
