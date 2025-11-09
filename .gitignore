@@ -1,1 +1,7 @@
 venv*/
+# Large archive files (deleted for size optimization)
+*.deb
+*.tar.xz
+*.tar.gz
+*backup*.zip
+GitHubDesktop*

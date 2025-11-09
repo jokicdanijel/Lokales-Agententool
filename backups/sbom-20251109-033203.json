@@ -1,0 +1,8 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "creationInfo": {
+    "created": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  },
+  "name": "Portier OpenAI",
+  "packages": []
+}

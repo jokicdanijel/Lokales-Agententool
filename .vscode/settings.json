@@ -1,0 +1,14 @@
+{
+    "python.testing.pytestArgs": [
+        "1.portier_openai"
+    ],
+    "python.testing.unittestEnabled": true,
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./10.opena8_telephone",
+        "-p",
+        "*test.py"
+    ]
+}
