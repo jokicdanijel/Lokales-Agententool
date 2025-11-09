@@ -10,7 +10,11 @@ GitHubDesktop*
 ChatGPT\ -\ Agent\ *
 \*\*Hinweis\*\*
 
-# Large files
-backups/*.zip
-backups/*.tar.gz
+# Large files (wildcard patterns >100MB)
+backups/
+backups/**/*.zip
+backups/**/*.tar.gz
+backups/**/*.tar.xz
 *.deb
+Backup.zip
+docs/architektur/*.drawio.bak
