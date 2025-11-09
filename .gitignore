@@ -10,3 +10,7 @@ GitHubDesktop*
 ChatGPT\ -\ Agent\ *
 \*\*Hinweis\*\*
 
+# Large files
+backups/*.zip
+backups/*.tar.gz
+*.deb
