@@ -1,5 +1,0 @@
-INFO:__main__:🚀 Starting opena12_Influencer on port 12360
-INFO:     Started server process [2908185]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://127.0.0.1:12360 (Press CTRL+C to quit)

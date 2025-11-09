@@ -1,0 +1,48 @@
+name: portier-ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install tooling
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff==0.6.8 black==24.8.0 mypy==1.11.2 pytest==8.3.3 \
+                      fastapi==0.115.0 uvicorn==0.30.6 requests==2.32.3 pydantic==2.9.2
+
+      - name: Static analysis (Ruff)
+        run: ruff check .
+
+      - name: Code style (Black)
+        run: black --check .
+
+      - name: Type check (mypy) – tolerant
+        run: |
+          mypy --python-version 3.13 --install-types --non-interactive || true
+
+      - name: Project policy checks
+        run: |
+          bash 1.portier_openai/skripte/validate_portier.sh
+
+      - name: Unit tests (if any)
+        run: |
+          if [ -d tests ]; then
+            pytest -q
+          else
+            echo "no tests/ directory – skipping"
+          fi

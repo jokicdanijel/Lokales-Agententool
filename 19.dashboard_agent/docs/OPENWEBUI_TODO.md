@@ -1,24 +1,102 @@
 # OpenWebUI Integration – Offene Aufgaben
 
-## Feature-Implementierung
+Verbleibende Tasks nach Basis-Integration (Phase 1 / Tasks 1-21 abgeschlossen).
 
-- [ ] UI-Integration abschließen (ui_index.html mit OpenWebUI Chat-Button)
-- [ ] Adapter in Docker nutzen (docker-compose für standalone Adapter)
-- [ ] Systemd-Service für opena3 anlegen
-- [ ] Datenbankpersistierung für Agent-Registry
-- [ ] WebSocket-Unterstützung für Live-Chat
+---
 
-## Testing & QA
+## Phase 2: Erweiterte UI-Integration
 
-- [ ] End-to-End Tests (Dashboard → OpenWebUI)
-- [ ] Load-Tests (parallel Requests an opena3)
-- [ ] Fehlerfall-Tests (OpenWebUI offline, Timeout, etc.)
-- [ ] Security-Audit für Token-Handling
+### [ ] UI-Templates mit Jinja2
+- [ ] Basis-Template für Chat-Oberfläche
+- [ ] Komponenten für Antwort-Anzeige
+- [ ] Error-Handling Template
+- [ ] Live-Update mit WebSocket
 
-## Dokumentation
+### [ ] Chat-Verlauf
+- [ ] Session-Management
+- [ ] Persistent storage (SQLite/Redis)
+- [ ] Export zu PDF/JSON
 
-- [ ] Deployment-Guide (Docker, Kubernetes)
-- [ ] API-Referenz erweitern (Request/Response-Schemas)
+### [ ] Multi-Modal Support
+- [ ] Bild-Upload
+- [ ] Datei-Anhänge
+- [ ] Markdown-Rendering
+
+---
+
+## Phase 3: Docker & Deployment
+
+### [ ] Docker Compose
+- [ ] Orchestrierung aller Services
+- [ ] Netzwerk-Setup
+- [ ] Volume-Definitionen
+
+### [ ] Systemd Services
+- [ ] Service für opena3
+- [ ] Service für Adapter
+- [ ] Auto-Start konfigurieren
+
+---
+
+## Phase 4: Testing & QA
+
+### [ ] End-to-End Tests
+- [ ] Full integration test
+- [ ] Multi-prompt scenarios
+- [ ] Error recovery
+
+### [ ] Performance Testing
+- [ ] Load testing (50+concurrent)
+- [ ] Latency benchmarks
+- [ ] Memory profiling
+
+### [ ] Security Audit
+- [ ] OWASP Top 10 Check
+- [ ] Token rotation
+- [ ] SQL injection tests
+
+---
+
+## Phase 5: Monitoring & Observability
+
+### [ ] Prometheus Metrics
+- [ ] Request count/latency
+- [ ] Agent health status
+- [ ] Error rates
+
+### [ ] Grafana Dashboards
+- [ ] System overview
+- [ ] Agent status
+- [ ] Error tracking
+
+### [ ] Logging Enhancement
+- [ ] Structured logging (JSON)
+- [ ] Log aggregation
+- [ ] Alert rules
+
+---
+
+## Quick Wins (1-2h each)
+
+- [ ] Response caching
+- [ ] Request deduplication
+- [ ] Response streaming
+- [ ] Health dashboard
+- [ ] Request logging
+- [ ] Graceful shutdown
+- [ ] API versioning
+
+---
+
+## Timeline
+
+Total estimated: ~100-110 hours (≈ 3 weeks)
+
+**Priority:** Phase 2 & 3 = HIGH | Phase 4 & 5 = MEDIUM | Rest = LOW
+
+---
+
+Last Updated: 2025-11-09
 - [ ] Tuning-Guide (Performance, Memory)
 - [ ] Troubleshooting erweitern (mehr Fehlerszenarien)
 

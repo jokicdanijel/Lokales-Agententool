@@ -1,7 +1,0 @@
-2025-11-08 21:49:21,158 - opena4_telegram - INFO - 🚀 Starting opena4_telegram on port 12348
-2025-11-08 21:49:21,158 - opena4_telegram - INFO - Webhook Secret length: 31
-2025-11-08 21:49:21,158 - opena4_telegram - INFO - Allowed users: 2
-INFO:     Started server process [2907790]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://127.0.0.1:12348 (Press CTRL+C to quit)

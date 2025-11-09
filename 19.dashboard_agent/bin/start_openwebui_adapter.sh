@@ -1,27 +1,63 @@
 #!/usr/bin/env bash
+# ==============================================================================
+# bin/start_openwebui_adapter.sh
+# 
+# Startet den OpenWebUI Adapter (Port 12350) im Hintergrund
+# ==============================================================================
+
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-LOG_DIR="$ROOT_DIR/logs"
-RUNTIME_DIR="$ROOT_DIR/.runtime"
-mkdir -p "$LOG_DIR" "$RUNTIME_DIR"
+# Pfade
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$(dirname "${SCRIPT_DIR}")" && pwd)"
+VENV_PATH="${PROJECT_ROOT}/../1.portier_openai/venv313/bin/activate"
+LOGS_DIR="${PROJECT_ROOT}/logs"
+RUNTIME_DIR="${PROJECT_ROOT}/.runtime"
+PID_FILE="${RUNTIME_DIR}/openwebui_adapter.pid"
+LOG_FILE="${LOGS_DIR}/openwebui_adapter.nohup.log"
+
+# Sicherstelle Verzeichnisse existieren
+mkdir -p "${LOGS_DIR}" "${RUNTIME_DIR}"
 
 # Venv aktivieren
-VENV_PATH="${VENV_PATH:-../1.portier_openai/venv313}"
-if [[ ! -f "$ROOT_DIR/$VENV_PATH/bin/activate" ]]; then
-    echo "FEHLER: Venv nicht gefunden unter $VENV_PATH"
+if [[ ! -f "${VENV_PATH}" ]]; then
+    echo "❌ Venv nicht gefunden: ${VENV_PATH}"
     exit 1
 fi
-source "$ROOT_DIR/$VENV_PATH/bin/activate"
 
-PORT="${PORT:-12350}"
+source "${VENV_PATH}"
 
-echo "Starte OpenWebUI Adapter auf Port $PORT..."
-nohup python3 "$ROOT_DIR/openwebui_adapter.py" \
-    >"$LOG_DIR/openwebui_adapter.nohup.log" 2>&1 &
+# Prüfe ob bereits laufend
+if [[ -f "${PID_FILE}" ]]; then
+    OLD_PID=$(cat "${PID_FILE}")
+    if kill -0 "${OLD_PID}" 2>/dev/null; then
+        echo "⚠️  OpenWebUI Adapter läuft bereits (PID: ${OLD_PID})"
+        exit 0
+    else
+        echo "🧹 Alte PID-Datei bereinigt"
+        rm -f "${PID_FILE}"
+    fi
+fi
 
-PID=$!
-echo "$PID" > "$RUNTIME_DIR/openwebui_adapter.pid"
+# Starte Adapter im Hintergrund
+cd "${PROJECT_ROOT}"
 
-sleep 1
-echo "✓ OpenWebUI Adapter started (PID: $PID, Port: $PORT)"
+nohup python3 -m uvicorn openwebui_adapter:app \
+    --host 127.0.0.1 \
+    --port 12350 \
+    --log-level info \
+    > "${LOG_FILE}" 2>&1 &
+
+NEW_PID=$!
+echo "${NEW_PID}" > "${PID_FILE}"
+
+echo "✅ OpenWebUI Adapter gestartet (PID: ${NEW_PID}, Port: 12350)"
+echo "📋 Log: ${LOG_FILE}"
+
+# Kurz warten und Status prüfen
+sleep 2
+if curl -s http://127.0.0.1:12350/health > /dev/null 2>&1; then
+    echo "✅ Health-Check erfolgreich"
+else
+    echo "⚠️  Health-Check fehlgeschlagen – siehe Log"
+fi

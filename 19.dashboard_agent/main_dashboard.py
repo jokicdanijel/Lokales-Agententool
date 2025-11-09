@@ -20,6 +20,7 @@ from datetime import datetime
 from agent_registry import AgentRegistry
 from sse_bus import SSEBus
 from security import verify_token, RateLimiter, security_log
+from background_poller import on_startup as poller_startup, on_shutdown as poller_shutdown, set_registry
 
 # -------------------------------------------------------------------
 # Logging
@@ -47,10 +48,21 @@ app = FastAPI(
 )
 
 # CORS (lokal offen — bei Bedarf einschränken)
+# Ermöglicht Anfragen von OpenWebUI (Port 8080) und Dashboard (Port 12349)
+cors_origins = [
+    "http://127.0.0.1:8080",
+    "http://localhost:8080",
+    "http://127.0.0.1:12349",
+    "http://localhost:12349",
+    "*"  # Für Entwicklung; in Production einschränken
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], allow_credentials=True,
-    allow_methods=["*"], allow_headers=["*"],
+    allow_origins=cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 security = HTTPBearer()
@@ -59,6 +71,24 @@ rate_limiter = RateLimiter(requests_per_minute=60)
 # Komponenten
 agent_registry = AgentRegistry()
 sse_bus = SSEBus()
+
+# ─ Startup/Shutdown Events ───────────────────────────────────────────────
+
+@app.on_event("startup")
+async def startup_event():
+    """Starte Background-Poller beim App-Start"""
+    logger.info("Dashboard startup...")
+    set_registry(agent_registry)
+    await poller_startup()
+    logger.info("Background-Poller started")
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Stoppe Background-Poller beim App-Shutdown"""
+    logger.info("Dashboard shutdown...")
+    await poller_shutdown()
+    logger.info("Background-Poller stopped")
 
 # -------------------------------------------------------------------
 # Middleware: Port-Policy (nur Dashboard-Eingang kontrollieren)
@@ -94,9 +124,38 @@ async def health_check():
     }
 
 # -------------------------------------------------------------------
+# Diagnostics
+# -------------------------------------------------------------------
+@app.get("/api/diagnostics/poller")
+@rate_limiter.limit()
+async def get_poller_status(token: HTTPAuthorizationCredentials = Security(security)):
+    """Debug: Status des Background-Pollers"""
+    ok = verify_token(token.credentials)
+    security_log.log_access(token.credentials, "/api/diagnostics/poller", ok)
+    if not ok:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    from background_poller import get_status
+    return {"poller": get_status()}
+
+# -------------------------------------------------------------------
 # Agent Registry API
 # -------------------------------------------------------------------
-@app.get("/api/status/all")
+@app.get("/api/agent/list")
+@rate_limiter.limit()
+async def list_agents(token: HTTPAuthorizationCredentials = Security(security)):
+    """Alle registrierten Agenten aufzählen"""
+    ok = verify_token(token.credentials)
+    security_log.log_access(token.credentials, "/api/agent/list", ok)
+    if not ok:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    agents = agent_registry.get_all_agents()
+    return {
+        "strict": True,
+        "count": len(agents),
+        "agents": agents
+    }
 @rate_limiter.limit()
 async def get_all_status(token: HTTPAuthorizationCredentials = Security(security)):
     ok = verify_token(token.credentials)
@@ -202,6 +261,104 @@ async def openwebui_chat(payload: Dict, token: HTTPAuthorizationCredentials = Se
     except Exception as e:
         logger.error(f"OpenWebUI Chat error: {e}")
         raise HTTPException(status_code=502, detail="OpenWebUI Agent Fehler")
+
+# -------------------------------------------------------------------
+# JWT Token Management (Secure Agent Authentication)
+# -------------------------------------------------------------------
+
+@app.post("/api/agents/{agent_id}/token")
+@rate_limiter.limit()
+async def generate_agent_token(
+    agent_id: str,
+    token: HTTPAuthorizationCredentials = Security(security)
+):
+    """Generiere JWT Token für einen Agenten"""
+    ok = verify_token(token.credentials)
+    security_log.log_access(token.credentials, f"/api/agents/{agent_id}/token", ok)
+    if not ok:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    try:
+        from jwt_auth import create_token
+        jwt_token = create_token(
+            agent_id=agent_id,
+            scope="invoke",
+            permissions=["read", "write"]
+        )
+        return {
+            "agent_id": agent_id,
+            "token": jwt_token,
+            "token_type": "Bearer",
+            "expires_in": 86400,  # 24h in seconds
+            "scope": "invoke"
+        }
+    except Exception as e:
+        logger.error(f"Token generation failed for {agent_id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Token generation failed: {str(e)}")
+
+
+@app.post("/api/auth/verify")
+@rate_limiter.limit()
+async def verify_jwt_token(payload: Dict, token: HTTPAuthorizationCredentials = Security(security)):
+    """Validiere einen JWT Token (Admin-Only)"""
+    ok = verify_token(token.credentials)
+    security_log.log_access(token.credentials, "/api/auth/verify", ok)
+    if not ok:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    try:
+        from jwt_auth import verify_token as verify_jwt
+        token_to_verify = payload.get("token")
+        if not token_to_verify:
+            raise HTTPException(status_code=400, detail="'token' field required")
+        
+        result = verify_jwt(token_to_verify)
+        return {
+            "valid": result.is_valid,
+            "agent_id": result.agent_id,
+            "scope": result.scope,
+            "permissions": result.permissions,
+            "expires_at": result.exp,
+            "error": result.error_type if not result.is_valid else None
+        }
+    except Exception as e:
+        logger.error(f"Token verification failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Verification failed: {str(e)}")
+
+
+@app.get("/api/agents/tokens/all")
+@rate_limiter.limit()
+async def get_all_agent_tokens(token: HTTPAuthorizationCredentials = Security(security)):
+    """Generiere Tokens für ALLE registrierten Agenten (Admin-Only)"""
+    ok = verify_token(token.credentials)
+    security_log.log_access(token.credentials, "/api/agents/tokens/all", ok)
+    if not ok:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    try:
+        from jwt_auth import create_token
+        agents = agent_registry.get_all_agents()
+        tokens = {}
+        
+        for agent_id in agents.keys():
+            try:
+                tokens[agent_id] = create_token(
+                    agent_id=agent_id,
+                    scope="invoke",
+                    permissions=["read", "write"]
+                )
+            except Exception as e:
+                logger.warning(f"Failed to create token for {agent_id}: {e}")
+                tokens[agent_id] = None
+        
+        return {
+            "count": len(tokens),
+            "tokens": tokens,
+            "generated_at": datetime.utcnow().isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Batch token generation failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Batch generation failed: {str(e)}")
 
 # -------------------------------------------------------------------
 # Server Sent Events

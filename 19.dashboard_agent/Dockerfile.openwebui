@@ -2,14 +2,25 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-# Kopiere Projektordner
-COPY 19.dashboard_agent /app
+# System-Dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    netcat-traditional \
+    && rm -rf /var/lib/apt/lists/*
 
-# Installiere Abhängigkeiten
+# Python-Dependencies
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Exponiere Ports
+# Copy project
+COPY . .
+
+# Expose ports
 EXPOSE 12349 8080
 
-# Hauptbefehl
-CMD ["uvicorn", "main_dashboard:app", "--host", "0.0.0.0", "--port", "12349"]
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:12349/health || exit 1
+
+# Start dashboard
+CMD ["python3", "-m", "uvicorn", "main_dashboard:app", "--host", "0.0.0.0", "--port", "12349"]

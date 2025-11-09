@@ -1,0 +1,131 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "ops: start all services",
+      "type": "shell",
+      "command": "bash",
+      "args": ["bin/ops.sh", "start"],
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "ops: stop all services",
+      "type": "shell",
+      "command": "bash",
+      "args": ["bin/ops.sh", "stop"],
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "ops: health check",
+      "type": "shell",
+      "command": "bash",
+      "args": ["bin/ops.sh", "health"],
+      "problemMatcher": [],
+      "isBackground": false
+    },
+    {
+      "label": "ops: status",
+      "type": "shell",
+      "command": "bash",
+      "args": ["bin/ops.sh", "status"],
+      "problemMatcher": [],
+      "isBackground": false
+    },
+    {
+      "label": "ops: agents register",
+      "type": "shell",
+      "command": "bash",
+      "args": ["bin/ops.sh", "agents:register"],
+      "problemMatcher": [],
+      "isBackground": false
+    },
+    {
+      "label": "ops: verify stack",
+      "type": "shell",
+      "command": "bash",
+      "args": ["bin/ops.sh", "verify"],
+      "problemMatcher": [],
+      "isBackground": false
+    },
+    {
+      "label": "test: agent health check",
+      "type": "shell",
+      "command": "curl",
+      "args": ["-s", "http://127.0.0.1:12344/health", "|", "jq", "."],
+      "problemMatcher": [],
+      "isBackground": false
+    },
+    {
+      "label": "test: curl dashboard",
+      "type": "shell",
+      "command": "curl",
+      "args": ["-s", "http://127.0.0.1:12349/api/status/all", "|", "jq", "."],
+      "problemMatcher": [],
+      "isBackground": false
+    },
+    {
+      "label": "test: curl all agents health",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "for port in {12344..12367}; do echo \"Port $port:\"; curl -s http://127.0.0.1:$port/health | jq . 2>/dev/null || echo '❌ Not responding'; done"],
+      "problemMatcher": [],
+      "isBackground": false
+    },
+    {
+      "label": "git: status",
+      "type": "shell",
+      "command": "git",
+      "args": ["status", "--short"],
+      "problemMatcher": [],
+      "isBackground": false
+    },
+    {
+      "label": "git: log (5 last commits)",
+      "type": "shell",
+      "command": "git",
+      "args": ["log", "--oneline", "-5"],
+      "problemMatcher": [],
+      "isBackground": false
+    },
+    {
+      "label": "git: push origin main",
+      "type": "shell",
+      "command": "git",
+      "args": ["push", "origin", "main"],
+      "problemMatcher": [],
+      "isBackground": false
+    },
+    {
+      "label": "python: test openwebui integration",
+      "type": "shell",
+      "command": "cd 19.dashboard_agent && python3 -m pytest -v tests/ -k openwebui || python3 -c 'import openwebui_integration; import asyncio; asyncio.run(openwebui_integration.test())'",
+      "problemMatcher": [],
+      "isBackground": false
+    },
+    {
+      "label": "python: lint (flake8)",
+      "type": "shell",
+      "command": "python3",
+      "args": ["-m", "flake8", "19.dashboard_agent/openwebui_integration.py", "--max-line-length=120"],
+      "problemMatcher": [],
+      "isBackground": false
+    },
+    {
+      "label": "python: format (black)",
+      "type": "shell",
+      "command": "python3",
+      "args": ["-m", "black", "19.dashboard_agent/openwebui_integration.py"],
+      "problemMatcher": [],
+      "isBackground": false
+    },
+    {
+      "label": "documentation: update README",
+      "type": "shell",
+      "command": "echo 'Todo: Update README with OpenWebUI Integration'",
+      "problemMatcher": [],
+      "isBackground": false
+    }
+  ]
+}

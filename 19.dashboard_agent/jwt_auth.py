@@ -4,8 +4,17 @@ JWT Authentication Module for ELION OpenWebUI Integration
 Provides secure JWT token generation, validation, and management
 for inter-agent communication and OpenWebUI integration.
 
+SECURITY-CRITICAL:
+  - RS256 (RSA) signing - asymmetric encryption
+  - Private keys loaded from secure sources ONLY:
+    * Environment variables (JWT_PRIVATE_KEY / JWT_PUBLIC_KEY)
+    * PEM files on disk (JWT_PRIVATE_KEY_PATH / JWT_PUBLIC_KEY_PATH)
+    * NEVER hardcoded in source code
+  - Standard JWT claims: iss, sub, aud, iat, exp, nbf
+  - Additional claims: agent_id, scope, permissions
+  
 Features:
-  - RS256 (RSA) signing with automatic key generation
+  - RS256 (RSA) signing with secure key management
   - Configurable token expiration (default: 24 hours)
   - Agent-specific claims (agent_id, scope, permissions)
   - Token refresh/rotation mechanism
@@ -16,13 +25,18 @@ Usage:
   >>> from jwt_auth import create_token, verify_token
   >>> token = create_token(agent_id="opena1", scope="invoke")
   >>> payload = verify_token(token)
-  >>> print(payload.agent_id)  # "opena1"
+  >>> print(payload.get("agent_id"))  # "opena1"
 
-Security:
-  - Private key stored securely (.env or environment)
-  - Public key distributed to all agents
-  - Standard JWT claims: iss, sub, aud, iat, exp, nbf
-  - Additional claims: agent_id, scope, permissions
+Key Loading Priority:
+  1. Environment variables (JWT_PRIVATE_KEY / JWT_PUBLIC_KEY)
+  2. File paths from env (JWT_PRIVATE_KEY_PATH / JWT_PUBLIC_KEY_PATH)
+  3. Default paths (./secrets/jwt_private.pem, ./secrets/jwt_public.pem)
+  4. Raise error if no keys found
+
+Deployment:
+  - Production: Use GitHub Secrets or Vault
+  - Development: Use .env file (gitignored)
+  - Testing: Use test keys in CI/CD only
 """
 
 import json
@@ -135,94 +149,126 @@ class TokenValidationResult(BaseModel):
 
 
 # ============================================================================
-# RSA Key Management
+# Secure Key Management
 # ============================================================================
 
-class RSAKeyManager:
-    """Manages RSA key generation, storage, and retrieval"""
+class SecureKeyManager:
+    """
+    Manages RSA key loading from secure sources.
     
-    @staticmethod
-    def generate_keypair() -> Tuple[str, str]:
-        """
-        Generate RSA 2048-bit keypair.
-        
-        Returns:
-            Tuple[str, str]: (private_key_pem, public_key_pem)
-        """
-        from cryptography.hazmat.primitives.asymmetric import rsa
-        from cryptography.hazmat.primitives import serialization
-        from cryptography.hazmat.backends import default_backend
-        
-        # Generate private key
-        private_key = rsa.generate_private_key(
-            public_exponent=65537,
-            key_size=2048,
-            backend=default_backend()
-        )
-        
-        # Serialize private key to PEM
-        private_pem = private_key.private_bytes(
-            encoding=serialization.Encoding.PEM,
-            format=serialization.PrivateFormat.PKCS8,
-            encryption_algorithm=serialization.NoEncryption()
-        ).decode('utf-8')
-        
-        # Extract and serialize public key
-        public_key = private_key.public_key()
-        public_pem = public_key.public_bytes(
-            encoding=serialization.Encoding.PEM,
-            format=serialization.PublicFormat.SubjectPublicKeyInfo
-        ).decode('utf-8')
-        
-        return private_pem, public_pem
+    Priority order:
+    1. Environment variables (JWT_PRIVATE_KEY / JWT_PUBLIC_KEY)
+    2. File paths from environment (JWT_PRIVATE_KEY_PATH / JWT_PUBLIC_KEY_PATH)
+    3. Default file paths (./secrets/jwt_*.pem)
+    4. Raise error if not found
+    
+    NEVER uses hardcoded keys or generates keys at runtime in production.
+    """
+    
+    # Default paths (should be gitignored)
+    DEFAULT_PRIVATE_KEY_FILE = "secrets/jwt_private.pem"
+    DEFAULT_PUBLIC_KEY_FILE = "secrets/jwt_public.pem"
+    
+    # Environment variable names
+    ENV_PRIVATE_KEY = "JWT_PRIVATE_KEY"
+    ENV_PUBLIC_KEY = "JWT_PUBLIC_KEY"
+    ENV_PRIVATE_KEY_PATH = "JWT_PRIVATE_KEY_PATH"
+    ENV_PUBLIC_KEY_PATH = "JWT_PUBLIC_KEY_PATH"
     
     @staticmethod
     def load_private_key() -> str:
-        """Load private key from environment or file."""
-        # Try environment variable first
-        if os.getenv(JWTConfig.PRIVATE_KEY_ENV):
-            return os.getenv(JWTConfig.PRIVATE_KEY_ENV)
+        """
+        Load private key from secure source.
         
-        # Try file
-        if os.path.exists(JWTConfig.PRIVATE_KEY_FILE):
-            with open(JWTConfig.PRIVATE_KEY_FILE, 'r') as f:
-                return f.read()
+        Returns:
+            str: Private key PEM content
+            
+        Raises:
+            RuntimeError: If key cannot be loaded
+        """
+        # 1. Try environment variable (highest priority)
+        if os.getenv(SecureKeyManager.ENV_PRIVATE_KEY):
+            key = os.getenv(SecureKeyManager.ENV_PRIVATE_KEY)
+            if key and len(key) > 100:  # Basic sanity check
+                return key
         
-        # Generate and save new keypair
-        private_key, public_key = RSAKeyManager.generate_keypair()
-        RSAKeyManager.save_keypair(private_key, public_key)
-        return private_key
+        # 2. Try file path from environment
+        file_path = os.getenv(SecureKeyManager.ENV_PRIVATE_KEY_PATH)
+        if file_path and Path(file_path).exists():
+            try:
+                return Path(file_path).read_text()
+            except Exception as e:
+                raise RuntimeError(f"Failed to read private key from {file_path}: {e}")
+        
+        # 3. Try default path
+        if Path(SecureKeyManager.DEFAULT_PRIVATE_KEY_FILE).exists():
+            try:
+                return Path(SecureKeyManager.DEFAULT_PRIVATE_KEY_FILE).read_text()
+            except Exception as e:
+                raise RuntimeError(f"Failed to read default private key: {e}")
+        
+        # 4. Not found - raise error
+        raise RuntimeError(
+            f"No private RSA key found. Set one of:\n"
+            f"  - {SecureKeyManager.ENV_PRIVATE_KEY} (environment variable with key content)\n"
+            f"  - {SecureKeyManager.ENV_PRIVATE_KEY_PATH} (environment variable with file path)\n"
+            f"  - {SecureKeyManager.DEFAULT_PRIVATE_KEY_FILE} (default file path)"
+        )
     
     @staticmethod
     def load_public_key() -> str:
-        """Load public key from environment or file."""
-        # Try environment variable first
-        if os.getenv(JWTConfig.PUBLIC_KEY_ENV):
-            return os.getenv(JWTConfig.PUBLIC_KEY_ENV)
+        """
+        Load public key from secure source.
         
-        # Try file
-        if os.path.exists(JWTConfig.PUBLIC_KEY_FILE):
-            with open(JWTConfig.PUBLIC_KEY_FILE, 'r') as f:
-                return f.read()
+        Returns:
+            str: Public key PEM content
+            
+        Raises:
+            RuntimeError: If key cannot be loaded
+        """
+        # 1. Try environment variable
+        if os.getenv(SecureKeyManager.ENV_PUBLIC_KEY):
+            key = os.getenv(SecureKeyManager.ENV_PUBLIC_KEY)
+            if key and len(key) > 50:  # Basic sanity check
+                return key
         
-        # Generate new keypair
-        private_key, public_key = RSAKeyManager.generate_keypair()
-        RSAKeyManager.save_keypair(private_key, public_key)
-        return public_key
+        # 2. Try file path from environment
+        file_path = os.getenv(SecureKeyManager.ENV_PUBLIC_KEY_PATH)
+        if file_path and Path(file_path).exists():
+            try:
+                return Path(file_path).read_text()
+            except Exception as e:
+                raise RuntimeError(f"Failed to read public key from {file_path}: {e}")
+        
+        # 3. Try default path
+        if Path(SecureKeyManager.DEFAULT_PUBLIC_KEY_FILE).exists():
+            try:
+                return Path(SecureKeyManager.DEFAULT_PUBLIC_KEY_FILE).read_text()
+            except Exception as e:
+                raise RuntimeError(f"Failed to read default public key: {e}")
+        
+        # 4. Not found - raise error
+        raise RuntimeError(
+            f"No public RSA key found. Set one of:\n"
+            f"  - {SecureKeyManager.ENV_PUBLIC_KEY} (environment variable with key content)\n"
+            f"  - {SecureKeyManager.ENV_PUBLIC_KEY_PATH} (environment variable with file path)\n"
+            f"  - {SecureKeyManager.DEFAULT_PUBLIC_KEY_FILE} (default file path)"
+        )
     
     @staticmethod
-    def save_keypair(private_key: str, public_key: str) -> None:
-        """Save keypair to files."""
-        os.makedirs("secrets", exist_ok=True)
+    def verify_keys_available() -> Tuple[bool, str]:
+        """
+        Verify both keys are available without loading them.
         
-        with open(JWTConfig.PRIVATE_KEY_FILE, 'w') as f:
-            f.write(private_key)
-        
-        with open(JWTConfig.PUBLIC_KEY_FILE, 'w') as f:
-            f.write(public_key)
-        
-        # Restrict permissions on private key
-        os.chmod(JWTConfig.PRIVATE_KEY_FILE, 0o600)
+        Returns:
+            Tuple[bool, str]: (keys_available, error_message)
+        """
+        try:
+            SecureKeyManager.load_private_key()
+            SecureKeyManager.load_public_key()
+            return True, "Both keys available"
+        except RuntimeError as e:
+            return False, str(e)
 
 
 # ============================================================================

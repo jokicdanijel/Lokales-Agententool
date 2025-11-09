@@ -1,0 +1,26 @@
+{
+  "tool_telegram": {
+    "path": "http://127.0.0.1:12347/message",
+    "status": "active",
+    "agent": "opena4",
+    "description": "Telegram messaging"
+  },
+  "tool_vscode": {
+    "path": "http://127.0.0.1:12348/message",
+    "status": "active",
+    "agent": "opena5",
+    "description": "VSCode integration"
+  },
+  "tool_mail": {
+    "path": "http://127.0.0.1:12349/message",
+    "status": "active",
+    "agent": "opena6",
+    "description": "Email service"
+  },
+  "tool_whatsapp": {
+    "path": "http://127.0.0.1:12350/message",
+    "status": "active",
+    "agent": "opena7",
+    "description": "WhatsApp messaging"
+  }
+}

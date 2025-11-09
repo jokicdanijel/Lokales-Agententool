@@ -1,34 +1,33 @@
 #!/usr/bin/env bash
+# ==============================================================================
+# bin/ops.sh (ELION Hyper-Dashboard Stack Controler)
+# Einheitliche CLI für alle Stack-Operationen
+# ==============================================================================
+
 set -euo pipefail
 
-# Basis = Projektwurzel (Ordner über "bin")
-BASE="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+# Scource gemeinsame Library
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/_lib.sh"
+
+# Load environment
+load_env
+
+BASE="$PROJECT_ROOT"  # Kompatibilität mit älteren Skripten
 cd "$BASE"
 
-# Endpunkte
-DASH="http://127.0.0.1:12349"
-OPENA1="http://127.0.0.1:12344"
-OPENA2="http://127.0.0.1:12345"
-OPENA3="http://127.0.0.1:8080"  # optional (OpenWebUI)
+# Endpunkte (Kompatibilität)
+DASH="http://127.0.0.1:$DASHBOARD_PORT"
+OPENA1="http://127.0.0.1:$OPENA1_PORT"
+OPENA2="http://127.0.0.1:$OPENA2_PORT"
+OPENA3="http://127.0.0.1:$OPENWEBUI_PORT"
 
-# Token aus .env lesen (nur erste Zeile verwenden, Rest sind optionale Variablen)
-TOK="$(head -n 1 .env 2>/dev/null || true)"
-
-need_token() {
-  if [[ -z "${TOK:-}" ]]; then
-    echo "FEHLER: .env fehlt oder ist leer."
-    echo "  → Starte das Dashboard einmal (python3 main_dashboard.py) – dabei wird .env erzeugt."
-    echo "  → Danach erneut: bin/ops.sh status"
-    exit 1
-  fi
-}
-
-need_cmd() {
-  command -v "$1" >/dev/null 2>&1 || {
-    echo "FEHLER: Befehl '$1' fehlt. Bitte installieren."
-    exit 1
-  }
-}
+# ==============================================================================
+# Helferfunktionen
+# ==============================================================================
 
 case "${1:-}" in
   start)
