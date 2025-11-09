@@ -1,0 +1,14 @@
+**/.venv/**
+**/node_modules/**
+**/.git/**
+**/*.lock
+**/backups/**
+**/_conflicts/**
+**/__pycache__/**
+**/*.pyc
+**/.pytest_cache/**
+**/.mypy_cache/**
+**/.ruff_cache/**
+**/dist/**
+**/build/**
+**/*.egg-info/**
