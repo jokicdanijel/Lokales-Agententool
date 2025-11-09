@@ -1,0 +1,34 @@
+{
+  "archivp": {
+    "description": "Safepoint-Archivierung und Indexierung der Operationen.",
+    "endpoints": {
+      "store": "/store/archivp"
+    },
+    "owner": "Portier/Archiv",
+    "version": "1.0.0"
+  },
+  "opena1": {
+    "description": "Koordinator – zentrale Orchestrierung eingehender Aufträge.",
+    "endpoints": {
+      "log": "/log/opena1"
+    },
+    "owner": "Portier/Koordination",
+    "version": "1.0.0"
+  },
+  "kordp": {
+    "description": "Kordinatport – Dispatching und Weiterleitung.",
+    "endpoints": {
+      "dispatch": "/dispatch/kordp"
+    },
+    "owner": "Portier/Dispatch",
+    "version": "1.0.0"
+  },
+  "opena2": {
+    "description": "Archivator – Finalisierung und Persistierung von Ergebnissen.",
+    "endpoints": {
+      "finalize": "/finalize/opena2"
+    },
+    "owner": "Portier/Archiv",
+    "version": "1.0.0"
+  }
+}
