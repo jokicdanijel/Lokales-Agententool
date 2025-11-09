@@ -1,0 +1,21 @@
+
+======================================================================
+Portier Structure Manager - DRY-RUN
+======================================================================
+
+[Scan] Scanning project at /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt...
+[Scan] Scanned 11033 files, 552 changes needed, 48 conflicts
+[Reports] Generating...
+  ✓ rename_map.csv (552 entries)
+  ✓ path_index.json
+  ✓ violations_report.md
+  ✓ structure_checkpoint.json
+
+======================================================================
+Summary:
+  Files checked: 11033
+  Changes needed: 552
+  Conflicts: 48
+  Violations: 10258
+======================================================================
+

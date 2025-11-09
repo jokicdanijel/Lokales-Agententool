@@ -1,0 +1,2214 @@
+{
+  "generated_at": "2025-11-09T03:29:51.186479",
+  "total_files": 11034,
+  "files": [
+    {
+      "path": "OPENWEBUI_INTEGRATION_GUIDE.md",
+      "category": "categorized"
+    },
+    {
+      "path": "structure_checkpoint.json",
+      "category": "categorized"
+    },
+    {
+      "path": "check_health.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "BRIDGE_PHASE_1_SUMMARY.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PLAN_opena7_WhatsApp.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PHASE_4_1_ARCHITECTURE_OVERVIEW.md",
+      "category": "categorized"
+    },
+    {
+      "path": "README_PHASE5_COMPLETE.md",
+      "category": "categorized"
+    },
+    {
+      "path": "COORDINATOR_ARCHIVATOR_SETUP.md",
+      "category": "categorized"
+    },
+    {
+      "path": "EXECUTIVE_SUMMARY.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PLAN_opena15_Shop.md",
+      "category": "categorized"
+    },
+    {
+      "path": "AGENT_TEST_RESULTS.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PHASE_5_DETAILED_PLAN.md",
+      "category": "categorized"
+    },
+    {
+      "path": "create_all_agents.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "tool-server-export.json",
+      "category": "categorized"
+    },
+    {
+      "path": "PLAN_opena19_Dashboard.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PLAN_opena11_SocialMedia.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PLAN_opena6_Email.md",
+      "category": "categorized"
+    },
+    {
+      "path": "LATEST_UPDATES.md",
+      "category": "categorized"
+    },
+    {
+      "path": "DAILY_SUMMARY_2025-11-08.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PRODUCTION_STATUS_REPORT_NOV9.md",
+      "category": "categorized"
+    },
+    {
+      "path": "DEPLOYMENT_STATUS_NOV8.md",
+      "category": "categorized"
+    },
+    {
+      "path": "README_PHASE_4_1_LAUNCH.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PHASE_4_FINAL_STATUS_REPORT.md",
+      "category": "categorized"
+    },
+    {
+      "path": "README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PLAN_opena8_Telephone.md",
+      "category": "categorized"
+    },
+    {
+      "path": "quickstart.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "MASTER_PLAN_ALL_AGENTS.md",
+      "category": "categorized"
+    },
+    {
+      "path": "SPRINT_UPDATE_2025-11-08.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PLAN_opena18_Trading.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PLAN_opena17_LocalArchive.md",
+      "category": "categorized"
+    },
+    {
+      "path": "ARCHITECTURE.md",
+      "category": "categorized"
+    },
+    {
+      "path": "verify_phase_4.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "create_agents.py",
+      "category": "categorized"
+    },
+    {
+      "path": "JWT_AUTHENTICATION_GUIDE.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PHASE_5_IMPLEMENTATION_COMPLETE.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PHASE_4_1_FINAL_STATUS_REPORT.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PLAN_opena12_Influencer.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PROJECT_COMPLETE.md",
+      "category": "categorized"
+    },
+    {
+      "path": "AGENT_STRUCTURE_PLAN.md",
+      "category": "categorized"
+    },
+    {
+      "path": "DAILY_PROGRESS_NOV09.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PLAN_opena9_TelephoneCall.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PLAN_opena16_Homepage.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PHASE_4_SUMMARY.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PHASE_5_FINAL_STATUS.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PHASE_2_COMPLETION.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PHASE_3_COMPLETION.md",
+      "category": "categorized"
+    },
+    {
+      "path": "portier_fs_bridge.py",
+      "category": "categorized"
+    },
+    {
+      "path": "PLAN_opena13_Calendar.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PHASE_4_1_EXECUTIVE_SUMMARY.md",
+      "category": "categorized"
+    },
+    {
+      "path": "DEPLOYMENT_CHECKLIST.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PLAN_opena14_HTML.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PLAN_opena4_VSCode.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PLAN_opena5_Browser.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PROJECT_COMPLETION_SUMMARY.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PLAN_opena10_Unlock.md",
+      "category": "categorized"
+    },
+    {
+      "path": "violations_report.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PHASE_4_PRODUCTION_READY.md",
+      "category": "categorized"
+    },
+    {
+      "path": "STRUCTURE_AUDIT_2025-11-08.md",
+      "category": "categorized"
+    },
+    {
+      "path": "PHASE_4_1_DEPLOYMENT_CHECKLIST.md",
+      "category": "categorized"
+    },
+    {
+      "path": "path_index.json",
+      "category": "categorized"
+    },
+    {
+      "path": "PHASE_4_COMPLETION.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena13_calendar.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena5_browser.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bridge_tokens.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena11_social_media.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/config.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ui_index.html",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/pdi_core.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/background_poller.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_kordp.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena17_analytics.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena15_shop.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena_finance.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bridge_schema.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena8_telephone.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/start_opena2.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena16_crm.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena4_telegram.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/jwt_auth.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/agent_registry_opena1.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/sse_bus.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena9_call_tracking.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/browser_selenium.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bridge_api.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena6_email.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/openwebui_adapter.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena12_influencer.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/vscode_ssh.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/security.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_openwebui_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena18_dashboard.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena14_html.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena19_workflow.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena10_unlock.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena7_whatsapp.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/openwebui_integration.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena1.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena2.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/README_STACK_START.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/safepoints.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/safepoints_latest.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/agent_registry.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ui_agent.html",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_opena4_vscode.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main_dashboard.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/SETUP_COMPLETE.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "8.opena6_email/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "8.opena6_email/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "16.opena14_html/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "16.opena14_html/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "6.opena4_telegram/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "6.opena4_telegram/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "21.opena19_workflow/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "21.opena19_workflow/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "17.opena15_shop/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "17.opena15_shop/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "2.openwebui/status.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "2.openwebui/docker-agent.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "2.openwebui/docker-compose.yml",
+      "category": "categorized"
+    },
+    {
+      "path": "2.openwebui/stop.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "2.openwebui/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "2.openwebui/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "11.opena9_call_tracking/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "11.opena9_call_tracking/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "13.opena11_social_media/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "13.opena11_social_media/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "6.mail_agent/main_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "10.opena8_telephone/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "10.opena8_telephone/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "14.opena12_influencer/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "14.opena12_influencer/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "18.opena16_crm/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "18.opena16_crm/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "12.opena10_unlock/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "12.opena10_unlock/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.opena17_analytics/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.opena17_analytics/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "9.opena7_whatsapp/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "9.opena7_whatsapp/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "4.opena2_archivator/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "4.opena2_archivator/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "15.opena13_calendar/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "15.opena13_calendar/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "5.kordp_scheduler/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "5.kordp_scheduler/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "7.whatsapp_agent/main_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "scripts/structure_manager.py",
+      "category": "categorized"
+    },
+    {
+      "path": "20.opena18_dashboard/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "20.opena18_dashboard/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "7.opena5_browser/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "7.opena5_browser/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "4.telegram_agent/main_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/start_openwebui_agent.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/stop_all.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/start_all.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/kordp_ping.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/verify_phase3.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/status.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/system_mode_switch.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/bootstrap.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/write_ping.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/logs.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/clean_pycache.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/start_agents_11_15.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/validate_bridge.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/start_agents_8_10.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/health_matrix.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/agents_auto_register.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/_lib.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/openwebui_status.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/agents_register.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/port_kill_safeguard.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/log_tail.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/env_probe.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/health.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/stack_status_badge.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/openwebui_up.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/verify_stack.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/env_bootstrap.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/archiv_last.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/ops.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/sse_listen.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/openwebui_down.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/register_openwebui.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/reset_today.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/check_ports.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/print_token.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/check_env.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/ports.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "bin/fix_stack_now.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "3.opena1_coordinator/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "3.opena1_coordinator/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "5.vscode_agent/main_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/create_agents.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/MAC_DIR_SYSTEM.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/env.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/scanpython.py",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/code_generator.py",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/venv313_init.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/preflight.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/generate_macdir.py",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/preflight_fixed.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/setup_venv313.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/api/core.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/PDI_INTEGRATION.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/OPERATIONS.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/PDI_MANIFEST.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/TROUBLESHOOTING.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/DEV_PROD_SWITCH_BLUEPRINT.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/BRIDGE_API.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/REGISTRY_MANAGEMENT.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/OPENWEBUI_INTEGRATION.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/OPENWEBUI_API.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/PDI_CHECKLIST.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/OPENWEBUI_INTEGRATION_COMPLETE.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/OPENWEBUI_TODO.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/opena3/openwebui_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/opena3/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/main_opena5_browser.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/main_opena_finance.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/main_opena8_telephone.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/main_opena4_telegram.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/main_opena9_call_tracking.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/main_opena6_email.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/main_opena10_unlock.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/main_opena7_whatsapp.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/main_opena1.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/main_opena2.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/main_opena4_vscode.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/tests/test_opena4_telegram.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/tests/test_jwt_auth.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/tests/verify_phase2.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/tests/test_opena_finance.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/tests/test_opena4_vscode.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/tests/test_opena5_browser.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/tests/test_phase5.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/tests/e2e_integration.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/tests/test_phase_4_agents.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/tests/test_bridge_api.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/tests/test_archivator.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/tests/test_openwebui_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/tests/test_opena10_unlock.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/tests/test_opena9_call_tracking.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/tests/test_opena8_telephone.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/scripts/curl_examples.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/scripts/register_agents.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/scripts/test_openwebui.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/scripts/seed_openwebui.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/scripts/run_production.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/scripts/migrate_data.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/templates/error.html",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/templates/agent.html",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/templates/base.html",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/templates/dashboard.html",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/start_opena5_browser.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/stop_all.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/start_all.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/start_openwebui_adapter.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/start_opena_finance.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/start_opena4_vscode.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/start_opena3.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/clean_pycache.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/start_opena2.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/start_opena4_telegram.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/start_agents_5_7.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/agents_auto_register.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/openwebui_status.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/agents_register.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/log_tail.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/verify_stack.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/env_bootstrap.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/ops.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/start_kordp.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/start_opena19.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/reset_today.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/check_ports.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/start_opena1.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/bin/print_token.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/PDI/MANIFEST_V1_0_FINAL.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/PDI/PHASE_4_QUICKSTART.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/PDI/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/PDI/validation_report.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/PDI/project_manifest.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/PDI/VALIDATION_FRAMEWORK.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/PDI/COMPLETION_REPORT.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/PDI/glossary.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/PDI/validation/structure_check.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/PDI/validation/consistency_report.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/PDI/chapters/00_kapitelplan.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/docs/PDI/chapters/PHASE_4_1_TASK_PROGRESS.md",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/06/SP1762419411_kordp\u2192opena2_CMD.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/06/SP1762419397_kordp\u2192opena2_CMD.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762625396_opena4_telegram\u2192opena2_MESSAGE.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762636655_opena18_dashboard\u2192opena2_DASHBOARD_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762636655_opena19_workflow\u2192opena2_WORKFLOW_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762630921_opena10_unlock\u2192opena2_SECURITY_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762625448_opena4_telegram\u2192opena2_MESSAGE.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762636654_opena16_crm\u2192opena2_CRM_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762630831_opena8_telephone\u2192opena2_CALL_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762625447_opena4_telegram\u2192opena2_MESSAGE.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762630782_opena8_telephone\u2192opena2_CALL_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762625404_opena4_telegram\u2192opena2_MESSAGE.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762630756_opena8_telephone\u2192opena2_CALL_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762622903_opena_finance\u2192opena2_TRANSACTION.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762630783_opena8_telephone\u2192opena2_CALL_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762622941_opena_finance\u2192opena2_TRANSACTION.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762630896_opena9_call_tracking\u2192opena2_ANALYTICS_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762630830_opena8_telephone\u2192opena2_CALL_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762636655_opena17_analytics\u2192opena2_ANALYTICS_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762630893_opena9_call_tracking\u2192opena2_ANALYTICS_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762622898_opena_finance\u2192opena2_TRANSACTION.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762630744_opena8_telephone\u2192opena2_CALL_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762630931_opena10_unlock\u2192opena2_SECURITY_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762636627_kordp\u2192opena2_CMD.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762630918_opena9_call_tracking\u2192opena2_ANALYTICS_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/ARCHIV/2025/11/08/SP1762630755_opena8_telephone\u2192opena2_CALL_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/main_opena5_browser.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/main_opena_finance.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/main_opena8_telephone.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/main_opena4_telegram.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/main_opena9_call_tracking.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/main_opena6_email.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/main_opena10_unlock.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/main_opena7_whatsapp.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/main_opena1.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/main_opena2.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/main_opena4_vscode.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena4_telegram.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/tests_backup/verify_phase2.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena_finance.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena4_vscode.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena5_browser.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/tests_backup/e2e_integration.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_bridge_api.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_archivator.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_openwebui_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena10_unlock.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena9_call_tracking.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena8_telephone.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.dashboard_agent/tests/__pycache__/test_phase5.cpython-312-pytest-9.0.0.pyc",
+      "category": "categorized"
+    },
+    {
+      "path": "8.opena6_email/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "8.opena6_email/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "8.opena6_email/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "8.opena6_email/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "16.opena14_html/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "16.opena14_html/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "16.opena14_html/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "16.opena14_html/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "6.opena4_telegram/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "6.opena4_telegram/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "6.opena4_telegram/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "6.opena4_telegram/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "21.opena19_workflow/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "21.opena19_workflow/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "21.opena19_workflow/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "21.opena19_workflow/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "17.opena15_shop/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "17.opena15_shop/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "17.opena15_shop/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "17.opena15_shop/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "2.openwebui/data/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "11.opena9_call_tracking/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "11.opena9_call_tracking/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "11.opena9_call_tracking/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "11.opena9_call_tracking/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "13.opena11_social_media/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "13.opena11_social_media/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "13.opena11_social_media/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "13.opena11_social_media/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "6.mail_agent/skripte/start_agent.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "10.opena8_telephone/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "10.opena8_telephone/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "10.opena8_telephone/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "10.opena8_telephone/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "14.opena12_influencer/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "14.opena12_influencer/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "14.opena12_influencer/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "14.opena12_influencer/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "18.opena16_crm/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "18.opena16_crm/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "18.opena16_crm/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "18.opena16_crm/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "docs/siri/ARCHITEKTUR_UND_SETUP.md",
+      "category": "categorized"
+    },
+    {
+      "path": "docs/siri/STATUS.md",
+      "category": "categorized"
+    },
+    {
+      "path": "docs/siri/TESTS_TELEMETRIE_ROLLOUT.md",
+      "category": "categorized"
+    },
+    {
+      "path": "12.opena10_unlock/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "12.opena10_unlock/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "12.opena10_unlock/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "12.opena10_unlock/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "19.opena17_analytics/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.opena17_analytics/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.opena17_analytics/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "19.opena17_analytics/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "9.opena7_whatsapp/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "9.opena7_whatsapp/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "9.opena7_whatsapp/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "9.opena7_whatsapp/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "4.opena2_archivator/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "4.opena2_archivator/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "4.opena2_archivator/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "4.opena2_archivator/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "15.opena13_calendar/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "15.opena13_calendar/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "15.opena13_calendar/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "15.opena13_calendar/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "5.kordp_scheduler/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "5.kordp_scheduler/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "5.kordp_scheduler/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "5.kordp_scheduler/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "7.whatsapp_agent/skripte/start_agent.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "20.opena18_dashboard/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "20.opena18_dashboard/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "20.opena18_dashboard/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "20.opena18_dashboard/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "7.opena5_browser/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "7.opena5_browser/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "7.opena5_browser/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "7.opena5_browser/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "4.telegram_agent/skripte/start_agent.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "3.opena1_coordinator/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "3.opena1_coordinator/tests/test_agent.py",
+      "category": "categorized"
+    },
+    {
+      "path": "3.opena1_coordinator/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "3.opena1_coordinator/bin/start.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "3.opena1_coordinator/venv_local/lib/python3.12/site-packages/typing_extensions.py",
+      "category": "categorized"
+    },
+    {
+      "path": "3.opena1_coordinator/venv_local/lib/python3.12/site-packages/py.py",
+      "category": "categorized"
+    },
+    {
+      "path": "5.vscode_agent/skripte/start_agent.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena9_call_tracking/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena9_call_tracking/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena7_whatsapp/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena7_whatsapp/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena1_coordinator/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena1_coordinator/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena14_html/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena14_html/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena11_social_media/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena11_social_media/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena17_analytics/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena17_analytics/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena16_crm/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena16_crm/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena6_email/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena6_email/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena12_influencer/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena12_influencer/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena19_workflow/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena19_workflow/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena13_calendar/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena13_calendar/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena8_telephone/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena8_telephone/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/kordp_scheduler/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/kordp_scheduler/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena18_dashboard/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena18_dashboard/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena2_archivator/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena2_archivator/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena10_unlock/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena10_unlock/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena5_browser/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena5_browser/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena4_telegram/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena4_telegram/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena15_shop/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena15_shop/main.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena9_call_tracking/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena9_call_tracking/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena7_whatsapp/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena7_whatsapp/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena1_coordinator/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena1_coordinator/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena14_html/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena14_html/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena11_social_media/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena11_social_media/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena17_analytics/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena17_analytics/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena16_crm/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena16_crm/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena6_email/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena6_email/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena12_influencer/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena12_influencer/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena19_workflow/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena19_workflow/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena13_calendar/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena13_calendar/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena8_telephone/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena8_telephone/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/kordp_scheduler/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/kordp_scheduler/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena18_dashboard/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena18_dashboard/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena2_archivator/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena2_archivator/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena10_unlock/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena10_unlock/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena5_browser/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena5_browser/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena4_telegram/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena4_telegram/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena15_shop/api/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "agents/opena15_shop/tests/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/kordp/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/config/tools_registry.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/docs/ARCHITEKTUR_UND_SETUP.md",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/docs/ELION_DASHBOARD_SPEC.md",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/docs/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/docs/DASHBOARD_SPEZIFIKATION.md",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/docs/PROJEKTBAUPLAN.md",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/docs/ELION_SETUP_GUIDE.md",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/opena1/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/opena2/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/skripte/validate_portier.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/skripte/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/tests/README.md",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/bin/stop_all.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/bin/start_all.sh",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/hilfen/port_check.py",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/hilfen/__init__.py",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/venv313/lib/python3.12/site-packages/sockshandler.py",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/venv313/lib/python3.12/site-packages/typing_extensions.py",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/venv313/lib/python3.12/site-packages/socks.py",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/venv313/lib/python3.12/site-packages/py.py",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/venv/lib/python3.12/site-packages/typing_extensions.py",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/ARCHIV/2025/11/08/SP1762631529_opena9_call_tracking\u2192opena2_ANALYTICS_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena12_influencer\u2192opena2_INFLUENCER_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena13_calendar\u2192opena2_CALENDAR_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/ARCHIV/2025/11/08/SP1762631525_opena8_telephone\u2192opena2_CALL_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena14_html_generator\u2192opena2_HTML_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/ARCHIV/2025/11/08/SP1762631532_opena10_unlock\u2192opena2_SECURITY_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/ARCHIV/2025/11/08/SP1762632454_opena11_social_media\u2192opena2_SOCIAL_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena15_shop\u2192opena2_SHOP_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena11_social_media\u2192opena2_SOCIAL_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/ARCHIV/2025/11/08/SP1762631526_opena8_telephone\u2192opena2_CALL_OP.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/archivp/2025/11/03/SP1762143131_kordp\u2192opena2_CMD.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/archivp/2025/11/03/SP1762143089_kordp\u2192opena2_CMD.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/archivp/2025/11/03/SP1762145568_opena1\u2192opena2_CMD.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/archivp/2025/11/02/SP1762120025_opena1\u2192opena2_CMD.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/archivp/2025/11/02/SP1762120019_opena1\u2192opena2_CMD.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/archivp/2025/11/02/SP1762120040_opena1\u2192opena2_CMD.json",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/knowledgebase/opena1/KB_OPENA1_COORDINATOR_2025-11-08.md",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/knowledgebase/opena1/KB_SYSTEM_INTEGRATION_FLOWS_2025-11-08.md",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/knowledgebase/opena1/KB_PROGRESS_REPORT_2025-11-08.md",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/knowledgebase/opena1/KB_DASHBOARD_INTEGRATION_2025-11-08.md",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/knowledgebase/opena1/KB_EXPANSION_PLAN_LITE_2025-11-08.md",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/knowledgebase/opena1/KB_EXPANSION_PLAN_2025-11-08.md",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/knowledgebase/opena1/KB_ARCHIVE_PATTERNS_2025-11-08.md",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/knowledgebase/opena1/KB_TELEGRAM_BRIDGE_2025-11-08.md",
+      "category": "categorized"
+    },
+    {
+      "path": "1.portier_openai/knowledgebase/opena1/KB_INDEX_CURRENT_2025-11-08.md",
+      "category": "categorized"
+    }
+  ]
+}

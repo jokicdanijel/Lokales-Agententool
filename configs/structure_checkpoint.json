@@ -1,0 +1,9 @@
+{
+  "timestamp": "2025-11-09T03:29:51.198500",
+  "dry_run": false,
+  "files_checked": 11034,
+  "files_moved": 552,
+  "conflicts": 48,
+  "violations_count": 10258,
+  "status": "applied"
+}
