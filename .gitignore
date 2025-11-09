@@ -5,3 +5,8 @@ venv*/
 *.tar.gz
 *backup*.zip
 GitHubDesktop*
+
+# Files with spaces/special characters in name (use docs/ subdirectory instead)
+ChatGPT\ -\ Agent\ *
+\*\*Hinweis\*\*
+

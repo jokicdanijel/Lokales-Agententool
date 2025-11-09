@@ -146,4 +146,7 @@ clean-map:
 	@rm -rf $(OUT)
 	@echo "$(GREEN)✅ Done$(RESET)"
 
+# ========== INCLUDE PORTIER PORT-POLICY MAKEFILE ==========
+include make/portier.mk
+
 .DEFAULT_GOAL := help
