@@ -1,4 +1,4 @@
-.PHONY: venv deps dry apply verify release archive clean help
+.PHONY: venv deps dry apply verify release archive clean scan clean-map help
 
 # Colors
 BOLD = \033[1m
@@ -15,9 +15,9 @@ BACKUP_DIR = backups
 TIMESTAMP = $(shell date +%Y%m%d-%H%M%S)
 
 help:
-	@echo "$(BOLD)Portier Koordinator & Archivator$(RESET)"
+	@echo "$(BOLD)Portier Koordinator & Archivator + Project Scanner$(RESET)"
 	@echo ""
-	@echo "$(BOLD)Targets:$(RESET)"
+	@echo "$(BOLD)Infrastructure Targets:$(RESET)"
 	@echo "  $(GREEN)make venv$(RESET)           - Create/update virtual environment"
 	@echo "  $(GREEN)make deps$(RESET)           - Install dependencies"
 	@echo "  $(GREEN)make dry$(RESET)            - Run dry-run structure validation"
@@ -25,14 +25,23 @@ help:
 	@echo "  $(GREEN)make verify$(RESET)         - Verify consistency (git, secrets, path_index)"
 	@echo "  $(GREEN)make release$(RESET)        - Create GitHub release with artifacts"
 	@echo "  $(GREEN)make archive$(RESET)        - Sync backups to local archive"
+	@echo ""
+	@echo "$(BOLD)Scanner Targets:$(RESET)"
+	@echo "  $(GREEN)make scan$(RESET)           - Run project scan → project_map/ (ChatGPT-ready)"
+	@echo "  $(GREEN)make clean-map$(RESET)      - Remove project_map/ directory"
+	@echo ""
+	@echo "$(BOLD)Cleanup:$(RESET)"
 	@echo "  $(GREEN)make clean$(RESET)          - Remove .venv, logs, backups"
 	@echo ""
 	@echo "$(BOLD)Workflow:$(RESET)"
-	@echo "  1. make venv"
+	@echo "  1. make venv && make deps"
 	@echo "  2. make dry"
 	@echo "  3. (review reports) make apply"
 	@echo "  4. make verify"
 	@echo "  5. make release"
+	@echo ""
+	@echo "$(BOLD)Or just scan:$(RESET)"
+	@echo "  make scan  # generates project_map/ with STRUCTURE.md, files.csv, stats.json, etc."
 
 venv:
 	@echo "$(YELLOW)[venv]$(RESET) Creating virtual environment..."
@@ -113,5 +122,28 @@ clean:
 	@echo "$(YELLOW)[clean]$(RESET) Removing temporary files..."
 	rm -rf $(VENV_DIR) $(LOG_DIR)/*.log $(BACKUP_DIR)/*.tar.gz $(BACKUP_DIR)/*.zip $(BACKUP_DIR)/*.sha256
 	@echo "$(GREEN)✅ Cleanup complete$(RESET)"
+
+# ========== PROJECT SCANNER (zero-dependency, ChatGPT-ready) ==========
+
+ROOT ?= .
+OUT  ?= project_map
+
+scan:
+	@echo "$(YELLOW)[SCAN]$(RESET) Starting project scan..."
+	@python3 tools/scan_project.py --root $(ROOT) --out $(OUT) --max-tree-depth 4 --hash-limit-mb 5
+	@echo ""
+	@echo "$(GREEN)✅ Scan complete$(RESET)"
+	@echo "$(YELLOW)Output files:$(RESET)"
+	@ls -1 $(OUT)/ | sed 's/^/  /'
+	@echo ""
+	@echo "$(YELLOW)Quick checks:$(RESET)"
+	@echo "  head -n 40 $(OUT)/STRUCTURE.md"
+	@echo "  wc -l $(OUT)/files.csv"
+	@echo "  jq '. | length' $(OUT)/path_index.json"
+
+clean-map:
+	@echo "$(YELLOW)[CLEAN]$(RESET) Removing $(OUT)/"
+	@rm -rf $(OUT)
+	@echo "$(GREEN)✅ Done$(RESET)"
 
 .DEFAULT_GOAL := help
