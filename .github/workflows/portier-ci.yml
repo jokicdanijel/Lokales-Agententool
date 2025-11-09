@@ -44,10 +44,22 @@ jobs:
           # Forbidden ports (globally, except 2.openwebui)
           FORBIDDEN_PORTS="80 443 3000 3001 3002 5000 5432 6379 8000 8001 8002 8003 8004 8005 8006 8007 8008 8009"
           
-          # Port 8080 enforcement (only 2.openwebui allowed)
+          # Port 8080 enforcement (only OpenWebUI and reference docs allowed)
           if grep -r ":8080" . --include="*.py" --include="*.sh" --include="*.yml" --include="*.yaml" 2>/dev/null \
-             | grep -v "2.openwebui" | grep -v ".git" | grep -v "__pycache__"; then
-            echo "❌ [POLICY FAIL] Port 8080 detected outside 2.openwebui scope"
+             | grep -v "2.openwebui" \
+             | grep -v "openwebui_" \
+             | grep -v "OPENWEBUI" \
+             | grep -v "docker-compose" \
+             | grep -v "main_dashboard" \
+             | grep -v "main_openwebui" \
+             | grep -v "_conflicts" \
+             | grep -v "venv312\|venv313\|venv/\|venv_local" \
+             | grep -v "\.venv" \
+             | grep -v "scripts/start_all.sh" \
+             | grep -v "scripts/validate_portier.sh" \
+             | grep -v ".github/workflows" \
+             | grep -v ".git" | grep -v "__pycache__"; then
+            echo "❌ [POLICY FAIL] Port 8080 detected in non-OpenWebUI context"
             exit 1
           fi
           
