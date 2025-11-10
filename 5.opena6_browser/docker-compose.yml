@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  opena6:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: opena6-browser
+    ports:
+      - "127.0.0.1:12349:12349"
+    environment:
+      - OPENA6_PORT=12349
+      - OPENA1_URL=http://opena1:12344
+      - OPENA2_URL=http://opena2:12345
+      - HEADLESS=true
+      - BROWSER_TYPE=chromium
+      - LOG_LEVEL=INFO
+      - ALLOWED_DOMAINS=localhost,127.0.0.1,example.org
+    volumes:
+      - ./logs:/app/logs
+      - ./archivp:/app/archivp
+      - ./app:/app/app
+    networks:
+      - portier_net
+    restart: unless-stopped
+    depends_on:
+      - opena1
+      - opena2
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:12349/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  opena1:
+    image: ${OPENA1_IMAGE:-localhost:5000/opena1:latest}
+    container_name: opena1-coordinator
+    ports:
+      - "127.0.0.1:12344:12344"
+    networks:
+      - portier_net
+    restart: unless-stopped
+
+  opena2:
+    image: ${OPENA2_IMAGE:-localhost:5000/opena2:latest}
+    container_name: opena2-archivator
+    ports:
+      - "127.0.0.1:12345:12345"
+    volumes:
+      - ./archivp:/app/archivp
+    networks:
+      - portier_net
+    restart: unless-stopped
+
+networks:
+  portier_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

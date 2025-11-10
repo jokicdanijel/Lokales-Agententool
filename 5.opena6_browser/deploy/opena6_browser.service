@@ -1,0 +1,23 @@
+[Unit]
+Description=opena6 Browser Automation Agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/opena6
+Environment="PATH=/opt/opena6/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
+Environment="OPENA6_PORT=12349"
+Environment="OPENA1_URL=http://127.0.0.1:12344"
+Environment="OPENA2_URL=http://127.0.0.1:12345"
+Environment="LOG_LEVEL=INFO"
+ExecStart=/opt/opena6/venv/bin/python3 -m uvicorn app.main:app --host 127.0.0.1 --port 12349
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=opena6
+
+[Install]
+WantedBy=multi-user.target
