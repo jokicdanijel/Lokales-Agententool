@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-11-09T20:44:01.697287Z",
+  "src": "opena4",
+  "dst": "opena4",
+  "kind": "ERR",
+  "payload": {
+    "request_id": null,
+    "timestamp": "2025-11-09T20:44:01.697274Z",
+    "source": "opena4",
+    "error": {
+      "code": "INTERNAL_ERROR",
+      "message": "Server error: Expecting property name enclosed in double quotes: line 3 column 26 (char 49)",
+      "details": {}
+    },
+    "strict": true
+  },
+  "strict": true
+}

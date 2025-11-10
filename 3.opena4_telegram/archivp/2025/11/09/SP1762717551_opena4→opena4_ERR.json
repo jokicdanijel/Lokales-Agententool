@@ -1,0 +1,25 @@
+{
+  "timestamp": "2025-11-09T20:45:51.510897Z",
+  "src": "opena4",
+  "dst": "opena4",
+  "kind": "ERR",
+  "payload": {
+    "request_id": null,
+    "timestamp": "2025-11-09T20:45:51.510866Z",
+    "source": "opena4",
+    "error": {
+      "code": "SCHEMA_VIOLATION",
+      "message": "Invalid message schema",
+      "details": {
+        "validation_errors": [
+          {
+            "field": "request_id",
+            "message": "Value error, request_id must be UUID4 or numeric timestamp"
+          }
+        ]
+      }
+    },
+    "strict": true
+  },
+  "strict": true
+}

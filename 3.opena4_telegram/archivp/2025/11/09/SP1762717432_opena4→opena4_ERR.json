@@ -1,0 +1,11 @@
+{
+  "timestamp": "2025-11-09T20:43:52.575396Z",
+  "src": "opena4",
+  "dst": "opena4",
+  "kind": "ERR",
+  "payload": {
+    "error": "unauthorized_user",
+    "user_id": 67890
+  },
+  "strict": true
+}

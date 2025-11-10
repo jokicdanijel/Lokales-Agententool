@@ -1,0 +1,5 @@
+Kordinator_opena1_bot_TOKEN=8447897118:AAGSeFBose7sXDAX79JMXPob_WyW1sRcVEU
+Kordinator_ALLOWED_USERS=7664467819   # deine eigene Telegram-ID
+OPENA1_URL=http://127.0.0.1:12344/kordp/opena1
+TELEGRAM_ALLOWED_USERS=7664467819   # deine eigene Telegram-ID
+OPENA2_URL=http://127.0.0.1:12345/finalize/opena2

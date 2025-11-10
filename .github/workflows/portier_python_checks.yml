@@ -1,0 +1,46 @@
+name: Portier Python checks
+
+on:
+  push:
+    branches: [ main, master, feat/* ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  lint-and-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements_apps.txt ]; then pip install -r requirements_apps.txt; fi
+          pip install fastapi uvicorn pydantic httpx flake8 mypy
+
+      - name: Lint
+        run: |
+          flake8 .
+
+      - name: Type check
+        run: |
+          mypy portier_service_base.py
+
+  tests (optional):
+    needs: lint-and-typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run tests
+        run: |
+          python -m pip install pytest
+          pytest -q
