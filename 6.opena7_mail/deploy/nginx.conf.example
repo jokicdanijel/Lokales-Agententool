@@ -1,0 +1,99 @@
+# Nginx Reverse Proxy for opena7 Mail Agent
+# Handles SSL termination + authentication
+
+upstream opena7_upstream {
+    server 127.0.0.1:12350 max_fails=3 fail_timeout=10s;
+    keepalive 64;
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name mail.internal;
+
+    ssl_certificate /etc/letsencrypt/live/mail.internal/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/mail.internal/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+
+    access_log /var/log/nginx/opena7_access.log combined;
+    error_log /var/log/nginx/opena7_error.log warn;
+
+    # Health endpoint (internal only)
+    location = /health {
+        allow 127.0.0.1;
+        allow 172.20.0.0/16;
+        deny all;
+        
+        proxy_pass http://opena7_upstream;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+    }
+
+    # Mail operations (requires auth)
+    location /run {
+        auth_basic "opena7 Restricted";
+        auth_basic_user_file /etc/nginx/.htpasswd_opena7;
+
+        proxy_pass http://opena7_upstream;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        
+        client_max_body_size 50m;
+    }
+
+    # Metrics (internal only)
+    location /metrics {
+        allow 127.0.0.1;
+        allow 172.20.0.0/16;
+        deny all;
+        
+        proxy_pass http://opena7_upstream;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+    }
+
+    # Admin endpoints (local only)
+    location /api {
+        allow 127.0.0.1;
+        allow 172.20.0.0/16;
+        deny all;
+        
+        proxy_pass http://opena7_upstream;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+    }
+
+    # Documentation
+    location /docs {
+        proxy_pass http://opena7_upstream;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+    }
+
+    # Root
+    location / {
+        proxy_pass http://opena7_upstream;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+    }
+}
+
+# HTTP -> HTTPS redirect
+server {
+    listen 80;
+    listen [::]:80;
+    server_name mail.internal;
+
+    location /.well-known/acme-challenge {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://$server_name$request_uri;
+    }
+}
