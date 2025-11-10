@@ -111,83 +111,291 @@ class ToolRegistry:
         self._init_default_registry()
 
     def _init_default_registry(self):
-        """Initialize with default Portier agents and tools"""
+        """Initialize with all 20 Portier agents and tools"""
 
         # ──────────────────────────────────────────────────────────────────────
-        # AGENTS
+        # AGENTS – INFRASTRUKTUR (2)
         # ──────────────────────────────────────────────────────────────────────
 
-        # opena1 – Koordinator
+        # opena1 – Koordinator (Port 12344)
         self.register_agent(Agent(
             id="opena1",
-            name="Koordinator",
+            name="Portier Koordinator",
             port=12344,
-            description="Central coordinator and orchestrator",
+            description="Central coordinator, routing, validation",
             role="Koordinator",
-            tools=["status", "invoke", "log"],
+            tools=["status", "dispatch", "health_check"],
             dependencies=[],
             health_endpoint="/health"
         ))
 
-        # opena2 – Archivator
+        # opena2 – Archivator (Port 12345)
         self.register_agent(Agent(
             id="opena2",
-            name="Archivator",
-            port=12348,
-            description="Append-only persistence and dedupe engine",
+            name="Archivator (Storage)",
+            port=12345,
+            description="Append-only persistence, safepoint deduplication, integrity",
             role="Persistence",
-            tools=["store", "query", "dedupe"],
+            tools=["store", "query", "dedupe", "verify_integrity"],
             dependencies=[],
             health_endpoint="/health"
         ))
 
-        # opena3 – OpenWebUI
+        # ──────────────────────────────────────────────────────────────────────
+        # AGENTS – KOMMUNIKATION (4)
+        # ──────────────────────────────────────────────────────────────────────
+
+        # opena3 – OpenWebUI (Port 8080, exclusive)
         self.register_agent(Agent(
             id="opena3",
-            name="OpenWebUI",
+            name="OpenWebUI Terminal",
             port=8080,
-            description="Web-based user interface",
-            role="UI",
+            description="Web-based terminal interface",
+            role="Communication",
             tools=["browse", "chat", "display"],
             dependencies=["opena1", "opena2"],
+            enabled=True,
             health_endpoint="/health"
         ))
 
-        # opena4 – Telegram Agent
+        # opena4 – Telegram Agent (Port 12347)
         self.register_agent(Agent(
             id="opena4",
-            name="Telegram Agent",
+            name="Telegram Mobile-Anbindung",
             port=12347,
-            description="Telegram messenger interface",
-            role="Messenger",
-            tools=["send_message", "receive_message", "notify"],
+            description="Telegram messenger integration",
+            role="Communication",
+            tools=["send_message", "receive_message", "webhook"],
             dependencies=["opena1", "opena2"],
+            enabled=True,
             health_endpoint="/health"
         ))
 
-        # opena5 – VS Code Bridge (planned)
+        # opena5 – VS Code Bridge (Port 12348)
         self.register_agent(Agent(
             id="opena5",
-            name="VS Code Bridge",
+            name="VS Code Programmier-Bridge",
             port=12348,
-            description="IDE integration for code editing",
-            role="Editor",
-            tools=["edit_file", "diff", "apply_patch"],
+            description="IDE integration for code editing and tasks",
+            role="Communication",
+            tools=["edit_file", "diff", "apply_patch", "run_task"],
             dependencies=["opena1", "opena2"],
-            enabled=False,  # Planned
+            enabled=False,  # Schritt 5 pending
             health_endpoint="/health"
         ))
 
-        # opena20 – Monitoring
+        # opena6 – Browser Automation (Port 12349)
+        self.register_agent(Agent(
+            id="opena6",
+            name="Browser-Bedienung (Automation)",
+            port=12349,
+            description="Automated browser control and web automation",
+            role="Communication",
+            tools=["navigate", "click", "type", "screenshot"],
+            dependencies=["opena1", "opena2"],
+            enabled=False,
+            health_endpoint="/health"
+        ))
+
+        # ──────────────────────────────────────────────────────────────────────
+        # AGENTS – CHATBOTS SCHRIFT (2)
+        # ──────────────────────────────────────────────────────────────────────
+
+        # opena7 – Email Chatbot (Port 12350)
+        self.register_agent(Agent(
+            id="opena7",
+            name="Email-Chatbot (Schrift)",
+            port=12350,
+            description="Email-based conversational AI",
+            role="Chatbot",
+            tools=["process_email", "reply", "classify"],
+            dependencies=["opena1", "opena2"],
+            enabled=False,
+            health_endpoint="/health"
+        ))
+
+        # opena8 – WhatsApp Chatbot (Port 12351)
+        self.register_agent(Agent(
+            id="opena8",
+            name="WhatsApp-Chatbot (Schrift)",
+            port=12351,
+            description="WhatsApp-based conversational AI",
+            role="Chatbot",
+            tools=["process_message", "send_reply", "forward"],
+            dependencies=["opena1", "opena2"],
+            enabled=False,
+            health_endpoint="/health"
+        ))
+
+        # ──────────────────────────────────────────────────────────────────────
+        # AGENTS – CHATBOTS TON (2)
+        # ──────────────────────────────────────────────────────────────────────
+
+        # opena9 – Telefon-Antwort Chatbot (Port 12352)
+        self.register_agent(Agent(
+            id="opena9",
+            name="Telefon-Antwort Chatbot (IVR)",
+            port=12352,
+            description="Interactive Voice Response for incoming calls",
+            role="Chatbot-Voice",
+            tools=["answer_call", "process_audio", "transfer"],
+            dependencies=["opena1", "opena2"],
+            enabled=False,
+            health_endpoint="/health"
+        ))
+
+        # opena10 – Telefon-Anruf Chatbot (Port 12353)
+        self.register_agent(Agent(
+            id="opena10",
+            name="Telefon-Anruf Chatbot",
+            port=12353,
+            description="Outbound calling and voice automation",
+            role="Chatbot-Voice",
+            tools=["initiate_call", "play_audio", "collect_input"],
+            dependencies=["opena1", "opena2"],
+            enabled=False,
+            health_endpoint="/health"
+        ))
+
+        # ──────────────────────────────────────────────────────────────────────
+        # AGENTS – FUNKTIONAL (4)
+        # ──────────────────────────────────────────────────────────────────────
+
+        # opena11 – Unlock Master (Port 12354)
+        self.register_agent(Agent(
+            id="opena11",
+            name="Unlock-Master (Decode)",
+            port=12354,
+            description="Security unlock, decode operations, cryptography",
+            role="Functional",
+            tools=["unlock", "decode", "encrypt", "verify"],
+            dependencies=["opena1", "opena2"],
+            enabled=False,
+            health_endpoint="/health"
+        ))
+
+        # opena12 – Social Media Automation (Port 12355)
+        self.register_agent(Agent(
+            id="opena12",
+            name="Sozialmedia-Automatisierung",
+            port=12355,
+            description="Social media sync, posting, scheduling",
+            role="Functional",
+            tools=["sync_accounts", "post", "schedule", "analyze"],
+            dependencies=["opena1", "opena2"],
+            enabled=False,
+            health_endpoint="/health"
+        ))
+
+        # opena13 – Influencer Manager (Port 12356)
+        self.register_agent(Agent(
+            id="opena13",
+            name="Influencer-Manager",
+            port=12356,
+            description="Influencer outreach and collaboration management",
+            role="Functional",
+            tools=["find_influencers", "propose_collab", "manage_campaign"],
+            dependencies=["opena1", "opena2"],
+            enabled=False,
+            health_endpoint="/health"
+        ))
+
+        # opena14 – Calendar Agent (Port 12357)
+        self.register_agent(Agent(
+            id="opena14",
+            name="Kalender-Agent",
+            port=12357,
+            description="Calendar sync, event management, scheduling",
+            role="Functional",
+            tools=["sync_calendar", "create_event", "schedule_meeting"],
+            dependencies=["opena1", "opena2"],
+            enabled=False,
+            health_endpoint="/health"
+        ))
+
+        # ──────────────────────────────────────────────────────────────────────
+        # AGENTS – CONTENT CREATORS (3)
+        # ──────────────────────────────────────────────────────────────────────
+
+        # opena15 – HTML Creator (Port 12358)
+        self.register_agent(Agent(
+            id="opena15",
+            name="HTML-Creator Tool",
+            port=12358,
+            description="HTML generation, template rendering, code generation",
+            role="ContentCreator",
+            tools=["generate_html", "render_template", "validate"],
+            dependencies=["opena1", "opena2"],
+            enabled=False,
+            health_endpoint="/health"
+        ))
+
+        # opena16 – Shop Creator (Port 12359)
+        self.register_agent(Agent(
+            id="opena16",
+            name="Shop-Creator & Service",
+            port=12359,
+            description="E-commerce creation, shop setup, product catalog",
+            role="ContentCreator",
+            tools=["create_shop", "add_product", "configure_payment"],
+            dependencies=["opena1", "opena2"],
+            enabled=False,
+            health_endpoint="/health"
+        ))
+
+        # opena17 – Homepage Creator (Port 12360)
+        self.register_agent(Agent(
+            id="opena17",
+            name="Homepage-Creator & Service",
+            port=12360,
+            description="Homepage design, web page creation, site building",
+            role="ContentCreator",
+            tools=["create_homepage", "design_page", "publish"],
+            dependencies=["opena1", "opena2"],
+            enabled=False,
+            health_endpoint="/health"
+        ))
+
+        # ──────────────────────────────────────────────────────────────────────
+        # AGENTS – DATA MANAGEMENT (3)
+        # ──────────────────────────────────────────────────────────────────────
+
+        # opena18 – Local Archive Agent (Port 12361)
+        self.register_agent(Agent(
+            id="opena18",
+            name="Lokaler Archiv-Agent",
+            port=12361,
+            description="Local storage management, backup, archival",
+            role="DataManagement",
+            tools=["backup", "archive", "restore", "cleanup"],
+            dependencies=["opena1", "opena2"],
+            enabled=False,
+            health_endpoint="/health"
+        ))
+
+        # opena19 – Trading Agent (Port 12362)
+        self.register_agent(Agent(
+            id="opena19",
+            name="Trading-Agent (Aktien/Crypto)",
+            port=12362,
+            description="Stock/crypto trading, market analysis, execution",
+            role="DataManagement",
+            tools=["analyze_market", "execute_trade", "manage_portfolio"],
+            dependencies=["opena1", "opena2"],
+            enabled=False,
+            health_endpoint="/health"
+        ))
+
+        # opena20 – Dashboard Agent (Port 12363)
         self.register_agent(Agent(
             id="opena20",
-            name="Monitoring",
-            port=12349,
-            description="System monitoring and alerting",
-            role="Monitoring",
-            tools=["health_check", "metrics", "alert"],
-            dependencies=["opena1"],
-            enabled=False,  # Planned
+            name="Dashboard-Agent (Kunden)",
+            port=12363,
+            description="Customer dashboard, reporting, analytics, UI serving",
+            role="DataManagement",
+            tools=["serve_ui", "get_data", "generate_report", "export"],
+            dependencies=["opena1", "opena2"],
+            enabled=True,  # Schritt 5 in progress
             health_endpoint="/health"
         ))
 
