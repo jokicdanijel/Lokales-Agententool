@@ -54,32 +54,20 @@ def _get_base_root() -> Path:
 
 def _get_venv_path() -> Path:
     """
-    Ermittelt VENV_PATH mit Fallback:
-    1. $VENV_PATH (explizit)
-    2. $VIRTUAL_ENV (Fallback, wenn venv aktiv)
-    3. BASE_ROOT/1.portier_openai/venv313 (standard location)
-    4. Suche nach beliebiger venv313, venv312, .venv
+    Ermittelt VENV_PATH — POLICY-BINDING (immer 1.portier_openai/venv313):
+    1. $VENV_PATH (explizit, überschreibt Policy)
+    2. Hardcoded Policy-Pfad: BASE_ROOT/1.portier_openai/venv313 (DEFAULT)
+    
+    Diese Venv ist zentral für ALLE 20 Services. Keine Alternativen!
     """
+    # Nur explizite ENV-Override erlaubt
     if venv_env := os.getenv("VENV_PATH"):
         return Path(venv_env).resolve()
     
-    if venv_active := os.getenv("VIRTUAL_ENV"):
-        return Path(venv_active).resolve()
-    
+    # Policy-Binding: Immer 1.portier_openai/venv313
     base = _get_base_root()
-    standard = base / "1.portier_openai" / "venv313"
-    if standard.exists():
-        return standard
-    
-    # Suche alternative venv locations
-    for candidate in [base / "1.portier_openai" / "venv312",
-                      base / "1.portier_openai" / ".venv",
-                      base / ".venv"]:
-        if candidate.exists():
-            return candidate
-    
-    # Fallback: Return expected location (even if not yet created)
-    return standard
+    policy_venv = base / "1.portier_openai" / "venv313"
+    return policy_venv.resolve()
 
 # ════════════════════════════════════════════════════════════════════════════
 # CONSTANTS (Derived from ENV or hardcoded)
