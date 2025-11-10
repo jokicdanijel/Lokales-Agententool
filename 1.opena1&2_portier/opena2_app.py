@@ -18,6 +18,7 @@ import hashlib
 import json
 import os
 import socket
+import sys
 import time
 from datetime import datetime
 from pathlib import Path
@@ -26,7 +27,10 @@ from typing import Dict, Any
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field, ConfigDict
 
-BASE_ROOT = Path("/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt").resolve()
+# -------- PORTABLE PATHS (Server-Transfer Ready) --------
+# Nutze zentrale paths_config.py für Single Source of Truth
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+from paths_config import BASE_ROOT, PORTIER_DIR, ARCHIVP_STORE, ARCHIVP_INDEX
 ALLOWED_TOP = {
     "1.opena1&2_portier","2.opena3_openwebui","3.opena4_telegram","4.opena5_vscode","5.opena6_browser",
     "6.opena7_email","7.opena8_whatsapp","8.opena9_telephone","9.opena10_call_tracking","10.opena11_unlock",
@@ -36,8 +40,8 @@ ALLOWED_TOP = {
 }
 PORT = 12345
 
-ARCHIVE_DIR = BASE_ROOT / "1.opena1&2_portier" / "archivp_store"
-INDEX_FILE = BASE_ROOT / "1.opena1&2_portier" / "archivp_store" / "index.jsonl"
+ARCHIVE_DIR = ARCHIVP_STORE
+INDEX_FILE = ARCHIVP_INDEX
 
 # -------- OpenAI Key (ENV) --------
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
