@@ -1,0 +1,65 @@
+# Bindende Agent-Ordnerliste – exakt wie im System vorhanden.
+# Diese Whitelist erzwingt die strikte Ordner-Struktur für alle 20 opena-Services.
+# Infrastruktur-Ordner (src/, bin/, docs/, etc.) werden optional erlaubt.
+#
+# Validierungsmodi:
+#   --mode validate         : Prüfe nur Agent-Ordner (Infrastruktur OK)
+#   --mode check_name NAME  : Prüfe einen einzelnen Namen
+#
+# Verwendung:
+#   python src/tools/copilot_guard.py --config configs/agent_dirs.yaml --mode validate
+#   python src/tools/copilot_guard.py --config configs/agent_dirs.yaml --mode check_name --name "3.opena4_telegram"
+
+version: 1
+base_dir: "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt"
+
+# Bindende Agent-Ordner (Nummern 1-20)
+required_agent_dirs:
+  # Koordination & Archivierung
+  - "1.opena1&2_portier"
+  - "2.opena3_openwebui"
+  
+  # Agent-Services (3-20)
+  - "3.opena4_telegram"
+  - "4.opena5_vscode"
+  - "5.opena6_browser"
+  - "6.opena7_email"
+  - "7.opena8_whatsapp"
+  - "8.opena9_telephone"
+  - "9.opena10_call_tracking"
+  - "10.opena11_unlock"
+  - "11.opena12_social_media"
+  - "12.opena13_influencer"
+  - "13.opena14_calendar"
+  - "14.opena15_html"
+  - "15.opena16_shop"
+  - "16.opena17_homepagecreator"
+  - "17.opena18_CMR"
+  - "18.opena19_Aktien&Crypto"
+  - "19.opena20_dashboard_agent"
+  - "20.opena21_workflow"
+
+# Optionale Infrastruktur-Ordner (dürfen existieren, aber nicht nötig)
+optional_infra_dirs:
+  - "src"
+  - "bin"
+  - "docs"
+  - "scripts"
+  - "logs"
+  - "config"
+  - "configs"
+  - "assets"
+  - "archivp"
+  - "backups"
+  - "agents"
+  - "tools"
+  - "reports"
+  - "fullstack_app"
+  - "make"
+  - "project_map"
+  - "project-root"
+  - "__pycache__"
+  - "_conflicts"
+
+# Strikte Agent-Validierung: Alle Agent-Ordner müssen existieren und korrekt benannt sein
+strict: true
