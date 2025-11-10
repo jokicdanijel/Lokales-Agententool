@@ -1,0 +1,480 @@
+# Agent Registry – Zentralisierte Konfiguration für alle 20 Agenten
+# Dieses File wird von tool_registry.py, tool_dispatcher.py und dedupe_engine.py gelesen
+
+version: "1.0"
+created: "2025-11-10"
+scope: "ELION Gesamtprojekt – Hyper-Dashboard"
+
+# ============================================================================
+# INFRASTRUKTUR-AGENTEN (Basis)
+# ============================================================================
+infrastructure:
+  kordinator:
+    agent_id: "opena1"
+    name: "Portier Koordinator"
+    port: 12344
+    archive_key: "kordp"
+    description: "Central routing, validation, safepoint lifecycle"
+    api_base: "http://127.0.0.1:12344"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+        purpose: "Health check"
+      - path: "/api/dispatch"
+        method: "POST"
+        purpose: "Route tool request to agent"
+      - path: "/api/status"
+        method: "GET"
+        purpose: "System status"
+    type: "infrastructure"
+    enabled: true
+
+  archivator:
+    agent_id: "opena2"
+    name: "Archivator (Append-Only Storage)"
+    port: 12345
+    archive_key: "archivp"
+    description: "Persistent storage, safepoint deduplication, integrity checks"
+    api_base: "http://127.0.0.1:12345"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+        purpose: "Health check"
+      - path: "/store/archivp"
+        method: "POST"
+        purpose: "Write safepoint"
+      - path: "/archiv/last"
+        method: "GET"
+        purpose: "Query last N safepoints"
+      - path: "/integrity/verify"
+        method: "POST"
+        purpose: "Verify integrity chain"
+    type: "infrastructure"
+    enabled: true
+    storage:
+      path: "archivp"
+      format: "jsonl"
+      append_only: true
+      dedup_via_hash: "sha256"
+
+# ============================================================================
+# KOMMUNIKATIONS-AGENTEN
+# ============================================================================
+communication:
+  openwebui:
+    agent_id: "opena3"
+    name: "OpenWebUI Terminal Interface"
+    port: 8080
+    archive_key: "openweb"
+    description: "Web UI, terminal access, interactive interface"
+    api_base: "http://127.0.0.1:8080"
+    type: "communication"
+    enabled: true
+    note: "Port 8080 is exclusive per policy"
+
+  telegram:
+    agent_id: "opena4"
+    name: "Telegram Mobile-Anbindung"
+    port: 12347
+    archive_key: "telep"
+    description: "Telegram bot integration, mobile messaging"
+    api_base: "http://127.0.0.1:12347"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+      - path: "/telegram/send"
+        method: "POST"
+        purpose: "Send telegram message"
+      - path: "/telegram/webhook"
+        method: "POST"
+        purpose: "Receive incoming messages"
+    type: "communication"
+    enabled: true
+    config:
+      bot_token_env: "TELEGRAM_BOT_TOKEN"
+      webhook_secret_env: "TELEGRAM_WEBHOOK_SECRET"
+
+  vscode_bridge:
+    agent_id: "opena5"
+    name: "VS Code Programmier-Bridge"
+    port: 12348
+    archive_key: "vscop"
+    description: "IDE integration, code tasks, debugging"
+    api_base: "http://127.0.0.1:12348"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+      - path: "/vscode/task"
+        method: "POST"
+        purpose: "Execute code task"
+      - path: "/vscode/poll"
+        method: "GET"
+        purpose: "Poll for pending tasks"
+    type: "communication"
+    enabled: false
+    note: "Implementation pending (Schritt 5)"
+
+  browser_automation:
+    agent_id: "opena6"
+    name: "Browser-Bedienung (Automation)"
+    port: 12349
+    archive_key: "browsp"
+    description: "Automated browser control, web scraping, testing"
+    api_base: "http://127.0.0.1:12349"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+      - path: "/browser/action"
+        method: "POST"
+        purpose: "Perform browser action (click, type, navigate)"
+    type: "communication"
+    enabled: false
+    note: "Implementation pending"
+
+# ============================================================================
+# CHATBOT-AGENTEN (SCHRIFT)
+# ============================================================================
+chatbots_text:
+  email_chatbot:
+    agent_id: "opena7"
+    name: "Email-Chatbot (Schrift)"
+    port: 12350
+    archive_key: "emailp"
+    description: "Email-based conversational AI"
+    api_base: "http://127.0.0.1:12350"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+      - path: "/chat/email"
+        method: "POST"
+        purpose: "Process email message"
+    type: "chatbot"
+    enabled: false
+    note: "Implementation pending"
+
+  whatsapp_chatbot:
+    agent_id: "opena8"
+    name: "WhatsApp-Chatbot (Schrift)"
+    port: 12351
+    archive_key: "whatp"
+    description: "WhatsApp-based conversational AI"
+    api_base: "http://127.0.0.1:12351"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+      - path: "/chat/whatsapp"
+        method: "POST"
+        purpose: "Process WhatsApp message"
+    type: "chatbot"
+    enabled: false
+    note: "Implementation pending"
+
+# ============================================================================
+# CHATBOT-AGENTEN (TON)
+# ============================================================================
+chatbots_voice:
+  call_answer_bot:
+    agent_id: "opena9"
+    name: "Telefon-Antwort Chatbot (IVR)"
+    port: 12352
+    archive_key: "calp"
+    description: "Interactive Voice Response (IVR), call answering"
+    api_base: "http://127.0.0.1:12352"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+      - path: "/call/answer"
+        method: "POST"
+        purpose: "Answer incoming call"
+    type: "chatbot_voice"
+    enabled: false
+    note: "Implementation pending"
+
+  call_initiate_bot:
+    agent_id: "opena10"
+    name: "Telefon-Anruf Chatbot"
+    port: 12353
+    archive_key: "answp"
+    description: "Outbound calling, voice automation"
+    api_base: "http://127.0.0.1:12353"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+      - path: "/call/initiate"
+        method: "POST"
+        purpose: "Initiate outbound call"
+    type: "chatbot_voice"
+    enabled: false
+    note: "Implementation pending"
+
+# ============================================================================
+# FUNKTIONAL-AGENTEN
+# ============================================================================
+functional:
+  unlock_master:
+    agent_id: "opena11"
+    name: "Unlock-Master (Decode)"
+    port: 12354
+    archive_key: "onlockp"
+    description: "Security unlock, decode operations, cryptography"
+    api_base: "http://127.0.0.1:12354"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+      - path: "/security/unlock"
+        method: "POST"
+        purpose: "Unlock/decode secured data"
+    type: "functional"
+    enabled: false
+    note: "Implementation pending"
+
+  social_media_automation:
+    agent_id: "opena12"
+    name: "Sozialmedia-Automatisierung"
+    port: 12355
+    archive_key: "somep"
+    description: "Social media sync, posting, scheduling"
+    api_base: "http://127.0.0.1:12355"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+      - path: "/social/sync"
+        method: "POST"
+        purpose: "Sync social media accounts"
+      - path: "/social/post"
+        method: "POST"
+        purpose: "Publish post to social media"
+    type: "functional"
+    enabled: false
+    note: "Implementation pending"
+
+  influencer_manager:
+    agent_id: "opena13"
+    name: "Influencer-Manager"
+    port: 12356
+    archive_key: "infmep"
+    description: "Influencer outreach, collaboration management"
+    api_base: "http://127.0.0.1:12356"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+      - path: "/influencer/manage"
+        method: "POST"
+        purpose: "Manage influencer collaboration"
+    type: "functional"
+    enabled: false
+    note: "Implementation pending"
+
+  calendar_agent:
+    agent_id: "opena14"
+    name: "Kalender-Agent"
+    port: 12357
+    archive_key: "kalp"
+    description: "Calendar sync, event management, scheduling"
+    api_base: "http://127.0.0.1:12357"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+      - path: "/calendar/sync"
+        method: "POST"
+        purpose: "Sync calendar events"
+    type: "functional"
+    enabled: false
+    note: "Implementation pending"
+
+# ============================================================================
+# CONTENT-CREATOR-AGENTEN
+# ============================================================================
+content_creators:
+  html_creator:
+    agent_id: "opena15"
+    name: "HTML-Creator Tool"
+    port: 12358
+    archive_key: "htmlp"
+    description: "HTML generation, template rendering, code generation"
+    api_base: "http://127.0.0.1:12358"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+      - path: "/content/html"
+        method: "POST"
+        purpose: "Generate HTML content"
+    type: "content_creator"
+    enabled: false
+    note: "Implementation pending"
+
+  shop_creator:
+    agent_id: "opena16"
+    name: "Shop-Creator & Service"
+    port: 12359
+    archive_key: "shopp"
+    description: "E-commerce creation, shop setup, product catalog"
+    api_base: "http://127.0.0.1:12359"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+      - path: "/content/shop"
+        method: "POST"
+        purpose: "Create shop structure"
+    type: "content_creator"
+    enabled: false
+    note: "Implementation pending"
+
+  homepage_creator:
+    agent_id: "opena17"
+    name: "Homepage-Creator & Service"
+    port: 12360
+    archive_key: "homep"
+    description: "Homepage design, web page creation, site building"
+    api_base: "http://127.0.0.1:12360"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+      - path: "/content/homepage"
+        method: "POST"
+        purpose: "Create homepage structure"
+    type: "content_creator"
+    enabled: false
+    note: "Implementation pending"
+
+# ============================================================================
+# DATENVERWALTUNGS-AGENTEN
+# ============================================================================
+data_management:
+  local_archive_agent:
+    agent_id: "opena18"
+    name: "Lokaler Archiv-Agent"
+    port: 12361
+    archive_key: "locp"
+    description: "Local storage management, backup, archival"
+    api_base: "http://127.0.0.1:12361"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+      - path: "/archive/local"
+        method: "POST"
+        purpose: "Archive local data"
+    type: "data_management"
+    enabled: false
+    note: "Implementation pending"
+
+  trading_agent:
+    agent_id: "opena19"
+    name: "Trading-Agent (Aktien/Crypto)"
+    port: 12362
+    archive_key: "aktienp"
+    description: "Stock/crypto trading, market analysis, execution"
+    api_base: "http://127.0.0.1:12362"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+      - path: "/trading/execute"
+        method: "POST"
+        purpose: "Execute trading action"
+    type: "data_management"
+    enabled: false
+    note: "Implementation pending"
+
+  dashboard_agent:
+    agent_id: "opena20"
+    name: "Dashboard-Agent (Kunden)"
+    port: 12363
+    archive_key: "dashp"
+    description: "Customer dashboard, reporting, analytics, UI"
+    api_base: "http://127.0.0.1:12363"
+    endpoints:
+      - path: "/health"
+        method: "GET"
+      - path: "/dashboard/serve"
+        method: "GET"
+        purpose: "Serve dashboard UI"
+      - path: "/dashboard/data"
+        method: "GET"
+        purpose: "Get dashboard data"
+    type: "data_management"
+    enabled: true
+    note: "Schritt 5+ implementation in progress"
+
+# ============================================================================
+# ROUTING-POLICIES
+# ============================================================================
+routing_policies:
+  default_timeout_seconds: 30
+  retry_attempts: 3
+  retry_backoff_ms: 500
+  health_check_interval_seconds: 60
+  circuit_breaker:
+    failure_threshold: 5
+    recovery_timeout_seconds: 60
+
+# ============================================================================
+# SAFEPOINT-POLICIES (Schritt 3 Integration)
+# ============================================================================
+safepoint_policies:
+  append_only: true
+  dedup_via_hash: "sha256"
+  hash_algorithm: "sha256"
+  archive_retention_days: 365
+  integrity_check_interval_hours: 24
+  chain_verification:
+    enabled: true
+    checkpoint_frequency: 100
+
+# ============================================================================
+# PORT-POLICY ENFORCEMENT
+# ============================================================================
+port_policy:
+  allowed_range:
+    min: 12344
+    max: 12369
+  forbidden_ports:
+    - 8080
+  binding:
+    - "127.0.0.1"  # loopback only
+  total_agents: 20
+  infrastructure_agents: 2
+  communication_agents: 4
+  chatbot_agents: 4
+  functional_agents: 4
+  content_creator_agents: 3
+  data_management_agents: 3
+
+# ============================================================================
+# SCHRITT-INTEGRATION
+# ============================================================================
+steps:
+  schritt_1:
+    name: "7.1 Validation"
+    status: "✅ complete"
+    files:
+      - "1.portier_openai/schemas.py"
+      - "1.portier_openai/koordinator.py"
+      - "1.portier_openai/main_production.py"
+    commit: "151c11c"
+
+  schritt_2:
+    name: "Tool-Registry & Dispatcher"
+    status: "✅ complete"
+    files:
+      - "1.portier_openai/tool_registry.py"
+      - "1.portier_openai/tool_dispatcher.py"
+      - "1.portier_openai/registry_schemas.py"
+    commit: "c5221f9"
+
+  schritt_3:
+    name: "Safepoint Dedupe & Integrity"
+    status: "✅ complete"
+    files:
+      - "1.portier_openai/dedupe_engine.py"
+      - "1.portier_openai/safepoint_manager.py"
+    commit: "348cf3f"
+
+  schritt_4:
+    name: "Agent-Integration (20 Services)"
+    status: "🟡 in progress"
+    note: "This file (agent_registry.yaml) is the spec for Schritt 4"
+
+  schritt_5:
+    name: "VS Code Bridge Implementation"
+    status: "🔴 pending"
+    blocked_by: "schritt_4"
