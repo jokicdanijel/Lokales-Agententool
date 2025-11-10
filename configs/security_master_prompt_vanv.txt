@@ -1,0 +1,101 @@
+# SECURITY MASTER PROMPT — VANV (FINAL, BINDEND)
+
+###############################################################################
+# 0) SYSTEMKERN (UNVERÄNDERLICH)
+###############################################################################
+BASE_ROOT = /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
+VENV_PATH = /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313
+PYTHON_BIN = /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/python3
+PORT_RANGE = 12344–12399
+FORBIDDEN_PORTS = [8080]
+
+TOP_LEVEL_WHITELIST:
+  1.opena1&2_portier
+  2.opena3_openwebui
+  3.opena4_telegram
+  4.opena5_vscode
+  5.opena6_browser
+  6.opena7_email
+  7.opena8_whatsapp
+  8.opena9_telephone
+  9.opena10_call_tracking
+  10.opena11_unlock
+  11.opena12_social_media
+  12.opena13_influencer
+  13.opena14_calendar
+  14.opena15_html
+  15.opena16_shop
+  16.opena17_homepagecreator
+  17.opena18_CMR
+  18.opena19_Aktien&Crypto
+  19.opena20_dashboard_agent
+  20.opena21_workflow
+
+ARCHITEKTUR (bindend):
+  - OpenA1 = Coordinator (kordp)  → Port 12344
+  - OpenA2 = Archivator  (archivp) → Port 12345
+
+SECRETS-POLICY:
+  - OPENAI_API_KEY / OPENAI_ORG / OPENAI_BASE_URL nur aus ENV
+  - Niemals im Code, Safepoints, Logs oder Repo
+
+###############################################################################
+# 1) VANV — GATEFLOW (PFLICHT VOR JEDEM OUTPUT)
+###############################################################################
+
+V1: VERZEICHNIS
+  ✓ Arbeitsverzeichnis MUSS exakt BASE_ROOT sein
+  ✓ Zielpfad unter BASE_ROOT + TOP_LEVEL_WHITELIST
+  ✓ Keine neuen Top-Level-Ordner
+  Befehl: bash scripts/copilot_guard.sh → Exit 0
+
+A2: AUDIT (GitHub & Policy)
+  ✓ GitHub-Review grün (keine Konflikte)
+  ✓ Keine venv/pycache/.env im Index
+  ✓ Keine 8080-Portnutzung im Code
+  Befehl: git status → clean oder nur erwartete Änderungen
+
+N3: NOTWENDIG
+  ✓ Nur minimal notwendige, funktionskritische Dateien
+  ✓ Keine Boilerplate, kein Duplicate, keine Dummies
+  Jede Datei hat produktiven Zweck
+
+V4: VERIFIZIERT
+  ✓ VENV intakt: ${PYTHON_BIN} --version → Python 3.12.x
+  ✓ Secrets-Redaction aktiv (kein Secret im Output)
+  ✓ Bei Unklarheit: Rückfrage statt Mutmaßung
+
+Bei Fehler: [SECURITY-STOP] <VANV-Fehlercode>
+
+###############################################################################
+# 2) SAFETY-PATHS & SPEICHERORTE
+###############################################################################
+- Safepoints ausschließlich via OpenA2:
+    POST http://127.0.0.1:12345/store/archivp
+- Ablagepfad: 1.opena1&2_portier/archivp_store/YYYY/MM/DD/SP<ts>_<src>→<dst>_<kind>.json
+- Index: 1.opena1&2_portier/archivp_store/index.jsonl
+
+###############################################################################
+# 3) AUSGABEREGELN FÜR COPILOT
+###############################################################################
+- Nur Dateien erzeugen/ändern, die nach VANV freigegeben sind
+- Format: Pfadzeile + finaler Dateiinhalt (kein Platzhalter, keine TODOs)
+- Keine Begleittexte außer bei [SECURITY-STOP]
+
+###############################################################################
+# 4) FEHLERKLASSEN (HARTER ABBRUCH)
+###############################################################################
+- PATH_VIOLATION, DIR_NOT_WHITELISTED, PORT_POLICY_VIOLATION
+- GH_AUDIT_FAILED, VENV_MISSING_OR_BROKEN
+- SECRET_POLICY_BREACH, SAFETY_PATH_BREACH
+
+###############################################################################
+# 5) NICHT VERHANDELBAR
+###############################################################################
+- Keine neuen Top-Level-Ordner
+- Keine Hardcodierung von Secrets
+- Kein Commit von venv/.env
+- VANV-Check MUSS vor jedem Output bestanden werden
+
+# Ende — Dieses Policy-Dokument ist bindend für alle Copilot-Operationen.
+# Status: ACTIVE (Gültig ab 10. November 2025)
