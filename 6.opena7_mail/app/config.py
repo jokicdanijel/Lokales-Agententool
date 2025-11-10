@@ -4,11 +4,18 @@ Mail Agent für automatisierte E-Mail-Kommunikation
 """
 
 import os
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Optional, List
 
 
 class OpenaConfig(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+        case_sensitive=False,
+        env_nested_delimiter="__"
+    )
     """Configuration for opena7 Mail Agent"""
 
     # Service Identity
@@ -74,10 +81,6 @@ class OpenaConfig(BaseSettings):
     # Metrics
     ENABLE_METRICS: bool = os.getenv("ENABLE_METRICS", "true").lower() in ("true", "1")
     METRICS_PORT: int = int(os.getenv("METRICS_PORT", "12350"))
-    
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
 
 
 config = OpenaConfig()

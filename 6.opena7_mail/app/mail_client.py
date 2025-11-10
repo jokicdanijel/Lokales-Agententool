@@ -76,9 +76,9 @@ class MailClassifier:
                 break
         
         sentiment_patterns = {
+            SentimentType.URGENT: r"urgent|emergency|help|critical",
             SentimentType.POSITIVE: r"thank|great|excellent|happy|perfect",
             SentimentType.NEGATIVE: r"problem|issue|error|fail|upset|angry",
-            SentimentType.URGENT: r"urgent|emergency|help|critical",
         }
         
         sentiment = SentimentType.NEUTRAL
