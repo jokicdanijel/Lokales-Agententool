@@ -3,15 +3,18 @@
 OpenA2 = Archivator (archivp)
 - Fester Port: 12345
 - Fester BASE_ROOT: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
-- Feste Endpunkte:
+- Endpunkte:
   * GET  /health
-  * POST /store/archivp    (Safepoints/Logs speichern)
-  * POST /finalize/opena2  (Abschlussmeldung/Audit)
-- Speichert unter: 1.opena1&2_portier/archivp_store/YYYY/MM/DD/SP<ts>_<src>→<dst>_<kind>.json
-- Keine Erstellung neuer Top-Level-Ordner.
+  * POST /store/archivp
+  * POST /finalize/opena2
+- OpenAI-KEY-Integration (ENV):
+  * Liest OPENAI_API_KEY/OPENAI_BASE_URL/OPENAI_ORG nur zur Präsenzanzeige/Redaction.
+  * Speichert KEIN Secret; Redaction filtert sensible Felder weg.
+- Speicherort: 1.opena1&2_portier/archivp_store/YYYY/MM/DD/SP<ts>_<src>→<dst>_<kind>.json
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import socket
@@ -35,6 +38,38 @@ PORT = 12345
 
 ARCHIVE_DIR = BASE_ROOT / "1.opena1&2_portier" / "archivp_store"
 INDEX_FILE = BASE_ROOT / "1.opena1&2_portier" / "archivp_store" / "index.jsonl"
+
+# -------- OpenAI Key (ENV) --------
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
+OPENAI_ORG = os.getenv("OPENAI_ORG", "")
+
+def _key_fingerprint(secret: str) -> str:
+    if not secret:
+        return ""
+    return hashlib.sha256(secret.encode("utf-8")).hexdigest()[:8]
+
+OPENAI_PRESENT = bool(OPENAI_API_KEY)
+OPENAI_FP = _key_fingerprint(OPENAI_API_KEY)
+
+REDACT_KEYS = {
+    "authorization", "openai_api_key", "api_key", "openai-key", "x-api-key",
+    "OPENAI_API_KEY", "OPENAI_ORG", "OPENAI_BASE_URL", "bearer"
+}
+
+def _redact_secrets(obj: Any) -> Any:
+    if isinstance(obj, dict):
+        san: Dict[str, Any] = {}
+        for k, v in obj.items():
+            kl = str(k).lower()
+            if kl in REDACT_KEYS or "token" in kl or "secret" in kl or "key" in kl:
+                san[k] = "***REDACTED***"
+            else:
+                san[k] = _redact_secrets(v)
+        return san
+    if isinstance(obj, list):
+        return [_redact_secrets(x) for x in obj]
+    return obj
 
 def _guard_path(p: Path) -> None:
     p = p.resolve()
@@ -78,14 +113,13 @@ def _write_safepoint(item: StoreIn) -> Path:
     target_dir = ARCHIVE_DIR / f"{day:%Y/%m/%d}"
     _guard_path(target_dir)
     target_dir.mkdir(parents=True, exist_ok=True)
-    # Dateiname: SP<ts>_<src>→<dst>_<kind>.json
     ts = int(time.time())
     name = f"SP{ts}_{item.src}→{item.dst}_{item.kind}.json"
     fpath = target_dir / name
     content = item.model_dump()
+    content["body"] = _redact_secrets(content.get("body", {}))
     content.setdefault("strict", True)
     fpath.write_text(json.dumps(content, ensure_ascii=False, indent=2), encoding="utf-8")
-    # Index aktualisieren
     INDEX_FILE.parent.mkdir(parents=True, exist_ok=True)
     with INDEX_FILE.open("a", encoding="utf-8") as idx:
         idx.write(json.dumps({"sp": name, "ts": item.ts, "src": item.src, "dst": item.dst, "kind": item.kind, "path": str(fpath)}) + "\n")
@@ -96,7 +130,19 @@ async def health() -> Dict[str, Any]:
     count = 0
     if INDEX_FILE.exists():
         count = sum(1 for _ in INDEX_FILE.open("r", encoding="utf-8"))
-    return {"status": "ok", "service": "opena2", "role": "archivp", "host": _hostname(), "base_root": str(BASE_ROOT), "port": PORT, "entries": count, "strict": True}
+    return {
+        "status": "ok",
+        "service": "opena2",
+        "role": "archivp",
+        "host": _hostname(),
+        "base_root": str(BASE_ROOT),
+        "port": PORT,
+        "entries": count,
+        "openai_key_present": OPENAI_PRESENT,
+        "openai_fp": OPENAI_FP,
+        "openai_base_url": OPENAI_BASE_URL,
+        "strict": True
+    }
 
 @app.post("/store/archivp")
 async def store(item: StoreIn) -> Dict[str, Any]:

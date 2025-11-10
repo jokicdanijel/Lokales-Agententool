@@ -3,16 +3,19 @@
 OpenA1 = Coordinator (kordp)
 - Fester Port: 12344 (Port-Policy 12344–12399)
 - Fester BASE_ROOT: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
-- Feste Endpunkte:
+- Endpunkte:
   * GET  /health
   * POST /log/opena1
   * POST /dispatch/kordp
-  * POST /route/update  (von Copilot/Tools genutzt, um Transfers korrekt zu setzen)
-- Keine Erstellung neuer Top-Level-Ordner.
-- Safepoints werden an OpenA2 (archivp) übergeben.
+  * POST /route/update
+- OpenAI-KEY-Integration (ENV):
+  * Liest OPENAI_API_KEY/OPENAI_BASE_URL/OPENAI_ORG aus Umgebungsvariablen.
+  * Validiert Präsenz (keine Ausführung, kein Loggen des Secrets).
+  * Redaction-Filter verhindert, dass Keys in Safepoints/Logs landen.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import socket
@@ -35,6 +38,40 @@ ALLOWED_TOP = {
 }
 PORT = 12344
 ARCHIVP_PORT = 12345  # OpenA2
+
+# -------- OpenAI Key (ENV) --------
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
+OPENAI_ORG = os.getenv("OPENAI_ORG", "")
+
+def _key_fingerprint(secret: str) -> str:
+    """Gibt eine kurze, nicht rückrechenbare Kennung zurück (sha256/8)."""
+    if not secret:
+        return ""
+    return hashlib.sha256(secret.encode("utf-8")).hexdigest()[:8]
+
+OPENAI_PRESENT = bool(OPENAI_API_KEY)
+OPENAI_FP = _key_fingerprint(OPENAI_API_KEY)
+
+REDACT_KEYS = {
+    "authorization", "openai_api_key", "api_key", "openai-key", "x-api-key",
+    "OPENAI_API_KEY", "OPENAI_ORG", "OPENAI_BASE_URL", "bearer"
+}
+
+def _redact_secrets(obj: Any) -> Any:
+    """Entfernt/verschleiert sicherheitsrelevante Felder rekursiv."""
+    if isinstance(obj, dict):
+        sanitized: Dict[str, Any] = {}
+        for k, v in obj.items():
+            kl = str(k).lower()
+            if kl in REDACT_KEYS or "token" in kl or "secret" in kl or "key" in kl:
+                sanitized[k] = "***REDACTED***"
+            else:
+                sanitized[k] = _redact_secrets(v)
+        return sanitized
+    if isinstance(obj, list):
+        return [_redact_secrets(x) for x in obj]
+    return obj
 
 def _guard_path(p: Path) -> None:
     p = p.resolve()
@@ -95,14 +132,14 @@ APP_META = {
 
 async def _store_safepoint(kind: str, body: Dict[str, Any]) -> None:
     """
-    Delegiert Safepoint-Speicherung an OpenA2 (/store/archivp).
+    Delegiert Safepoint-Speicherung an OpenA2 (/store/archivp) – mit Redaction.
     """
     url = f"http://127.0.0.1:{ARCHIVP_PORT}/store/archivp"
     payload = {
         "src": "kordp",
         "dst": "archivp",
         "kind": kind,
-        "body": body,
+        "body": _redact_secrets(body),
         "strict": True,
         "ts": _now()
     }
@@ -112,7 +149,14 @@ async def _store_safepoint(kind: str, body: Dict[str, Any]) -> None:
 
 @app.get("/health")
 async def health() -> Dict[str, Any]:
-    return {"status": "ok", **APP_META, "routes_count": len(ROUTES)}
+    return {
+        "status": "ok",
+        **APP_META,
+        "routes_count": len(ROUTES),
+        "openai_key_present": OPENAI_PRESENT,
+        "openai_fp": OPENAI_FP,
+        "openai_base_url": OPENAI_BASE_URL,
+    }
 
 @app.post("/log/opena1")
 async def log_event(entry: LogEntry) -> Dict[str, Any]:
@@ -145,7 +189,9 @@ async def dispatch_task(req: DispatchIn) -> Dict[str, Any]:
     route: Optional[Dict[str, Any]] = ROUTES.get(req.agent)
     if not route:
         raise HTTPException(404, f"no route for agent '{req.agent}'")
-    await _store_safepoint("DISPATCH", {"request_id": req.request_id, "agent": req.agent, "action": req.action, "data": req.data, "route": route})
+    # Sicherstellen, dass Key nicht im Payload steckt
+    safe_data = _redact_secrets(req.data)
+    await _store_safepoint("DISPATCH", {"request_id": req.request_id, "agent": req.agent, "action": req.action, "data": safe_data, "route": route})
     return {"ok": True, "routed_to": route, "request_id": req.request_id, "strict": True}
 
 if __name__ == "__main__":
