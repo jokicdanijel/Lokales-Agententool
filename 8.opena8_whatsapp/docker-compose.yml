@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  opena8-whatsapp:
+    build:
+      context: ..
+      dockerfile: 8.opena8_whatsapp/Dockerfile
+    ports:
+      - "12351:12351"
+    environment:
+      OPENA8_PORT: 12351
+      OPENA2_URL: http://opena2:12345
+      OPENA1_URL: http://opena1:12344
+      META_API_VERSION: v20.0
+      META_PHONE_NUMBER_ID: ${META_PHONE_NUMBER_ID:-123456789012345}
+      META_BUSINESS_ACCOUNT_ID: ${META_BUSINESS_ACCOUNT_ID:-123456789012345}
+      META_ACCESS_TOKEN: ${META_ACCESS_TOKEN:-EAAxxxxxxxxxx}
+      META_WEBHOOK_VERIFY_TOKEN: ${META_WEBHOOK_VERIFY_TOKEN:-webhook_secret_32chars}
+      LOG_LEVEL: INFO
+      ENABLE_METRICS: "true"
+    networks:
+      - portier_net
+    depends_on:
+      - opena1
+      - opena2
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:12351/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  opena1:
+    image: localhost:5000/opena1:latest
+    ports:
+      - "12344:12344"
+    networks:
+      - portier_net
+
+  opena2:
+    image: localhost:5000/opena2:latest
+    ports:
+      - "12345:12345"
+    networks:
+      - portier_net
+
+networks:
+  portier_net:
+    driver: bridge

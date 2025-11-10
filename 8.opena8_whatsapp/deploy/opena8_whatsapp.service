@@ -1,0 +1,24 @@
+[Unit]
+Description=opena8-WhatsApp-Agent
+Documentation=https://docs.example.com/opena8
+After=network-online.target opena1.service opena2.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=opena8
+Group=opena8
+WorkingDirectory=/opt/opena8
+Environment="OPENA8_PORT=12351"
+Environment="OPENA2_URL=http://127.0.0.1:12345"
+Environment="OPENA1_URL=http://127.0.0.1:12344"
+Environment="LOG_LEVEL=INFO"
+ExecStart=/opt/opena8/venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 12351
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=opena8
+
+[Install]
+WantedBy=multi-user.target
