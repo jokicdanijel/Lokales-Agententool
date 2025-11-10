@@ -1,0 +1,23 @@
+# Auto-generated from scripts/init_service_folders.sh
+# DO NOT EDIT MANUALLY — re-run init_service_folders.sh to sync
+
+program_targets:
+  browser: browsp
+  calendar_agent: kalp
+  chatbot_email: emailp
+  chatbot_tone_answer: calp
+  chatbot_tone_call: answp
+  chatbot_whats: whatp
+  dashboard_agent: dashp
+  homepage_creator: homep
+  html_creator: htmlp
+  influencer: infmep
+  local_archiv_agent: locp
+  openwebui: openweb
+  portier: kordp
+  shop_creator: shopp
+  social_media: somep
+  stocks_crypto: aktienp
+  telegram: telep
+  unlock_master: onlockp
+  vscode: vscop

@@ -10,7 +10,7 @@ set -euo pipefail
 # CONFIG (Policy-Binding)
 # ════════════════════════════════════════════════════════════════════════════
 ROOT="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt"
-PYTHON="${ROOT}/1.portier_openai/venv313/bin/python3"
+PYTHON="${ROOT}/.venv/bin/python3"
 OPENA2_APP="1.opena1&2_portier/opena2_app.py"
 OPENA1_APP="1.opena1&2_portier/opena1_app.py"
 PORT_A2=12345

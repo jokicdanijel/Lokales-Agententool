@@ -1,0 +1,13 @@
+[Unit]
+Description=Agent 4 - Telegram Agent
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/opena4_telegram
+Environment="HOST=0.0.0.0" "PORT=12347"
+ExecStart=/usr/bin/python -m uvicorn app.main:app --host 0.0.0.0 --port 12347
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

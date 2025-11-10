@@ -1,0 +1,15 @@
+services:
+  opena4_telegram:
+    build: .
+    container_name: opena4_telegram
+    env_file:
+      - .env
+    ports:
+      - "12347:12347"
+    restart: unless-stopped
+    networks:
+      - portier_net
+
+networks:
+  portier_net:
+    driver: bridge
