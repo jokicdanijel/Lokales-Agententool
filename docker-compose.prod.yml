@@ -1,0 +1,430 @@
+version: "3.9"
+
+services:
+  # ====================================================================
+  # MONITORING STACK
+  # ====================================================================
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus-elion
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./configs/prometheus.yaml:/etc/prometheus/prometheus.yml:ro
+      - ./configs/alert_rules.yaml:/etc/prometheus/alert_rules.yaml:ro
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=7d"
+    networks:
+      - elion
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:9090/-/healthy",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana-elion
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SERVER_ROOT_URL=http://localhost:3001/
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./configs/grafana-dashboard-overview.json:/etc/grafana/provisioning/dashboards/overview.json:ro
+      - ./configs/grafana-dashboard-services.json:/etc/grafana/provisioning/dashboards/services.json:ro
+      - ./configs/grafana-dashboard-archive.json:/etc/grafana/provisioning/dashboards/archive.json:ro
+      - ./configs/grafana-dashboard-performance.json:/etc/grafana/provisioning/dashboards/performance.json:ro
+      - ./configs/grafana-dashboard-alerts.json:/etc/grafana/provisioning/dashboards/alerts.json:ro
+    networks:
+      - elion
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ====================================================================
+  # CORE SERVICES (4 always running)
+  # ====================================================================
+
+  portier:
+    build:
+      context: .
+      dockerfile: src/services/portier/Dockerfile
+    container_name: portier
+    ports:
+      - "12344:12344"
+    environment:
+      - SERVICE_NAME=portier
+      - PORT=12344
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./src/services/portier:/app
+      - ./19.opena20_dashboard_agent/metrics_exporter.py:/app/metrics_exporter.py:ro
+    networks:
+      - elion
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:12344/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  archivator:
+    build:
+      context: .
+      dockerfile: src/services/archivator/Dockerfile
+    container_name: archivator
+    ports:
+      - "12345:12345"
+    environment:
+      - SERVICE_NAME=archivator
+      - PORT=12345
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./src/services/archivator:/app
+      - ./1.opena1&2_portier/archivp_store:/data/archive
+    networks:
+      - elion
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:12345/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  telegram:
+    build:
+      context: .
+      dockerfile: src/services/telegram/Dockerfile
+    container_name: telegram
+    ports:
+      - "12346:12346"
+    environment:
+      - SERVICE_NAME=telegram
+      - PORT=12346
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./src/services/telegram:/app
+    networks:
+      - elion
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:12346/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  inference:
+    build:
+      context: .
+      dockerfile: src/services/inference/Dockerfile
+    container_name: inference
+    ports:
+      - "12348:12348"
+    environment:
+      - SERVICE_NAME=inference
+      - PORT=12348
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./src/services/inference:/app
+    networks:
+      - elion
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:12348/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ====================================================================
+  # SCALABLE SERVICES (16 on-demand)
+  # ====================================================================
+
+  browser:
+    build:
+      context: .
+      dockerfile: src/services/browser/Dockerfile
+    container_name: browser
+    ports:
+      - "12349:12349"
+    environment:
+      - SERVICE_NAME=browser
+      - PORT=12349
+    volumes:
+      - ./src/services/browser:/app
+    networks:
+      - elion
+    restart: "no"
+
+  vscode:
+    build:
+      context: .
+      dockerfile: src/services/vscode/Dockerfile
+    container_name: vscode
+    ports:
+      - "12350:12350"
+    environment:
+      - SERVICE_NAME=vscode
+      - PORT=12350
+    volumes:
+      - ./src/services/vscode:/app
+    networks:
+      - elion
+    restart: "no"
+
+  email:
+    build:
+      context: .
+      dockerfile: src/services/email/Dockerfile
+    container_name: email
+    ports:
+      - "12351:12351"
+    environment:
+      - SERVICE_NAME=email
+      - PORT=12351
+    volumes:
+      - ./src/services/email:/app
+    networks:
+      - elion
+    restart: "no"
+
+  whatsapp:
+    build:
+      context: .
+      dockerfile: src/services/whatsapp/Dockerfile
+    container_name: whatsapp
+    ports:
+      - "12352:12352"
+    environment:
+      - SERVICE_NAME=whatsapp
+      - PORT=12352
+    volumes:
+      - ./src/services/whatsapp:/app
+    networks:
+      - elion
+    restart: "no"
+
+  phone:
+    build:
+      context: .
+      dockerfile: src/services/phone/Dockerfile
+    container_name: phone
+    ports:
+      - "12353:12353"
+    environment:
+      - SERVICE_NAME=phone
+      - PORT=12353
+    volumes:
+      - ./src/services/phone:/app
+    networks:
+      - elion
+    restart: "no"
+
+  calendar:
+    build:
+      context: .
+      dockerfile: src/services/calendar/Dockerfile
+    container_name: calendar
+    ports:
+      - "12354:12354"
+    environment:
+      - SERVICE_NAME=calendar
+      - PORT=12354
+    volumes:
+      - ./src/services/calendar:/app
+    networks:
+      - elion
+    restart: "no"
+
+  social_media:
+    build:
+      context: .
+      dockerfile: src/services/social_media/Dockerfile
+    container_name: social_media
+    ports:
+      - "12355:12355"
+    environment:
+      - SERVICE_NAME=social_media
+      - PORT=12355
+    volumes:
+      - ./src/services/social_media:/app
+    networks:
+      - elion
+    restart: "no"
+
+  shop:
+    build:
+      context: .
+      dockerfile: src/services/shop/Dockerfile
+    container_name: shop
+    ports:
+      - "12356:12356"
+    environment:
+      - SERVICE_NAME=shop
+      - PORT=12356
+    volumes:
+      - ./src/services/shop:/app
+    networks:
+      - elion
+    restart: "no"
+
+  html_creator:
+    build:
+      context: .
+      dockerfile: src/services/html_creator/Dockerfile
+    container_name: html_creator
+    ports:
+      - "12357:12357"
+    environment:
+      - SERVICE_NAME=html_creator
+      - PORT=12357
+    volumes:
+      - ./src/services/html_creator:/app
+    networks:
+      - elion
+    restart: "no"
+
+  homepage_creator:
+    build:
+      context: .
+      dockerfile: src/services/homepage_creator/Dockerfile
+    container_name: homepage_creator
+    ports:
+      - "12358:12358"
+    environment:
+      - SERVICE_NAME=homepage_creator
+      - PORT=12358
+    volumes:
+      - ./src/services/homepage_creator:/app
+    networks:
+      - elion
+    restart: "no"
+
+  stocks_crypto:
+    build:
+      context: .
+      dockerfile: src/services/stocks_crypto/Dockerfile
+    container_name: stocks_crypto
+    ports:
+      - "12359:12359"
+    environment:
+      - SERVICE_NAME=stocks_crypto
+      - PORT=12359
+    volumes:
+      - ./src/services/stocks_crypto:/app
+    networks:
+      - elion
+    restart: "no"
+
+  influencer:
+    build:
+      context: .
+      dockerfile: src/services/influencer/Dockerfile
+    container_name: influencer
+    ports:
+      - "12360:12360"
+    environment:
+      - SERVICE_NAME=influencer
+      - PORT=12360
+    volumes:
+      - ./src/services/influencer:/app
+    networks:
+      - elion
+    restart: "no"
+
+  unlock_master:
+    build:
+      context: .
+      dockerfile: src/services/unlock_master/Dockerfile
+    container_name: unlock_master
+    ports:
+      - "12361:12361"
+    environment:
+      - SERVICE_NAME=unlock_master
+      - PORT=12361
+    volumes:
+      - ./src/services/unlock_master:/app
+    networks:
+      - elion
+    restart: "no"
+
+  local_archiv:
+    build:
+      context: .
+      dockerfile: src/services/local_archiv/Dockerfile
+    container_name: local_archiv
+    ports:
+      - "12362:12362"
+    environment:
+      - SERVICE_NAME=local_archiv
+      - PORT=12362
+    volumes:
+      - ./src/services/local_archiv:/app
+    networks:
+      - elion
+    restart: "no"
+
+  custom_1:
+    build:
+      context: .
+      dockerfile: src/services/custom_1/Dockerfile
+    container_name: custom_1
+    ports:
+      - "12363:12363"
+    environment:
+      - SERVICE_NAME=custom_1
+      - PORT=12363
+    volumes:
+      - ./src/services/custom_1:/app
+    networks:
+      - elion
+    restart: "no"
+
+  custom_2:
+    build:
+      context: .
+      dockerfile: src/services/custom_2/Dockerfile
+    container_name: custom_2
+    ports:
+      - "12364:12364"
+    environment:
+      - SERVICE_NAME=custom_2
+      - PORT=12364
+    volumes:
+      - ./src/services/custom_2:/app
+    networks:
+      - elion
+    restart: "no"
+
+# ====================================================================
+# NETWORKING & VOLUMES
+# ====================================================================
+
+networks:
+  elion:
+    driver: bridge
+
+volumes:
+  prometheus_data:
+  grafana_data:
