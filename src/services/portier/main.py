@@ -23,14 +23,20 @@ from pydantic import BaseModel, Field, ConfigDict
 import httpx
 
 # Metrics Exporter (Phase 17 Monitoring)
+# Note: metrics_exporter.py is in "19.opena20_dashboard_agent/" which starts with a digit,
+# so we use importlib.util to load it instead of normal import
+METRICS_ENABLED = False
 try:
-    import sys
-    sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
-    from metrics_exporter import get_exporter
-    METRICS_ENABLED = True
-except ImportError:
-    METRICS_ENABLED = False
-    print("⚠️  Metrics exporter not available (prometheus-client not installed)")
+    import importlib.util
+    metrics_path = Path(__file__).resolve().parent.parent.parent.parent / "19.opena20_dashboard_agent" / "metrics_exporter.py"
+    spec = importlib.util.spec_from_file_location("metrics_exporter", metrics_path)
+    if spec and spec.loader:
+        metrics_module = importlib.util.module_from_spec(spec)  # type: ignore
+        spec.loader.exec_module(metrics_module)  # type: ignore
+        get_exporter = metrics_module.get_exporter
+        METRICS_ENABLED = True
+except Exception as e:
+    print(f"⚠️  Metrics exporter not available: {e}")
 
 # ────────────────────────────────────────────────────────────────────────
 # Configuration

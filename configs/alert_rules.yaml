@@ -88,7 +88,7 @@ groups:
           component: orchestration
         annotations:
           summary: "Less than 2 services are online"
-          description: "Only {{ $value }} services are currently online (total: {{ query 'elion_services_total' | first | value }})"
+          description: "Only {{ $value }} services are currently online (expected at least 2)"
           runbook: "Start missing services: bin/ops.sh start"
       
       # Alert 8: Zero Throughput (System Stuck?)
