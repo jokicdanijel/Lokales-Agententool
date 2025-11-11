@@ -1,0 +1,154 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "created": "2025-11-11T15:55:00Z",
+    "last_updated": "2025-11-11T15:55:00Z",
+    "total_pages": 16
+  },
+  "pages": [
+    {
+      "id": "page01",
+      "title": "Main Dashboard",
+      "api_endpoint": "/agenda/pages/page01",
+      "bromt": "Zentrale Übersicht und Navigation zu allen Agenda-Punkten.",
+      "status": "active",
+      "last_updated": "2025-11-11T15:55:00Z",
+      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+    },
+    {
+      "id": "page02",
+      "title": "Logische Seite",
+      "api_endpoint": "/agenda/pages/page02",
+      "bromt": "Regeln, Flusslogik und Validierungsvorgaben.",
+      "status": "active",
+      "last_updated": "2025-11-11T15:55:00Z",
+      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+    },
+    {
+      "id": "page03",
+      "title": "API Registry",
+      "api_endpoint": "/agenda/pages/page03",
+      "bromt": "Katalog der 20 API-Endpunkte mit Parameterlisten.",
+      "status": "active",
+      "last_updated": "2025-11-11T15:55:00Z",
+      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+    },
+    {
+      "id": "page04",
+      "title": "Bromt Studio",
+      "api_endpoint": "/agenda/pages/page04",
+      "bromt": "Vorlagen und Textbausteine für Bromt-Eingaben.",
+      "status": "active",
+      "last_updated": "2025-11-11T15:55:00Z",
+      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+    },
+    {
+      "id": "page05",
+      "title": "Agenda 01 – Datenaufnahme",
+      "api_endpoint": "/agenda/pages/page05",
+      "bromt": "Eingabe-API, Bromt-Dokumentation, Status-Tracking.",
+      "status": "active",
+      "last_updated": "2025-11-11T15:55:00Z",
+      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+    },
+    {
+      "id": "page06",
+      "title": "Agenda 02 – Bearbeitung",
+      "api_endpoint": "/agenda/pages/page06",
+      "bromt": "Verarbeitungs-Pipeline, Transformationsregeln.",
+      "status": "active",
+      "last_updated": "2025-11-11T15:55:00Z",
+      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+    },
+    {
+      "id": "page07",
+      "title": "Agenda 03 – Validierung",
+      "api_endpoint": "/agenda/pages/page07",
+      "bromt": "Validierungspfade, Fehlerbehandlung, Korrekturen.",
+      "status": "active",
+      "last_updated": "2025-11-11T15:55:00Z",
+      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+    },
+    {
+      "id": "page08",
+      "title": "Agenda 04 – Speicherung",
+      "api_endpoint": "/agenda/pages/page08",
+      "bromt": "Persistierung in DB, Audit-Log, Transaktionen.",
+      "status": "active",
+      "last_updated": "2025-11-11T15:55:00Z",
+      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+    },
+    {
+      "id": "page09",
+      "title": "Agenda 05 – Auth/RBAC",
+      "api_endpoint": "/agenda/pages/page09",
+      "bromt": "RBAC-Konzepte, Token-basierte Authentifizierung.",
+      "status": "active",
+      "last_updated": "2025-11-11T15:55:00Z",
+      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+    },
+    {
+      "id": "page10",
+      "title": "Agenda 06 – Monitoring",
+      "api_endpoint": "/agenda/pages/page10",
+      "bromt": "Monitoring-Strategie, KPI-Definition, Dashboards.",
+      "status": "active",
+      "last_updated": "2025-11-11T15:55:00Z",
+      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+    },
+    {
+      "id": "page11",
+      "title": "Agenda 07 – Logging",
+      "api_endpoint": "/agenda/pages/page11",
+      "bromt": "Zugriff auf strukturierte Logs, Log-Levels.",
+      "status": "active",
+      "last_updated": "2025-11-11T15:55:00Z",
+      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+    },
+    {
+      "id": "page12",
+      "title": "Agenda 08 – Alerts",
+      "api_endpoint": "/agenda/pages/page12",
+      "bromt": "Alerting-Strategien, Runbooks, Eskalation.",
+      "status": "active",
+      "last_updated": "2025-11-11T15:55:00Z",
+      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+    },
+    {
+      "id": "page13",
+      "title": "Agenda 09 – Reporting",
+      "api_endpoint": "/agenda/pages/page13",
+      "bromt": "Berichte, Exportformate, View-Templates.",
+      "status": "active",
+      "last_updated": "2025-11-11T15:55:00Z",
+      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+    },
+    {
+      "id": "page14",
+      "title": "Agenda 10 – Import/Export",
+      "api_endpoint": "/agenda/pages/page14",
+      "bromt": "Datenimporte, Exporte, Snapshots, Backups.",
+      "status": "active",
+      "last_updated": "2025-11-11T15:55:00Z",
+      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+    },
+    {
+      "id": "page15",
+      "title": "Agenda 11 – Versionierung",
+      "api_endpoint": "/agenda/pages/page15",
+      "bromt": "Versionierung, Change-Logs, Rollback-Strategien.",
+      "status": "active",
+      "last_updated": "2025-11-11T15:55:00Z",
+      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+    },
+    {
+      "id": "page16",
+      "title": "Agenda 12 – Governance",
+      "api_endpoint": "/agenda/pages/page16",
+      "bromt": "Governance, Compliance, Policy-Management.",
+      "status": "active",
+      "last_updated": "2025-11-11T15:55:00Z",
+      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+    }
+  ]
+}
