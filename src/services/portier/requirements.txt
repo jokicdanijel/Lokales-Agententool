@@ -1,0 +1,7 @@
+# Portier (Coordinator Gateway) Dependencies
+fastapi==0.121.0
+uvicorn[standard]==0.30.0
+pydantic==2.12.4
+pydantic-settings==2.12.0
+httpx==0.27.2
+python-multipart==0.0.7
