@@ -1,20 +1,36 @@
 """
-opena8 WhatsApp Client
-Meta API integration, message parsing, classification
+opena8 WhatsApp Client - Type-Safe Meta API Integration
 """
 
 import re
-import json
 import hashlib
-from typing import Tuple, Optional, Dict, Any, List
+from typing import Optional, Dict, Any, TypedDict, Tuple
 from datetime import datetime
+
 import httpx
 
 from app.config import config
 from app.models import (
     MessageType, SentimentType, MediaType, MediaObject, WhatsAppMessage,
-    MessageDirection, WebhookMessageEvent
+    MessageDirection
 )
+
+
+# Type-safe JSON structures
+class ContactDict(TypedDict, total=False):
+    """WhatsApp contact structure"""
+    name: str
+    phone: str
+    wa_id: str
+    profile: Dict[str, str]
+
+
+class WebhookPayload(TypedDict, total=False):
+    """WhatsApp webhook payload structure"""
+    object: str
+    entry: list[Dict[str, Any]]
+    messaging_product: str
+    metadata: Dict[str, Any]
 
 
 class MessageClassifier:
@@ -26,7 +42,7 @@ class MessageClassifier:
         if not text:
             return "unknown"
         
-        de_keywords = ["hallo", "guten", "danke", "bitte", "bitte", "wie", "wann"]
+        de_keywords = ["hallo", "guten", "danke", "bitte", "wie", "wann"]
         en_keywords = ["hello", "hi", "thank", "please", "when", "what", "how"]
         
         text_lower = text.lower()
@@ -125,9 +141,10 @@ class MediaHandler:
             # If only media_id provided, construct Meta CDN URL
             if not url:
                 url = f"https://graph.instagram.com/{media_id}"
-                headers = {"Authorization": f"Bearer {config.META_ACCESS_TOKEN}"}
-            else:
-                headers = {"Authorization": f"Bearer {config.META_ACCESS_TOKEN}"}
+            
+            headers: Dict[str, str] = {
+                "Authorization": f"Bearer {config.META_ACCESS_TOKEN}"
+            }
             
             async with httpx.AsyncClient(timeout=30.0) as client:
                 response = await client.get(url, headers=headers)
@@ -140,51 +157,59 @@ class MediaHandler:
 
 
 class WhatsAppClient:
-    """Meta WhatsApp API client"""
+    """Meta WhatsApp API client with type safety"""
     
-    def __init__(self):
+    def __init__(self) -> None:
+        """Initialize WhatsApp client from config"""
         self.base_url = f"https://graph.instagram.com/{config.META_API_VERSION}"
         self.phone_number_id = config.META_PHONE_NUMBER_ID
         self.access_token = config.META_ACCESS_TOKEN
-        self.headers = {
+        self.headers: Dict[str, str] = {
             "Authorization": f"Bearer {self.access_token}",
             "Content-Type": "application/json"
         }
     
     async def parse_webhook_event(self, event_dict: Dict[str, Any]) -> Optional[WhatsAppMessage]:
-        """Parse Meta webhook entry into WhatsAppMessage"""
+        """Parse Meta webhook entry into WhatsAppMessage
+        
+        Args:
+            event_dict: Webhook entry dictionary from Meta
+            
+        Returns:
+            Parsed WhatsAppMessage or None if parsing fails
+        """
         try:
             # Navigate webhook structure: entry[0] -> changes[0] -> value -> messages[0]
-            changes = event_dict.get("changes", [])
+            changes: list[Dict[str, Any]] = event_dict.get("changes", [])
             if not changes:
                 return None
             
-            value = changes[0].get("value", {})
-            messages = value.get("messages", [])
-            contacts = value.get("contacts", [])
+            value: Dict[str, Any] = changes[0].get("value", {})
+            messages: list[Dict[str, Any]] = value.get("messages", [])
+            contacts: list[ContactDict] = value.get("contacts", [])
             
             if not messages:
                 return None
             
-            msg = messages[0]
-            contact = contacts[0] if contacts else {}
+            msg: Dict[str, Any] = messages[0]
+            contact: ContactDict = contacts[0] if contacts else {}
             
-            message_id = msg.get("id")
-            phone_number = msg.get("from")
-            timestamp = int(msg.get("timestamp", 0))
-            msg_type_raw = msg.get("type", "text")
+            message_id: str = msg.get("id", "")
+            phone_number: str = msg.get("from", "")
+            timestamp: int = int(msg.get("timestamp", 0))
+            msg_type_raw: str = msg.get("type", "text")
             
             # Determine message type and extract body
             msg_type = MessageType.TEXT
-            body = None
-            media = None
+            body: Optional[str] = None
+            media: Optional[MediaObject] = None
             
             if msg_type_raw == "text":
                 msg_type = MessageType.TEXT
                 body = msg.get("text", {}).get("body", "")
             elif msg_type_raw in ["image", "document", "audio", "video"]:
                 msg_type = MessageType(msg_type_raw)
-                obj = msg.get(msg_type_raw, {})
+                obj: Dict[str, Any] = msg.get(msg_type_raw, {})
                 media = MediaObject(
                     media_type=MediaType(msg_type_raw),
                     media_id=obj.get("id", ""),
@@ -194,8 +219,8 @@ class WhatsAppClient:
             
             # Classify message
             sentiment, urgency = MessageClassifier.classify_sentiment(body or "")
-            language = MessageClassifier.detect_language(body or "")
-            allowed = MessageClassifier.check_allowlist(phone_number)
+            language: str = MessageClassifier.detect_language(body or "")
+            allowed: bool = MessageClassifier.check_allowlist(phone_number)
             
             return WhatsAppMessage(
                 message_id=message_id,
@@ -215,11 +240,23 @@ class WhatsAppClient:
             print(f"❌ Webhook parse failed: {e}")
             return None
     
-    async def send_message(self, to_phone: str, body: str) -> Tuple[bool, Optional[str], Optional[str]]:
-        """Send text message via Meta API"""
+    async def send_message(
+        self,
+        to_phone: str,
+        body: str
+    ) -> Tuple[bool, Optional[str], Optional[str]]:
+        """Send text message via Meta API
+        
+        Args:
+            to_phone: Recipient phone number
+            body: Message text
+            
+        Returns:
+            Tuple of (success, message_id, error_message)
+        """
         try:
-            url = f"{self.base_url}/{self.phone_number_id}/messages"
-            payload = {
+            url: str = f"{self.base_url}/{self.phone_number_id}/messages"
+            payload: Dict[str, Any] = {
                 "messaging_product": "whatsapp",
                 "to": to_phone,
                 "type": "text",
@@ -229,18 +266,33 @@ class WhatsAppClient:
             async with httpx.AsyncClient(timeout=15.0) as client:
                 response = await client.post(url, json=payload, headers=self.headers)
                 if response.status_code in [200, 201]:
-                    result = response.json()
-                    return True, result.get("messages", [{}])[0].get("id"), None
+                    result: Dict[str, Any] = response.json()
+                    msg_id: str = result.get("messages", [{}])[0].get("id", "")
+                    return True, msg_id, None
                 else:
                     return False, None, f"API error: {response.status_code}"
         except Exception as e:
             return False, None, str(e)
     
-    async def send_media(self, to_phone: str, media_url: str, media_type: str) -> Tuple[bool, Optional[str], Optional[str]]:
-        """Send media message via Meta API"""
+    async def send_media(
+        self,
+        to_phone: str,
+        media_url: str,
+        media_type: str
+    ) -> Tuple[bool, Optional[str], Optional[str]]:
+        """Send media message via Meta API
+        
+        Args:
+            to_phone: Recipient phone number
+            media_url: URL to media file
+            media_type: Type (image, video, document, audio)
+            
+        Returns:
+            Tuple of (success, message_id, error_message)
+        """
         try:
-            url = f"{self.base_url}/{self.phone_number_id}/messages"
-            payload = {
+            url: str = f"{self.base_url}/{self.phone_number_id}/messages"
+            payload: Dict[str, Any] = {
                 "messaging_product": "whatsapp",
                 "to": to_phone,
                 "type": media_type,
@@ -250,18 +302,26 @@ class WhatsAppClient:
             async with httpx.AsyncClient(timeout=15.0) as client:
                 response = await client.post(url, json=payload, headers=self.headers)
                 if response.status_code in [200, 201]:
-                    result = response.json()
-                    return True, result.get("messages", [{}])[0].get("id"), None
+                    result: Dict[str, Any] = response.json()
+                    msg_id: str = result.get("messages", [{}])[0].get("id", "")
+                    return True, msg_id, None
                 else:
                     return False, None, f"API error: {response.status_code}"
         except Exception as e:
             return False, None, str(e)
     
     async def mark_message_read(self, message_id: str) -> bool:
-        """Mark message as read"""
+        """Mark message as read
+        
+        Args:
+            message_id: WhatsApp message ID
+            
+        Returns:
+            True if successful
+        """
         try:
-            url = f"{self.base_url}/{self.phone_number_id}/messages"
-            payload = {
+            url: str = f"{self.base_url}/{self.phone_number_id}/messages"
+            payload: Dict[str, Any] = {
                 "messaging_product": "whatsapp",
                 "status": "read",
                 "message_id": message_id
