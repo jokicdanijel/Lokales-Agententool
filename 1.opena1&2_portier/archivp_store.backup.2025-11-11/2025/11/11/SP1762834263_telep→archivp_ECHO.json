@@ -1,0 +1,10 @@
+{
+  "src": "telep",
+  "dst": "archivp",
+  "kind": "ECHO",
+  "body": {
+    "msg": "test"
+  },
+  "strict": true,
+  "ts": "2025-11-11T04:11:03.599171Z"
+}

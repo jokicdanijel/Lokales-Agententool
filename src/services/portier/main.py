@@ -18,9 +18,19 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Response
 from pydantic import BaseModel, Field, ConfigDict
 import httpx
+
+# Metrics Exporter (Phase 17 Monitoring)
+try:
+    import sys
+    sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+    from metrics_exporter import get_exporter
+    METRICS_ENABLED = True
+except ImportError:
+    METRICS_ENABLED = False
+    print("⚠️  Metrics exporter not available (prometheus-client not installed)")
 
 # ────────────────────────────────────────────────────────────────────────
 # Configuration
@@ -143,6 +153,22 @@ APP_META = {
 
 
 # ────────────────────────────────────────────────────────────────────────
+# Startup Event: Initialize Metrics Exporter (Phase 17)
+# ────────────────────────────────────────────────────────────────────────
+
+@app.on_event("startup")
+async def startup_metrics():
+    """Initialize metrics exporter on app startup."""
+    if METRICS_ENABLED:
+        exporter = get_exporter()
+        exporter.register_service("portier", 12344)
+        exporter.register_service("opena2", 12345)
+        exporter.register_service("telegram", 12346)
+        exporter.register_service("inference", 12348)
+        print("✅ Metrics exporter initialized (9090 metrics will be available)")
+
+
+# ────────────────────────────────────────────────────────────────────────
 # Helper: Store Safepoint (delegate to OpenA2)
 # ────────────────────────────────────────────────────────────────────────
 
@@ -180,6 +206,26 @@ async def health() -> Dict[str, Any]:
         "openai_base_url": OPENAI_BASE_URL,
         "status": "ok",
     }
+
+
+@app.get("/metrics")
+async def metrics() -> Response:
+    """Prometheus metrics endpoint (Phase 17 Monitoring)."""
+    if not METRICS_ENABLED:
+        return Response("# Metrics not available (prometheus-client not installed)", media_type="text/plain")
+    
+    exporter = get_exporter()
+    return Response(exporter.get_metrics_text(), media_type="text/plain")
+
+
+@app.get("/api/health/metrics")
+async def health_metrics() -> Dict[str, Any]:
+    """JSON health summary with metrics (Phase 17 Monitoring)."""
+    if not METRICS_ENABLED:
+        return {"error": "Metrics not available (prometheus-client not installed)"}
+    
+    exporter = get_exporter()
+    return exporter.get_health_summary()
 
 
 @app.post("/route/update")

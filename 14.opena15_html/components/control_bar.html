@@ -1,0 +1,25 @@
+<section class="control_bar" aria-label="Agent Controls">
+  <label class="toggle">
+    <input type="checkbox" id="agent_toggle" data-testid="agent_toggle" />
+    <span>Enabled</span>
+  </label>
+
+  <label for="model_preset">Model</label>
+  <select id="model_preset" data-testid="model_preset" aria-label="Model Preset">
+    <option>Non-OpenAI-1</option>
+    <option>Non-OpenAI-2</option>
+    <option>Non-OpenAI-3</option>
+  </select>
+
+  <form id="apikey_form" data-testid="apikey_form" aria-label="API Key">
+    <input type="password" id="api_key" placeholder="API Key" aria-describedby="api_hint">
+    <button type="submit">Save</button>
+    <button type="button" id="api_clear">Clear</button>
+    <small id="api_hint">Stored securely</small>
+  </form>
+
+  <form id="agent_input_form" data-testid="agent_input_form" aria-label="Agent Input">
+    <input type="text" id="agent_input" placeholder="Type command…" required />
+    <button type="submit">Send</button>
+  </form>
+</section>

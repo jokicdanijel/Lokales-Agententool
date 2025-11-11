@@ -7,11 +7,11 @@ on:
     branches: [main, develop]
 
 jobs:
-  # ═══════════════════════════════════════════════════════════════════════
+  # ══════════════════════════════════════════════════════════════════════�?
   # GATE 1: Structure Drift Detection (HARD STOP on mismatch)
-  # ═══════════════════════════════════════════════════════════════════════
+  # ══════════════════════════════════════════════════════════════════════�?
   no-drift-structure:
-    name: "🛡️ Structure Validation (no drift allowed)"
+    name: "🛡�? Structure Validation (no drift allowed)"
     runs-on: ubuntu-latest
     
     steps:
@@ -40,9 +40,9 @@ jobs:
       - name: Validate README contains program targets
         run: pytest -v tests/test_service_folders.py::test_readme_contains_program_target
 
-  # ═══════════════════════════════════════════════════════════════════════
+  # ══════════════════════════════════════════════════════════════════════�?
   # GATE 2: Config Validation
-  # ═══════════════════════════════════════════════════════════════════════
+  # ══════════════════════════════════════════════════════════════════════�?
   config-validation:
     name: "⚙️ Config & YAML Validation"
     runs-on: ubuntu-latest
@@ -61,13 +61,13 @@ jobs:
         run: |
           python -m pip install pyyaml
           python -c "import yaml; yaml.safe_load(open('configs/routing_matrix.yaml'))"
-          echo "✅ routing_matrix.yaml valid"
+          echo "�? routing_matrix.yaml valid"
 
-  # ═══════════════════════════════════════════════════════════════════════
+  # ══════════════════════════════════════════════════════════════════════�?
   # GATE 3: Python Syntax Validation (ALL services)
-  # ═══════════════════════════════════════════════════════════════════════
+  # ══════════════════════════════════════════════════════════════════════�?
   syntax-check:
-    name: "✅ Python Syntax Validation"
+    name: "�? Python Syntax Validation"
     runs-on: ubuntu-latest
     
     steps:
@@ -85,7 +85,7 @@ jobs:
           python -m py_compile src/services/telegram/main.py
           python -m py_compile src/services/inference/main.py
           python -m py_compile src/services/template/main.py
-          echo "✅ All service main.py files have valid syntax"
+          echo "�? All service main.py files have valid syntax"
 
       - name: Check syntax of all test scripts
         run: |
@@ -94,11 +94,11 @@ jobs:
           python -m py_compile scripts/load_test_scaled.py
           python -m py_compile scripts/test_multi_service_orchestration.py
           python -m py_compile scripts/generate_scalable_services.py
-          echo "✅ All test scripts have valid syntax"
+          echo "�? All test scripts have valid syntax"
 
-  # ═══════════════════════════════════════════════════════════════════════
+  # ══════════════════════════════════════════════════════════════════════�?
   # GATE 4: Python Linting & Code Quality
-  # ═══════════════════════════════════════════════════════════════════════
+  # ══════════════════════════════════════════════════════════════════════�?
   lint:
     name: "🔍 Python Linting & Quality"
     runs-on: ubuntu-latest
@@ -125,9 +125,9 @@ jobs:
         run: isort --check-only scripts/ src/services/ --diff
         continue-on-error: true
 
-  # ═══════════════════════════════════════════════════════════════════════
+  # ══════════════════════════════════════════════════════════════════════�?
   # GATE 5: Unit Tests (Service Health, Echo, etc)
-  # ═══════════════════════════════════════════════════════════════════════
+  # ══════════════════════════════════════════════════════════════════════�?
   unit-tests:
     name: "🧪 Unit Tests"
     runs-on: ubuntu-latest
@@ -150,9 +150,9 @@ jobs:
         run: pytest -v tests/ -k "service" --tb=short
         continue-on-error: true
 
-  # ═══════════════════════════════════════════════════════════════════════
+  # ══════════════════════════════════════════════════════════════════════�?
   # SUMMARY
-  # ═══════════════════════════════════════════════════════════════════════
+  # ══════════════════════════════════════════════════════════════════════�?
   ci-summary:
     name: "📊 CI Summary"
     runs-on: ubuntu-latest
@@ -161,7 +161,7 @@ jobs:
     steps:
       - name: Report success
         run: |
-          echo "✅ All CI gates passed"
+          echo "�? All CI gates passed"
           echo "  - Service folder structure: OK"
           echo "  - Program targets mapping: OK"
           echo "  - Config validation: OK"

@@ -1,0 +1,13 @@
+{
+  "src": "kordp",
+  "dst": "archivp",
+  "kind": "ROUTE",
+  "body": {
+    "agent": "telegram_bot",
+    "agent_id": "telep-001",
+    "port": 12347,
+    "program": "telep"
+  },
+  "strict": true,
+  "ts": "2025-11-11T03:49:15.162419Z"
+}

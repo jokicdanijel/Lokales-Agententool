@@ -1,0 +1,13 @@
+{
+  "src": "kordp",
+  "dst": "archivp",
+  "kind": "ROUTE",
+  "body": {
+    "agent": "openweb_gateway",
+    "agent_id": "openweb-001",
+    "port": 12346,
+    "program": "openweb"
+  },
+  "strict": true,
+  "ts": "2025-11-11T03:53:51.368514Z"
+}

@@ -1,0 +1,13 @@
+{
+  "src": "infer",
+  "dst": "archivp",
+  "kind": "CHAT_COMPLETION",
+  "body": {
+    "model": "llama2",
+    "messages_count": 1,
+    "completion_tokens": "***REDACTED***",
+    "latency_ms": 3160.1614952087402
+  },
+  "strict": true,
+  "ts": "2025-11-11T04:22:24.696554Z"
+}

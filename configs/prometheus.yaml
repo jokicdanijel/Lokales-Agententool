@@ -1,0 +1,107 @@
+# Prometheus Configuration
+# Location: configs/prometheus.yaml
+# Scrapes metrics from ELION Hyper-Dashboard services
+# UI: http://localhost:9090
+
+global:
+  scrape_interval: 30s          # Scrape every 30 seconds
+  evaluation_interval: 15s       # Evaluate alert rules every 15s
+  external_labels:
+    monitor: 'elion-monitoring'
+
+# Alert manager (optional, can add later)
+alerting:
+  alertmanagers: []
+
+# Load alert rules
+rule_files:
+  - "alert_rules.yaml"
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Dashboard/Coordinator (Portier)
+  - job_name: 'portier'
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['localhost:12344']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'portier'
+      - source_labels: [__address__]
+        target_label: port
+        replacement: '12344'
+
+  # Archive Service (OpenA2)
+  - job_name: 'opena2'
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['localhost:12345']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'opena2'
+
+  # Telegram Agent
+  - job_name: 'telegram'
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['localhost:12346']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'telegram'
+
+  # Inference Service
+  - job_name: 'inference'
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['localhost:12348']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'inference'
+
+  # Generic service discovery (12349-12365)
+  # Fallback for any other services
+  - job_name: 'generic_services'
+    metrics_path: '/metrics'
+    scrape_interval: 60s
+    static_configs:
+      - targets:
+          - 'localhost:12349'
+          - 'localhost:12350'
+          - 'localhost:12351'
+          - 'localhost:12352'
+          - 'localhost:12353'
+          - 'localhost:12354'
+          - 'localhost:12355'
+          - 'localhost:12356'
+          - 'localhost:12357'
+          - 'localhost:12358'
+          - 'localhost:12359'
+          - 'localhost:12360'
+          - 'localhost:12361'
+          - 'localhost:12362'
+          - 'localhost:12363'
+          - 'localhost:12364'
+          - 'localhost:12365'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+      - source_labels: [__scheme__, __address__]
+        separator: ':'
+        target_label: __param_target
+      - target_label: __address__
+        replacement: 'localhost:9090'
+      - source_labels: [__param_target]
+        target_label: instance

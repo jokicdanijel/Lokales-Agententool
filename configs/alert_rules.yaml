@@ -1,0 +1,108 @@
+# Prometheus Alert Rules
+# Location: configs/alert_rules.yaml
+# Defines alert conditions for ELION Hyper-Dashboard monitoring
+
+groups:
+  - name: elion_alerts
+    interval: 15s
+    
+    rules:
+      # Alert 1: Service Down
+      - alert: ServiceDown
+        expr: elion_service_up{job!="prometheus"} == 0
+        for: 30s
+        labels:
+          severity: critical
+          component: service_health
+        annotations:
+          summary: "{{ $labels.service }} is down"
+          description: "Service {{ $labels.service }} (port {{ $labels.port }}) has been unavailable for 30 seconds"
+          runbook: "Stop and restart the service: bin/ops.sh restart {{ $labels.service }}"
+      
+      # Alert 2: High Response Latency
+      - alert: HighLatency
+        expr: histogram_quantile(0.95, elion_service_response_time_seconds) > 1.0
+        for: 1m
+        labels:
+          severity: warning
+          component: performance
+        annotations:
+          summary: "High latency on {{ $labels.service }}"
+          description: "95th percentile latency for {{ $labels.service }} {{ $labels.endpoint }} is {{ $value | humanize }}s"
+          runbook: "Check service load: curl http://localhost:{{ $labels.port }}/health"
+      
+      # Alert 3: Archive Growing Too Fast
+      - alert: ArchiveGrowthTooFast
+        expr: elion_archive_growth_entries_per_hour > 100
+        for: 5m
+        labels:
+          severity: warning
+          component: storage
+        annotations:
+          summary: "Archive growing too quickly"
+          description: "Archive is growing at {{ $value | humanize }} entries/hour (threshold: 100)"
+          runbook: "Review archive content: bin/ops.sh archiv:last?n=10"
+      
+      # Alert 4: Memory Usage High
+      - alert: HighMemoryUsage
+        expr: elion_service_memory_bytes > 536870912  # 512 MB
+        for: 2m
+        labels:
+          severity: warning
+          component: resource
+        annotations:
+          summary: "High memory usage: {{ $labels.service }}"
+          description: "{{ $labels.service }} is using {{ $value | humanize1024 }}B of memory"
+          runbook: "Restart service or investigate memory leak"
+      
+      # Alert 5: Error Rate High
+      - alert: HighErrorRate
+        expr: elion_error_rate_percent > 5
+        for: 1m
+        labels:
+          severity: warning
+          component: reliability
+        annotations:
+          summary: "High error rate detected"
+          description: "System-wide error rate is {{ $value | humanize }}% (threshold: 5%)"
+          runbook: "Check service logs: bin/ops.sh logs"
+      
+      # Alert 6: Archive Size Critical
+      - alert: ArchiveSizeCritical
+        expr: elion_archive_size_bytes > 1073741824  # 1 GB
+        for: 5m
+        labels:
+          severity: warning
+          component: storage
+        annotations:
+          summary: "Archive size is getting large"
+          description: "Archive size is {{ $value | humanize1024 }}B"
+          runbook: "Consider archiving old entries: bin/ops.sh archiv:prune"
+      
+      # Alert 7: Few Services Online
+      - alert: LowServiceAvailability
+        expr: elion_services_online < 2
+        for: 1m
+        labels:
+          severity: warning
+          component: orchestration
+        annotations:
+          summary: "Less than 2 services are online"
+          description: "Only {{ $value }} services are currently online (total: {{ query 'elion_services_total' | first | value }})"
+          runbook: "Start missing services: bin/ops.sh start"
+      
+      # Alert 8: Zero Throughput (System Stuck?)
+      - alert: ZeroThroughput
+        expr: elion_requests_per_second == 0 and elion_services_online > 0
+        for: 2m
+        labels:
+          severity: warning
+          component: orchestration
+        annotations:
+          summary: "System not processing requests"
+          description: "No requests processed in last 2 minutes despite {{ $value }} online services"
+          runbook: "Check Portier health: curl -s http://localhost:12344/health | jq ."
+
+# Grouping for AlertManager (optional)
+# Groups similar alerts for de-duplication
+# rule_file paths for separate alert definitions (if needed)

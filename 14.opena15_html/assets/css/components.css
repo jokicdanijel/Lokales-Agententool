@@ -1,0 +1,10 @@
+/* components.css */
+.control_bar{display:flex;gap:var(--space-3);align-items:center;flex-wrap:wrap;background:#0b1220;border:1px solid #1e293b;border-radius:var(--radius);padding:var(--space-3);position:sticky;top:0}
+.control_bar input[type="text"], .control_bar input[type="password"], .control_bar select{background:#0f172a;border:1px solid #324055;border-radius:6px;color:#e6eaf0;padding:8px}
+.control_bar button{background:#1e293b;border:1px solid #334155;color:#e6eaf0;padding:8px 12px;border-radius:6px;cursor:pointer}
+.stat_card{padding:16px;border-radius:8px;border:1px solid #1e293b;background:#0b1220}
+.stat_title{margin:0 0 4px 0;color:#94a3b8}
+.stat_value{font-size:24px;margin:0}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{padding:8px;border-bottom:1px solid #1e293b;text-align:left}
+.log_console{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;background:#0b1220;border:1px solid #1e293b;border-radius:8px;padding:10px;max-height:320px;overflow:auto}

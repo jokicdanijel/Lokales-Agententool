@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Hyper Dashboard – OpenA5</title>
+  <link rel="stylesheet" href="/assets/css/base.css"/>
+  <link rel="stylesheet" href="/assets/css/layout.css"/>
+  <link rel="stylesheet" href="/assets/css/components.css"/>
+  <link rel="stylesheet" href="/assets/css/themes.css"/>
+</head>
+<body>
+  <header role="banner">
+    <div class="container">
+      <h1>Hyper Dashboard</h1>
+    </div>
+  </header>
+  <main role="main">
+    <nav class="sidebar" aria-label="Primary">
+      <a href="#/agents/opena5" data-testid="nav_opena5">OpenA5</a>
+      <a href="#/agents/opena5/logs" data-testid="nav_opena5_logs">Logs</a>
+      <a href="#/agents/opena5/config" data-testid="nav_opena5_config">Config</a>
+    </nav>
+    <section class="content" aria-live="polite"></section>
+    <aside aria-label="Context"></aside>
+  </main>
+  <footer role="contentinfo">
+    <div class="container">© Hyper Dashboard</div>
+  </footer>
+  <script type="module" src="/assets/js/router.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+#!/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/.venv/bin/python3
+import sys
+from llama_stack_client.lib.cli.llama_stack_client import main
+if __name__ == '__main__':
+    if sys.argv[0].endswith('.exe'):
+        sys.argv[0] = sys.argv[0][:-4]
+    sys.exit(main())

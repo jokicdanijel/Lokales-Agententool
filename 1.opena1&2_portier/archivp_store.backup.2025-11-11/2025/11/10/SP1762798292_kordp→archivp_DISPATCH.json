@@ -1,0 +1,22 @@
+{
+  "src": "kordp",
+  "dst": "archivp",
+  "kind": "DISPATCH",
+  "body": {
+    "request_id": "req-1762798292958",
+    "agent": "agent_demo",
+    "action": "ping",
+    "data": {
+      "note": "hello world"
+    },
+    "route": {
+      "agent_id": "demo-001",
+      "port": 12346,
+      "program": "kordp",
+      "archivator_port": 12345,
+      "mapping_ts": "2025-11-10T18:11:32Z"
+    }
+  },
+  "strict": true,
+  "ts": "2025-11-10T18:11:32.958530Z"
+}
