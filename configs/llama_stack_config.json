@@ -1,0 +1,86 @@
+{
+  "version": "0.1.0",
+  "title": "ELION Hyper-Dashboard — Inference Stack",
+  "description": "llama-stack configuration for multi-model inference via Ollama",
+  
+  "models": [
+    {
+      "id": "llama2",
+      "name": "llama2:latest",
+      "provider": "ollama",
+      "endpoint": "http://127.0.0.1:11434",
+      "max_tokens": 2048,
+      "temperature": 0.7,
+      "context_length": 4096
+    },
+    {
+      "id": "neural-chat",
+      "name": "neural-chat:latest",
+      "provider": "ollama",
+      "endpoint": "http://127.0.0.1:11434",
+      "max_tokens": 2048,
+      "temperature": 0.7,
+      "context_length": 4096,
+      "enabled": false,
+      "note": "Download mit: ollama pull neural-chat"
+    },
+    {
+      "id": "mistral",
+      "name": "mistral:latest",
+      "provider": "ollama",
+      "endpoint": "http://127.0.0.1:11434",
+      "max_tokens": 2048,
+      "temperature": 0.7,
+      "context_length": 32768,
+      "enabled": false,
+      "note": "Download mit: ollama pull mistral"
+    }
+  ],
+  
+  "inference_service": {
+    "host": "127.0.0.1",
+    "port": 12348,
+    "program_target": "infer",
+    "description": "Centralized inference gateway (llama-stack + Ollama)",
+    "coordinator_port": 12344,
+    "archivp_port": 12345
+  },
+
+  "orchestration": {
+    "queue_policy": "fifo",
+    "max_concurrent_requests": 4,
+    "request_timeout_seconds": 60,
+    "health_check_interval_seconds": 5
+  },
+
+  "openwebui_integration": {
+    "openwebui_port": 3000,
+    "inference_service_port": 12348,
+    "routes": {
+      "models": "/api/models",
+      "chat_completions": "/api/chat/completions"
+    },
+    "bridge_enabled": true,
+    "health_endpoint": "/health"
+  },
+
+  "monitoring": {
+    "metrics_enabled": true,
+    "safepoint_logging": true,
+    "archive_path": "1.opena1&2_portier/archivp_store",
+    "metrics": [
+      "completions_requested",
+      "tokens_processed",
+      "latency_p50",
+      "latency_p99",
+      "queue_depth",
+      "errors"
+    ]
+  },
+
+  "fallback": {
+    "default_model": "llama2",
+    "mock_responses": false,
+    "timeout_fallback": "service unavailable"
+  }
+}
