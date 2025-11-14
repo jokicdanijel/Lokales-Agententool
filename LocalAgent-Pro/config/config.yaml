@@ -1,0 +1,25 @@
+sandbox: true
+
+# Pfad zum Sandbox-Verzeichnis. Ersetze <USER> durch deinen Benutzernamen,
+# falls du diese Konfiguration verwendest. Im Sandbox-Modus werden
+# alle Dateioperationen in dieses Verzeichnis umgeleitet.
+sandbox_path: "/home/<USER>/localagent_sandbox"
+
+# Domains, auf die der Agent beim Abrufen von Webseiten zugreifen darf.
+allowed_domains:
+  - "example.com"
+  - "github.com"
+  - "ubuntu.com"
+  - "archlinux.org"
+
+# Port, auf dem deine Open WebUI Instanz läuft. Standardmäßig ist das 3000,
+# wenn du Open WebUI via Docker mit `-p 3000:8080` gestartet hast. Passe
+# diesen Wert an, falls du einen anderen Port verwendest (z.B. 8080 mit
+# `--network=host`).
+open_webui_port: 3000
+
+# Einstellungen für das lokale Sprachmodell. Passe diese Werte
+# entsprechend der von dir installierten LLM-Instanz an.
+llm:
+  base_url: "http://localhost:11434/v1"
+  model: "llama3.1"

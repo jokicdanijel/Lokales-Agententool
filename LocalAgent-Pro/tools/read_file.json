@@ -1,0 +1,14 @@
+{
+  "name": "read_file",
+  "description": "Liess den Inhalt einer Datei. Im Sandbox-Modus wird der Pfad unter sandbox_path verwendet.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "path": {
+        "type": "string",
+        "description": "Der relative oder absolute Pfad der zu lesenden Datei."
+      }
+    },
+    "required": ["path"]
+  }
+}

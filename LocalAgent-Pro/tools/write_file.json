@@ -1,0 +1,18 @@
+{
+  "name": "write_file",
+  "description": "Schreibt Text in eine Datei. Im Sandbox-Modus wird der Pfad unter sandbox_path angelegt.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "path": {
+        "type": "string",
+        "description": "Der relative oder absolute Pfad der Datei, die geschrieben werden soll."
+      },
+      "content": {
+        "type": "string",
+        "description": "Der Inhalt, der in die Datei geschrieben werden soll."
+      }
+    },
+    "required": ["path", "content"]
+  }
+}
