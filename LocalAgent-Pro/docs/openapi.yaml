@@ -1,0 +1,513 @@
+openapi: 3.0.3
+info:
+  title: LocalAgent-Pro API
+  description: |
+    **AI Agent Server** kompatibel mit OpenWebUI
+    
+    LocalAgent-Pro ist ein intelligenter Agent, der:
+    - 📝 Dateien lesen/schreiben kann
+    - 🔧 Shell-Befehle ausführt (in Sandbox)
+    - 🌐 Webseiten abruft
+    - 🔒 Loop-Protection & Security hat
+    - 📊 Prometheus-Metriken exportiert
+    
+    **Features:**
+    - OpenAI-kompatible Chat-API
+    - Tool-basierte Architektur (write_file, read_file, shell_exec, fetch_webpage)
+    - Sandbox-Isolation für Dateioperationen
+    - Rate-Limiting & Loop-Detection
+    - Prometheus /metrics Endpoint
+    
+    **Sicherheit:**
+    - Whitelisted Shell-Befehle (ls, cat, grep, find, etc.)
+    - Domain-Whitelist für fetch_webpage
+    - Sandbox-Escape-Prevention
+    - Timeout-Protection (2s Loop-Detection)
+    
+    **Weitere Infos:** [GitHub](https://github.com/jokicdanijel/Lokales-Agententool)
+  version: 1.0.0
+  contact:
+    name: Danijel Jokic
+    email: jokicdanijel@protonmail.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8001
+    description: Lokaler Development Server
+  - url: http://0.0.0.0:8001
+    description: Production Server
+
+tags:
+  - name: chat
+    description: OpenAI-kompatible Chat-Completion API
+  - name: monitoring
+    description: Health & Metrics Endpoints
+  - name: testing
+    description: Test-Endpoints (nur Development)
+
+paths:
+  /v1/chat/completions:
+    post:
+      tags:
+        - chat
+      summary: Chat Completion Request
+      description: |
+        Sendet eine Chat-Anfrage an den LocalAgent-Pro Server.
+        
+        **Unterstützte Tools:**
+        - `write_file`: Datei in Sandbox erstellen/überschreiben
+        - `read_file`: Datei aus Sandbox lesen
+        - `delete_file`: Datei aus Sandbox löschen
+        - `shell_exec`: Shell-Befehl ausführen (whitelisted)
+        - `fetch_webpage`: Webseite abrufen (domain-whitelisted)
+        
+        **Loop-Protection:**
+        - Identische Requests innerhalb 2s werden blockiert
+        - Max. 1 Retry bei Fehlern
+        - MD5-basierte Request-Deduplizierung
+        
+        **Response:**
+        - Agent antwortet mit Tool-Calls (z.B. write_file)
+        - Content enthält Status-Message
+        - Tools werden automatisch ausgeführt
+      operationId: chatCompletion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionRequest'
+            examples:
+              write_file:
+                summary: Datei erstellen
+                value:
+                  model: localagent-pro
+                  messages:
+                    - role: user
+                      content: Erstelle eine Datei hello.txt mit Inhalt "Hello World"
+                  stream: false
+              
+              read_file:
+                summary: Datei lesen
+                value:
+                  model: localagent-pro
+                  messages:
+                    - role: user
+                      content: Lese den Inhalt von hello.txt
+              
+              shell_command:
+                summary: Shell-Befehl
+                value:
+                  model: localagent-pro
+                  messages:
+                    - role: user
+                      content: Führe 'ls -la' aus
+              
+              fetch_webpage:
+                summary: Webseite abrufen
+                value:
+                  model: localagent-pro
+                  messages:
+                    - role: user
+                      content: Rufe https://example.com ab
+      
+      responses:
+        '200':
+          description: Erfolgreiche Antwort
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionResponse'
+              examples:
+                write_file_success:
+                  summary: Datei erfolgreich erstellt
+                  value:
+                    id: chatcmpl-1234567890
+                    object: chat.completion
+                    created: 1732022400
+                    model: localagent-pro
+                    choices:
+                      - index: 0
+                        message:
+                          role: assistant
+                          content: "Datei hello.txt erfolgreich erstellt."
+                          tool_calls:
+                            - id: call_abc123
+                              type: function
+                              function:
+                                name: write_file
+                                arguments: '{"filename":"hello.txt","content":"Hello World"}'
+                        finish_reason: tool_calls
+                    usage:
+                      prompt_tokens: 15
+                      completion_tokens: 25
+                      total_tokens: 40
+                
+                loop_detected:
+                  summary: Loop-Protection aktiviert
+                  value:
+                    id: chatcmpl-9876543210
+                    object: chat.completion
+                    created: 1732022401
+                    model: localagent-pro
+                    choices:
+                      - index: 0
+                        message:
+                          role: assistant
+                          content: "⚠️ Loop-Protection: Identische Anfrage innerhalb 2 Sekunden blockiert"
+                        finish_reason: stop
+        
+        '400':
+          description: Ungültige Anfrage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missing_messages:
+                  value:
+                    error:
+                      message: "messages field is required"
+                      type: invalid_request_error
+                      code: 400
+        
+        '500':
+          description: Interner Server-Fehler
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /health:
+    get:
+      tags:
+        - monitoring
+      summary: Health Check
+      description: |
+        Prüft ob der Server läuft und gesund ist.
+        
+        **Checks:**
+        - ✅ Server läuft
+        - ✅ Ollama erreichbar (http://localhost:11434)
+        - ✅ Sandbox-Verzeichnis existiert
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Server ist gesund
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: healthy
+                timestamp: "2025-11-19T10:30:00Z"
+                ollama_connected: true
+                sandbox_path: /home/user/sandbox
+        
+        '503':
+          description: Server nicht verfügbar
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: unhealthy
+                timestamp: "2025-11-19T10:30:00Z"
+                ollama_connected: false
+                error: "Ollama nicht erreichbar"
+
+  /metrics:
+    get:
+      tags:
+        - monitoring
+      summary: Prometheus Metrics
+      description: |
+        Exportiert Prometheus-Metriken im Text-Format.
+        
+        **Verfügbare Metriken:**
+        - `localagent_requests_total{method,endpoint,status}` - Counter für Requests
+        - `localagent_request_duration_seconds{endpoint}` - Histogram für Latenz
+        - `localagent_tool_calls_total{tool_name,status}` - Counter für Tool-Calls
+        - `localagent_loop_detections_total` - Counter für Loop-Detection
+        - `localagent_errors_total{error_type}` - Counter für Fehler
+      operationId: prometheusMetrics
+      responses:
+        '200':
+          description: Prometheus Metriken im Text-Format
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: |
+                # HELP localagent_requests_total Total number of requests
+                # TYPE localagent_requests_total counter
+                localagent_requests_total{endpoint="/v1/chat/completions",method="POST",status="200"} 42.0
+                
+                # HELP localagent_tool_calls_total Total number of tool calls
+                # TYPE localagent_tool_calls_total counter
+                localagent_tool_calls_total{status="success",tool_name="write_file"} 15.0
+                localagent_tool_calls_total{status="success",tool_name="read_file"} 10.0
+
+  /test:
+    get:
+      tags:
+        - testing
+      summary: Test Endpoint
+      description: |
+        Einfacher Test-Endpoint für Debugging.
+        
+        **⚠️ Nur für Development verwenden!**
+      operationId: testEndpoint
+      responses:
+        '200':
+          description: Test-Antwort
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "LocalAgent-Pro Server is running!"
+
+components:
+  schemas:
+    ChatCompletionRequest:
+      type: object
+      required:
+        - model
+        - messages
+      properties:
+        model:
+          type: string
+          description: Model-Name (normalerweise "localagent-pro")
+          example: localagent-pro
+        
+        messages:
+          type: array
+          description: Chat-Nachrichtenhistorie
+          items:
+            $ref: '#/components/schemas/Message'
+          minItems: 1
+        
+        stream:
+          type: boolean
+          description: Streaming aktivieren (nicht implementiert)
+          default: false
+        
+        temperature:
+          type: number
+          format: float
+          description: Sampling Temperature (0.0 - 2.0)
+          minimum: 0.0
+          maximum: 2.0
+          default: 0.7
+        
+        max_tokens:
+          type: integer
+          description: Maximale Token-Anzahl in Response
+          minimum: 1
+          default: 2000
+    
+    Message:
+      type: object
+      required:
+        - role
+        - content
+      properties:
+        role:
+          type: string
+          enum: [system, user, assistant]
+          description: Rolle des Nachrichtensenders
+        
+        content:
+          type: string
+          description: Nachrichteninhalt
+          example: "Erstelle eine Datei test.txt"
+        
+        name:
+          type: string
+          description: Name des Senders (optional)
+    
+    ChatCompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Eindeutige ID der Completion
+          example: chatcmpl-1234567890
+        
+        object:
+          type: string
+          enum: [chat.completion]
+          description: Objekt-Typ
+        
+        created:
+          type: integer
+          description: Unix-Timestamp der Erstellung
+          example: 1732022400
+        
+        model:
+          type: string
+          description: Verwendetes Model
+          example: localagent-pro
+        
+        choices:
+          type: array
+          description: Liste von Completion-Choices
+          items:
+            $ref: '#/components/schemas/Choice'
+        
+        usage:
+          $ref: '#/components/schemas/Usage'
+    
+    Choice:
+      type: object
+      properties:
+        index:
+          type: integer
+          description: Index des Choices
+          example: 0
+        
+        message:
+          $ref: '#/components/schemas/ResponseMessage'
+        
+        finish_reason:
+          type: string
+          enum: [stop, length, tool_calls, content_filter]
+          description: Grund für Completion-Ende
+          example: tool_calls
+    
+    ResponseMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          enum: [assistant]
+          description: Rolle (immer "assistant")
+        
+        content:
+          type: string
+          description: Antwort-Text
+          nullable: true
+          example: "Datei erfolgreich erstellt."
+        
+        tool_calls:
+          type: array
+          description: Liste von Tool-Aufrufen
+          items:
+            $ref: '#/components/schemas/ToolCall'
+    
+    ToolCall:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Eindeutige Tool-Call-ID
+          example: call_abc123
+        
+        type:
+          type: string
+          enum: [function]
+          description: Tool-Typ
+        
+        function:
+          type: object
+          properties:
+            name:
+              type: string
+              enum: [write_file, read_file, delete_file, shell_exec, fetch_webpage]
+              description: Tool-Name
+              example: write_file
+            
+            arguments:
+              type: string
+              description: JSON-String mit Tool-Argumenten
+              example: '{"filename":"hello.txt","content":"Hello World"}'
+    
+    Usage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+          description: Token-Anzahl im Prompt
+          example: 15
+        
+        completion_tokens:
+          type: integer
+          description: Token-Anzahl in Completion
+          example: 25
+        
+        total_tokens:
+          type: integer
+          description: Gesamt-Token-Anzahl
+          example: 40
+    
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [healthy, unhealthy]
+          description: Gesundheitsstatus
+        
+        timestamp:
+          type: string
+          format: date-time
+          description: Zeitstempel der Prüfung
+        
+        ollama_connected:
+          type: boolean
+          description: Ollama-Verbindungsstatus
+        
+        sandbox_path:
+          type: string
+          description: Pfad zum Sandbox-Verzeichnis
+          example: /home/user/sandbox
+        
+        error:
+          type: string
+          description: Fehlerbeschreibung (bei unhealthy)
+          nullable: true
+    
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+              description: Fehlerbeschreibung
+              example: "messages field is required"
+            
+            type:
+              type: string
+              description: Fehlertyp
+              example: invalid_request_error
+            
+            code:
+              type: integer
+              description: HTTP-Statuscode
+              example: 400
+
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: |
+        Optional: API-Key für Authentifizierung
+        
+        **Format:** `Bearer YOUR_API_KEY`
+        
+        **⚠️ Aktuell nicht implementiert, aber für v2.0 geplant**
+
+security: []  # Keine Security aktuell (für v2.0 geplant)
+
+externalDocs:
+  description: GitHub Repository
+  url: https://github.com/jokicdanijel/Lokales-Agententool

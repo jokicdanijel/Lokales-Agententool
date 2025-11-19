@@ -1,0 +1,47 @@
+[Unit]
+Description=LocalAgent-Pro AI Agent Server
+Documentation=https://github.com/jokicdanijel/Lokales-Agententool
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=danijel-jd
+Group=danijel-jd
+WorkingDirectory=/home/danijel-jd/Dokumente/Workspace/Projekte/Lokales Agententool/LocalAgent-Pro
+
+# Virtual Environment Activation
+ExecStartPre=/bin/bash -c 'source ../venv/bin/activate || source .venv/bin/activate'
+
+# Start Command
+ExecStart=/home/danijel-jd/Dokumente/Workspace/Projekte/Lokales Agententool/venv/bin/python -m flask run --host=0.0.0.0 --port=8001
+
+# Restart Policy
+Restart=always
+RestartSec=10s
+
+# Environment Variables
+Environment="FLASK_APP=src/openwebui_agent_server.py"
+Environment="FLASK_ENV=production"
+Environment="PYTHONUNBUFFERED=1"
+Environment="LOG_LEVEL=INFO"
+
+# Resource Limits
+MemoryLimit=2G
+CPUQuota=200%
+
+# Security Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/danijel-jd/Dokumente/Workspace/Projekte/Lokales Agententool/LocalAgent-Pro/sandbox
+ReadWritePaths=/home/danijel-jd/Dokumente/Workspace/Projekte/Lokales Agententool/LocalAgent-Pro/logs
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=localagent-pro
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  # LocalAgent-Pro Server
+  localagent-pro:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: localagent-pro
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      - SANDBOX_PATH=/app/sandbox
+      - LOG_LEVEL=INFO
+      - OLLAMA_HOST=http://ollama:11434
+    volumes:
+      - ./sandbox:/app/sandbox
+      - ./logs:/app/logs
+      - ./config:/app/config:ro
+    depends_on:
+      - ollama
+    networks:
+      - localagent-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Ollama LLM Server
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    networks:
+      - localagent-network
+    environment:
+      - OLLAMA_ORIGINS=*
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Prometheus (Optional Monitoring)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus_localagent.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+    networks:
+      - localagent-network
+    profiles:
+      - monitoring
+
+  # Grafana (Optional Dashboard)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./config/grafana_dashboard_localagent.json:/etc/grafana/provisioning/dashboards/localagent.json:ro
+    depends_on:
+      - prometheus
+    networks:
+      - localagent-network
+    profiles:
+      - monitoring
+
+networks:
+  localagent-network:
+    driver: bridge
+
+volumes:
+  ollama-data:
+  prometheus-data:
+  grafana-data:

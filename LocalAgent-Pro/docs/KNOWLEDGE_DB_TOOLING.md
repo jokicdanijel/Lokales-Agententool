@@ -31,6 +31,7 @@ Drei neue Tools zur automatischen Verwaltung und Abfrage der LocalAgent-Pro Know
 ### Verwendung
 
 Automatisch bei jedem Commit. Validation Report verfügbar unter:
+
 - GitHub Actions → Artifacts → `knowledge-db-validation-report`
 
 ---
@@ -52,23 +53,27 @@ Automatisch bei jedem Commit. Validation Report verfügbar unter:
 ### Verwendung
 
 #### Manuell
+
 ```bash
 cd LocalAgent-Pro
 python3 scripts/update_knowledge_db.py
 ```
 
 #### VSCode Task
+
 ```
 Ctrl+Shift+P → "Tasks: Run Task" → "LocalAgent-Pro: Update Knowledge DB"
 ```
 
 #### Cronjob (stündlich)
+
 ```bash
 # Crontab eintragen:
 0 * * * * cd /home/danijel-jd/.../LocalAgent-Pro && python3 scripts/update_knowledge_db.py
 ```
 
 ### Output-Beispiel
+
 ```
 🔄 LocalAgent-Pro Knowledge DB Auto-Update
 📅 Timestamp: 2025-11-19T05:00:00
@@ -201,27 +206,35 @@ python3 tools/knowledge_db_query.py
 Vier neue Tasks wurden zur `tasks.json` hinzugefügt:
 
 ### 1. Update Knowledge DB
+
 ```
 Ctrl+Shift+P → "Tasks: Run Task" → "LocalAgent-Pro: Update Knowledge DB"
 ```
+
 Aktualisiert `config/localagent_knowledge_db.json` mit aktuellem Status.
 
 ### 2. Query Status
+
 ```
 Ctrl+Shift+P → "Tasks: Run Task" → "LocalAgent-Pro: Query Knowledge DB (Status)"
 ```
+
 Zeigt Runtime-Status, Model, Sandbox, Metrics, Prometheus.
 
 ### 3. Validate Knowledge DB
+
 ```
 Ctrl+Shift+P → "Tasks: Run Task" → "LocalAgent-Pro: Validate Knowledge DB"
 ```
+
 Prüft, ob alle erforderlichen Sektionen vorhanden sind.
 
 ### 4. Run Health Check
+
 ```
 Ctrl+Shift+P → "Tasks: Run Task" → "LocalAgent-Pro: Run Health Check"
 ```
+
 Führt Health-Check Command aus und zeigt Response.
 
 ---
@@ -293,6 +306,7 @@ else:
 ## Wartung
 
 ### Knowledge DB aktualisieren
+
 ```bash
 # Manuell
 python3 scripts/update_knowledge_db.py
@@ -302,7 +316,9 @@ python3 scripts/update_knowledge_db.py
 ```
 
 ### GitHub Action deaktivieren
+
 Datei `.github/workflows/knowledge_db_validator.yml` löschen oder:
+
 ```yaml
 on:
   workflow_dispatch:  # Nur manuell triggern
@@ -313,6 +329,7 @@ on:
 ## Fehlerbehebung
 
 ### "Knowledge DB not found"
+
 ```bash
 # Prüfe Pfad
 ls -la config/localagent_knowledge_db.json
@@ -322,6 +339,7 @@ ls -la config/localagent_knowledge_db.json
 ```
 
 ### "Health data unavailable"
+
 ```bash
 # Prüfe ob Server läuft
 curl http://127.0.0.1:8001/health
@@ -331,6 +349,7 @@ bash start_server.sh
 ```
 
 ### "Prometheus target status unavailable"
+
 ```bash
 # Prüfe Prometheus
 curl http://localhost:9090/api/v1/targets
@@ -350,11 +369,13 @@ docker start prometheus-elion
 3. ✅ **Query-Tool** - Programmatische Abfragen für opena1 und andere Tools
 
 **Integration in ELION:**
+
 - opena1 kann jederzeit LocalAgent-Pro Status abfragen
 - Keine manuellen Checks mehr nötig
 - Single Source of Truth für alle Agenten
 
 **Nächste Schritte:**
+
 - Cronjob für stündliche Updates einrichten
 - opena1 Agent-Code erweitern (Knowledge DB Integration)
 - Monitoring-Alerts bei Schema-Änderungen (GitHub Action)

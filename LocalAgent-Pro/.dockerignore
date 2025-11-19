@@ -1,0 +1,71 @@
+# Docker-specific ignores
+.git/
+.github/
+.gitignore
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs (we mount these as volumes)
+logs/
+*.log
+
+# Test files
+tests/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+coverage.xml
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Development files
+requirements-dev.txt
+pytest.ini
+.flake8
+.mypy_cache/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# macOS
+.DS_Store
+
+# Data files (if large)
+*.tar
+*.gz
+*.zip
+*.deb
+*.pkg
+data.tar
+multipass-*.pkg
+virtualbox-*.deb
