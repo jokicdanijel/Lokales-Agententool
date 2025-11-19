@@ -11,6 +11,7 @@ import requests
 import subprocess
 from urllib.parse import urlparse
 
+
 # Config laden
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 CONFIG_PATH = os.path.join(BASE_DIR, "config", "config.yaml")
@@ -26,9 +27,11 @@ except FileNotFoundError:
 SYSTEM_PROMPT_PATH = os.path.join(BASE_DIR, "config", "system_prompt.txt")
 try:
     with open(SYSTEM_PROMPT_PATH, "r", encoding="utf-8") as f:
-        SYSTEM_PROMPT = f.read()
+        system_prompt = f.read()
 except FileNotFoundError:
-    SYSTEM_PROMPT = "Du bist LocalAgent-Pro, ein lokaler KI-Agent."
+    system_prompt = "Du bist LocalAgent-Pro, ein lokaler KI-Agent."
+
+SYSTEM_PROMPT = system_prompt
 
 # Konfiguration
 SANDBOX = config.get("sandbox", True)
@@ -94,7 +97,7 @@ def list_files(path: str = ".") -> str:
         if not os.path.isdir(rpath):
             return f"❌ Kein Verzeichnis: {rpath}"
         
-        entries = []
+        entries: list[str] = []
         for item in sorted(os.listdir(rpath)):
             item_path = os.path.join(rpath, item)
             if os.path.isdir(item_path):
@@ -193,7 +196,7 @@ def analyze_and_execute(prompt: str) -> str:
         str: Formatierte Ergebnisse der ausgeführten Operationen
     """
     prompt_lower = prompt.lower()
-    results = []
+    results: list[str] = []
     
     # Datei lesen
     if any(word in prompt_lower for word in ['lesen', 'read', 'zeigen', 'show', 'inhalt']):

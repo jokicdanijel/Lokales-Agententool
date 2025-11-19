@@ -1,0 +1,105 @@
+{
+  "localagent_pro": {
+    "runtime": {
+      "status": "ok",
+      "model": "llama3.1",
+      "sandbox_enabled": true,
+      "sandbox_path": "/home/danijel-jd/localagent_sandbox",
+      "open_webui_port": 3000,
+      "health_raw": {
+        "allowed_domains": ["*"],
+        "auto_whitelist_count": 24,
+        "auto_whitelist_enabled": true,
+        "server_time": 1763522128
+      }
+    },
+    "process": {
+      "command": "python src/openwebui_agent_server.py",
+      "user": "danijel-jd",
+      "notes": "Python-basierter OpenWebUI Agent-Server für LocalAgent-Pro"
+    },
+    "config_files": [
+      {
+        "path": "config/config.yaml",
+        "role": "primary_runtime_config",
+        "description": "Hauptlaufzeitkonfiguration für LocalAgent-Pro (Ports, Sandbox, Tools, etc.)"
+      },
+      {
+        "path": "config/config_safe.yaml",
+        "role": "sanitized_config",
+        "description": "Bereinigte/sichere Konfiguration für Doku und Sharing ohne Secrets."
+      },
+      {
+        "path": "config/domain_whitelist.yaml",
+        "role": "web_domain_policy",
+        "description": "Whitelist und Policies für erlaubte Domains bei Web-Fetches."
+      },
+      {
+        "path": "config/grafana_dashboard_localagent.json",
+        "role": "grafana_dashboard",
+        "description": "Vorkonfiguriertes Grafana-Dashboard für LocalAgent-Pro Metriken."
+      },
+      {
+        "path": "config/prometheus_localagent.yml",
+        "role": "prometheus_scrape_config",
+        "description": "Prometheus-Scrape-Job für LocalAgent-Pro (job_name: localagent-pro)."
+      },
+      {
+        "path": "config/system_prompt.txt",
+        "role": "system_prompt",
+        "description": "System-Prompt/Verhaltensbeschreibung für den lokalen Agenten."
+      }
+    ],
+    "monitoring": {
+      "metrics_endpoint": "http://127.0.0.1:8001/metrics",
+      "metrics_prefix": "localagent_",
+      "metrics_count_observed": 33,
+      "prometheus": {
+        "job_name": "localagent-pro",
+        "target_status": "up",
+        "targets": ["127.0.0.1:8001"],
+        "config_file": "config/prometheus_localagent.yml"
+      },
+      "grafana": {
+        "dashboard_file": "config/grafana_dashboard_localagent.json",
+        "description": "Visualisierung von Health, Latenzen, Fehlern und Tool-Nutzung."
+      }
+    },
+    "integration": {
+      "elion": {
+        "agent_id": "opena21",
+        "port": 12364,
+        "upstream_endpoint": "http://127.0.0.1:8001",
+        "role": "llm_core_tool_agent",
+        "orchestration": {
+          "coordinator": "opena1",
+          "archivator": "opena2",
+          "ui_agents": ["opena3", "opena4"],
+          "flow_description": "Channel -> opena2 (Safepoint MSG_IN) -> opena1 (Dispatch) -> opena21 (Exec) -> opena1 -> opena2 (Safepoint MSG_OUT) -> Channel"
+        },
+        "safety_model": {
+          "writes_safepoints_directly": false,
+          "sandbox_enabled": true,
+          "web_access_controlled_by": "domain_whitelist.yaml + auto_whitelist",
+          "shell_live_mode_default": "disabled"
+        }
+      }
+    },
+    "quick_checks": {
+      "health_check_cmd": "cd \"/home/danijel-jd/Dokumente/Workspace/Projekte/Lokales Agententool/LocalAgent-Pro\" && curl -s http://127.0.0.1:8001/health | jq .",
+      "metrics_count_cmd": "curl -s http://127.0.0.1:8001/metrics | grep \"localagent_\" | wc -l",
+      "prometheus_health_cmd": "curl -s http://localhost:9090/api/v1/targets | jq '.data.activeTargets[] | select(.labels.job==\"localagent-pro\") | .health'",
+      "process_check_cmd": "ps aux | grep \"python.*openwebui_agent_server\" | grep -v grep"
+    },
+    "meta": {
+      "description": "Wissensbasis-Snapshot für LocalAgent-Pro und seine Integration in das ELION Hyper-Dashboard.",
+      "source_paths": [
+        "/home/danijel-jd/Dokumente/Workspace/Projekte/Lokales Agententool/LocalAgent-Pro/README.md",
+        "/home/danijel-jd/Dokumente/Workspace/Projekte/Lokales Agententool/LocalAgent-Pro/config/"
+      ],
+      "author": "Danijel (System-Owner)",
+      "created_by": "GPT-5.1 Thinking (lokale Doku-Generierung)",
+      "created_reason": "Single Source of Truth / 100% Wissensstand & Datenbank für LocalAgent-Pro."
+    }
+  }
+}
