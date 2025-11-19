@@ -228,6 +228,8 @@ grep -i error server.log
 
 ## Commit-Konventionen
 
+> **Siehe auch:** [Root-Level Commit Instructions](../../.github/copilot-commit-instructions.md) für detaillierte Commit-Richtlinien.
+
 ```
 feat: Neues Feature hinzufügen
 fix: Bug beheben
@@ -242,6 +244,38 @@ feat: Add file deletion endpoint
 fix: Correct regex pattern for file read commands
 docs: Update API documentation in COMPLETE_GUIDE.md
 test: Add integration tests for chat endpoint
+```
+
+## CI/CD Pipeline
+
+### GitHub Actions Workflows
+
+Der Repository nutzt GitHub Actions für automatisierte Tests:
+
+**Test Workflow** (`.github/workflows/test.yml`):
+- Runs on Push/PR to main/develop branches
+- Matrix Tests: Python 3.10, 3.11, 3.12
+- **Jobs:**
+  1. **Lint:** Black, isort, Flake8, MyPy
+  2. **Test:** Unit & Integration Tests mit Coverage
+  3. **Security:** Bandit, Safety, pip-audit
+  4. **Docker:** Build-Test des Docker Images
+
+**Alle Tests müssen vor dem Merge bestehen!**
+
+### Lokale Pre-Commit Checks
+
+Vor dem Commit empfohlen:
+```bash
+# Code formatieren
+black src/ tests/
+isort src/ tests/
+
+# Linting
+flake8 src/ tests/ --max-line-length=120
+
+# Tests
+pytest tests/ -v --cov=src
 ```
 
 ## Nützliche Befehle für Agenten
