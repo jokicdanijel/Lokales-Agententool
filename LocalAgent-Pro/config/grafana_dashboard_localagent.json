@@ -1,0 +1,89 @@
+{
+  "dashboard": {
+    "title": "LocalAgent-Pro Monitoring",
+    "tags": ["localagent", "prometheus", "ai"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "title": "Request Rate (req/s)",
+        "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8},
+        "targets": [{
+          "expr": "rate(localagent_requests_total[5m])",
+          "legendFormat": "{{endpoint}} - {{status}}"
+        }]
+      },
+      {
+        "title": "Active Requests",
+        "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8},
+        "targets": [{
+          "expr": "localagent_active_requests"
+        }]
+      },
+      {
+        "title": "Response Time (95th percentile)",
+        "gridPos": {"x": 0, "y": 8, "w": 12, "h": 8},
+        "targets": [{
+          "expr": "histogram_quantile(0.95, rate(localagent_request_duration_seconds_bucket[5m]))",
+          "legendFormat": "{{endpoint}} p95"
+        }]
+      },
+      {
+        "title": "Error Rate",
+        "gridPos": {"x": 12, "y": 8, "w": 12, "h": 8},
+        "targets": [{
+          "expr": "rate(localagent_requests_total{status=\"error\"}[5m])",
+          "legendFormat": "{{endpoint}}"
+        }]
+      },
+      {
+        "title": "Loop Detections",
+        "gridPos": {"x": 0, "y": 16, "w": 12, "h": 8},
+        "targets": [{
+          "expr": "increase(localagent_loop_detections_total[1m])"
+        }]
+      },
+      {
+        "title": "Ollama API Calls",
+        "gridPos": {"x": 12, "y": 16, "w": 12, "h": 8},
+        "targets": [{
+          "expr": "rate(localagent_ollama_calls_total[5m])",
+          "legendFormat": "{{model}} - {{status}}"
+        }]
+      },
+      {
+        "title": "Shell Executions",
+        "gridPos": {"x": 0, "y": 24, "w": 12, "h": 8},
+        "targets": [{
+          "expr": "rate(localagent_shell_executions_total[5m])",
+          "legendFormat": "{{status}}"
+        }]
+      },
+      {
+        "title": "Tool Executions",
+        "gridPos": {"x": 12, "y": 24, "w": 12, "h": 8},
+        "targets": [{
+          "expr": "rate(localagent_tool_executions_total[5m])",
+          "legendFormat": "{{tool}} - {{status}}"
+        }]
+      },
+      {
+        "title": "Sandbox Operations",
+        "gridPos": {"x": 0, "y": 32, "w": 12, "h": 8},
+        "targets": [{
+          "expr": "rate(localagent_sandbox_operations_total[5m])",
+          "legendFormat": "{{operation}}"
+        }]
+      },
+      {
+        "title": "Memory Usage",
+        "gridPos": {"x": 12, "y": 32, "w": 12, "h": 8},
+        "targets": [{
+          "expr": "process_resident_memory_bytes / 1024 / 1024",
+          "legendFormat": "Resident Memory (MB)"
+        }]
+      }
+    ],
+    "refresh": "10s",
+    "time": {"from": "now-1h", "to": "now"}
+  }
+}

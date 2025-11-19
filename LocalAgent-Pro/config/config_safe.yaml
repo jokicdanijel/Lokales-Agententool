@@ -1,0 +1,126 @@
+# ========================================
+# LocalAgent-Pro Safe Configuration
+# Loop-Protection & Strikte Sicherheit
+# ========================================
+
+# Sandbox-Modus (EMPFOHLEN für Produktion)
+sandbox: true
+sandbox_path: "/home/danijel-jd/localagent_sandbox"
+
+# Domain-Whitelist - Nur vertrauenswürdige Domains
+allowed_domains:
+  - "github.com"
+  - "gitlab.com"
+  - "stackoverflow.com"
+  - "docs.python.org"
+  - "localhost"
+  - "127.0.0.1"
+
+# Auto-Whitelist: DEAKTIVIERT für max. Sicherheit
+auto_whitelist_enabled: false
+ask_before_new_domain: true  # Frage bei jeder neuen Domain
+
+# OpenWebUI Port
+open_webui_port: 3000
+
+# LLM-Konfiguration
+llm:
+  base_url: "http://localhost:11434/v1"
+  model: "llama3.1"
+
+# ========================================
+# SHELL-EXECUTION KONTROLLE (NEU!)
+# ========================================
+shell_execution:
+  enabled: false  # Standard: DEAKTIVIERT
+  require_explicit_trigger: true  # Nur bei "execute", "run", "führe aus"
+  dangerous_command_filter: true  # Blockiert gefährliche Commands
+  
+  # Erlaubte Commands (nur wenn enabled: true)
+  allowed_commands:
+    - "ls"
+    - "pwd"
+    - "cat"
+    - "echo"
+    - "date"
+    - "whoami"
+  
+  # Blockierte Commands (IMMER blockiert)
+  blocked_commands:
+    - "rm -rf"
+    - "sudo"
+    - "su"
+    - "chmod +x"
+    - "mkfs"
+    - "dd"
+    - "format"
+    - "shutdown"
+    - "reboot"
+
+# ========================================
+# LOOP-PROTECTION (NEU!)
+# ========================================
+loop_protection:
+  enabled: true
+  max_retries: 1  # Max. 1 Wiederholung bei Fehlern
+  time_window_seconds: 2  # Zeitfenster für Loop-Erkennung
+  block_duration_seconds: 5  # Block-Dauer nach Loop-Erkennung
+  
+# ========================================
+# COMMAND AUTO-DETECTION (NEU!)
+# ========================================
+command_auto_detect:
+  enabled: false  # KEINE automatische Shell-Erkennung
+  require_backticks: true  # Nur `command` wird erkannt
+  require_explicit_keyword: true  # Nur mit "execute", "run", etc.
+  
+  # Explizite Trigger-Wörter
+  triggers:
+    - "führe aus"
+    - "execute"
+    - "run command"
+    - "kommando ausführen"
+    - "shell"
+  
+  # Ignoriere diese Muster (nie als Command interpretieren)
+  ignore_patterns:
+    - "^/"  # Pfade die mit / beginnen
+    - "\\.(py|txt|md|json|yaml)$"  # Dateinamen mit Endung
+    - "^https?://"  # URLs
+
+# ========================================
+# LOGGING & MONITORING
+# ========================================
+logging:
+  level: "INFO"  # DEBUG für Entwicklung, INFO für Produktion
+  console_output: true
+  max_file_size_mb: 10
+  backup_count: 5
+  
+  # Spezielle Logger
+  log_tool_calls: true  # Logge alle Tool-Aufrufe
+  log_shell_commands: true  # Logge Shell-Commands (auch blockierte)
+  log_loops: true  # Logge Loop-Erkennungen
+  log_security_events: true  # Logge Sicherheits-Events
+
+# ========================================
+# RATE-LIMITING (Optional, empfohlen)
+# ========================================
+rate_limiting:
+  enabled: true
+  max_requests_per_minute: 30  # Max. Requests pro Minute pro IP
+  max_requests_per_hour: 500  # Max. Requests pro Stunde
+  
+# ========================================
+# SECURITY FEATURES
+# ========================================
+security:
+  # Content-Validierung
+  max_prompt_length: 10000  # Max. Prompt-Größe in Zeichen
+  max_file_size_mb: 10  # Max. Dateigröße für read/write
+  
+  # Path-Traversal-Schutz
+  block_path_traversal: true  # Blockiert ../../../etc/passwd
+  
+  # Injection-Schutz
+  block_code_injection: true  # Blockiert `; rm -rf /`

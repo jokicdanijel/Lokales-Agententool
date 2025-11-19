@@ -1,0 +1,54 @@
+# Prometheus Scrape Config für LocalAgent-Pro
+# Füge diese Job-Definition zu deiner prometheus.yml hinzu
+
+scrape_configs:
+  # LocalAgent-Pro Monitoring
+  - job_name: 'localagent-pro'
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    static_configs:
+      - targets: ['host.docker.internal:8001']  # Für Docker-Container
+        labels:
+          service: 'localagent-pro'
+          environment: 'production'
+    
+    # Alternative für direkten Host-Zugriff (ohne Docker):
+    # - targets: ['localhost:8001']
+    
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'localagent-pro'
+
+  # Open-WebUI (falls Metrics verfügbar)
+  - job_name: 'open-webui'
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['host.docker.internal:3000']
+        labels:
+          service: 'open-webui'
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: '(http_|process_|go_).*'
+        action: keep
+
+  # ComfyUI (falls Metrics verfügbar)
+  - job_name: 'comfyui'
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['host.docker.internal:8188']
+        labels:
+          service: 'comfyui'
+
+# Wichtige Metriken für LocalAgent-Pro:
+# - localagent_requests_total{endpoint, status}
+# - localagent_request_duration_seconds{endpoint}
+# - localagent_active_requests
+# - localagent_ollama_calls_total{model, status}
+# - localagent_shell_executions_total{status}
+# - localagent_loop_detections_total
+# - localagent_tool_executions_total{tool, status}
+# - localagent_sandbox_operations_total{operation}

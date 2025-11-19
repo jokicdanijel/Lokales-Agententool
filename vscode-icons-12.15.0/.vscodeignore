@@ -1,0 +1,11 @@
+*
+*/
+.DS_Store
+!dist/
+!icons/
+!images/*.png
+!*bundle.json
+!package.nls*.json
+!*.md
+!LICENSE
+!.integrity.json

@@ -1,0 +1,1 @@
+def greet(name): return f"Hallo {name}!"; print(greet("LocalAgent"))

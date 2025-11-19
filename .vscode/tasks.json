@@ -1,0 +1,65 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "🚀 Start LocalAgent-Pro",
+      "type": "shell",
+      "command": "${workspaceFolder}/LocalAgent-Pro/start_server.sh",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "🛑 Stop LocalAgent-Pro",
+      "type": "shell",
+      "command": "${workspaceFolder}/LocalAgent-Pro/stop_server.sh",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "🏥 Health Check",
+      "type": "shell",
+      "command": "${workspaceFolder}/LocalAgent-Pro/health_check.sh",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "📊 Server Status",
+      "type": "shell",
+      "command": "ps aux | grep openwebui_agent_server | grep -v grep || echo 'Server nicht aktiv'",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "📝 Server Logs",
+      "type": "shell",
+      "command": "tail -n 50 ${workspaceFolder}/LocalAgent-Pro/server.log",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      }
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "agent": {
+    "name": "LocalAgent-Pro",
+    "version": "1.0.0",
+    "description": "Lokaler KI-Agent mit Dateizugriff, Shell-Befehlen und Web-Zugriff"
+  },
+  "api": {
+    "base_url": "http://127.0.0.1:8001/v1",
+    "model": "llama3.1",
+    "api_key": "dummy"
+  },
+  "system_prompt": "Du bist LocalAgent-Pro, ein lokaler KI-Agent mit erweiterten Fähigkeiten.\n\nVERFÜGBARE TOOLS:\n1. **Datei lesen**: \"Zeige mir config.yaml\" oder \"Lies test.txt\"\n2. **Datei schreiben**: \"Erstelle Datei hello.txt mit Hallo Welt\"\n3. **Verzeichnis**: \"Liste alle Dateien auf\" oder \"Zeige Dateien im workspace\"\n4. **Web-Zugriff**: \"Hole github.com\" oder \"Lade example.com\"\n5. **Shell**: \"Führe Kommando 'ls -la' aus\" (nur im Live-Modus)\n\nSICHERHEIT:\n- Sandbox-Modus: AKTIV\n- Erlaubte Domains: github.com, example.com, ubuntu.com, archlinux.org\n- Alle Dateien werden in /home/danijel-jd/localagent_sandbox gespeichert\n\nANTWORT-STIL:\n- Präzise und handlungsorientiert\n- Nutze Emojis für bessere Lesbarkeit\n- Zeige immer die verwendeten Tools an\n- Bei Fehlern: Klare Fehlermeldung + Alternative vorschlagen\n\nBEISPIELE:\nUser: \"Liste alle Dateien auf\"\nAgent: 📂 Verzeichnisinhalt: [Liste der Dateien]\n\nUser: \"Erstelle eine Datei notes.md\"\nAgent: ✅ Datei notes.md wurde erstellt in der Sandbox\n",
+  "tools": [
+    {
+      "name": "read_file",
+      "description": "Liest den Inhalt einer Datei",
+      "parameters": {
+        "path": {
+          "type": "string",
+          "description": "Pfad zur Datei"
+        }
+      },
+      "examples": [
+        "Lies Datei config.yaml",
+        "Zeige mir test.txt"
+      ]
+    },
+    {
+      "name": "write_file",
+      "description": "Schreibt Inhalt in eine Datei",
+      "parameters": {
+        "path": {
+          "type": "string",
+          "description": "Pfad zur Datei"
+        },
+        "content": {
+          "type": "string",
+          "description": "Dateiinhalt"
+        }
+      },
+      "examples": [
+        "Erstelle Datei hello.txt mit Hallo Welt",
+        "Schreibe notes.md mit Meine Notizen"
+      ]
+    },
+    {
+      "name": "list_files",
+      "description": "Listet Dateien in einem Verzeichnis auf",
+      "parameters": {
+        "path": {
+          "type": "string",
+          "description": "Verzeichnispfad",
+          "default": "."
+        }
+      },
+      "examples": [
+        "Liste alle Dateien auf",
+        "Zeige Dateien im workspace"
+      ]
+    },
+    {
+      "name": "fetch",
+      "description": "Lädt Webseiteninhalte",
+      "parameters": {
+        "url": {
+          "type": "string",
+          "description": "URL der Webseite"
+        }
+      },
+      "examples": [
+        "Hole github.com",
+        "Lade example.com"
+      ]
+    },
+    {
+      "name": "run_shell",
+      "description": "Führt Shell-Befehle aus (nur Live-Modus)",
+      "parameters": {
+        "command": {
+          "type": "string",
+          "description": "Shell-Befehl"
+        }
+      },
+      "examples": [
+        "Führe 'ls -la' aus",
+        "Execute 'pwd'"
+      ]
+    }
+  ],
+  "prompt_suggestions": [
+    "Liste alle Dateien im workspace auf",
+    "Erstelle eine Datei README.md mit einer Projektbeschreibung",
+    "Zeige mir den Inhalt von config.yaml",
+    "Hole die Webseite github.com",
+    "Führe 'pwd' aus und zeige das aktuelle Verzeichnis"
+  ],
+  "security": {
+    "sandbox": true,
+    "sandbox_path": "/home/danijel-jd/localagent_sandbox",
+    "allowed_domains": [
+      "github.com",
+      "example.com",
+      "ubuntu.com",
+      "archlinux.org"
+    ],
+    "dangerous_commands_blocked": true
+  }
+}

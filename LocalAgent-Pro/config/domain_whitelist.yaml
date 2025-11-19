@@ -1,0 +1,44 @@
+approved_domains:
+- 127.0.0.1
+- 192.168.0.70
+- example.com
+- example.com"
+- github.com
+- wikipedia.org
+- google.com
+- stackoverflow.com
+- docs.python.org
+- localagent-pro.com
+- localhost
+- gitlab.com
+- openai.com
+- api.openai.com
+- huggingface.com
+- api.huggingface.com
+- youtube.com
+- vimeo.com
+- twitter.com
+- facebook.com
+- linkedin.com
+- instagram.com
+- reddit.com
+- opewebui.com
+loop_protection: # Neue Loop-Protection Einstellungen 
+  enabled: true  # Aktiviert die Loop-Protection
+  max_iterations: 5  # Maximale Anzahl an Iterationen pro Aufgabe
+  alert_on_loop: true  # Benachrichtigt den Nutzer bei Erkennung einer Schleife
+  log_loops: true  # Protokolliert erkannte Schleifen in den Logs
+  reset_on_new_task: true  # Setzt den Zähler bei neuen Aufgaben zurück
+  block_duration_minutes: 1  # Dauer der Blockierung bei wiederholten Schleifen
+  notify_admin: false  # Sendet eine Benachrichtigung an den Administrator bei Schleifen
+  admin_email: "xxjokic01@gmail.com, jokicdanijel@gmail.com"  # E-Mail-Adresse des Administrators für Benachrichtigungen
+  detailed_logging: true  # Aktiviert detaillierte Protokollierung für Debugging-Zwecke 
+  whitelist_domains:  # Domains, die von der Loop-Protection ausgenommen sind
+    - localhost:
+    - localagent-pro.com  
+    - 127.0.0.1:
+    - example.com
+
+# ========================================
+# ENDE DER DATEI
+# ========================================
