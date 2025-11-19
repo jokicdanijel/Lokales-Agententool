@@ -7,13 +7,6 @@
     "-v"
   ],
   "python.testing.unittestEnabled": false,
-  "python.linting.enabled": true,
-  "python.linting.flake8Enabled": true,
-  "python.linting.pylintEnabled": false,
-  "python.formatting.provider": "black",
-  "python.formatting.blackArgs": [
-    "--line-length=120"
-  ],
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
@@ -36,6 +29,7 @@
     "**/node_modules": true
   },
   "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.rulers": [120],
     "editor.tabSize": 4,
     "editor.insertSpaces": true
@@ -51,5 +45,8 @@
   "yaml.schemas": {
     "./LocalAgent-Pro/config/config.yaml": "config/*.yaml"
   },
-  "git.ignoreLimitWarning": true
+  "git.ignoreLimitWarning": true,
+  "black-formatter.args": [
+    "--line-length=120"
+  ]
 }

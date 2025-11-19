@@ -253,8 +253,8 @@ test: Add integration tests for chat endpoint
 Der Repository nutzt GitHub Actions für automatisierte Tests:
 
 **Test Workflow** (`.github/workflows/test.yml`):
-- Runs on Push/PR to main/develop branches
-- Matrix Tests: Python 3.10, 3.11, 3.12
+- Läuft bei Push/PR auf die main/develop Branches
+- Matrix-Tests: Python 3.10, 3.11, 3.12
 - **Jobs:**
   1. **Lint:** Black, isort, Flake8, MyPy
   2. **Test:** Unit & Integration Tests mit Coverage

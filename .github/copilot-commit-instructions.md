@@ -42,8 +42,8 @@ Bereich des Codes, der geändert wird:
 
 - Kurz und prägnant (max. 50 Zeichen)
 - Imperativ (z.B. "Add" statt "Added" oder "Adds")
-- Keine Punkt am Ende
-- Klein geschrieben (außer Eigennamen)
+- Kein Punkt am Ende
+- Beginnt mit Großbuchstaben (außer bei Fortsetzung des Typs)
 
 ### Body (optional)
 
