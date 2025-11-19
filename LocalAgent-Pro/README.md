@@ -1,4 +1,4 @@
-# 🚀 LocalAgent-Pro v1.0
+# LocalAgent-Pro v1.0
 
 **Production-Ready AI Agent Server** mit Tool-Execution, Sandbox-Isolation und Prometheus-Monitoring.
 
@@ -114,7 +114,7 @@ ollama pull llama3.1:8b-instruct-q4_K_M
 python src/openwebui_agent_server.py
 ```
 
-**Server läuft auf:** http://localhost:8001
+**Server läuft auf:** <http://localhost:8001>
 
 ### 2. Docker-Installation (1 Minute)
 
@@ -125,10 +125,10 @@ docker-compose up -d
 
 **Services:**
 
-- LocalAgent-Pro: http://localhost:8001
-- Ollama: http://localhost:11434
-- Prometheus: http://localhost:9090 (optional)
-- Grafana: http://localhost:3001 (optional)
+- LocalAgent-Pro: <http://localhost:8001>
+- Ollama: <http://localhost:11434>
+- Prometheus: <http://localhost:9090> (optional)
+- Grafana: <http://localhost:3001> (optional)
 
 ### 3. Systemd-Service (Auto-Start)
 
@@ -671,8 +671,8 @@ SOFTWARE.
 ## 📧 Kontakt
 
 - **Autor:** Danijel Jokic
-- **Email:** jokicdanijel@protonmail.com
-- **GitHub:** https://github.com/jokicdanijel/Lokales-Agententool
+- **Email:** <jokicdanijel@protonmail.com>
+- **GitHub:** <https://github.com/jokicdanijel/Lokales-Agententool>
 
 ---
 

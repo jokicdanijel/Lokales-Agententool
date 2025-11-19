@@ -1,1 +1,131 @@
-{}
+{
+  // ========================================
+  // Performance-Optimierungen
+  // ========================================
+  
+  // Dateien aus Suche/Indexierung ausschließen (reduziert Memory & Token-Usage)
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/*.pyo": true,
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/.mypy_cache": true,
+    "**/.pytest_cache": true,
+    "**/node_modules": true,
+    "**/venv": true,
+    "**/.venv": true,
+    "**/env": true,
+    "LocalAgent-Pro/venv": true,
+    ".venv": true,
+    "vscode-icons-12.15.0/node_modules": true
+  },
+  
+  "search.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/venv": true,
+    "**/.venv": true,
+    "**/env": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/.git": true,
+    "LocalAgent-Pro/venv": true,
+    ".venv": true,
+    "vscode-icons-12.15.0/node_modules": true,
+    "vscode-icons-12.15.0/icons": true
+  },
+  
+  "files.watcherExclude": {
+    "**/__pycache__": true,
+    "**/venv/**": true,
+    "**/.venv/**": true,
+    "**/env/**": true,
+    "**/node_modules/**": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "LocalAgent-Pro/venv/**": true,
+    ".venv/**": true,
+    "vscode-icons-12.15.0/node_modules/**": true
+  },
+  
+  // ========================================
+  // Git & GitLens Optimierungen
+  // ========================================
+  
+  // GitLens - reduziere Token-Verbrauch
+  "gitlens.codeLens.enabled": false,
+  "gitlens.currentLine.enabled": false,
+  "gitlens.hovers.currentLine.over": "line",
+  "gitlens.blame.highlight.enabled": false,
+  "gitlens.changes.locations": [],
+  "gitlens.fileAnnotations.command": null,
+  
+  // Git - Ignoriere große Binärdateien
+  "git.ignoreLimitWarning": true,
+  "git.scanRepositories": [],
+  
+  // ========================================
+  // Python-spezifische Einstellungen
+  // ========================================
+  
+  "python.analysis.exclude": [
+    "**/venv/**",
+    "**/.venv/**",
+    "**/env/**",
+    "**/__pycache__/**",
+    "**/node_modules/**",
+    "LocalAgent-Pro/venv/**",
+    ".venv/**"
+  ],
+  
+  "python.analysis.ignore": [
+    "**/venv/**",
+    "**/.venv/**",
+    "**/env/**",
+    "LocalAgent-Pro/venv/**"
+  ],
+  
+  "python.analysis.autoSearchPaths": false,
+  "python.analysis.indexing": true,
+  
+  // ========================================
+  // Editor Performance
+  // ========================================
+  
+  "editor.largeFileOptimizations": true,
+  "editor.maxTokenizationLineLength": 20000,
+  "diffEditor.maxFileSize": 50,
+  
+  // ========================================
+  // Copilot Optimierungen
+  // ========================================
+  
+  "github.copilot.advanced": {
+    "length": 500,
+    "temperature": "",
+    "top_p": 1,
+    "stops": {
+      "*": ["\n\n\n"]
+    }
+  },
+  
+  // Reduziere Copilot Context-Window
+  "github.copilot.editor.enableAutoCompletions": true,
+  
+  // ========================================
+  // Weitere Performance-Tweaks
+  // ========================================
+  
+  "extensions.autoUpdate": false,
+  "extensions.autoCheckUpdates": false,
+  "update.mode": "none",
+  
+  // Terminal Performance
+  "terminal.integrated.persistentSessionReviveProcess": "never",
+  "terminal.integrated.enablePersistentSessions": false
+}

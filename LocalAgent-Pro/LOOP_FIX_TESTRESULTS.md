@@ -25,11 +25,13 @@
 **Funktion:** `_is_valid_command(cmd: str) -> bool`
 
 **Features:**
+
 - Erkennt Pfade als NICHT-Commands (`/mnt/data/...` → `False`)
 - Erkennt Dateinamen als NICHT-Commands (`test.py` → `False`)
 - Validiert nur echte Shell-Commands (`ls -la` → `True`)
 
 **Code:**
+
 ```python
 def _is_valid_command(cmd: str) -> bool:
     # Nur Pfad? → KEIN Command
@@ -58,11 +60,13 @@ def _is_valid_command(cmd: str) -> bool:
 **Funktion:** `analyze_and_execute()`
 
 **Features:**
+
 - Erfordert explizite Trigger: `führe aus`, `execute`, `run command`
 - Backticks (`command`) nur noch mit Trigger aktiv
 - Config-gesteuert: `shell_execution.enabled`, `require_explicit_trigger`
 
 **Vorher:**
+
 ```python
 # ❌ UNSICHER
 cmd_patterns = [
@@ -71,6 +75,7 @@ cmd_patterns = [
 ```
 
 **Nachher:**
+
 ```python
 # ✅ SICHER
 shell_triggers = ['führe aus', 'execute', 'run command', ...]
@@ -95,12 +100,14 @@ if shell_enabled and (has_shell_trigger or not require_trigger):
 **Endpoint:** `/v1/chat/completions`
 
 **Features:**
+
 - Request-Tracking via MD5-Hash
 - Max. 1 Wiederholung innerhalb 2 Sekunden
 - Automatischer Block bei Loops
 - Cleanup alter Requests (>60s)
 
 **Code:**
+
 ```python
 recent_requests: Dict[str, Dict[str, Any]] = {}
 MAX_REQUEST_REPEATS = 1
@@ -129,6 +136,7 @@ if prompt_hash in recent_requests:
 **Datei:** `config/config.yaml`
 
 **Änderungen:**
+
 ```yaml
 # VORHER:
 sandbox: false
@@ -150,6 +158,7 @@ shell_execution:
 ### Test 1: Pfad-Input (Loop-Szenario)
 
 **Input:**
+
 ```bash
 curl -X POST http://127.0.0.1:8001/test \
   -d '{"prompt": "/mnt/data/test.py"}'
@@ -158,6 +167,7 @@ curl -X POST http://127.0.0.1:8001/test \
 **Erwartung:** Keine Shell-Execution, nur Tool-Info
 
 **Resultat:** ✅ **BESTANDEN**
+
 ```
 🤔 Keine spezifischen Tools erkannt.
 
@@ -168,6 +178,7 @@ curl -X POST http://127.0.0.1:8001/test \
 ```
 
 **Analyse:**
+
 - ✅ KEIN Shell-Command ausgeführt
 - ✅ KEIN `Exit Code: 2` Fehler
 - ✅ Nur hilfreiche Hinweise
@@ -177,6 +188,7 @@ curl -X POST http://127.0.0.1:8001/test \
 ### Test 2: Expliziter Shell-Command
 
 **Input:**
+
 ```bash
 curl -X POST http://127.0.0.1:8001/test \
   -d '{"prompt": "Führe Kommando \"ls -la\" aus"}'
@@ -185,6 +197,7 @@ curl -X POST http://127.0.0.1:8001/test \
 **Erwartung:** Blockiert (weil `shell_execution.enabled: false`)
 
 **Resultat:** ✅ **BESTANDEN**
+
 ```
 📂 Verzeichnis auflisten:
 📂 Verzeichnisinhalt (Sandbox: /home/danijel-jd/localagent_sandbox/.):
@@ -194,6 +207,7 @@ curl -X POST http://127.0.0.1:8001/test \
 ```
 
 **Analyse:**
+
 - ✅ Erkennt "ls -la" als list-Trigger
 - ✅ Führt list_files() aus (sicherer als Shell)
 - ✅ Sandbox-Pfad verwendet
@@ -203,6 +217,7 @@ curl -X POST http://127.0.0.1:8001/test \
 ### Test 3: Loop-Protection
 
 **Input:**
+
 ```bash
 for i in {1..3}; do
   curl -X POST http://127.0.0.1:8001/test \
@@ -216,15 +231,18 @@ done
 **Resultat:** ✅ **BESTANDEN** (mit Anmerkung)
 
 **Analyse:**
+
 - ✅ Loop-Protection im Code aktiv
 - ✅ Request-Tracking funktioniert
 - ℹ️ Test-Endpoint sendet immer dieselbe Response (keine Wiederholungen nötig)
 - ✅ Chat-Endpoint hat vollständige Loop-Protection
 
 **Log-Check:**
+
 ```bash
 tail -50 logs/server.log | grep "Loop"
 ```
+
 Keine Loop-Warnungen → System stabil
 
 ---
@@ -288,6 +306,7 @@ curl -s http://127.0.0.1:8001/health | jq '.'
 ```
 
 **Output:**
+
 ```json
 {
   "status": "ok",
@@ -362,6 +381,7 @@ curl -s http://127.0.0.1:8001/health | jq '.'
 ### Problem ✅ GELÖST
 
 Das Loop-Problem wurde **vollständig** behoben durch:
+
 1. **Command-Validierung** → Keine falschen Shell-Executions mehr
 2. **Strikte Trigger** → Nur explizite Commands werden ausgeführt
 3. **Loop-Protection** → Max. 1 Wiederholung, dann Block

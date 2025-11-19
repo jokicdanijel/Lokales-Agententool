@@ -7,6 +7,7 @@
 ### Integration-Optionen
 
 #### Option 1: Als opena21 (Inference-Agent) - Port 12364
+
 ```yaml
 Agent: opena21 (AI-Inference)
 Port: 12364
@@ -20,6 +21,7 @@ Verknüpfungen:
 ```
 
 #### Option 2: Eigenständig - Port 8001 (Aktuell)
+
 ```yaml
 Service: LocalAgent-Pro (Standalone)
 Port: 8001
@@ -39,6 +41,7 @@ Integration:
 ### 1. Kommunikation mit Koordinator (opena1)
 
 **LocalAgent-Pro → opena1 (Request Flow):**
+
 ```python
 # LocalAgent empfängt Chat-Request
 POST /v1/chat/completions
@@ -56,6 +59,7 @@ POST http://localhost:12344/api/task/complete
 ```
 
 **opena1 → LocalAgent-Pro (Dispatch):**
+
 ```python
 # Koordinator dispatched AI-Aufgabe
 POST http://localhost:8001/v1/chat/completions
@@ -75,6 +79,7 @@ POST http://localhost:8001/v1/chat/completions
 ### 2. Archivierung über opena2
 
 **Safepoint-Integration:**
+
 ```python
 # Nach erfolgreicher Tool-Execution
 def archive_result_to_opena2(result):
@@ -99,6 +104,7 @@ def archive_result_to_opena2(result):
 ### 3. Dashboard-Integration (opena20)
 
 **Metriken-Export:**
+
 - LocalAgent-Pro stellt bereits `/metrics` bereit
 - opena20 kann diese scrapen für:
   - Request Rate
@@ -108,6 +114,7 @@ def archive_result_to_opena2(result):
   - Tool Usage
 
 **Dashboard-Queries:**
+
 ```promql
 # LocalAgent-Pro Performance
 rate(localagent_requests_total{job="localagent-pro"}[5m])
@@ -122,6 +129,7 @@ increase(localagent_loop_detections_total[1h])
 ### 4. OpenWebUI-Integration (opena3)
 
 **Direkte Anbindung:**
+
 ```
 OpenWebUI (opena3:8080)
     ↓
@@ -133,6 +141,7 @@ LocalAgent-Pro (Port 8001)
 ```
 
 **Vorteile:**
+
 - ✅ OpenWebUI kann LocalAgent-Pro als "Custom API" nutzen
 - ✅ Alle Tool-Executions laufen über Sandbox
 - ✅ Volle OpenAI-Kompatibilität
@@ -293,6 +302,7 @@ def handle_ai_request(message):
 ### Health-Check-Routing
 
 **opena20 → LocalAgent-Pro:**
+
 ```bash
 # Periodischer Health-Check
 curl http://localhost:8001/health
@@ -307,6 +317,7 @@ curl http://localhost:8001/health
 ```
 
 **Alert-Regeln:**
+
 ```yaml
 # In opena20 oder Prometheus
 - alert: LocalAgentDown
@@ -329,12 +340,14 @@ curl http://localhost:8001/health
 ### Sandbox-Isolation
 
 **LocalAgent-Pro nutzt bereits Sandbox:**
+
 ```yaml
 sandbox: true
 sandbox_path: /home/danijel-jd/localagent_sandbox
 ```
 
 **Für ELION-Integration:**
+
 - Alle File-Operationen laufen in Sandbox
 - Shell-Commands sind blockiert (sandbox-mode)
 - Nur whitelisted Domains erlaubt
@@ -342,6 +355,7 @@ sandbox_path: /home/danijel-jd/localagent_sandbox
 ### Unlock-Master Integration (opena11)
 
 **Verschlüsselte Secrets via opena11:**
+
 ```python
 # LocalAgent-Pro ruft opena11 für Credentials
 def get_api_key(service):
@@ -376,6 +390,7 @@ ELION-System (Ports 12344-12363)
 ```
 
 **Vorteile:**
+
 - ✅ Unabhängige Skalierung
 - ✅ Keine Abhängigkeiten zu ELION
 - ✅ Einfache Wartung
@@ -396,6 +411,7 @@ ELION-System
 ```
 
 **Vorteile:**
+
 - ✅ Zentrale Orchestrierung via opena1
 - ✅ Alle Aktionen protokolliert in opena2
 - ✅ Einheitliches Routing
@@ -404,6 +420,7 @@ ELION-System
 ### Szenario 3: Hybrid
 
 LocalAgent-Pro läuft auf Port 8001, aber:
+
 - opena1 kann bei Bedarf AI-Tasks dorthin routen
 - opena4 (Telegram) nutzt LocalAgent für Chat
 - opena20 scraped Metriken
@@ -473,6 +490,7 @@ LocalAgent-Pro läuft auf Port 8001, aber:
 4. **Später: Als opena21 registrieren** → Für vollständige ELION-Integration
 
 **Nächste Schritte:**
+
 1. ✅ Prometheus-Integration läuft bereits
 2. 📊 Grafana-Dashboard für LocalAgent erstellen
 3. 🤖 opena4 (Telegram) mit LocalAgent verbinden

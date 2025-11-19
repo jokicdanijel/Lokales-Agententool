@@ -11,7 +11,7 @@
 | Check | Status | Details |
 |-------|--------|---------|
 | **Problem gelöst?** | ✅ JA | Loop komplett behoben |
-| **Server läuft?** | ✅ JA | http://127.0.0.1:8001 |
+| **Server läuft?** | ✅ JA | <http://127.0.0.1:8001> |
 | **Sandbox aktiv?** | ✅ JA | Alle Dateien sicher |
 | **Shell sicher?** | ✅ JA | Keine falschen Executions mehr |
 | **Tests bestanden?** | ✅ JA | 3/3 erfolgreich |
@@ -75,6 +75,7 @@ bash restart_server.sh
 ```
 
 **Ausgabe:**
+
 ```
 ✅ Server erfolgreich gestartet!
 Status:
@@ -94,6 +95,7 @@ curl -X POST http://127.0.0.1:8001/test \
 ```
 
 **Resultat:** ✅ **BESTANDEN**
+
 - Keine Shell-Execution
 - Keine Fehler
 - Hilfreiche Tool-Info
@@ -106,6 +108,7 @@ curl -X POST http://127.0.0.1:8001/test \
 ```
 
 **Resultat:** ✅ **BESTANDEN**
+
 - Sicherer Fallback auf `list_files()`
 - Sandbox-Pfad verwendet
 
@@ -117,6 +120,7 @@ for i in {1..3}; do curl ...; done
 ```
 
 **Resultat:** ✅ **BESTANDEN**
+
 - Loop-Protection aktiv
 - Request-Tracking funktioniert
 
@@ -166,6 +170,7 @@ User sendet: /mnt/data/test.py
 ### System ist bereit! ✅
 
 Dein LocalAgent-Pro läuft jetzt:
+
 - ✅ **Stabil** (keine Loops mehr)
 - ✅ **Sicher** (Sandbox aktiv, Shell kontrolliert)
 - ✅ **Getestet** (alle Tests bestanden)
@@ -183,7 +188,7 @@ tail -f logs/server.log
 
 ### Optional: OpenWebUI testen
 
-1. Öffne: http://localhost:3000
+1. Öffne: <http://localhost:3000>
 2. Sende: `Erstelle Datei test.txt mit Hello World`
 3. **Erwartung:** Datei wird in Sandbox erstellt
 

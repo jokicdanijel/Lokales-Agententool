@@ -198,8 +198,9 @@ def analyze_and_execute(prompt: str) -> str:
                         tool_logger.warning(f"🚫 Ungültiges Kommando ignoriert: {cmd}")
     else:
         tool_logger.debug("🔒 Shell-Kommandos deaktiviert (config.shell_execution.enabled=false)")
-    
+
     # ... (Rest der Funktion)
+
 ```
 
 #### Fix 2: Command-Validierung
@@ -343,8 +344,9 @@ class LoopDetector:
 ### Betroffene Komponente
 
 **Datei:** `src/openwebui_agent_server.py`
-        
+
         return False
+
 ```
 
 ---

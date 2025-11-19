@@ -1,322 +1,360 @@
-# LocalAgent-Pro - GitHub Copilot Instructions
+# LocalAgent-Pro — GitHub Copilot Instructions
 
-## Repository-Übersicht
+**Handlungsorientierte Hinweise für KI-Coding-Agenten** — damit du in diesem Repo sofort produktiv bist.
 
-**LocalAgent-Pro** ist ein lokaler KI-Agent mit OpenAI-kompatibler API, der natürliche Sprache in Tool-Aufrufe übersetzt.
+---
 
-### Tech-Stack
-- **Backend:** Python 3.12+, Flask 3.1.2, PyYAML 6.0.3
-- **API:** OpenAI-kompatibel auf Port 8001
-- **Frontend:** OpenWebUI auf Port 3000
-- **Sandbox:** Aktiv unter `/home/danijel-jd/localagent_sandbox`
-- **Modell:** llama3.1, localagent-pro
+## 🎯 Projekt-Übersicht
 
-## Repository-Struktur
+**LocalAgent-Pro** ist ein Flask-basierter AI-Agent-Server mit OpenWebUI-Integration:
+
+- **Stack:** Python 3.12, Flask, OpenAI SDK, Ollama (LLM)
+- **Zweck:** Lokaler Tool-Agent für Dateisystem-Operationen, Web-Fetching, Shell-Execution
+- **Integration:** OpenWebUI (Port 3000), Agent-Server (Port 8001)
+- **Sicherheit:** Sandbox-Modus, Domain-Whitelist, Loop-Protection
+- **Storage:** SQLite Knowledge DB, Prometheus Monitoring
+
+---
+
+## 📁 Wichtige Dateien & Einstiegspunkte
 
 ```
 LocalAgent-Pro/
 ├── src/
-│   ├── openwebui_agent_server.py    # Haupt-Server (Flask)
-│   └── agent_server.py              # Alternative mit OpenAI SDK
+│   ├── openwebui_agent_server.py  # Haupt-Server (Production)
+│   ├── simple_agent.py             # Vereinfachter Demo-Server
+│   ├── tools/                      # Tool-Implementierungen
+│   └── knowledge_db/               # Wissens-Datenbank
 ├── config/
-│   └── config.yaml                  # Zentrale Konfiguration
-├── .github/
-│   └── copilot-instructions.md      # Diese Datei
-├── venv/                            # Python Virtual Environment
-├── Scripts/
-│   ├── start_server.sh             # Server starten (nohup)
-│   ├── stop_server.sh              # Server stoppen
-│   ├── health_check.sh             # API-Tests
-│   ├── openwebui_test.sh           # Vollständiger Systemtest
-│   ├── openwebui_check.sh          # Schneller OpenWebUI-Check
-│   └── chat-local.sh               # CLI Chat Interface
-└── Docs/
-    ├── SOFORT_START.md             # Schnellstart
-    ├── COMPLETE_GUIDE.md           # Vollständige Dokumentation
-    └── COPILOT_SYSTEM_PROMPT.md    # Ausführlicher Prompt
+│   ├── config.yaml                 # Hauptkonfiguration
+│   ├── config_safe.yaml            # Safe-Mode (Loop-Protection)
+│   └── domain_whitelist.yaml       # Domain Auto-Whitelist
+├── scripts/
+│   ├── restart_server.sh           # Server neu starten
+│   ├── health_check.sh             # Health-Check
+│   └── cleanup_logs.sh             # Log-Rotation
+├── logs/                           # Server-Logs
+├── sandbox/                        # Sandbox-Verzeichnis
+└── workspace/                      # Test-Dateien
 ```
 
-## Schnellstart für KI-Agenten
+**Manifestdateien:**
 
-### 1. Repository-Scan
-```bash
-# Manifestdateien finden
-find . -name "requirements.txt" -o -name "config.yaml" -o -name "package.json"
+- `requirements.txt` — Python Dependencies
+- `config/config.yaml` — Runtime-Konfiguration
+- `.gitignore` — Git-Ausschlüsse (inkl. venv)
 
-# Server-Status prüfen
-./openwebui_test.sh
-```
+---
 
-### 2. Server starten/stoppen
-```bash
-# Starten (im Hintergrund)
-./start_server.sh
-
-# Status prüfen
-curl -s http://127.0.0.1:8001/health | python3 -m json.tool
-
-# Stoppen
-./stop_server.sh
-```
-
-### 3. API-Endpunkte testen
-```bash
-# Health
-curl http://127.0.0.1:8001/health
-
-# Modelle
-curl http://127.0.0.1:8001/v1/models
-
-# Chat
-curl -X POST http://127.0.0.1:8001/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{"messages":[{"role":"user","content":"Liste Dateien auf"}]}'
-```
-
-## API-Konfiguration
-
-### Backend-API (Port 8001)
-- **Base URL:** `http://127.0.0.1:8001/v1`
-- **Health:** `GET /health`
-- **Models:** `GET /v1/models`
-- **Chat:** `POST /v1/chat/completions`
-- **Test:** `POST /test`
-
-### OpenWebUI (Port 3000)
-- **UI:** `http://127.0.0.1:3000`
-- **API Base URL:** `http://127.0.0.1:8001/v1`
-- **API Key:** `dummy` (beliebig)
-
-## Wichtige Regeln für Code-Änderungen
-
-### ✅ DO
-- Port 8001 für alle Backend-API-Aufrufe nutzen
-- Natürliche Sprache für Tool-Aufrufe verwenden
-- Health-Endpoint vor anderen Tests prüfen
-- Sandbox-Pfade für Datei-Operationen verwenden
-- Virtual Environment aktivieren: `source venv/bin/activate`
-
-### ❌ DON'T
-- Port 3000 für API-Aufrufe nutzen (nur UI)
-- `/v1` allein aufrufen (404)
-- Dateien außerhalb der Sandbox erstellen (wenn Sandbox aktiv)
-- OpenAI SDK in `openwebui_agent_server.py` verwenden (SDK-frei)
-
-## Verfügbare Tools
-
-LocalAgent-Pro erkennt automatisch folgende natürlichsprachliche Befehle:
-
-| Tool | Beispiel-Prompt | Python-Funktion |
-|------|-----------------|-----------------|
-| **Datei lesen** | "Lies Datei config.yaml" | `read_file()` |
-| **Datei schreiben** | "Erstelle test.txt mit 'Hello'" | `write_file()` |
-| **Verzeichnis** | "Liste Verzeichnis workspace auf" | `list_files()` |
-| **Shell** | "Führe 'ls -la' aus" | `run_shell()` |
-| **Web** | "Hole Webseite github.com" | `fetch()` |
-
-## Development-Workflows
-
-### Neues Feature hinzufügen
-1. **Backup erstellen:** `cp src/openwebui_agent_server.py src/openwebui_agent_server.py.bak`
-2. **Virtual Env aktivieren:** `source venv/bin/activate`
-3. **Code ändern:** In `src/openwebui_agent_server.py`
-4. **Server neu starten:** `./stop_server.sh && ./start_server.sh`
-5. **Testen:** `./openwebui_test.sh`
-6. **Logging prüfen:** `tail -f server.log`
-
-### Neue Abhängigkeit hinzufügen
-```bash
-source venv/bin/activate
-pip install <package>
-pip freeze > requirements.txt
-```
-
-### Neuen Endpoint hinzufügen
-```python
-# In src/openwebui_agent_server.py
-@app.route('/new_endpoint', methods=['POST'])
-def new_endpoint():
-    data = request.json
-    # Implementierung
-    return jsonify({"result": "..."})
-```
-
-## Sandbox-Sicherheit
-
-- **Sandbox AKTIV:** `true` (siehe `config/config.yaml`)
-- **Sandbox-Pfad:** `/home/danijel-jd/localagent_sandbox`
-- **Erlaubte Domains:** `example.com`, `github.com`, `ubuntu.com`, `archlinux.org`
-- **Alle Dateipfade** werden automatisch in Sandbox umgewandelt
-
-## Integration Points
-
-### 1. CLI Chat Interface
-```bash
-./chat-local.sh "Was kannst du alles machen?"
-./chat-local.sh "Liste alle Dateien auf"
-./chat-local.sh "Erstelle Datei test.txt mit 'Hallo Welt'"
-```
-
-### 2. OpenWebUI Verbindung
-1. Browser: http://127.0.0.1:3000
-2. Einstellungen → Connections → OpenAI API
-3. API Base URL: `http://127.0.0.1:8001/v1`
-4. API Key: `dummy`
-
-### 3. Programmatische Nutzung
-```python
-import requests
-
-response = requests.post(
-    "http://127.0.0.1:8001/v1/chat/completions",
-    json={
-        "messages": [
-            {"role": "user", "content": "Liste Dateien auf"}
-        ]
-    }
-)
-print(response.json()["choices"][0]["message"]["content"])
-```
-
-## Testing & Debugging
-
-### Vollständiger Systemtest
-```bash
-./openwebui_test.sh
-```
-**Testet:** Health, Models, Chat, Test-Endpoint, OpenWebUI UI
-
-### Einzelne Tests
-```bash
-# Health
-curl -s http://127.0.0.1:8001/health | python3 -m json.tool
-
-# Models
-curl -s http://127.0.0.1:8001/v1/models | python3 -m json.tool
-
-# Chat
-curl -s -X POST -H "Content-Type: application/json" \
-  -d '{"messages":[{"role":"user","content":"Hallo"}]}' \
-  http://127.0.0.1:8001/v1/chat/completions | python3 -m json.tool
-```
-
-### Logs analysieren
-```bash
-# Live-Logs
-tail -f server.log
-
-# Letzte 50 Zeilen
-tail -n 50 server.log
-
-# Nach Fehlern suchen
-grep -i error server.log
-```
-
-## Patterns & Anti-Patterns
-
-### ✅ Patterns
-- **Self-contained Server:** Kein externes SDK, alles in einer Datei
-- **Natürliche Sprache:** Regex-basierte Erkennung von User-Intent
-- **OpenAI-kompatibel:** Standard-Response-Format für breite Kompatibilität
-- **Sandbox-first:** Alle Datei-Ops werden automatisch in Sandbox ausgeführt
-
-### ❌ Anti-Patterns zu vermeiden
-- OpenAI SDK in `openwebui_agent_server.py` verwenden (bleibt SDK-frei)
-- Hardcoded Pfade außerhalb der Sandbox
-- Destruktive Operationen ohne Sandbox-Check
-- Port 3000 für Backend-API nutzen
-
-## Commit-Konventionen
-
-```
-feat: Neues Feature hinzufügen
-fix: Bug beheben
-docs: Dokumentation aktualisieren
-test: Tests hinzufügen
-refactor: Code umstrukturieren
-```
-
-**Beispiele:**
-```
-feat: Add file deletion endpoint
-fix: Correct regex pattern for file read commands
-docs: Update API documentation in COMPLETE_GUIDE.md
-test: Add integration tests for chat endpoint
-```
-
-## Nützliche Befehle für Agenten
-
-### Repository-Analyse
-```bash
-# Alle Python-Dateien finden
-find . -name "*.py" -type f
-
-# Alle Konfigurationsdateien
-find . -name "*.yaml" -o -name "*.yml" -o -name "*.json"
-
-# Alle ausführbaren Skripte
-find . -name "*.sh" -type f -executable
-```
+## 🚀 Schnellstart-Befehle
 
 ### Server-Management
+
 ```bash
-# Status prüfen
-ps aux | grep openwebui_agent_server
+# Server starten
+bash restart_server.sh
 
-# Port-Nutzung
-ss -ltnp | grep 8001
+# Server stoppen
+bash stop_server.sh
 
-# Prozess beenden
-pkill -f openwebui_agent_server
+# Health-Check
+curl http://127.0.0.1:8001/health | jq '.'
+
+# Logs live anzeigen
+tail -f logs/server.log
+
+# Logs analysieren
+bash analyze_logs.sh
 ```
 
-### Virtual Environment
+### Testen
+
 ```bash
-# Aktivieren
+# Tool-Endpunkt testen
+curl -X POST http://127.0.0.1:8001/test \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "Liste alle Dateien auf"}'
+
+# Chat-Interaktion
+./chat-local.sh 'Erstelle Datei test.txt mit Hello World'
+
+# Ollama-Integration testen
+python3 test_ollama_integration.py
+```
+
+### Entwicklung
+
+```bash
+# Virtual Environment aktivieren
 source venv/bin/activate
 
-# Deaktivieren
-deactivate
+# Dependencies installieren
+pip install -r requirements.txt
 
-# Pakete auflisten
-pip list
-
-# Requirements exportieren
-pip freeze > requirements.txt
-```
-
-## Beispiele für präzise Agent-Prompts
-
-1. **"Finde alle API-Endpunkte und dokumentiere ihre HTTP-Methoden"**
-2. **"Starte den Server lokal und teste alle Endpunkte mit curl"**
-3. **"Füge einen DELETE-Endpoint für Dateien hinzu, teste ihn und dokumentiere"**
-4. **"Analysiere die Tool-Erkennung in analyze_and_execute() und verbessere Regex-Patterns"**
-5. **"Erstelle einen neuen Health-Check der auch OpenWebUI-Verbindung prüft"**
-
-## Häufige Aufgaben
-
-### Server neu starten
-```bash
-./stop_server.sh && sleep 2 && ./start_server.sh
-```
-
-### Alle Tests durchführen
-```bash
-./openwebui_test.sh && echo "✅ Alle Tests bestanden"
-```
-
-### Konfiguration ändern
-```bash
-nano config/config.yaml
-# Dann Server neu starten
-./stop_server.sh && ./start_server.sh
-```
-
-### Logs in Echtzeit verfolgen
-```bash
-tail -f server.log | grep -v "GET /health"  # Health-Checks ausblenden
+# Code-Qualität prüfen
+python3 -m mypy src/
+python3 -m pylint src/
 ```
 
 ---
 
-**Bei Fragen oder fehlenden Informationen:** Konsultiere `COMPLETE_GUIDE.md` oder frage den Repository-Besitzer nach spezifischen Anforderungen.
+## ⚙️ Konfiguration verstehen
+
+### `config/config.yaml` — Haupteinstellungen
+
+```yaml
+sandbox: true # Sandbox-Modus (Datei-Isolation)
+sandbox_path: "~/localagent_sandbox" # Sandbox-Verzeichnis
+
+allowed_domains: # Domain-Whitelist für fetch()
+  - "github.com"
+  - "docs.python.org"
+
+shell_execution:
+  enabled: false # Shell-Commands deaktiviert (Sicherheit)
+  require_explicit_trigger: true # Nur mit "execute", "run" Trigger
+
+loop_protection: # Loop-Protection (Safe-Mode)
+  enabled: true
+  max_retries: 1
+
+llm:
+  base_url: "http://localhost:11434/v1" # Ollama API
+  model: "llama3.1" # LLM-Modell
+```
+
+**Wichtig:**
+
+- `sandbox: true` → Alle Dateien gehen nach `~/localagent_sandbox/`
+- `shell_execution.enabled: false` → **Verhindert Loop-Problem** (siehe unten)
+
+---
+
+## 🔒 Sicherheits-Features (WICHTIG!)
+
+### 1. Loop-Problem (BEHOBEN)
+
+**Problem:** Früher interpretierte der Server normale Texteingaben als Shell-Commands → Endlosschleifen.
+
+**Lösung:**
+
+- `config_safe.yaml` verwenden (bereits aktiv)
+- `shell_execution.enabled: false` (Standard)
+- Loop-Protection mit `max_retries: 1`
+
+**Dokumentation:** Siehe `LOOP_PROBLEM_ANALYSIS.md`, `LOOP_FIX_SUMMARY.md`
+
+### 2. Sandbox-Modus
+
+Alle Datei-Operationen werden in `~/localagent_sandbox/` umgeleitet:
+
+```python
+# User fragt: "Erstelle /etc/passwd"
+# Tatsächlicher Pfad: ~/localagent_sandbox/etc/passwd ✅
+```
+
+### 3. Domain-Whitelist
+
+Nur erlaubte Domains für `fetch()`:
+
+```python
+# ✅ fetch("https://github.com/...")  → Erlaubt
+# ❌ fetch("https://evil.com/...")    → Blockiert
+```
+
+---
+
+## 🛠️ Code-Änderungen: Best Practices
+
+### Pattern: Tool-Implementierung
+
+Neue Tools in `src/tools/` hinzufügen:
+
+```python
+# src/tools/new_tool.py
+def my_new_tool(param: str) -> str:
+    """Tool-Beschreibung für LLM."""
+    # Implementierung
+    return result
+
+# In openwebui_agent_server.py registrieren:
+TOOLS["my_new_tool"] = my_new_tool
+```
+
+### Pattern: Config-Änderungen
+
+1. **Backup erstellen:** `cp config/config.yaml config/config_backup.yaml`
+2. **Änderungen vornehmen**
+3. **Server neu starten:** `bash restart_server.sh`
+4. **Testen:** `curl http://127.0.0.1:8001/health`
+
+### Anti-Pattern: Direkter DB-Zugriff
+
+❌ **Nicht tun:**
+
+```python
+conn = sqlite3.connect('knowledge.db')
+conn.execute("DROP TABLE ...") # Destruktiv!
+```
+
+✅ **Stattdessen:**
+
+```python
+from src.knowledge_db.manager import KnowledgeDB
+kb = KnowledgeDB()
+kb.safe_operation()  # Nutze API
+```
+
+---
+
+## 🔍 Debugging & Troubleshooting
+
+### Häufige Probleme
+
+**Problem:** Server startet nicht
+
+```bash
+# Prüfe Port
+sudo lsof -i :8001
+
+# Prüfe Logs
+tail -50 logs/server.log
+
+# Prüfe Config-Syntax
+python3 -c "import yaml; yaml.safe_load(open('config/config.yaml'))"
+```
+
+**Problem:** "Exit Code: 2" Fehler in Logs
+→ **Loop-Problem aktiv!** Siehe `LOOP_FIX_QUICKSTART.md`
+
+**Problem:** Ollama nicht erreichbar
+
+```bash
+# Ollama-Status prüfen
+curl http://localhost:11434/api/tags
+
+# Ollama neu starten
+pkill ollama && ollama serve
+```
+
+---
+
+## 📖 Dokumentations-Hierarchie
+
+### Für Quick-Start:
+
+1. `QUICK_START.md` — Erste Schritte
+2. `SOFORT_START.md` — Installations-Guide
+3. `README.md` — Projekt-Übersicht
+
+### Für Entwicklung:
+
+1. `COMPLETE_GUIDE.md` — Vollständige Referenz
+2. `ENDPOINT_CHEATSHEET.md` — API-Endpunkte
+3. `LOGGING_GUIDE.md` — Logging-Konfiguration
+
+### Für Probleme:
+
+1. `LOOP_FIX_QUICKSTART.md` — Loop-Problem 2-Min-Fix
+2. `LOOP_PROBLEM_ANALYSIS.md` — Technische Analyse
+3. `SECURITY_UPDATE.md` — Sicherheits-Updates
+
+### Für Integration:
+
+1. `OPENWEBUI_INTEGRATION.md` — OpenWebUI Setup
+2. `PROMETHEUS_INTEGRATION.md` — Monitoring
+3. `ELION_INTEGRATION.md` — Elion-CLI
+
+---
+
+## 💡 Typische Agent-Aufgaben
+
+### Datei-Operationen
+
+```bash
+./chat-local.sh 'Liste alle Dateien im workspace auf'
+./chat-local.sh 'Lies config/config.yaml'
+./chat-local.sh 'Erstelle test.txt mit "Hello LocalAgent"'
+```
+
+### Code-Analyse
+
+```bash
+./chat-local.sh 'Zeige mir alle Python-Dateien in src/'
+./chat-local.sh 'Erkläre die Tool-Architektur'
+./chat-local.sh 'Welche Dependencies werden verwendet?'
+```
+
+### Troubleshooting
+
+```bash
+./chat-local.sh 'Warum startet der Server nicht?'
+./chat-local.sh 'Analysiere die letzten 50 Log-Einträge'
+./chat-local.sh 'Prüfe ob Ollama erreichbar ist'
+```
+
+---
+
+## 🧪 Testing-Checkliste
+
+Vor jedem Commit:
+
+- [ ] `bash restart_server.sh` erfolgreich
+- [ ] Health-Check: `curl http://127.0.0.1:8001/health` → `status: ok`
+- [ ] Keine Errors in `logs/server.log`
+- [ ] Loop-Test: Sende problematischen Input (`/mnt/data/test.py`) → Keine Loops
+- [ ] Sandbox-Test: Datei erstellen → Landet in `~/localagent_sandbox/`
+
+---
+
+## 🚨 Kritische Regeln
+
+1. **NIE `venv/` committen** — Ist bereits in `.gitignore`
+2. **NIE `shell_execution.enabled: true`** ohne Loop-Protection
+3. **IMMER** Config-Backups vor Änderungen
+4. **IMMER** Safe-Mode testen nach Code-Änderungen
+5. **NIE** destruktive DB-Operationen ohne Migration
+
+---
+
+## 📊 Monitoring & Metrics
+
+### Health-Check Response
+
+```json
+{
+  "status": "ok",
+  "sandbox": true,
+  "model": "llama3.1",
+  "allowed_domains": ["github.com", "..."],
+  "server_time": 1732000000
+}
+```
+
+### Log-Analyse
+
+```bash
+# Fehler zählen
+grep -c "ERROR" logs/server.log
+
+# Loop-Erkennungen
+grep "Loop" logs/server.log
+
+# Shell-Executions
+grep "Shell-Kommando" logs/server.log
+```
+
+---
+
+## 🎯 Nächste Schritte für Agenten
+
+1. **Erste Orientierung:** Lies `README.md` und `QUICK_START.md`
+2. **Server starten:** `bash restart_server.sh`
+3. **Test ausführen:** `./chat-local.sh 'Hallo LocalAgent!'`
+4. **Config verstehen:** Öffne `config/config.yaml`
+5. **Code erkunden:** Starte in `src/openwebui_agent_server.py`
+
+---
+
+**Status:** ✅ Production-Ready | **Letzte Aktualisierung:** 19.11.2025  
+**Für Fragen:** Siehe `COMPLETE_GUIDE.md` oder führe `./chat-local.sh` mit deiner Frage aus.

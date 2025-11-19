@@ -1,24 +1,28 @@
 # LocalAgent-Pro Prometheus Integration - README
 
-## ✅ Integration erfolgreich implementiert!
+## ✅ Integration erfolgreich implementiert
 
 ### 📊 Verfügbare Metriken
 
 #### Request Metrics
+
 - `localagent_requests_total{endpoint, status}` - Anzahl API-Requests
 - `localagent_request_duration_seconds{endpoint}` - Request-Latenz (Histogram)
 - `localagent_active_requests` - Aktuell aktive Requests
 
 #### Ollama Integration
+
 - `localagent_ollama_calls_total{model, status}` - Ollama API Calls
   - Labels: `model=llama3.1`, `status=success|failed`
 
 #### Security & Stability
+
 - `localagent_loop_detections_total` - Loop-Protection Aktivierungen
 - `localagent_shell_executions_total{status}` - Shell-Command Executions
   - Status: `success|failed|blocked_sandbox|blocked_dangerous|timeout|error`
 
 #### Tool Usage
+
 - `localagent_tool_executions_total{tool, status}` - Tool-Aufrufe
   - Tools: `write_file`, `read_file`, `list_files`, etc.
 - `localagent_sandbox_operations_total{operation}` - Sandbox-Dateoperationen
@@ -27,6 +31,7 @@
 ### 🔧 Prometheus-Konfiguration
 
 1. **Füge zu prometheus.yml hinzu:**
+
 ```yaml
 scrape_configs:
   - job_name: 'localagent-pro'
@@ -42,6 +47,7 @@ scrape_configs:
 Siehe `config/prometheus_localagent.yml`
 
 3. **Prometheus neu laden:**
+
 ```bash
 docker exec prometheus-elion kill -HUP 1
 # ODER
@@ -51,11 +57,12 @@ curl -X POST http://localhost:9090/-/reload
 ### 📈 Grafana Dashboard
 
 1. **Dashboard importieren:**
-   - Öffne Grafana: http://localhost:3001
+   - Öffne Grafana: <http://localhost:3001>
    - Gehe zu "Dashboards" → "Import"
    - Lade `config/grafana_dashboard_localagent.json` hoch
 
 2. **Manuelle Erstellung:**
+
 ```
 Panel 1: Request Rate
 Query: rate(localagent_requests_total[5m])
@@ -96,6 +103,7 @@ curl http://127.0.0.1:8001/metrics | grep localagent_
 ### 🔍 Wichtige PromQL-Queries
 
 #### Performance
+
 ```promql
 # Requests pro Sekunde
 rate(localagent_requests_total[5m])
@@ -110,6 +118,7 @@ histogram_quantile(0.99, rate(localagent_request_duration_seconds_bucket[5m]))
 ```
 
 #### Error Tracking
+
 ```promql
 # Error Rate (%)
 100 * rate(localagent_requests_total{status="error"}[5m]) / rate(localagent_requests_total[5m])
@@ -122,6 +131,7 @@ increase(localagent_loop_detections_total[5m])
 ```
 
 #### Ollama Performance
+
 ```promql
 # Ollama Success Rate
 rate(localagent_ollama_calls_total{status="success"}[5m]) / rate(localagent_ollama_calls_total[5m])
@@ -131,6 +141,7 @@ increase(localagent_ollama_calls_total[1m])
 ```
 
 #### Resource Usage
+
 ```promql
 # Memory Usage (MB)
 process_resident_memory_bytes / 1024 / 1024
@@ -178,10 +189,10 @@ groups:
 
 ### 📡 Endpoints
 
-- **Metrics:** http://127.0.0.1:8001/metrics
-- **Health:** http://127.0.0.1:8001/health
-- **Prometheus UI:** http://127.0.0.1:9090
-- **Grafana:** http://127.0.0.1:3001
+- **Metrics:** <http://127.0.0.1:8001/metrics>
+- **Health:** <http://127.0.0.1:8001/health>
+- **Prometheus UI:** <http://127.0.0.1:9090>
+- **Grafana:** <http://127.0.0.1:3001>
 
 ### 💡 Nächste Schritte
 
