@@ -5,14 +5,14 @@
       "name": "🚀 Dashboard (opena20)",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/19.opena20_dashboard_agent/main_dashboard.py",
+      "program": "${workspaceFolder}/src/pkg/main_dashboard.py",
       "console": "integratedTerminal",
       "justMyCode": true,
       "env": {
-        "PYTHONPATH": "${workspaceFolder}/19.opena20_dashboard_agent",
+        "PYTHONPATH": "${workspaceFolder}/src",
         "LOG_LEVEL": "INFO"
       },
-      "cwd": "${workspaceFolder}/19.opena20_dashboard_agent",
+      "cwd": "${workspaceFolder}/src",
       "args": ["--port", "12349"]
     },
     {
@@ -64,7 +64,7 @@
       "name": "💬 Agent opena3 (OpenWebUI Terminal)",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/2.opena3_openwebui/main_openwebui_agent.py",
+      "program": "${workspaceFolder}/src/pkg/main_openwebui_agent.py",
       "console": "integratedTerminal",
       "justMyCode": true,
       "env": {
@@ -72,9 +72,9 @@
         "PORT": "12347",
         "OPENWEBUI_URL": "http://127.0.0.1:8080",
         "LOG_LEVEL": "INFO",
-        "PYTHONPATH": "${workspaceFolder}/2.opena3_openwebui"
+        "PYTHONPATH": "${workspaceFolder}/src"
       },
-      "cwd": "${workspaceFolder}/2.opena3_openwebui"
+      "cwd": "${workspaceFolder}/src"
     }
   ],
   "compounds": [
