@@ -2,98 +2,100 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Dashboard (main_dashboard.py)",
-      "type": "python",
+      "name": "🚀 Dashboard (opena20)",
+      "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/19.dashboard_agent/main_dashboard.py",
+      "program": "${workspaceFolder}/19.opena20_dashboard_agent/main_dashboard.py",
       "console": "integratedTerminal",
       "justMyCode": true,
       "env": {
-        "PYTHONPATH": "${workspaceFolder}",
+        "PYTHONPATH": "${workspaceFolder}/19.opena20_dashboard_agent",
         "LOG_LEVEL": "INFO"
       },
+      "cwd": "${workspaceFolder}/19.opena20_dashboard_agent",
       "args": ["--port", "12349"]
     },
     {
-      "name": "Agent opena1 (Coordinator)",
-      "type": "python",
+      "name": "🔗 Agent opena1 (Koordinator)",
+      "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/3.opena1_coordinator/main.py",
+      "program": "${workspaceFolder}/1.opena1&2_portier/opena1_app.py",
       "console": "integratedTerminal",
       "justMyCode": true,
       "env": {
         "AGENT_ID": "opena1",
         "PORT": "12344",
         "LOG_LEVEL": "INFO",
-        "PYTHONPATH": "${workspaceFolder}"
+        "PYTHONPATH": "${workspaceFolder}/1.opena1&2_portier"
       },
-      "cwd": "${workspaceFolder}/3.opena1_coordinator"
+      "cwd": "${workspaceFolder}/1.opena1&2_portier"
     },
     {
-      "name": "Agent opena2 (Archivator)",
-      "type": "python",
+      "name": "📦 Agent opena2 (Archivator)",
+      "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/4.opena2_archivator/main.py",
+      "program": "${workspaceFolder}/1.opena1&2_portier/opena2_app.py",
       "console": "integratedTerminal",
       "justMyCode": true,
       "env": {
         "AGENT_ID": "opena2",
         "PORT": "12345",
         "LOG_LEVEL": "INFO",
-        "PYTHONPATH": "${workspaceFolder}"
+        "PYTHONPATH": "${workspaceFolder}/1.opena1&2_portier"
       },
-      "cwd": "${workspaceFolder}/4.opena2_archivator"
+      "cwd": "${workspaceFolder}/1.opena1&2_portier"
     },
     {
-      "name": "Agent kordp (Scheduler)",
-      "type": "python",
+      "name": "⏰ Agent kordp (Scheduler)",
+      "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/5.kordp_scheduler/main.py",
+      "program": "${workspaceFolder}/1.opena1&2_portier/kordp/main.py",
       "console": "integratedTerminal",
       "justMyCode": true,
       "env": {
         "AGENT_ID": "kordp",
         "PORT": "12346",
         "LOG_LEVEL": "INFO",
-        "PYTHONPATH": "${workspaceFolder}"
+        "PYTHONPATH": "${workspaceFolder}/1.opena1&2_portier"
       },
-      "cwd": "${workspaceFolder}/5.kordp_scheduler"
+      "cwd": "${workspaceFolder}/1.opena1&2_portier/kordp"
     },
     {
-      "name": "OpenWebUI (Port 3000)",
-      "type": "python",
+      "name": "💬 Agent opena3 (OpenWebUI Terminal)",
+      "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/2.openwebui/openwebui_server.py",
+      "program": "${workspaceFolder}/2.opena3_openwebui/main_openwebui_agent.py",
       "console": "integratedTerminal",
       "justMyCode": true,
       "env": {
-        "OPENWEBUI_HOST": "0.0.0.0",
-        "OPENWEBUI_PORT": "3000",
+        "AGENT_ID": "opena3",
+        "PORT": "12347",
+        "OPENWEBUI_URL": "http://127.0.0.1:8080",
         "LOG_LEVEL": "INFO",
-        "PYTHONPATH": "${workspaceFolder}"
+        "PYTHONPATH": "${workspaceFolder}/2.opena3_openwebui"
       },
-      "cwd": "${workspaceFolder}/2.openwebui"
+      "cwd": "${workspaceFolder}/2.opena3_openwebui"
     }
   ],
   "compounds": [
     {
-      "name": "Start: Alle Services",
+      "name": "🚀 Start: Alle Services",
       "configurations": [
-        "Dashboard (main_dashboard.py)",
-        "Agent opena1 (Coordinator)",
-        "Agent opena2 (Archivator)",
-        "Agent kordp (Scheduler)",
-        "OpenWebUI (Port 3000)"
+        "🚀 Dashboard (opena20)",
+        "🔗 Agent opena1 (Koordinator)",
+        "📦 Agent opena2 (Archivator)",
+        "⏰ Agent kordp (Scheduler)",
+        "💬 Agent opena3 (OpenWebUI Terminal)"
       ],
       "stopAll": true
     },
     {
-      "name": "Start: Core Services Only",
+      "name": "⚡ Start: Core Services Only",
       "configurations": [
-        "Dashboard (main_dashboard.py)",
-        "Agent opena1 (Coordinator)",
-        "Agent opena2 (Archivator)",
-        "Agent kordp (Scheduler)"
+        "🚀 Dashboard (opena20)",
+        "🔗 Agent opena1 (Koordinator)",
+        "📦 Agent opena2 (Archivator)",
+        "⏰ Agent kordp (Scheduler)"
       ],
       "stopAll": true
     }
