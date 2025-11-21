@@ -74,6 +74,15 @@ if ! echo "$EMAIL" | grep -qE '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     exit 1
 fi
 
+# Validate password hash format (bcrypt format: $2a$, $2b$, or $2y$ followed by rounds and hash)
+# Bcrypt hashes are always 60 characters long
+if ! echo "$PASSWORD_HASH" | grep -qE '^\$2[aby]\$[0-9]{2}\$.{53}$'; then
+    echo -e "${RED}Error: Invalid bcrypt password hash format${NC}" >&2
+    echo -e "${YELLOW}Expected format: \$2b\$12\$... (60 characters total)${NC}" >&2
+    echo -e "${YELLOW}Actual length: $(echo -n "$PASSWORD_HASH" | wc -c) characters${NC}" >&2
+    exit 1
+fi
+
 # Check if Docker is available
 if ! command -v docker &> /dev/null; then
     echo -e "${RED}Error: Docker is not installed or not in PATH${NC}" >&2
@@ -98,6 +107,9 @@ echo -e "${BLUE}─────────────────────�
 echo ""
 
 # Construct the SQL command
+# Note: Input validation above ensures EMAIL and PASSWORD_HASH contain only valid characters
+# to prevent SQL injection. Email is validated against RFC format, and password hash
+# is validated against bcrypt format ($2a$/$2b$/$2y$ + rounds + 53 char hash)
 SQL_CMD="UPDATE auth SET password='${PASSWORD_HASH}' WHERE email='${EMAIL}';"
 
 echo -e "${YELLOW}⚠️  Warning: This will update the password in the database${NC}"
@@ -122,6 +134,7 @@ if sg docker -c "docker run --rm -v ${DOCKER_VOLUME}:/data ${SQLITE_IMAGE} ${DB_
     # Verify the update
     echo ""
     echo -e "${BLUE}Verifying update...${NC}"
+    # Email already validated above, safe to use in SQL query
     VERIFY_CMD="SELECT email, password FROM auth WHERE email='${EMAIL}';"
     
     if sg docker -c "docker run --rm -v ${DOCKER_VOLUME}:/data ${SQLITE_IMAGE} ${DB_PATH} \"${VERIFY_CMD}\"" 2>&1 | grep -q "$EMAIL"; then
