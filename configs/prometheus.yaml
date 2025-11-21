@@ -1,28 +1,36 @@
 # Prometheus Configuration
 # Location: configs/prometheus.yaml
-# Scrapes metrics from ELION Hyper-Dashboard services
+# Scrapes metrics from ELION Hyper-Dashboard services + LocalAgent-Pro
 # UI: http://localhost:9090
 
 global:
-  scrape_interval: 30s          # Scrape every 30 seconds
-  evaluation_interval: 15s       # Evaluate alert rules every 15s
+  scrape_interval: 30s
+  evaluation_interval: 15s
   external_labels:
     monitor: 'elion-monitoring'
 
-# Alert manager (optional, can add later)
 alerting:
   alertmanagers: []
 
-# Load alert rules
 rule_files:
   - "alert_rules.yaml"
 
-# Scrape configurations
 scrape_configs:
   # Prometheus itself
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
+
+  # LocalAgent-Pro (NEU!)
+  - job_name: 'localagent-pro'
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    static_configs:
+      - targets: ['172.17.0.1:8001']
+        labels:
+          service: 'localagent-pro'
+          environment: 'production'
 
   # Dashboard/Coordinator (Portier)
   - job_name: 'portier'
@@ -34,9 +42,6 @@ scrape_configs:
       - source_labels: [__address__]
         target_label: service
         replacement: 'portier'
-      - source_labels: [__address__]
-        target_label: port
-        replacement: '12344'
 
   # Archive Service (OpenA2)
   - job_name: 'opena2'
@@ -44,10 +49,6 @@ scrape_configs:
     scrape_interval: 30s
     static_configs:
       - targets: ['localhost:12345']
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: service
-        replacement: 'opena2'
 
   # Telegram Agent
   - job_name: 'telegram'
@@ -55,10 +56,6 @@ scrape_configs:
     scrape_interval: 30s
     static_configs:
       - targets: ['localhost:12346']
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: service
-        replacement: 'telegram'
 
   # Inference Service
   - job_name: 'inference'
@@ -66,13 +63,8 @@ scrape_configs:
     scrape_interval: 30s
     static_configs:
       - targets: ['localhost:12348']
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: service
-        replacement: 'inference'
 
-  # Generic service discovery (12349-12365)
-  # Fallback for any other services
+  # Generic services
   - job_name: 'generic_services'
     metrics_path: '/metrics'
     scrape_interval: 60s

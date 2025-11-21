@@ -19,7 +19,8 @@ from pydantic import BaseModel
 # CONFIGURATION
 # ====================================================================
 
-AGENDA_FILE = Path(__file__).parent.parent / "configs" / "agenda_pages.json"
+# Path: src/services/agenda_api.py → ../../configs/agenda_pages.json
+AGENDA_FILE = Path(__file__).resolve().parent.parent.parent / "configs" / "agenda_pages.json"
 VALID_TOKEN = "250886"  # In Produktion: Vault/Environment
 VALID_USERNAME = "admin"
 VALID_PASSWORD = "250886"

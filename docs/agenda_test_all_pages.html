@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELION Agenda - Alle Seiten Übersicht</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #60a5fa;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+        }
+
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .page-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .page-card:hover {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #1e293b 0%, #1a365d 100%);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
+        }
+
+        .page-card:hover::before {
+            left: 100%;
+        }
+
+        .page-number {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .page-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #93c5fd;
+        }
+
+        .page-description {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .page-meta {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #334155;
+            font-size: 0.85rem;
+        }
+
+        .page-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #94a3b8;
+        }
+
+        .page-endpoint {
+            background: #0f172a;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: #60a5fa;
+            word-break: break-all;
+            margin-top: 8px;
+        }
+
+        .category-section {
+            margin-bottom: 50px;
+        }
+
+        .category-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #93c5fd;
+            margin-bottom: 20px;
+            padding-left: 16px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 16px 24px;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        .status-active {
+            color: #4ade80;
+        }
+
+        .status-planned {
+            color: #facc15;
+        }
+
+        .api-info {
+            background: #0f172a;
+            border: 1px solid #3b82f6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .api-info h3 {
+            color: #93c5fd;
+            margin-bottom: 12px;
+        }
+
+        .api-info code {
+            background: #1e293b;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #60a5fa;
+            font-family: 'Courier New', monospace;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .pages-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ELION Hyper-Dashboard</h1>
+            <p>Agenda-Verwaltung - 16 Seiten Übersicht</p>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value">16</div>
+                <div class="stat-label">Seiten gesamt</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">4</div>
+                <div class="stat-label">Struktur-Seiten</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">4</div>
+                <div class="stat-label">Verarbeitungs-Seiten</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">4</div>
+                <div class="stat-label">Betriebs-Seiten</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">4</div>
+                <div class="stat-label">Verwaltungs-Seiten</div>
+            </div>
+        </div>
+
+        <!-- Struktur-Seiten -->
+        <div class="category-section">
+            <h2 class="category-title">Struktur-Seiten</h2>
+            <div class="pages-grid">
+                <div class="page-card">
+                    <span class="page-number">Seite 1</span>
+                    <div class="page-title">Main Dashboard</div>
+                    <div class="page-description">Zentrale Übersicht und Navigation zu allen Agenda-Punkten. Bereitstellung des Einstiegspunkts für das gesamte System.</div>
+                    <div class="page-endpoint">/agenda/pages/page01</div>
+                    <div class="page-meta">
+                        <span>Status: <span class="status-active">aktiv</span></span>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <span class="page-number">Seite 2</span>
+                    <div class="page-title">Logische Seite</div>
+                    <div class="page-description">Regeln, Flusslogik und Validierungsvorgaben. Definition der Geschäftslogik und Ablaufsteuerung.</div>
+                    <div class="page-endpoint">/agenda/pages/page02</div>
+                    <div class="page-meta">
+                        <span>Status: <span class="status-active">aktiv</span></span>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <span class="page-number">Seite 3</span>
+                    <div class="page-title">API Registry</div>
+                    <div class="page-description">Katalog der 20 API-Endpunkte mit Parameterlisten. Zentrale Referenz für alle verfügbaren Service-Endpunkte.</div>
+                    <div class="page-endpoint">/agenda/pages/page03</div>
+                    <div class="page-meta">
+                        <span>Status: <span class="status-active">aktiv</span></span>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <span class="page-number">Seite 4</span>
+                    <div class="page-title">Bromt Studio</div>
+                    <div class="page-description">Vorlagen und Textbausteine für Bromt-Eingaben. Wiederverwendbare Komponenten und Bausteine für die Dateneingabe.</div>
+                    <div class="page-endpoint">/agenda/pages/page04</div>
+                    <div class="page-meta">
+                        <span>Status: <span class="status-active">aktiv</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Verarbeitungs-Seiten -->
+        <div class="category-section">
+            <h2 class="category-title">Verarbeitungs-Seiten</h2>
+            <div class="pages-grid">
+                <div class="page-card">
+                    <span class="page-number">Seite 5</span>
+                    <div class="page-title">Agenda 01 - Datenaufnahme</div>
+                    <div class="page-description">Eingabe-API, Bromt-Dokumentation, Status-Tracking. Erfassung und Verarbeitung von Eingabedaten.</div>
+                    <div class="page-endpoint">/agenda/pages/page05</div>
+                    <div class="page-meta">
+                        <span>Status: <span class="status-active">aktiv</span></span>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <span class="page-number">Seite 6</span>
+                    <div class="page-title">Agenda 02 - Bearbeitung</div>
+                    <div class="page-description">Verarbeitungs-Pipeline und Transformationsregeln. Anwendung von Geschäftsregeln und Datentransformationen.</div>
+                    <div class="page-endpoint">/agenda/pages/page06</div>
+                    <div class="page-meta">
+                        <span>Status: <span class="status-active">aktiv</span></span>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <span class="page-number">Seite 7</span>
+                    <div class="page-title">Agenda 03 - Validierung</div>
+                    <div class="page-description">Validierungspfade, Fehlerbehandlung und Korrekturen. Sicherstellung der Datenqualität und Konsistenz.</div>
+                    <div class="page-endpoint">/agenda/pages/page07</div>
+                    <div class="page-meta">
+                        <span>Status: <span class="status-active">aktiv</span></span>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <span class="page-number">Seite 8</span>
+                    <div class="page-title">Agenda 04 - Speicherung</div>
+                    <div class="page-description">Persistierung in Datenbank, Audit-Log und Transaktionen. Sichere Persistierung und Nachverfolgung von Änderungen.</div>
+                    <div class="page-endpoint">/agenda/pages/page08</div>
+                    <div class="page-meta">
+                        <span>Status: <span class="status-active">aktiv</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Betriebs-Seiten -->
+        <div class="category-section">
+            <h2 class="category-title">Betriebs-Seiten</h2>
+            <div class="pages-grid">
+                <div class="page-card">
+                    <span class="page-number">Seite 9</span>
+                    <div class="page-title">Agenda 05 - Auth/RBAC</div>
+                    <div class="page-description">RBAC-Konzepte und token-basierte Authentifizierung. Verwaltung von Zugriffskontrolle und Berechtigungen.</div>
+                    <div class="page-endpoint">/agenda/pages/page09</div>
+                    <div class="page-meta">
+                        <span>Status: <span class="status-active">aktiv</span></span>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <span class="page-number">Seite 10</span>
+                    <div class="page-title">Agenda 06 - Monitoring</div>
+                    <div class="page-description">Monitoring-Strategie, KPI-Definition und Dashboards. Überwachung der Systemleistung und Kennzahlen.</div>
+                    <div class="page-endpoint">/agenda/pages/page10</div>
+                    <div class="page-meta">
+                        <span>Status: <span class="status-active">aktiv</span></span>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <span class="page-number">Seite 11</span>
+                    <div class="page-title">Agenda 07 - Logging</div>
+                    <div class="page-description">Zugriff auf strukturierte Logs und Log-Levels. Zentrale Protokollierung von Systemereignissen.</div>
+                    <div class="page-endpoint">/agenda/pages/page11</div>
+                    <div class="page-meta">
+                        <span>Status: <span class="status-active">aktiv</span></span>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <span class="page-number">Seite 12</span>
+                    <div class="page-title">Agenda 08 - Alerts</div>
+                    <div class="page-description">Alerting-Strategien, Runbooks und Eskalation. Verwaltung von Benachrichtigungen und Incident-Response.</div>
+                    <div class="page-endpoint">/agenda/pages/page12</div>
+                    <div class="page-meta">
+                        <span>Status: <span class="status-active">aktiv</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Verwaltungs-Seiten -->
+        <div class="category-section">
+            <h2 class="category-title">Verwaltungs-Seiten</h2>
+            <div class="pages-grid">
+                <div class="page-card">
+                    <span class="page-number">Seite 13</span>
+                    <div class="page-title">Agenda 09 - Reporting</div>
+                    <div class="page-description">Berichte, Exportformate und View-Templates. Erstellung und Verteilung von Geschäftsberichten.</div>
+                    <div class="page-endpoint">/agenda/pages/page13</div>
+                    <div class="page-meta">
+                        <span>Status: <span class="status-active">aktiv</span></span>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <span class="page-number">Seite 14</span>
+                    <div class="page-title">Agenda 10 - Import/Export</div>
+                    <div class="page-description">Datenimporte, Exporte und Snapshots. Datenintegration und Backup-Management.</div>
+                    <div class="page-endpoint">/agenda/pages/page14</div>
+                    <div class="page-meta">
+                        <span>Status: <span class="status-active">aktiv</span></span>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <span class="page-number">Seite 15</span>
+                    <div class="page-title">Agenda 11 - Versionierung</div>
+                    <div class="page-description">Versionierung, Change-Logs und Rollback-Strategien. Verwaltung von Versionshistorie und Rückverfolgung.</div>
+                    <div class="page-endpoint">/agenda/pages/page15</div>
+                    <div class="page-meta">
+                        <span>Status: <span class="status-active">aktiv</span></span>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <span class="page-number">Seite 16</span>
+                    <div class="page-title">Agenda 12 - Governance</div>
+                    <div class="page-description">Governance, Compliance und Policy-Management. Einhaltung von Richtlinien und Bestimmungen.</div>
+                    <div class="page-endpoint">/agenda/pages/page16</div>
+                    <div class="page-meta">
+                        <span>Status: <span class="status-active">aktiv</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Info -->
+        <div class="api-info">
+            <h3>API-Integration</h3>
+            <p>
+                Alle Seiten sind über die Agenda-API erreichbar. Login erforderlich:
+                <br><br>
+                <code>POST /login</code> mit username: admin, password: 250886
+                <br>
+                <code>GET /agenda/pages</code> - Alle Seiten abrufen
+                <br>
+                <code>GET /agenda/pages/{id}</code> - Einzelne Seite abrufen
+                <br>
+                <code>POST /agenda/pages/{id}</code> - Seite aktualisieren
+            </p>
+        </div>
+
+        <footer>
+            <p>ELION Hyper-Dashboard - Agenda Pages Test Übersicht</p>
+            <p>Stand: November 2025 | Version 1.0.0</p>
+        </footer>
+    </div>
+</body>
+</html>
