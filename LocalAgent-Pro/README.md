@@ -217,13 +217,15 @@ curl http://localhost:8001/metrics
 
 ### OpenWebUI-Integration
 
-**Siehe:** [QUICK_START.md](QUICK_START.md)
+**Siehe:** [QUICK_START.md](QUICK_START.md) | [OPENWEBUI_INTEGRATION.md](OPENWEBUI_INTEGRATION.md)
 
 1. Öffne OpenWebUI
 2. Gehe zu **Settings → Functions → + New Function**
 3. Upload `openwebui_agent_server.py`
 4. Aktiviere Function
 5. Chat starten: "Erstelle Datei test.txt"
+
+**Passwort vergessen?** Siehe [PASSWORD_RESET.md](PASSWORD_RESET.md) für Anleitung zum Zurücksetzen
 
 ---
 

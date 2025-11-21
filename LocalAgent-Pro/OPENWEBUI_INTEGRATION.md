@@ -41,6 +41,7 @@
 | `./start_server.sh` | Server im Hintergrund starten |
 | `./stop_server.sh` | Server stoppen |
 | `./health_check.sh` | Alle APIs testen |
+| `./update_openwebui_password.sh` | Passwort in OpenWebUI zurücksetzen |
 
 ---
 
@@ -103,6 +104,14 @@ curl -s -X POST http://127.0.0.1:8001/test \
 ---
 
 ## 🔧 Troubleshooting
+
+### Passwort vergessen
+```bash
+# Passwort zurücksetzen
+./update_openwebui_password.sh -e your@email.com -p 'NEW_HASH'
+
+# Siehe PASSWORD_RESET.md für Details
+```
 
 ### Server startet nicht
 ```bash
