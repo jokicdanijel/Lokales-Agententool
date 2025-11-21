@@ -90,11 +90,7 @@ if ! command -v docker &> /dev/null; then
 fi
 
 # Check if sg command is available (for docker group access)
-# Try sg first, fall back to direct docker if not available
-DOCKER_CMD="docker"
-if command -v sg &> /dev/null; then
-    DOCKER_CMD="sg docker -c docker"
-else
+if ! command -v sg &> /dev/null; then
     echo -e "${YELLOW}Note: 'sg' command not found, using 'docker' directly${NC}"
     echo -e "${YELLOW}      If you get permission errors, try adding your user to the docker group${NC}"
 fi
@@ -103,12 +99,7 @@ fi
 if ! docker volume inspect "$DOCKER_VOLUME" &> /dev/null; then
     echo -e "${RED}Error: Docker volume '$DOCKER_VOLUME' does not exist${NC}" >&2
     echo -e "${YELLOW}Available volumes:${NC}"
-    if docker volume ls | grep -i webui; then
-        # Found matching volumes
-        true
-    else
-        echo "  (no volumes matching 'webui' found)"
-    fi
+    docker volume ls | grep -i webui || echo "  (no volumes matching 'webui' found)"
     exit 1
 fi
 
@@ -145,7 +136,8 @@ echo -e "${BLUE}Updating password...${NC}"
 # Build the docker command based on whether sg is available
 if command -v sg &> /dev/null; then
     # Use sg docker for group access
-    if sg docker -c "docker run --rm -v ${DOCKER_VOLUME}:/data ${SQLITE_IMAGE} ${DB_PATH} \"${SQL_CMD}\"" 2>&1; then
+    # Note: Variables are validated above - DOCKER_VOLUME exists, EMAIL and PASSWORD_HASH are validated
+    if sg docker -c "docker run --rm -v '${DOCKER_VOLUME}:/data' '${SQLITE_IMAGE}' '${DB_PATH}' \"${SQL_CMD}\"" 2>&1; then
         UPDATE_SUCCESS=true
     else
         UPDATE_SUCCESS=false
@@ -171,7 +163,7 @@ if [ "$UPDATE_SUCCESS" = true ]; then
     
     # Verify using the same method
     if command -v sg &> /dev/null; then
-        VERIFY_OUTPUT=$(sg docker -c "docker run --rm -v ${DOCKER_VOLUME}:/data ${SQLITE_IMAGE} ${DB_PATH} \"${VERIFY_CMD}\"" 2>&1)
+        VERIFY_OUTPUT=$(sg docker -c "docker run --rm -v '${DOCKER_VOLUME}:/data' '${SQLITE_IMAGE}' '${DB_PATH}' \"${VERIFY_CMD}\"" 2>&1)
     else
         VERIFY_OUTPUT=$(docker run --rm -v "${DOCKER_VOLUME}:/data" "${SQLITE_IMAGE}" "${DB_PATH}" "${VERIFY_CMD}" 2>&1)
     fi
