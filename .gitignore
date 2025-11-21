@@ -1,5 +1,6 @@
 # Python
 __pycache__/
+**/__pycache__/
 *.py[cod]
 *$py.class
 *.so
@@ -11,6 +12,10 @@ venv*/
 *.egg-info/
 dist/
 build/
+
+# Runtime
+.runtime/
+*.pid
 
 # Testing
 .pytest_cache/
