@@ -23,7 +23,13 @@ else
   
   # Read token from .env if exists
   if [[ -f "$PROJECT_ROOT/.env" ]]; then
-    TOK=$(grep "^DASHBOARD_ADMIN_TOKEN=" "$PROJECT_ROOT/.env" 2>/dev/null | cut -d= -f2 || cat "$PROJECT_ROOT/.env" | head -1 | cut -d= -f2 || echo "")
+    # Look specifically for DASHBOARD_ADMIN_TOKEN
+    TOK=$(grep "^DASHBOARD_ADMIN_TOKEN=" "$PROJECT_ROOT/.env" 2>/dev/null | cut -d= -f2 || echo "")
+    
+    # If not found, warn but continue
+    if [[ -z "$TOK" ]]; then
+      echo "⚠️  DASHBOARD_ADMIN_TOKEN not found in .env" >&2
+    fi
   else
     TOK=""
   fi

@@ -25,21 +25,24 @@ if os.path.exists(os.path.join(ROOT, ".runtime/port")):
 def token():
     """Read the admin token from .env file."""
     if os.path.isfile(ENV):
-        # Read the first line or DASHBOARD_ADMIN_TOKEN from .env
+        # Look specifically for DASHBOARD_ADMIN_TOKEN
         with open(ENV, 'r') as f:
             for line in f:
                 line = line.strip()
                 if line.startswith('DASHBOARD_ADMIN_TOKEN='):
-                    return line.split('=', 1)[1]
-                elif not line.startswith('#') and '=' in line and not line.startswith('TELEGRAM_') and not line.startswith('OPENAI_'):
-                    # Fallback: return first non-comment token
-                    return line.split('=', 1)[1]
-        # If no DASHBOARD_ADMIN_TOKEN found, return first line
-        with open(ENV, 'r') as f:
-            first_line = f.readline().strip()
-            if '=' in first_line:
-                return first_line.split('=', 1)[1]
-    print("No .env token", file=sys.stderr)
+                    token_value = line.split('=', 1)[1]
+                    if token_value:
+                        return token_value
+                    else:
+                        print("DASHBOARD_ADMIN_TOKEN is empty in .env", file=sys.stderr)
+                        sys.exit(1)
+        
+        # If DASHBOARD_ADMIN_TOKEN not found, fail explicitly
+        print("DASHBOARD_ADMIN_TOKEN not found in .env", file=sys.stderr)
+        print("Please add: DASHBOARD_ADMIN_TOKEN=your_token_here", file=sys.stderr)
+        sys.exit(1)
+    
+    print("No .env file found", file=sys.stderr)
     sys.exit(1)
 
 
