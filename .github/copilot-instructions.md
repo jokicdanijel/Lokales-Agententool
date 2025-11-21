@@ -4,6 +4,24 @@
 
 ---
 
+## 🚀 **HINWEIS: HYPER-MASTER-PROMPT**
+
+**Für vollständige Systemkenntnis siehe:**  
+📖 **[`.github/copilot-master-prompt.md`](./copilot-master-prompt.md)**
+
+Dieser Prompt enthält das **komplette, absolute, unhinterfragbare Wissen** über:
+
+- Architektur & Module
+- Agenten & Ports
+- Option-2-Flow
+- Safepoints & Archivator
+- Policies & Konventionen
+- Operations & Commands
+
+**Verwende ihn als zentrale Referenz für ChatGPT, CoPilot, Custom GPTs und alle AI-Interaktionen.**
+
+---
+
 ## Phase 1: Core Infrastructure (20 Tasks) ✅
 
 - [x] **1. VS Code Launch Config** – `.vscode/launch.json` (4 configs + compound)
