@@ -13,6 +13,7 @@ import logging
 from enum import Enum
 import urllib.request
 import urllib.error
+import httpx
 
 from tool_registry import get_registry, Tool, Agent
 
@@ -197,26 +198,29 @@ class ToolDispatcher:
         url = tool_info["url"]
         timeout = tool_info["timeout"]
 
-        # Write CMD safepoint
-        cmd_success, cmd_filename, cmd_path = self.safepoint_writer.write_safepoint(
-            src=source_agent,
-            dst=target_agent,
-            kind=DispatcherEvent.CMD,
-            payload={
-                "tool": tool_id,
-                "params": params,
-                "timestamp": datetime.utcnow().isoformat() + "Z"
-            },
-            request_id=request_id
-        )
-
-        if not cmd_success:
+        # Forward CMD to opena2 for safepoint
+        try:
+            async with httpx.AsyncClient(timeout=5) as client:
+                cmd_payload = {
+                    "request_id": request_id,
+                    "timestamp": datetime.utcnow().isoformat() + "Z",
+                    "source": source_agent,
+                    "cmd": {
+                        "tool": tool_id,
+                        "params": params,
+                        "target_agent": target_agent
+                    },
+                    "strict": True
+                }
+                resp = await client.post("http://127.0.0.1:12345/finalize/opena2", json=cmd_payload)
+                resp.raise_for_status()
+                logger.info(f"📤 CMD safepoint forwarded to opena2")
+        except Exception as e:
+            logger.error(f"Failed to forward CMD to opena2: {e}")
             return False, self._error_response(
-                "Failed to create command safepoint",
+                f"Archivator forwarding failed: {e}",
                 request_id
             )
-
-        logger.info(f"📤 CMD safepoint created: {cmd_filename}")
 
         # Dispatch to agent
         try:
@@ -227,16 +231,20 @@ class ToolDispatcher:
                 timeout=timeout
             )
 
-            # Write RESP safepoint
-            resp_success, resp_filename, resp_path = self.safepoint_writer.write_safepoint(
-                src=target_agent,
-                dst=source_agent,
-                kind=DispatcherEvent.RESP,
-                payload=response,
-                request_id=request_id
-            )
-
-            logger.info(f"📥 RESP safepoint created: {resp_filename}")
+            # Forward RESP to opena2 for safepoint
+            try:
+                async with httpx.AsyncClient(timeout=5) as client:
+                    resp_payload = {
+                        "request_id": request_id,
+                        "timestamp": datetime.utcnow().isoformat() + "Z",
+                        "source": target_agent,
+                        "result": response,
+                        "strict": True
+                    }
+                    await client.post("http://127.0.0.1:12345/store/resp", json=resp_payload)
+                    logger.info(f"📥 RESP safepoint forwarded to opena2")
+            except Exception as e:
+                logger.warning(f"Failed to forward RESP to opena2: {e}")
 
             return True, {
                 "ok": True,
@@ -244,8 +252,8 @@ class ToolDispatcher:
                 "target_agent": target_agent,
                 "request_id": request_id,
                 "result": response,
-                "cmd_safepoint": str(cmd_path) if cmd_path else None,
-                "resp_safepoint": str(resp_path) if resp_success and resp_path else None
+                "archivator_status": "stored",
+                "strict": True
             }
 
         except asyncio.TimeoutError:

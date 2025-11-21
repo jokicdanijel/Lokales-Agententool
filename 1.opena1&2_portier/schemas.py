@@ -1,75 +1,71 @@
 """
-opena1/schemas.py – 7.1-Validierungsschemas (Pydantic v2)
+schemas.py — Complete Pydantic Schemas for opena1
 Strict validation for request routing and logging.
+LOCATION: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/schemas.py
 """
 
-from pydantic import BaseModel, Field, field_validator
-from typing import Any, Optional, Literal
+from typing import Any, Dict, Optional
+from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
-import re
 
 
-class Routing(BaseModel):
+class RoutingData(BaseModel):
     """Routing metadata for request."""
+    model_config = ConfigDict(extra="forbid")
+    
     resolved_path: Optional[str] = None
-    notes: Optional[str] = None
+    target: Optional[str] = None
+    meta: Dict[str, Any] = Field(default_factory=dict)
 
 
-class Project(BaseModel):
+class ProjectData(BaseModel):
     """Project metadata."""
-    id: str = Field(..., min_length=1)
+    model_config = ConfigDict(extra="forbid")
+    
     name: str = Field(..., min_length=1)
+    id: str = Field(..., min_length=1)
 
 
 class Request71(BaseModel):
     """7.1 Strict validation schema for opena1 logging."""
+    model_config = ConfigDict(extra="forbid")
+    
     request_id: str = Field(..., description="UUID v4 format")
     timestamp: str = Field(..., description="ISO-8601 with Z suffix")
     command: str = Field(..., min_length=1)
-    target_preference: Optional[str] = None
-    payload: dict[str, Any] = Field(default_factory=dict)
-    routing: Routing = Field(default_factory=Routing)
-    project: Project
-    strict: Literal[True]
-
-    model_config = {"extra": "forbid"}  # Pydantic v2: reject unknown fields
-
-    @field_validator("request_id")
-    @classmethod
-    def validate_request_id(cls, v: str) -> str:
-        """Validate UUID4 format."""
-        uuid_pattern = r"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
-        if not re.match(uuid_pattern, v, re.IGNORECASE):
-            raise ValueError("request_id must be valid UUID v4")
-        return v
-
-    @field_validator("timestamp")
-    @classmethod
-    def validate_timestamp(cls, v: str) -> str:
-        """Validate ISO-8601 format with Z suffix."""
-        if not v.endswith("Z"):
-            raise ValueError("timestamp must end with 'Z' (UTC)")
-        try:
-            datetime.fromisoformat(v.replace("Z", "+00:00"))
-        except ValueError:
-            raise ValueError("timestamp must be valid ISO-8601")
-        return v
-
-    @field_validator("strict")
-    @classmethod
-    def validate_strict(cls, v: bool) -> bool:
-        """Enforce strict mode."""
-        if v is not True:
-            raise ValueError("strict must be True")
-        return v
+    payload: Dict[str, Any] = Field(default_factory=dict)
+    routing: RoutingData = Field(default_factory=RoutingData)
+    project: ProjectData
+    strict: bool = Field(default=True)
 
 
 class ErrorSchema83(BaseModel):
     """Error response schema 8.3 (standard error format)."""
+    model_config = ConfigDict(extra="forbid")
+    
     request_id: str = Field(default="unknown")
     timestamp: str
-    source: Literal["opena1"]
-    error: dict[str, Any] = Field(
+    source: str = Field(default="opena1")
+    error: Dict[str, Any] = Field(
         default_factory=lambda: {"code": "", "message": "", "details": {}}
     )
-    strict: Literal[True] = True
+    strict: bool = Field(default=True)
+
+
+class Decision72(BaseModel):
+    """Decision response schema 7.2 (opena1 decision output)."""
+    model_config = ConfigDict(extra="forbid")
+    
+    request_id: str = Field(..., description="Request UUID")
+    timestamp: str = Field(..., description="ISO-8601 Z timestamp")
+    source: str = Field(default="opena1")
+    decision: Dict[str, Any] = Field(
+        ...,
+        description="Decision details (selected_tool, reason, resolved_path)"
+    )
+    archivator_forward: Dict[str, Any] = Field(
+        default_factory=dict,
+        description="Archivator forwarding status (endpoint, status)"
+    )
+    status: str = Field(..., description="Decision status (FORWARDED, ERROR, etc.)")
+    strict: bool = Field(default=True)

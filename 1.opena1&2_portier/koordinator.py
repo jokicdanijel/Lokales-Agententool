@@ -1,116 +1,120 @@
 """
-opena1/koordinator.py – 7.1 Validation router for opena1
-FastAPI routes for strict request logging and validation.
+koordinator.py — opena1 Coordinator
+Strict 7.1 validation, 7.2 decision schema, CMD-envelope creation,
+tool selection, archivator forwarding, and error schema 8.3 responses.
+LOCATION: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/koordinator.py
 """
 
-from fastapi import APIRouter, HTTPException
-from pydantic import ValidationError
-from datetime import datetime, timezone
 import json
 import logging
+from datetime import datetime, timezone
 
-try:
-    from schemas import Request71, ErrorSchema83
-except ImportError:
-    from .schemas import Request71, ErrorSchema83
+import httpx
+from fastapi import APIRouter, HTTPException
+from pydantic import ValidationError
 
-logger = logging.getLogger(__name__)
+from schemas import Request71, ErrorSchema83, Decision72
+
 router = APIRouter(prefix="/log", tags=["opena1"])
+logger = logging.getLogger("opena1.koordinator")
+
+ARCHIVATOR_URL = "http://127.0.0.1:12345/finalize/opena2"
 
 
-def create_error_response_83(
-    code: str,
-    message: str,
-    details: dict = None,  # type: ignore
-    request_id: str = "unknown"
-) -> ErrorSchema83:
-    """Create standardized error response 8.3."""
-    now_utc = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+def utc():
+    """Generate UTC timestamp with Z suffix."""
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def error(code, msg, details=None, req_id="unknown"):
+    """Create standard 8.3 error response."""
     return ErrorSchema83(
-        request_id=request_id,
-        timestamp=now_utc,
+        request_id=req_id,
+        timestamp=utc(),
         source="opena1",
-        error={
-            "code": code,
-            "message": message,
-            "details": details or {}
-        },
-        strict=True
+        error={"code": code, "message": msg, "details": details or {}},
+        strict=True,
     )
 
 
+def build_cmd(req: Request71, tool: str, reason: str):
+    """Build CMD envelope for opena2."""
+    return {
+        "request_id": req.request_id,
+        "timestamp": utc(),
+        "source": "opena1",
+        "cmd": {
+            "command": req.command,
+            "tool": tool,
+            "reason": reason,
+            "payload": req.payload,
+            "routing": req.routing.model_dump() if hasattr(req.routing, 'model_dump') else req.routing,
+            "project": req.project.model_dump(),
+        },
+        "strict": True,
+    }
+
+
+def select_tool(req: Request71):
+    """Select tool based on command content."""
+    c = req.command.lower()
+    if "file" in c:
+        return "tool_file_manager", "command contains 'file'"
+    if "search" in c:
+        return "tool_file_searcher", "command contains 'search'"
+    if "analyze" in c:
+        return "tool_text_analyzer", "command contains 'analyze'"
+    return "tool_default", "fallback"
+
+
 @router.post("/opena1")
-async def log_opena1(body: dict) -> dict:
-    """
-    7.1 Strict validation endpoint for opena1 logging.
+async def log_opena1(body: dict):
+    """Main opena1 endpoint - validate, select tool, forward to archivator."""
+    req_id = body.get("request_id", "unknown")
     
-    Accepts only fully-formed Request71 objects with strict=True.
-    Returns 400 with schema 8.3 on validation failure.
-    """
-    request_id = body.get("request_id", "unknown")
-    
+    # Validate 7.1 schema
     try:
-        # Parse and validate
         req = Request71(**body)
-        
-        # Log successful validation
-        logger.info(f"Valid 7.1 request: {req.request_id} from {req.project.name}")
-        
-        # Return success response
-        now_utc = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
-        return {
-            "request_id": str(req.request_id),
-            "timestamp": now_utc,
-            "source": "opena1",
-            "status": "accepted",
-            "strict": True
-        }
-    
+        logger.info(f"[7.1 VALID] {req.request_id}")
     except ValidationError as ve:
-        """Handle Pydantic validation errors."""
-        error_details = []
-        for err in ve.errors():
-            error_details.append({
-                "field": ".".join(str(x) for x in err["loc"]),
-                "error": err["msg"]
-            })
-        
-        # Determine error code
-        if "strict" in str(ve):
-            error_code = "STRICT_REQUIRED"
-            error_msg = "Field 'strict' must be True"
-        elif any("extra" in e["msg"] for e in ve.errors()):
-            error_code = "EXTRA_FIELDS_FORBIDDEN"
-            error_msg = "Extra fields not allowed"
-        else:
-            error_code = "SCHEMA_VIOLATION"
-            error_msg = "Request does not match schema 7.1"
-        
-        logger.warning(f"Validation error [{error_code}]: {error_msg}")
-        
-        error_response = create_error_response_83(
-            code=error_code,
-            message=error_msg,
-            details={"validation_errors": error_details},
-            request_id=request_id
-        )
-        
-        raise HTTPException(
-            status_code=400,
-            detail=json.loads(error_response.model_dump_json())
-        )
-    
+        errs = [{"field": ".".join(map(str, e["loc"])), "error": e["msg"]} for e in ve.errors()]
+        raise HTTPException(400, detail=json.loads(error(
+            "SCHEMA_71_INVALID", "Schema mismatch", {"validation_errors": errs}, req_id
+        ).model_dump_json()))
+
+    # Tool selection
+    tool, reason = select_tool(req)
+    logger.info(f"[TOOL] {tool} — {reason}")
+
+    # Build CMD envelope
+    cmd = build_cmd(req, tool, reason)
+
+    # Forward to archivator
+    try:
+        async with httpx.AsyncClient(timeout=10) as c:
+            r = await c.post(ARCHIVATOR_URL, json=cmd)
+        if r.status_code != 200:
+            raise Exception(r.text)
     except Exception as ex:
-        """Handle unexpected errors."""
-        logger.error(f"Unexpected error: {type(ex).__name__}: {ex}")
-        
-        error_response = create_error_response_83(
-            code="INTERNAL_ERROR",
-            message=str(ex),
-            request_id=request_id
-        )
-        
-        raise HTTPException(
-            status_code=500,
-            detail=json.loads(error_response.model_dump_json())
-        )
+        logger.error(f"[FORWARD_ERROR] {ex}")
+        raise HTTPException(500, detail=json.loads(error(
+            "FORWARD_ERROR", str(ex), req_id=req.request_id
+        ).model_dump_json()))
+
+    # Build 7.2 decision response
+    decision = Decision72(
+        request_id=req.request_id,
+        timestamp=utc(),
+        source="opena1",
+        decision={
+            "selected_tool": tool,
+            "reason": reason,
+            "resolved_path": req.routing.resolved_path if hasattr(req.routing, 'resolved_path') else None,
+        },
+        archivator_forward={"endpoint": ARCHIVATOR_URL, "status": "sent"},
+        status="FORWARDED",
+        strict=True,
+    )
+    
+    logger.info(f"[7.2 OUT] {req.request_id}")
+    return decision.model_dump()

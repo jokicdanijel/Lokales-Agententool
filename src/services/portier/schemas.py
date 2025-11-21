@@ -64,3 +64,22 @@ class HealthResponse(BaseModel):
     openai_fp: str = Field(default="", description="OpenAI API key fingerprint")
     openai_base_url: str = Field(default="https://api.openai.com/v1")
     strict: bool = Field(default=True)
+
+
+class Decision72(BaseModel):
+    """Decision response schema 7.2 (opena1 decision output)."""
+    model_config = ConfigDict(extra="forbid")
+    
+    request_id: str = Field(..., description="Request UUID")
+    timestamp: str = Field(..., description="ISO-8601 Z timestamp")
+    source: str = Field(default="opena1", description="Source service")
+    decision: Dict[str, Any] = Field(
+        ...,
+        description="Decision details (selected_tool, reason, resolved_path)"
+    )
+    archivator_forward: Dict[str, Any] = Field(
+        default_factory=dict,
+        description="Archivator forwarding status (endpoint, status)"
+    )
+    status: str = Field(..., description="Decision status (FORWARDED, ERROR, etc.)")
+    strict: bool = Field(default=True)

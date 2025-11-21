@@ -1,6 +1,7 @@
 """
-main_production.py – Production entry point for opena1
+main_production.py — opena1 Production Entry
 FastAPI application with 7.1 validation and health endpoint.
+LOCATION: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/main_production.py
 """
 
 import sys
@@ -15,24 +16,20 @@ import uvicorn
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-try:
-    from koordinator import router as opena1_router
-except ImportError:
-    sys.path.insert(0, str(Path(__file__).parent.parent))
-    from portier_openai.koordinator import router as opena1_router
+from koordinator import router as opena1_router
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(name)s] %(levelname)s: %(message)s"
 )
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("opena1")
 
 # Initialize FastAPI app
 app = FastAPI(
     title="opena1 – Portier Koordinator",
-    description="Coordinator service with 7.1 strict validation",
-    version="1.0.0"
+    description="Coordinator service with 7.1 strict validation + forwarding",
+    version="2.0.0"
 )
 
 # Include routers
@@ -40,22 +37,19 @@ app.include_router(opena1_router)
 
 
 @app.get("/health")
-async def health() -> dict:
+async def health():
     """Health check endpoint."""
-    now_utc = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    now = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     return {
         "service": "opena1",
         "status": "ok",
-        "timestamp": now_utc,
-        "port_policy": {
-            "window": [12344, 12349],
-            "forbidden": [8080]
-        }
+        "timestamp": now,
+        "port_policy": {"window": [12344, 12349], "forbidden": [8080]}
     }
 
 
 @app.get("/")
-async def root() -> dict:
+async def root():
     """Root endpoint."""
     return {
         "service": "opena1",
@@ -68,18 +62,18 @@ async def root() -> dict:
 
 def main():
     """Entry point."""
-    parser = argparse.ArgumentParser(description="opena1 Production Server")
-    parser.add_argument("--port", type=int, default=12344, help="Port (default 12344)")
-    parser.add_argument("--host", default="127.0.0.1", help="Host (default 127.0.0.1)")
+    parser = argparse.ArgumentParser(description="opena1 Server")
+    parser.add_argument("--port", type=int, default=12344)
+    parser.add_argument("--host", default="127.0.0.1")
     args = parser.parse_args()
     
     # Validate port policy
     if args.port == 8080:
-        logger.error("❌ Port 8080 is forbidden by policy")
+        logger.error("PORT 8080 FORBIDDEN")
         sys.exit(1)
     
     if not (12344 <= args.port <= 12349):
-        logger.warning(f"⚠️  Port {args.port} outside recommended range [12344-12349]")
+        logger.warning(f"Port {args.port} outside recommended range [12344-12349]")
     
     logger.info(f"Starting opena1 on {args.host}:{args.port}")
     
@@ -94,3 +88,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

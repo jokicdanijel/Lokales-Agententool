@@ -157,11 +157,55 @@ async def store(item: StoreIn) -> Dict[str, Any]:
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/finalize/opena2")
-async def finalize(fin: FinalizeIn) -> Dict[str, Any]:
-    # Abschluss-Safepoint
-    sp = StoreIn(src="finalizer", dst="archivp", kind="FINALIZE", body={"ticket": fin.ticket, "status": fin.status, "notes": fin.notes})
+async def finalize(body: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Accept CMD envelope from opena1, store as safepoint, return OK.
+    Expected body: {request_id, timestamp, source, cmd{...}, strict}
+    """
+    req_id = body.get("request_id", "unknown")
+    
+    # Store CMD safepoint
+    sp = StoreIn(
+        src=body.get("source", "opena1"),
+        dst="archivp",
+        kind="CMD",
+        body=body,
+        strict=True
+    )
     path = _write_safepoint(sp)
-    return {"ok": True, "finalized": fin.ticket, "stored": str(path), "strict": True}
+    
+    # Return minimal OK response
+    return {
+        "ok": True,
+        "request_id": req_id,
+        "stored": str(path),
+        "strict": True
+    }
+
+@app.post("/store/resp")
+async def store_resp(body: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Store RESP safepoint from tool execution.
+    Expected body: {request_id, timestamp, source, result{...}, strict}
+    """
+    req_id = body.get("request_id", "unknown")
+    
+    # Store RESP safepoint
+    sp = StoreIn(
+        src=body.get("source", "tool"),
+        dst="opena1",
+        kind="RESP",
+        body=body,
+        strict=True
+    )
+    path = _write_safepoint(sp)
+    
+    return {
+        "ok": True,
+        "request_id": req_id,
+        "stored": str(path),
+        "strict": True
+    }
 
 if __name__ == "__main__":
     import uvicorn
