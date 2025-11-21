@@ -60,7 +60,8 @@ NEW_HASH=$(python3 -c "import bcrypt; print(bcrypt.hashpw(b'myNewPassword123', b
    ```
 
 2. **User must have Docker permissions**
-   - The script uses `sg docker` to run Docker commands
+   - The script automatically detects if `sg` command is available and uses it for Docker group access
+   - If `sg` is not available, it falls back to running `docker` directly
    - Ensure your user is in the `docker` group:
      ```bash
      sudo usermod -aG docker $USER

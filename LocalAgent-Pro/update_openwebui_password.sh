@@ -89,11 +89,26 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
+# Check if sg command is available (for docker group access)
+# Try sg first, fall back to direct docker if not available
+DOCKER_CMD="docker"
+if command -v sg &> /dev/null; then
+    DOCKER_CMD="sg docker -c docker"
+else
+    echo -e "${YELLOW}Note: 'sg' command not found, using 'docker' directly${NC}"
+    echo -e "${YELLOW}      If you get permission errors, try adding your user to the docker group${NC}"
+fi
+
 # Check if Docker volume exists
 if ! docker volume inspect "$DOCKER_VOLUME" &> /dev/null; then
     echo -e "${RED}Error: Docker volume '$DOCKER_VOLUME' does not exist${NC}" >&2
     echo -e "${YELLOW}Available volumes:${NC}"
-    docker volume ls | grep -i webui || echo "  (no volumes matching 'webui' found)"
+    if docker volume ls | grep -i webui; then
+        # Found matching volumes
+        true
+    else
+        echo "  (no volumes matching 'webui' found)"
+    fi
     exit 1
 fi
 
@@ -127,7 +142,24 @@ echo ""
 echo -e "${BLUE}Updating password...${NC}"
 
 # Execute the SQL command using Docker
-if sg docker -c "docker run --rm -v ${DOCKER_VOLUME}:/data ${SQLITE_IMAGE} ${DB_PATH} \"${SQL_CMD}\"" 2>&1; then
+# Build the docker command based on whether sg is available
+if command -v sg &> /dev/null; then
+    # Use sg docker for group access
+    if sg docker -c "docker run --rm -v ${DOCKER_VOLUME}:/data ${SQLITE_IMAGE} ${DB_PATH} \"${SQL_CMD}\"" 2>&1; then
+        UPDATE_SUCCESS=true
+    else
+        UPDATE_SUCCESS=false
+    fi
+else
+    # Use docker directly
+    if docker run --rm -v "${DOCKER_VOLUME}:/data" "${SQLITE_IMAGE}" "${DB_PATH}" "${SQL_CMD}" 2>&1; then
+        UPDATE_SUCCESS=true
+    else
+        UPDATE_SUCCESS=false
+    fi
+fi
+
+if [ "$UPDATE_SUCCESS" = true ]; then
     echo ""
     echo -e "${GREEN}✅ Password updated successfully${NC}"
     
@@ -137,7 +169,14 @@ if sg docker -c "docker run --rm -v ${DOCKER_VOLUME}:/data ${SQLITE_IMAGE} ${DB_
     # Email already validated above, safe to use in SQL query
     VERIFY_CMD="SELECT email, password FROM auth WHERE email='${EMAIL}';"
     
-    if sg docker -c "docker run --rm -v ${DOCKER_VOLUME}:/data ${SQLITE_IMAGE} ${DB_PATH} \"${VERIFY_CMD}\"" 2>&1 | grep -q "$EMAIL"; then
+    # Verify using the same method
+    if command -v sg &> /dev/null; then
+        VERIFY_OUTPUT=$(sg docker -c "docker run --rm -v ${DOCKER_VOLUME}:/data ${SQLITE_IMAGE} ${DB_PATH} \"${VERIFY_CMD}\"" 2>&1)
+    else
+        VERIFY_OUTPUT=$(docker run --rm -v "${DOCKER_VOLUME}:/data" "${SQLITE_IMAGE}" "${DB_PATH}" "${VERIFY_CMD}" 2>&1)
+    fi
+    
+    if echo "$VERIFY_OUTPUT" | grep -q "$EMAIL"; then
         echo -e "${GREEN}✅ Verification successful${NC}"
     else
         echo -e "${YELLOW}⚠️  Could not verify the update${NC}"
