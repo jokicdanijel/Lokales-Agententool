@@ -97,40 +97,165 @@ curl -X POST http://127.0.0.1:12344/log/opena1 \
 
 ---
 
-## 🏗️ PORTIER 3.0 — Option-2-Flow Architektur
+## 🏗️ PORTIER 3.0 — Vollständige Systemarchitektur
 
+### **Interaktives Architekturdiagramm (21 Agenten)**
+
+```mermaid
+flowchart TB
+    %% =====================
+    %% ENTRY LAYER
+    %% =====================
+    subgraph Entry["🌐 Entry Layer — External Interfaces"]
+        OpenAI["OpenAI API<br>(External)"]
+        UserUI["User Interfaces<br>(Web, CLI, API)"]
+    end
+    
+    %% =====================
+    %% CORE SERVICES
+    %% =====================
+    subgraph Core["PORTIER 3.0 — Core Services (1.opena1&2_portier)"]
+        opena1["opena1<br>Coordinator<br>Port 12344<br>Request71→Decision72"]
+        opena2["opena2<br>Archivator<br>Port 12345<br>CMD/RESP Safepoints"]
+        kordp["kordp<br>Dispatch Gateway<br>Port 12346<br>Tool Routing"]
+        archivp["archivp<br>Local Archive<br>Filesystem<br>YYYY/MM/DD"]
+    end
+    
+    %% =====================
+    %% DASHBOARD
+    %% =====================
+    subgraph Dashboard["🖥️ Dashboard Layer (19.opena20_dashboard_agent)"]
+        opena20["opena20<br>Dashboard Service<br>Port 12349<br>Web UI + API"]
+    end
+    
+    %% =====================
+    %% OPERATIONAL AGENTS
+    %% =====================
+    subgraph Agents["🔧 Operational Agents (opena3-opena19 + opena21)"]
+        opena3["opena3<br>OpenWebUI Terminal<br>Port 12347<br>✅ Running"]
+        opena4["opena4<br>Telegram Bot<br>Port 12348<br>🟡 Planned"]
+        opena5["opena5<br>VS Code Agent<br>Port 12349<br>🟡 Planned"]
+        opena6["opena6<br>Browser Automation<br>Port 12350 (Adapter)<br>✅ Running"]
+        opena7["opena7<br>E-Mail Client<br>Port 12351<br>🟡 Planned"]
+        opena8["opena8<br>WhatsApp API<br>Port 12352<br>🟡 Planned"]
+        opena9["opena9<br>Telefonie<br>Port 12353<br>🟡 Planned"]
+        opena10["opena10<br>Call Tracking<br>Port 12354<br>🟡 Planned"]
+        opena11["opena11<br>Unlock Master<br>Port 12355<br>🟡 Planned"]
+        opena12["opena12<br>Social Media<br>Port 12356<br>🟡 Planned"]
+        opena13["opena13<br>Influencer<br>Port 12357<br>🟡 Planned"]
+        opena14["opena14<br>Calendar<br>Port 12358<br>🟡 Planned"]
+        opena15["opena15<br>HTML Creator<br>Port 12359<br>🟡 Planned"]
+        opena16["opena16<br>Shop Creator<br>Port 12360<br>🟡 Planned"]
+        opena17["opena17<br>Homepage Creator<br>Port 12361<br>🟡 Planned"]
+        opena18["opena18<br>Local Archiv / CRM<br>Port 12362<br>🟡 Planned"]
+        opena19["opena19<br>Aktien & Crypto<br>Port 12363<br>🟡 Planned"]
+        opena21["opena21<br>Workflow Engine<br>Port 12364<br>🟡 Planned"]
+    end
+    
+    %% =====================
+    %% SCTA LAYER
+    %% =====================
+    subgraph SCTA["📋 SCTA Layer (Structured Code Task Automation)"]
+        agenda_api["agenda_api<br>16-Seiten Agenda<br>Port 12399<br>✅ Running"]
+    end
+    
+    %% =====================
+    %% EXTERNAL UI (FORBIDDEN FOR BACKEND)
+    %% =====================
+    subgraph External["⚠️ External UI (UI-Only, No Backend)"]
+        openwebui_ui["OpenWebUI UI<br>Port 8080<br>❌ Backend Forbidden"]
+    end
+    
+    %% =====================
+    %% OPTION-2-FLOW (CORE ROUTING)
+    %% =====================
+    
+    %% Entry → opena1
+    OpenAI -->|Request71| opena1
+    UserUI -->|API Call| opena1
+    
+    %% opena1 → opena2 (CMD Safepoint)
+    opena1 -->|Decision72 → CMD| opena2
+    
+    %% opena2 → kordp (Route)
+    opena2 -->|ROUTE Safepoint| kordp
+    
+    %% opena2 → archivp (Persist)
+    opena2 -.->|Save Safepoint<br>YYYY/MM/DD| archivp
+    
+    %% kordp → Tools (Dispatch)
+    kordp -->|Dispatch| opena3
+    kordp -->|Dispatch| opena4
+    kordp -->|Dispatch| opena5
+    kordp -->|Dispatch| opena6
+    kordp -->|Dispatch| opena7
+    kordp -->|Dispatch| opena8
+    kordp -->|Dispatch| opena9
+    kordp -->|Dispatch| opena10
+    kordp -->|Dispatch| opena11
+    kordp -->|Dispatch| opena12
+    kordp -->|Dispatch| opena13
+    kordp -->|Dispatch| opena14
+    kordp -->|Dispatch| opena15
+    kordp -->|Dispatch| opena16
+    kordp -->|Dispatch| opena17
+    kordp -->|Dispatch| opena18
+    kordp -->|Dispatch| opena19
+    kordp -->|Dispatch| opena21
+    
+    %% Tools → opena2 (RESP Safepoint)
+    opena3 -.->|RESP| opena2
+    opena6 -.->|RESP| opena2
+    
+    %% opena2 → opena1 (Return)
+    opena2 -->|RESP to Coordinator| opena1
+    
+    %% opena1 → OpenAI (Final Response)
+    opena1 -->|Final Response| OpenAI
+    
+    %% =====================
+    %% DASHBOARD MONITORING
+    %% =====================
+    opena20 -.->|Status Poll| opena1
+    opena20 -.->|Status Poll| opena2
+    opena20 -.->|Status Poll| kordp
+    opena20 -.->|Read Safepoints| archivp
+    
+    %% =====================
+    %% SCTA INTEGRATION
+    %% =====================
+    opena1 -.->|Agenda Query| agenda_api
+    
+    %% =====================
+    %% OPENWEBUI UI (EXTERNAL, UI-ONLY)
+    %% =====================
+    openwebui_ui -.->|HTTP → Adapter → opena3| opena6
+    
+    %% =====================
+    %% STYLING
+    %% =====================
+    classDef running fill:#5cb85c,stroke:#4caf50,color:#fff
+    classDef planned fill:#fcf8e3,stroke:#f0ad4e,color:#000
+    classDef forbidden fill:#f44336,stroke:#d32f2f,color:#fff
+    classDef dashboard fill:#f0ad4e,stroke:#ec971f,color:#fff
+    classDef scta fill:#4caf50,stroke:#388e3c,color:#fff
+    
+    class opena1,opena2,kordp,archivp,opena3,opena6,agenda_api running
+    class opena4,opena5,opena7,opena8,opena9,opena10,opena11,opena12,opena13,opena14,opena15,opena16,opena17,opena18,opena19,opena21 planned
+    class openwebui_ui forbidden
+    class opena20 dashboard
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                      PORTIER 3.0 PLATFORM                           │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                     │
-│  🌐 Entry Layer (OpenAI API / User Interfaces)                     │
-│      ↓                                                              │
-│  🧠 opena1 (Coordinator, Port 12344)                               │
-│      ↓ Request71 → Decision72                                      │
-│  📦 opena2 (Archivator, Port 12345)                                │
-│      ↓ CMD/RESP Safepoints (YYYY/MM/DD)                            │
-│  🚪 kordp (Gateway, Port 12346)                                    │
-│      ↓ Tool Dispatch & Routing                                     │
-│  🔧 20 Tool-Agenten (Ports 12347-12367)                            │
-│      • opena3: OpenWebUI Terminal (12347)                          │
-│      • opena4: Telegram Bot (12348)                                │
-│      • opena5: VS Code Integration (12349)                         │
-│      • opena6: Browser Automation (12350)                          │
-│      • opena7-21: 15 weitere Agenten (12351-12365)                 │
-│                                                                     │
-│  ┌───────────────────────────────────────────────────────────┐     │
-│  │ 🖥️ opena20 Dashboard (Port 12349, Web UI)               │     │
-│  │ • Live Status Grid (alle Agenten)                        │     │
-│  │ • E2E Test Trigger                                       │     │
-│  │ • Safepoint Inspector (heute, archiv)                   │     │
-│  │ • Activity Log (real-time SSE)                           │     │
-│  │ • Auto-Refresh (5s Interval)                             │     │
-│  │ • Restart Stack Control                                  │     │
-│  └───────────────────────────────────────────────────────────┘     │
-│                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
-```
+
+**Diagramm-Legende:**
+
+- 🟢 **Grün (Running):** Produktiv im Einsatz (opena1, opena2, kordp, opena3, opena6, opena20, agenda_api)
+- 🟡 **Gelb (Planned):** Ordnerstruktur vorhanden, noch nicht implementiert (opena4-opena5, opena7-opena19, opena21)
+- 🔴 **Rot (Forbidden):** Port 8080 ist für Backend-Services gesperrt (UI-only)
+- 🟠 **Orange (Dashboard):** Dashboard-Service mit Web UI
+
+**Vollständiges Diagramm:** Siehe [PORTIER_3.0_SYSTEM_ARCHITECTURE.md](PORTIER_3.0_SYSTEM_ARCHITECTURE.md) für hochauflösende SVG/PNG-Versionen
+
+---
 
 ### Option-2-Flow (Heilige Regel)
 
