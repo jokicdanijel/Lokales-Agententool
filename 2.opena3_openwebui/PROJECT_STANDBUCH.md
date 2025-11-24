@@ -1,8 +1,8 @@
 # 📋 Standbuch: Lokale Server-Freigabe für externe Zugänge
 
-**Projekt:** Browser Agent Tool Server - Externe Zugänglichkeit  
-**Datum:** 25. November 2025  
-**Status:** ✅ PRODUKTIONSFERTIG  
+**Projekt:** Browser Agent Tool Server - Externe Zugänglichkeit
+**Datum:** 25. November 2025
+**Status:** ✅ PRODUKTIONSFERTIG
 **Version:** 1.0.0
 
 ---
@@ -113,12 +113,12 @@ ssh -L 8765:localhost:8765 user@remote.host -N
 
 | Test | Befehl | Status | Ergebnis |
 |------|--------|--------|----------|
-| **Health Check (Lokal)** | `curl http://127.0.0.1:8765/health` | ✅ PASS | 200 OK |
-| **LAN-Zugriff** | `curl http://192.168.0.70:8765/health` | ✅ PASS | 200 OK |
-| **Manifest** | `curl http://192.168.0.70:8765/manifest` | ✅ PASS | Valid JSON |
-| **Port-Bindung** | `ss -tlnp \| grep 8765` | ✅ PASS | 0.0.0.0 gebunden |
-| **Prozess** | `ps aux \| grep tool_server` | ✅ PASS | Läuft |
-| **Firewall** | `sudo ufw status` | ✅ PASS | Port freigegeben |
+| **Health Endpoint (Lokal)** | `curl http://127.0.0.1:8765/health` | ✅ PASS | 200 OK |
+| **Health Endpoint (LAN)** | `curl http://192.168.0.70:8765/health` | ✅ PASS | 200 OK |
+| **Manifest Endpoint** | `curl http://192.168.0.70:8765/manifest` | ✅ PASS | Valid JSON |
+| **Port-Belegung** | `ss -tlnp \| grep 8765` | ✅ PASS | 0.0.0.0:8765 gebunden |
+| **Prozess Status** | `ps aux \| grep tool_server` | ✅ PASS | Läuft und aktiv |
+| **Firewall Config** | `sudo ufw status` | ✅ PASS | Port 8765 freigegeben |
 
 ### Code-Qualität
 - ✅ Python PEP 8 konform
@@ -436,8 +436,8 @@ Security Check:  ✅ Bestanden
 
 ## ✅ Sign-Off
 
-**Hergestellt durch:** GitHub Copilot  
-**Datum:** 25. November 2025  
+**Hergestellt durch:** GitHub Copilot
+**Datum:** 25. November 2025
 **Status:** ✅ READY FOR PRODUCTION
 
 ---
