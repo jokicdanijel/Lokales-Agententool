@@ -1,2 +1,122 @@
+# PORTIER 3.0 Enterprise .gitignore
+# Large Files Policy: <100MB OK | 100-500MB optional | >500MB forbidden
+
+# Archives & Archive Storage
+*.tar
+*.tar.gz
+*.tar.bz2
+*.zip
+*.rar
+*.7z
 opena1/archiv/
 opena2/archiv/
+archivp_store/**/*.json
+archivp_store/**/*.tar
+archivp_store/**/*.gz
+
+# Backups
+*.bak
+*.backup
+*.old
+*.tmp
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+venv/
+venv*/
+ENV/
+env/
+.venv/
+
+# Database Files
+*.db
+*.sqlite
+*.sqlite3
+*.dbm
+
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.pydevproject
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+.env.production
+.env.test
+
+# Logs
+*.log
+logs/
+*.log.*
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Ollama (local models)
+ollama/models/*
+ollama/blobs/*
+
+# Temporary files
+*.tmp
+*.temp
+**/temp/
+**/tmp/
+
+# Unit tests / Coverage
+.coverage
+.pytest_cache/
+htmlcov/
+
+# Sensitive Data
+*.key
+*.pem
+*.p12
+*.pfx
+secrets/
+credentials.json
+tokens.json
+bearer_tokens.txt
+
