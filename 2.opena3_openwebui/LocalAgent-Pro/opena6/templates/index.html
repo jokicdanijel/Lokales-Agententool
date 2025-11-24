@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>5.opena6_browser – Status Dashboard</title>
+    <style>
+        body {
+            background:#10151a;
+            color:#fff;
+            font-family:Arial, sans-serif;
+            padding:40px;
+        }
+        h1 {
+            font-size:32px;
+            margin-bottom:10px;
+        }
+        .status-box {
+            background:#1a2129;
+            padding:20px;
+            border-radius:8px;
+            margin-top:20px;
+        }
+        .log {
+            background:#0d1117;
+            padding:15px;
+            border-radius:8px;
+            margin-top:15px;
+            max-height:300px;
+            overflow-y:auto;
+        }
+        .green { color:#4ade80; }
+        .yellow { color:#fde047; }
+    </style>
+</head>
+<body>
+    <h1>Browser-Agent: 5.opena6_browser</h1>
+
+    <div class="status-box">
+        <h2>Status</h2>
+        <p class="green">● Agent läuft stabil</p>
+        <p>Modus: Headless</p>
+        <p>Verbund: Portier (opena1/opena2)</p>
+    </div>
+
+    <div class="status-box">
+        <h2>Letzte Aktionen</h2>
+        <div class="log" id="activityLog">
+            <!-- Live-Logs können hier injected werden -->
+        </div>
+    </div>
+</body>
+</html>

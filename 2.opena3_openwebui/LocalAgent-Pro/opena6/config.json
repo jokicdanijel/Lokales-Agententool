@@ -1,12 +1,21 @@
 {
-  "service_name": "opena6-browser",
-  "agent_number": "6",
-  "function": "Browser",
-  "port": 12351,
-  "bearer_token": "sk_opena6_brow_12351_strict_v1",
-  "environment": "production",
-  "logging_level": "INFO",
-  "safepoint_enabled": true,
-  "security_event_logging": true,
-  "created_at": "2025-11-24T12:34:46Z"
+  "agent_name": "5.opena6_browser",
+  "type": "local_agent",
+  "description": "Browser-Automation, Scraping, DOM-Interaktion",
+  "entrypoint": "main.py",
+  "portier_integration": {
+    "dispatcher": "../1.opena1&2_portier/opena1",
+    "archivator": "../1.opena1&2_portier/opena2",
+    "flow_model": "option-2-flow"
+  },
+  "browser_engine": {
+    "headless": true,
+    "default_wait_ms": 500,
+    "timeout_ms": 15000
+  },
+  "logging": {
+    "enabled": true,
+    "store_html_snapshots": true,
+    "verbose": false
+  }
 }
