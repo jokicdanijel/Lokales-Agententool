@@ -1,0 +1,12 @@
+{
+  "service_name": "opena16-shop",
+  "agent_number": "16",
+  "function": "Shop",
+  "port": 12361,
+  "bearer_token": "sk_opena16_shop_12361_strict_v1",
+  "environment": "production",
+  "logging_level": "INFO",
+  "safepoint_enabled": true,
+  "security_event_logging": true,
+  "created_at": "2025-11-24T12:34:47Z"
+}

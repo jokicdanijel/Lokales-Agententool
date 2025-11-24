@@ -1,0 +1,12 @@
+{
+  "service_name": "opena18-archive",
+  "agent_number": "18",
+  "function": "Archive",
+  "port": 12363,
+  "bearer_token": "sk_opena18_arch_12363_strict_v1",
+  "environment": "production",
+  "logging_level": "INFO",
+  "safepoint_enabled": true,
+  "security_event_logging": true,
+  "created_at": "2025-11-24T12:34:47Z"
+}

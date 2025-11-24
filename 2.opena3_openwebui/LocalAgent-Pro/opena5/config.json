@@ -1,0 +1,12 @@
+{
+  "service_name": "opena5-vscode",
+  "agent_number": "5",
+  "function": "VSCode",
+  "port": 12350,
+  "bearer_token": "sk_opena5_vsc_12350_strict_v1",
+  "environment": "production",
+  "logging_level": "INFO",
+  "safepoint_enabled": true,
+  "security_event_logging": true,
+  "created_at": "2025-11-24T12:34:46Z"
+}

@@ -1,0 +1,12 @@
+{
+  "service_name": "opena20-dashboard",
+  "agent_number": "20",
+  "function": "Dashboard",
+  "port": 12365,
+  "bearer_token": "sk_opena20_dash_12365_strict_v1",
+  "environment": "production",
+  "logging_level": "INFO",
+  "safepoint_enabled": true,
+  "security_event_logging": true,
+  "created_at": "2025-11-24T12:34:47Z"
+}

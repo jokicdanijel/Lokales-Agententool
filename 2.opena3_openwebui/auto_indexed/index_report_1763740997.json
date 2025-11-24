@@ -1,0 +1,16 @@
+{
+  "indexer_version": "1.0.0",
+  "timestamp": "2025-11-21T16:03:17.340765Z",
+  "statistics": {
+    "total_files": 132,
+    "new_files": 132,
+    "updated_files": 0,
+    "skipped_files": 0,
+    "extracted_archives": 1,
+    "kb_entries": 2
+  },
+  "auto_index_dir": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.opena3_openwebui/auto_indexed",
+  "extraction_dir": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.opena3_openwebui/auto_indexed/extracted",
+  "knowledgebase_dir": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/knowledgebase",
+  "metadata_file": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.opena3_openwebui/auto_indexed/index_metadata.jsonl"
+}

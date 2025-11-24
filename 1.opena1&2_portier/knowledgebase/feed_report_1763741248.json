@@ -1,0 +1,20 @@
+{
+  "feeder_version": "1.0.0",
+  "timestamp": "2025-11-21T16:07:28.703903Z",
+  "statistics": {
+    "total_scanned": 239,
+    "new_entries": 239,
+    "duplicates_skipped": 0,
+    "categories": {
+      "documentation": 30,
+      "openwebui": 7,
+      "misc": 75,
+      "code": 111,
+      "data": 3,
+      "integration": 2,
+      "database": 11
+    }
+  },
+  "kb_index_file": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/knowledgebase/kb_index.jsonl",
+  "kb_entries_total": 239
+}

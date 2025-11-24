@@ -1,0 +1,46 @@
+server:
+  host: 127.0.0.1
+  port: 8001
+  debug: false
+
+ollama:
+  base_url: http://localhost:11434
+  model: llama3.1:8b-instruct-q4_K_M
+  timeout: 60
+
+sandbox:
+  enabled: true
+  base_dir: ~/localagent_sandbox
+  max_file_size: 10485760  # 10 MB
+
+security:
+  shell_whitelist:
+    - ls
+    - cat
+    - grep
+    - echo
+    - pwd
+    - date
+    - whoami
+    - uname
+  
+  dangerous_commands:
+    - rm -rf
+    - sudo
+    - dd
+    - mkfs
+    - chmod 777
+  
+  domain_whitelist:
+    - example.com
+    - api.github.com
+    - httpbin.org
+
+logging:
+  level: INFO
+  file: logs/localagent.log
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+monitoring:
+  prometheus_enabled: true
+  metrics_port: 9090

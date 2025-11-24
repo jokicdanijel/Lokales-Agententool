@@ -1,0 +1,12 @@
+{
+  "service_name": "opena10-answer",
+  "agent_number": "10",
+  "function": "Answer",
+  "port": 12355,
+  "bearer_token": "sk_opena10_answ_12355_strict_v1",
+  "environment": "production",
+  "logging_level": "INFO",
+  "safepoint_enabled": true,
+  "security_event_logging": true,
+  "created_at": "2025-11-24T12:34:46Z"
+}

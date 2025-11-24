@@ -1,0 +1,58 @@
+[
+  {
+    "name": "read_file",
+    "description": "Liess den Inhalt einer Datei. Im Sandbox-Modus wird der Pfad unter sandbox_path verwendet.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "path": {"type": "string", "description": "Der relative oder absolute Pfad der zu lesenden Datei."}
+      },
+      "required": ["path"]
+    }
+  },
+  {
+    "name": "write_file",
+    "description": "Schreibt Text in eine Datei. Im Sandbox-Modus wird der Pfad unter sandbox_path angelegt.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "path": {"type": "string", "description": "Der relative oder absolute Pfad der Datei, die geschrieben werden soll."},
+        "content": {"type": "string", "description": "Der Inhalt, der in die Datei geschrieben werden soll."}
+      },
+      "required": ["path", "content"]
+    }
+  },
+  {
+    "name": "list_files",
+    "description": "Listet die Inhalte eines Verzeichnisses auf. Im Sandbox-Modus wird der Pfad unter sandbox_path verwendet.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "path": {"type": "string", "description": "Der relative oder absolute Pfad des Verzeichnisses, das aufgelistet werden soll."}
+      },
+      "required": ["path"]
+    }
+  },
+  {
+    "name": "run_shell",
+    "description": "Führt ein Shell-Kommando aus. Nur im Live-Modus erlaubt.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "cmd": {"type": "string", "description": "Das auszuführende Shell-Kommando."}
+      },
+      "required": ["cmd"]
+    }
+  },
+  {
+    "name": "fetch",
+    "description": "Ruft den HTML-Inhalt einer URL ab, sofern die Domain in der Whitelist erlaubt ist.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "url": {"type": "string", "description": "Die vollständige URL, die abgefragt werden soll."}
+      },
+      "required": ["url"]
+    }
+  }
+]

@@ -1,0 +1,98 @@
+{
+  "last_update": "2025-11-21T00:00:00Z",
+  "strict": true,
+  "schema": {
+    "file": {
+      "path": "string",
+      "size_bytes": "number",
+      "hash_sha256": "string"
+    },
+    "document": {
+      "id": "string",
+      "source_file": "string",
+      "title": "string",
+      "keywords": ["string"],
+      "summary": "string"
+    },
+    "embedding": {
+      "document_id": "string",
+      "vector_file": "string",
+      "provider": "openai",
+      "model": "text-embedding-3-large"
+    }
+  },
+  "files": [],
+  "documents": [
+    {
+      "id": "portier-architektur",
+      "source_file": "raw/portier-system.md",
+      "title": "Portier Systemarchitektur",
+      "keywords": ["opena1", "opena2", "kordp", "archivp", "Safepoints", "Option-2-Flow"],
+      "summary": "Komplette Architektur, Prozesse und Endpunkte des Portier-Systems mit Option-2-Nachrichtenfluss."
+    },
+    {
+      "id": "koordinator-spec",
+      "source_file": "raw/koordinator-opena1.md",
+      "title": "Koordinator Spezifikation",
+      "keywords": ["Routing", "Schema 7.1", "Schema 7.2", "Tools", "Validation"],
+      "summary": "Strikte Definition des Koordinators, Entscheidungslogik und Endpunkte."
+    },
+    {
+      "id": "archivator-spec",
+      "source_file": "raw/archivator-opena2.md",
+      "title": "Archivator Spezifikation",
+      "keywords": ["Safepoint", "Archiv", "RESP", "CMD", "index.jsonl"],
+      "summary": "Definition der Archivator-Prozesse, Speicherlogik und Safepoint-Format."
+    },
+    {
+      "id": "port-policy",
+      "source_file": "raw/port-policy.md",
+      "title": "Port-Policy Enforcement",
+      "keywords": ["Ports", "12344-12349", "8080", "Security", "Registry"],
+      "summary": "Zentrale Port-Management-Regeln und Sicherheitspolicy."
+    },
+    {
+      "id": "agent-registry",
+      "source_file": "raw/agent-registry.md",
+      "title": "Agent Registry",
+      "keywords": ["Agents", "opena1-opena20", "Ports", "Mapping"],
+      "summary": "Vollstaendige Agent-Registrierung mit Port-Mapping und Rollen."
+    },
+    {
+      "id": "option-2-flow",
+      "source_file": "raw/option-2-flow.md",
+      "title": "Option-2 Nachrichtenfluss",
+      "keywords": ["OpenAI", "opena1", "opena2", "kordp", "Tool", "Rueckweg"],
+      "summary": "Detaillierte Beschreibung des heiligen Option-2-Pfads (Hinweg + Rueckweg)."
+    },
+    {
+      "id": "safepoint-schema",
+      "source_file": "raw/safepoint-format.md",
+      "title": "Safepoint-Format",
+      "keywords": ["SP<n>", "Unicode-Pfeil", "CMD", "RESP", "YYYY/MM/DD"],
+      "summary": "Strikte Naming Convention und Speicherstruktur fuer Safepoints."
+    },
+    {
+      "id": "schema-71-72",
+      "source_file": "raw/schemas-71-72.md",
+      "title": "JSON Schemas 7.1 und 7.2",
+      "keywords": ["strict", "additionalProperties", "JSON Schema", "Draft 2020-12"],
+      "summary": "Strikte JSON-Schema-Validierung fuer Request (7.1) und Response (7.2)."
+    },
+    {
+      "id": "dashboard-integration",
+      "source_file": "raw/dashboard-opena20.md",
+      "title": "Dashboard Agent opena20",
+      "keywords": ["FastAPI", "SSE", "Health", "Status", "Port 12349"],
+      "summary": "Dashboard-System mit SSE-Bus, Security und Agent-Registry."
+    },
+    {
+      "id": "openwebui-integration",
+      "source_file": "raw/openwebui-opena3.md",
+      "title": "OpenWebUI Integration opena3",
+      "keywords": ["OpenWebUI", "Port 8080", "Port 12347", "Adapter", "Terminal"],
+      "summary": "OpenWebUI Terminal-Integration mit Adapter-Pattern."
+    }
+  ],
+  "embeddings": []
+}

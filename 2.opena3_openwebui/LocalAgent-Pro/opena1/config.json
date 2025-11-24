@@ -1,0 +1,12 @@
+{
+  "service_name": "opena1-coordinator",
+  "agent_number": "1",
+  "function": "Coordinator",
+  "port": 12344,
+  "bearer_token": "sk_opena1_coord_12344_strict_v1",
+  "environment": "production",
+  "logging_level": "INFO",
+  "safepoint_enabled": true,
+  "security_event_logging": true,
+  "created_at": "2025-11-24T12:34:46Z"
+}

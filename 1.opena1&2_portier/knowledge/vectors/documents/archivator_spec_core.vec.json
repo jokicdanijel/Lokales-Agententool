@@ -1,0 +1,8 @@
+{
+  "document_id": "archivator_spec_core",
+  "source": "knowledge/processed/archivator_spec_core.md",
+  "model": "text-embedding-3-large",
+  "embedding": [],
+  "status": "pending",
+  "strict": true
+}

@@ -1,0 +1,12 @@
+### USER
+# 1. Basic Health Check
+curl -s http://127.0.0.1:8001/health | jq '.'
+# 2. GPU-Performance
+python benchmark_cpu_vs_gpu.py
+# 3. In OpenWebUI testen:
+"Erstelle Datei test.txt mit Hello World"
+"Liste alle Dateien auf"
+"Lies Datei test.txt"
+
+### ASSISTANT
+🤖 LocalAgent-Pro hat deine Anfrage bearbeitet: 🔍 Datei lesen: 📄 Datei gelesen (Sandbox: /home/danijel-jd/localagent_sandbox/test.txt): Hi ✏️ Datei schreiben: ✅ Datei erstellt (Sandbox: /home/danijel-jd/localagent_sandbox/test.txt) 📝 39 Zeichen geschrieben 📂 Verzeichnis auflisten: ❌ Verzeichnis nicht gefunden: /home/danijel-jd/localagent_sandbox/OpenWebUI 🌐 Web-Request: 🌐 Webseite geladen: http://127.0.0.1:8001/health 📊 Status: 200 {"allowed_domains":["*"],"model":"llama3.1","open_webui_port":3000,"sandbox":true,"sandbox_path":"/home/danijel-jd/localagent_sandbox","server_time":1763272778,"status":"ok"}

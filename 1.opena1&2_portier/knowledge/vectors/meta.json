@@ -1,0 +1,16 @@
+{
+  "embedding_model": "text-embedding-3-large",
+  "dimension": 3072,
+  "source": "OpenAI",
+  "vector_format": "float32",
+  "generator": "Portier / ELION Hyper-Dashboard 2.0",
+  "compatible_with": [
+    "opena1",
+    "opena2",
+    "opena20",
+    "tool_text_analyzer",
+    "tool_file_searcher"
+  ],
+  "last_update": "2025-11-21T00:00:00Z",
+  "strict": true
+}

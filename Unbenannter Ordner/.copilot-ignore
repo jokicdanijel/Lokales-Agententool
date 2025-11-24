@@ -1,0 +1,100 @@
+# .copilot-ignore
+# Verhindert, dass Copilot sensible oder irrelevante Dateien in Suggestions einbezieht
+
+# Secrets & Environment
+.env
+.env.*
+*.key
+*.pem
+*.crt
+*.pfx
+secrets/
+credentials/
+
+# Runtime & Temp
+runtime/
+.runtime/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+
+# Logs
+logs/
+*.log
+*.nohup.log
+
+# Databases
+finances.db
+*.sqlite
+*.sqlite3
+*.db
+
+# Archives & Safepoints (zu groß, nicht für Suggestions relevant)
+archivp/**/*.json
+archivp_store/**/*.json
+archivp_store.backup*/**
+
+# Process IDs
+*.pid
+pids/
+
+# OS-spezifisch
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# Backup & Conflicts
+_conflicts/
+*.backup
+*.bak
+*.old
+
+# Virtual Environments (bereits im Code, nicht für Suggestions)
+venv/
+venv*/
+.venv/
+env/
+ENV/
+
+# Git-intern (nicht relevant)
+.git/
+.gitignore
+
+# Large Data Files
+*.csv
+*.xlsx
+*.json.gz
+*.tar.gz
+*.zip
+
+# Node Modules (falls vorhanden)
+node_modules/
+
+# Docker Build Context (nicht relevant für Code-Suggestions)
+.dockerignore
+Dockerfile.*
+
+# Test Coverage Reports (analysiert, nicht editierbar)
+htmlcov/
+.coverage
+.pytest_cache/
+
+# System Cache
+.mypy_cache/
+.ruff_cache/
+.tox/

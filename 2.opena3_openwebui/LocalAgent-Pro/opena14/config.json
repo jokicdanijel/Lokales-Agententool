@@ -1,0 +1,12 @@
+{
+  "service_name": "opena14-calendar",
+  "agent_number": "14",
+  "function": "Calendar",
+  "port": 12359,
+  "bearer_token": "sk_opena14_cal_12359_strict_v1",
+  "environment": "production",
+  "logging_level": "INFO",
+  "safepoint_enabled": true,
+  "security_event_logging": true,
+  "created_at": "2025-11-24T12:34:47Z"
+}

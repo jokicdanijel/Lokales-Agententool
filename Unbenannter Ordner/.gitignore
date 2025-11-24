@@ -1,0 +1,83 @@
+# Python
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+.venv/
+venv/
+venv*/
+*.egg-info/
+dist/
+build/
+
+# Runtime
+.runtime/
+*.pid
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.tox/
+
+# IDE
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+
+# Secrets (CRITICAL)
+.env
+.env.local
+.env.*.local
+.env.production.local
+.env.full
+*.pem
+*.key
+*.pub
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Large files & backups
+*.tar.gz
+*.tar.xz
+*.zip
+*.deb
+Backup.zip
+backups/
+backups/**
+node_modules/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Large archive files (deleted for size optimization)
+*.deb
+*backup*.zip
+GitHubDesktop*
+
+# Files with spaces/special characters in name (use docs/ subdirectory instead)
+ChatGPT\ -\ Agent\ *
+\*\*Hinweis\*\*
+
+# Drawio backups
+docs/architektur/*.drawio.bak
+*.drawio.bak

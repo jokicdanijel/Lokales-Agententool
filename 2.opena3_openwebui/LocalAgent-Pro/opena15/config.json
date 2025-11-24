@@ -1,0 +1,12 @@
+{
+  "service_name": "opena15-html",
+  "agent_number": "15",
+  "function": "HTML",
+  "port": 12360,
+  "bearer_token": "sk_opena15_html_12360_strict_v1",
+  "environment": "production",
+  "logging_level": "INFO",
+  "safepoint_enabled": true,
+  "security_event_logging": true,
+  "created_at": "2025-11-24T12:34:47Z"
+}

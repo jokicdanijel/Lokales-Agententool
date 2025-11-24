@@ -1,0 +1,25 @@
+{
+  "ts": "2025-11-21T16:20:49.507867Z",
+  "src": "kb_feeder",
+  "dst": "knowledgebase",
+  "kind": "FEED_COMPLETE",
+  "body": {
+    "feeder_version": "1.0.0",
+    "timestamp": "2025-11-21T16:20:49.507597Z",
+    "statistics": {
+      "total_scanned": 777,
+      "new_entries": 536,
+      "duplicates_skipped": 241,
+      "categories": {
+        "data": 513,
+        "config": 2,
+        "documentation": 13,
+        "code": 6,
+        "database": 2
+      }
+    },
+    "kb_index_file": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/knowledgebase/kb_index.jsonl",
+    "kb_entries_total": 763
+  },
+  "strict": true
+}

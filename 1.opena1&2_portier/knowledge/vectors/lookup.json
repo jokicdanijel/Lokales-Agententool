@@ -1,0 +1,91 @@
+{
+  "documents": [
+    {
+      "document_id": "portier_architektur_core",
+      "vector_file": "knowledge/vectors/documents/portier_architektur_core.vec.json",
+      "source_document": "knowledge/processed/portier_architektur_core.md"
+    },
+    {
+      "document_id": "koordinator_spec_core",
+      "vector_file": "knowledge/vectors/documents/koordinator_spec_core.vec.json",
+      "source_document": "knowledge/processed/koordinator_spec_core.md"
+    },
+    {
+      "document_id": "archivator_spec_core",
+      "vector_file": "knowledge/vectors/documents/archivator_spec_core.vec.json",
+      "source_document": "knowledge/processed/archivator_spec_core.md"
+    },
+    {
+      "document_id": "option_2_flow_core",
+      "vector_file": "knowledge/vectors/documents/option_2_flow_core.vec.json",
+      "source_document": "knowledge/processed/option_2_flow_core.md"
+    },
+    {
+      "document_id": "port_policy_core",
+      "vector_file": "knowledge/vectors/documents/port_policy_core.vec.json",
+      "source_document": "knowledge/processed/port_policy_core.md"
+    },
+    {
+      "document_id": "safepoint_schema_core",
+      "vector_file": "knowledge/vectors/documents/safepoint_schema_core.vec.json",
+      "source_document": "knowledge/processed/safepoint_schema_core.md"
+    },
+    {
+      "document_id": "dashboard_integration_core",
+      "vector_file": "knowledge/vectors/documents/dashboard_integration_core.vec.json",
+      "source_document": "knowledge/processed/dashboard_integration_core.md"
+    },
+    {
+      "document_id": "openwebui_integration_core",
+      "vector_file": "knowledge/vectors/documents/openwebui_integration_core.vec.json",
+      "source_document": "knowledge/processed/openwebui_integration_core.md"
+    },
+    {
+      "document_id": "routing_telegram_webui",
+      "vector_file": "knowledge/vectors/documents/routing_telegram_webui.vec.json",
+      "source_document": "knowledge/processed/routing_telegram_webui.md"
+    },
+    {
+      "document_id": "dashboard_agent_core",
+      "vector_file": "knowledge/vectors/documents/dashboard_agent_core.vec.json",
+      "source_document": "knowledge/processed/dashboard_agent_core.md"
+    },
+    {
+      "document_id": "openwebui_connector_core",
+      "vector_file": "knowledge/vectors/documents/openwebui_connector_core.vec.json",
+      "source_document": "knowledge/processed/openwebui_connector_core.md"
+    },
+    {
+      "document_id": "master_prompts_core",
+      "vector_file": "knowledge/vectors/documents/master_prompts_core.vec.json",
+      "source_document": "knowledge/processed/master_prompts_core.md"
+    },
+    {
+      "document_id": "logik_core",
+      "vector_file": "knowledge/vectors/documents/logik_core.vec.json",
+      "source_document": "knowledge/processed/logik_core.md"
+    },
+    {
+      "document_id": "docker_openwebui_core",
+      "vector_file": "knowledge/vectors/documents/docker_openwebui_core.vec.json",
+      "source_document": "knowledge/processed/docker_openwebui_core.md"
+    },
+    {
+      "document_id": "business_callassistant_core",
+      "vector_file": "knowledge/vectors/documents/business_callassistant_core.vec.json",
+      "source_document": "knowledge/processed/business_callassistant_core.md"
+    },
+    {
+      "document_id": "system_chat_exports_core",
+      "vector_file": "knowledge/vectors/documents/system_chat_exports_core.vec.json",
+      "source_document": "knowledge/processed/system_chat_exports_core.md"
+    },
+    {
+      "document_id": "dashboard_config_core",
+      "vector_file": "knowledge/vectors/documents/dashboard_config_core.vec.json",
+      "source_document": "knowledge/processed/dashboard_config_core.md"
+    }
+  ],
+  "created_at": "2025-11-21T00:00:00Z",
+  "strict": true
+}

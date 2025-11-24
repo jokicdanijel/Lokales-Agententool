@@ -1,9 +1,9 @@
 # 🚀 ELION Upgrade Guide v0.6.37
 
-**Target:** OpenWebUI v0.6.37 Integration with LocalAgent-Pro  
-**Date:** 24. November 2025  
-**Status:** Production-Ready  
-**Author:** GitHub Copilot  
+**Target:** OpenWebUI v0.6.37 Integration with LocalAgent-Pro
+**Date:** 24. November 2025
+**Status:** Production-Ready
+**Author:** GitHub Copilot
 
 ---
 
@@ -401,7 +401,7 @@ cd LocalAgent-Pro
 for i in {1..20}; do
   AGENT="opena$i"
   PORT=$((12344 + i - 1))
-  
+
   if [[ -f "$AGENT/config.json" ]]; then
     # Update port (using jq if available, else Python)
     if command -v jq &>/dev/null; then
@@ -691,6 +691,6 @@ echo "✅ Rollback complete"
 
 ---
 
-**Status:** ✅ COMPLETE - Ready for deployment  
-**Last Updated:** 24. November 2025  
+**Status:** ✅ COMPLETE - Ready for deployment
+**Last Updated:** 24. November 2025
 **Version:** 0.6.37

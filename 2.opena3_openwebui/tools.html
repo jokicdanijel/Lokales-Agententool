@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenA3 - Tools Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* IMPORTED FROM BASE.HTML */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* NAVIGATION BAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .nav-brand {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-brand:hover {
+            opacity: 0.9;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            transition: opacity 0.3s, border-bottom 0.3s;
+            font-weight: 500;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .nav-links a.active {
+            border-bottom: 2px solid rgba(255, 255, 255, 1);
+        }
+
+        /* HEADER */
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 20px 0;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        /* CARDS / TOOL CARDS */
+        .tool-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s, border-left 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .tool-card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tool-card p {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        /* FORMS & INPUTS */
+        .tool-input {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .tool-input input,
+        .tool-input textarea,
+        .tool-input select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95em;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .tool-input input:focus,
+        .tool-input textarea:focus,
+        .tool-input select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .tool-input textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .tool-input label {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9em;
+        }
+
+        /* BUTTONS */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        /* RESULT PANELS */
+        .result-panel {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+            display: none;
+            word-break: break-all;
+            white-space: pre-wrap;
+        }
+
+        .result-panel.visible {
+            display: block;
+        }
+
+        .result-panel.error {
+            color: #ff6b6b;
+        }
+
+        .result-panel.warning {
+            color: #ffd93d;
+        }
+
+        /* GRIDS */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 30px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 50px;
+        }
+
+        footer p {
+            margin-bottom: 5px;
+        }
+
+        footer a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        footer a:hover {
+            opacity: 0.8;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .nav-links a {
+                display: block;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="navbar">
+        <a href="index.html" class="nav-brand">🤖 OpenA3</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link" data-page="index">📊 Dashboard</a>
+            <a href="tools.html" class="nav-link active" data-page="tools">🛠️ Tools</a>
+            <a href="#" onclick="alert('Dokumentation wird geladen...')" class="nav-link">📖 Docs</a>
+            <a href="#" onclick="alert('Einstellungen werden geladen...')" class="nav-link">⚙️ Einstellungen</a>
+        </div>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="container">
+        <header>
+            <h1>🛠️ OpenA3 Tools Panel</h1>
+            <p>Vollständige Tool-Suite für Datei-, System- und Datenoperationen</p>
+        </header>
+
+        <div class="tools-grid">
+            <!-- 1. Write File Tool -->
+            <div class="tool-card" data-tool="write_file">
+                <h2>📝 write_file</h2>
+                <p>Erstelle oder überschreibe Dateien mit beliebigem Inhalt</p>
+                <div class="tool-input">
+                    <label>Dateiname:</label>
+                    <input type="text" id="write_filename" placeholder="path/to/file.txt" />
+                    <label>Inhalt:</label>
+                    <textarea id="write_content" placeholder="Datei-Inhalt"></textarea>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="executeWriteFile()">Speichern</button>
+                    <button class="btn btn-secondary" onclick="clearWriteForm()">Zurücksetzen</button>
+                </div>
+                <div class="result-panel" id="write_result"></div>
+            </div>
+
+            <!-- 2. Read File Tool -->
+            <div class="tool-card" data-tool="read_file">
+                <h2>📖 read_file</h2>
+                <p>Lese den Inhalt von Dateien</p>
+                <div class="tool-input">
+                    <label>Dateiname:</label>
+                    <input type="text" id="read_filename" placeholder="path/to/file.txt" />
+                    <label>Max. Zeilen (optional):</label>
+                    <input type="number" id="read_limit" placeholder="Keine Limit" min="1" />
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="executeReadFile()">Lesen</button>
+                </div>
+                <div class="result-panel" id="read_result"></div>
+            </div>
+
+            <!-- 3. Delete File Tool -->
+            <div class="tool-card" data-tool="delete_file">
+                <h2>🗑️ delete_file</h2>
+                <p>Lösche Dateien oder Verzeichnisse</p>
+                <div class="tool-input">
+                    <label>Dateiname/Verzeichnis:</label>
+                    <input type="text" id="delete_path" placeholder="path/to/file.txt" />
+                    <label>
+                        <input type="checkbox" id="delete_recursive" /> Rekursiv (für Ordner)
+                    </label>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="executeDeleteFile()">Löschen</button>
+                </div>
+                <div class="result-panel" id="delete_result"></div>
+            </div>
+
+            <!-- 4. Shell Execute Tool -->
+            <div class="tool-card" data-tool="shell_exec">
+                <h2>💻 shell_exec</h2>
+                <p>Führe Shell-Befehle aus (mit Sicherheitswhitelisting)</p>
+                <div class="tool-input">
+                    <label>Befehl:</label>
+                    <input type="text" id="shell_command" placeholder="ls -la /home/user" />
+                    <label for="shell_timeout">Timeout (Sekunden):</label>
+                    <input type="number" id="shell_timeout" title="Timeout in Sekunden" value="10" min="1" max="60" />
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="executeShellCommand()">Ausführen</button>
+                </div>
+                <div class="result-panel" id="shell_result"></div>
+            </div>
+
+            <!-- 5. Fetch Webpage Tool -->
+            <div class="tool-card" data-tool="fetch_webpage">
+                <h2>🌐 fetch_webpage</h2>
+                <p>Rufe Webseiten-Inhalte ab und parse HTML</p>
+                <div class="tool-input">
+                    <label>URL:</label>
+                    <input type="url" id="fetch_url" placeholder="https://example.com" />
+                    <label for="fetch_parser">Parser:</label>
+                    <select id="fetch_parser" title="Wähle den Parser-Typ aus" aria-label="Parser-Typ für Webseiten">
+                        <option value="html">HTML</option>
+                        <option value="text">Text</option>
+                        <option value="json">JSON</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="executeFetchWebpage()">Abrufen</button>
+                </div>
+                <div class="result-panel" id="fetch_result"></div>
+            </div>
+
+            <!-- 6. Execute Query Tool -->
+            <div class="tool-card" data-tool="execute_query">
+                <h2>📊 execute_query</h2>
+                <p>Führe Datenbank-Abfragen aus (SQLite, JSON)</p>
+                <div class="tool-input">
+                    <label for="query_type">Query-Typ:</label>
+                    <select id="query_type" title="Wähle den Query-Typ aus" aria-label="Art der Datenbankabfrage">
+                        <option value="sql">SQL</option>
+                        <option value="json">JSON Query</option>
+                        <option value="csv">CSV Parse</option>
+                    </select>
+                    <label>Abfrage:</label>
+                    <textarea id="query_text" placeholder="SELECT * FROM users;"></textarea>
+                    <label>Datei (optional):</label>
+                    <input type="text" id="query_file" placeholder="/path/to/database.db" />
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="executeQuery()">Ausführen</button>
+                </div>
+                <div class="result-panel" id="query_result"></div>
+            </div>
+
+            <!-- 7. List Directory Tool -->
+            <div class="tool-card" data-tool="list_directory">
+                <h2>🔍 list_directory</h2>
+                <p>Zeige Verzeichnis-Inhalte mit Eigenschaften</p>
+                <div class="tool-input">
+                    <label>Verzeichnis-Pfad:</label>
+                    <input type="text" id="list_path" placeholder="/home/user" value="." />
+                    <label>
+                        <input type="checkbox" id="list_recursive" /> Rekursiv
+                    </label>
+                    <label>Filter (optional):</label>
+                    <input type="text" id="list_filter" placeholder="*.txt" />
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="executeListDirectory()">Auflisten</button>
+                </div>
+                <div class="result-panel" id="list_result"></div>
+            </div>
+
+            <!-- 8. Execute Function Tool -->
+            <div class="tool-card" data-tool="execute_function">
+                <h2>⚡ execute_function</h2>
+                <p>Führe Python/JavaScript Funktionen aus</p>
+                <div class="tool-input">
+                    <label for="func_language">Sprache:</label>
+                    <select id="func_language" title="Wähle die Programmiersprache aus" aria-label="Programmiersprache für Code-Ausführung">
+                        <option value="python">Python</option>
+                        <option value="javascript">JavaScript</option>
+                    </select>
+                    <label>Code:</label>
+                    <textarea id="func_code" placeholder="def hello():\n    return 'Hello, World!'"></textarea>
+                    <label>Funktion aufrufen:</label>
+                    <input type="text" id="func_name" placeholder="hello()" />
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="executeFunction()">Ausführen</button>
+                </div>
+                <div class="result-panel" id="func_result"></div>
+            </div>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <footer>
+            <p>&copy; 2025 OpenA3 - AI Agent Dashboard System</p>
+            <p><small>Version 3.0 | <a href="#">Dokumentation</a> | <a href="#">Support</a> | <a href="#">GitHub</a></small></p>
+        </footer>
+    </div>
+
+    <script>
+        const BASE_URL = "http://127.0.0.1:8001";
+
+        // Helper Functions
+        function showResult(elementId, content, type = 'info') {
+            const el = document.getElementById(elementId);
+            el.textContent = content;
+            el.classList.add('visible');
+            el.classList.remove('error', 'warning');
+            if (type === 'error') el.classList.add('error');
+            if (type === 'warning') el.classList.add('warning');
+        }
+
+        function clearResult(elementId) {
+            const el = document.getElementById(elementId);
+            el.classList.remove('visible');
+            el.textContent = '';
+        }
+
+        // 1. Write File
+        async function executeWriteFile() {
+            const filename = document.getElementById('write_filename').value;
+            const content = document.getElementById('write_content').value;
+
+            if (!filename) {
+                showResult('write_result', 'Fehler: Dateiname erforderlich', 'error');
+                return;
+            }
+
+            try {
+                showResult('write_result', 'Speichere Datei...', 'info');
+                const response = await fetch(`${BASE_URL}/v1/chat/completions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{ role: 'user', content: `Erstelle ${filename}\n${content}` }]
+                    })
+                });
+
+                const data = await response.json();
+                const result = data.choices?.[0]?.message?.content || 'Erfolg';
+                showResult('write_result', `✅ ${result}`, 'success');
+            } catch (error) {
+                showResult('write_result', `❌ Fehler: ${error.message}`, 'error');
+            }
+        }
+
+        function clearWriteForm() {
+            document.getElementById('write_filename').value = '';
+            document.getElementById('write_content').value = '';
+            clearResult('write_result');
+        }
+
+        // 2. Read File
+        async function executeReadFile() {
+            const filename = document.getElementById('read_filename').value;
+
+            if (!filename) {
+                showResult('read_result', 'Fehler: Dateiname erforderlich', 'error');
+                return;
+            }
+
+            try {
+                showResult('read_result', 'Lese Datei...', 'info');
+                const response = await fetch(`${BASE_URL}/v1/chat/completions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{ role: 'user', content: `Lies ${filename}` }]
+                    })
+                });
+
+                const data = await response.json();
+                const content = data.choices?.[0]?.message?.content || 'Keine Inhalte';
+                showResult('read_result', `✅ ${content}`, 'success');
+            } catch (error) {
+                showResult('read_result', `❌ Fehler: ${error.message}`, 'error');
+            }
+        }
+
+        // 3. Delete File
+        async function executeDeleteFile() {
+            const path = document.getElementById('delete_path').value;
+
+            if (!path) {
+                showResult('delete_result', 'Fehler: Pfad erforderlich', 'error');
+                return;
+            }
+
+            try {
+                showResult('delete_result', 'Lösche Datei...', 'info');
+                const response = await fetch(`${BASE_URL}/v1/chat/completions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{ role: 'user', content: `Lösche ${path}` }]
+                    })
+                });
+
+                const data = await response.json();
+                const result = data.choices?.[0]?.message?.content || 'Gelöscht';
+                showResult('delete_result', `✅ ${result}`, 'success');
+                document.getElementById('delete_path').value = '';
+            } catch (error) {
+                showResult('delete_result', `❌ Fehler: ${error.message}`, 'error');
+            }
+        }
+
+        // 4. Shell Execute
+        async function executeShellCommand() {
+            const command = document.getElementById('shell_command').value;
+
+            if (!command) {
+                showResult('shell_result', 'Fehler: Befehl erforderlich', 'error');
+                return;
+            }
+
+            try {
+                showResult('shell_result', 'Führe Befehl aus...', 'info');
+                const response = await fetch(`${BASE_URL}/v1/chat/completions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{ role: 'user', content: `Führe aus: ${command}` }]
+                    })
+                });
+
+                const data = await response.json();
+                const output = data.choices?.[0]?.message?.content || 'Keine Ausgabe';
+                showResult('shell_result', `✅ ${output}`, 'success');
+            } catch (error) {
+                showResult('shell_result', `❌ Fehler: ${error.message}`, 'error');
+            }
+        }
+
+        // 5. Fetch Webpage
+        async function executeFetchWebpage() {
+            const url = document.getElementById('fetch_url').value;
+            const parser = document.getElementById('fetch_parser').value;
+
+            if (!url) {
+                showResult('fetch_result', 'Fehler: URL erforderlich', 'error');
+                return;
+            }
+
+            try {
+                showResult('fetch_result', 'Rufe Seite ab...', 'info');
+                const response = await fetch(`${BASE_URL}/v1/chat/completions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{ role: 'user', content: `Rufe ab (${parser}): ${url}` }]
+                    })
+                });
+
+                const data = await response.json();
+                const content = data.choices?.[0]?.message?.content || 'Keine Inhalte';
+                showResult('fetch_result', `✅ ${content.substring(0, 500)}...`, 'success');
+            } catch (error) {
+                showResult('fetch_result', `❌ Fehler: ${error.message}`, 'error');
+            }
+        }
+
+        // 6. Execute Query
+        async function executeQuery() {
+            const type = document.getElementById('query_type').value;
+            const query = document.getElementById('query_text').value;
+
+            if (!query) {
+                showResult('query_result', 'Fehler: Abfrage erforderlich', 'error');
+                return;
+            }
+
+            try {
+                showResult('query_result', 'Führe Abfrage aus...', 'info');
+                const response = await fetch(`${BASE_URL}/v1/chat/completions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{ role: 'user', content: `Führe ${type} aus: ${query}` }]
+                    })
+                });
+
+                const data = await response.json();
+                const result = data.choices?.[0]?.message?.content || 'Keine Ergebnisse';
+                showResult('query_result', `✅ ${result}`, 'success');
+            } catch (error) {
+                showResult('query_result', `❌ Fehler: ${error.message}`, 'error');
+            }
+        }
+
+        // 7. List Directory
+        async function executeListDirectory() {
+            const path = document.getElementById('list_path').value || '.';
+
+            try {
+                showResult('list_result', 'Auflisten des Verzeichnisses...', 'info');
+                const response = await fetch(`${BASE_URL}/v1/chat/completions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{ role: 'user', content: `Liste auf: ${path}` }]
+                    })
+                });
+
+                const data = await response.json();
+                const result = data.choices?.[0]?.message?.content || 'Keine Einträge';
+                showResult('list_result', `✅ ${result}`, 'success');
+            } catch (error) {
+                showResult('list_result', `❌ Fehler: ${error.message}`, 'error');
+            }
+        }
+
+        // 8. Execute Function
+        async function executeFunction() {
+            const language = document.getElementById('func_language').value;
+            const code = document.getElementById('func_code').value;
+            const funcName = document.getElementById('func_name').value;
+
+            if (!code || !funcName) {
+                showResult('func_result', 'Fehler: Code und Funktionsname erforderlich', 'error');
+                return;
+            }
+
+            try {
+                showResult('func_result', 'Führe Funktion aus...', 'info');
+                const response = await fetch(`${BASE_URL}/v1/chat/completions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{
+                            role: 'user',
+                            content: `Führe ${language} aus:\n${code}\n\nAufrufen: ${funcName}`
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                const result = data.choices?.[0]?.message?.content || 'Keine Ausgabe';
+                showResult('func_result', `✅ ${result}`, 'success');
+            } catch (error) {
+                showResult('func_result', `❌ Fehler: ${error.message}`, 'error');
+            }
+        }
+
+        // Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.getAttribute('href').includes(currentPage) || (currentPage === 'tools.html' && link.getAttribute('data-page') === 'tools')) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "service_name": "opena17-homepage",
+  "agent_number": "17",
+  "function": "Homepage",
+  "port": 12362,
+  "bearer_token": "sk_opena17_home_12362_strict_v1",
+  "environment": "production",
+  "logging_level": "INFO",
+  "safepoint_enabled": true,
+  "security_event_logging": true,
+  "created_at": "2025-11-24T12:34:47Z"
+}

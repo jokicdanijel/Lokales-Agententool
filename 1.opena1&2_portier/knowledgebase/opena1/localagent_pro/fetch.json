@@ -1,0 +1,14 @@
+{
+  "name": "fetch",
+  "description": "Ruft den HTML-Inhalt einer URL ab, sofern die Domain in der Whitelist erlaubt ist.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "url": {
+        "type": "string",
+        "description": "Die vollständige URL, die abgefragt werden soll."
+      }
+    },
+    "required": ["url"]
+  }
+}

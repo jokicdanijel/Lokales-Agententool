@@ -1,553 +1,1532 @@
-source,destination
-OPENWEBUI_INTEGRATION_GUIDE.md,docs/OPENWEBUI_INTEGRATION_GUIDE.md
-structure_checkpoint.json,configs/structure_checkpoint.json
-check_health.sh,scripts/check_health.sh
-BRIDGE_PHASE_1_SUMMARY.md,docs/BRIDGE_PHASE_1_SUMMARY.md
-PLAN_opena7_WhatsApp.md,docs/PLAN_opena7_WhatsApp.md
-PHASE_4_1_ARCHITECTURE_OVERVIEW.md,docs/PHASE_4_1_ARCHITECTURE_OVERVIEW.md
-README_PHASE5_COMPLETE.md,docs/README_PHASE5_COMPLETE.md
-COORDINATOR_ARCHIVATOR_SETUP.md,docs/COORDINATOR_ARCHIVATOR_SETUP.md
-EXECUTIVE_SUMMARY.md,docs/EXECUTIVE_SUMMARY.md
-PLAN_opena15_Shop.md,docs/PLAN_opena15_Shop.md
-AGENT_TEST_RESULTS.md,_conflicts/2025-11-09_032949/AGENT_TEST_RESULTS.md
-PHASE_5_DETAILED_PLAN.md,docs/PHASE_5_DETAILED_PLAN.md
-create_all_agents.sh,scripts/create_all_agents.sh
-tool-server-export.json,configs/tool-server-export.json
-PLAN_opena19_Dashboard.md,docs/PLAN_opena19_Dashboard.md
-PLAN_opena11_SocialMedia.md,docs/PLAN_opena11_SocialMedia.md
-PLAN_opena6_Email.md,docs/PLAN_opena6_Email.md
-LATEST_UPDATES.md,_conflicts/2025-11-09_032949/LATEST_UPDATES.md
-DAILY_SUMMARY_2025-11-08.md,docs/DAILY_SUMMARY_2025-11-08.md
-PRODUCTION_STATUS_REPORT_NOV9.md,docs/PRODUCTION_STATUS_REPORT_NOV9.md
-DEPLOYMENT_STATUS_NOV8.md,docs/DEPLOYMENT_STATUS_NOV8.md
-README_PHASE_4_1_LAUNCH.md,docs/README_PHASE_4_1_LAUNCH.md
-PHASE_4_FINAL_STATUS_REPORT.md,docs/PHASE_4_FINAL_STATUS_REPORT.md
-README.md,docs/README.md
-PLAN_opena8_Telephone.md,docs/PLAN_opena8_Telephone.md
-quickstart.sh,scripts/quickstart.sh
-MASTER_PLAN_ALL_AGENTS.md,docs/MASTER_PLAN_ALL_AGENTS.md
-SPRINT_UPDATE_2025-11-08.md,docs/SPRINT_UPDATE_2025-11-08.md
-PLAN_opena18_Trading.md,docs/PLAN_opena18_Trading.md
-PLAN_opena17_LocalArchive.md,docs/PLAN_opena17_LocalArchive.md
-ARCHITECTURE.md,docs/ARCHITECTURE.md
-verify_phase_4.sh,scripts/verify_phase_4.sh
-create_agents.py,src/pkg/create_agents.py
-JWT_AUTHENTICATION_GUIDE.md,docs/JWT_AUTHENTICATION_GUIDE.md
-PHASE_5_IMPLEMENTATION_COMPLETE.md,docs/PHASE_5_IMPLEMENTATION_COMPLETE.md
-PHASE_4_1_FINAL_STATUS_REPORT.md,docs/PHASE_4_1_FINAL_STATUS_REPORT.md
-PLAN_opena12_Influencer.md,docs/PLAN_opena12_Influencer.md
-PROJECT_COMPLETE.md,docs/PROJECT_COMPLETE.md
-AGENT_STRUCTURE_PLAN.md,docs/AGENT_STRUCTURE_PLAN.md
-DAILY_PROGRESS_NOV09.md,docs/DAILY_PROGRESS_NOV09.md
-PLAN_opena9_TelephoneCall.md,docs/PLAN_opena9_TelephoneCall.md
-PLAN_opena16_Homepage.md,docs/PLAN_opena16_Homepage.md
-PHASE_4_SUMMARY.md,docs/PHASE_4_SUMMARY.md
-PHASE_5_FINAL_STATUS.md,docs/PHASE_5_FINAL_STATUS.md
-PHASE_2_COMPLETION.md,docs/PHASE_2_COMPLETION.md
-PHASE_3_COMPLETION.md,docs/PHASE_3_COMPLETION.md
-portier_fs_bridge.py,src/pkg/portier_fs_bridge.py
-PLAN_opena13_Calendar.md,docs/PLAN_opena13_Calendar.md
-PHASE_4_1_EXECUTIVE_SUMMARY.md,docs/PHASE_4_1_EXECUTIVE_SUMMARY.md
-DEPLOYMENT_CHECKLIST.md,docs/DEPLOYMENT_CHECKLIST.md
-PLAN_opena14_HTML.md,docs/PLAN_opena14_HTML.md
-PLAN_opena4_VSCode.md,docs/PLAN_opena4_VSCode.md
-PLAN_opena5_Browser.md,docs/PLAN_opena5_Browser.md
-PROJECT_COMPLETION_SUMMARY.md,docs/PROJECT_COMPLETION_SUMMARY.md
-PLAN_opena10_Unlock.md,docs/PLAN_opena10_Unlock.md
-violations_report.md,docs/violations_report.md
-PHASE_4_PRODUCTION_READY.md,docs/PHASE_4_PRODUCTION_READY.md
-STRUCTURE_AUDIT_2025-11-08.md,docs/STRUCTURE_AUDIT_2025-11-08.md
-PHASE_4_1_DEPLOYMENT_CHECKLIST.md,docs/PHASE_4_1_DEPLOYMENT_CHECKLIST.md
-path_index.json,configs/path_index.json
-PHASE_4_COMPLETION.md,docs/PHASE_4_COMPLETION.md
-19.dashboard_agent/main_opena13_calendar.py,src/pkg/main_opena13_calendar.py
-19.dashboard_agent/main_opena5_browser.py,src/pkg/main_opena5_browser.py
-19.dashboard_agent/bridge_tokens.json,configs/bridge_tokens.json
-19.dashboard_agent/main_opena11_social_media.py,src/pkg/main_opena11_social_media.py
-19.dashboard_agent/config.py,src/pkg/config.py
-19.dashboard_agent/ui_index.html,assets/ui_index.html
-19.dashboard_agent/pdi_core.py,src/pkg/pdi_core.py
-19.dashboard_agent/background_poller.py,src/pkg/background_poller.py
-19.dashboard_agent/main_kordp.py,src/pkg/main_kordp.py
-19.dashboard_agent/main_opena17_analytics.py,src/pkg/main_opena17_analytics.py
-19.dashboard_agent/main_opena15_shop.py,src/pkg/main_opena15_shop.py
-19.dashboard_agent/main_opena_finance.py,src/pkg/main_opena_finance.py
-19.dashboard_agent/bridge_schema.json,configs/bridge_schema.json
-19.dashboard_agent/main_opena8_telephone.py,src/pkg/main_opena8_telephone.py
-19.dashboard_agent/start_opena2.sh,scripts/start_opena2.sh
-19.dashboard_agent/main_opena16_crm.py,src/pkg/main_opena16_crm.py
-19.dashboard_agent/main_opena4_telegram.py,src/pkg/main_opena4_telegram.py
-19.dashboard_agent/jwt_auth.py,src/pkg/jwt_auth.py
-19.dashboard_agent/agent_registry_opena1.py,src/pkg/agent_registry_opena1.py
-19.dashboard_agent/README.md,docs/README.md
-19.dashboard_agent/sse_bus.py,src/pkg/sse_bus.py
-19.dashboard_agent/main_opena9_call_tracking.py,src/pkg/main_opena9_call_tracking.py
-19.dashboard_agent/browser_selenium.py,src/pkg/browser_selenium.py
-19.dashboard_agent/bridge_api.py,src/pkg/bridge_api.py
-19.dashboard_agent/main_opena6_email.py,src/pkg/main_opena6_email.py
-19.dashboard_agent/openwebui_adapter.py,src/pkg/openwebui_adapter.py
-19.dashboard_agent/main_opena12_influencer.py,src/pkg/main_opena12_influencer.py
-19.dashboard_agent/vscode_ssh.py,src/pkg/vscode_ssh.py
-19.dashboard_agent/security.py,src/pkg/security.py
-19.dashboard_agent/main_openwebui_agent.py,src/pkg/main_openwebui_agent.py
-19.dashboard_agent/main_opena18_dashboard.py,src/pkg/main_opena18_dashboard.py
-19.dashboard_agent/main_opena14_html.py,src/pkg/main_opena14_html.py
-19.dashboard_agent/main_opena19_workflow.py,src/pkg/main_opena19_workflow.py
-19.dashboard_agent/main_opena10_unlock.py,src/pkg/main_opena10_unlock.py
-19.dashboard_agent/main_opena7_whatsapp.py,src/pkg/main_opena7_whatsapp.py
-19.dashboard_agent/openwebui_integration.py,src/pkg/openwebui_integration.py
-19.dashboard_agent/main_opena1.py,src/pkg/main_opena1.py
-19.dashboard_agent/main_opena2.py,src/pkg/main_opena2.py
-19.dashboard_agent/README_STACK_START.md,docs/README_STACK_START.md
-19.dashboard_agent/safepoints.py,src/pkg/safepoints.py
-19.dashboard_agent/safepoints_latest.py,src/tests/safepoints_latest.py
-19.dashboard_agent/agent_registry.py,src/pkg/agent_registry.py
-19.dashboard_agent/ui_agent.html,assets/ui_agent.html
-19.dashboard_agent/main_opena4_vscode.py,src/pkg/main_opena4_vscode.py
-19.dashboard_agent/main_dashboard.py,src/pkg/main_dashboard.py
-19.dashboard_agent/SETUP_COMPLETE.md,docs/SETUP_COMPLETE.md
-19.dashboard_agent/main.py,src/pkg/main.py
-8.opena6_email/README.md,docs/README.md
-8.opena6_email/main.py,src/pkg/main.py
-16.opena14_html/README.md,docs/README.md
-16.opena14_html/main.py,src/pkg/main.py
-6.opena4_telegram/README.md,docs/README.md
-6.opena4_telegram/main.py,src/pkg/main.py
-21.opena19_workflow/README.md,docs/README.md
-21.opena19_workflow/main.py,src/pkg/main.py
-17.opena15_shop/README.md,docs/README.md
-17.opena15_shop/main.py,src/pkg/main.py
-2.openwebui/status.sh,scripts/status.sh
-2.openwebui/docker-agent.sh,scripts/docker-agent.sh
-2.openwebui/docker-compose.yml,configs/docker-compose.yml
-2.openwebui/stop.sh,scripts/stop.sh
-2.openwebui/README.md,docs/README.md
-2.openwebui/start.sh,scripts/start.sh
-11.opena9_call_tracking/README.md,docs/README.md
-11.opena9_call_tracking/main.py,src/pkg/main.py
-13.opena11_social_media/README.md,docs/README.md
-13.opena11_social_media/main.py,src/pkg/main.py
-6.mail_agent/main_agent.py,src/pkg/main_agent.py
-10.opena8_telephone/README.md,docs/README.md
-10.opena8_telephone/main.py,src/pkg/main.py
-14.opena12_influencer/README.md,docs/README.md
-14.opena12_influencer/main.py,src/pkg/main.py
-18.opena16_crm/README.md,docs/README.md
-18.opena16_crm/main.py,src/pkg/main.py
-12.opena10_unlock/README.md,docs/README.md
-12.opena10_unlock/main.py,src/pkg/main.py
-19.opena17_analytics/README.md,docs/README.md
-19.opena17_analytics/main.py,src/pkg/main.py
-9.opena7_whatsapp/README.md,docs/README.md
-9.opena7_whatsapp/main.py,src/pkg/main.py
-4.opena2_archivator/README.md,docs/README.md
-4.opena2_archivator/main.py,src/pkg/main.py
-15.opena13_calendar/README.md,docs/README.md
-15.opena13_calendar/main.py,src/pkg/main.py
-5.kordp_scheduler/README.md,docs/README.md
-5.kordp_scheduler/main.py,src/pkg/main.py
-7.whatsapp_agent/main_agent.py,src/pkg/main_agent.py
-scripts/structure_manager.py,src/pkg/structure_manager.py
-20.opena18_dashboard/README.md,docs/README.md
-20.opena18_dashboard/main.py,src/pkg/main.py
-7.opena5_browser/README.md,docs/README.md
-7.opena5_browser/main.py,src/pkg/main.py
-4.telegram_agent/main_agent.py,src/pkg/main_agent.py
-bin/start_openwebui_agent.sh,scripts/start_openwebui_agent.sh
-bin/stop_all.sh,scripts/stop_all.sh
-bin/start_all.sh,scripts/start_all.sh
-bin/kordp_ping.sh,scripts/kordp_ping.sh
-bin/verify_phase3.sh,scripts/verify_phase3.sh
-bin/status.sh,scripts/status.sh
-bin/system_mode_switch.sh,scripts/system_mode_switch.sh
-bin/bootstrap.sh,scripts/bootstrap.sh
-bin/write_ping.sh,scripts/write_ping.sh
-bin/logs.sh,scripts/logs.sh
-bin/clean_pycache.sh,scripts/clean_pycache.sh
-bin/start_agents_11_15.sh,scripts/start_agents_11_15.sh
-bin/validate_bridge.sh,scripts/validate_bridge.sh
-bin/start_agents_8_10.sh,scripts/start_agents_8_10.sh
-bin/health_matrix.sh,scripts/health_matrix.sh
-bin/agents_auto_register.sh,scripts/agents_auto_register.sh
-bin/_lib.sh,scripts/_lib.sh
-bin/openwebui_status.sh,scripts/openwebui_status.sh
-bin/agents_register.sh,scripts/agents_register.sh
-bin/port_kill_safeguard.sh,scripts/port_kill_safeguard.sh
-bin/log_tail.sh,scripts/log_tail.sh
-bin/env_probe.sh,scripts/env_probe.sh
-bin/health.sh,scripts/health.sh
-bin/stack_status_badge.sh,scripts/stack_status_badge.sh
-bin/openwebui_up.sh,scripts/openwebui_up.sh
-bin/verify_stack.sh,scripts/verify_stack.sh
-bin/env_bootstrap.sh,scripts/env_bootstrap.sh
-bin/archiv_last.sh,scripts/archiv_last.sh
-bin/ops.sh,scripts/ops.sh
-bin/sse_listen.sh,scripts/sse_listen.sh
-bin/openwebui_down.sh,scripts/openwebui_down.sh
-bin/register_openwebui.sh,scripts/register_openwebui.sh
-bin/reset_today.sh,scripts/reset_today.sh
-bin/check_ports.sh,scripts/check_ports.sh
-bin/print_token.sh,scripts/print_token.sh
-bin/check_env.sh,scripts/check_env.sh
-bin/ports.sh,scripts/ports.sh
-bin/fix_stack_now.sh,scripts/fix_stack_now.sh
-3.opena1_coordinator/README.md,docs/README.md
-3.opena1_coordinator/main.py,src/pkg/main.py
-5.vscode_agent/main_agent.py,src/pkg/main_agent.py
-agents/create_agents.sh,scripts/create_agents.sh
-1.portier_openai/MAC_DIR_SYSTEM.json,configs/MAC_DIR_SYSTEM.json
-1.portier_openai/env.sh,scripts/env.sh
-1.portier_openai/scanpython.py,src/pkg/scanpython.py
-1.portier_openai/README.md,docs/README.md
-1.portier_openai/code_generator.py,src/pkg/code_generator.py
-1.portier_openai/venv313_init.sh,scripts/venv313_init.sh
-1.portier_openai/preflight.sh,scripts/preflight.sh
-1.portier_openai/generate_macdir.py,src/pkg/generate_macdir.py
-1.portier_openai/preflight_fixed.sh,scripts/preflight_fixed.sh
-1.portier_openai/setup_venv313.sh,scripts/setup_venv313.sh
-19.dashboard_agent/api/core.py,src/pkg/core.py
-19.dashboard_agent/docs/PDI_INTEGRATION.md,docs/PDI_INTEGRATION.md
-19.dashboard_agent/docs/OPERATIONS.md,docs/OPERATIONS.md
-19.dashboard_agent/docs/PDI_MANIFEST.md,docs/PDI_MANIFEST.md
-19.dashboard_agent/docs/TROUBLESHOOTING.md,docs/TROUBLESHOOTING.md
-19.dashboard_agent/docs/DEV_PROD_SWITCH_BLUEPRINT.md,docs/DEV_PROD_SWITCH_BLUEPRINT.md
-19.dashboard_agent/docs/BRIDGE_API.md,docs/BRIDGE_API.md
-19.dashboard_agent/docs/REGISTRY_MANAGEMENT.md,docs/REGISTRY_MANAGEMENT.md
-19.dashboard_agent/docs/OPENWEBUI_INTEGRATION.md,docs/OPENWEBUI_INTEGRATION.md
-19.dashboard_agent/docs/OPENWEBUI_API.md,docs/OPENWEBUI_API.md
-19.dashboard_agent/docs/PDI_CHECKLIST.md,docs/PDI_CHECKLIST.md
-19.dashboard_agent/docs/OPENWEBUI_INTEGRATION_COMPLETE.md,docs/OPENWEBUI_INTEGRATION_COMPLETE.md
-19.dashboard_agent/docs/OPENWEBUI_TODO.md,docs/OPENWEBUI_TODO.md
-19.dashboard_agent/opena3/openwebui_agent.py,src/pkg/openwebui_agent.py
-19.dashboard_agent/opena3/__init__.py,src/pkg/__init__.py
-19.dashboard_agent/backups/main_opena5_browser.py,src/pkg/main_opena5_browser.py
-19.dashboard_agent/backups/main_opena_finance.py,src/pkg/main_opena_finance.py
-19.dashboard_agent/backups/main_opena8_telephone.py,src/pkg/main_opena8_telephone.py
-19.dashboard_agent/backups/main_opena4_telegram.py,src/pkg/main_opena4_telegram.py
-19.dashboard_agent/backups/main_opena9_call_tracking.py,src/pkg/main_opena9_call_tracking.py
-19.dashboard_agent/backups/main_opena6_email.py,src/pkg/main_opena6_email.py
-19.dashboard_agent/backups/main_opena10_unlock.py,src/pkg/main_opena10_unlock.py
-19.dashboard_agent/backups/main_opena7_whatsapp.py,src/pkg/main_opena7_whatsapp.py
-19.dashboard_agent/backups/main_opena1.py,src/pkg/main_opena1.py
-19.dashboard_agent/backups/main_opena2.py,src/pkg/main_opena2.py
-19.dashboard_agent/backups/main_opena4_vscode.py,src/pkg/main_opena4_vscode.py
-19.dashboard_agent/tests/test_opena4_telegram.sh,_conflicts/2025-11-09_032949/test_opena4_telegram.sh
-19.dashboard_agent/tests/test_jwt_auth.py,_conflicts/2025-11-09_032949/test_jwt_auth.py
-19.dashboard_agent/tests/verify_phase2.sh,scripts/verify_phase2.sh
-19.dashboard_agent/tests/test_opena_finance.sh,_conflicts/2025-11-09_032949/test_opena_finance.sh
-19.dashboard_agent/tests/test_opena4_vscode.py,_conflicts/2025-11-09_032949/test_opena4_vscode.py
-19.dashboard_agent/tests/test_opena5_browser.py,_conflicts/2025-11-09_032949/test_opena5_browser.py
-19.dashboard_agent/tests/test_phase5.py,_conflicts/2025-11-09_032949/test_phase5.py
-19.dashboard_agent/tests/e2e_integration.sh,scripts/e2e_integration.sh
-19.dashboard_agent/tests/test_phase_4_agents.py,_conflicts/2025-11-09_032949/test_phase_4_agents.py
-19.dashboard_agent/tests/test_bridge_api.py,_conflicts/2025-11-09_032949/test_bridge_api.py
-19.dashboard_agent/tests/test_archivator.py,_conflicts/2025-11-09_032949/test_archivator.py
-19.dashboard_agent/tests/test_openwebui_agent.py,_conflicts/2025-11-09_032949/test_openwebui_agent.py
-19.dashboard_agent/tests/test_opena10_unlock.py,_conflicts/2025-11-09_032949/test_opena10_unlock.py
-19.dashboard_agent/tests/test_opena9_call_tracking.py,_conflicts/2025-11-09_032949/test_opena9_call_tracking.py
-19.dashboard_agent/tests/test_opena8_telephone.py,_conflicts/2025-11-09_032949/test_opena8_telephone.py
-19.dashboard_agent/scripts/curl_examples.sh,_conflicts/2025-11-09_032949/curl_examples.sh
-19.dashboard_agent/scripts/register_agents.py,src/pkg/register_agents.py
-19.dashboard_agent/scripts/test_openwebui.py,_conflicts/2025-11-09_032949/test_openwebui.py
-19.dashboard_agent/scripts/seed_openwebui.py,src/pkg/seed_openwebui.py
-19.dashboard_agent/scripts/run_production.sh,scripts/run_production.sh
-19.dashboard_agent/scripts/migrate_data.py,src/pkg/migrate_data.py
-19.dashboard_agent/templates/error.html,assets/error.html
-19.dashboard_agent/templates/agent.html,assets/agent.html
-19.dashboard_agent/templates/base.html,assets/base.html
-19.dashboard_agent/templates/dashboard.html,assets/dashboard.html
-19.dashboard_agent/bin/start_opena5_browser.sh,scripts/start_opena5_browser.sh
-19.dashboard_agent/bin/stop_all.sh,scripts/stop_all.sh
-19.dashboard_agent/bin/start_all.sh,scripts/start_all.sh
-19.dashboard_agent/bin/start_openwebui_adapter.sh,scripts/start_openwebui_adapter.sh
-19.dashboard_agent/bin/start_opena_finance.sh,scripts/start_opena_finance.sh
-19.dashboard_agent/bin/start_opena4_vscode.sh,scripts/start_opena4_vscode.sh
-19.dashboard_agent/bin/start_opena3.sh,scripts/start_opena3.sh
-19.dashboard_agent/bin/clean_pycache.sh,scripts/clean_pycache.sh
-19.dashboard_agent/bin/start_opena2.sh,scripts/start_opena2.sh
-19.dashboard_agent/bin/start_opena4_telegram.sh,scripts/start_opena4_telegram.sh
-19.dashboard_agent/bin/start_agents_5_7.sh,scripts/start_agents_5_7.sh
-19.dashboard_agent/bin/agents_auto_register.sh,scripts/agents_auto_register.sh
-19.dashboard_agent/bin/openwebui_status.sh,scripts/openwebui_status.sh
-19.dashboard_agent/bin/agents_register.sh,scripts/agents_register.sh
-19.dashboard_agent/bin/log_tail.sh,scripts/log_tail.sh
-19.dashboard_agent/bin/verify_stack.sh,scripts/verify_stack.sh
-19.dashboard_agent/bin/env_bootstrap.sh,scripts/env_bootstrap.sh
-19.dashboard_agent/bin/ops.sh,scripts/ops.sh
-19.dashboard_agent/bin/start_kordp.sh,scripts/start_kordp.sh
-19.dashboard_agent/bin/start_opena19.sh,scripts/start_opena19.sh
-19.dashboard_agent/bin/reset_today.sh,scripts/reset_today.sh
-19.dashboard_agent/bin/check_ports.sh,scripts/check_ports.sh
-19.dashboard_agent/bin/start_opena1.sh,scripts/start_opena1.sh
-19.dashboard_agent/bin/print_token.sh,scripts/print_token.sh
-19.dashboard_agent/docs/PDI/MANIFEST_V1_0_FINAL.md,docs/MANIFEST_V1_0_FINAL.md
-19.dashboard_agent/docs/PDI/PHASE_4_QUICKSTART.md,docs/PHASE_4_QUICKSTART.md
-19.dashboard_agent/docs/PDI/README.md,docs/README.md
-19.dashboard_agent/docs/PDI/validation_report.md,docs/validation_report.md
-19.dashboard_agent/docs/PDI/project_manifest.md,docs/project_manifest.md
-19.dashboard_agent/docs/PDI/VALIDATION_FRAMEWORK.md,docs/VALIDATION_FRAMEWORK.md
-19.dashboard_agent/docs/PDI/COMPLETION_REPORT.md,docs/COMPLETION_REPORT.md
-19.dashboard_agent/docs/PDI/glossary.md,docs/glossary.md
-19.dashboard_agent/docs/PDI/validation/structure_check.json,configs/structure_check.json
-19.dashboard_agent/docs/PDI/validation/consistency_report.md,docs/consistency_report.md
-19.dashboard_agent/docs/PDI/chapters/00_kapitelplan.md,docs/00_kapitelplan.md
-19.dashboard_agent/docs/PDI/chapters/PHASE_4_1_TASK_PROGRESS.md,docs/PHASE_4_1_TASK_PROGRESS.md
-19.dashboard_agent/ARCHIV/2025/11/06/SP1762419411_kordp→opena2_CMD.json,configs/SP1762419411_kordp→opena2_CMD.json
-19.dashboard_agent/ARCHIV/2025/11/06/SP1762419397_kordp→opena2_CMD.json,configs/SP1762419397_kordp→opena2_CMD.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762625396_opena4_telegram→opena2_MESSAGE.json,configs/SP1762625396_opena4_telegram→opena2_MESSAGE.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762636655_opena18_dashboard→opena2_DASHBOARD_OP.json,configs/SP1762636655_opena18_dashboard→opena2_DASHBOARD_OP.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762636655_opena19_workflow→opena2_WORKFLOW_OP.json,configs/SP1762636655_opena19_workflow→opena2_WORKFLOW_OP.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762630921_opena10_unlock→opena2_SECURITY_OP.json,configs/SP1762630921_opena10_unlock→opena2_SECURITY_OP.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762625448_opena4_telegram→opena2_MESSAGE.json,configs/SP1762625448_opena4_telegram→opena2_MESSAGE.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762636654_opena16_crm→opena2_CRM_OP.json,configs/SP1762636654_opena16_crm→opena2_CRM_OP.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762630831_opena8_telephone→opena2_CALL_OP.json,configs/SP1762630831_opena8_telephone→opena2_CALL_OP.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762625447_opena4_telegram→opena2_MESSAGE.json,configs/SP1762625447_opena4_telegram→opena2_MESSAGE.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762630782_opena8_telephone→opena2_CALL_OP.json,configs/SP1762630782_opena8_telephone→opena2_CALL_OP.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762625404_opena4_telegram→opena2_MESSAGE.json,configs/SP1762625404_opena4_telegram→opena2_MESSAGE.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762630756_opena8_telephone→opena2_CALL_OP.json,configs/SP1762630756_opena8_telephone→opena2_CALL_OP.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762622903_opena_finance→opena2_TRANSACTION.json,configs/SP1762622903_opena_finance→opena2_TRANSACTION.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762630783_opena8_telephone→opena2_CALL_OP.json,configs/SP1762630783_opena8_telephone→opena2_CALL_OP.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762622941_opena_finance→opena2_TRANSACTION.json,configs/SP1762622941_opena_finance→opena2_TRANSACTION.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762630896_opena9_call_tracking→opena2_ANALYTICS_OP.json,configs/SP1762630896_opena9_call_tracking→opena2_ANALYTICS_OP.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762630830_opena8_telephone→opena2_CALL_OP.json,configs/SP1762630830_opena8_telephone→opena2_CALL_OP.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762636655_opena17_analytics→opena2_ANALYTICS_OP.json,configs/SP1762636655_opena17_analytics→opena2_ANALYTICS_OP.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762630893_opena9_call_tracking→opena2_ANALYTICS_OP.json,configs/SP1762630893_opena9_call_tracking→opena2_ANALYTICS_OP.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762622898_opena_finance→opena2_TRANSACTION.json,configs/SP1762622898_opena_finance→opena2_TRANSACTION.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762630744_opena8_telephone→opena2_CALL_OP.json,configs/SP1762630744_opena8_telephone→opena2_CALL_OP.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762630931_opena10_unlock→opena2_SECURITY_OP.json,configs/SP1762630931_opena10_unlock→opena2_SECURITY_OP.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762636627_kordp→opena2_CMD.json,configs/SP1762636627_kordp→opena2_CMD.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762630918_opena9_call_tracking→opena2_ANALYTICS_OP.json,configs/SP1762630918_opena9_call_tracking→opena2_ANALYTICS_OP.json
-19.dashboard_agent/ARCHIV/2025/11/08/SP1762630755_opena8_telephone→opena2_CALL_OP.json,configs/SP1762630755_opena8_telephone→opena2_CALL_OP.json
-19.dashboard_agent/backups/2025-11-08_204452/main_opena5_browser.py,src/pkg/main_opena5_browser.py
-19.dashboard_agent/backups/2025-11-08_204452/main_opena_finance.py,src/pkg/main_opena_finance.py
-19.dashboard_agent/backups/2025-11-08_204452/main_opena8_telephone.py,src/pkg/main_opena8_telephone.py
-19.dashboard_agent/backups/2025-11-08_204452/main_opena4_telegram.py,src/pkg/main_opena4_telegram.py
-19.dashboard_agent/backups/2025-11-08_204452/main_opena9_call_tracking.py,src/pkg/main_opena9_call_tracking.py
-19.dashboard_agent/backups/2025-11-08_204452/main_opena6_email.py,src/pkg/main_opena6_email.py
-19.dashboard_agent/backups/2025-11-08_204452/main_opena10_unlock.py,src/pkg/main_opena10_unlock.py
-19.dashboard_agent/backups/2025-11-08_204452/main_opena7_whatsapp.py,src/pkg/main_opena7_whatsapp.py
-19.dashboard_agent/backups/2025-11-08_204452/main_opena1.py,src/pkg/main_opena1.py
-19.dashboard_agent/backups/2025-11-08_204452/main_opena2.py,src/pkg/main_opena2.py
-19.dashboard_agent/backups/2025-11-08_204452/main_opena4_vscode.py,src/pkg/main_opena4_vscode.py
-19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena4_telegram.sh,_conflicts/2025-11-09_032949/test_opena4_telegram.sh
-19.dashboard_agent/backups/2025-11-08_204452/tests_backup/verify_phase2.sh,scripts/verify_phase2.sh
-19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena_finance.sh,_conflicts/2025-11-09_032949/test_opena_finance.sh
-19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena4_vscode.py,_conflicts/2025-11-09_032949/test_opena4_vscode.py
-19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena5_browser.py,_conflicts/2025-11-09_032949/test_opena5_browser.py
-19.dashboard_agent/backups/2025-11-08_204452/tests_backup/e2e_integration.sh,scripts/e2e_integration.sh
-19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_bridge_api.py,_conflicts/2025-11-09_032949/test_bridge_api.py
-19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_archivator.py,_conflicts/2025-11-09_032949/test_archivator.py
-19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_openwebui_agent.py,_conflicts/2025-11-09_032949/test_openwebui_agent.py
-19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena10_unlock.py,_conflicts/2025-11-09_032949/test_opena10_unlock.py
-19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena9_call_tracking.py,_conflicts/2025-11-09_032949/test_opena9_call_tracking.py
-19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena8_telephone.py,_conflicts/2025-11-09_032949/test_opena8_telephone.py
-19.dashboard_agent/tests/__pycache__/test_phase5.cpython-312-pytest-9.0.0.pyc,_conflicts/2025-11-09_032949/test_phase5.cpython-312-pytest-9.0.0.pyc
-8.opena6_email/api/__init__.py,src/pkg/__init__.py
-8.opena6_email/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-8.opena6_email/tests/__init__.py,src/pkg/__init__.py
-8.opena6_email/bin/start.sh,scripts/start.sh
-16.opena14_html/api/__init__.py,src/pkg/__init__.py
-16.opena14_html/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-16.opena14_html/tests/__init__.py,src/pkg/__init__.py
-16.opena14_html/bin/start.sh,scripts/start.sh
-6.opena4_telegram/api/__init__.py,src/pkg/__init__.py
-6.opena4_telegram/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-6.opena4_telegram/tests/__init__.py,src/pkg/__init__.py
-6.opena4_telegram/bin/start.sh,scripts/start.sh
-21.opena19_workflow/api/__init__.py,src/pkg/__init__.py
-21.opena19_workflow/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-21.opena19_workflow/tests/__init__.py,src/pkg/__init__.py
-21.opena19_workflow/bin/start.sh,scripts/start.sh
-17.opena15_shop/api/__init__.py,src/pkg/__init__.py
-17.opena15_shop/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-17.opena15_shop/tests/__init__.py,src/pkg/__init__.py
-17.opena15_shop/bin/start.sh,scripts/start.sh
-2.openwebui/data/README.md,docs/README.md
-11.opena9_call_tracking/api/__init__.py,src/pkg/__init__.py
-11.opena9_call_tracking/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-11.opena9_call_tracking/tests/__init__.py,src/pkg/__init__.py
-11.opena9_call_tracking/bin/start.sh,scripts/start.sh
-13.opena11_social_media/api/__init__.py,src/pkg/__init__.py
-13.opena11_social_media/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-13.opena11_social_media/tests/__init__.py,src/pkg/__init__.py
-13.opena11_social_media/bin/start.sh,scripts/start.sh
-6.mail_agent/skripte/start_agent.sh,scripts/start_agent.sh
-10.opena8_telephone/api/__init__.py,src/pkg/__init__.py
-10.opena8_telephone/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-10.opena8_telephone/tests/__init__.py,src/pkg/__init__.py
-10.opena8_telephone/bin/start.sh,scripts/start.sh
-14.opena12_influencer/api/__init__.py,src/pkg/__init__.py
-14.opena12_influencer/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-14.opena12_influencer/tests/__init__.py,src/pkg/__init__.py
-14.opena12_influencer/bin/start.sh,scripts/start.sh
-18.opena16_crm/api/__init__.py,src/pkg/__init__.py
-18.opena16_crm/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-18.opena16_crm/tests/__init__.py,src/pkg/__init__.py
-18.opena16_crm/bin/start.sh,scripts/start.sh
-docs/siri/ARCHITEKTUR_UND_SETUP.md,docs/ARCHITEKTUR_UND_SETUP.md
-docs/siri/STATUS.md,docs/STATUS.md
-docs/siri/TESTS_TELEMETRIE_ROLLOUT.md,_conflicts/2025-11-09_032949/TESTS_TELEMETRIE_ROLLOUT.md
-12.opena10_unlock/api/__init__.py,src/pkg/__init__.py
-12.opena10_unlock/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-12.opena10_unlock/tests/__init__.py,src/pkg/__init__.py
-12.opena10_unlock/bin/start.sh,scripts/start.sh
-19.opena17_analytics/api/__init__.py,src/pkg/__init__.py
-19.opena17_analytics/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-19.opena17_analytics/tests/__init__.py,src/pkg/__init__.py
-19.opena17_analytics/bin/start.sh,scripts/start.sh
-9.opena7_whatsapp/api/__init__.py,src/pkg/__init__.py
-9.opena7_whatsapp/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-9.opena7_whatsapp/tests/__init__.py,src/pkg/__init__.py
-9.opena7_whatsapp/bin/start.sh,scripts/start.sh
-4.opena2_archivator/api/__init__.py,src/pkg/__init__.py
-4.opena2_archivator/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-4.opena2_archivator/tests/__init__.py,src/pkg/__init__.py
-4.opena2_archivator/bin/start.sh,scripts/start.sh
-15.opena13_calendar/api/__init__.py,src/pkg/__init__.py
-15.opena13_calendar/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-15.opena13_calendar/tests/__init__.py,src/pkg/__init__.py
-15.opena13_calendar/bin/start.sh,scripts/start.sh
-5.kordp_scheduler/api/__init__.py,src/pkg/__init__.py
-5.kordp_scheduler/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-5.kordp_scheduler/tests/__init__.py,src/pkg/__init__.py
-5.kordp_scheduler/bin/start.sh,scripts/start.sh
-7.whatsapp_agent/skripte/start_agent.sh,scripts/start_agent.sh
-20.opena18_dashboard/api/__init__.py,src/pkg/__init__.py
-20.opena18_dashboard/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-20.opena18_dashboard/tests/__init__.py,src/pkg/__init__.py
-20.opena18_dashboard/bin/start.sh,scripts/start.sh
-7.opena5_browser/api/__init__.py,src/pkg/__init__.py
-7.opena5_browser/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-7.opena5_browser/tests/__init__.py,src/pkg/__init__.py
-7.opena5_browser/bin/start.sh,scripts/start.sh
-4.telegram_agent/skripte/start_agent.sh,scripts/start_agent.sh
-3.opena1_coordinator/api/__init__.py,src/pkg/__init__.py
-3.opena1_coordinator/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py
-3.opena1_coordinator/tests/__init__.py,src/pkg/__init__.py
-3.opena1_coordinator/bin/start.sh,scripts/start.sh
-3.opena1_coordinator/venv_local/lib/python3.12/site-packages/typing_extensions.py,src/pkg/typing_extensions.py
-3.opena1_coordinator/venv_local/lib/python3.12/site-packages/py.py,src/pkg/py.py
-5.vscode_agent/skripte/start_agent.sh,scripts/start_agent.sh
-agents/opena9_call_tracking/README.md,docs/README.md
-agents/opena9_call_tracking/main.py,src/pkg/main.py
-agents/opena7_whatsapp/README.md,docs/README.md
-agents/opena7_whatsapp/main.py,src/pkg/main.py
-agents/opena1_coordinator/README.md,docs/README.md
-agents/opena1_coordinator/main.py,src/pkg/main.py
-agents/opena14_html/README.md,docs/README.md
-agents/opena14_html/main.py,src/pkg/main.py
-agents/opena11_social_media/README.md,docs/README.md
-agents/opena11_social_media/main.py,src/pkg/main.py
-agents/opena17_analytics/README.md,docs/README.md
-agents/opena17_analytics/main.py,src/pkg/main.py
-agents/opena16_crm/README.md,docs/README.md
-agents/opena16_crm/main.py,src/pkg/main.py
-agents/opena6_email/README.md,docs/README.md
-agents/opena6_email/main.py,src/pkg/main.py
-agents/opena12_influencer/README.md,docs/README.md
-agents/opena12_influencer/main.py,src/pkg/main.py
-agents/opena19_workflow/README.md,docs/README.md
-agents/opena19_workflow/main.py,src/pkg/main.py
-agents/opena13_calendar/README.md,docs/README.md
-agents/opena13_calendar/main.py,src/pkg/main.py
-agents/opena8_telephone/README.md,docs/README.md
-agents/opena8_telephone/main.py,src/pkg/main.py
-agents/kordp_scheduler/README.md,docs/README.md
-agents/kordp_scheduler/main.py,src/pkg/main.py
-agents/opena18_dashboard/README.md,docs/README.md
-agents/opena18_dashboard/main.py,src/pkg/main.py
-agents/opena2_archivator/README.md,docs/README.md
-agents/opena2_archivator/main.py,src/pkg/main.py
-agents/opena10_unlock/README.md,docs/README.md
-agents/opena10_unlock/main.py,src/pkg/main.py
-agents/opena5_browser/README.md,docs/README.md
-agents/opena5_browser/main.py,src/pkg/main.py
-agents/opena4_telegram/README.md,docs/README.md
-agents/opena4_telegram/main.py,src/pkg/main.py
-agents/opena15_shop/README.md,docs/README.md
-agents/opena15_shop/main.py,src/pkg/main.py
-agents/opena9_call_tracking/api/__init__.py,src/pkg/__init__.py
-agents/opena9_call_tracking/tests/__init__.py,src/pkg/__init__.py
-agents/opena7_whatsapp/api/__init__.py,src/pkg/__init__.py
-agents/opena7_whatsapp/tests/__init__.py,src/pkg/__init__.py
-agents/opena1_coordinator/api/__init__.py,src/pkg/__init__.py
-agents/opena1_coordinator/tests/__init__.py,src/pkg/__init__.py
-agents/opena14_html/api/__init__.py,src/pkg/__init__.py
-agents/opena14_html/tests/__init__.py,src/pkg/__init__.py
-agents/opena11_social_media/api/__init__.py,src/pkg/__init__.py
-agents/opena11_social_media/tests/__init__.py,src/pkg/__init__.py
-agents/opena17_analytics/api/__init__.py,src/pkg/__init__.py
-agents/opena17_analytics/tests/__init__.py,src/pkg/__init__.py
-agents/opena16_crm/api/__init__.py,src/pkg/__init__.py
-agents/opena16_crm/tests/__init__.py,src/pkg/__init__.py
-agents/opena6_email/api/__init__.py,src/pkg/__init__.py
-agents/opena6_email/tests/__init__.py,src/pkg/__init__.py
-agents/opena12_influencer/api/__init__.py,src/pkg/__init__.py
-agents/opena12_influencer/tests/__init__.py,src/pkg/__init__.py
-agents/opena19_workflow/api/__init__.py,src/pkg/__init__.py
-agents/opena19_workflow/tests/__init__.py,src/pkg/__init__.py
-agents/opena13_calendar/api/__init__.py,src/pkg/__init__.py
-agents/opena13_calendar/tests/__init__.py,src/pkg/__init__.py
-agents/opena8_telephone/api/__init__.py,src/pkg/__init__.py
-agents/opena8_telephone/tests/__init__.py,src/pkg/__init__.py
-agents/kordp_scheduler/api/__init__.py,src/pkg/__init__.py
-agents/kordp_scheduler/tests/__init__.py,src/pkg/__init__.py
-agents/opena18_dashboard/api/__init__.py,src/pkg/__init__.py
-agents/opena18_dashboard/tests/__init__.py,src/pkg/__init__.py
-agents/opena2_archivator/api/__init__.py,src/pkg/__init__.py
-agents/opena2_archivator/tests/__init__.py,src/pkg/__init__.py
-agents/opena10_unlock/api/__init__.py,src/pkg/__init__.py
-agents/opena10_unlock/tests/__init__.py,src/pkg/__init__.py
-agents/opena5_browser/api/__init__.py,src/pkg/__init__.py
-agents/opena5_browser/tests/__init__.py,src/pkg/__init__.py
-agents/opena4_telegram/api/__init__.py,src/pkg/__init__.py
-agents/opena4_telegram/tests/__init__.py,src/pkg/__init__.py
-agents/opena15_shop/api/__init__.py,src/pkg/__init__.py
-agents/opena15_shop/tests/__init__.py,src/pkg/__init__.py
-1.portier_openai/kordp/__init__.py,src/pkg/__init__.py
-1.portier_openai/config/tools_registry.json,configs/tools_registry.json
-1.portier_openai/docs/ARCHITEKTUR_UND_SETUP.md,docs/ARCHITEKTUR_UND_SETUP.md
-1.portier_openai/docs/ELION_DASHBOARD_SPEC.md,docs/ELION_DASHBOARD_SPEC.md
-1.portier_openai/docs/README.md,docs/README.md
-1.portier_openai/docs/DASHBOARD_SPEZIFIKATION.md,docs/DASHBOARD_SPEZIFIKATION.md
-1.portier_openai/docs/PROJEKTBAUPLAN.md,docs/PROJEKTBAUPLAN.md
-1.portier_openai/docs/ELION_SETUP_GUIDE.md,docs/ELION_SETUP_GUIDE.md
-1.portier_openai/opena1/__init__.py,src/pkg/__init__.py
-1.portier_openai/opena2/__init__.py,src/pkg/__init__.py
-1.portier_openai/skripte/validate_portier.sh,scripts/validate_portier.sh
-1.portier_openai/skripte/README.md,docs/README.md
-1.portier_openai/tests/README.md,docs/README.md
-1.portier_openai/bin/stop_all.sh,scripts/stop_all.sh
-1.portier_openai/bin/start_all.sh,scripts/start_all.sh
-1.portier_openai/hilfen/port_check.py,src/pkg/port_check.py
-1.portier_openai/hilfen/__init__.py,src/pkg/__init__.py
-1.portier_openai/venv313/lib/python3.12/site-packages/sockshandler.py,src/pkg/sockshandler.py
-1.portier_openai/venv313/lib/python3.12/site-packages/typing_extensions.py,src/pkg/typing_extensions.py
-1.portier_openai/venv313/lib/python3.12/site-packages/socks.py,src/pkg/socks.py
-1.portier_openai/venv313/lib/python3.12/site-packages/py.py,src/pkg/py.py
-1.portier_openai/venv/lib/python3.12/site-packages/typing_extensions.py,src/pkg/typing_extensions.py
-1.portier_openai/ARCHIV/2025/11/08/SP1762631529_opena9_call_tracking→opena2_ANALYTICS_OP.json,configs/SP1762631529_opena9_call_tracking→opena2_ANALYTICS_OP.json
-1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena12_influencer→opena2_INFLUENCER_OP.json,configs/SP1762631953_opena12_influencer→opena2_INFLUENCER_OP.json
-1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena13_calendar→opena2_CALENDAR_OP.json,configs/SP1762631953_opena13_calendar→opena2_CALENDAR_OP.json
-1.portier_openai/ARCHIV/2025/11/08/SP1762631525_opena8_telephone→opena2_CALL_OP.json,configs/SP1762631525_opena8_telephone→opena2_CALL_OP.json
-1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena14_html_generator→opena2_HTML_OP.json,configs/SP1762631953_opena14_html_generator→opena2_HTML_OP.json
-1.portier_openai/ARCHIV/2025/11/08/SP1762631532_opena10_unlock→opena2_SECURITY_OP.json,configs/SP1762631532_opena10_unlock→opena2_SECURITY_OP.json
-1.portier_openai/ARCHIV/2025/11/08/SP1762632454_opena11_social_media→opena2_SOCIAL_OP.json,configs/SP1762632454_opena11_social_media→opena2_SOCIAL_OP.json
-1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena15_shop→opena2_SHOP_OP.json,configs/SP1762631953_opena15_shop→opena2_SHOP_OP.json
-1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena11_social_media→opena2_SOCIAL_OP.json,configs/SP1762631953_opena11_social_media→opena2_SOCIAL_OP.json
-1.portier_openai/ARCHIV/2025/11/08/SP1762631526_opena8_telephone→opena2_CALL_OP.json,configs/SP1762631526_opena8_telephone→opena2_CALL_OP.json
-1.portier_openai/archivp/2025/11/03/SP1762143131_kordp→opena2_CMD.json,configs/SP1762143131_kordp→opena2_CMD.json
-1.portier_openai/archivp/2025/11/03/SP1762143089_kordp→opena2_CMD.json,configs/SP1762143089_kordp→opena2_CMD.json
-1.portier_openai/archivp/2025/11/03/SP1762145568_opena1→opena2_CMD.json,configs/SP1762145568_opena1→opena2_CMD.json
-1.portier_openai/archivp/2025/11/02/SP1762120025_opena1→opena2_CMD.json,configs/SP1762120025_opena1→opena2_CMD.json
-1.portier_openai/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json,configs/SP1762120019_opena1→opena2_CMD.json
-1.portier_openai/archivp/2025/11/02/SP1762120040_opena1→opena2_CMD.json,configs/SP1762120040_opena1→opena2_CMD.json
-1.portier_openai/knowledgebase/opena1/KB_OPENA1_COORDINATOR_2025-11-08.md,docs/KB_OPENA1_COORDINATOR_2025-11-08.md
-1.portier_openai/knowledgebase/opena1/KB_SYSTEM_INTEGRATION_FLOWS_2025-11-08.md,docs/KB_SYSTEM_INTEGRATION_FLOWS_2025-11-08.md
-1.portier_openai/knowledgebase/opena1/KB_PROGRESS_REPORT_2025-11-08.md,docs/KB_PROGRESS_REPORT_2025-11-08.md
-1.portier_openai/knowledgebase/opena1/KB_DASHBOARD_INTEGRATION_2025-11-08.md,docs/KB_DASHBOARD_INTEGRATION_2025-11-08.md
-1.portier_openai/knowledgebase/opena1/KB_EXPANSION_PLAN_LITE_2025-11-08.md,docs/KB_EXPANSION_PLAN_LITE_2025-11-08.md
-1.portier_openai/knowledgebase/opena1/KB_EXPANSION_PLAN_2025-11-08.md,docs/KB_EXPANSION_PLAN_2025-11-08.md
-1.portier_openai/knowledgebase/opena1/KB_ARCHIVE_PATTERNS_2025-11-08.md,docs/KB_ARCHIVE_PATTERNS_2025-11-08.md
-1.portier_openai/knowledgebase/opena1/KB_TELEGRAM_BRIDGE_2025-11-08.md,docs/KB_TELEGRAM_BRIDGE_2025-11-08.md
-1.portier_openai/knowledgebase/opena1/KB_INDEX_CURRENT_2025-11-08.md,docs/KB_INDEX_CURRENT_2025-11-08.md
+source,destination,,
+OPENWEBUI_INTEGRATION_GUIDE.md,docs/OPENWEBUI_INTEGRATION_GUIDE.md,,
+structure_checkpoint.json,configs/structure_checkpoint.json,,
+check_health.sh,scripts/check_health.sh,,
+BRIDGE_PHASE_1_SUMMARY.md,docs/BRIDGE_PHASE_1_SUMMARY.md,,
+PLAN_opena7_WhatsApp.md,docs/PLAN_opena7_WhatsApp.md,,
+PHASE_4_1_ARCHITECTURE_OVERVIEW.md,docs/PHASE_4_1_ARCHITECTURE_OVERVIEW.md,,
+README_PHASE5_COMPLETE.md,docs/README_PHASE5_COMPLETE.md,,
+COORDINATOR_ARCHIVATOR_SETUP.md,docs/COORDINATOR_ARCHIVATOR_SETUP.md,,
+EXECUTIVE_SUMMARY.md,docs/EXECUTIVE_SUMMARY.md,,
+PLAN_opena15_Shop.md,docs/PLAN_opena15_Shop.md,,
+AGENT_TEST_RESULTS.md,_conflicts/2025-11-09_032949/AGENT_TEST_RESULTS.md,,
+PHASE_5_DETAILED_PLAN.md,docs/PHASE_5_DETAILED_PLAN.md,,
+create_all_agents.sh,scripts/create_all_agents.sh,,
+tool-server-export.json,configs/tool-server-export.json,,
+PLAN_opena19_Dashboard.md,docs/PLAN_opena19_Dashboard.md,,
+PLAN_opena11_SocialMedia.md,docs/PLAN_opena11_SocialMedia.md,,
+PLAN_opena6_Email.md,docs/PLAN_opena6_Email.md,,
+LATEST_UPDATES.md,_conflicts/2025-11-09_032949/LATEST_UPDATES.md,,
+DAILY_SUMMARY_2025-11-08.md,docs/DAILY_SUMMARY_2025-11-08.md,,
+PRODUCTION_STATUS_REPORT_NOV9.md,docs/PRODUCTION_STATUS_REPORT_NOV9.md,,
+DEPLOYMENT_STATUS_NOV8.md,docs/DEPLOYMENT_STATUS_NOV8.md,,
+README_PHASE_4_1_LAUNCH.md,docs/README_PHASE_4_1_LAUNCH.md,,
+PHASE_4_FINAL_STATUS_REPORT.md,docs/PHASE_4_FINAL_STATUS_REPORT.md,,
+README.md,docs/README.md,,
+PLAN_opena8_Telephone.md,docs/PLAN_opena8_Telephone.md,,
+quickstart.sh,scripts/quickstart.sh,,
+MASTER_PLAN_ALL_AGENTS.md,docs/MASTER_PLAN_ALL_AGENTS.md,,
+SPRINT_UPDATE_2025-11-08.md,docs/SPRINT_UPDATE_2025-11-08.md,,
+PLAN_opena18_Trading.md,docs/PLAN_opena18_Trading.md,,
+PLAN_opena17_LocalArchive.md,docs/PLAN_opena17_LocalArchive.md,,
+ARCHITECTURE.md,docs/ARCHITECTURE.md,,
+verify_phase_4.sh,scripts/verify_phase_4.sh,,
+create_agents.py,src/pkg/create_agents.py,,
+JWT_AUTHENTICATION_GUIDE.md,docs/JWT_AUTHENTICATION_GUIDE.md,,
+PHASE_5_IMPLEMENTATION_COMPLETE.md,docs/PHASE_5_IMPLEMENTATION_COMPLETE.md,,
+PHASE_4_1_FINAL_STATUS_REPORT.md,docs/PHASE_4_1_FINAL_STATUS_REPORT.md,,
+PLAN_opena12_Influencer.md,docs/PLAN_opena12_Influencer.md,,
+PROJECT_COMPLETE.md,docs/PROJECT_COMPLETE.md,,
+AGENT_STRUCTURE_PLAN.md,docs/AGENT_STRUCTURE_PLAN.md,,
+DAILY_PROGRESS_NOV09.md,docs/DAILY_PROGRESS_NOV09.md,,
+PLAN_opena9_TelephoneCall.md,docs/PLAN_opena9_TelephoneCall.md,,
+PLAN_opena16_Homepage.md,docs/PLAN_opena16_Homepage.md,,
+PHASE_4_SUMMARY.md,docs/PHASE_4_SUMMARY.md,,
+PHASE_5_FINAL_STATUS.md,docs/PHASE_5_FINAL_STATUS.md,,
+PHASE_2_COMPLETION.md,docs/PHASE_2_COMPLETION.md,,
+PHASE_3_COMPLETION.md,docs/PHASE_3_COMPLETION.md,,
+portier_fs_bridge.py,src/pkg/portier_fs_bridge.py,,
+PLAN_opena13_Calendar.md,docs/PLAN_opena13_Calendar.md,,
+PHASE_4_1_EXECUTIVE_SUMMARY.md,docs/PHASE_4_1_EXECUTIVE_SUMMARY.md,,
+DEPLOYMENT_CHECKLIST.md,docs/DEPLOYMENT_CHECKLIST.md,,
+PLAN_opena14_HTML.md,docs/PLAN_opena14_HTML.md,,
+PLAN_opena4_VSCode.md,docs/PLAN_opena4_VSCode.md,,
+PLAN_opena5_Browser.md,docs/PLAN_opena5_Browser.md,,
+PROJECT_COMPLETION_SUMMARY.md,docs/PROJECT_COMPLETION_SUMMARY.md,,
+PLAN_opena10_Unlock.md,docs/PLAN_opena10_Unlock.md,,
+violations_report.md,docs/violations_report.md,,
+PHASE_4_PRODUCTION_READY.md,docs/PHASE_4_PRODUCTION_READY.md,,
+STRUCTURE_AUDIT_2025-11-08.md,docs/STRUCTURE_AUDIT_2025-11-08.md,,
+PHASE_4_1_DEPLOYMENT_CHECKLIST.md,docs/PHASE_4_1_DEPLOYMENT_CHECKLIST.md,,
+path_index.json,configs/path_index.json,,
+PHASE_4_COMPLETION.md,docs/PHASE_4_COMPLETION.md,,
+19.dashboard_agent/main_opena13_calendar.py,src/pkg/main_opena13_calendar.py,,
+19.dashboard_agent/main_opena5_browser.py,src/pkg/main_opena5_browser.py,,
+19.dashboard_agent/bridge_tokens.json,configs/bridge_tokens.json,,
+19.dashboard_agent/main_opena11_social_media.py,src/pkg/main_opena11_social_media.py,,
+19.dashboard_agent/config.py,src/pkg/config.py,,
+19.dashboard_agent/ui_index.html,assets/ui_index.html,,
+19.dashboard_agent/pdi_core.py,src/pkg/pdi_core.py,,
+19.dashboard_agent/background_poller.py,src/pkg/background_poller.py,,
+19.dashboard_agent/main_kordp.py,src/pkg/main_kordp.py,,
+19.dashboard_agent/main_opena17_analytics.py,src/pkg/main_opena17_analytics.py,,
+19.dashboard_agent/main_opena15_shop.py,src/pkg/main_opena15_shop.py,,
+19.dashboard_agent/main_opena_finance.py,src/pkg/main_opena_finance.py,,
+19.dashboard_agent/bridge_schema.json,configs/bridge_schema.json,,
+19.dashboard_agent/main_opena8_telephone.py,src/pkg/main_opena8_telephone.py,,
+19.dashboard_agent/start_opena2.sh,scripts/start_opena2.sh,,
+19.dashboard_agent/main_opena16_crm.py,src/pkg/main_opena16_crm.py,,
+19.dashboard_agent/main_opena4_telegram.py,src/pkg/main_opena4_telegram.py,,
+19.dashboard_agent/jwt_auth.py,src/pkg/jwt_auth.py,,
+19.dashboard_agent/agent_registry_opena1.py,src/pkg/agent_registry_opena1.py,,
+19.dashboard_agent/README.md,docs/README.md,,
+19.dashboard_agent/sse_bus.py,src/pkg/sse_bus.py,,
+19.dashboard_agent/main_opena9_call_tracking.py,src/pkg/main_opena9_call_tracking.py,,
+19.dashboard_agent/browser_selenium.py,src/pkg/browser_selenium.py,,
+19.dashboard_agent/bridge_api.py,src/pkg/bridge_api.py,,
+19.dashboard_agent/main_opena6_email.py,src/pkg/main_opena6_email.py,,
+19.dashboard_agent/openwebui_adapter.py,src/pkg/openwebui_adapter.py,,
+19.dashboard_agent/main_opena12_influencer.py,src/pkg/main_opena12_influencer.py,,
+19.dashboard_agent/vscode_ssh.py,src/pkg/vscode_ssh.py,,
+19.dashboard_agent/security.py,src/pkg/security.py,,
+19.dashboard_agent/main_openwebui_agent.py,src/pkg/main_openwebui_agent.py,,
+19.dashboard_agent/main_opena18_dashboard.py,src/pkg/main_opena18_dashboard.py,,
+19.dashboard_agent/main_opena14_html.py,src/pkg/main_opena14_html.py,,
+19.dashboard_agent/main_opena19_workflow.py,src/pkg/main_opena19_workflow.py,,
+19.dashboard_agent/main_opena10_unlock.py,src/pkg/main_opena10_unlock.py,,
+19.dashboard_agent/main_opena7_whatsapp.py,src/pkg/main_opena7_whatsapp.py,,
+19.dashboard_agent/openwebui_integration.py,src/pkg/openwebui_integration.py,,
+19.dashboard_agent/main_opena1.py,src/pkg/main_opena1.py,,
+19.dashboard_agent/main_opena2.py,src/pkg/main_opena2.py,,
+19.dashboard_agent/README_STACK_START.md,docs/README_STACK_START.md,,
+19.dashboard_agent/safepoints.py,src/pkg/safepoints.py,,
+19.dashboard_agent/safepoints_latest.py,src/tests/safepoints_latest.py,,
+19.dashboard_agent/agent_registry.py,src/pkg/agent_registry.py,,
+19.dashboard_agent/ui_agent.html,assets/ui_agent.html,,
+19.dashboard_agent/main_opena4_vscode.py,src/pkg/main_opena4_vscode.py,,
+19.dashboard_agent/main_dashboard.py,src/pkg/main_dashboard.py,,
+19.dashboard_agent/SETUP_COMPLETE.md,docs/SETUP_COMPLETE.md,,
+19.dashboard_agent/main.py,src/pkg/main.py,,
+8.opena6_email/README.md,docs/README.md,,
+8.opena6_email/main.py,src/pkg/main.py,,
+16.opena14_html/README.md,docs/README.md,,
+16.opena14_html/main.py,src/pkg/main.py,,
+6.opena4_telegram/README.md,docs/README.md,,
+6.opena4_telegram/main.py,src/pkg/main.py,,
+21.opena19_workflow/README.md,docs/README.md,,
+21.opena19_workflow/main.py,src/pkg/main.py,,
+17.opena15_shop/README.md,docs/README.md,,
+17.opena15_shop/main.py,src/pkg/main.py,,
+2.openwebui/status.sh,scripts/status.sh,,
+2.openwebui/docker-agent.sh,scripts/docker-agent.sh,,
+2.openwebui/docker-compose.yml,configs/docker-compose.yml,,
+2.openwebui/stop.sh,scripts/stop.sh,,
+2.openwebui/README.md,docs/README.md,,
+2.openwebui/start.sh,scripts/start.sh,,
+11.opena9_call_tracking/README.md,docs/README.md,,
+11.opena9_call_tracking/main.py,src/pkg/main.py,,
+13.opena11_social_media/README.md,docs/README.md,,
+13.opena11_social_media/main.py,src/pkg/main.py,,
+6.mail_agent/main_agent.py,src/pkg/main_agent.py,,
+10.opena8_telephone/README.md,docs/README.md,,
+10.opena8_telephone/main.py,src/pkg/main.py,,
+14.opena12_influencer/README.md,docs/README.md,,
+14.opena12_influencer/main.py,src/pkg/main.py,,
+18.opena16_crm/README.md,docs/README.md,,
+18.opena16_crm/main.py,src/pkg/main.py,,
+12.opena10_unlock/README.md,docs/README.md,,
+12.opena10_unlock/main.py,src/pkg/main.py,,
+19.opena17_analytics/README.md,docs/README.md,,
+19.opena17_analytics/main.py,src/pkg/main.py,,
+9.opena7_whatsapp/README.md,docs/README.md,,
+9.opena7_whatsapp/main.py,src/pkg/main.py,,
+4.opena2_archivator/README.md,docs/README.md,,
+4.opena2_archivator/main.py,src/pkg/main.py,,
+15.opena13_calendar/README.md,docs/README.md,,
+15.opena13_calendar/main.py,src/pkg/main.py,,
+5.kordp_scheduler/README.md,docs/README.md,,
+5.kordp_scheduler/main.py,src/pkg/main.py,,
+7.whatsapp_agent/main_agent.py,src/pkg/main_agent.py,,
+scripts/structure_manager.py,src/pkg/structure_manager.py,,
+20.opena18_dashboard/README.md,docs/README.md,,
+20.opena18_dashboard/main.py,src/pkg/main.py,,
+7.opena5_browser/README.md,docs/README.md,,
+7.opena5_browser/main.py,src/pkg/main.py,,
+4.telegram_agent/main_agent.py,src/pkg/main_agent.py,,
+bin/start_openwebui_agent.sh,scripts/start_openwebui_agent.sh,,
+bin/stop_all.sh,scripts/stop_all.sh,,
+bin/start_all.sh,scripts/start_all.sh,,
+bin/kordp_ping.sh,scripts/kordp_ping.sh,,
+bin/verify_phase3.sh,scripts/verify_phase3.sh,,
+bin/status.sh,scripts/status.sh,,
+bin/system_mode_switch.sh,scripts/system_mode_switch.sh,,
+bin/bootstrap.sh,scripts/bootstrap.sh,,
+bin/write_ping.sh,scripts/write_ping.sh,,
+bin/logs.sh,scripts/logs.sh,,
+bin/clean_pycache.sh,scripts/clean_pycache.sh,,
+bin/start_agents_11_15.sh,scripts/start_agents_11_15.sh,,
+bin/validate_bridge.sh,scripts/validate_bridge.sh,,
+bin/start_agents_8_10.sh,scripts/start_agents_8_10.sh,,
+bin/health_matrix.sh,scripts/health_matrix.sh,,
+bin/agents_auto_register.sh,scripts/agents_auto_register.sh,,
+bin/_lib.sh,scripts/_lib.sh,,
+bin/openwebui_status.sh,scripts/openwebui_status.sh,,
+bin/agents_register.sh,scripts/agents_register.sh,,
+bin/port_kill_safeguard.sh,scripts/port_kill_safeguard.sh,,
+bin/log_tail.sh,scripts/log_tail.sh,,
+bin/env_probe.sh,scripts/env_probe.sh,,
+bin/health.sh,scripts/health.sh,,
+bin/stack_status_badge.sh,scripts/stack_status_badge.sh,,
+bin/openwebui_up.sh,scripts/openwebui_up.sh,,
+bin/verify_stack.sh,scripts/verify_stack.sh,,
+bin/env_bootstrap.sh,scripts/env_bootstrap.sh,,
+bin/archiv_last.sh,scripts/archiv_last.sh,,
+bin/ops.sh,scripts/ops.sh,,
+bin/sse_listen.sh,scripts/sse_listen.sh,,
+bin/openwebui_down.sh,scripts/openwebui_down.sh,,
+bin/register_openwebui.sh,scripts/register_openwebui.sh,,
+bin/reset_today.sh,scripts/reset_today.sh,,
+bin/check_ports.sh,scripts/check_ports.sh,,
+bin/print_token.sh,scripts/print_token.sh,,
+bin/check_env.sh,scripts/check_env.sh,,
+bin/ports.sh,scripts/ports.sh,,
+bin/fix_stack_now.sh,scripts/fix_stack_now.sh,,
+3.opena1_coordinator/README.md,docs/README.md,,
+3.opena1_coordinator/main.py,src/pkg/main.py,,
+5.vscode_agent/main_agent.py,src/pkg/main_agent.py,,
+agents/create_agents.sh,scripts/create_agents.sh,,
+1.portier_openai/MAC_DIR_SYSTEM.json,configs/MAC_DIR_SYSTEM.json,,
+1.portier_openai/env.sh,scripts/env.sh,,
+1.portier_openai/scanpython.py,src/pkg/scanpython.py,,
+1.portier_openai/README.md,docs/README.md,,
+1.portier_openai/code_generator.py,src/pkg/code_generator.py,,
+1.portier_openai/venv313_init.sh,scripts/venv313_init.sh,,
+1.portier_openai/preflight.sh,scripts/preflight.sh,,
+1.portier_openai/generate_macdir.py,src/pkg/generate_macdir.py,,
+1.portier_openai/preflight_fixed.sh,scripts/preflight_fixed.sh,,
+1.portier_openai/setup_venv313.sh,scripts/setup_venv313.sh,,
+19.dashboard_agent/api/core.py,src/pkg/core.py,,
+19.dashboard_agent/docs/PDI_INTEGRATION.md,docs/PDI_INTEGRATION.md,,
+19.dashboard_agent/docs/OPERATIONS.md,docs/OPERATIONS.md,,
+19.dashboard_agent/docs/PDI_MANIFEST.md,docs/PDI_MANIFEST.md,,
+19.dashboard_agent/docs/TROUBLESHOOTING.md,docs/TROUBLESHOOTING.md,,
+19.dashboard_agent/docs/DEV_PROD_SWITCH_BLUEPRINT.md,docs/DEV_PROD_SWITCH_BLUEPRINT.md,,
+19.dashboard_agent/docs/BRIDGE_API.md,docs/BRIDGE_API.md,,
+19.dashboard_agent/docs/REGISTRY_MANAGEMENT.md,docs/REGISTRY_MANAGEMENT.md,,
+19.dashboard_agent/docs/OPENWEBUI_INTEGRATION.md,docs/OPENWEBUI_INTEGRATION.md,,
+19.dashboard_agent/docs/OPENWEBUI_API.md,docs/OPENWEBUI_API.md,,
+19.dashboard_agent/docs/PDI_CHECKLIST.md,docs/PDI_CHECKLIST.md,,
+19.dashboard_agent/docs/OPENWEBUI_INTEGRATION_COMPLETE.md,docs/OPENWEBUI_INTEGRATION_COMPLETE.md,,
+19.dashboard_agent/docs/OPENWEBUI_TODO.md,docs/OPENWEBUI_TODO.md,,
+19.dashboard_agent/opena3/openwebui_agent.py,src/pkg/openwebui_agent.py,,
+19.dashboard_agent/opena3/__init__.py,src/pkg/__init__.py,,
+19.dashboard_agent/backups/main_opena5_browser.py,src/pkg/main_opena5_browser.py,,
+19.dashboard_agent/backups/main_opena_finance.py,src/pkg/main_opena_finance.py,,
+19.dashboard_agent/backups/main_opena8_telephone.py,src/pkg/main_opena8_telephone.py,,
+19.dashboard_agent/backups/main_opena4_telegram.py,src/pkg/main_opena4_telegram.py,,
+19.dashboard_agent/backups/main_opena9_call_tracking.py,src/pkg/main_opena9_call_tracking.py,,
+19.dashboard_agent/backups/main_opena6_email.py,src/pkg/main_opena6_email.py,,
+19.dashboard_agent/backups/main_opena10_unlock.py,src/pkg/main_opena10_unlock.py,,
+19.dashboard_agent/backups/main_opena7_whatsapp.py,src/pkg/main_opena7_whatsapp.py,,
+19.dashboard_agent/backups/main_opena1.py,src/pkg/main_opena1.py,,
+19.dashboard_agent/backups/main_opena2.py,src/pkg/main_opena2.py,,
+19.dashboard_agent/backups/main_opena4_vscode.py,src/pkg/main_opena4_vscode.py,,
+19.dashboard_agent/tests/test_opena4_telegram.sh,_conflicts/2025-11-09_032949/test_opena4_telegram.sh,,
+19.dashboard_agent/tests/test_jwt_auth.py,_conflicts/2025-11-09_032949/test_jwt_auth.py,,
+19.dashboard_agent/tests/verify_phase2.sh,scripts/verify_phase2.sh,,
+19.dashboard_agent/tests/test_opena_finance.sh,_conflicts/2025-11-09_032949/test_opena_finance.sh,,
+19.dashboard_agent/tests/test_opena4_vscode.py,_conflicts/2025-11-09_032949/test_opena4_vscode.py,,
+19.dashboard_agent/tests/test_opena5_browser.py,_conflicts/2025-11-09_032949/test_opena5_browser.py,,
+19.dashboard_agent/tests/test_phase5.py,_conflicts/2025-11-09_032949/test_phase5.py,,
+19.dashboard_agent/tests/e2e_integration.sh,scripts/e2e_integration.sh,,
+19.dashboard_agent/tests/test_phase_4_agents.py,_conflicts/2025-11-09_032949/test_phase_4_agents.py,,
+19.dashboard_agent/tests/test_bridge_api.py,_conflicts/2025-11-09_032949/test_bridge_api.py,,
+19.dashboard_agent/tests/test_archivator.py,_conflicts/2025-11-09_032949/test_archivator.py,,
+19.dashboard_agent/tests/test_openwebui_agent.py,_conflicts/2025-11-09_032949/test_openwebui_agent.py,,
+19.dashboard_agent/tests/test_opena10_unlock.py,_conflicts/2025-11-09_032949/test_opena10_unlock.py,,
+19.dashboard_agent/tests/test_opena9_call_tracking.py,_conflicts/2025-11-09_032949/test_opena9_call_tracking.py,,
+19.dashboard_agent/tests/test_opena8_telephone.py,_conflicts/2025-11-09_032949/test_opena8_telephone.py,,
+19.dashboard_agent/scripts/curl_examples.sh,_conflicts/2025-11-09_032949/curl_examples.sh,,
+19.dashboard_agent/scripts/register_agents.py,src/pkg/register_agents.py,,
+19.dashboard_agent/scripts/test_openwebui.py,_conflicts/2025-11-09_032949/test_openwebui.py,,
+19.dashboard_agent/scripts/seed_openwebui.py,src/pkg/seed_openwebui.py,,
+19.dashboard_agent/scripts/run_production.sh,scripts/run_production.sh,,
+19.dashboard_agent/scripts/migrate_data.py,src/pkg/migrate_data.py,,
+19.dashboard_agent/templates/error.html,assets/error.html,,
+19.dashboard_agent/templates/agent.html,assets/agent.html,,
+19.dashboard_agent/templates/base.html,assets/base.html,,
+19.dashboard_agent/templates/dashboard.html,assets/dashboard.html,,
+19.dashboard_agent/bin/start_opena5_browser.sh,scripts/start_opena5_browser.sh,,
+19.dashboard_agent/bin/stop_all.sh,scripts/stop_all.sh,,
+19.dashboard_agent/bin/start_all.sh,scripts/start_all.sh,,
+19.dashboard_agent/bin/start_openwebui_adapter.sh,scripts/start_openwebui_adapter.sh,,
+19.dashboard_agent/bin/start_opena_finance.sh,scripts/start_opena_finance.sh,,
+19.dashboard_agent/bin/start_opena4_vscode.sh,scripts/start_opena4_vscode.sh,,
+19.dashboard_agent/bin/start_opena3.sh,scripts/start_opena3.sh,,
+19.dashboard_agent/bin/clean_pycache.sh,scripts/clean_pycache.sh,,
+19.dashboard_agent/bin/start_opena2.sh,scripts/start_opena2.sh,,
+19.dashboard_agent/bin/start_opena4_telegram.sh,scripts/start_opena4_telegram.sh,,
+19.dashboard_agent/bin/start_agents_5_7.sh,scripts/start_agents_5_7.sh,,
+19.dashboard_agent/bin/agents_auto_register.sh,scripts/agents_auto_register.sh,,
+19.dashboard_agent/bin/openwebui_status.sh,scripts/openwebui_status.sh,,
+19.dashboard_agent/bin/agents_register.sh,scripts/agents_register.sh,,
+19.dashboard_agent/bin/log_tail.sh,scripts/log_tail.sh,,
+19.dashboard_agent/bin/verify_stack.sh,scripts/verify_stack.sh,,
+19.dashboard_agent/bin/env_bootstrap.sh,scripts/env_bootstrap.sh,,
+19.dashboard_agent/bin/ops.sh,scripts/ops.sh,,
+19.dashboard_agent/bin/start_kordp.sh,scripts/start_kordp.sh,,
+19.dashboard_agent/bin/start_opena19.sh,scripts/start_opena19.sh,,
+19.dashboard_agent/bin/reset_today.sh,scripts/reset_today.sh,,
+19.dashboard_agent/bin/check_ports.sh,scripts/check_ports.sh,,
+19.dashboard_agent/bin/start_opena1.sh,scripts/start_opena1.sh,,
+19.dashboard_agent/bin/print_token.sh,scripts/print_token.sh,,
+19.dashboard_agent/docs/PDI/MANIFEST_V1_0_FINAL.md,docs/MANIFEST_V1_0_FINAL.md,,
+19.dashboard_agent/docs/PDI/PHASE_4_QUICKSTART.md,docs/PHASE_4_QUICKSTART.md,,
+19.dashboard_agent/docs/PDI/README.md,docs/README.md,,
+19.dashboard_agent/docs/PDI/validation_report.md,docs/validation_report.md,,
+19.dashboard_agent/docs/PDI/project_manifest.md,docs/project_manifest.md,,
+19.dashboard_agent/docs/PDI/VALIDATION_FRAMEWORK.md,docs/VALIDATION_FRAMEWORK.md,,
+19.dashboard_agent/docs/PDI/COMPLETION_REPORT.md,docs/COMPLETION_REPORT.md,,
+19.dashboard_agent/docs/PDI/glossary.md,docs/glossary.md,,
+19.dashboard_agent/docs/PDI/validation/structure_check.json,configs/structure_check.json,,
+19.dashboard_agent/docs/PDI/validation/consistency_report.md,docs/consistency_report.md,,
+19.dashboard_agent/docs/PDI/chapters/00_kapitelplan.md,docs/00_kapitelplan.md,,
+19.dashboard_agent/docs/PDI/chapters/PHASE_4_1_TASK_PROGRESS.md,docs/PHASE_4_1_TASK_PROGRESS.md,,
+19.dashboard_agent/ARCHIV/2025/11/06/SP1762419411_kordp→opena2_CMD.json,configs/SP1762419411_kordp→opena2_CMD.json,,
+19.dashboard_agent/ARCHIV/2025/11/06/SP1762419397_kordp→opena2_CMD.json,configs/SP1762419397_kordp→opena2_CMD.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762625396_opena4_telegram→opena2_MESSAGE.json,configs/SP1762625396_opena4_telegram→opena2_MESSAGE.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762636655_opena18_dashboard→opena2_DASHBOARD_OP.json,configs/SP1762636655_opena18_dashboard→opena2_DASHBOARD_OP.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762636655_opena19_workflow→opena2_WORKFLOW_OP.json,configs/SP1762636655_opena19_workflow→opena2_WORKFLOW_OP.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762630921_opena10_unlock→opena2_SECURITY_OP.json,configs/SP1762630921_opena10_unlock→opena2_SECURITY_OP.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762625448_opena4_telegram→opena2_MESSAGE.json,configs/SP1762625448_opena4_telegram→opena2_MESSAGE.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762636654_opena16_crm→opena2_CRM_OP.json,configs/SP1762636654_opena16_crm→opena2_CRM_OP.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762630831_opena8_telephone→opena2_CALL_OP.json,configs/SP1762630831_opena8_telephone→opena2_CALL_OP.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762625447_opena4_telegram→opena2_MESSAGE.json,configs/SP1762625447_opena4_telegram→opena2_MESSAGE.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762630782_opena8_telephone→opena2_CALL_OP.json,configs/SP1762630782_opena8_telephone→opena2_CALL_OP.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762625404_opena4_telegram→opena2_MESSAGE.json,configs/SP1762625404_opena4_telegram→opena2_MESSAGE.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762630756_opena8_telephone→opena2_CALL_OP.json,configs/SP1762630756_opena8_telephone→opena2_CALL_OP.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762622903_opena_finance→opena2_TRANSACTION.json,configs/SP1762622903_opena_finance→opena2_TRANSACTION.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762630783_opena8_telephone→opena2_CALL_OP.json,configs/SP1762630783_opena8_telephone→opena2_CALL_OP.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762622941_opena_finance→opena2_TRANSACTION.json,configs/SP1762622941_opena_finance→opena2_TRANSACTION.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762630896_opena9_call_tracking→opena2_ANALYTICS_OP.json,configs/SP1762630896_opena9_call_tracking→opena2_ANALYTICS_OP.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762630830_opena8_telephone→opena2_CALL_OP.json,configs/SP1762630830_opena8_telephone→opena2_CALL_OP.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762636655_opena17_analytics→opena2_ANALYTICS_OP.json,configs/SP1762636655_opena17_analytics→opena2_ANALYTICS_OP.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762630893_opena9_call_tracking→opena2_ANALYTICS_OP.json,configs/SP1762630893_opena9_call_tracking→opena2_ANALYTICS_OP.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762622898_opena_finance→opena2_TRANSACTION.json,configs/SP1762622898_opena_finance→opena2_TRANSACTION.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762630744_opena8_telephone→opena2_CALL_OP.json,configs/SP1762630744_opena8_telephone→opena2_CALL_OP.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762630931_opena10_unlock→opena2_SECURITY_OP.json,configs/SP1762630931_opena10_unlock→opena2_SECURITY_OP.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762636627_kordp→opena2_CMD.json,configs/SP1762636627_kordp→opena2_CMD.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762630918_opena9_call_tracking→opena2_ANALYTICS_OP.json,configs/SP1762630918_opena9_call_tracking→opena2_ANALYTICS_OP.json,,
+19.dashboard_agent/ARCHIV/2025/11/08/SP1762630755_opena8_telephone→opena2_CALL_OP.json,configs/SP1762630755_opena8_telephone→opena2_CALL_OP.json,,
+19.dashboard_agent/backups/2025-11-08_204452/main_opena5_browser.py,src/pkg/main_opena5_browser.py,,
+19.dashboard_agent/backups/2025-11-08_204452/main_opena_finance.py,src/pkg/main_opena_finance.py,,
+19.dashboard_agent/backups/2025-11-08_204452/main_opena8_telephone.py,src/pkg/main_opena8_telephone.py,,
+19.dashboard_agent/backups/2025-11-08_204452/main_opena4_telegram.py,src/pkg/main_opena4_telegram.py,,
+19.dashboard_agent/backups/2025-11-08_204452/main_opena9_call_tracking.py,src/pkg/main_opena9_call_tracking.py,,
+19.dashboard_agent/backups/2025-11-08_204452/main_opena6_email.py,src/pkg/main_opena6_email.py,,
+19.dashboard_agent/backups/2025-11-08_204452/main_opena10_unlock.py,src/pkg/main_opena10_unlock.py,,
+19.dashboard_agent/backups/2025-11-08_204452/main_opena7_whatsapp.py,src/pkg/main_opena7_whatsapp.py,,
+19.dashboard_agent/backups/2025-11-08_204452/main_opena1.py,src/pkg/main_opena1.py,,
+19.dashboard_agent/backups/2025-11-08_204452/main_opena2.py,src/pkg/main_opena2.py,,
+19.dashboard_agent/backups/2025-11-08_204452/main_opena4_vscode.py,src/pkg/main_opena4_vscode.py,,
+19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena4_telegram.sh,_conflicts/2025-11-09_032949/test_opena4_telegram.sh,,
+19.dashboard_agent/backups/2025-11-08_204452/tests_backup/verify_phase2.sh,scripts/verify_phase2.sh,,
+19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena_finance.sh,_conflicts/2025-11-09_032949/test_opena_finance.sh,,
+19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena4_vscode.py,_conflicts/2025-11-09_032949/test_opena4_vscode.py,,
+19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena5_browser.py,_conflicts/2025-11-09_032949/test_opena5_browser.py,,
+19.dashboard_agent/backups/2025-11-08_204452/tests_backup/e2e_integration.sh,scripts/e2e_integration.sh,,
+19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_bridge_api.py,_conflicts/2025-11-09_032949/test_bridge_api.py,,
+19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_archivator.py,_conflicts/2025-11-09_032949/test_archivator.py,,
+19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_openwebui_agent.py,_conflicts/2025-11-09_032949/test_openwebui_agent.py,,
+19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena10_unlock.py,_conflicts/2025-11-09_032949/test_opena10_unlock.py,,
+19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena9_call_tracking.py,_conflicts/2025-11-09_032949/test_opena9_call_tracking.py,,
+19.dashboard_agent/backups/2025-11-08_204452/tests_backup/test_opena8_telephone.py,_conflicts/2025-11-09_032949/test_opena8_telephone.py,,
+19.dashboard_agent/tests/__pycache__/test_phase5.cpython-312-pytest-9.0.0.pyc,_conflicts/2025-11-09_032949/test_phase5.cpython-312-pytest-9.0.0.pyc,,
+8.opena6_email/api/__init__.py,src/pkg/__init__.py,,
+8.opena6_email/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+8.opena6_email/tests/__init__.py,src/pkg/__init__.py,,
+8.opena6_email/bin/start.sh,scripts/start.sh,,
+16.opena14_html/api/__init__.py,src/pkg/__init__.py,,
+16.opena14_html/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+16.opena14_html/tests/__init__.py,src/pkg/__init__.py,,
+16.opena14_html/bin/start.sh,scripts/start.sh,,
+6.opena4_telegram/api/__init__.py,src/pkg/__init__.py,,
+6.opena4_telegram/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+6.opena4_telegram/tests/__init__.py,src/pkg/__init__.py,,
+6.opena4_telegram/bin/start.sh,scripts/start.sh,,
+21.opena19_workflow/api/__init__.py,src/pkg/__init__.py,,
+21.opena19_workflow/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+21.opena19_workflow/tests/__init__.py,src/pkg/__init__.py,,
+21.opena19_workflow/bin/start.sh,scripts/start.sh,,
+17.opena15_shop/api/__init__.py,src/pkg/__init__.py,,
+17.opena15_shop/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+17.opena15_shop/tests/__init__.py,src/pkg/__init__.py,,
+17.opena15_shop/bin/start.sh,scripts/start.sh,,
+2.openwebui/data/README.md,docs/README.md,,
+11.opena9_call_tracking/api/__init__.py,src/pkg/__init__.py,,
+11.opena9_call_tracking/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+11.opena9_call_tracking/tests/__init__.py,src/pkg/__init__.py,,
+11.opena9_call_tracking/bin/start.sh,scripts/start.sh,,
+13.opena11_social_media/api/__init__.py,src/pkg/__init__.py,,
+13.opena11_social_media/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+13.opena11_social_media/tests/__init__.py,src/pkg/__init__.py,,
+13.opena11_social_media/bin/start.sh,scripts/start.sh,,
+6.mail_agent/skripte/start_agent.sh,scripts/start_agent.sh,,
+10.opena8_telephone/api/__init__.py,src/pkg/__init__.py,,
+10.opena8_telephone/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+10.opena8_telephone/tests/__init__.py,src/pkg/__init__.py,,
+10.opena8_telephone/bin/start.sh,scripts/start.sh,,
+14.opena12_influencer/api/__init__.py,src/pkg/__init__.py,,
+14.opena12_influencer/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+14.opena12_influencer/tests/__init__.py,src/pkg/__init__.py,,
+14.opena12_influencer/bin/start.sh,scripts/start.sh,,
+18.opena16_crm/api/__init__.py,src/pkg/__init__.py,,
+18.opena16_crm/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+18.opena16_crm/tests/__init__.py,src/pkg/__init__.py,,
+18.opena16_crm/bin/start.sh,scripts/start.sh,,
+docs/siri/ARCHITEKTUR_UND_SETUP.md,docs/ARCHITEKTUR_UND_SETUP.md,,
+docs/siri/STATUS.md,docs/STATUS.md,,
+docs/siri/TESTS_TELEMETRIE_ROLLOUT.md,_conflicts/2025-11-09_032949/TESTS_TELEMETRIE_ROLLOUT.md,,
+12.opena10_unlock/api/__init__.py,src/pkg/__init__.py,,
+12.opena10_unlock/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+12.opena10_unlock/tests/__init__.py,src/pkg/__init__.py,,
+12.opena10_unlock/bin/start.sh,scripts/start.sh,,
+19.opena17_analytics/api/__init__.py,src/pkg/__init__.py,,
+19.opena17_analytics/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+19.opena17_analytics/tests/__init__.py,src/pkg/__init__.py,,
+19.opena17_analytics/bin/start.sh,scripts/start.sh,,
+9.opena7_whatsapp/api/__init__.py,src/pkg/__init__.py,,
+9.opena7_whatsapp/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+9.opena7_whatsapp/tests/__init__.py,src/pkg/__init__.py,,
+9.opena7_whatsapp/bin/start.sh,scripts/start.sh,,
+4.opena2_archivator/api/__init__.py,src/pkg/__init__.py,,
+4.opena2_archivator/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+4.opena2_archivator/tests/__init__.py,src/pkg/__init__.py,,
+4.opena2_archivator/bin/start.sh,scripts/start.sh,,
+15.opena13_calendar/api/__init__.py,src/pkg/__init__.py,,
+15.opena13_calendar/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+15.opena13_calendar/tests/__init__.py,src/pkg/__init__.py,,
+15.opena13_calendar/bin/start.sh,scripts/start.sh,,
+5.kordp_scheduler/api/__init__.py,src/pkg/__init__.py,,
+5.kordp_scheduler/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+5.kordp_scheduler/tests/__init__.py,src/pkg/__init__.py,,
+5.kordp_scheduler/bin/start.sh,scripts/start.sh,,
+7.whatsapp_agent/skripte/start_agent.sh,scripts/start_agent.sh,,
+20.opena18_dashboard/api/__init__.py,src/pkg/__init__.py,,
+20.opena18_dashboard/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+20.opena18_dashboard/tests/__init__.py,src/pkg/__init__.py,,
+20.opena18_dashboard/bin/start.sh,scripts/start.sh,,
+7.opena5_browser/api/__init__.py,src/pkg/__init__.py,,
+7.opena5_browser/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+7.opena5_browser/tests/__init__.py,src/pkg/__init__.py,,
+7.opena5_browser/bin/start.sh,scripts/start.sh,,
+4.telegram_agent/skripte/start_agent.sh,scripts/start_agent.sh,,
+3.opena1_coordinator/api/__init__.py,src/pkg/__init__.py,,
+3.opena1_coordinator/tests/test_agent.py,_conflicts/2025-11-09_032949/test_agent.py,,
+3.opena1_coordinator/tests/__init__.py,src/pkg/__init__.py,,
+3.opena1_coordinator/bin/start.sh,scripts/start.sh,,
+3.opena1_coordinator/venv_local/lib/python3.12/site-packages/typing_extensions.py,src/pkg/typing_extensions.py,,
+3.opena1_coordinator/venv_local/lib/python3.12/site-packages/py.py,src/pkg/py.py,,
+5.vscode_agent/skripte/start_agent.sh,scripts/start_agent.sh,,
+agents/opena9_call_tracking/README.md,docs/README.md,,
+agents/opena9_call_tracking/main.py,src/pkg/main.py,,
+agents/opena7_whatsapp/README.md,docs/README.md,,
+agents/opena7_whatsapp/main.py,src/pkg/main.py,,
+agents/opena1_coordinator/README.md,docs/README.md,,
+agents/opena1_coordinator/main.py,src/pkg/main.py,,
+agents/opena14_html/README.md,docs/README.md,,
+agents/opena14_html/main.py,src/pkg/main.py,,
+agents/opena11_social_media/README.md,docs/README.md,,
+agents/opena11_social_media/main.py,src/pkg/main.py,,
+agents/opena17_analytics/README.md,docs/README.md,,
+agents/opena17_analytics/main.py,src/pkg/main.py,,
+agents/opena16_crm/README.md,docs/README.md,,
+agents/opena16_crm/main.py,src/pkg/main.py,,
+agents/opena6_email/README.md,docs/README.md,,
+agents/opena6_email/main.py,src/pkg/main.py,,
+agents/opena12_influencer/README.md,docs/README.md,,
+agents/opena12_influencer/main.py,src/pkg/main.py,,
+agents/opena19_workflow/README.md,docs/README.md,,
+agents/opena19_workflow/main.py,src/pkg/main.py,,
+agents/opena13_calendar/README.md,docs/README.md,,
+agents/opena13_calendar/main.py,src/pkg/main.py,,
+agents/opena8_telephone/README.md,docs/README.md,,
+agents/opena8_telephone/main.py,src/pkg/main.py,,
+agents/kordp_scheduler/README.md,docs/README.md,,
+agents/kordp_scheduler/main.py,src/pkg/main.py,,
+agents/opena18_dashboard/README.md,docs/README.md,,
+agents/opena18_dashboard/main.py,src/pkg/main.py,,
+agents/opena2_archivator/README.md,docs/README.md,,
+agents/opena2_archivator/main.py,src/pkg/main.py,,
+agents/opena10_unlock/README.md,docs/README.md,,
+agents/opena10_unlock/main.py,src/pkg/main.py,,
+agents/opena5_browser/README.md,docs/README.md,,
+agents/opena5_browser/main.py,src/pkg/main.py,,
+agents/opena4_telegram/README.md,docs/README.md,,
+agents/opena4_telegram/main.py,src/pkg/main.py,,
+agents/opena15_shop/README.md,docs/README.md,,
+agents/opena15_shop/main.py,src/pkg/main.py,,
+agents/opena9_call_tracking/api/__init__.py,src/pkg/__init__.py,,
+agents/opena9_call_tracking/tests/__init__.py,src/pkg/__init__.py,,
+agents/opena7_whatsapp/api/__init__.py,src/pkg/__init__.py,,
+agents/opena7_whatsapp/tests/__init__.py,src/pkg/__init__.py,,
+agents/opena1_coordinator/api/__init__.py,src/pkg/__init__.py,,
+agents/opena1_coordinator/tests/__init__.py,src/pkg/__init__.py,,
+agents/opena14_html/api/__init__.py,src/pkg/__init__.py,,
+agents/opena14_html/tests/__init__.py,src/pkg/__init__.py,,
+agents/opena11_social_media/api/__init__.py,src/pkg/__init__.py,,
+agents/opena11_social_media/tests/__init__.py,src/pkg/__init__.py,,
+agents/opena17_analytics/api/__init__.py,src/pkg/__init__.py,,
+agents/opena17_analytics/tests/__init__.py,src/pkg/__init__.py,,
+agents/opena16_crm/api/__init__.py,src/pkg/__init__.py,,
+agents/opena16_crm/tests/__init__.py,src/pkg/__init__.py,,
+agents/opena6_email/api/__init__.py,src/pkg/__init__.py,,
+agents/opena6_email/tests/__init__.py,src/pkg/__init__.py,,
+agents/opena12_influencer/api/__init__.py,src/pkg/__init__.py,,
+agents/opena12_influencer/tests/__init__.py,src/pkg/__init__.py,,
+agents/opena19_workflow/api/__init__.py,src/pkg/__init__.py,,
+agents/opena19_workflow/tests/__init__.py,src/pkg/__init__.py,,
+agents/opena13_calendar/api/__init__.py,src/pkg/__init__.py,,
+agents/opena13_calendar/tests/__init__.py,src/pkg/__init__.py,,
+agents/opena8_telephone/api/__init__.py,src/pkg/__init__.py,,
+agents/opena8_telephone/tests/__init__.py,src/pkg/__init__.py,,
+agents/kordp_scheduler/api/__init__.py,src/pkg/__init__.py,,
+agents/kordp_scheduler/tests/__init__.py,src/pkg/__init__.py,,
+agents/opena18_dashboard/api/__init__.py,src/pkg/__init__.py,,
+agents/opena18_dashboard/tests/__init__.py,src/pkg/__init__.py,,
+agents/opena2_archivator/api/__init__.py,src/pkg/__init__.py,,
+agents/opena2_archivator/tests/__init__.py,src/pkg/__init__.py,,
+agents/opena10_unlock/api/__init__.py,src/pkg/__init__.py,,
+agents/opena10_unlock/tests/__init__.py,src/pkg/__init__.py,,
+agents/opena5_browser/api/__init__.py,src/pkg/__init__.py,,
+agents/opena5_browser/tests/__init__.py,src/pkg/__init__.py,,
+agents/opena4_telegram/api/__init__.py,src/pkg/__init__.py,,
+agents/opena4_telegram/tests/__init__.py,src/pkg/__init__.py,,
+agents/opena15_shop/api/__init__.py,src/pkg/__init__.py,,
+agents/opena15_shop/tests/__init__.py,src/pkg/__init__.py,,
+1.portier_openai/kordp/__init__.py,src/pkg/__init__.py,,
+1.portier_openai/config/tools_registry.json,configs/tools_registry.json,,
+1.portier_openai/docs/ARCHITEKTUR_UND_SETUP.md,docs/ARCHITEKTUR_UND_SETUP.md,,
+1.portier_openai/docs/ELION_DASHBOARD_SPEC.md,docs/ELION_DASHBOARD_SPEC.md,,
+1.portier_openai/docs/README.md,docs/README.md,,
+1.portier_openai/docs/DASHBOARD_SPEZIFIKATION.md,docs/DASHBOARD_SPEZIFIKATION.md,,
+1.portier_openai/docs/PROJEKTBAUPLAN.md,docs/PROJEKTBAUPLAN.md,,
+1.portier_openai/docs/ELION_SETUP_GUIDE.md,docs/ELION_SETUP_GUIDE.md,,
+1.portier_openai/opena1/__init__.py,src/pkg/__init__.py,,
+1.portier_openai/opena2/__init__.py,src/pkg/__init__.py,,
+1.portier_openai/skripte/validate_portier.sh,scripts/validate_portier.sh,,
+1.portier_openai/skripte/README.md,docs/README.md,,
+1.portier_openai/tests/README.md,docs/README.md,,
+1.portier_openai/bin/stop_all.sh,scripts/stop_all.sh,,
+1.portier_openai/bin/start_all.sh,scripts/start_all.sh,,
+1.portier_openai/hilfen/port_check.py,src/pkg/port_check.py,,
+1.portier_openai/hilfen/__init__.py,src/pkg/__init__.py,,
+1.portier_openai/venv313/lib/python3.12/site-packages/sockshandler.py,src/pkg/sockshandler.py,,
+1.portier_openai/venv313/lib/python3.12/site-packages/typing_extensions.py,src/pkg/typing_extensions.py,,
+1.portier_openai/venv313/lib/python3.12/site-packages/socks.py,src/pkg/socks.py,,
+1.portier_openai/venv313/lib/python3.12/site-packages/py.py,src/pkg/py.py,,
+1.portier_openai/venv/lib/python3.12/site-packages/typing_extensions.py,src/pkg/typing_extensions.py,,
+1.portier_openai/ARCHIV/2025/11/08/SP1762631529_opena9_call_tracking→opena2_ANALYTICS_OP.json,configs/SP1762631529_opena9_call_tracking→opena2_ANALYTICS_OP.json,,
+1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena12_influencer→opena2_INFLUENCER_OP.json,configs/SP1762631953_opena12_influencer→opena2_INFLUENCER_OP.json,,
+1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena13_calendar→opena2_CALENDAR_OP.json,configs/SP1762631953_opena13_calendar→opena2_CALENDAR_OP.json,,
+1.portier_openai/ARCHIV/2025/11/08/SP1762631525_opena8_telephone→opena2_CALL_OP.json,configs/SP1762631525_opena8_telephone→opena2_CALL_OP.json,,
+1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena14_html_generator→opena2_HTML_OP.json,configs/SP1762631953_opena14_html_generator→opena2_HTML_OP.json,,
+1.portier_openai/ARCHIV/2025/11/08/SP1762631532_opena10_unlock→opena2_SECURITY_OP.json,configs/SP1762631532_opena10_unlock→opena2_SECURITY_OP.json,,
+1.portier_openai/ARCHIV/2025/11/08/SP1762632454_opena11_social_media→opena2_SOCIAL_OP.json,configs/SP1762632454_opena11_social_media→opena2_SOCIAL_OP.json,,
+1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena15_shop→opena2_SHOP_OP.json,configs/SP1762631953_opena15_shop→opena2_SHOP_OP.json,,
+1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena11_social_media→opena2_SOCIAL_OP.json,configs/SP1762631953_opena11_social_media→opena2_SOCIAL_OP.json,,
+1.portier_openai/ARCHIV/2025/11/08/SP1762631526_opena8_telephone→opena2_CALL_OP.json,configs/SP1762631526_opena8_telephone→opena2_CALL_OP.json,,
+1.portier_openai/archivp/2025/11/03/SP1762143131_kordp→opena2_CMD.json,configs/SP1762143131_kordp→opena2_CMD.json,,
+1.portier_openai/archivp/2025/11/03/SP1762143089_kordp→opena2_CMD.json,configs/SP1762143089_kordp→opena2_CMD.json,,
+1.portier_openai/archivp/2025/11/03/SP1762145568_opena1→opena2_CMD.json,configs/SP1762145568_opena1→opena2_CMD.json,,
+1.portier_openai/archivp/2025/11/02/SP1762120025_opena1→opena2_CMD.json,configs/SP1762120025_opena1→opena2_CMD.json,,
+1.portier_openai/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json,configs/SP1762120019_opena1→opena2_CMD.json,,
+1.portier_openai/archivp/2025/11/02/SP1762120040_opena1→opena2_CMD.json,configs/SP1762120040_opena1→opena2_CMD.json,,
+1.portier_openai/knowledgebase/opena1/KB_OPENA1_COORDINATOR_2025-11-08.md,docs/KB_OPENA1_COORDINATOR_2025-11-08.md,,
+1.portier_openai/knowledgebase/opena1/KB_SYSTEM_INTEGRATION_FLOWS_2025-11-08.md,docs/KB_SYSTEM_INTEGRATION_FLOWS_2025-11-08.md,,
+1.portier_openai/knowledgebase/opena1/KB_PROGRESS_REPORT_2025-11-08.md,docs/KB_PROGRESS_REPORT_2025-11-08.md,,
+1.portier_openai/knowledgebase/opena1/KB_DASHBOARD_INTEGRATION_2025-11-08.md,docs/KB_DASHBOARD_INTEGRATION_2025-11-08.md,,
+1.portier_openai/knowledgebase/opena1/KB_EXPANSION_PLAN_LITE_2025-11-08.md,docs/KB_EXPANSION_PLAN_LITE_2025-11-08.md,,
+1.portier_openai/knowledgebase/opena1/KB_EXPANSION_PLAN_2025-11-08.md,docs/KB_EXPANSION_PLAN_2025-11-08.md,,
+1.portier_openai/knowledgebase/opena1/KB_ARCHIVE_PATTERNS_2025-11-08.md,docs/KB_ARCHIVE_PATTERNS_2025-11-08.md,,
+1.portier_openai/knowledgebase/opena1/KB_TELEGRAM_BRIDGE_2025-11-08.md,docs/KB_TELEGRAM_BRIDGE_2025-11-08.md,,
+1.portier_openai/knowledgebase/opena1/KB_INDEX_CURRENT_2025-11-08.md,docs/KB_INDEX_CURRENT_2025-11-08.md,,
+,,,
+,,,
+,,,
+Zum Inhalt springen,,,
+Navigationsmenü,,,
+jokicdanijel,,,
+Gesamtprojekt-Start,,,
+,,,
+/Zum Suchen eingeben,,,
+,,,
+Code,,,
+Probleme,,,
+Pull-Anfragen,,,
+Aktionen,,,
+Projekte,,,
+Sicherheit,,,
+Einblicke,,,
+Einstellungen,,,
+Besitzer-Avatar,,,
+Gesamtprojekt-Start,,,
+Privat,,,
+jokicdanijel/Gesamtprojekt-start,,,
+Zur Datei gehen,,,
+t,,,
+Name,,,
+jokicdanijel,,,
+jokicdanijel,,,
+feat: PORTIER 3.0 – Vollständiges Systemarchitekturdiagramm integriert,,,
+74f4d77,,,
+ · ,,,
+vor 14 Minuten,,,
+.Kopilot,,,
+"Funktion: Hinzufügen der Koordinator- und Archivator-Infrastruktur (Makefile, Struktur…)",,,
+vor 2 Wochen,,,
+.github,,,
+Feature: HYPER-MASTER-PROMPT-Stack hinzufügen (5 Formate + Dokumentation),,,
+vor 10 Stunden,,,
+.venv,,,
+Aufgabe: .venv-Verzeichnisse ignorieren + WhatsApp-/Telefonagenten hinzufügen + Umbenennen …,,,
+vor 11 Stunden,,,
+.vscode,,,
+Fix (VS Code): Korrekte Dateipfade für Dashboard und OpenA3 (src/pkg/),,,
+vor 1 Stunde,,,
+1.opena1&2_portier,,,
+Feature: Vollständiger Portier 2.0 Produktionsstack,,,
+vor 1 Stunde,,,
+10.opena11_unlock,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+11.opena12_social_media,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+12.opena13_influencer,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+13.opena14_calendar,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+14.opena15_html,,,
+feat (Phase 17): Metrikenexport + Portier-Integration,,,
+letzte Woche,,,
+15.opena16_shop,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+17.opena18_CMR,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+18.opena19_Aktien&Krypto,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+19.opena20_dashboard_agent,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+2.opena3_openwebui,,,
+Aufgabe: .venv-Verzeichnisse ignorieren + WhatsApp-/Telefonagenten hinzufügen + Umbenennen …,,,
+vor 11 Stunden,,,
+20.opena21_workflow,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+3.opena4_telegram,,,
+"Funktion: Phase 9+10+11+12 – Dienstordnerstruktur, OpenWebUI-Agent, T…",,,
+vor 2 Wochen,,,
+4.opena5_vscode,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+5.opena6_browser,,,
+Feature: Phase 13 – vollständiges Gerüst des opena6 Browser Automation Agent,,,
+vor 2 Wochen,,,
+6.opena7_email,,,
+Aufgabe: .venv-Verzeichnisse ignorieren + WhatsApp-/Telefonagenten hinzufügen + Umbenennen …,,,
+vor 11 Stunden,,,
+7.opena8_whatsapp,,,
+Aufgabe: .venv-Verzeichnisse ignorieren + WhatsApp-/Telefonagenten hinzufügen + Umbenennen …,,,
+vor 11 Stunden,,,
+8.opena8_whatsapp,,,
+Aufgabe: .venv-Verzeichnisse ignorieren + WhatsApp-/Telefonagenten hinzufügen + Umbenennen …,,,
+vor 11 Stunden,,,
+8.opena9_telephone,,,
+Aufgabe: .venv-Verzeichnisse ignorieren + WhatsApp-/Telefonagenten hinzufügen + Umbenennen …,,,
+vor 11 Stunden,,,
+9.opena10_call_tracking,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+__pycache__,,,
+Behoben: Normalisierung des .env-Token-Formats für ops.sh – alle Agenten sind registriert…,,,
+vor 2 Wochen,,,
+_conflicts/ 2025-11-09_032949,,,
+"Aufgabe (Struktur): Ordnernormalisierung anwenden, Konflikte isolieren, rep…",,,
+vor 2 Wochen,,,
+Agenten,,,
+"Aufgabe (Struktur): Ordnernormalisierung anwenden, Konflikte isolieren, rep…",,,
+vor 2 Wochen,,,
+Vermögenswerte,,,
+"Aufgabe (Struktur): Ordnernormalisierung anwenden, Konflikte isolieren, rep…",,,
+vor 2 Wochen,,,
+Backups,,,
+Aufgabe: Große Archivdateien bereinigen (299 MB freigegeben),,,
+vor 2 Wochen,,,
+Mülleimer,,,
+Feedback zur Überprüfung des Adresscodes – Verbesserung der Token-Verwaltung und Sicherheit,,,
+vor 9 Stunden,,,
+Konfiguration,,,
+Dokumentation: Agenten-Mapping-Architektur und Registry-Spezifikation hinzufügen (alle 20 Dienste),,,
+vor 2 Wochen,,,
+Konfigurationen,,,
+Aufgabe: .venv-Verzeichnisse ignorieren + WhatsApp-/Telefonagenten hinzufügen + Umbenennen …,,,
+vor 11 Stunden,,,
+Beitrag/ Abschluss,,,
+"Funktionen: CLI-Vervollständigung (hdctl), Lasttests, WhatsApp-Typsicherheit",,,
+letzte Woche,,,
+Dokumente,,,
+Fügen Sie eine umfassende Einrichtungsanleitung hinzu.,,,
+vor 9 Stunden,,,
+Protokolle,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+machen,,,
+"P0: Portrichtlinie, venv312, Endpunkte, Root-Härtung",,,
+vor 2 Wochen,,,
+Projektstamm,,,
+Aufgabe: Große Archivdateien bereinigen (299 MB freigegeben),,,
+vor 2 Wochen,,,
+Projektkarte,,,
+"Dokumentation: P0-Phase abgeschlossen – Portrichtlinie, venv312, Endpunkte, Integritätsprüfung…",,,
+vor 2 Wochen,,,
+Berichte,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+Skripte,,,
+Feedback zur Überprüfung des Adresscodes – Verbesserung der Token-Verwaltung und Sicherheit,,,
+vor 9 Stunden,,,
+Quelle,,,
+Feature: Vollständiger Portier 2.0 Produktionsstack,,,
+vor 1 Stunde,,,
+Tests,,,
+Füge umfassende Tests für ops.sh und register_agents.py hinzu.,,,
+vor 9 Stunden,,,
+Werkzeuge,,,
+Aufgabe: Große Archivdateien bereinigen (299 MB freigegeben),,,
+vor 2 Wochen,,,
+.assistant.json,,,
+Feature: HYPER-MASTER-PROMPT-Stack hinzufügen (5 Formate + Dokumentation),,,
+vor 10 Stunden,,,
+.copilot-config,,,
+Feature: HYPER-MASTER-PROMPT-Stack hinzufügen (5 Formate + Dokumentation),,,
+vor 10 Stunden,,,
+.copilot-ignore,,,
+Feature: HYPER-MASTER-PROMPT-Stack hinzufügen (5 Formate + Dokumentation),,,
+vor 10 Stunden,,,
+.copilot-system.yaml,,,
+Feature: HYPER-MASTER-PROMPT-Stack hinzufügen (5 Formate + Dokumentation),,,
+vor 10 Stunden,,,
+.env.example,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+.gitignore,,,
+"Fehlerbehebung: launch.json modernisieren (Python→DebugPy, Pfade korrigieren, Git zulassen)",,,
+vor 1 Stunde,,,
+.pre-commit-config.yaml,,,
+"feat (Phase 16): CI/CD-Härtung – GitHub Actions (5 Gates), Testen von S…",,,
+letzte Woche,,,
+.prompt-profile,,,
+Feature: HYPER-MASTER-PROMPT-Stack hinzufügen (5 Formate + Dokumentation),,,
+vor 10 Stunden,,,
+ARCHIVE_ANALYSIS_2025-11-11.md,,,
+feat (Phase 17): Metrikenexport + Portier-Integration,,,
+letzte Woche,,,
+CDATA,,,
+Aufgabe: .venv-Verzeichnisse ignorieren + WhatsApp-/Telefonagenten hinzufügen + Umbenennen …,,,
+vor 11 Stunden,,,
+CLEANUP_REPORT.md,,,
+"Dokumentation: Bereinigungsbericht hinzugefügt (299 MB freigegeben, 78 % Reduzierung)",,,
+vor 2 Wochen,,,
+DAILY_REPORT_2025-11-09.md,,,
+"P0: Portrichtlinie, venv312, Endpunkte, Root-Härtung",,,
+vor 2 Wochen,,,
+EXECUTIVE_SUMMARY_SESSION_10.md,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+FINAL_CHECKLIST_SESSION_10.md,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+IMPLEMENTATION_SUMMARY.md,,,
+Implementierungszusammenfassung hinzufügen – alle Anforderungen erfüllt,,,
+vor 9 Stunden,,,
+LIZENZ,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+Makefile,,,
+"P0: Portrichtlinie, venv312, Endpunkte, Root-Härtung",,,
+vor 2 Wochen,,,
+PHASE5_EXECUTIVE_SUMMARY.txt,,,
+Behoben: Normalisierung des .env-Token-Formats für ops.sh – alle Agenten sind registriert…,,,
+vor 2 Wochen,,,
+PHASE_17_COMPLETION_REPORT.md,,,
+Behebung (Phase 17): Portier-Integration + Prometheus/Grafana-Bereitstellung,,,
+letzte Woche,,,
+PHASE_17_IMPLEMENTATION_SUMMARY.md,,,
+feat (Phase 17): Metrikenexport + Portier-Integration,,,
+letzte Woche,,,
+PHASE_17_INTEGRATION_COMPLETE.md,,,
+feat (Phase 17): Metrikenexport + Portier-Integration,,,
+letzte Woche,,,
+PHASE_17_MONITORING_PLAN.md,,,
+feat (Phase 17): Metrikenexport + Portier-Integration,,,
+letzte Woche,,,
+PHASE_18_COMPLETION_REPORT.md,,,
+Dokumente (Phase 18): Abschlussbericht – Infrastruktur zu 90 % bereit,,,
+letzte Woche,,,
+PIPELINE_EXECUTION_REPORT.md,,,
+Aufgabe: Große Archivdateien bereinigen (299 MB freigegeben),,,
+vor 2 Wochen,,,
+PORTIER_3.0_RELEASE.md,,,
+mit: PORTIER 3.0 Produktionsversion,,,
+vor 1 Stunde,,,
+PORTIER_3.0_SYSTEM_ARCHITECTURE.md,,,
+feat: PORTIER 3.0 – Vollständiges Systemarchitekturdiagramm integriert,,,
+vor 14 Minuten,,,
+PORTIER_INTEGRATION_MANIFEST.md,,,
+Feature: PORTIER 3.0 Repository-Integration abgeschlossen,,,
+vor 41 Minuten,,,
+PORTIER_REPOSITORY_STRUCTURE.md,,,
+Feature: PORTIER 3.0 Repository-Integration abgeschlossen,,,
+vor 41 Minuten,,,
+PORTIER_SYSTEM_DOCS.md,,,
+Dokumentation: Umfassende PORTIER 3.0-Systemdokumentation hinzufügen,,,
+vor 1 Stunde,,,
+README.md,,,
+feat: PORTIER 3.0 – Vollständiges Systemarchitekturdiagramm integriert,,,
+vor 14 Minuten,,,
+README_ENTERPRISE.md,,,
+Feature: PORTIER 3.0 Repository-Integration abgeschlossen,,,
+vor 41 Minuten,,,
+SCANNER_DEPLOYMENT.md,,,
+feat(scanner): Scanner für Projektstruktur ohne Abhängigkeiten hinzufügen,,,
+vor 2 Wochen,,,
+SCTA_IMPLEMENTATION_CHECKPOINT.md,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+SESSION_10_CONTINUATION_SUMMARY.md,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+SESSION_11_CHECKPOINT.md,,,
+Behebung (Phase 17): Portier-Integration + Prometheus/Grafana-Bereitstellung,,,
+letzte Woche,,,
+SESSION_RECORDING_2025-11-09.md,,,
+"P0: Portrichtlinie, venv312, Endpunkte, Root-Härtung",,,
+vor 2 Wochen,,,
+Unbenanntes Dokument,,,
+"Funktion: Phase 9+10+11+12 – Dienstordnerstruktur, OpenWebUI-Agent, T…",,,
+vor 2 Wochen,,,
+docker-compose.prod.yml,,,
+feat (Phase 18): Produktionsbereitstellungsinfrastruktur,,,
+letzte Woche,,,
+gesammt.txt,,,
+Behoben: Normalisierung des .env-Token-Formats für ops.sh – alle Agenten sind registriert…,,,
+vor 2 Wochen,,,
+gesammtprojekt.txt,,,
+Behoben: Normalisierung des .env-Token-Formats für ops.sh – alle Agenten sind registriert…,,,
+vor 2 Wochen,,,
+hetzner-status-incident.ics,,,
+Behoben: Normalisierung des .env-Token-Formats für ops.sh – alle Agenten sind registriert…,,,
+vor 2 Wochen,,,
+pyproject.toml,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+rename_map.csv,,,
+"Aufgabe (Struktur): Ordnernormalisierung anwenden, Konflikte isolieren, rep…",,,
+vor 2 Wochen,,,
+requirements.lock,,,
+"P0: Portrichtlinie, venv312, Endpunkte, Root-Härtung",,,
+vor 2 Wochen,,,
+Baum gesammt101120251002,,,
+Behebung: Aufräumarbeiten in portier_service_base + CI/CD-Workflow – Entfernen von Datenmüll…,,,
+vor 2 Wochen,,,
+Navigation in Repository-Dateien,,,
+README,,,
+MIT-Lizenz,,,
+🏢 PORTIER 3.0 – Enterprise Multi-Agent Intelligence Platform,,,
+Version: 3.0.0,,,
+Status: ✅ PRODUKTIONSFERTIG,,,
+Veröffentlichungsdatum: 21. November 2025,,,
+Hauptentwickler: Danijel Jokic,,,
+Repository: jokicdanijel/Gesamtprojekt-start,,,
+Lizenz: MIT + Nur für den internen Gebrauch (Unternehmenskomponenten),,,
+,,,
+📖 Zusammenfassung,,,
+"PORTIER 3.0 ist eine vollständig modulare, produktionsreife Multi-Agent Intelligence Platform , entwickelt für die nahtlose Integration von 20+ spezialisierten KI-Agenten in eine einheitliche Orchestrierungs- und Archivierungsinfrastruktur.",,,
+,,,
+"Das System folgt dem Option-2-Flow Architekturprinzip, bei dem jede Anfrage durch einen zentralen Koordinator (opena1), einen unveränderlichen Archivator (opena2) und einen intelligenten Gateway (kordp) geleitet wird.",,,
+,,,
+Kern-Dienste (PORTIER 3.0 Core):,,,
+,,,
+Service,Hafen,Funktion,Status
+opena1,12344,Koordinator (Anfrage71→Entscheidung72),✅ Laufen
+opena2,12345,Archivator (CMD/RESP-Sicherheitspunkte),✅ Laufen
+kordp,12346,Gateway (Werkzeugverteilung),✅ Laufen
+opena3,12347,OpenWebUI Terminal Agent,✅ Laufen
+opena20,12349,Dashboard (Live-Monitoring-Benutzeroberfläche),✅ Laufen
+archivp,Dateisystem,Safepoint Storage (JJJJ/MM/TT),✅ Aktiv
+Kernmerkmale:,,,
+,,,
+✅ Option-2-Flow-Architektur – OpenAI → opena1 → opena2 → kordp → Tools,,,
+"✅ Append-Only Safepoint System – Unicode → in Dateinamen, unveränderlich",,,
+"✅ Live-Dashboard – Echtzeitüberwachung, E2E-Testauslösung",,,
+"✅ Durchsetzung der Hafenrichtlinien – 12344-12399 (Backend), 8080 verboten",,,
+"✅ Strenge JSON-Schemas – Pydantic extra=""forbid"", OpenAI-kompatibel",,,
+"✅ Sicherheit steht an erster Stelle – Bearer-Token-Authentifizierung, Geheimnismaskierung",,,
+🚀 Schnellstart (2 Minuten),,,
+1️⃣ Token Bootstrap (Einmalig),,,
+cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt,,,
+bin/env_bootstrap.sh  # Generiert .env mit Bearer Token,,,
+2️⃣ Stapel starten,,,
+"# Alle Services starten (opena1, opena2, kordp, opena3, opena20)",,,
+bin/ops.sh start,,,
+,,,
+# Output:,,,
+# ▶️  Starting opena2 (Port 12345)...,,,
+# ✅ opena2 started (PID: 684455),,,
+# ▶️  Starting opena1 (Port 12344)...,,,
+# ✅ opena1 started (PID: 684588),,,
+# ...,,,
+3️⃣ Integration überprüfen,,,
+bin/ops.sh verify,,,
+,,,
+# Output:,,,
+# ✅ opena1 health OK,,,
+# ✅ opena2 health OK,,,
+# ✅ kordp health OK,,,
+# ✅ opena20 health OK,,,
+# ✅ Option-2-Flow validated,,,
+4️⃣ Dashboard öffnen,,,
+# Browser öffnen,,,
+xdg-open http://127.0.0.1:12349/dashboard,,,
+,,,
+# Oder manuell:,,,
+# http://127.0.0.1:12349/dashboard,,,
+5️⃣ E2E-Test ausgeführt,,,
+# Via Dashboard API,,,
+curl -X POST http://127.0.0.1:12349/api/e2e,,,
+,,,
+# Via opena1 direkt,,,
+curl -X POST http://127.0.0.1:12344/log/opena1 \,,,
+"  -H ""Content-Type: application/json"" \",,,
+"  -d '{""request_id"":""test-123"",""timestamp"":""2025-11-21T12:00:00Z"",""source"":""openai"",""user_query"":""Test"",""context"":{},""metadata"":{}}'",,,
+🏗️ PORTIER 3.0 — Vollständige Systemarchitektur,,,
+Interaktives Architekturdiagramm (21 Agenten),,,
+Rich-Display kann nicht gerendert werden,,,
+,,,
+Eigenschaften von undefinierten Objekten können nicht gelesen werden (Lesen von 'render'). Weitere Informationen finden Sie unter https://docs.github.com/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams#creating-mermaid-diagrams,,,
+,,,
+,,,
+,,,
+Flussdiagramm TB,,,
+    %% =====================,,,
+    %% EINSTIEGSSCHICHT,,,
+    %% =====================,,,
+"    subgraph Entry[""🌐 Entry Layer — External Interfaces""]",,,
+"        OpenAI[""OpenAI API<br>(Extern)""]",,,
+"        UserUI[""Benutzeroberflächen<br>(Web, CLI, API)""]",,,
+    Ende,,,
+    ,,,
+    %% =====================,,,
+    %% Kernleistungen,,,
+    %% =====================,,,
+"    subgraph Core[""PORTIER 3.0 – Kerndienste (1.opena1&2_portier)""]",,,
+"        opena1[""opena1<br>Koordinator<br>Port 12344<br>Anfrage71→Entscheidung72""]",,,
+"        opena2[""opena2<br>Archivator<br>Port 12345<br>CMD/RESP Safepoints""]",,,
+"        kordp[""kordp<br>Dispatch Gateway<br>Port 12346<br>Tool Routing""]",,,
+"        archivp[""archivp<br>Lokales Archiv<br>Dateisystem<br>JJJJ/MM/TT""]",,,
+    Ende,,,
+    ,,,
+    %% =====================,,,
+    %% ARMATURENBRETT,,,
+    %% =====================,,,
+"    subgraph Dashboard[""🖥️ Dashboard Layer (19.opena20_dashboard_agent)""]",,,
+"        opena20[""opena20<br>Dashboard-Dienst<br>Port 12349<br>Web-UI + API""]",,,
+    Ende,,,
+    ,,,
+    %% =====================,,,
+    %% OPERATIVE MITTEL,,,
+    %% =====================,,,
+"    subgraph Agents[""🔧 Operational Agents (opena3-opena19 + opena21)""]",,,
+"        opena3[""opena3<br>OpenWebUI Terminal<br>Port 12347<br>✅ Läuft""]",,,
+"        opena4[""opena4<br>Telegram Bot<br>Port 12348<br>🟡 Geplant""]",,,
+"        opena5[""opena5<br>VS Code Agent<br>Port 12349<br>🟡 Geplant""]",,,
+"        opena6[""opena6<br>Browser Automation<br>Port 12350 (Adapter)<br>✅ Läuft""]",,,
+"        opena7[""opena7<br>E-Mail-Client<br>Port 12351<br>🟡 Geplant""]",,,
+"        opena8[""opena8<br>WhatsApp API<br>Port 12352<br>🟡 Geplant""]",,,
+"        opena9[""opena9<br>Telefonie<br>Port 12353<br>🟡 Geplant""]",,,
+"        opena10[""opena10<br>Anrufverfolgung<br>Port 12354<br>🟡 Geplant""]",,,
+"        opena11[""opena11<br>Master entsperren<br>Port 12355<br>🟡 Geplant""]",,,
+"        opena12[""opena12<br>Soziale Medien<br>Port 12356<br>🟡 Geplant""]",,,
+"        opena13[""opena13<br>Influencer<br>Port 12357<br>🟡 Geplant""]",,,
+"        opena14[""opena14<br>Kalender<br>Hafen 12358<br>🟡 Geplant""]",,,
+"        opena15[""opena15<br>HTML Creator<br>Port 12359<br>🟡 Geplant""]",,,
+"        opena16[""opena16<br>Shop Creator<br>Port 12360<br>🟡 Geplant""]",,,
+"        opena17[""opena17<br>Homepage Creator<br>Port 12361<br>🟡 Geplant""]",,,
+"        opena18[""opena18<br>Lokales Archiv / CRM<br>Port 12362<br>🟡 Geplant""]",,,
+"        opena19[""opena19<br>Aktien & Krypto<br>Port 12363<br>🟡 Geplant""]",,,
+"        opena21[""opena21<br>Workflow Engine<br>Port 12364<br>🟡 Geplant""]",,,
+    Ende,,,
+    ,,,
+    %% =====================,,,
+    %% SCTA-SCHICHT,,,
+    %% =====================,,,
+"    subgraph SCTA[""📋 SCTA-Schicht (Strukturierte Code-Aufgabenautomatisierung)""]",,,
+"        Agenda_api[""agenda_api<br>16-Seiten Agenda<br>Port 12399<br>✅ Läuft""]",,,
+    Ende,,,
+    ,,,
+    %% =====================,,,
+    %% EXTERNE BENUTZEROBERFLÄCHE (FÜR DAS BACKEND VERBOTEN),,,
+    %% =====================,,,
+"    subgraph External[""⚠️ Externe Benutzeroberfläche (Nur Benutzeroberfläche, kein Backend)""]",,,
+"        openwebui_ui[""OpenWebUI UI<br>Port 8080<br>❌ Backend Forbidden""]",,,
+    Ende,,,
+    ,,,
+    %% =====================,,,
+    %% OPTION-2-FLOW (KERNROUTING),,,
+    %% =====================,,,
+    ,,,
+    %% Entry → opena1,,,
+    OpenAI -->|Anfrage71| opena1,,,
+    Benutzeroberfläche -->|API-Aufruf| opena1,,,
+    ,,,
+    %% opena1 → opena2 (CMD Safepoint),,,
+    opena1 -->|Decision72 → CMD| opena2,,,
+    ,,,
+    %% opena2 → kordp (Route),,,
+    opena2 -->|ROUTE Safepoint| kordp,,,
+    ,,,
+    %% opena2 → archivp (Persist),,,
+    opena2 -.->|Speicherpunkt<br>JJJJ/MM/TT| archivp,,,
+    ,,,
+    %% kordp → Tools (Dispatch),,,
+    kordp -->|Dispatch| opena3,,,
+    kordp -->|Dispatch| opena4,,,
+    kordp -->|Dispatch| opena5,,,
+    kordp -->|Dispatch| opena6,,,
+    kordp -->|Dispatch| opena7,,,
+    kordp -->|Dispatch| opena8,,,
+    kordp -->|Dispatch| opena9,,,
+    kordp -->|Dispatch| opena10,,,
+    kordp -->|Dispatch| opena11,,,
+    kordp -->|Dispatch| opena12,,,
+    kordp -->|Dispatch| opena13,,,
+    kordp -->|Dispatch| opena14,,,
+    kordp -->|Dispatch| opena15,,,
+    kordp -->|Dispatch| opena16,,,
+    kordp -->|Dispatch| opena17,,,
+    kordp -->|Dispatch| opena18,,,
+    kordp -->|Dispatch| opena19,,,
+    kordp -->|Dispatch| opena21,,,
+    ,,,
+    %% Tools → opena2 (RESP Safepoint),,,
+    opena3 -.->|RESP| opena2,,,
+    opena6 -.->|RESP| opena2,,,
+    ,,,
+    %% opena2 → opena1 (Return),,,
+    opena2 -->|RESP an Koordinator| opena1,,,
+    ,,,
+    %% opena1 → OpenAI (Endgültige Antwort),,,
+    opena1 -->|Endgültige Antwort| OpenAI,,,
+    ,,,
+    %% =====================,,,
+    %% DASHBOARD-ÜBERWACHUNG,,,
+    %% =====================,,,
+    opena20 -.->|Statusabfrage| opena1,,,
+    opena20 -.->|Statusabfrage| opena2,,,
+    opena20 -.->|Statusumfrage| kordp,,,
+    opena20 -.->|Read Safepoints| archivp,,,
+    ,,,
+    %% =====================,,,
+    %% SCTA-INTEGRATION,,,
+    %% =====================,,,
+    opena1 -.->|Agenda-Abfrage| agenda_api,,,
+    ,,,
+    %% =====================,,,
+"    %% OPENWEBUI UI (EXTERN, NUR BENUTZEROBERFLÄCHE)",,,
+    %% =====================,,,
+    openwebui_ui -.->|HTTP → Adapter → opena3| opena6,,,
+    ,,,
+    %% =====================,,,
+    %% STYLING,,,
+    %% =====================,,,
+"    classDef running fill:#5cb85c,stroke:#4caf50,color:#fff",,,
+"    classDef geplante Füllung:#fcf8e3,Strich:#f0ad4e,Farbe:#000",,,
+"    classDef forbidden fill:#f44336,stroke:#d32f2f,color:#fff",,,
+"    classDef dashboard fill:#f0ad4e,stroke:#ec971f,color:#fff",,,
+"    classDef scta fill:#4caf50,stroke:#388e3c,color:#fff",,,
+    ,,,
+"    Klasse opena1,opena2,kordp,archivp,opena3,opena6,agenda_api läuft",,,
+"    geplante Klassen opena4,opena5,opena7,opena8,opena9,opena10,opena11,opena12,opena13,opena14,opena15,opena16,opena17,opena18,opena19,opena21",,,
+    Klasse openwebui_ui verboten,,,
+    class opena20 dashboard,,,
+Diagramm-Legende:,,,
+,,,
+"🟢 Grün (Running): Produktiv im Einsatz (opena1, opena2, kordp, opena3, opena6, opena20, Agenda_api)",,,
+"🟡 Gelb (Geplant): Ordnerstruktur vorhanden, noch nicht implementiert (opena4-opena5, opena7-opena19, opena21)",,,
+🔴 Rot (Forbidden): Port 8080 ist für Backend-Services gesperrt (UI-only),,,
+🟠 Orange (Dashboard): Dashboard-Service mit Web UI,,,
+Vollständiges Diagramm: Siehe PORTIER_3.0_SYSTEM_ARCHITECTURE.md für hochauflösende SVG/PNG-Versionen,,,
+,,,
+Option-2-Flow (Heilige Regel),,,
+OpenAI → opena1:12344 → opena2:12345 → kordp:12346 → Tools,,,
+         ↓ Request71    ↓ CMD safepoint  ↓ Dispatch,,,
+         ↓ Decision72   ↓ RESP safepoint ↓ Result,,,
+         ↓              ↓                 ↓,,,
+         OpenAI ←───────┴─────────────────┘,,,
+                         ↘,,,
+                    opena20:12349 (Dashboard),,,
+Ablaufregeln (nicht verhandelbar):,,,
+,,,
+❌ Keine Direktaufrufe: OpenAI → Tool verboten,,,
+❌ Keine Verknüpfungen: opena1 → kordp ohne opena2 verboten,,,
+✅ Archivator immer in Kette: opena2 muss jeden CMD/RESP loggen,,,
+✅ Unicode-Pfeil → in allen Safepoint-Dateinamen (U+2192),,,
+"✅ Strenge JSON-Schemas: extra=""forbid"" in allen Pydantic-Modellen",,,
+Hafenpolitik,,,
+Hafen,Service,Rolle,Status
+12344,Portier,Koordinator/Disponent,✅ Online
+12345,OpenA2,Archiv (JSONL-Speicher),✅ Online
+12346,Telegramm,Messaging-Agent,✅ Online
+12348,Schlussfolgerung,Lama-Stapel + Ollama,✅ Online
+12349-12364,Skalierbare Dienste,Agentenpool,⏳ Vorlagenbereit
+12365-12399,Reserviert,Zukünftige Erweiterung,📅 Verfügbar
+📊 Status der Phasenabwicklung,,,
+✅ Abgeschlossene Phasen (7-16),,,
+Phase,Besonderheit,Details,
+7b,Laufzeitvalidierung,OpenA1/OpenA2-Gesundheitsprüfungen ✓,
+8,Servicearchitektur,19 Serviceordner + CI/CD-Gate ✓,
+9,Portier Service,Koordinator + Routing-Register ✓,
+10,Telegram + OpenWebUI,Messaging- und Inferenzintegration ✓,
+11,Multi-Service-Test,"4 Services, Routenregistrierung ✓",
+12,Git-Synchronisierung,Alle Änderungen übernommen und umgesetzt ✓,
+13,Lasttestphase 1,"100 Anfragen, 30,33 Anfragen/s, 100 % Erfolg ✓",
+14,llama-stack Integration,"Inferenzdienst, Brücke, 0,87 Anfragen/s ✓",
+15,Scale zu 20 Services,"Vorlage, Massengenerierung, 27,74 Anfragen/s ✓",
+16,CI/CD-Härtung,"GitHub Actions, Pre-Commit, Bereitstellungsvalidierung ✓",
+🔄 Kernkonzepte,,,
+1️⃣ Routenregister (Portier),,,
+Registriere einen Service:,,,
+,,,
+curl -X POST http://127.0.0.1:12344/route/update \,,,
+"  -H ""Content-Type: application/json"" \",,,
+  -d '{,,,
+"""service_name"": ""my_service"",",,,
+"""endpoint"": ""http://127.0.0.1:12350"",",,,
+"program_target"": ""myp",,,
+  }',,,
+Antwort:,,,
+,,,
+{,,,
+"""ok"": true,",,,
+"""routes_registered"": 1,",,,
+"""service_targets"": [""myp""]",,,
+},,,
+2️⃣ Versandaktionen (Portier),,,
+Sende Aktion zu Service:,,,
+,,,
+curl -X POST http://127.0.0.1:12344/dispatch/kordp \,,,
+"  -H ""Content-Type: application/json"" \",,,
+  -d '{,,,
+"""service_target"": ""telep"",",,,
+"""action"": ""send_message"",",,,
+"""params"": {""msg"": ""Hello""}",,,
+  }',,,
+3️⃣ Archivspeicher (OpenA2),,,
+Speicherne Safepoint:,,,
+,,,
+curl -X POST http://127.0.0.1:12345/store/archivp \,,,
+"  -H ""Content-Type: application/json"" \",,,
+  -d '{,,,
+"""src"": ""telep"",",,,
+"""dst"": ""archivp"",",,,
+"""kind"": ""MESSAGE_OUT"",",,,
+"""body"": {""message"": ""Hello"", ""chat_id"": 12345},",,,
+"""strict"": true",,,
+  }',,,
+Lügen-Sicherheitspunkte:,,,
+,,,
+curl http://127.0.0.1:12345/archiv/last?n=5 | jq .,,,
+4️⃣ Inferenz (Lama-Stapel),,,
+Chat-Abschluss:,,,
+,,,
+curl -X POST http://127.0.0.1:12348/chat/completions \,,,
+"  -H ""Content-Type: application/json"" \",,,
+  -d '{,,,
+"""model"": ""llama2"",",,,
+"""messages"": [{""role"": ""user"", ""content"": ""Sag hallo""}],",,,
+"""max_tokens"": 50",,,
+  }',,,
+📁 PORTIER 3.0 — Ordnerstruktur (Vollständig),,,
+Gesamtprojekt/  (PORTIER 3.0 Root),,,
+│,,,
+├── .github/                                  # ✅ GitHub Configuration,,,
+│   ├── copilot-master-prompt.md             # Vollständiges System-Wissen (v2.0),,,
+│   ├── copilot-instructions.md              # AI Integration Guide (200+ Zeilen),,,
+│   ├── COMPLETION_CHECKLIST.md              # Phase 1-3 Tracking (40/40 Tasks ✅),,,
+│   └── workflows/,,,
+│       └── ci.yml                           # GitHub Actions Pipeline,,,
+│,,,
+├── 1.opena1&2_portier/                      # ✅ PORTIER Core Services,,,
+│   ├── opena1/                              # Coordinator Service,,,
+│   │   ├── koordinator.py                   # Request71→Decision72 (120 Zeilen),,,
+│   │   └── main_production.py               # FastAPI Entry (91 Zeilen),,,
+│   ├── opena2/                              # Archivator Service,,,
+│   │   └── opena2_app.py                    # CMD/RESP Safepoints (212 Zeilen),,,
+│   ├── kordp/                               # Gateway Service,,,
+│   │   ├── main_production.py               # FastAPI Entry (91 Zeilen),,,
+│   │   ├── router.py                        # Route Handling (148 Zeilen),,,
+│   │   └── tool_resolver.py                 # Tool Resolution (186 Zeilen),,,
+│   ├── archivp_store/                       # ✅ Safepoint Storage,,,
+│   │   ├── YYYY/MM/DD/                      # Date-based structure,,,
+│   │   │   ├── SP<TS>_opena1→archivp_CMD.json,,,
+│   │   │   └── SP<TS>_archivp→opena1_RESP.json,,,
+│   │   └── index.jsonl                      # Append-only index,,,
+│   ├── bin/                                 # Operational Scripts,,,
+│   │   ├── start_stack.sh                   # Start all services,,,
+│   │   ├── stop_stack.sh                    # Stop all services,,,
+│   │   ├── verify_stack.sh                  # Integration verification,,,
+│   │   ├── check_ports.sh                   # Port availability check,,,
+│   │   └── env_bootstrap.sh                 # .env token generation,,,
+│   ├── tests/,,,
+│   │   └── test_portier_stack.py            # E2E Tests (450+ Zeilen),,,
+│   └── venv313/                             # Python 3.13 Virtual Environment,,,
+│,,,
+├── 2.opena3_openwebui/                      # ✅ OpenWebUI Terminal Agent,,,
+│   ├── main_openwebui_agent.py              # FastAPI Wrapper (Port 12347),,,
+│   ├── openwebui_adapter.py                 # HTTP Forwarder (Port 12350),,,
+│   └── bin/,,,
+│       ├── start_opena3.sh,,,
+│       └── start_openwebui_adapter.sh,,,
+│,,,
+├── 3.opena4_telegram/                       # 🟡 Telegram Bot (Placeholder),,,
+│   ├── api/,,,
+│   ├── bin/,,,
+│   ├── config/,,,
+│   │   └── agent.conf,,,
+│   └── requirements.txt,,,
+│,,,
+├── 4.opena5_vscode/                         # 🟡 VS Code Agent,,,
+├── 5.opena6_browser/                        # 🟡 Browser Automation,,,
+├── 6.opena7_email/                          # 🟡 E-Mail Client,,,
+├── 7.opena8_whatsapp/                       # 🟡 WhatsApp API,,,
+├── 8.opena9_telephone/                      # 🟡 Telefonie,,,
+├── 9.opena10_call_tracking/                 # 🟡 Call Tracking,,,
+├── 10.opena11_unlock/                       # 🟡 Unlock Master,,,
+├── 11.opena12_social_media/                 # 🟡 Social Media,,,
+├── 12.opena13_influencer/                   # 🟡 Influencer,,,
+├── 13.opena14_calendar/                     # 🟡 Calendar,,,
+├── 14.opena15_html/                         # 🟡 HTML Creator,,,
+├── 15.opena16_shop/                         # 🟡 Shop,,,
+├── 16.opena17_homepagecreator/              # 🟡 Homepage Creator,,,
+├── 17.opena18_CMR/                          # 🟡 CRM,,,
+├── 18.opena19_Aktien&Crypto/                # 🟡 Aktien & Crypto,,,
+│,,,
+├── 19.opena20_dashboard_agent/              # ✅ Dashboard (717 Zeilen),,,
+│   ├── main.py                              # FastAPI App (67 Zeilen),,,
+│   ├── router.py                            # API Routes (137 Zeilen),,,
+│   ├── templates/,,,
+│   │   └── dashboard.html                   # UI Template (73 Zeilen),,,
+│   ├── static/,,,
+│   │   ├── css/,,,
+│   │   │   └── dashboard.css                # Styles (214 Zeilen),,,
+│   │   └── js/,,,
+│   │       └── dashboard.js                 # Logic (219 Zeilen),,,
+│   └── bin/,,,
+│       └── start_opena20.sh,,,
+│,,,
+├── 20.opena21_workflow/                     # 🟡 Workflow Engine,,,
+│,,,
+├── src/                                     # ✅ SCTA Shared Modules,,,
+│   ├── agents/,,,
+│   │   ├── core_orchestrator/,,,
+│   │   └── worker_agents/,,,
+│   │       ├── planner/,,,
+│   │       └── executor/,,,
+│   ├── api/,,,
+│   │   └── http/,,,
+│   ├── pkg/,,,
+│   │   ├── shared/,,,
+│   │   │   ├── config.py                    # Global Config (60 Zeilen),,,
+│   │   │   ├── schemas.py                   # Shared Schemas (150 Zeilen),,,
+│   │   │   └── exceptions.py                # Custom Exceptions (80 Zeilen),,,
+│   │   └── models/,,,
+│   └── services/,,,
+│       └── agenda_api.py                    # 16-Seiten Agenda API (260 Zeilen),,,
+│,,,
+├── docs/                                    # ✅ Documentation,,,
+│   ├── OPERATIONS.md                        # Runtime Commands,,,
+│   ├── TROUBLESHOOTING.md                   # Error Scenarios,,,
+│   ├── OPENWEBUI_INTEGRATION.md             # opena3 Specs,,,
+│   ├── OPENWEBUI_API.md                     # Endpoint Specs,,,
+│   └── structure_runbook.md                 # SCTA Architecture (500+ Zeilen),,,
+│,,,
+├── bin/                                     # Root-Level Wrapper Scripts,,,
+│   ├── ops.sh                               # Main Orchestrator,,,
+│   ├── start_all.sh,,,
+│   ├── stop_all.sh,,,
+│   ├── verify_stack.sh,,,
+│   ├── check_ports.sh,,,
+│   └── log_tail.sh,,,
+│,,,
+├── scripts/,,,
+│   ├── register_agents.py                   # Agent-Registry Bootstrap,,,
+│   ├── test_openwebui.py                    # OpenWebUI Integration Tests,,,
+│   └── seed_openwebui.py                    # Seed Data for opena3,,,
+│,,,
+├── configs/,,,
+│   ├── agenda_pages.json                    # 16-Page Agenda Structure,,,
+│   └── tools_registry.json                  # Tool Registry,,,
+│,,,
+├── pyproject.toml                           # SCTA Dependencies (27 Packages),,,
+├── docker-compose.prod.yml                  # Production Docker Stack,,,
+├── LICENSE                                  # MIT License,,,
+"├── .gitignore                               # 40+ Patterns, .env blocked",,,
+├── .env.example                             # Template (18 Fields),,,
+│,,,
+├── PORTIER_3.0_RELEASE.md                   # Release Notes v3.0.0 (511 Zeilen),,,
+├── PORTIER_SYSTEM_DOCS.md                   # System Docs (654 Zeilen),,,
+├── SCTA_IMPLEMENTATION_CHECKPOINT.md        # SCTA Phase 1-3 (Phases 4-10 Queued),,,
+"├── README_ENTERPRISE.md                     # Enterprise README (5,890 Zeilen)",,,
+└── README.md                                # ← This file (Main README),,,
+Legende:,,,
+,,,
+✅ Laufen = Produktiv im Einsatz,,,
+"🟡 Geplant = Ordnerstruktur vorhanden, noch nicht implementiert",,,
+🧪 Lasttestergebnisse,,,
+Phase 13: Grundlegender Lasttest,,,
+100 Requests | 4 Services | 10 concurrent,,,
+✅ Success Rate: 90.0%,,,
+⏱️  Avg Latency: 202.36ms,,,
+📈 Throughput: 24.55 req/s,,,
+🔄 Archive: 29 Entries,,,
+Phase 14: Inferenzlasttest,,,
+100 Requests | Inference Service | 5 concurrent,,,
+✅ Success Rate: 100.0%,,,
+"⏱️  Avg Latency: 3,632.83ms (GPU-bound)",,,
+📈 Throughput: 0.87 req/s,,,
+🔄 Archive: 172 Entries (50 COMPLETIONS),,,
+Phase 15: Skalierter Lasttest,,,
+200 Requests | 20 Services | 10 concurrent,,,
+✅ Success Rate: 20.0% (4/20 online),,,
+⏱️  Avg Latency: 298.71ms,,,
+📈 Throughput: 27.74 req/s,,,
+🔄 Archive: 172 Entries (persistent),,,
+🚀 Schnellstart für neue Services,,,
+Option 1: Verwende Template,,,
+cd src/services/custom_3,,,
+"SERVICE_NAME=""custom_3"" \",,,
+"PROGRAM_TARGET=""cust3p"" \",,,
+PORT=12366 \,,,
+python3 main.py,,,
+Option 2: Generieren Sie mehrere Dienste,,,
+source .venv/bin/activate,,,
+python3 scripts/generate_scalable_services.py,,,
+Option 3: Kopieren bestehender Service,,,
+cp -r src/services/template src/services/my_agent,,,
+cd src/services/my_agent,,,
+"# Edit run.sh mit neuem PORT, SERVICE_NAME, PROGRAM_TARGET",,,
+./run.sh,,,
+🔗 OpenWebUI-Integration,,,
+Gesundheitscheck,,,
+curl http://127.0.0.1:3000/health,,,
+"# { ""status"": true }",,,
+Modellliste,,,
+curl http://127.0.0.1:3000/api/models,,,
+Chat-Abschlüsse (über Bridge),,,
+python3 scripts/openwebui_inference_bridge.py,,,
+📊 Überwachung & Protokolle,,,
+Gesundheitsdienst,,,
+for port in 12344 12345 12346 12348; do,,,
+"  echo ""Port $port:""",,,
+  curl -s http://127.0.0.1:$port/health | jq '.status',,,
+done,,,
+Archivprüfung,,,
+# Letzte 5 Einträge,,,
+curl http://127.0.0.1:12345/archiv/last?n=5 | jq .,,,
+,,,
+# Oder direkt lesen,,,
+tail -5 1.opena1&2_portier/archivp_store/index.jsonl | jq .,,,
+Protokolle hinterher,,,
+tail -f /tmp/portier.log,,,
+tail -f /tmp/telegram.log,,,
+tail -f /tmp/infer.log,,,
+🔐 Sicherheit & Bewährte Verfahren,,,
+Umgebungsvariablen,,,
+# .env (git-ignored),,,
+PORTIER_PORT=12344,,,
+ARCHIVP_PORT=12345,,,
+COORDINATOR_TOKEN=your_secret_token_here,,,
+OLLAMA_ENDPOINT=http://127.0.0.1:11434,,,
+Token-Validierung,,,
+# All endpoints (except /health) require auth:,,,
+Authorization: Bearer $TOKEN,,,
+Safepoint-Redaktion,,,
+# Sensitive fields automatically redacted in archive:,,,
+- password,,,
+- api_key,,,
+- token,,,
+- secret,,,
+🧹 Aufräumen & Zurücksetzen,,,
+Alle Dienste eingestellt,,,
+"pkill -f ""python3 src/services""",,,
+"pkill -f ""python3 main_opena""",,,
+Archiv leeren (⚠️WARNUNG),,,
+rm -rf 1.opena1&2_portier/archivp_store/*,,,
+Cache leeren,,,
+find . -type d -name __pycache__ -exec rm -rf {} +,,,
+"find . -name ""*.pyc"" -delete",,,
+📚 Dokumentation,,,
+Dokument,Link,Status,
+Architektur-Runbook,docs/OPERATIONS.md,✅,
+Portier API,src/services/portier/main.py(Docstrings),✅,
+Servicevorlage,src/services/template/main.py,✅,
+Routing-Matrix,configs/routing_matrix.yaml,✅,
+CI/CD-Konfiguration,.github/workflows/ci.yml,✅,
+Lasttest-Dokumentation,scripts/load_test*.py(Kommentare),✅,
+🚦 Aktueller Stand (11. November 2025),,,
+Komponente,Status,Details,
+Kernarchitektur,✅ Abgeschlossen,"20 Gottesdienste, 4 laufend",
+Koordinator,✅ Abgeschlossen,Portier + Routenregister,
+Archiv,✅ Abgeschlossen,JSONL + Tägliche Partitionen,
+Schlussfolgerung,✅ Abgeschlossen,llama2 via Ollama,
+OpenWebUI,✅ Abgeschlossen,"Port 3000, Bridge aktiv",
+Lasttests,✅ Abgeschlossen,"27,74 Anfragen/s validiert",
+CI/CD,✅ Abgeschlossen,"GitHub Actions, Pre-Commit",
+Produktionsbereit,⏳ Phase 17-18,Überwachung + Bereitstellung,
+🗺️ Roadmap (Nächste Phasen),,,
+Phase 17: Überwachungs-Dashboard,,,
+Prometheus-Metriken,,,
+Grafana-Dashboards,,,
+Echtzeit-Servicestatus,,,
+Phase 18: Produktionsbereitstellung,,,
+Docker Compose-Abschluss,,,
+Kubernetes-Manifeste,,,
+Load-Balancer-Konfiguration,,,
+Phase 19: Erweiterte Orchestrierung,,,
+Service Mesh (Istio),,,
+Leistungsschalter,,,
+Auto-Scaling-Richtlinien,,,
+Phase 20: Unternehmensfunktionen,,,
+Unterstützung für mehrere Mandanten,,,
+RBAC (rollenbasierte Zugriffskontrolle),,,
+Audit-Protokollierung,,,
+💡 Fehlerbehebung,,,
+Hafen bereits belegt,,,
+# Finde Prozess,,,
+lsof -i :12344,,,
+,,,
+# Beende Prozess,,,
+kill -9 <PID>,,,
+Der Service antwortet nicht,,,
+# Health Check,,,
+curl -v http://127.0.0.1:12344/health,,,
+,,,
+# Logs prüfen,,,
+ps aux | grep python3 | grep services,,,
+Archivfehler,,,
+# Prüfe Archiv-Zugriff,,,
+ls -la 1.opena1&2_portier/archivp_store/,,,
+wc -l 1.opena1&2_portier/archivp_store/index.jsonl,,,
+📞 Unterstützung & Beitrag,,,
+Fehlerberichte: GitHub-Issues,,,
+Funktionswünsche: GitHub-Diskussionen,,,
+Sicherheit: Kontakt: Danijel ELION Team,,,
+Dokumentation: Pull Requests willkommen,,,
+📄 Lizenz,,,
+MIT-Lizenz – Einzelheiten finden Sie unter LIZENZ,,,
+,,,
+🏢 PORTIER 3.0 — Firmen-Kontext,,,
+Entwickelt für:,,,
+ELION Technologies GmbH,,,
+Leitender Entwickler: Danijel Jokic,,,
+Team: AI Engineering & Automation,,,
+,,,
+Technologiepartner:,,,
+,,,
+"OpenAI (GPT-4, Claude Sonnet 4.5)",,,
+"GitHub (Repository-Hosting, CI/CD)",,,
+Docker (Containerisierung),,,
+FastAPI (Framework),,,
+Pydantic (Schema-Validierung),,,
+GitHub: jokicdanijel/Gesamtprojekt-start,,,
+,,,
+📄 Lizenz,,,
+MIT-Lizenz (Open-Source-Komponenten),,,
+Nur für den internen Gebrauch (Unternehmenskomponenten),,,
+,,,
+Copyright (c) 2025 ELION Technologies GmbH,,,
+,,,
+"Permission is hereby granted, free of charge, to any person obtaining a copy",,,
+"of this software and associated documentation files (the ""Software""), to deal",,,
+in the Software without restriction...,,,
+Letzte Aktualisierung: 21. November 2025,,,
+Version: 3.0.0 PORTIER,,,
+Veröffentlichungsstatus: ✅ PRODUKTIONSFÄHIG,,,
+Betreuer: Danijel Jokic (ELION-Team),,,
+,,,
+🚀 Dashboard: http://127.0.0.1:12349/dashboard,,,
+📊 Status-API: http://127.0.0.1:12349/api/status,,,
+💚 Gesundheitsprüfung: http://127.0.0.1:12349/health,,,
+,,,
+Für die vollständige technische Dokumentation siehe:,,,
+📖 PORTIER_SYSTEM_DOCS.md (654 Zeilen),,,
+"📖 README_ENTERPRISE.md (5,890 Zeilen, 20 Seiten)",,,
+,,,
+Um,,,
+"Es wurden weder eine Beschreibung, eine Website noch Themen angegeben.",,,
+Ressourcen,,,
+ Readme,,,
+Lizenz,,,
+ MIT-Lizenz,,,
+ Aktivität,,,
+Sterne,,,
+ 0 Sterne,,,
+Beobachter,,,
+ 0 Zuschauer,,,
+Gabeln,,,
+ 0 Gabeln,,,
+Veröffentlichungen,,,
+ 1 Tag,,,
+Neue Version erstellen,,,
+Pakete,,,
+Es sind noch keine Pakete veröffentlicht.,,,
+Veröffentlichen Sie Ihr erstes Paket.,,,
+Sprachen,,,
+Python,,,
+"97,70 %",,,
+ ,,,
+Cython,,,
+"1,00 %",,,
+ ,,,
+C,,,
+"0,50 %",,,
+ ,,,
+C++,,,
+"0,40 %",,,
+ ,,,
+Hülse,,,
+"0,30 %",,,
+ ,,,
+HTML,,,
+"0,10 %",,,
+Fußzeile,,,
+"© 2025 GitHub, Inc.",,,
+Fußnavigation,,,
+Bedingungen,,,
+Datenschutz,,,
+Sicherheit,,,
+Status,,,
+Gemeinschaft,,,
+Dokumente,,,
+Kontakt,,,
+Cookies verwalten,,,
+Meine persönlichen Daten dürfen nicht weitergegeben werden.,,,
+18 Dateien verbleiben,,,
+Kopiert!,,,

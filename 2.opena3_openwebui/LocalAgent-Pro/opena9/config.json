@@ -1,0 +1,12 @@
+{
+  "service_name": "opena9-call",
+  "agent_number": "9",
+  "function": "Call",
+  "port": 12354,
+  "bearer_token": "sk_opena9_call_12354_strict_v1",
+  "environment": "production",
+  "logging_level": "INFO",
+  "safepoint_enabled": true,
+  "security_event_logging": true,
+  "created_at": "2025-11-24T12:34:46Z"
+}

@@ -1,0 +1,8 @@
+{
+  "document_id": "safepoint_schema_core",
+  "source": "knowledge/processed/safepoint_schema_core.md",
+  "model": "text-embedding-3-large",
+  "embedding": [],
+  "status": "pending",
+  "strict": true
+}

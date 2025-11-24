@@ -1,0 +1,12 @@
+{
+  "service_name": "opena19-trading",
+  "agent_number": "19",
+  "function": "Trading",
+  "port": 12364,
+  "bearer_token": "sk_opena19_trade_12364_strict_v1",
+  "environment": "production",
+  "logging_level": "INFO",
+  "safepoint_enabled": true,
+  "security_event_logging": true,
+  "created_at": "2025-11-24T12:34:47Z"
+}

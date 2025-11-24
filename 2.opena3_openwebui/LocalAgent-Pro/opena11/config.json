@@ -1,0 +1,12 @@
+{
+  "service_name": "opena11-unlock",
+  "agent_number": "11",
+  "function": "Unlock",
+  "port": 12356,
+  "bearer_token": "sk_opena11_lock_12356_strict_v1",
+  "environment": "production",
+  "logging_level": "INFO",
+  "safepoint_enabled": true,
+  "security_event_logging": true,
+  "created_at": "2025-11-24T12:34:46Z"
+}

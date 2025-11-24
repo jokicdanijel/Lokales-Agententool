@@ -1,0 +1,12 @@
+{
+  "service_name": "opena8-whatsapp",
+  "agent_number": "8",
+  "function": "WhatsApp",
+  "port": 12353,
+  "bearer_token": "sk_opena8_what_12353_strict_v1",
+  "environment": "production",
+  "logging_level": "INFO",
+  "safepoint_enabled": true,
+  "security_event_logging": true,
+  "created_at": "2025-11-24T12:34:46Z"
+}

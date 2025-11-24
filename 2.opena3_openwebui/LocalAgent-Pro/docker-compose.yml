@@ -1,0 +1,74 @@
+services:
+  localagent-pro:
+    build: .
+    container_name: localagent-pro
+    ports:
+      - "8001:8001"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=llama3.1:8b-instruct-q4_K_M
+      - SANDBOX_DIR=/app/sandbox
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./sandbox:/app/sandbox
+      - ./logs:/app/logs
+      - ./config:/app/config
+    networks:
+      - agent-network
+    depends_on:
+      - ollama
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    networks:
+      - agent-network
+    restart: unless-stopped
+
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: openwebui
+    ports:
+      - "3000:8080"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OPENAI_API_BASE_URL=http://localagent-pro:8001/v1
+      - OPENAI_API_KEY=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
+      - WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY:-default-secret-key}
+      # 🧠 Masterprompt Auto-Recovery Integration
+      - SYSTEM_PROMPT_FILE=/system_prompts/MASTERPROMPT_OPENA3_AUTORECOVERY.md
+      - PORTIER_URL=http://127.0.0.1:12349
+      - PORTIER_TOKEN=${PORTIER_TOKEN:-default-token}
+      - AGENT_ID=opena3
+      - AUTO_RECOVERY_ENABLED=true
+      - SAFEPOINT_INTERVAL=300
+    volumes:
+      - openwebui-data:/app/backend/data
+      - /mnt/data:/mnt/data:rw
+      - ../MASTERPROMPT_OPENA3_AUTORECOVERY.md:/system_prompts/MASTERPROMPT_OPENA3_AUTORECOVERY.md:ro
+    networks:
+      - agent-network
+    depends_on:
+      - ollama
+      - localagent-pro
+    restart: unless-stopped
+    # 🔧 Health Check mit Portier-Integration
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  agent-network:
+    driver: bridge
+
+volumes:
+  ollama-data:
+  openwebui-data:

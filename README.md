@@ -705,14 +705,30 @@ find . -name "*.pyc" -delete
 
 ## 📚 Dokumentation
 
-| Dokument | Link | Status |
-|----------|------|--------|
-| Architecture Runbook | `docs/OPERATIONS.md` | ✅ |
-| Portier API | `src/services/portier/main.py` (docstrings) | ✅ |
-| Service Template | `src/services/template/main.py` | ✅ |
-| Routing Matrix | `configs/routing_matrix.yaml` | ✅ |
-| CI/CD Config | `.github/workflows/ci.yml` | ✅ |
-| Load-Test Docs | `scripts/load_test*.py` (comments) | ✅ |
+**System-Architektur & Design:**
+
+| Dokument | Link | Zweck | Status |
+|----------|------|-------|--------|
+| **System-Architektur** | `ELION_SYSTEM_ARCHITECTURE.md` | Überblick: Datenstruktur, Datenpfad, Projektstruktur | ✅ Master |
+| **Datenstruktur** | `DATENSTRUKTUR.md` | Detaillierte Dokumentation der Datenmodelle | ✅ |
+| **Datenpfad** | `DATENPFAD.md` | Datenflüsse und Verarbeitungspipelines | ✅ |
+| **Projektstruktur** | `PROJEKTSTRUKTUR.md` | Verzeichnisorganisation und Module | ✅ |
+| **Verzeichnis-Inventar** | `DIRECTORY_INVENTORY.md` | Vollständiges Verzeichnis-Inventar mit 248 Ordnern, Agent-Struktur, Datenpfaden | ✅ |
+| **Runbook: System-Architektur** | `Runbooks/RUNBOOK_SYSTEM_ARCHITECTURE.md` | Operationale Version für DevOps | ✅ |
+
+**Betriebsanleitungen:**
+
+| Dokument | Link | Zweck | Status |
+|----------|------|-------|--------|
+| Architecture Runbook | `docs/OPERATIONS.md` | Allgemeine Operations | ✅ |
+| Patch Flow & Guard | `Runbooks/Runbook_PatchFlow_and_Guard.md` | Patch-Management | ✅ |
+| No-Ask Integration | `Runbooks/Runbook_NoAsk.md` | Copilot No-Ask Mode | ✅ |
+| Env Setup | `Runbooks/Runbook_EnvSetup.md` | Umgebungskonfiguration | ✅ |
+| Portier API | `src/services/portier/main.py` (docstrings) | API-Dokumentation | ✅ |
+| Service Template | `src/services/template/main.py` | Service-Vorlage | ✅ |
+| Routing Matrix | `configs/routing_matrix.yaml` | Routing-Konfiguration | ✅ |
+| CI/CD Config | `.github/workflows/ci.yml` | CI/CD-Pipeline | ✅ |
+| Load-Test Docs | `scripts/load_test*.py` (comments) | Performance-Tests | ✅ |
 
 ---
 
@@ -797,6 +813,60 @@ wc -l 1.opena1&2_portier/archivp_store/index.jsonl
 - **Feature Requests:** GitHub Discussions
 - **Security:** Kontakt: Danijel ELION Team
 - **Documentation:** Pull Requests welcome
+
+---
+
+
+---
+
+## 🆕 **ARCHITEKTUR-DOKUMENTATION (24. November 2025)**
+
+### 📚 Vollständige System-Dokumentation
+
+Diese Dokumentation bietet einen umfassenden Überblick über die **ELION-System-Architektur**:
+
+**🔍 Schnelleinstieg:**
+- Start mit: **`ELION_SYSTEM_ARCHITECTURE.md`** (Master, alle 4 Abschnitte)
+- Dann spezialisieren auf: **`DATENSTRUKTUR.md`**, **`DATENPFAD.md`**, **`PROJEKTSTRUKTUR.md`**
+- Für DevOps: **`Runbooks/RUNBOOK_SYSTEM_ARCHITECTURE.md`**
+
+**📊 Was ist dokumentiert:**
+
+1. **Datenstruktur** – SQLite + JSON + JSONL Persistierung
+   - 8 Kern-Entitäten (Endpoint, PatchBlock, Safepoint, HealthRecord, AuditLog, etc.)
+   - Datentypen & Formate (JSON, YAML, Unified-Diff, SHA-256, JSONL)
+   - Relationale Integrität & Beziehungen
+
+2. **Datenpfad** – End-to-End Datenflüsse
+   - 4 Eingangsquellen (OpenWebUI, Telegram, GitHub, Shell)
+   - 6-stufige Verarbeitungspipeline
+   - 4 Use-Case Beispiele (Datei-Op, Telegram, Patch-Delivery, Voice-Prog)
+   - Sicherheits-Layer (Loop-Protection, Sandbox, Secret-Masking, TLS-Plan)
+
+3. **Projektstruktur** – Verzeichnisorganisation
+   - Hierarchische Struktur (5 Hauptbereiche)
+   - 4 Kernmodule (LocalAgent-Pro, opena3-Bridge, Coordinator, Voice-Tools)
+   - Port-Konventionen (12344–12349)
+   - Secrets-Management
+
+4. **Gesamterkenntnisse** – Production-Grade Qualität
+   - Architektur-Übersicht (3 Schichten)
+   - Datenfluss-Charakteristiken
+   - Integrations-Punkte
+   - Sicherheits-Architektur
+   - 6 Production-Ready Kriterien
+   - Roadmap (Nächste Phasen)
+
+**🎯 Wer sollte was lesen:**
+
+| Rolle | Empfohlene Dateien |
+|-------|-------------------|
+| **Entwickler (Backend)** | `DATENSTRUKTUR.md`, `DATENPFAD.md` |
+| **DevOps / SysAdmin** | `Runbooks/RUNBOOK_SYSTEM_ARCHITECTURE.md`, `PROJEKTSTRUKTUR.md` |
+| **Frontend-Entwickler** | `PROJEKTSTRUKTUR.md`, `LocalAgent-Pro/README.md` |
+| **Architekten** | `ELION_SYSTEM_ARCHITECTURE.md` (all-in-one) |
+| **Projektmanager** | `ELION_SYSTEM_ARCHITECTURE.md` (Executive Summary) |
+| **Neue Team-Mitglieder** | Start mit `ELION_SYSTEM_ARCHITECTURE.md`, dann spezialisieren |
 
 ---
 
