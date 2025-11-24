@@ -1,7 +1,7 @@
 # Browser Agent - OpenWebUI Tool Integration (JSON Specification)
 
-**Version**: 1.0.0  
-**Format**: OpenAI Function Calling Schema  
+**Version**: 1.0.0
+**Format**: OpenAI Function Calling Schema
 **Status**: Production Ready
 
 ---
@@ -75,6 +75,7 @@
 ## 🔧 API Endpoints
 
 ### 1. GET /manifest
+
 **Zweck**: Tool Definition für OpenWebUI laden
 
 ```bash
@@ -82,6 +83,7 @@ curl http://192.168.0.70:8765/manifest
 ```
 
 **Response**:
+
 ```json
 {
   "type": "function",
@@ -94,6 +96,7 @@ curl http://192.168.0.70:8765/manifest
 ```
 
 ### 2. GET /health
+
 **Zweck**: Health Check
 
 ```bash
@@ -101,6 +104,7 @@ curl http://192.168.0.70:8765/health
 ```
 
 **Response**:
+
 ```json
 {
   "status": "ok",
@@ -111,6 +115,7 @@ curl http://192.168.0.70:8765/health
 ```
 
 ### 3. GET /status
+
 **Zweck**: Detaillierter Server Status
 
 ```bash
@@ -118,6 +123,7 @@ curl http://192.168.0.70:8765/status
 ```
 
 **Response**:
+
 ```json
 {
   "status": "operational",
@@ -129,6 +135,7 @@ curl http://192.168.0.70:8765/status
 ```
 
 ### 4. POST /call
+
 **Zweck**: Tool Call von OpenWebUI
 
 ```bash
@@ -146,6 +153,7 @@ curl -X POST http://192.168.0.70:8765/call \
 ```
 
 **Response**:
+
 ```json
 {
   "status": "success",
@@ -159,6 +167,7 @@ curl -X POST http://192.168.0.70:8765/call \
 ```
 
 ### 5. POST /execute
+
 **Zweck**: Direkte Browser-Aktion ausführen
 
 ```bash
@@ -173,6 +182,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ```
 
 **Response**:
+
 ```json
 {
   "status": "success",
@@ -191,6 +201,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ### 1. OPEN - Browser öffnen
 
 **JSON Request**:
+
 ```json
 {
   "action": "open",
@@ -200,6 +211,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ```
 
 **JSON Response**:
+
 ```json
 {
   "status": "success",
@@ -216,6 +228,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ### 2. CLICK - Element klicken
 
 **JSON Request**:
+
 ```json
 {
   "action": "click",
@@ -226,6 +239,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ```
 
 **JSON Response**:
+
 ```json
 {
   "status": "success",
@@ -241,6 +255,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ### 3. TYPE - Text eingeben
 
 **JSON Request**:
+
 ```json
 {
   "action": "type",
@@ -252,6 +267,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ```
 
 **JSON Response**:
+
 ```json
 {
   "status": "success",
@@ -268,6 +284,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ### 4. EXTRACT_TEXT - Text extrahieren
 
 **JSON Request**:
+
 ```json
 {
   "action": "extract_text",
@@ -278,6 +295,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ```
 
 **JSON Response**:
+
 ```json
 {
   "status": "success",
@@ -294,6 +312,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ### 5. EXTRACT_HTML - HTML extrahieren
 
 **JSON Request**:
+
 ```json
 {
   "action": "extract_html",
@@ -304,6 +323,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ```
 
 **JSON Response**:
+
 ```json
 {
   "status": "success",
@@ -320,6 +340,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ### 6. QUERY_SELECTOR - DOM analysieren
 
 **JSON Request**:
+
 ```json
 {
   "action": "query_selector",
@@ -330,6 +351,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ```
 
 **JSON Response**:
+
 ```json
 {
   "status": "success",
@@ -351,6 +373,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ### 7. SCREENSHOT - Screenshot machen
 
 **JSON Request**:
+
 ```json
 {
   "action": "screenshot",
@@ -359,6 +382,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ```
 
 **JSON Response**:
+
 ```json
 {
   "status": "success",
@@ -376,6 +400,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ### 8. SCROLL - Seite scrollen
 
 **JSON Request**:
+
 ```json
 {
   "action": "scroll",
@@ -386,6 +411,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ```
 
 **JSON Response**:
+
 ```json
 {
   "status": "success",
@@ -402,6 +428,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ### 9. WAIT_FOR - Auf Element warten
 
 **JSON Request**:
+
 ```json
 {
   "action": "wait_for",
@@ -412,6 +439,7 @@ curl -X POST http://192.168.0.70:8765/execute \
 ```
 
 **JSON Response**:
+
 ```json
 {
   "status": "success",
@@ -578,14 +606,14 @@ Dann:
 
 ## 📚 Weitere URLs
 
-- **Dashboard**: http://localhost:8765/
-- **Manifest**: http://localhost:8765/manifest
-- **Health**: http://localhost:8765/health
-- **Status**: http://localhost:8765/status
+- **Dashboard**: <http://localhost:8765/>
+- **Manifest**: <http://localhost:8765/manifest>
+- **Health**: <http://localhost:8765/health>
+- **Status**: <http://localhost:8765/status>
 - **Tool Repo**: /home/danijel-jd/.../LocalAgent-Pro/opena6/
 
 ---
 
-**Stand**: 24. November 2025  
-**System**: PORTIER 3.0 Multi-Agent Platform  
+**Stand**: 24. November 2025
+**System**: PORTIER 3.0 Multi-Agent Platform
 **Status**: ✅ Production Ready
