@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-OpenA3 Web Dashboard
+OpenA3 Web Dashboard - Updated 2025
 Comprehensive web interface for all tools and voice programs
 Runs on http://localhost:8000
+Real-time monitoring, metrics & system control
 """
 
 import http.server
@@ -14,8 +15,11 @@ from datetime import datetime
 import threading
 import subprocess
 import socket
+import psutil
+import platform
 
 PORT = 8000
+VERSION = "2.0.0"
 
 
 class DashboardHandler(http.server.SimpleHTTPRequestHandler):
