@@ -2,6 +2,38 @@
 
 Mache deinen lokalen Browser Agent Tool Server (Port 8765) für andere Geräte im Netzwerk oder über das Internet zugänglich.
 
+---
+
+## ✅ Voraussetzungen
+
+Bevor du startest, stelle sicher dass folgende Punkte erfüllt sind:
+
+| Voraussetzung | Status | Details |
+|---------------|--------|---------|
+| Server läuft auf Port 8765 | ✅ | `python3 tool_server.py --host 0.0.0.0 --port 8765` |
+| 0.0.0.0 Binding | ✅ | Server auf allen Netzwerk-Interfaces erreichbar |
+| Firewall/Router erlaubt Port 8765 | ✅ | `sudo ufw allow 8765/tcp` |
+| CLI/Terminal Zugriff | ✅ | Linux/macOS/Windows Terminal oder PowerShell |
+| Für ngrok: Account & Token | ⚠️ | Optional für Methode 2 (Registrierung kostenlos) |
+| Für SSH: Remote SSH-Zugang | ⚠️ | Optional für Methode 3 |
+
+**Schnelle Überprüfung:**
+```bash
+# Server läuft?
+ps aux | grep tool_server
+
+# Port 8765 gebunden?
+ss -tlnp | grep 8765
+
+# Firewall Port offen?
+sudo ufw status | grep 8765
+
+# Health Endpoint antwortet?
+curl http://127.0.0.1:8765/health
+```
+
+---
+
 ## 📋 Inhaltsverzeichnis
 
 1. [Schnellstart (5 Minuten)](#schnellstart)
