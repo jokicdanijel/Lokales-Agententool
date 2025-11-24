@@ -42,7 +42,7 @@ services:
       - WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY:-default-secret-key}
       # 🧠 Masterprompt Auto-Recovery Integration
       - SYSTEM_PROMPT_FILE=/system_prompts/MASTERPROMPT_OPENA3_AUTORECOVERY.md
-      - PORTIER_URL=http://127.0.0.1:12349
+      - PORTIER_URL=http://0.0.0.0:12349
       - PORTIER_TOKEN=${PORTIER_TOKEN:-default-token}
       - AGENT_ID=opena3
       - AUTO_RECOVERY_ENABLED=true
@@ -59,7 +59,7 @@ services:
     restart: unless-stopped
     # 🔧 Health Check mit Portier-Integration
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health || exit 1"]
+      test: ["CMD", "curl", "-f", "http://0.0.0.0:8080/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3

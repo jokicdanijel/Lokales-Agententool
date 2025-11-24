@@ -2,7 +2,7 @@
 """
 OpenA3 Web Dashboard - Updated 2025
 Comprehensive web interface for all tools and voice programs
-Runs on http://localhost:8000
+Runs on http://0.0.0.0:8000
 Real-time monitoring, metrics & system control
 """
 
@@ -1538,12 +1538,12 @@ def main():
     print("\n" + "="*70)
     print("  🤖 OpenA3 Web Dashboard")
     print("="*70)
-    print(f"\n✅ Server startet auf: http://localhost:{PORT}")
-    print(f"\n📊 Dashboard verfügbar unter: http://localhost:{PORT}/")
+    print(f"\n✅ Server startet auf: http://0.0.0.0:{PORT}")
+    print(f"\n📊 Dashboard verfügbar unter: http://0.0.0.0:{PORT}/")
     print(f"📡 API Endpoints:")
-    print(f"   • Status:  http://localhost:{PORT}/api/status")
-    print(f"   • Tools:   http://localhost:{PORT}/api/tools")
-    print(f"   • Programs: http://localhost:{PORT}/api/programs")
+    print(f"   • Status:  http://0.0.0.0:{PORT}/api/status")
+    print(f"   • Tools:   http://0.0.0.0:{PORT}/api/tools")
+    print(f"   • Programs: http://0.0.0.0:{PORT}/api/programs")
     print(f"\n🎤 Voice Programme können gestartet werden mit:")
     print(f"   python3 tools/voice_command_parser.py")
     print(f"   python3 tools/voice_note_recorder.py")

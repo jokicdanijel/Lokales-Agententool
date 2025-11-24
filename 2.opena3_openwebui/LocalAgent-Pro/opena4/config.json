@@ -1,12 +1,16 @@
 {
-  "service_name": "opena4-telegram",
-  "agent_number": "4",
-  "function": "Telegram",
+  "service": "opena4",
   "port": 12348,
-  "bearer_token": "sk_opena4_tele_12348_strict_v1",
-  "environment": "production",
-  "logging_level": "INFO",
-  "safepoint_enabled": true,
-  "security_event_logging": true,
-  "created_at": "2025-11-24T12:34:46Z"
+  "role": "compute",
+  "version": "3.0.0",
+  "features": {
+    "health_check": true,
+    "metrics": true,
+    "sandbox": true,
+    "api_auth": true
+  },
+  "bearer_token": "sk_opena4_compute_v3_production",
+  "max_workers": 4,
+  "timeout": 30,
+  "log_level": "INFO"
 }

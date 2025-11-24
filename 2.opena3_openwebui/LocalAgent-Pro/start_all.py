@@ -42,7 +42,7 @@ class OpenA3Master:
         """Prüfe ob Port verfügbar ist"""
         import socket
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        result = sock.connect_ex(('127.0.0.1', port))
+        result = sock.connect_ex(('0.0.0.0', port))
         sock.close()
         return result != 0
 
@@ -142,10 +142,10 @@ class OpenA3Master:
         print("="*70)
 
         print("\n📡 WEB DASHBOARD:")
-        print("   URL: http://localhost:8000/")
-        print("   API: http://localhost:8000/api/status")
-        print("   API: http://localhost:8000/api/tools")
-        print("   API: http://localhost:8000/api/programs")
+        print("   URL: http://0.0.0.0:8000/")
+        print("   API: http://0.0.0.0:8000/api/status")
+        print("   API: http://0.0.0.0:8000/api/tools")
+        print("   API: http://0.0.0.0:8000/api/programs")
 
         print("\n🎤 VOICE PROGRAMME (Standalone):")
         print("   python3 tools/voice_command_parser.py")

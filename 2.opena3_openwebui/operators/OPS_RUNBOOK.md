@@ -1,8 +1,8 @@
 # 🚀 PORTIER 3.0 - Operations Runbook
 **Enterprise Multi-Agent Intelligence Platform**
 
-Version: 3.0.0  
-Status: Production Ready  
+Version: 3.0.0
+Status: Production Ready
 Last Updated: 24. November 2025
 
 ---
@@ -299,7 +299,7 @@ curl -s http://127.0.0.1:12346/archiv/verify
 cp LocalAgent-Pro/logs/*.db ~/backups/
 
 # Mit Timestamp
-for db in LocalAgent-Pro/logs/*.db; do 
+for db in LocalAgent-Pro/logs/*.db; do
   cp "$db" ~/backups/"$(basename $db).$(date +%s)"
 done
 
@@ -497,6 +497,6 @@ curl http://127.0.0.1:12349/metrics
 
 ---
 
-**Generated**: 24. November 2025  
-**Version**: PORTIER 3.0.0  
+**Generated**: 24. November 2025
+**Version**: PORTIER 3.0.0
 **Status**: ✅ Production Ready
