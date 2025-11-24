@@ -461,3 +461,46 @@ curl -X POST http://localhost:8001/v1/chat/completions \
 ---
 
 **🎉 Viel Erfolg mit LocalAgent-Pro und GitHub Copilot!**
+
+---
+
+## 🌐 Externe Server-Freigabe für Remote Geräte
+
+Dein lokaler Browser Agent Tool Server (Port 8765) ist jetzt für externe Geräte erreichbar!
+
+### 3 Zugriffsmethoden zur Wahl:
+
+**1. 📱 LAN-Zugriff** (Schnellste - 5 Min)
+```bash
+python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
+# Dann: http://192.168.0.70:8765 von anderem Gerät
+```
+
+**2. 🌍 Internet mit ngrok** (Einfachste - 15 Min)
+```bash
+ngrok http 8765
+# Weltweit erreichbar via https://*.ngrok.io
+```
+
+**3. 🔐 SSH Tunneling** (Sicherste - 20 Min)
+```bash
+ssh -L 8765:localhost:8765 user@remote.host -N
+```
+
+### Dokumentation:
+- **DEPLOYMENT_QUICK_START.md** - Ultra-kurze Anleitung (5 Min Lesen)
+- **EXTERNAL_SERVER_OVERVIEW.md** - Visuelle Übersicht mit Entscheidungshilfe
+- **EXTERNAL_ACCESS_GUIDE.md** - Detaillierte Dokumentation (500 Zeilen)
+- **QUICK_REFERENCE_EXTERNAL_ACCESS.md** - Schnelle Referenz
+
+### Tools:
+```bash
+# Interaktives Menü
+bash setup_external_access.sh
+
+# Konfiguration überprüfen
+python3 LocalAgent-Pro/opena6/external_access_manager.py --method firewall
+```
+
+---
+
