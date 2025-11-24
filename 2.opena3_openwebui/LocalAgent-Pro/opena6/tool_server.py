@@ -601,10 +601,15 @@ def main():
     parser = argparse.ArgumentParser(
         description="Browser Agent - OpenWebUI Tool Server"
     )
-    parser.add_argument("--host", default="0.0.0.0", help="Bind address")
+    parser.add_argument("--host", default="0.0.0.0", help="Bind address (0.0.0.0 für externen Zugriff)")
     parser.add_argument("--port", type=int, default=8765, help="Port")
+    parser.add_argument("--local", action="store_true", help="Nur auf localhost (127.0.0.1) lauschen")
 
     args = parser.parse_args()
+
+    # Wenn --local Flag gesetzt, nutze 127.0.0.1
+    if args.local:
+        args.host = "127.0.0.1"
 
     logger.info("")
     logger.info("╔═══════════════════════════════════════════════════════╗")
