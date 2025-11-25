@@ -57,6 +57,7 @@ Security:           🔐 IMPLEMENTIERT
 ### 🟢 Anfänger (5-10 Minuten)
 
 **→ START HIER:**
+
 ```
 DEPLOYMENT_QUICK_START.md
 └─ Schritt-für-Schritt Anleitung
@@ -70,6 +71,7 @@ DEPLOYMENT_QUICK_START.md
 ### 🟡 Entscheidungsträger (15-20 Minuten)
 
 **→ ÜBERSICHT:**
+
 ```
 EXTERNAL_SERVER_OVERVIEW.md
 └─ Vergleich der 3 Methoden
@@ -84,6 +86,7 @@ EXTERNAL_SERVER_OVERVIEW.md
 ### 🔵 Techniker (60+ Minuten)
 
 **→ DETAILS:**
+
 ```
 EXTERNAL_ACCESS_GUIDE.md
 ├─ Detaillierte Setup-Anleitung
@@ -108,6 +111,7 @@ NETZWERK_INFRASTRUKTUR.md
 ### ⚙️ Alle (schnelle Referenz)
 
 **→ SCHNELLE BEFEHLE:**
+
 ```
 QUICK_REFERENCE_EXTERNAL_ACCESS.md
 └─ Copy & Paste Befehle
@@ -122,10 +126,13 @@ QUICK_REFERENCE_EXTERNAL_ACCESS.md
 ## 🛠️ Werkzeuge & Scripts
 
 ### Validierungsskript
+
 ```bash
 bash validate_network.sh
 ```
+
 **Prüft:**
+
 - ✅ Server läuft
 - ✅ Port korrekt gebunden
 - ✅ Firewall konfiguriert
@@ -134,20 +141,26 @@ bash validate_network.sh
 - ✅ System-Ressourcen
 
 ### Setup-Assistent
+
 ```bash
 bash setup_external_access.sh
 ```
+
 **Bietet:**
+
 - 🟢 Interaktive Menüs
 - 🟢 Automatische Erkennung
 - 🟢 Schritt-für-Schritt Guidance
 - 🟢 Fehlerbehandlung
 
 ### Management-Tool
+
 ```bash
 python3 external_access_manager.py
 ```
+
 **Funktionen:**
+
 - 🐍 Konfiguration aller 3 Methoden
 - 🐍 Automatische ngrok-Installation
 - 🐍 SSH-Key-Verwaltung
@@ -160,6 +173,7 @@ python3 external_access_manager.py
 ### Wann welche Methode?
 
 **METHODE 1: LAN-Zugriff (Firewall)**
+
 ```
 ✅ NUTZEN WENN:
 - Nur lokales Netzwerk erforderlich
@@ -174,6 +188,7 @@ python3 external_access_manager.py
 ```
 
 **Befehl:**
+
 ```bash
 python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
 curl http://192.168.0.70:8765/health
@@ -182,6 +197,7 @@ curl http://192.168.0.70:8765/health
 ---
 
 **METHODE 2: Internet (ngrok)**
+
 ```
 ✅ NUTZEN WENN:
 - Zugriff von überall (Internet)
@@ -196,6 +212,7 @@ curl http://192.168.0.70:8765/health
 ```
 
 **Befehl:**
+
 ```bash
 python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765 &
 ngrok http 8765
@@ -205,6 +222,7 @@ curl https://abc123.ngrok.io/health
 ---
 
 **METHODE 3: SSH Tunnel (Sicherheit)**
+
 ```
 ✅ NUTZEN WENN:
 - Höchste Sicherheit erforderlich
@@ -219,6 +237,7 @@ curl https://abc123.ngrok.io/health
 ```
 
 **Befehl:**
+
 ```bash
 python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765 &
 ssh -L 8765:localhost:8765 user@remote.host -N
@@ -455,17 +474,20 @@ tail -f /var/log/auth.log | grep sshd
 ## 📞 Support & Ressourcen
 
 ### Dokumentationen
+
 - [EXTERNAL_ACCESS_GUIDE.md](./EXTERNAL_ACCESS_GUIDE.md) - Detailliert
 - [NETZWERK_INFRASTRUKTUR.md](./NETZWERK_INFRASTRUKTUR.md) - Infrastruktur
 - [DEPLOYMENT_QUICK_START.md](./DEPLOYMENT_QUICK_START.md) - Quick Start
 - [PROJECT_STANDBUCH.md](./PROJECT_STANDBUCH.md) - Status & Team
 
 ### Tools & Scripts
+
 - [setup_external_access.sh](./setup_external_access.sh) - Setup-Assistent
 - [validate_network.sh](./validate_network.sh) - Validierung
 - [external_access_manager.py](./LocalAgent-Pro/opena6/external_access_manager.py) - Management
 
 ### Externe Links
+
 - [ngrok Documentation](https://ngrok.com/docs)
 - [SSH Tunneling Guide](https://www.ssh.com/ssh/tunneling/)
 - [UFW Documentation](https://wiki.ubuntu.com/UncomplicatedFirewall)
@@ -475,6 +497,7 @@ tail -f /var/log/auth.log | grep sshd
 ## 🎯 Empfohlener Ablauf
 
 ### Woche 1: Setup & Testing
+
 ```
 Tag 1: DEPLOYMENT_QUICK_START.md lesen
 Tag 2: Methode 1 (LAN) implementieren
@@ -484,6 +507,7 @@ Tag 5: validate_network.sh durchlaufen
 ```
 
 ### Woche 2: Optimierung & Deployment
+
 ```
 Tag 6: Performance-Tuning
 Tag 7: Sicherheits-Audit
@@ -493,6 +517,7 @@ Tag 10: Production Deployment
 ```
 
 ### Laufend: Wartung
+
 ```
 Täglich: Health Checks
 Wöchentlich: Log-Review

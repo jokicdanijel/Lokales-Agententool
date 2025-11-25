@@ -1,23 +1,31 @@
+#!/usr/bin/env python3
 """
-VS Code Local Server Tunneling Guide
+External Server Access Manager
 
 Mache lokale Server (Port 8765, 12349, 12350, 3000) öffentlich zugänglich
-über ngrok, localtunnel oder SSH Tunneling.
+über 3 Methoden:
+1. Firewall/Router (für LAN)
+2. ngrok Tunneling (für Internet)
+3. SSH Tunneling (für sichere Remote-Verbindungen)
 
 Anwendungsfälle:
-- Browser Agent Tool Server (8765) über Internet zugänglich
+- Browser Agent Tool Server (8765) über Internet/LAN zugänglich
+- OpenWebUI von anderen Geräten erreichbar
 - Remote-Entwicklung mit VS Code
-- Testing auf verschiedenen Netzwerkgeräten
-- OpenWebUI von überall erreichbar
-- Mobile Testing
+- Testing auf mobilen Geräten
 """
 
 import subprocess
 import json
 import time
 import os
+import socket
+import sys
+import platform
 from pathlib import Path
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
+from dataclasses import dataclass
+from datetime import datetime
 
 
 # ==================== ngrok Tunneling ====================

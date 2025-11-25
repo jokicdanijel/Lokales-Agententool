@@ -1,0 +1,183 @@
+# Browser Agent Tool Server - REST Client für VS Code
+# Benötigt Extension: REST Client (humao.rest-client)
+
+@baseUrl = http://192.168.0.70:8765
+@token = sk_opena6_browser_v3_production
+
+###############################################################################
+# HEALTH & STATUS
+###############################################################################
+
+### 🏥 Health Check
+GET {{baseUrl}}/health
+
+### 📊 Server Status
+GET {{baseUrl}}/status
+
+### 📦 Tool Manifest
+GET {{baseUrl}}/manifest
+
+###############################################################################
+# BROWSER ACTIONS
+###############################################################################
+
+### 🌐 Open Website
+POST {{baseUrl}}/call
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "action": "open",
+  "url": "https://example.com",
+  "wait_time": 2
+}
+
+### 🖱️ Click Element
+POST {{baseUrl}}/call
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "action": "click",
+  "url": "https://example.com",
+  "element": "button.submit"
+}
+
+### ⌨️ Type Text
+POST {{baseUrl}}/call
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "action": "type",
+  "url": "https://example.com",
+  "element": "input[name=search]",
+  "text": "GitHub Copilot"
+}
+
+### 📄 Extract Text
+POST {{baseUrl}}/call
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "action": "extract_text",
+  "url": "https://example.com",
+  "element": "body",
+  "return_format": "text"
+}
+
+### 🏗️ Extract HTML
+POST {{baseUrl}}/call
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "action": "extract_html",
+  "url": "https://example.com",
+  "element": "main",
+  "return_format": "html"
+}
+
+### 🔍 Query DOM
+POST {{baseUrl}}/call
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "action": "query_selector",
+  "url": "https://example.com",
+  "selector": "h1",
+  "return_format": "json"
+}
+
+### 📸 Take Screenshot
+POST {{baseUrl}}/call
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "action": "screenshot",
+  "url": "https://example.com"
+}
+
+### 📜 Scroll Page
+POST {{baseUrl}}/call
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "action": "scroll",
+  "url": "https://example.com",
+  "direction": "down",
+  "amount": 3
+}
+
+### ⏳ Wait for Element
+POST {{baseUrl}}/call
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "action": "wait_for",
+  "url": "https://example.com",
+  "element": ".dynamic-content",
+  "timeout": 10
+}
+
+###############################################################################
+# ADVANCED EXAMPLES
+###############################################################################
+
+### 🔗 Multi-Step: Open + Extract
+# Schritt 1: Website öffnen
+POST {{baseUrl}}/call
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "action": "open",
+  "url": "https://github.com"
+}
+
+###
+
+# Schritt 2: Headline extrahieren
+POST {{baseUrl}}/call
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "action": "extract_text",
+  "url": "https://github.com",
+  "element": "h1"
+}
+
+###############################################################################
+# UTILITY ENDPOINTS
+###############################################################################
+
+### 📡 Direct Execute (Legacy)
+POST {{baseUrl}}/execute
+Content-Type: application/json
+
+{
+  "action": "open",
+  "url": "https://example.com"
+}
+
+###############################################################################
+# DEBUGGING
+###############################################################################
+
+### 🐛 View Dashboard
+GET {{baseUrl}}/
+
+###
+
+# Öffne in Browser: http://192.168.0.70:8765/
+# Das Dashboard zeigt:
+# - Server Status
+# - Action History
+# - Performance Metrics
+# - Test Controls

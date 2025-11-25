@@ -1,34 +1,53 @@
-# Lokalen Server für externe Geräte freigeben
+# 📖 Externe Zugriffs-Anleitung
+## Browser Agent Tool Server - Externe Zugänglichkeit
 
-Mache deinen lokalen Browser Agent Tool Server (Port 8765) für andere Geräte im Netzwerk oder über das Internet zugänglich.
+Mache deinen lokalen Browser Agent Tool Server (Port 8765) für andere Geräte im Netzwerk oder über das Internet zugänglich – LAN, ngrok, SSH.
+
+**Projekt:** Browser Agent Tool Server - Externe Zugänge
+**Datum:** 2025-11-25
+**Status:** ✅ PRODUKTIONSFERTIG
+**Version:** 1.0.0
 
 ---
 
 ## ✅ Voraussetzungen
 
+### Erforderlich (5 Punkte)
+
 Bevor du startest, stelle sicher dass folgende Punkte erfüllt sind:
 
-| Voraussetzung | Status | Details |
-|---------------|--------|---------|
-| Server läuft auf Port 8765 | ✅ | `python3 tool_server.py --host 0.0.0.0 --port 8765` |
-| 0.0.0.0 Binding | ✅ | Server auf allen Netzwerk-Interfaces erreichbar |
-| Firewall/Router erlaubt Port 8765 | ✅ | `sudo ufw allow 8765/tcp` |
-| CLI/Terminal Zugriff | ✅ | Linux/macOS/Windows Terminal oder PowerShell |
-| Für ngrok: Account & Token | ⚠️ | Optional für Methode 2 (Registrierung kostenlos) |
-| Für SSH: Remote SSH-Zugang | ⚠️ | Optional für Methode 3 |
+| # | Voraussetzung | Status | Befehl |
+|---|---------------|--------|--------|
+| 1 | Server läuft auf Port 8765 | ✅ | `ps aux \| grep tool_server` |
+| 2 | 0.0.0.0 Binding aktiv | ✅ | `ss -tlnp \| grep 8765` |
+| 3 | Firewall/Router erlaubt Port 8765 | ✅ | `sudo ufw status \| grep 8765` |
+| 4 | CLI/Terminal Zugriff | ✅ | Bash, Zsh, PowerShell, WSL |
+| 5 | Bearer Token gesetzt | ✅ | `echo $BEARER_TOKEN` |
 
-**Schnelle Überprüfung:**
+### Optional (2 Punkte)
+
+| # | Option | Nutzen | Quelle |
+|---|--------|--------|--------|
+| 6 | ngrok Account & Token | Internet-Zugriff | https://ngrok.com |
+| 7 | SSH Remote Zugriff | Sicheres Tunneling | SSH-Schlüssel |
+
+---
+
+## 🔍 Schnelle Überprüfung (vor Start)
+
+Führe diese 4 Befehle aus:
+
 ```bash
-# Server läuft?
+# 1. Server läuft?
 ps aux | grep tool_server
 
-# Port 8765 gebunden?
+# 2. Port 8765 gebunden?
 ss -tlnp | grep 8765
 
-# Firewall Port offen?
+# 3. Firewall Port offen?
 sudo ufw status | grep 8765
 
-# Health Endpoint antwortet?
+# 4. Health Endpoint antwortet?
 curl http://127.0.0.1:8765/health
 ```
 

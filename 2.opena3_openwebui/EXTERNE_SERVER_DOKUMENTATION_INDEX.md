@@ -10,6 +10,7 @@
 ### 👤 Wer bin ich?
 
 **→ ANFÄNGER** (Zum ersten Mal?)
+
 ```
 1. Lese DEPLOYMENT_QUICK_START.md (5 Min)
 2. Führe ONE Methode aus (10 Min)
@@ -18,6 +19,7 @@
 ```
 
 **→ TECHNIKER** (Detaillierte Implementierung?)
+
 ```
 1. Lese EXTERNAL_ACCESS_GUIDE.md
 2. Lese NETZWERK_INFRASTRUKTUR.md
@@ -27,6 +29,7 @@
 ```
 
 **→ ENTSCHEIDUNGSTRÄGER** (Überblick & Vergleich?)
+
 ```
 1. Lese INFRASTRUCTURE_DASHBOARD.md (Übersicht)
 2. Lese EXTERNAL_SERVER_OVERVIEW.md (Vergleich)
@@ -41,12 +44,14 @@
 ### 🟢 ANFÄNGER-LEVEL
 
 #### **DEPLOYMENT_QUICK_START.md**
+
 - **Größe:** 100 Zeilen | **Lesezeit:** 5 Minuten
 - **Inhalt:** Ultra-kurze Anleitung für 3 Methoden
 - **Best For:** Sofort-Einstieg, Schnelles Setup
 - **Gut für:** iPhone/Laptop Test, Demo-Aufbau
 
 **Quick Commands:**
+
 ```bash
 # LAN (schnellste)
 python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
@@ -66,6 +71,7 @@ ssh -L 8765:localhost:8765 user@host -N
 ### 🟡 TECHNIKER-LEVEL
 
 #### **EXTERNAL_ACCESS_GUIDE.md** (Detailliert)
+
 - **Größe:** 500 Zeilen | **Lesezeit:** 30-60 Minuten
 - **Inhalt:** Komplette Dokumentation aller 3 Methoden
 - **Best For:** Umfassendes Verständnis, Production Setup
@@ -80,6 +86,7 @@ ssh -L 8765:localhost:8765 user@host -N
 **→ [Zur Datei](./EXTERNAL_ACCESS_GUIDE.md)**
 
 #### **NETZWERK_INFRASTRUKTUR.md** (Infrastruktur)
+
 - **Größe:** 600 Zeilen | **Lesezeit:** 45-90 Minuten
 - **Inhalt:** Tiefgehende Netzwerk-Konfiguration
 - **Best For:** Netzwerk-Admin, DevOps, Architektur
@@ -95,6 +102,7 @@ ssh -L 8765:localhost:8765 user@host -N
 **→ [Zur Datei](./NETZWERK_INFRASTRUKTUR.md)**
 
 #### **QUICK_REFERENCE_EXTERNAL_ACCESS.md** (Befehle)
+
 - **Größe:** 200 Zeilen | **Lesezeit:** 10 Minuten
 - **Inhalt:** Copy & Paste Befehle für alle Szenarien
 - **Best For:** Schnelle Referenz während Setup
@@ -107,6 +115,7 @@ ssh -L 8765:localhost:8765 user@host -N
 ### 🔵 ENTSCHEIDUNGSTRÄGER-LEVEL
 
 #### **INFRASTRUCTURE_DASHBOARD.md** (Zentrale Übersicht)
+
 - **Größe:** 500 Zeilen | **Lesezeit:** 15 Minuten
 - **Inhalt:** Übersicht, Navigation, Status-Dashboard
 - **Best For:** Schneller Überblick, Nächste Schritte
@@ -122,6 +131,7 @@ ssh -L 8765:localhost:8765 user@host -N
 **→ [Zur Datei](./INFRASTRUCTURE_DASHBOARD.md)**
 
 #### **EXTERNAL_SERVER_OVERVIEW.md** (Vergleich)
+
 - **Größe:** 300 Zeilen | **Lesezeit:** 15 Minuten
 - **Inhalt:** Vergleich der 3 Zugriffsmethoden
 - **Best For:** Entscheidungsfindung, Anforderungsanalyse
@@ -136,6 +146,7 @@ ssh -L 8765:localhost:8765 user@host -N
 **→ [Zur Datei](./EXTERNAL_SERVER_OVERVIEW.md)**
 
 #### **PROJECT_STANDBUCH.md** (Status & Handover)
+
 - **Größe:** 450 Zeilen | **Lesezeit:** 20 Minuten
 - **Inhalt:** Projekt-Status, Team-Informationen, Tests
 - **Best For:** Stakeholder-Berichte, Team-Coordination
@@ -157,16 +168,20 @@ ssh -L 8765:localhost:8765 user@host -N
 ## 🛠️ Tools & Scripts
 
 ### **setup_external_access.sh** (Setup-Assistent)
+
 ```bash
 bash setup_external_access.sh
 ```
+
 **Features:**
+
 - 🎯 Interaktive Menüs
 - 🎯 Automatische Erkennung
 - 🎯 Schritt-für-Schritt Guidance
 - 🎯 Für alle 3 Methoden
 
 **Menü-Optionen:**
+
 1. Methode 1: LAN-Zugriff (Firewall)
 2. Methode 2: Internet-Zugriff (ngrok)
 3. Methode 3: SSH Tunneling
@@ -177,10 +192,13 @@ bash setup_external_access.sh
 **→ [Zum Script](./setup_external_access.sh)**
 
 ### **validate_network.sh** (Validierungsskript)
+
 ```bash
 bash validate_network.sh
 ```
+
 **Tests:**
+
 - ✅ Server läuft?
 - ✅ Port korrekt gebunden?
 - ✅ Firewall konfiguriert?
@@ -195,10 +213,13 @@ bash validate_network.sh
 **→ [Zum Script](./validate_network.sh)**
 
 ### **external_access_manager.py** (Management)
+
 ```bash
 python3 LocalAgent-Pro/opena6/external_access_manager.py
 ```
+
 **Funktionen:**
+
 - ⚙️ Automatische Konfiguration
 - ⚙️ ngrok Installation & Setup
 - ⚙️ SSH-Key-Verwaltung
@@ -238,6 +259,7 @@ EXTERNE SERVER-FREIGABE
 ## 🎯 Wähle deinen Weg
 
 ### 🚀 Option A: "Ich will SOFORT starten" (15 Min)
+
 ```
 1. Lese: DEPLOYMENT_QUICK_START.md (5 Min)
 2. Führe aus: setup_external_access.sh (5 Min)
@@ -246,6 +268,7 @@ EXTERNE SERVER-FREIGABE
 ```
 
 ### 🔍 Option B: "Ich will verstehen was ich tue" (2 Stunden)
+
 ```
 1. Lese: INFRASTRUCTURE_DASHBOARD.md (15 Min)
 2. Lese: EXTERNAL_ACCESS_GUIDE.md (45 Min)
@@ -256,6 +279,7 @@ EXTERNE SERVER-FREIGABE
 ```
 
 ### 📊 Option C: "Ich muss entscheiden" (30 Min)
+
 ```
 1. Lese: INFRASTRUCTURE_DASHBOARD.md (15 Min)
 2. Lese: EXTERNAL_SERVER_OVERVIEW.md (10 Min)
@@ -310,26 +334,32 @@ EXTERNE SERVER-FREIGABE
 ## 🌐 Methoden in 30 Sekunden
 
 ### Methode 1: LAN (Schnellste)
+
 ```bash
 python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
 # Dann: http://192.168.0.70:8765
 ```
+
 **Latenz:** <5ms | **Kosten:** Kostenlos | **Setup:** 5 Min
 
 ### Methode 2: ngrok (Internet)
+
 ```bash
 python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765 &
 ngrok http 8765
 # Dann: https://abc123.ngrok.io
 ```
+
 **Latenz:** ~50ms | **Kosten:** Kostenlos | **Setup:** 10 Min
 
 ### Methode 3: SSH (Sicherste)
+
 ```bash
 python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765 &
 ssh -L 8765:localhost:8765 user@remote.host -N
 # Dann: http://localhost:8765
 ```
+
 **Latenz:** ~20ms | **Kosten:** Kostenlos | **Setup:** 15 Min
 
 ---
@@ -337,33 +367,42 @@ ssh -L 8765:localhost:8765 user@remote.host -N
 ## 📞 Support & FAQ
 
 ### F: Welche Methode sollte ich wählen?
-**A:** 
+
+**A:**
+
 - **LAN nur:** → Methode 1
 - **Internet & Demo:** → Methode 2 (ngrok)
 - **Maximale Sicherheit:** → Methode 3 (SSH)
 - **Unsicher?** → Siehe EXTERNAL_SERVER_OVERVIEW.md
 
 ### F: Wie schnell ist die Einrichtung?
-**A:** 
+
+**A:**
+
 - **Minimum:** 5 Minuten (Methode 1)
 - **Empfohlen:** 30 Minuten (mit Setup + Test)
 - **Detailliert:** 2 Stunden (mit Verständnis)
 
 ### F: Was wenn der Server läuft nicht?
+
 **A:**
+
 1. Überprüfe: `ps aux | grep tool_server`
 2. Schau Fehler: `python3 tool_server.py` (direkt)
 3. Konsultiere: QUICK_REFERENCE_EXTERNAL_ACCESS.md
 4. Nutze: `bash validate_network.sh`
 
 ### F: Ist das sicher?
-**A:** 
+
+**A:**
+
 - **LAN:** Medium (nur internes Netzwerk)
 - **ngrok:** Hoch (HTTPS automatisch)
 - **SSH:** Sehr hoch (verschlüsselt)
 - Details: Siehe EXTERNAL_ACCESS_GUIDE.md #Sicherheit
 
 ### F: Kann ich mehrere Methoden gleichzeitig nutzen?
+
 **A:** Ja! Alle 3 Methoden können parallel laufen.
 
 ---
@@ -371,11 +410,13 @@ ssh -L 8765:localhost:8765 user@remote.host -N
 ## 📚 Weitere Ressourcen
 
 ### Interne Links
+
 - [README.md](./README.md) - Projekt-Übersicht
 - [LocalAgent-Pro/](./LocalAgent-Pro/) - Tool Server Code
 - [tools/](./tools/) - Zusätzliche Tools
 
 ### Externe Links
+
 - [ngrok Dokumentation](https://ngrok.com/docs)
 - [SSH Tunneling Guide](https://www.ssh.com/ssh/tunneling/)
 - [Linux Firewall Basics](https://wiki.ubuntu.com/UncomplicatedFirewall)
@@ -385,16 +426,19 @@ ssh -L 8765:localhost:8765 user@remote.host -N
 ## 🎓 Learning Path
 
 ### Woche 1: Grundlagen
+
 - Tag 1-2: Lese DEPLOYMENT_QUICK_START.md
 - Tag 3-4: Implementiere Methode 1 (LAN)
 - Tag 5: Teste mit anderen Geräten
 
 ### Woche 2: Vertiefung
+
 - Tag 6-7: Lese EXTERNAL_ACCESS_GUIDE.md
 - Tag 8-9: Implementiere Methode 2 & 3
 - Tag 10: Fülle alle Checklisten aus
 
 ### Woche 3: Production
+
 - Tag 11-12: Sicherheits-Audit durchführen
 - Tag 13-14: Monitoring aufsetzen
 - Tag 15: Go-Live & Team Training
@@ -424,7 +468,7 @@ ssh -L 8765:localhost:8765 user@remote.host -N
 
 ---
 
-## 🚀 Los geht's!
+## 🚀 Los geht's
 
 **Schritt 1:** Wähle deinen Weg (oben)
 **Schritt 2:** Folge der entsprechenden Dokumentation
