@@ -1,0 +1,6 @@
+
+# ============================================================================
+# Vendor-Leak-Cleanup (2025-11-27)
+# Ersetzt kopierte venv-Site-Packages durch korrekte Dependencies
+# ============================================================================
+PySocks>=1.7.1  # Ersetzt src/pkg/socks*.py
