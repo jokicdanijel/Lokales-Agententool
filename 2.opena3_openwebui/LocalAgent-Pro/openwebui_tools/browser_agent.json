@@ -1,0 +1,53 @@
+{
+  "name": "browser_agent",
+  "type": "action",
+  "description": "Zero-limit browser automation - Full web automation with multi-step intelligence, DOM manipulation, and headless control",
+  "endpoint": "http://localhost:12350/execute",
+  "method": "POST",
+  "timeout": 60000,
+  "parameters": {
+    "action": {
+      "type": "string",
+      "description": "Browser action: open, click, type, scroll, extract_text, extract_html, screenshot, wait_for, submit_form, navigate_back",
+      "required": true,
+      "enum": ["open", "click", "type", "scroll", "extract_text", "extract_html", "screenshot", "wait_for", "submit_form", "navigate_back"]
+    },
+    "url": {
+      "type": "string",
+      "description": "URL to navigate to (required for 'open' action)",
+      "required": false
+    },
+    "selector": {
+      "type": "string",
+      "description": "CSS or XPath selector for DOM element",
+      "required": false
+    },
+    "text": {
+      "type": "string",
+      "description": "Text to type or search for",
+      "required": false
+    },
+    "wait_time": {
+      "type": "integer",
+      "description": "Wait time in milliseconds",
+      "required": false,
+      "default": 5000
+    },
+    "headless": {
+      "type": "boolean",
+      "description": "Run in headless mode (default: true)",
+      "required": false,
+      "default": true
+    }
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "status": {"type": "string", "enum": ["success", "error", "timeout"]},
+      "action": {"type": "string"},
+      "data": {"type": "object"},
+      "screenshot": {"type": "string", "description": "Base64 encoded screenshot"},
+      "timestamp": {"type": "string"}
+    }
+  }
+}

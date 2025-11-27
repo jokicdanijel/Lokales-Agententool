@@ -1,0 +1,59 @@
+{
+  "permissions": [
+    {
+      "permission_id": "perm_1764244100955845",
+      "subject": "user123",
+      "resource": "/files/documents",
+      "action": "read",
+      "created_at": "2025-11-27T11:48:20.955897Z",
+      "expires_at": null,
+      "active": true
+    },
+    {
+      "permission_id": "perm_1764244101460192",
+      "subject": "user456",
+      "resource": "/files/temp",
+      "action": "write",
+      "created_at": "2025-11-27T11:48:21.460201Z",
+      "expires_at": null,
+      "active": false
+    },
+    {
+      "permission_id": "perm_1764244101968633",
+      "subject": "user789",
+      "resource": "/api/endpoint",
+      "action": "execute",
+      "created_at": "2025-11-27T11:48:21.968643Z",
+      "expires_at": null,
+      "active": true
+    },
+    {
+      "permission_id": "perm_1764244102978404",
+      "subject": "user_expired",
+      "resource": "/files/old",
+      "action": "read",
+      "created_at": "2025-11-27T11:48:22.978416Z",
+      "expires_at": "2025-11-27T10:48:22.975932Z",
+      "active": true
+    },
+    {
+      "permission_id": "perm_1764244104491775",
+      "subject": "user_cmd",
+      "resource": "/cmd/test",
+      "action": "read",
+      "created_at": "2025-11-27T11:48:24.491783Z",
+      "expires_at": null,
+      "active": true
+    },
+    {
+      "permission_id": "perm_1764244104994950",
+      "subject": "user_wildcard",
+      "resource": "/files/*",
+      "action": "read",
+      "created_at": "2025-11-27T11:48:24.994958Z",
+      "expires_at": null,
+      "active": true
+    }
+  ],
+  "last_updated": "2025-11-27T11:48:24.994997Z"
+}

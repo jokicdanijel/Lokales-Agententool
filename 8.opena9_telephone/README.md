@@ -1,8 +1,9 @@
-# ☎️ opena9 - Telefon Antwort Chatbot (Ton)
+# ☎️ opena9 - Telefonie Agent (Twilio)
 
 **Agent-ID:** `opena9`  
-**Port:** 12351  
-**Kürzel:** `calp`  
+**Port:** 12354  
+**Kürzel:** `telphonep`  
+**Status:** ✅ RUNNING (PID: siehe logs/opena9.pid)  
 **Version:** 2.0  
 **Status:** ✅ Production
 

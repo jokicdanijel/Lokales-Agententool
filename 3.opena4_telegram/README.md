@@ -1,9 +1,23 @@
-# Agent 4 – Telegram Agent (Port 12347)
+# 📱 opena4 - Telegram Agent
+
+**Agent-ID:** `opena4`  
+**Port:** 12348  
+**Kürzel:** `telep`  
+**Status:** ✅ RUNNING (PID: siehe logs/opena4.pid)  
+**Version:** 2.0  
+**Status:** ✅ Production  
+**Letzte Aktualisierung:** 27. November 2025
+
+---
+
+## 📖 Überblick
 
 **Role:** Bot-Connector (Telegram) – empfängt/sendet Nachrichten und integriert in die Portier-Architektur.
 
-**Ingress:** Telegram Webhook → FastAPI
+**Ingress:** Telegram Webhook → FastAPI  
 **Egress:** Archivierung via `opena2` (`/store/archivp`) und Dispatch via `kordp` (`/dispatch/kordp`)
+
+---
 
 ## Quickstart (Docker)
 
@@ -13,14 +27,14 @@ cp .env.example .env
 docker compose up -d --build
 ```
 
-### Webhook setzen (einmalig):
+### Webhook setzen (einmalig)
 
 ```bash
 curl -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/setWebhook" \
      -d "url=$PUBLIC_BASE_URL/telegram/webhook?secret=$(grep WEBHOOK_SECRET .env | cut -d= -f2)"
 ```
 
-### Healthcheck:
+### Healthcheck
 
 ```bash
 curl http://localhost:12347/health
@@ -41,7 +55,7 @@ curl http://localhost:12347/health
 - **kordp** (Dispatch): Befehle Richtung Ziel-Tools laufen über `/dispatch/kordp`.
 - **opena1** (Koordinator): bleibt Master der Entscheidung; dieser Agent führt nur Bot-IO aus.
 
-## Default-URLs (lokal):
+## Default-URLs (lokal)
 
 ```
 OPENA2_URL=http://localhost:12345

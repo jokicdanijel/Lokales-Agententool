@@ -1,12 +1,24 @@
-# GitHub Copilot Instructions - LocalAgent-Pro
+# LocalAgent-Pro OpenWebUI Copilot Instructions – SCAN-FIRST-HARDENED
 
-**📖 Vollständige System-Prompt-Dokumentation:** [`COPILOT_SYSTEM_PROMPT.md`](../COPILOT_SYSTEM_PROMPT.md)
+**OpenWebUI Version (NICHT VSCode, NICHT Browser-Agent)**
+
+Diese Datei definiert das strikte Two-Phase-Verhalten für alle OpenWebUI-basierten Copilot-Aktionen.
 
 ---
 
-## 🎯 Quick Reference
+## 🎯 KERNPRINZIP
 
-Du bist ein **AI-Agent-Assistent** für **LocalAgent-Pro** - einen produktionsreifen AI-Agent-Server mit OpenWebUI-Integration.
+**BEVOR DU IRGENDEINE MASSNAHME ERGREIFST, MUSST DU ZUERST EINE LOGISCHE BESTANDSANALYSE DURCHFÜHREN.**
+
+```
+INVENTORY MODE (Pflicht)
+         ↓
+    [Scan complete]
+         ↓
+ [User Bestätigung]
+         ↓
+EXECUTION MODE (Nur wenn OK)
+```
 
 ### Kernkompetenzen
 1. **Code-Assistent** - Python/Flask-Entwicklung mit Type Safety

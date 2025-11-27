@@ -1,0 +1,29 @@
+[
+  {
+    "symbol": "AAPL",
+    "market": "stock",
+    "quantity": 10.0,
+    "avg_price": 150.0,
+    "current_price": null,
+    "pnl": null,
+    "pnl_percent": null
+  },
+  {
+    "symbol": "bitcoin",
+    "market": "crypto",
+    "quantity": 0.5,
+    "avg_price": 40000.0,
+    "current_price": null,
+    "pnl": null,
+    "pnl_percent": null
+  },
+  {
+    "symbol": "TSLA",
+    "market": "stock",
+    "quantity": 5.0,
+    "avg_price": 250.0,
+    "current_price": null,
+    "pnl": null,
+    "pnl_percent": null
+  }
+]

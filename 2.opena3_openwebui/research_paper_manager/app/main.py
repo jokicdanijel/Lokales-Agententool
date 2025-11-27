@@ -11,7 +11,7 @@ import json
 # Import models and services
 from app.models.paper import Base, Paper, Tag, Collection, CollectionPaper
 from app.services.arxiv_service import ArxivService
-from app.db.database import init_db, get_session
+from app.db.database import init_db, get_db_session, close_db
 
 # Initialize Flask App
 app = Flask(__name__, template_folder='../web', static_folder='../web')
@@ -23,6 +23,13 @@ DB_PATH = os.getenv('DB_PATH', './research_papers.db')
 
 # Initialize Database
 init_db(DB_PATH)
+
+# Register cleanup on app shutdown
+def shutdown_session(exception=None):
+    """Close database connection on app shutdown"""
+    close_db()
+
+app.teardown_appcontext(shutdown_session)
 
 # Initialize Services
 arxiv_service = ArxivService()
@@ -46,9 +53,9 @@ def health():
 @app.route('/api/status', methods=['GET'])
 def status():
     """Detailed status"""
-    session = get_session()
     try:
-        paper_count = session.query(Paper).count()
+        with get_db_session() as session:
+paper_count = session.query(Paper).count()
         collection_count = session.query(Collection).count()
         tag_count = session.query(Tag).count()
 
@@ -66,8 +73,6 @@ def status():
                 'tagging': True
             }
         }), 200
-    finally:
-        session.close()
 
 
 # ============================================================================
@@ -77,9 +82,9 @@ def status():
 @app.route('/api/papers', methods=['GET'])
 def list_papers():
     """Get all papers with pagination"""
-    session = get_session()
     try:
-        page = request.args.get('page', 1, type=int)
+        with get_db_session() as session:
+page = request.args.get('page', 1, type=int)
         per_page = request.args.get('per_page', 20, type=int)
 
         query = session.query(Paper)
@@ -94,16 +99,14 @@ def list_papers():
             'per_page': per_page,
             'pages': (total + per_page - 1) // per_page
         }), 200
-    finally:
-        session.close()
 
 
 @app.route('/api/papers/<int:paper_id>', methods=['GET'])
 def get_paper(paper_id):
     """Get single paper"""
-    session = get_session()
     try:
-        paper = session.query(Paper).filter_by(id=paper_id).first()
+        with get_db_session() as session:
+paper = session.query(Paper).filter_by(id=paper_id).first()
 
         if not paper:
             return jsonify({'error': 'Paper not found'}), 404
@@ -112,16 +115,14 @@ def get_paper(paper_id):
         paper_data['tags'] = [t.tag_name for t in paper.tags]
 
         return jsonify(paper_data), 200
-    finally:
-        session.close()
 
 
 @app.route('/api/papers', methods=['POST'])
 def create_paper():
     """Create new paper"""
-    session = get_session()
     try:
-        data = request.get_json()
+        with get_db_session() as session:
+data = request.get_json()
 
         # Validierung
         if not data.get('title') or not data.get('authors'):
@@ -146,18 +147,15 @@ def create_paper():
 
         return jsonify(paper.to_dict()), 201
     except Exception as e:
-        session.rollback()
-        return jsonify({'error': str(e)}), 500
-    finally:
-        session.close()
+return jsonify({'error': str(e)}), 500
 
 
 @app.route('/api/papers/<int:paper_id>', methods=['PUT'])
 def update_paper(paper_id):
     """Update paper"""
-    session = get_session()
     try:
-        paper = session.query(Paper).filter_by(id=paper_id).first()
+        with get_db_session() as session:
+paper = session.query(Paper).filter_by(id=paper_id).first()
 
         if not paper:
             return jsonify({'error': 'Paper not found'}), 404
@@ -180,18 +178,15 @@ def update_paper(paper_id):
 
         return jsonify(paper.to_dict()), 200
     except Exception as e:
-        session.rollback()
-        return jsonify({'error': str(e)}), 500
-    finally:
-        session.close()
+return jsonify({'error': str(e)}), 500
 
 
 @app.route('/api/papers/<int:paper_id>', methods=['DELETE'])
 def delete_paper(paper_id):
     """Delete paper"""
-    session = get_session()
     try:
-        paper = session.query(Paper).filter_by(id=paper_id).first()
+        with get_db_session() as session:
+paper = session.query(Paper).filter_by(id=paper_id).first()
 
         if not paper:
             return jsonify({'error': 'Paper not found'}), 404
@@ -201,10 +196,7 @@ def delete_paper(paper_id):
 
         return jsonify({'message': 'Paper deleted'}), 200
     except Exception as e:
-        session.rollback()
-        return jsonify({'error': str(e)}), 500
-    finally:
-        session.close()
+return jsonify({'error': str(e)}), 500
 
 
 # ============================================================================
@@ -214,9 +206,9 @@ def delete_paper(paper_id):
 @app.route('/api/search', methods=['GET'])
 def search_papers():
     """Search papers locally"""
-    session = get_session()
     try:
-        query = request.args.get('q', '')
+        with get_db_session() as session:
+query = request.args.get('q', '')
         category = request.args.get('category', '')
 
         papers_query = session.query(Paper)
@@ -238,8 +230,6 @@ def search_papers():
             'count': len(papers),
             'papers': [p.to_dict() for p in papers]
         }), 200
-    finally:
-        session.close()
 
 
 @app.route('/api/arxiv/search', methods=['GET'])
@@ -275,9 +265,9 @@ def search_arxiv():
 @app.route('/api/arxiv/fetch', methods=['POST'])
 def arxiv_fetch():
     """Fetch and import paper from arXiv"""
-    session = get_session()
     try:
-        data = request.get_json()
+        with get_db_session() as session:
+data = request.get_json()
         arxiv_id = data.get('arxiv_id')
 
         if not arxiv_id:
@@ -301,10 +291,7 @@ def arxiv_fetch():
 
         return jsonify(paper.to_dict()), 201
     except Exception as e:
-        session.rollback()
-        return jsonify({'error': str(e)}), 500
-    finally:
-        session.close()
+return jsonify({'error': str(e)}), 500
 
 
 @app.route('/api/arxiv/parse', methods=['POST'])
@@ -331,9 +318,9 @@ def arxiv_parse():
 @app.route('/api/papers/<int:paper_id>/tags', methods=['POST'])
 def add_tag(paper_id):
     """Add tag to paper"""
-    session = get_session()
     try:
-        paper = session.query(Paper).filter_by(id=paper_id).first()
+        with get_db_session() as session:
+paper = session.query(Paper).filter_by(id=paper_id).first()
         if not paper:
             return jsonify({'error': 'Paper not found'}), 404
 
@@ -354,10 +341,7 @@ def add_tag(paper_id):
 
         return jsonify(tag.to_dict()), 201
     except Exception as e:
-        session.rollback()
-        return jsonify({'error': str(e)}), 500
-    finally:
-        session.close()
+return jsonify({'error': str(e)}), 500
 
 
 # ============================================================================
@@ -367,20 +351,18 @@ def add_tag(paper_id):
 @app.route('/api/collections', methods=['GET'])
 def list_collections():
     """List all collections"""
-    session = get_session()
     try:
-        collections = session.query(Collection).all()
+        with get_db_session() as session:
+collections = session.query(Collection).all()
         return jsonify([c.to_dict() for c in collections]), 200
-    finally:
-        session.close()
 
 
 @app.route('/api/collections', methods=['POST'])
 def create_collection():
     """Create new collection"""
-    session = get_session()
     try:
-        data = request.get_json()
+        with get_db_session() as session:
+data = request.get_json()
 
         collection = Collection(
             name=data.get('name'),
@@ -392,10 +374,7 @@ def create_collection():
 
         return jsonify(collection.to_dict()), 201
     except Exception as e:
-        session.rollback()
-        return jsonify({'error': str(e)}), 500
-    finally:
-        session.close()
+return jsonify({'error': str(e)}), 500
 
 
 # ============================================================================

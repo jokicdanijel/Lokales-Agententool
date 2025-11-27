@@ -1,23 +1,25 @@
-# 📈 opena19 - Aktien & Crypto Trading Agent
+# 📈 opena19 - Stocks & Crypto Agent
 
 **Agent-ID:** `opena19`  
-**Port:** 12361  
-**Kürzel:** `aktienp`  
-**Version:** 2.0  
-**Status:** ✅ Production
+**Port:** 12364  
+**Kürzel:** `stockcryptop`  
+**Version:** 1.0  
+**Status:** ✅ RUNNING (PID: 1819135)
 
 ---
 
 ## 📖 Überblick
 
-**opena19** ist der **Aktien & Crypto Trading Agent** - ein spezialisierter Agent im ELION Hyper-Dashboard Ökosystem.
+**opena19** ist der **Stocks & Crypto Agent** - Marktdaten, Portfolio & Alerts für Aktien und Kryptowährungen.
 
 ### Kernfunktionen
 
-- 📈 **Stock Tracking** - Aktienkurse überwachen
-- 💰 **Crypto Trading** - Krypto-Handel
-- 📊 **Portfolio Management** - Portfolio verwalten
-- 🔔 **Price Alerts** - Kursalarme
+- 📈 **Stock Prices** - Aktienkurse abrufen (AAPL, TSLA, etc.) via Alpha Vantage
+- 💰 **Crypto Prices** - Kryptokurse abrufen (BTC, ETH, etc.) via CoinGecko
+- 📊 **Portfolio Management** - Positionen verwalten, PnL berechnen, Total Value
+- 🔔 **Price Alerts** - Kurs-Alarme erstellen (above/below threshold)
+- 💾 **Caching** - 5min TTL für API-Schonung
+- 🔗 **Option-2-Flow** - Vollständige Integration
 
 ---
 
@@ -30,7 +32,7 @@ Portier (12344) → OpenA2 (12345)
     ↓
 kordp (Dispatcher)
     ↓
-opena19 (12361) ← Dieser Agent
+opena19 (12364) ← Dieser Agent
     ↓
 OpenA2 (12345) → Portier (12344)
     ↓
@@ -47,7 +49,7 @@ Client/UI
 Health-Check des Agents.
 
 ```bash
-curl http://127.0.0.1:12361/health | jq .
+curl http://127.0.0.1:12364/health | jq .
 ```
 
 **Response:**
@@ -55,23 +57,68 @@ curl http://127.0.0.1:12361/health | jq .
 {
   "status": "ok",
   "service": "opena19",
-  "port": 12361,
-  "program_target": "aktienp",
-  "uptime_seconds": 3661.23
+  "kuerzel": "stockcryptop",
+  "port": 12364,
+  "uptime_seconds": 787.63,
+  "total_positions": 2,
+  "total_alerts": 1,
+  "active_alerts": 1
 }
 ```
 
-### `POST /invoke`
-Service-spezifische Aktion ausführen.
+### `GET /prices`
+Aktuelle Kurse abrufen.
 
 ```bash
-curl -X POST http://127.0.0.1:12361/invoke \
+curl -X GET "http://127.0.0.1:12364/prices?symbols=AAPL,TSLA&market=stock" \
+  -H "Authorization: Bearer $BEARER_TOKEN"
+```
+
+### `POST /portfolio`
+Portfolio-Position hinzufügen.
+
+```bash
+curl -X POST http://127.0.0.1:12364/portfolio \
   -H "Authorization: Bearer $BEARER_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "action": "track_stock",
-    "params": {...}
+    "symbol": "AAPL",
+    "market": "stock",
+    "quantity": 10.0,
+    "avg_price": 150.0
   }'
+```
+
+### `GET /portfolio`
+Portfolio-Übersicht abrufen.
+
+```bash
+curl -X GET http://127.0.0.1:12364/portfolio \
+  -H "Authorization: Bearer $BEARER_TOKEN"
+```
+
+### `POST /alerts`
+Kurs-Alarm erstellen.
+
+```bash
+curl -X POST http://127.0.0.1:12364/alerts \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "symbol": "bitcoin",
+    "market": "crypto",
+    "condition": "above",
+    "threshold": 100000.0,
+    "notification": "Email"
+  }'
+```
+
+### `GET /alerts`
+Aktive Alarme auflisten.
+
+```bash
+curl -X GET "http://127.0.0.1:12364/alerts?active_only=true" \
+  -H "Authorization: Bearer $BEARER_TOKEN"
 ```
 
 ---
@@ -82,9 +129,9 @@ curl -X POST http://127.0.0.1:12361/invoke \
 
 ```bash
 cd 18.opena19_Aktien&Crypto
-python3 main.py
+./bin/start_opena19.sh
 
-# Oder via ops.sh
+# Oder via ops.sh (root)
 cd ..
 bin/ops.sh start
 ```
@@ -92,7 +139,7 @@ bin/ops.sh start
 ### Health Check
 
 ```bash
-curl http://127.0.0.1:12361/health | jq .
+curl http://127.0.0.1:12364/health | jq .
 ```
 
 ---
@@ -107,8 +154,8 @@ curl -X POST http://127.0.0.1:12344/route/update \
   -H "Content-Type: application/json" \
   -d '{
     "service_name": "opena19",
-    "endpoint": "http://127.0.0.1:12361",
-    "program_target": "aktienp"
+    "endpoint": "http://127.0.0.1:12364",
+    "program_target": "stockcryptop"
   }'
 ```
 
@@ -119,9 +166,12 @@ curl -X POST http://127.0.0.1:12344/dispatch/kordp \
   -H "Authorization: Bearer $BEARER_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "service_target": "aktienp",
-    "action": "track_stock",
-    "params": {...}
+    "service_target": "stockcryptop",
+    "action": "get_prices",
+    "params": {
+      "symbols": ["AAPL", "TSLA"],
+      "market": "stock"
+    }
   }'
 ```
 
@@ -131,13 +181,19 @@ curl -X POST http://127.0.0.1:12344/dispatch/kordp \
 
 ```
 18.opena19_Aktien&Crypto/
-├── main.py                  # FastAPI Agent Entry Point
-├── config.py                # Konfiguration
-├── requirements.txt         # Dependencies
+├── main_stocks_crypto_agent.py  # FastAPI Entry Point (950 LOC)
 ├── bin/
-│   └── start.sh             # Start-Script
-├── tests/
-│   └── test_opena19.py      # Unit-Tests
+│   ├── start_opena19.sh     # Start-Script
+│   └── stop_opena19.sh      # Stop-Script
+├── test_opena19.py          # Integration Tests (15 Tests, 100%)
+├── data/
+│   ├── prices_cache.json    # Price Cache (5min TTL)
+│   ├── portfolio.json       # Portfolio Positions
+│   ├── alerts.json          # Price Alerts
+│   └── stockcrypto_history.jsonl  # Append-only History
+├── logs/
+│   ├── opena19.pid
+│   └── opena19.nohup.log
 └── README.md                # Diese Datei
 ```
 
@@ -155,14 +211,14 @@ curl -X POST http://127.0.0.1:12344/dispatch/kordp \
 ## 🧪 Testing
 
 ```bash
-# Unit-Tests
-pytest tests/test_opena19.py -v
+# Integration Tests (15 Tests)
+python3 test_opena19.py
 
 # Health-Check
-curl http://127.0.0.1:12361/health
+curl http://127.0.0.1:12364/health | jq .
 
-# Integration-Test via Portier
-python3 ../scripts/test_opena19_integration.py
+# Stop Service
+./bin/stop_opena19.sh
 ```
 
 ---
@@ -170,8 +226,11 @@ python3 ../scripts/test_opena19_integration.py
 ## 📊 Monitoring
 
 ```bash
-# Prometheus Metrics (wenn aktiviert)
-curl http://127.0.0.1:12361/metrics
+# Service Logs (real-time)
+tail -f logs/opena19.nohup.log
+
+# History (JSONL)
+tail -f data/stockcrypto_history.jsonl | jq .
 ```
 
 ---
@@ -185,4 +244,4 @@ curl http://127.0.0.1:12361/metrics
 ---
 
 **Maintainer:** ELION Team  
-**Letzte Aktualisierung:** 21. November 2025
+**Letzte Aktualisierung:** 27. November 2025

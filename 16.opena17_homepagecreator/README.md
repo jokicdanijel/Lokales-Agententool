@@ -1,23 +1,25 @@
-# 🏠 opena17 - Homepage Creator & Servicetool
+# 🏠 opena17 - Homepage Creator Agent
 
 **Agent-ID:** `opena17`  
-**Port:** 12359  
-**Kürzel:** `homep`  
-**Version:** 2.0  
-**Status:** ✅ Production
+**Port:** 12362  
+**Kürzel:** `hpcreatep`  
+**Version:** 1.0  
+**Status:** ✅ RUNNING (PID: 1786434)
 
 ---
 
 ## 📖 Überblick
 
-**opena17** ist der **Homepage Creator & Servicetool** - ein spezialisierter Agent im ELION Hyper-Dashboard Ökosystem.
+**opena17** ist der **Homepage Creator Agent** - spezialisiert auf Website-Generierung, CMS-Integration und Deployment.
 
 ### Kernfunktionen
 
-- 🏠 **Page Builder** - Webseiten erstellen
-- 🎨 **Design Templates** - Vorlagen nutzen
-- 📝 **CMS Integration** - Content-Management
-- 🚀 **Deployment** - Hosting & Veröffentlichung
+- 🏗️ **Site Generator** - Statische Websites generieren (STATIC, 11ty, Hugo)
+- 🎨 **Multi-Page Support** - Mehrere Seiten, Navigation, Branding
+- 📝 **Custom Styling** - Custom CSS/JS injection, SEO meta tags
+- 📦 **Export** - ZIP/TAR.GZ Export mit Assets
+- 🚀 **Deployment** - Local, FTP, S3, Netlify, Vercel
+- 👁️ **Preview** - Live-Preview ohne Auth
 
 ---
 
@@ -30,7 +32,7 @@ Portier (12344) → OpenA2 (12345)
     ↓
 kordp (Dispatcher)
     ↓
-opena17 (12359) ← Dieser Agent
+opena17 (12362) ← Dieser Agent
     ↓
 OpenA2 (12345) → Portier (12344)
     ↓
@@ -47,7 +49,7 @@ Client/UI
 Health-Check des Agents.
 
 ```bash
-curl http://127.0.0.1:12359/health | jq .
+curl http://127.0.0.1:12362/health | jq .
 ```
 
 **Response:**
@@ -55,23 +57,80 @@ curl http://127.0.0.1:12359/health | jq .
 {
   "status": "ok",
   "service": "opena17",
-  "port": 12359,
-  "program_target": "homep",
-  "uptime_seconds": 3661.23
+  "kuerzel": "hpcreatep",
+  "port": 12362,
+  "uptime_seconds": 317.88,
+  "total_sites": 4
 }
 ```
 
-### `POST /invoke`
-Service-spezifische Aktion ausführen.
+### `POST /site/generate`
+Website generieren.
 
 ```bash
-curl -X POST http://127.0.0.1:12359/invoke \
+curl -X POST http://127.0.0.1:12362/site/generate \
   -H "Authorization: Bearer $BEARER_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "action": "build_page",
-    "params": {...}
+    "generator": "static",
+    "template": "default",
+    "pages": [
+      {
+        "slug": "home",
+        "title": "Welcome",
+        "content": "<p>Homepage content</p>",
+        "is_homepage": true
+      }
+    ],
+    "branding": {
+      "site_name": "My Site",
+      "tagline": "A great website",
+      "color_primary": "#007bff"
+    }
   }'
+```
+
+### `POST /site/export`
+Site als ZIP exportieren.
+
+```bash
+curl -X POST http://127.0.0.1:12362/site/export \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "site_id": "<site_id>",
+    "format": "zip",
+    "include_assets": true
+  }'
+```
+
+### `POST /site/deploy`
+Site deployen.
+
+```bash
+curl -X POST http://127.0.0.1:12362/site/deploy \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "site_id": "<site_id>",
+    "target": "local",
+    "target_path": "/var/www/sites"
+  }'
+```
+
+### `GET /site/structure/{site_id}`
+Site-Struktur abrufen.
+
+```bash
+curl -X GET http://127.0.0.1:12362/site/structure/<site_id> \
+  -H "Authorization: Bearer $BEARER_TOKEN"
+```
+
+### `GET /preview/{site_id}/{file_path}`
+Preview (ohne Auth).
+
+```bash
+open http://127.0.0.1:12362/preview/<site_id>/index.html
 ```
 
 ---
@@ -82,9 +141,9 @@ curl -X POST http://127.0.0.1:12359/invoke \
 
 ```bash
 cd 16.opena17_homepagecreator
-python3 main.py
+./bin/start_opena17.sh
 
-# Oder via ops.sh
+# Oder via ops.sh (root)
 cd ..
 bin/ops.sh start
 ```
@@ -92,7 +151,7 @@ bin/ops.sh start
 ### Health Check
 
 ```bash
-curl http://127.0.0.1:12359/health | jq .
+curl http://127.0.0.1:12362/health | jq .
 ```
 
 ---
@@ -107,8 +166,8 @@ curl -X POST http://127.0.0.1:12344/route/update \
   -H "Content-Type: application/json" \
   -d '{
     "service_name": "opena17",
-    "endpoint": "http://127.0.0.1:12359",
-    "program_target": "homep"
+    "endpoint": "http://127.0.0.1:12362",
+    "program_target": "hpcreatep"
   }'
 ```
 
@@ -119,9 +178,22 @@ curl -X POST http://127.0.0.1:12344/dispatch/kordp \
   -H "Authorization: Bearer $BEARER_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "service_target": "homep",
-    "action": "build_page",
-    "params": {...}
+    "service_target": "hpcreatep",
+    "action": "generate_site",
+    "params": {
+      "generator": "static",
+      "pages": [
+        {
+          "slug": "home",
+          "title": "Home",
+          "content": "<p>Content</p>",
+          "is_homepage": true
+        }
+      ],
+      "branding": {
+        "site_name": "Test Site"
+      }
+    }
   }'
 ```
 
@@ -131,13 +203,20 @@ curl -X POST http://127.0.0.1:12344/dispatch/kordp \
 
 ```
 16.opena17_homepagecreator/
-├── main.py                  # FastAPI Agent Entry Point
-├── config.py                # Konfiguration
-├── requirements.txt         # Dependencies
+├── main_homepage_agent.py   # FastAPI Entry Point (850 LOC)
 ├── bin/
-│   └── start.sh             # Start-Script
-├── tests/
-│   └── test_opena17.py      # Unit-Tests
+│   ├── start_opena17.sh     # Start-Script
+│   └── stop_opena17.sh      # Stop-Script
+├── test_opena17.py          # Integration Tests (12 Tests, 100%)
+├── data/
+│   ├── sites/               # Site Metadata (JSON)
+│   ├── output/              # Generated Sites (HTML)
+│   ├── templates/           # Template Files
+│   ├── preview/             # Preview Cache
+│   └── homepage_history.jsonl  # Append-only History
+├── logs/
+│   ├── opena17.pid
+│   └── opena17.nohup.log
 └── README.md                # Diese Datei
 ```
 
@@ -155,14 +234,14 @@ curl -X POST http://127.0.0.1:12344/dispatch/kordp \
 ## 🧪 Testing
 
 ```bash
-# Unit-Tests
-pytest tests/test_opena17.py -v
+# Integration Tests (12 Tests)
+python3 test_opena17.py
 
 # Health-Check
-curl http://127.0.0.1:12359/health
+curl http://127.0.0.1:12362/health | jq .
 
-# Integration-Test via Portier
-python3 ../scripts/test_opena17_integration.py
+# Stop Service
+./bin/stop_opena17.sh
 ```
 
 ---
@@ -170,8 +249,11 @@ python3 ../scripts/test_opena17_integration.py
 ## 📊 Monitoring
 
 ```bash
-# Prometheus Metrics (wenn aktiviert)
-curl http://127.0.0.1:12359/metrics
+# Service Logs (real-time)
+tail -f logs/opena17.nohup.log
+
+# Homepage History (JSONL)
+tail -f data/homepage_history.jsonl | jq .
 ```
 
 ---
@@ -185,4 +267,4 @@ curl http://127.0.0.1:12359/metrics
 ---
 
 **Maintainer:** ELION Team  
-**Letzte Aktualisierung:** 21. November 2025
+**Letzte Aktualisierung:** 27. November 2025

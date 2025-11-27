@@ -1,0 +1,465 @@
+# LocalAgent-Pro VSCode Copilot Bridge Configuration
+# Version: 1.0
+# Status: Production Ready
+
+################################################################################
+# PATHS & DIRECTORIES
+################################################################################
+
+project:
+  # Hauptprojekt-Verzeichnis
+  root: "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.opena3_openwebui/LocalAgent-Pro"
+
+  # Quellcode-Struktur
+  src_directories:
+    core: "src/core"
+    server: "src/server"
+    tools: "src/tools"
+    agents: "src/agents"
+    utils: "src/utils"
+
+  # Test-Struktur
+  test_directories:
+    unit: "tests/unit"
+    integration: "tests/integration"
+    fixtures: "tests/fixtures"
+    coverage_html: "htmlcov"
+
+  # Dokumentation
+  docs:
+    main: "docs"
+    api: "docs/API.md"
+    project_map: "docs/PROJECT_MAP.md"
+    guides: "docs/guides"
+
+  # Logs & Temp
+  logs: "logs"
+  temp: ".copilot_bridge_temp"
+
+
+################################################################################
+# VSCODE & TOOLS
+################################################################################
+
+vscode:
+  # VSCode Kommando
+  command: "code"
+
+  # Optionale VSCode Extensions
+  extensions:
+    - "ms-python.python"
+    - "ms-python.vscode-pylance"
+    - "ms-python.debugpy"
+    - "ms-python.isort"
+    - "GitHub.copilot"
+    - "GitHub.copilot-chat"
+
+  # Auto-Öffnen nach Operationen
+  auto_open: true
+
+  # Fenster-Fokus
+  focus_window: true
+
+
+################################################################################
+# PYTHON & TESTING
+################################################################################
+
+python:
+  # Python-Version
+  version: "3.8+"
+
+  # Pytest Konfiguration
+  pytest:
+    # Test-Dateien Pattern
+    test_pattern: "test_*.py"
+
+    # Minimum Version
+    min_version: "7.0"
+
+    # Coverage Threshold
+    coverage_threshold: 80
+
+    # Report-Formate
+    reports:
+      - "term-missing"
+      - "html:htmlcov"
+      - "json:coverage.json"
+
+    # Marker
+    markers:
+      unit: "Unit Tests"
+      integration: "Integration Tests"
+      slow: "Slow running tests"
+      smoke: "Smoke Tests"
+
+  # Dependencies
+  requirements:
+    core:
+      - "flask==3.0.0"
+      - "flask-cors==4.0.0"
+      - "requests==2.31.0"
+      - "pyyaml==6.0.1"
+      - "python-dotenv==1.0.0"
+      - "prometheus-client==0.19.0"
+      - "bcrypt==4.1.2"
+      - "SpeechRecognition==3.14.4"
+
+    dev:
+      - "pytest==7.4.3"
+      - "pytest-cov==4.1.0"
+      - "pytest-asyncio==0.21.1"
+      - "black==23.12.0"
+      - "flake8==6.1.0"
+      - "mypy==1.7.1"
+
+
+################################################################################
+# TEST GENERATION
+################################################################################
+
+test_generation:
+  # Automatische Test-Generierung aktivieren
+  enabled: true
+
+  # Test-Typen
+  types:
+    unit: true
+    integration: true
+    smoke: false
+
+  # Fixture-Vorlagen
+  fixtures:
+    - "test_config"
+    - "temp_dir"
+    - "mock_api_client"
+    - "mock_database"
+    - "mock_auth"
+
+  # Coverage-Konfiguration
+  coverage:
+    enabled: true
+    min_percent: 80
+    exclude:
+      - "*/tests/*"
+      - "*/venv/*"
+      - "*/__pycache__/*"
+
+
+################################################################################
+# STRUCTURE REORGANIZATION
+################################################################################
+
+restructure:
+  # Automatische Reorganisation aktivieren
+  enabled: true
+
+  # Neue Verzeichnis-Struktur
+  new_structure:
+    src/core: "Core-Funktionalität"
+    src/server: "OpenWebUI Server & API"
+    src/tools: "Tool-Module"
+    src/agents: "Agent-Implementierungen"
+    src/utils: "Hilfsfunktionen & Auth"
+    docs: "Dokumentation"
+    scripts/health: "Health-Checks"
+    scripts/deploy: "Deployment-Scripts"
+    config: "Konfigurationsdateien"
+
+  # Dateien verschieben
+  move_files:
+    - from: "./openwebui_agent_server.py"
+      to: "./src/server/"
+
+    - from: "./shared/auth.py"
+      to: "./src/utils/"
+
+    - from: "./*.sh"
+      to: "./scripts/"
+      if_contains: ["start", "setup", "run"]
+
+    - from: "./health_*.sh"
+      to: "./scripts/health/"
+
+  # Ignore-Muster (nicht verschieben)
+  ignore_patterns:
+    - "venv/*"
+    - ".venv/*"
+    - "__pycache__/*"
+    - ".git/*"
+    - "logs/*"
+
+
+################################################################################
+# ZIP EXPORT
+################################################################################
+
+zip_export:
+  # Export aktivieren
+  enabled: true
+
+  # Zielverzeichnis (Fallback: /tmp)
+  target_dir: "${HOME}/Desktop"
+
+  # Dateiname-Pattern
+  filename_pattern: "LocalAgent-Pro-Autobuild_%Y%m%d_%H%M%S"
+
+  # Include Patterns
+  include:
+    - "src/**"
+    - "tests/**"
+    - "docs/**"
+    - "scripts/**"
+    - "config/**"
+    - "logs/**"
+    - "*.md"
+    - "*.txt"
+    - "requirements*.txt"
+    - ".env.example"
+
+  # Exclude Patterns
+  exclude:
+    - ".git"
+    - ".gitignore"
+    - ".venv"
+    - "venv"
+    - "__pycache__"
+    - "*.pyc"
+    - ".pytest_cache"
+    - "htmlcov"
+    - ".coverage"
+    - "node_modules"
+    - ".DS_Store"
+    - "*.egg-info"
+    - "dist"
+    - "build"
+
+  # Manifest erstellen
+  create_manifest: true
+
+  # Kompression
+  compression: 6  # 1-9, 6 = default
+
+
+################################################################################
+# LOGGING
+################################################################################
+
+logging:
+  # Log-Level: DEBUG, INFO, WARNING, ERROR
+  level: "INFO"
+
+  # Log-Format
+  format: "[%H:%M:%S] [%LEVEL] %MESSAGE"
+
+  # Log-Verzeichnis
+  directory: "logs"
+
+  # Log-Datei-Pattern
+  file_pattern: "copilot_bridge_%Y%m%d_%H%M%S.log"
+
+  # Maximale Log-Dateigröße (MB)
+  max_size: 50
+
+  # Alte Logs behalten
+  retention_days: 30
+
+  # Farbiges Output
+  colored: true
+
+
+################################################################################
+# HEALTH CHECKS
+################################################################################
+
+health_check:
+  # Health-Check aktivieren
+  enabled: true
+
+  # Zu prüfende Systeme
+  checks:
+    vscode:
+      command: "code"
+      required: true
+
+    python:
+      command: "python3"
+      version_min: "3.8"
+      required: true
+
+    git:
+      command: "git"
+      required: true
+
+    zip:
+      command: "zip"
+      required: true
+
+    pytest:
+      package: "pytest"
+      required: true
+
+  # Verzeichnisse prüfen
+  directories:
+    - "src"
+    - "tests"
+    - "docs"
+    - "scripts"
+    - "config"
+
+  # Dateien prüfen
+  files:
+    - "requirements.txt"
+    - "pytest.ini"
+    - "README.md"
+
+
+################################################################################
+# NOTIFICATIONS
+################################################################################
+
+notifications:
+  # Benachrichtigungen aktivieren
+  enabled: true
+
+  # Erfolgs-Benachrichtigungen
+  success:
+    enabled: true
+    sound: false
+
+  # Fehler-Benachrichtigungen
+  errors:
+    enabled: true
+    sound: true
+
+  # Email-Benachrichtigungen (optional)
+  email:
+    enabled: false
+    to: "your-email@example.com"
+    on_error: true
+    on_success: false
+
+
+################################################################################
+# ADVANCED OPTIONS
+################################################################################
+
+advanced:
+  # Parallele Verarbeitung
+  parallel: true
+  max_workers: 4
+
+  # Automatische Backup vor Operationen
+  auto_backup: true
+  backup_dir: ".backup"
+
+  # Dry-Run Modus (zeigt was getan würde, tut es aber nicht)
+  dry_run: false
+
+  # Verbose Output
+  verbose: false
+
+  # Interactive Mode
+  interactive: true
+
+  # Auto-Retry bei Fehlern
+  auto_retry: true
+  retry_count: 3
+
+
+################################################################################
+# COPILOT INTEGRATION
+################################################################################
+
+copilot:
+  # Copilot Integration aktivieren
+  enabled: true
+
+  # Prompts für verschiedene Aktionen
+  prompts:
+    test_generation: |
+      Bitte generiere automatisch Unit-Tests für das gesamte Projekt.
+      Verwende pytest und füge Fixtures hinzu.
+      Erstelle pytest.ini und conftest.py.
+
+    structure_reorganization: |
+      Reorganisiere die komplette Projektstruktur:
+      - src/core, src/server, src/tools, src/agents, src/utils
+      - Verschiebe Shell-Skripte nach scripts/
+      - Dokumentation nach docs/
+      - Passe alle relativen Imports an.
+
+    code_quality: |
+      Verbessere Code-Qualität:
+      - Type Hints hinzufügen
+      - Docstrings erweitern
+      - Error Handling verbessern
+      - Security Review durchführen
+
+  # Auto-Push zu GitHub (optional)
+  auto_push: false
+
+  # Commit-Message Template
+  commit_message: "🤖 Copilot Automation: %ACTION% - %TIMESTAMP%"
+
+
+################################################################################
+# METRICS & ANALYTICS
+################################################################################
+
+metrics:
+  # Metriken sammeln
+  enabled: true
+
+  # Zu verfolgende Metriken
+  track:
+    - "build_time"
+    - "test_coverage"
+    - "files_changed"
+    - "success_rate"
+
+  # Prometheus Export
+  prometheus:
+    enabled: false
+    port: 9090
+
+
+################################################################################
+# DEPLOYMENT
+################################################################################
+
+deployment:
+  # Deployment aktivieren
+  enabled: true
+
+  # Target Environments
+  environments:
+    local:
+      host: "localhost"
+      port: 8000
+
+    staging:
+      host: "staging.example.com"
+      port: 443
+
+    production:
+      host: "api.example.com"
+      port: 443
+
+  # Pre-Deployment Checks
+  pre_checks:
+    - "health_check"
+    - "test_coverage"
+    - "code_quality"
+
+  # Rollback bei Fehler
+  auto_rollback: true
+
+
+# ============================================================================
+# ENDE DER KONFIGURATION
+# ============================================================================
+# Status: ✅ Production Ready
+# Version: 1.0
+# Datum: 25. November 2025
+# Author: LocalAgent-Pro Development Team

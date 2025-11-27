@@ -193,47 +193,57 @@ python3 tools/voice_command_parser.py
 ```
 
 ### 2. 📝 Voice Note Recorder
+
 **Datei:** `tools/voice_note_recorder.py` (187 Zeilen)
 
 Sprachnotizen aufnehmen und verwalten:
+
 - Live-Aufnahme von Notizen mit Sprache
 - JSON-Persistierung
 - Durchsuchen und Filterung
 - Export als TXT oder JSON
 
 **Nutzung:**
+
 ```bash
 python3 tools/voice_note_recorder.py
 # Menü: Neue Notiz → Aufnehmen → Speichern → Durchsuchen
 ```
 
 **Datenverwaltung:**
+
 - Speichert in: `voice_notes/notes.json`
 - Exportiert zu: `voice_notes/notizen_export_*.{txt,json}`
 
 ### 3. 📞 Voice Call System
+
 **Datei:** `tools/voice_call_system.py` (173 Zeilen)
 
 Kontakt- und Anrufverwaltung:
+
 - Kontakte speichern/laden
 - Sprachanrufe simulieren
 - SMS-Versand über Sprachbefehl
 - Anrufverlauf-Tracking
 
 **Nutzung:**
+
 ```bash
 python3 tools/voice_call_system.py
 # Optionen: Kontakt hinzufügen → Anrufen → SMS → Verlauf ansehen
 ```
 
 **Datenverwaltung:**
+
 - Speichert in: `contacts.json`
 - Anrufverlauf im RAM
 
 ### 4. 🤖 Voice Assistant
+
 **Datei:** `tools/voice_assistant.py` (138 Zeilen)
 
 Intelligente Sprachassistentin mit Befehlen:
+
 - Uhrzeit und Datum abrufen
 - Wetter-Integrationen (Placeholder)
 - Taschenrechner-Funktionen
@@ -241,19 +251,23 @@ Intelligente Sprachassistentin mit Befehlen:
 - Sitzungs-Logging
 
 **Nutzung:**
+
 ```bash
 python3 tools/voice_assistant.py
 # Befehle: "uhrzeit", "datum", "rechnen 2+2", "speicher", etc.
 ```
 
 **Features:**
+
 - Sitzungen werden in `conversation_*.log` gespeichert
 - System-Information in Echtzeit
 
 ### 5. 📄 Voice Transcriber
+
 **Datei:** `tools/voice_transcriber.py` (226 Zeilen)
 
 Audio-Transkription mit Analyse:
+
 - Live-Transkription von Sprache
 - Datei-Transkription (WAV, AIFF, FLAC, AU)
 - Statistiken und Wortanzahl
@@ -261,20 +275,24 @@ Audio-Transkription mit Analyse:
 - Export-Funktionen
 
 **Nutzung:**
+
 ```bash
 python3 tools/voice_transcriber.py
 # Optionen: Live transkribieren → Datei transkribieren → Statistiken
 ```
 
 **Datenverwaltung:**
+
 - Speichert in: `transcripts/`
 - Export-Formate: TXT, JSON
 - Metadaten: Wortanzahl, Sprache, Zeitstempel
 
 ### 6. 📅 Voice Scheduler
+
 **Datei:** `tools/voice_scheduler.py` (176 Zeilen)
 
 Aufgabenverwaltung per Sprachbefehl:
+
 - Aufgaben per Sprache erfassen
 - Manuelle Aufgabeneingabe
 - Completion-Tracking
@@ -282,12 +300,14 @@ Aufgabenverwaltung per Sprachbefehl:
 - Pending-Tasks-Übersicht
 
 **Nutzung:**
+
 ```bash
 python3 tools/voice_scheduler.py
 # Optionen: Aufgabe diktieren → Abschließen → Löschen → Übersicht
 ```
 
 **Datenverwaltung:**
+
 - Speichert in: `tasks.json`
 - Persistent zwischen Sessions
 - Status-Tracking (erledigt/ausstehend)
@@ -305,21 +325,19 @@ python3 tools/voice_scheduler.py
 | **Gesamt** | **1.041** | **40+ Methoden** | **JSON-basiert** |
 
 **Technologie-Stack:**
+
 - 🎤 SpeechRecognition 3.14.4 (Google Speech API)
 - 📝 JSON für Persistierung
 - 🔄 Error-Handling durchgehend
 - 📊 Statistiken und Logging
 
 **Installation der Dependencies:**
+
 ```bash
 pip install SpeechRecognition==3.14.4
 # Optional für besseres Microphone-Support:
 pip install PyAudio==0.2.14
 ```
-
----
-
-## 🔒 Security-Features
 
 ---
 
@@ -468,32 +486,37 @@ curl -X POST http://localhost:8001/v1/chat/completions \
 
 Dein lokaler Browser Agent Tool Server (Port 8765) ist jetzt für externe Geräte erreichbar!
 
-### 3 Zugriffsmethoden zur Wahl:
+### 3 Zugriffsmethoden zur Wahl
 
 **1. 📱 LAN-Zugriff** (Schnellste - 5 Min)
+
 ```bash
 python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
 # Dann: http://192.168.0.70:8765 von anderem Gerät
 ```
 
 **2. 🌍 Internet mit ngrok** (Einfachste - 15 Min)
+
 ```bash
 ngrok http 8765
 # Weltweit erreichbar via https://*.ngrok.io
 ```
 
 **3. 🔐 SSH Tunneling** (Sicherste - 20 Min)
+
 ```bash
 ssh -L 8765:localhost:8765 user@remote.host -N
 ```
 
-### Dokumentation:
+### Dokumentation
+
 - **DEPLOYMENT_QUICK_START.md** - Ultra-kurze Anleitung (5 Min Lesen)
 - **EXTERNAL_SERVER_OVERVIEW.md** - Visuelle Übersicht mit Entscheidungshilfe
 - **EXTERNAL_ACCESS_GUIDE.md** - Detaillierte Dokumentation (500 Zeilen)
 - **QUICK_REFERENCE_EXTERNAL_ACCESS.md** - Schnelle Referenz
 
-### Tools:
+### Tools
+
 ```bash
 # Interaktives Menü
 bash setup_external_access.sh

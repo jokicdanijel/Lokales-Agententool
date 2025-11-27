@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Portier HyperDashboard – Technische Dokumentation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+    /* --- Neutral Business Theme --- */
+    body {
+        background: #f6f7f9;
+        color: #2c2f36;
+        font-family: "Inter", "Segoe UI", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+        font-weight: 600;
+        color: #1d1f24;
+        margin-top: 32px;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .section {
+        background: #ffffff;
+        padding: 28px;
+        border-radius: 10px;
+        margin-bottom: 32px;
+        border: 1px solid #d8dbe2;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    code {
+        background: #f0f1f4;
+        display: block;
+        padding: 14px;
+        border-radius: 8px;
+        margin-top: 12px;
+        white-space: pre-wrap;
+        font-size: 14px;
+        font-family: "Consolas", monospace;
+        border: 1px solid #d2d4da;
+    }
+
+    ul {
+        padding-left: 24px;
+        margin-top: 12px;
+    }
+
+    li {
+        margin-bottom: 6px;
+    }
+
+    .header {
+        background: #ffffff;
+        padding: 32px 0;
+        border-bottom: 1px solid #e0e2e7;
+        margin-bottom: 40px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 28px;
+    }
+
+    footer {
+        text-align: center;
+        padding: 30px;
+        font-size: 14px;
+        color: #8a8d94;
+        margin-top: 40px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="container">
+        <h1>Portier HyperDashboard – Technische Systemdokumentation</h1>
+        <p>Version 3.0.0 – Entwickler- & Administrationsreferenz</p>
+    </div>
+</div>
+
+<div class="container">
+
+<!-- SECTION 0 -->
+<div class="section">
+    <h2>0. Initialer Systemstart</h2>
+    <code>
+start_system()
+ ├─ load_theme_pack()
+ ├─ load_dashboard_config()
+ ├─ start_portier_services()
+ │    ├─ LocalAgentPro API
+ │    ├─ BrowserAgent
+ │    ├─ Dispatcher
+ │    ├─ Recorder
+ │    └─ Workflow Engine
+ ├─ run_health_check()
+ └─ render_dashboard()
+    </code>
+</div>
+
+<!-- SECTION 1 -->
+<div class="section">
+    <h2>1. Dashboard Panels (HyperDashboard 3.0.0)</h2>
+
+    <h3>1.1 System Metrics Panel</h3>
+    <code>
+metrics_panel()
+ ├─ get_cpu_usage()          → portier_monitoring_engine.monitor_system()
+ ├─ get_ram_usage()          → portier_monitoring_engine.monitor_system()
+ ├─ get_uptime()             → dashboard_system_service.get_uptime()
+ └─ render_metrics_widget()
+    </code>
+
+    <h3>1.2 Modulstatus</h3>
+    <code>
+module_status_panel()
+ ├─ check_localagentpro()    → monitor_localagent()
+ ├─ check_browseragent()     → monitor_browseragent()
+ ├─ check_dispatcher()       → monitor_dispatcher()
+ ├─ check_openwebui()        → monitor_http(8000)
+ └─ render_status_grid()
+    </code>
+
+    <h3>1.3 Aktionen</h3>
+    <code>
+actions_panel()
+ ├─ open_openwebui()         → system.open_browser("http://localhost:8000")
+ ├─ check_api_health()       → monitor_http("/api/health")
+ └─ update_system()          → installer.run_update()
+    </code>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+    <h2>2. Portier Workflow Builder</h2>
+    <code>
+workflow_builder()
+ ├─ workflow_create()
+ │    ├─ validate_steps()
+ │    └─ write_file(/usr/local/portier/workflows/&lt;name&gt;.json)
+ │
+ ├─ workflow_run()
+ │    ├─ load_workflow()
+ │    ├─ for step in steps:
+ │    │      run_step(step)
+ │    └─ append_execution_log()
+ │
+ └─ workflow_get()
+      └─ load_workflow_json()
+    </code>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+    <h2>3. Portier Monitoring Engine</h2>
+    <code>
+monitoring_engine()
+ ├─ monitor_system()
+ │    ├─ psutil.cpu_percent
+ │    ├─ psutil.virtual_memory
+ │    └─ psutil.disk_usage
+ │
+ ├─ monitor_localagent()
+ │    └─ http://localhost:8001/v1/status
+ │
+ ├─ monitor_browseragent()
+ │    └─ http://localhost:12350/health
+ │
+ └─ monitor_dispatcher()
+      └─ http://localhost:8100/status
+    </code>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+    <h2>4. BrowserAgent Recorder</h2>
+    <code>
+recorder()
+ ├─ recorder_start()
+ │    ├─ recording = []
+ │    └─ active = True
+ │
+ ├─ recorder_event(action, details)
+ │    └─ recording.append({action, details})
+ │
+ ├─ recorder_stop()
+ │    └─ active = False
+ │
+ └─ recorder_export()
+      └─ write_workflow_json()
+    </code>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+    <h2>5. Live Logs</h2>
+    <code>
+live_logs()
+ ├─ live_logs_once(logfile)
+ │    └─ read_last_lines(logfile)
+ │
+ ├─ live_logs_stream(...)
+ │    ├─ loop(…duration…)
+ │    ├─ read_last_lines(logfile)
+ │    └─ push_output_chunk()
+ │
+ └─ live_logs_export()
+      └─ return full file content
+    </code>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section">
+    <h2>6. Dispatcher FlowMap</h2>
+    <code>
+dispatcher_flowmap()
+ ├─ load_safepoints()
+ ├─ parse_cmd_resp_pairs()
+ ├─ generate_flow_graph()
+ └─ return_json_for_visualizer()
+    </code>
+</div>
+
+<!-- SECTION 7 -->
+<div class="section">
+    <h2>7. PDF Viewer</h2>
+    <code>
+pdf_viewer()
+ ├─ load_pdf_base64()
+ ├─ render_preview()
+ ├─ extract_text()
+ └─ export_pdf()
+    </code>
+</div>
+
+<!-- SECTION 8 -->
+<div class="section">
+    <h2>8. Installer Suite</h2>
+    <code>
+installer_suite()
+ ├─ install_admin_dashboard()
+ ├─ install_user_dashboard()
+ ├─ install_modules()
+ │    ├─ copy_tools()
+ │    ├─ validate_python()
+ │    ├─ regenerate_index()
+ │    └─ restart_services()
+ │
+ ├─ systemd_setup()
+ ├─ backup_system()
+ ├─ recovery_console()
+ └─ finalize_install()
+    </code>
+</div>
+
+<!-- DATAFLOW -->
+<div class="section">
+    <h2>Datenfluss (Frontend → Backend → Frontend)</h2>
+    <code>
+Dashboard-Aktion →
+    /tools/portier_monitoring_engine.monitor_system()
+        → psutil / REST
+        → JSON Response
+        → UI aktualisiert Widget
+    </code>
+</div>
+
+<!-- PANELS & RIGHTS -->
+<div class="section">
+    <h2>Panels & Funktionen</h2>
+
+    <h3>Top Widgets</h3>
+    <ul>
+        <li>CPU</li>
+        <li>RAM</li>
+        <li>Uptime</li>
+    </ul>
+
+    <h3>Systemstatus</h3>
+    <ul>
+        <li>Dashboard</li>
+        <li>LocalAgentPro</li>
+        <li>BrowserAgent</li>
+        <li>OpenWebUI</li>
+        <li>Dispatcher</li>
+    </ul>
+
+    <h3>Aktionen</h3>
+    <ul>
+        <li>Open OpenWebUI</li>
+        <li>API Health Check</li>
+        <li>System Update</li>
+    </ul>
+
+    <h3>Tools</h3>
+    <ul>
+        <li>Workflow Builder</li>
+        <li>Monitoring Engine</li>
+        <li>Recorder</li>
+        <li>PDF Viewer</li>
+        <li>Dispatcher FlowMap</li>
+    </ul>
+
+    <h3>Entwickler</h3>
+    <ul>
+        <li>Live Logs</li>
+        <li>System Console</li>
+        <li>Service Restart</li>
+        <li>Module Reload</li>
+    </ul>
+</div>
+
+<!-- RIGHTS -->
+<div class="section">
+    <h2>Rechteverwaltung</h2>
+
+    <h3>Admin Edition 3.0.0</h3>
+    <ul>
+        <li>Developer Console</li>
+        <li>Installer Suite</li>
+        <li>Logs & Monitoring</li>
+        <li>Systemwerkzeuge</li>
+    </ul>
+
+    <h3>User Edition 1.0.0</h3>
+    <ul>
+        <li>Rechnungsansicht</li>
+        <li>Dokumentenviewer</li>
+        <li>Status</li>
+    </ul>
+
+</div>
+
+<footer>
+    Portier HyperSuite © 2025 – Technische Dokumentation
+</footer>
+
+</div>
+</body>
+</html>

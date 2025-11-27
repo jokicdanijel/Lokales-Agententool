@@ -16,8 +16,6 @@ from shared.auth import (
     token_validator,
     rate_limiter,
     audit_logger,
-    extract_bearer_token,
-    VALID_TOKENS
 )
 
 def test_token_validation():

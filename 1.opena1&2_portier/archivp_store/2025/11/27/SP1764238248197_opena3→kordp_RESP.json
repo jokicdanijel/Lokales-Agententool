@@ -1,0 +1,13 @@
+{
+  "ts": "2025-11-27T10:10:48.197225Z",
+  "src": "opena3",
+  "dst": "kordp",
+  "kind": "RESP",
+  "body": {
+    "status": "executed",
+    "command": "test_command",
+    "output": "Command 'test_command' würde hier ausgeführt (Placeholder)",
+    "timestamp": "2025-11-27T10:10:48.197143Z"
+  },
+  "strict": true
+}

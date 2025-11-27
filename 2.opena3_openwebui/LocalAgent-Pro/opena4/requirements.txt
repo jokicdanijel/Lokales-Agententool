@@ -1,5 +1,9 @@
-fastapi==0.104.1
-uvicorn==0.24.0
-pydantic==2.5.0
-httpx==0.25.0
-python-multipart==0.0.6
+# opena4 - Compute Service
+# Uses standard library HTTP server for lightweight footprint
+# No additional dependencies required for core functionality
+# Optional: For advanced features in future versions
+# fastapi==0.104.1
+# uvicorn==0.24.0
+# pydantic==2.5.0
+# httpx==0.25.0
+# python-multipart==0.0.6

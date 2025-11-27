@@ -1,9 +1,9 @@
 # 📋 Projekt-Standbuch: Externe Server-Freigabe
 
-**Projekt:** Browser Agent Tool Server - Externe Zugänglichkeit  
-**Datei:** PROJECT_STANDBUCH.md  
-**Datum:** 25. November 2025  
-**Status:** ✅ PRODUKTIONSFERTIG  
+**Projekt:** Browser Agent Tool Server - Externe Zugänglichkeit
+**Datei:** PROJECT_STANDBUCH.md
+**Datum:** 25. November 2025
+**Status:** ✅ PRODUKTIONSFERTIG
 **Version:** 1.0.0
 
 ---
@@ -264,8 +264,8 @@ Server Uptime:        99.9%
 
 ---
 
-**Zuletzt aktualisiert:** 25. November 2025  
-**Status:** ✅ PRODUKTIONSFERTIG  
+**Zuletzt aktualisiert:** 25. November 2025
+**Status:** ✅ PRODUKTIONSFERTIG
 **Version:** 1.0.0
 
 

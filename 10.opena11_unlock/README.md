@@ -1,23 +1,24 @@
-# 🔓 opena11 - Unlock Master (Aufsperr-Decode)
+# 🔓 opena11 - Unlock Master (RBAC & Permission Store)
 
 **Agent-ID:** `opena11`  
-**Port:** 12353  
-**Kürzel:** `onlockp`  
+**Port:** 12356  
+**Kürzel:** `unlockp`  
 **Version:** 2.0  
-**Status:** ✅ Production
+**Status:** ✅ RUNNING (PID: siehe logs/opena11.pid)
 
 ---
 
 ## 📖 Überblick
 
-**opena11** ist der **Unlock Master (Aufsperr-Decode)** - ein spezialisierter Agent im ELION Hyper-Dashboard Ökosystem.
+**opena11** ist der **Unlock Master (RBAC & Permission Store)** - ein spezialisierter Agent für Zugriffskontrolle und Berechtigungsverwaltung im ELION Hyper-Dashboard Ökosystem.
 
 ### Kernfunktionen
 
-- 🔓 **Decode** - Verschlüsselte Daten entschlüsseln
-- 🔑 **Key Management** - Schlüsselverwaltung
-- 🛡️ **Security Analysis** - Sicherheitsanalyse
-- 📜 **Audit Logging** - Zugriffsprotokolle
+- 🔐 **RBAC** - Role-Based Access Control
+- 📦 **Permission Store** - JSON-basierte Berechtigungsverwaltung
+- 🔑 **Grant/Revoke** - Berechtigungen erteilen und entziehen
+- ✅ **Check** - Berechtigungen prüfen (mit Expiration & Wildcards)
+- 📜 **Audit Log** - WORM-compliant Zugriffsprotokolle
 
 ---
 
@@ -30,7 +31,7 @@ Portier (12344) → OpenA2 (12345)
     ↓
 kordp (Dispatcher)
     ↓
-opena11 (12353) ← Dieser Agent
+opena11 (12356) ← Dieser Agent
     ↓
 OpenA2 (12345) → Portier (12344)
     ↓
@@ -44,33 +45,39 @@ Client/UI
 ## 📡 API-Endpoints
 
 ### `GET /health`
+
 Health-Check des Agents.
 
 ```bash
-curl http://127.0.0.1:12353/health | jq .
+curl http://127.0.0.1:12356/health | jq .
 ```
 
 **Response:**
+
 ```json
 {
   "status": "ok",
   "service": "opena11",
-  "port": 12353,
-  "program_target": "onlockp",
-  "uptime_seconds": 3661.23
+  "kürzel": "unlockp",
+  "port": 12356,
+  "uptime_seconds": 3661.23,
+  "permissions_count": 42,
+  "timestamp": "2025-11-27T12:00:00Z"
 }
 ```
 
-### `POST /invoke`
-Service-spezifische Aktion ausführen.
+### `POST /grant`
+
+Berechtigung erteilen.
 
 ```bash
-curl -X POST http://127.0.0.1:12353/invoke \
+curl -X POST http://127.0.0.1:12356/grant \
   -H "Authorization: Bearer $BEARER_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "action": "decode",
-    "params": {...}
+    "subject": "user123",
+    "resource": "/files/documents",
+    "action": "read"
   }'
 ```
 
@@ -92,7 +99,7 @@ bin/ops.sh start
 ### Health Check
 
 ```bash
-curl http://127.0.0.1:12353/health | jq .
+curl http://127.0.0.1:12356/health | jq .
 ```
 
 ---
@@ -107,8 +114,8 @@ curl -X POST http://127.0.0.1:12344/route/update \
   -H "Content-Type: application/json" \
   -d '{
     "service_name": "opena11",
-    "endpoint": "http://127.0.0.1:12353",
-    "program_target": "onlockp"
+    "endpoint": "http://127.0.0.1:12356",
+    "program_target": "unlockp"
   }'
 ```
 
@@ -119,9 +126,13 @@ curl -X POST http://127.0.0.1:12344/dispatch/kordp \
   -H "Authorization: Bearer $BEARER_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "service_target": "onlockp",
-    "action": "decode",
-    "params": {...}
+    "service_target": "unlockp",
+    "action": "grant",
+    "params": {
+      "subject": "user123",
+      "resource": "/files/documents",
+      "action": "read"
+    }
   }'
 ```
 
@@ -171,7 +182,7 @@ python3 ../scripts/test_opena11_integration.py
 
 ```bash
 # Prometheus Metrics (wenn aktiviert)
-curl http://127.0.0.1:12353/metrics
+curl http://127.0.0.1:12356/metrics
 ```
 
 ---

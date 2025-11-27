@@ -1,0 +1,15 @@
+{
+  "sp_id": "20251127_110308_25101",
+  "timestamp": "2025-11-27T11:03:08.251016Z",
+  "src": "whatsappp",
+  "dst": "whatsapp_api",
+  "type": "CMD",
+  "request_id": "20251127_110308_25087",
+  "data": {
+    "action": "send_template",
+    "to": "+49123456****",
+    "template_name": "hello_world",
+    "language": "de",
+    "parameters": []
+  }
+}

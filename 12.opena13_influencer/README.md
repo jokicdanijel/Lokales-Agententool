@@ -1,23 +1,25 @@
-# ⭐ opena13 - Social Media Influencer
+# ⭐ opena13 - Influencer Management
 
 **Agent-ID:** `opena13`  
-**Port:** 12355  
-**Kürzel:** `infmep`  
-**Version:** 2.0  
-**Status:** ✅ Production
+**Port:** 12358  
+**Kürzel:** `influp`  
+**Version:** 1.0  
+**Status:** ✅ RUNNING (PID: 1727022)
 
 ---
 
 ## 📖 Überblick
 
-**opena13** ist der **Social Media Influencer** - ein spezialisierter Agent im ELION Hyper-Dashboard Ökosystem.
+**opena13** ist der **Influencer Management Agent** - spezialisiert auf Influencer-Matching, Kampagnen-Management und Metriken.
 
 ### Kernfunktionen
 
-- ⭐ **Influencer Tracking** - Influencer überwachen
-- 📈 **Campaign Management** - Kampagnen steuern
-- 💬 **Engagement Analysis** - Interaktionsanalyse
-- 🎯 **Target Audience** - Zielgruppenanalyse
+- 👤 **Profile Management** - Influencer-Profile erstellen und verwalten (CRUD)
+- 🎯 **Campaign Matching** - Algorithmus-basiertes Matching (Score-System)
+- 📊 **Metrics & Analytics** - Reichweiten, Engagement-Raten, Plattform-Statistiken
+- 🔍 **Multi-Platform Support** - Instagram, TikTok, YouTube, X/Twitter, LinkedIn, Facebook
+- ✅ **Hard Requirements** - Follower-Threshold als nicht kompensierbare Anforderung
+- 🗂️ **Campaign Management** - Kampagnen mit Budget, Zielgruppe, Nischen
 
 ---
 
@@ -30,7 +32,7 @@ Portier (12344) → OpenA2 (12345)
     ↓
 kordp (Dispatcher)
     ↓
-opena13 (12355) ← Dieser Agent
+opena13 (12358) ← Dieser Agent
     ↓
 OpenA2 (12345) → Portier (12344)
     ↓
@@ -55,22 +57,94 @@ curl http://127.0.0.1:12355/health | jq .
 {
   "status": "ok",
   "service": "opena13",
-  "port": 12355,
-  "program_target": "infmep",
-  "uptime_seconds": 3661.23
+  "kuerzel": "influp",
+  "port": 12358,
+  "uptime_seconds": 542.17,
+  "total_profiles": 5,
+  "total_campaigns": 3,
+  "total_matches": 2
 }
 ```
 
-### `POST /invoke`
-Service-spezifische Aktion ausführen.
+### `POST /profiles/create`
+Influencer-Profil erstellen.
 
 ```bash
-curl -X POST http://127.0.0.1:12355/invoke \
+curl -X POST http://127.0.0.1:12358/profiles/create \
   -H "Authorization: Bearer $BEARER_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "action": "track_influencer",
-    "params": {...}
+    "name": "FashionInfluencer_Anna",
+    "platform": "instagram",
+    "followers": 250000,
+    "engagement_rate": 5.2,
+    "niche": "fashion",
+    "contact_email": "anna@example.com",
+    "avg_likes": 13000,
+    "avg_comments": 450
+  }'
+```
+
+### `POST /campaigns/create`
+Kampagne erstellen.
+
+```bash
+curl -X POST http://127.0.0.1:12358/campaigns/create \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Spring Fashion 2025",
+    "budget": 75000.0,
+    "target_audience": "Women 25-40, Fashion",
+    "niches": ["fashion", "lifestyle"],
+    "min_followers": 150000,
+    "min_engagement_rate": 3.5,
+    "start_date": "2025-03-01T00:00:00Z",
+    "end_date": "2025-05-31T23:59:59Z"
+  }'
+```
+
+### `POST /match`
+Influencer für Kampagne matchen.
+
+```bash
+curl -X POST http://127.0.0.1:12358/match \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "campaign_id": "<campaign_id>",
+    "max_results": 10,
+    "min_score": 60.0
+  }'
+```
+
+**Response:**
+```json
+{
+  "campaign_id": "a0e74275-...",
+  "matches": [
+    {
+      "match_id": "xyz123",
+      "profile": { ... },
+      "score": 90.0,
+      "reasoning": "Niche match (fashion) | Followers sufficient (250,000 >= 150,000) | Engagement rate 5.20% | High-engagement platform (instagram)"
+    }
+  ],
+  "total_candidates": 5,
+  "matched_at": "2025-11-27T14:30:00Z"
+}
+```
+
+### `POST /metrics`
+Aggregierte Metriken abrufen.
+
+```bash
+curl -X POST http://127.0.0.1:12358/metrics \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "platform": "instagram",
+    "niche": "fashion"
   }'
 ```
 
@@ -82,9 +156,9 @@ curl -X POST http://127.0.0.1:12355/invoke \
 
 ```bash
 cd 12.opena13_influencer
-python3 main.py
+./bin/start_opena13.sh
 
-# Oder via ops.sh
+# Oder via ops.sh (root)
 cd ..
 bin/ops.sh start
 ```
@@ -92,7 +166,7 @@ bin/ops.sh start
 ### Health Check
 
 ```bash
-curl http://127.0.0.1:12355/health | jq .
+curl http://127.0.0.1:12358/health | jq .
 ```
 
 ---
@@ -107,8 +181,8 @@ curl -X POST http://127.0.0.1:12344/route/update \
   -H "Content-Type: application/json" \
   -d '{
     "service_name": "opena13",
-    "endpoint": "http://127.0.0.1:12355",
-    "program_target": "infmep"
+    "endpoint": "http://127.0.0.1:12358",
+    "program_target": "influp"
   }'
 ```
 
@@ -119,9 +193,15 @@ curl -X POST http://127.0.0.1:12344/dispatch/kordp \
   -H "Authorization: Bearer $BEARER_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "service_target": "infmep",
-    "action": "track_influencer",
-    "params": {...}
+    "service_target": "influp",
+    "action": "create_profile",
+    "params": {
+      "name": "TechInfluencer_Max",
+      "platform": "youtube",
+      "followers": 500000,
+      "engagement_rate": 6.8,
+      "niche": "tech"
+    }
   }'
 ```
 
@@ -131,13 +211,19 @@ curl -X POST http://127.0.0.1:12344/dispatch/kordp \
 
 ```
 12.opena13_influencer/
-├── main.py                  # FastAPI Agent Entry Point
-├── config.py                # Konfiguration
-├── requirements.txt         # Dependencies
+├── main_influencer_agent.py # FastAPI Agent Entry Point (850 LOC)
 ├── bin/
-│   └── start.sh             # Start-Script
-├── tests/
-│   └── test_opena13.py      # Unit-Tests
+│   ├── start_opena13.sh     # Start-Script
+│   └── stop_opena13.sh      # Stop-Script
+├── test_opena13.py          # Integration Tests (11 Tests, 100%)
+├── data/                    # JSON Persistence
+│   ├── influencer_profiles.json
+│   ├── campaigns.json
+│   ├── matches.json
+│   └── audit.jsonl          # Append-only Audit Log
+├── logs/
+│   ├── opena13.pid
+│   └── opena13.nohup.log
 └── README.md                # Diese Datei
 ```
 
@@ -155,14 +241,14 @@ curl -X POST http://127.0.0.1:12344/dispatch/kordp \
 ## 🧪 Testing
 
 ```bash
-# Unit-Tests
-pytest tests/test_opena13.py -v
+# Integration Tests (11 Tests)
+python3 test_opena13.py
 
 # Health-Check
-curl http://127.0.0.1:12355/health
+curl http://127.0.0.1:12358/health | jq .
 
-# Integration-Test via Portier
-python3 ../scripts/test_opena13_integration.py
+# Stop Service
+./bin/stop_opena13.sh
 ```
 
 ---
@@ -170,8 +256,11 @@ python3 ../scripts/test_opena13_integration.py
 ## 📊 Monitoring
 
 ```bash
-# Prometheus Metrics (wenn aktiviert)
-curl http://127.0.0.1:12355/metrics
+# Service Logs (real-time)
+tail -f logs/opena13.nohup.log
+
+# Audit Log (JSONL)
+tail -f data/audit.jsonl | jq .
 ```
 
 ---
@@ -185,4 +274,4 @@ curl http://127.0.0.1:12355/metrics
 ---
 
 **Maintainer:** ELION Team  
-**Letzte Aktualisierung:** 21. November 2025
+**Letzte Aktualisierung:** 27. November 2025

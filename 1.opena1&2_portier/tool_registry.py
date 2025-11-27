@@ -145,12 +145,12 @@ class ToolRegistry:
         # AGENTS – KOMMUNIKATION (4)
         # ──────────────────────────────────────────────────────────────────────
 
-        # opena3 – OpenWebUI (Port 8080, exclusive)
+        # opena3 – OpenWebUI (Port 12347, RUNNING)
         self.register_agent(Agent(
             id="opena3",
             name="OpenWebUI Terminal",
-            port=8080,
-            description="Web-based terminal interface",
+            port=12347,
+            description="Web-based terminal interface (owuip)",
             role="Communication",
             tools=["browse", "chat", "display"],
             dependencies=["opena1", "opena2"],
@@ -158,12 +158,12 @@ class ToolRegistry:
             health_endpoint="/health"
         ))
 
-        # opena4 – Telegram Agent (Port 12347)
+        # opena4 – Telegram Agent (Port 12348, RUNNING)
         self.register_agent(Agent(
             id="opena4",
             name="Telegram Mobile-Anbindung",
-            port=12347,
-            description="Telegram messenger integration",
+            port=12348,
+            description="Telegram messenger integration (telep)",
             role="Communication",
             tools=["send_message", "receive_message", "webhook"],
             dependencies=["opena1", "opena2"],
@@ -171,29 +171,29 @@ class ToolRegistry:
             health_endpoint="/health"
         ))
 
-        # opena5 – VS Code Bridge (Port 12348)
+        # opena5 – VS Code Bridge (Port 12351, RUNNING)
         self.register_agent(Agent(
             id="opena5",
             name="VS Code Programmier-Bridge",
-            port=12348,
-            description="IDE integration for code editing and tasks",
+            port=12351,
+            description="IDE integration for code editing and tasks (vscop)",
             role="Communication",
             tools=["edit_file", "diff", "apply_patch", "run_task"],
             dependencies=["opena1", "opena2"],
-            enabled=False,  # Schritt 5 pending
+            enabled=True,
             health_endpoint="/health"
         ))
 
-        # opena6 – Browser Automation (Port 12349)
+        # opena6 – Browser Automation (Port 12350, RUNNING)
         self.register_agent(Agent(
             id="opena6",
             name="Browser-Bedienung (Automation)",
-            port=12349,
-            description="Automated browser control and web automation",
+            port=12350,
+            description="Automated browser control and web automation (browsep)",
             role="Communication",
             tools=["navigate", "click", "type", "screenshot"],
             dependencies=["opena1", "opena2"],
-            enabled=False,
+            enabled=True,
             health_endpoint="/health"
         ))
 
@@ -201,29 +201,29 @@ class ToolRegistry:
         # AGENTS – CHATBOTS SCHRIFT (2)
         # ──────────────────────────────────────────────────────────────────────
 
-        # opena7 – Email Chatbot (Port 12350)
+        # opena7 – Email Chatbot (Port 12352, RUNNING)
         self.register_agent(Agent(
             id="opena7",
             name="Email-Chatbot (Schrift)",
-            port=12350,
-            description="Email-based conversational AI",
+            port=12352,
+            description="Email-based conversational AI (emailp)",
             role="Chatbot",
-            tools=["process_email", "reply", "classify"],
+            tools=["process_email", "reply", "classify", "send_email"],
             dependencies=["opena1", "opena2"],
-            enabled=False,
+            enabled=True,
             health_endpoint="/health"
         ))
 
-        # opena8 – WhatsApp Chatbot (Port 12351)
+        # opena8 – WhatsApp Chatbot (Port 12353, RUNNING)
         self.register_agent(Agent(
             id="opena8",
             name="WhatsApp-Chatbot (Schrift)",
-            port=12351,
-            description="WhatsApp-based conversational AI",
+            port=12353,
+            description="WhatsApp-based conversational AI (whatsappp)",
             role="Chatbot",
-            tools=["process_message", "send_reply", "forward"],
+            tools=["process_message", "send_reply", "forward", "send_media"],
             dependencies=["opena1", "opena2"],
-            enabled=False,
+            enabled=True,
             health_endpoint="/health"
         ))
 
@@ -231,29 +231,29 @@ class ToolRegistry:
         # AGENTS – CHATBOTS TON (2)
         # ──────────────────────────────────────────────────────────────────────
 
-        # opena9 – Telefon-Antwort Chatbot (Port 12352)
+        # opena9 – Telefonie Agent (Port 12354, RUNNING)
         self.register_agent(Agent(
             id="opena9",
-            name="Telefon-Antwort Chatbot (IVR)",
-            port=12352,
-            description="Interactive Voice Response for incoming calls",
+            name="Telefonie Agent (Twilio)",
+            port=12354,
+            description="Twilio Voice API integration, call management (telphonep)",
             role="Chatbot-Voice",
-            tools=["answer_call", "process_audio", "transfer"],
+            tools=["call_start", "call_hangup", "call_status", "webhook_status"],
             dependencies=["opena1", "opena2"],
-            enabled=False,
+            enabled=True,
             health_endpoint="/health"
         ))
 
-        # opena10 – Telefon-Anruf Chatbot (Port 12353)
+        # opena10 – Call Tracking Agent (Port 12355, RUNNING)
         self.register_agent(Agent(
             id="opena10",
-            name="Telefon-Anruf Chatbot",
-            port=12353,
-            description="Outbound calling and voice automation",
-            role="Chatbot-Voice",
-            tools=["initiate_call", "play_audio", "collect_input"],
-            dependencies=["opena1", "opena2"],
-            enabled=False,
+            name="Call Tracking Agent",
+            port=12355,
+            description="Call tracking, campaign analytics, SQLAlchemy models (calltrackp)",
+            role="Analytics",
+            tools=["events_ingest", "stats_summary", "stats_by_campaign", "tracking_numbers_list", "tracking_numbers_create", "campaigns_create", "campaigns_list"],
+            dependencies=["opena1", "opena2", "opena9"],
+            enabled=True,
             health_endpoint="/health"
         ))
 
@@ -261,55 +261,133 @@ class ToolRegistry:
         # AGENTS – FUNKTIONAL (4)
         # ──────────────────────────────────────────────────────────────────────
 
-        # opena11 – Unlock Master (Port 12354)
+        # opena11 – Unlock Master (Port 12356, RUNNING)
         self.register_agent(Agent(
             id="opena11",
-            name="Unlock-Master (Decode)",
-            port=12354,
-            description="Security unlock, decode operations, cryptography",
-            role="Functional",
-            tools=["unlock", "decode", "encrypt", "verify"],
+            name="Unlock Master Agent",
+            port=12356,
+            description="RBAC, Permission Store, Audit Log (unlockp)",
+            role="Security",
+            tools=["grant", "revoke", "check", "list", "audit"],
             dependencies=["opena1", "opena2"],
-            enabled=False,
+            enabled=True,
             health_endpoint="/health"
         ))
 
-        # opena12 – Social Media Automation (Port 12355)
+        # opena12 – Social Media Automation (Port 12357, RUNNING)
         self.register_agent(Agent(
             id="opena12",
-            name="Sozialmedia-Automatisierung",
-            port=12355,
-            description="Social media sync, posting, scheduling",
-            role="Functional",
-            tools=["sync_accounts", "post", "schedule", "analyze"],
+            name="Social Media Automation Agent",
+            port=12357,
+            description="Multi-platform posting, scheduling, analytics (smp)",
+            role="Social",
+            tools=["post", "schedule", "status", "delete", "platforms_list"],
             dependencies=["opena1", "opena2"],
-            enabled=False,
+            enabled=True,
             health_endpoint="/health"
         ))
 
-        # opena13 – Influencer Manager (Port 12356)
+        # opena13 – Influencer Management (Port 12358, RUNNING)
         self.register_agent(Agent(
             id="opena13",
-            name="Influencer-Manager",
-            port=12356,
-            description="Influencer outreach and collaboration management",
-            role="Functional",
-            tools=["find_influencers", "propose_collab", "manage_campaign"],
+            name="Influencer Management Agent",
+            port=12358,
+            description="Influencer profiles, campaign matching, metrics (influp)",
+            role="Marketing",
+            tools=["create_profile", "list_profiles", "create_campaign", "match", "metrics"],
             dependencies=["opena1", "opena2"],
-            enabled=False,
+            enabled=True,
             health_endpoint="/health"
         ))
 
-        # opena14 – Calendar Agent (Port 12357)
+        # opena14 – Calendar Management (Port 12359, RUNNING)
         self.register_agent(Agent(
             id="opena14",
-            name="Kalender-Agent",
-            port=12357,
-            description="Calendar sync, event management, scheduling",
-            role="Functional",
-            tools=["sync_calendar", "create_event", "schedule_meeting"],
+            name="Calendar Management Agent",
+            port=12359,
+            description="Event management, iCalendar, recurring events (calp)",
+            role="Productivity",
+            tools=["create_event", "list_events", "update_event", "delete_event", "create_calendar", "export_ical"],
             dependencies=["opena1", "opena2"],
-            enabled=False,
+            enabled=True,
+            health_endpoint="/health"
+        ))
+
+        # opena15 – HTML Creator (Port 12360, RUNNING)
+        self.register_agent(Agent(
+            id="opena15",
+            name="HTML Creator Agent",
+            port=12360,
+            description="HTML generation, Jinja2 templates, validation, SEO (htmlp)",
+            role="Development",
+            tools=["generate_html", "validate_html", "preview_html", "export_html", "list_templates"],
+            dependencies=["opena1", "opena2"],
+            enabled=True,
+            health_endpoint="/health"
+        ))
+
+        # opena16 – Shop Management (Port 12361, RUNNING)
+        self.register_agent(Agent(
+            id="opena16",
+            name="Shop Management Agent",
+            port=12361,
+            description="E-Commerce, product CRUD, orders, inventory, categories (shopp)",
+            role="Business",
+            tools=["create_product", "update_product", "list_products", "delete_product", "create_order", "list_orders", "update_inventory", "create_category"],
+            dependencies=["opena1", "opena2"],
+            enabled=True,
+            health_endpoint="/health"
+        ))
+
+        # opena17 – Homepage Creator (Port 12362, RUNNING)
+        self.register_agent(Agent(
+            id="opena17",
+            name="Homepage Creator Agent",
+            port=12362,
+            description="Website builder, CMS, page management (hpcreatep)",
+            role="Development",
+            tools=["generate_site", "export_site", "deploy_site", "get_site_structure", "preview_site"],
+            dependencies=["opena1", "opena2"],
+            enabled=True,
+            health_endpoint="/health"
+        ))
+
+        # opena18 – CRM (Port 12363, RUNNING)
+        self.register_agent(Agent(
+            id="opena18",
+            name="CRM Agent",
+            port=12363,
+            description="Customer Relationship Management (crmp)",
+            role="Business",
+            tools=["create_contact", "update_contact", "list_contacts", "create_organization", "create_deal", "update_deal", "create_activity", "search_crm"],
+            dependencies=["opena1", "opena2"],
+            enabled=True,
+            health_endpoint="/health"
+        ))
+
+        # opena19 – Aktien & Crypto (Port 12364, RUNNING)
+        self.register_agent(Agent(
+            id="opena19",
+            name="Stocks & Crypto Agent",
+            port=12364,
+            description="Stock market & cryptocurrency tracking (stockcryptop)",
+            role="Finance",
+            tools=["get_prices", "get_history", "add_position", "get_portfolio", "create_alert", "list_alerts", "delete_alert", "check_alerts"],
+            dependencies=["opena1", "opena2"],
+            enabled=True,
+            health_endpoint="/health"
+        ))
+
+        # opena20 – Dashboard (Port 12349, RUNNING)
+        self.register_agent(Agent(
+            id="opena20",
+            name="Dashboard Agent",
+            port=12349,
+            description="Central dashboard & SSE bus (dashp)",
+            role="Infrastructure",
+            tools=["publish_event", "get_status"],
+            dependencies=["opena1", "opena2"],
+            enabled=True,
             health_endpoint="/health"
         ))
 

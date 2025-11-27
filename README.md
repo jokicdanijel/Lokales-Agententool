@@ -912,7 +912,21 @@ in the Software without restriction...
 
 ---
 
-**Last Updated:** 21. November 2025  
+## 📚 Dokumentations-Struktur
+
+**Jedes Agent-Verzeichnis hat genau eine gültige README.md:**
+
+- ✅ **`1.opena1&2_portier/README.md`** - Kern-Infrastructure (opena1 + opena2)
+- ✅ **`2.opena3_openwebui/README.md`** - OpenWebUI Terminal Agent
+- ✅ **`3-21.openaX_*/README.md`** - Spezialisierte Agenten (Telegram, Browser, etc.)
+
+**Vollständige Übersicht:** [`README_STRUCTURE.md`](./README_STRUCTURE.md)
+
+**Hinweis:** Alle Dateien mit `_DEPRECATED.md` sind veraltet und enthalten Verweise auf die aktuelle Version.
+
+---
+
+**Last Updated:** 27. November 2025  
 **Version:** 3.0.0 PORTIER Release  
 **Status:** ✅ **PRODUCTION-READY**  
 **Maintainer:** Danijel Jokic (ELION Team)
@@ -927,4 +941,5 @@ in the Software without restriction...
 
 **Für vollständige technische Dokumentation siehe:**  
 📖 **[PORTIER_SYSTEM_DOCS.md](PORTIER_SYSTEM_DOCS.md)** (654 Zeilen)  
-📖 **[README_ENTERPRISE.md](README_ENTERPRISE.md)** (5,890 Zeilen, 20 Seiten)
+📖 **[README_ENTERPRISE.md](README_ENTERPRISE.md)** (5,890 Zeilen, 20 Seiten)  
+📖 **[README_STRUCTURE.md](README_STRUCTURE.md)** (README-Übersicht, alle Agents)

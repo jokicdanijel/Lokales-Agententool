@@ -1,23 +1,25 @@
-# 📝 opena15 - HTML Creator Tool
+# 📝 opena15 - HTML Creator Agent
 
 **Agent-ID:** `opena15`  
-**Port:** 12357  
+**Port:** 12360  
 **Kürzel:** `htmlp`  
-**Version:** 2.0  
-**Status:** ✅ Production
+**Version:** 1.0  
+**Status:** ✅ RUNNING (PID: 1766679)
 
 ---
 
 ## 📖 Überblick
 
-**opena15** ist der **HTML Creator Tool** - ein spezialisierter Agent im ELION Hyper-Dashboard Ökosystem.
+**opena15** ist der **HTML Creator Agent** - spezialisiert auf HTML-Generierung, Template-Management und Validierung.
 
 ### Kernfunktionen
 
-- 📝 **HTML Generation** - HTML-Code generieren
-- 🎨 **Template Engine** - Vorlagen verwenden
-- 🔍 **SEO Optimization** - Meta-Tags, Keywords
-- 📱 **Responsive Design** - Mobile-optimiert
+- 📝 **HTML-Generierung** - Jinja2-Templates rendern mit Variablen
+- 🎨 **CSS-Framework-Integration** - Bootstrap, Tailwind, Bulma Support
+- ✅ **HTML-Validierung** - BeautifulSoup4-basierte Struktur-Checks
+- 🔍 **SEO-Optimization** - Meta-Tags, Keywords, Description
+- 👁️ **Preview-Rendering** - HTML-Vorschau mit Viewport-Injection
+- 💾 **Export-Funktionen** - Datei, Base64, ZIP-Export
 
 ---
 
@@ -30,7 +32,7 @@ Portier (12344) → OpenA2 (12345)
     ↓
 kordp (Dispatcher)
     ↓
-opena15 (12357) ← Dieser Agent
+opena15 (12360) ← Dieser Agent
     ↓
 OpenA2 (12345) → Portier (12344)
     ↓
@@ -55,22 +57,81 @@ curl http://127.0.0.1:12357/health | jq .
 {
   "status": "ok",
   "service": "opena15",
-  "port": 12357,
-  "program_target": "htmlp",
-  "uptime_seconds": 3661.23
+  "kuerzel": "htmlp",
+  "port": 12360,
+  "uptime_seconds": 12.96,
+  "templates_available": 1,
+  "jinja2_support": true
 }
 ```
 
-### `POST /invoke`
-Service-spezifische Aktion ausführen.
+### `GET /templates/list`
+Verfügbare Templates auflisten.
 
 ```bash
-curl -X POST http://127.0.0.1:12357/invoke \
+curl -X GET http://127.0.0.1:12360/templates/list \
+  -H "Authorization: Bearer $BEARER_TOKEN" | jq .
+```
+
+### `POST /generate`
+HTML aus Template generieren.
+
+```bash
+curl -X POST http://127.0.0.1:12360/generate \
   -H "Authorization: Bearer $BEARER_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "action": "generate_html",
-    "params": {...}
+    "template_name": "default.html",
+    "variables": {
+      "title": "My Page",
+      "heading": "Welcome",
+      "content": "This is generated content."
+    },
+    "css_framework": "bootstrap",
+    "title": "My Page",
+    "description": "Generated with opena15",
+    "keywords": ["html", "bootstrap", "opena15"]
+  }'
+```
+
+### `POST /validate`
+HTML validieren.
+
+```bash
+curl -X POST http://127.0.0.1:12360/validate \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "html": "<html><head><title>Test</title></head><body><h1>Valid HTML</h1></body></html>",
+    "validation_level": "strict"
+  }'
+```
+
+### `POST /preview`
+HTML-Vorschau rendern.
+
+```bash
+curl -X POST http://127.0.0.1:12360/preview \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "html": "<html><head><title>Preview</title></head><body><h1>Preview Content</h1></body></html>",
+    "width": 1920,
+    "height": 1080
+  }'
+```
+
+### `POST /export`
+HTML exportieren (file/base64/zip).
+
+```bash
+curl -X POST http://127.0.0.1:12360/export \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "html": "<html><body>Export Test</body></html>",
+    "filename": "export.html",
+    "format": "html"
   }'
 ```
 
@@ -82,9 +143,9 @@ curl -X POST http://127.0.0.1:12357/invoke \
 
 ```bash
 cd 14.opena15_html
-python3 main.py
+./bin/start_opena15.sh
 
-# Oder via ops.sh
+# Oder via ops.sh (root)
 cd ..
 bin/ops.sh start
 ```
@@ -92,7 +153,7 @@ bin/ops.sh start
 ### Health Check
 
 ```bash
-curl http://127.0.0.1:12357/health | jq .
+curl http://127.0.0.1:12360/health | jq .
 ```
 
 ---
@@ -107,7 +168,7 @@ curl -X POST http://127.0.0.1:12344/route/update \
   -H "Content-Type: application/json" \
   -d '{
     "service_name": "opena15",
-    "endpoint": "http://127.0.0.1:12357",
+    "endpoint": "http://127.0.0.1:12360",
     "program_target": "htmlp"
   }'
 ```
@@ -121,7 +182,12 @@ curl -X POST http://127.0.0.1:12344/dispatch/kordp \
   -d '{
     "service_target": "htmlp",
     "action": "generate_html",
-    "params": {...}
+    "params": {
+      "template_name": "default.html",
+      "variables": {"heading": "Test", "content": "Hello World"},
+      "css_framework": "bootstrap",
+      "title": "Test Page"
+    }
   }'
 ```
 
@@ -131,13 +197,19 @@ curl -X POST http://127.0.0.1:12344/dispatch/kordp \
 
 ```
 14.opena15_html/
-├── main.py                  # FastAPI Agent Entry Point
-├── config.py                # Konfiguration
-├── requirements.txt         # Dependencies
+├── main_html_agent.py       # FastAPI Agent Entry Point (750 LOC)
 ├── bin/
-│   └── start.sh             # Start-Script
-├── tests/
-│   └── test_opena15.py      # Unit-Tests
+│   ├── start_opena15.sh     # Start-Script
+│   └── stop_opena15.sh      # Stop-Script
+├── test_opena15.py          # Integration Tests (12 Tests, 100%)
+├── data/
+│   ├── templates/           # Jinja2 Templates
+│   │   └── default.html     # Default Template
+│   ├── output/              # Generated HTML Files
+│   └── html_history.jsonl  # Append-only History
+├── logs/
+│   ├── opena15.pid
+│   └── opena15.nohup.log
 └── README.md                # Diese Datei
 ```
 
@@ -155,14 +227,14 @@ curl -X POST http://127.0.0.1:12344/dispatch/kordp \
 ## 🧪 Testing
 
 ```bash
-# Unit-Tests
-pytest tests/test_opena15.py -v
+# Integration Tests (12 Tests)
+python3 test_opena15.py
 
 # Health-Check
-curl http://127.0.0.1:12357/health
+curl http://127.0.0.1:12360/health | jq .
 
-# Integration-Test via Portier
-python3 ../scripts/test_opena15_integration.py
+# Stop Service
+./bin/stop_opena15.sh
 ```
 
 ---
@@ -170,8 +242,11 @@ python3 ../scripts/test_opena15_integration.py
 ## 📊 Monitoring
 
 ```bash
-# Prometheus Metrics (wenn aktiviert)
-curl http://127.0.0.1:12357/metrics
+# Service Logs (real-time)
+tail -f logs/opena15.nohup.log
+
+# HTML Generation History (JSONL)
+tail -f data/html_history.jsonl | jq .
 ```
 
 ---
@@ -185,4 +260,4 @@ curl http://127.0.0.1:12357/metrics
 ---
 
 **Maintainer:** ELION Team  
-**Letzte Aktualisierung:** 21. November 2025
+**Letzte Aktualisierung:** 27. November 2025

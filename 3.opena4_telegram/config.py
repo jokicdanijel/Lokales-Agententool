@@ -31,23 +31,28 @@ class PortierConfig:
         self.port = self._get_port()
         self.host = os.getenv("PORTIER_HOST", "127.0.0.1")
         
-        # Port-Policy enforcement
-        self.allowed_ports = self._parse_ports(os.getenv("PORTIER_ALLOWED_PORTS", "12344,12345,12346,12347,12348,12349"))
-        self.forbidden_ports = self._parse_ports(os.getenv("PORTIER_FORBIDDEN_PORTS", "8080"))
+        # Port-Policy enforcement (12344-12399 erlaubt, 8080 verboten)
+        self.allowed_ports = list(range(12344, 12400))
+        self.forbidden_ports = [8080]
         
         self._enforce_port_policy()
         
-        # Telegram configuration
+        # Telegram configuration (ENV-only secrets)
         self.telegram_bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
         self.telegram_allowed_users = self._parse_user_ids(os.getenv("TELEGRAM_ALLOWED_USERS", ""))
         self.telegram_webhook_url = os.getenv("TELEGRAM_WEBHOOK_URL", "")
         
-        # Archivator/Coordinator URLs
-        self.opena2_url = os.getenv("OPENA2_URL", "http://127.0.0.1:12348/store/archivp")
-        self.opena1_url = os.getenv("OPENA1_URL", "http://127.0.0.1:12344/invoke")
+        # Archivator/Coordinator URLs (Option-2-Flow)
+        self.opena2_url = os.getenv("OPENA2_URL", "http://127.0.0.1:12345/command")  # opena2 = Archivator
+        self.opena1_url = os.getenv("OPENA1_URL", "http://127.0.0.1:12344/invoke")   # opena1 = Koordinator
+        self.kordp_url = os.getenv("KORDP_URL", "http://127.0.0.1:12346/dispatch")   # kordp = Koordinatport
         
-        # Archive directory
-        self.archiv_dir = self.base_dir / "archivp"
+        # Bearer Token (ENV-only)
+        self.bearer_token = os.getenv("BEARER_TOKEN")
+        
+        # Archive directory (gemeinsames archivp aus 1.opena1&2_portier)
+        archivp_root = os.getenv("ARCHIVP_ROOT", str(self.base_dir.parent / "1.opena1&2_portier" / "archivp_store"))
+        self.archiv_dir = Path(archivp_root)
         self.archiv_dir.mkdir(parents=True, exist_ok=True)
         
         # Logging
@@ -72,13 +77,13 @@ class PortierConfig:
             logger.warning(f"Failed to load .env: {e}")
 
     def _get_port(self) -> int:
-        """Get port from environment or default to 12347"""
-        port_str = os.getenv("PORTIER_PORT", "12347")
+        """Get port from environment or default to 12348 (opena4)"""
+        port_str = os.getenv("PORTIER_PORT", "12348")
         try:
             return int(port_str)
         except ValueError:
-            logger.error(f"Invalid port: {port_str}, using default 12347")
-            return 12347
+            logger.error(f"Invalid port: {port_str}, using default 12348")
+            return 12348
 
     def _parse_ports(self, ports_str: str) -> list[int]:
         """Parse comma-separated port list"""
@@ -103,13 +108,13 @@ class PortierConfig:
     def _enforce_port_policy(self) -> None:
         """Enforce Port-Policy: reject if using forbidden port"""
         if self.port in self.forbidden_ports:
-            logger.error(f"❌ PORT-POLICY VIOLATION: Port {self.port} is forbidden (exclusive for opena3)")
+            logger.error(f"❌ PORT-POLICY VIOLATION: Port {self.port} ist verboten (8080 nur für UI)")
             sys.exit(1)
         
-        if self.allowed_ports and self.port not in self.allowed_ports:
-            logger.warning(f"⚠️  Port {self.port} not in allowed range {self.allowed_ports}")
+        if self.port not in self.allowed_ports:
+            logger.warning(f"⚠️  Port {self.port} außerhalb erlaubtem Bereich {min(self.allowed_ports)}-{max(self.allowed_ports)}")
         
-        logger.info(f"✅ Port-Policy OK: {self.port} in window {self.allowed_ports}, forbidden {self.forbidden_ports}")
+        logger.info(f"✅ Port-Policy OK: {self.port} in Bereich {min(self.allowed_ports)}-{max(self.allowed_ports)}")
 
     def get_logging_config(self) -> dict:
         """Return logging configuration"""
@@ -186,8 +191,9 @@ class PortierConfig:
                 "webhook_url": self.telegram_webhook_url or "(none)"
             },
             "endpoints": {
+                "opena1": self.opena1_url,
                 "opena2": self.opena2_url,
-                "opena1": self.opena1_url
+                "kordp": self.kordp_url
             },
             "archive_dir": str(self.archiv_dir),
             "log_level": self.log_level

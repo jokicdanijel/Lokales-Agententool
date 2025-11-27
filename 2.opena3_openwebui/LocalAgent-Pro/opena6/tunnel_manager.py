@@ -15,17 +15,35 @@ Anwendungsfälle:
 - Testing auf mobilen Geräten
 """
 
+from __future__ import annotations
+
 import subprocess
 import json
 import time
-import os
-import socket
 import sys
 import platform
-from pathlib import Path
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any
 from dataclasses import dataclass
 from datetime import datetime
+
+
+# ==================== Type Aliases ====================
+
+TunnelDict = Dict[str, Any]
+TunnelRegistry = Dict[str, TunnelDict]
+
+
+# ==================== Data Models ====================
+
+@dataclass
+class TunnelInfo:
+    """Tunnel-Informationen mit sauberer Typisierung"""
+    name: str
+    port: int
+    url: Optional[str]
+    process: Optional[subprocess.Popen]  # type: ignore
+    status: str
+    created_at: datetime
 
 
 # ==================== ngrok Tunneling ====================
@@ -33,9 +51,9 @@ from datetime import datetime
 class NgrokTunnel:
     """Verwalte ngrok Tunnels für lokale Server"""
 
-    def __init__(self, ngrok_path: str = "/usr/local/bin/ngrok"):
+    def __init__(self, ngrok_path: str = "/usr/local/bin/ngrok") -> None:
         self.ngrok_path = ngrok_path
-        self.tunnels = {}
+        self.tunnels: TunnelRegistry = {}
 
     def is_installed(self) -> bool:
         """Überprüfe, ob ngrok installiert ist"""
@@ -57,7 +75,7 @@ class NgrokTunnel:
             cmd = (
                 "curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | "
                 "sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && "
-                "echo 'deb https://ngrok-agent.s3.amazonaws.com buster main' | "
+                "echo 'deb https://ngrok-ag                   ent.s3.amazonaws.com buster main' | "
                 "sudo tee /etc/apt/sources.list.d/ngrok.list && "
                 "sudo apt update && sudo apt install ngrok"
             )
@@ -81,9 +99,9 @@ class NgrokTunnel:
     def start_tunnel(
         self,
         port: int,
-        name: str = None,
+        name: Optional[str] = None,
         protocol: str = "http"
-    ) -> Optional[Dict[str, Any]]:
+    ) -> Optional[TunnelDict]:
         """Starte einen ngrok Tunnel"""
         if not self.is_installed():
             print("❌ ngrok nicht installiert!")

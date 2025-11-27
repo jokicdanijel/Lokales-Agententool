@@ -1,0 +1,7 @@
+{"timestamp": "2025-11-27T13:19:26.529168+00:00", "event": "generate_site", "data": {"site_id": "9c7a1bdc-43b", "pages_count": 1, "generator": "static"}}
+{"timestamp": "2025-11-27T13:19:26.532462+00:00", "event": "generate_site", "data": {"site_id": "6e332bc1-696", "pages_count": 1, "generator": "static"}}
+{"timestamp": "2025-11-27T13:19:26.535590+00:00", "event": "generate_site", "data": {"site_id": "d8de9924-959", "pages_count": 3, "generator": "static"}}
+{"timestamp": "2025-11-27T13:19:26.538693+00:00", "event": "generate_site", "data": {"site_id": "30356007-1e9", "pages_count": 2, "generator": "static"}}
+{"timestamp": "2025-11-27T13:19:26.552863+00:00", "event": "generate_site", "data": {"site_id": "f037d76e-0df", "pages_count": 1, "generator": "static"}}
+{"timestamp": "2025-11-27T13:19:26.564231+00:00", "event": "export_site", "data": {"site_id": "9c7a1bdc-43b", "format": "zip", "file_size": 921}}
+{"timestamp": "2025-11-27T13:19:26.567036+00:00", "event": "deploy_site", "data": {"site_id": "9c7a1bdc-43b", "target": "local", "credentials_provided": false, "deployment_url": "file:///tmp/test_sites/9c7a1bdc-43b/index.html"}}

@@ -280,6 +280,7 @@ Token format: sk_opena[1-20]_[hash]_strict_v1
 Rotation: Planned for Phase 18
 ```
 
+
 ### Sandbox Execution
 ```
 File operations restricted to current directory

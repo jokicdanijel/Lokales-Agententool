@@ -1,8 +1,9 @@
 # 💻 opena5 - VS Code Programmier-Bridge
 
 **Agent-ID:** `opena5`  
-**Port:** 12347  
+**Port:** 12351  
 **Kürzel:** `vscop`  
+**Status:** ✅ RUNNING (PID: siehe logs/opena5.pid)  
 **Version:** 2.0  
 **Status:** ✅ Production
 
@@ -44,13 +45,17 @@ Client/UI
 ## 📡 API-Endpoints
 
 ### `GET /health`
+
+
 Health-Check des Agents.
 
 ```bash
 curl http://127.0.0.1:12347/health | jq .
 ```
 
+
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -61,7 +66,9 @@ curl http://127.0.0.1:12347/health | jq .
 }
 ```
 
+
 ### `POST /invoke`
+
 Service-spezifische Aktion ausführen.
 
 ```bash
@@ -185,4 +192,4 @@ curl http://127.0.0.1:12347/metrics
 ---
 
 **Maintainer:** ELION Team  
-**Letzte Aktualisierung:** 21. November 2025
+**Letzte Aktualisierung:** 27. November 2025

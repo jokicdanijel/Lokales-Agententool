@@ -7,6 +7,7 @@
 opena7 ist ein FastAPI-basierter Mail-Agent für das ELION Hyper-Dashboard. Er verbindet das System mit E-Mail-Infrastrukturen über IMAP/SMTP, automatisiert die Verarbeitung eingehender Mails, klassifiziert diese nach Sentiment/Dringlichkeit und archiviert jede Transaktion unveränderbar via opena2.
 
 **Kernmerkmale:**
+
 - 📧 IMAP/SMTP-Integration (SSL/TLS obligatorisch)
 - 🤖 Automatische Klassifizierung (Sentiment, Sprache, Dringlichkeit)
 - 💾 Attachment-Handling mit Sicherheitsprüfung
@@ -92,6 +93,7 @@ curl http://127.0.0.1:12350/health | jq .
 ```
 
 **Antwort:**
+
 ```json
 {
   "service": "opena7",
@@ -121,6 +123,7 @@ curl -X POST http://127.0.0.1:12350/run \
 ```
 
 **Antwort:**
+
 ```json
 {
   "request_id": "test-001",
@@ -198,18 +201,21 @@ curl -X POST http://127.0.0.1:12350/run \
 ### Klassifizierung
 
 **Sentiment-Analyse:**
+
 - `positive` — Zufriedene/dankbare Nachrichten
 - `neutral` — Informativ
 - `negative` — Probleme/Beschwerden
 - `urgent` — Dringende Anfragen
 
 **Dringlichkeit (0-10):**
+
 - 0-3: Low Priority
 - 4-6: Normal
 - 7-9: High Priority
 - 10: Critical/URGENT
 
 **Sprache:**
+
 - `en` — English
 - `de` — Deutsch
 - `null` — Unbekannt
@@ -227,6 +233,7 @@ curl -X POST http://127.0.0.1:12350/run \
 | `VIRUS_DETECTED` | Attachment verdächtig | Mail blockiert, Audit-Log |
 
 **Error-Response:**
+
 ```json
 {
   "request_id": "test-001",
@@ -336,6 +343,7 @@ ls logs/opena7/2025/11/10/*.jsonl
 ## Best Practices
 
 ✅ **DO:**
+
 - TLS/SSL erzwingen (Port 993 für IMAP, 587 für SMTP)
 - Allowlist verwenden (Domain-Einschränkung)
 - Secrets via Secret Store (keine .env)
@@ -343,6 +351,7 @@ ls logs/opena7/2025/11/10/*.jsonl
 - Metriken monitoren (Error-Rate, Latenz)
 
 ❌ **DON'T:**
+
 - Passwörter im Klartext speichern
 - Zu große Attachment-Limits
 - Robots-ähnliche Flooding-Pattern
@@ -456,5 +465,5 @@ curl http://127.0.0.1:12345/archiv/last?n=10 | jq '.items[] | select(.payload.sr
 
 ---
 
-**Letzte Aktualisierung:** 10. November 2025  
-**Status:** Production-Ready ✅
+**Letzte Aktualisierung:** 27. November 2025  
+**Status:** ✅ Production

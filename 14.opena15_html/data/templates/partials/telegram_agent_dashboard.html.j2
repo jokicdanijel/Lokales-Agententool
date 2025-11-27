@@ -1,0 +1,91 @@
+<!-- ===== TELEGRAM BOT UI ===== -->
+<div class="main-card">
+    <div class="section-card" style="border-left: 6px solid #0088cc;">
+        <h3 style="color: #0088cc;">📡 Telegram Webhook Status</h3>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="p-3 bg-light rounded text-center">
+                    <div class="text-muted small">Bot Status</div>
+                    <div class="fw-bold fs-5" id="botStatusValue">–</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 bg-light rounded text-center">
+                    <div class="text-muted small">Webhook</div>
+                    <div class="fw-bold small font-monospace" id="webhookUrlValue">{{ endpoints.webhook or "/webhook" }}</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 bg-light rounded text-center">
+                    <div class="text-muted small">Letzte Anfrage</div>
+                    <div class="fw-bold fs-6" id="lastRequestValue">–</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-card">
+    <div class="section-card" style="border-left: 6px solid #0088cc;">
+        <h3 style="color: #0088cc;">💬 Chat-Interface</h3>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="inputChatId" class="form-label fw-bold">Chat ID</label>
+                <input id="inputChatId" type="text" class="form-control form-control-lg" placeholder="123456789" />
+            </div>
+            <div class="col-md-6">
+                <label for="inputMessage" class="form-label fw-bold">Nachricht</label>
+                <textarea id="inputMessage" class="form-control" rows="3" 
+                          placeholder="Hello from {{ slug }} Dashboard"></textarea>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button class="btn btn-primary w-100 btn-lg" id="btnSendMessage" type="button">
+                    📨 Senden
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    const agentPort = "{{ port }}";
+    const endpoints = {
+        send: "{{ endpoints.send or '/send' }}",
+        webhook: "{{ endpoints.webhook or '/webhook' }}",
+    };
+
+    document.getElementById("btnSendMessage")?.addEventListener("click", function() {
+        const chatId = document.getElementById("inputChatId").value.trim();
+        const message = document.getElementById("inputMessage").value.trim();
+
+        if (!chatId || !message) {
+            alert("❌ Bitte Chat ID und Nachricht eingeben");
+            return;
+        }
+
+        window.withOpenAIKey && window.withOpenAIKey(async function(apiKey) {
+            try {
+                const resp = await fetch(`http://127.0.0.1:${agentPort}${endpoints.send}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({ chat_id: chatId, text: message })
+                });
+
+                if (resp.ok) {
+                    alert("✅ Nachricht gesendet!");
+                    document.getElementById("inputMessage").value = "";
+                } else {
+                    const data = await resp.json().catch(() => null);
+                    alert(`❌ Fehler: HTTP ${resp.status}\n${data?.error || ""}`);
+                }
+            } catch (e) {
+                alert(`❌ Fehler: ${e.message}`);
+            }
+        });
+    });
+})();
+</script>

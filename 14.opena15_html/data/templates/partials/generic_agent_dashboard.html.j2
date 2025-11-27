@@ -1,0 +1,65 @@
+<!-- ===== GENERIC AGENT UI (FALLBACK) ===== -->
+<div class="row">
+    <div class="col-lg-6">
+        <div class="main-card">
+            <div class="section-card">
+                <h3>📋 Agent-Details</h3>
+                <table class="table table-borderless fs-5">
+                    <tr>
+                        <td class="fw-bold">Agent-ID:</td>
+                        <td><code class="fs-5">{{ agent_id }}</code></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Kürzel:</td>
+                        <td><code class="fs-5">{{ kuerzel }}</code></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Port:</td>
+                        <td><code class="fs-5">{{ port }}</code></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="main-card">
+            <div class="section-card">
+                <h3>⚡ Kernfunktionen</h3>
+                <ul class="feature-list">
+{% for feature in features %}
+                    <li>{{ feature }}</li>
+{% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-card">
+    <div class="section-card">
+        <h3>🔗 API-Endpoints</h3>
+{% if endpoints %}
+        <div class="mt-3">
+    {% for key, endpoint in endpoints.items() %}
+            <span class="info-badge">{{ endpoint }}</span>
+    {% endfor %}
+        </div>
+{% else %}
+        <div class="mt-3">
+            <span class="info-badge">GET /health</span>
+            <span class="info-badge">POST /command</span>
+        </div>
+{% endif %}
+    </div>
+</div>
+
+<div class="main-card">
+    <h3 class="mb-4">📊 Live Health Status</h3>
+    <div id="healthOutput" class="alert alert-info fs-5">
+        Klicke auf "Status prüfen" um Live-Daten zu laden
+    </div>
+    <button class="btn btn-primary-custom w-100" onclick="checkHealth()">
+        🔄 Status prüfen
+    </button>
+</div>

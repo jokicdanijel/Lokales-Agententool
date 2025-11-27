@@ -1,0 +1,14 @@
+[
+  {
+    "sku": "TEST-001",
+    "quantity": 100,
+    "warehouse": "main",
+    "updated_at": "2025-11-27T13:02:44.594895+00:00"
+  },
+  {
+    "sku": "CMD-TEST-001",
+    "quantity": 0,
+    "warehouse": "main",
+    "updated_at": "2025-11-27T13:02:44.605337+00:00"
+  }
+]

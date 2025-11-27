@@ -1,0 +1,14 @@
+{
+  "sp_id": "20251127_110308_24409",
+  "timestamp": "2025-11-27T11:03:08.244098Z",
+  "src": "kordp",
+  "dst": "whatsappp",
+  "type": "RESP",
+  "request_id": "20251127_110308_24349",
+  "data": {
+    "status": "executed",
+    "command": "test_command",
+    "agent": "opena8",
+    "result": "Command received (use specific endpoints for WhatsApp operations)"
+  }
+}

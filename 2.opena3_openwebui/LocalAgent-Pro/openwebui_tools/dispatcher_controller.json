@@ -1,0 +1,61 @@
+{
+  "name": "dispatcher_controller",
+  "type": "action",
+  "description": "Deterministic CMD/RESP dispatcher - Multi-agent routing, safepoint management, audit trail, command orchestration",
+  "endpoint": "http://localhost:8100/dispatch",
+  "method": "POST",
+  "timeout": 15000,
+  "parameters": {
+    "cmd": {
+      "type": "object",
+      "description": "Command object with target and payload",
+      "required": true,
+      "properties": {
+        "system": {
+          "type": "string",
+          "description": "Target system: opena1-opena20, server, tools"
+        },
+        "action": {
+          "type": "string",
+          "description": "Action identifier"
+        },
+        "payload": {
+          "type": "object",
+          "description": "Command payload"
+        }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "description": "Routing configuration with path and safepoints",
+      "required": true,
+      "properties": {
+        "via": {
+          "type": "array",
+          "description": "Path through agents: [opena1, opena2, ..., kordp, target]",
+          "items": {"type": "string"}
+        },
+        "safepoint": {
+          "type": "string",
+          "description": "Safepoint identifier (SP_CMD_xxx, SP_RESP_xxx)"
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["low", "normal", "high", "critical"],
+          "default": "normal"
+        }
+      }
+    }
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "status": {"type": "string", "enum": ["accepted", "routing", "executing", "completed", "error"]},
+      "cmd_id": {"type": "string"},
+      "safepoint": {"type": "string"},
+      "result": {"type": "object"},
+      "timestamp": {"type": "string"},
+      "audit_trail": {"type": "array"}
+    }
+  }
+}

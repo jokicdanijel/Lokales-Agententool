@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-11-27T10:25:56.037031Z",
+  "src": "kordp",
+  "dst": "opena4",
+  "kind": "RESP",
+  "payload": {
+    "status": "executed",
+    "command": "test",
+    "request_id": "test_12346",
+    "timestamp": "2025-11-27T10:25:56.037023Z",
+    "output": "Command 'test' würde hier ausgeführt (Placeholder)"
+  },
+  "strict": true
+}

@@ -12,12 +12,14 @@
 Dieses Modul enthält die **Kern-Infrastructure** des ELION Hyper-Dashboards:
 
 ### **opena1 - Portier (Koordinator)**
+
 - **Port:** 12344
 - **Kürzel:** `kordp`
 - **Rolle:** Zentraler Koordinator & Dispatcher
 - **Funktion:** Orchestriert alle Service-Requests via Option-2-Flow
 
 ### **opena2 - OpenA2 (Archivator)**
+
 - **Port:** 12345
 - **Kürzel:** `archivp`
 - **Rolle:** Longtime-Gedächtnis & Safepoint-Manager
@@ -51,8 +53,33 @@ Client/UI
 
 ### opena1 (Portier) - 12344
 
+#### `GET /health`
+
+Health-Check (keine Authentifizierung erforderlich).
+
+```bash
+curl -s http://127.0.0.1:12344/health | jq
+```
+
 #### `POST /route/update`
-Service-Registrierung im Route-Registry.
+
+Service-Registrierung im Route-Registry (Agent-Setup).
+
+```bash
+curl -s -X POST http://127.0.0.1:12344/route/update \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "agent": "openwebui",
+    "agent_id": "opena3",
+    "port": 12346,
+    "program": "openweb",
+    "archivator_port": 12345,
+    "mapping_ts": "2025-11-10T00:00:00Z",
+    "mapping": {"intent": "ensure_transfer_to_archivator"}
+  }' | jq
+```
+
+**Älteres Format (weiterhin unterstützt):**
 
 ```bash
 curl -X POST http://127.0.0.1:12344/route/update \
@@ -66,7 +93,20 @@ curl -X POST http://127.0.0.1:12344/route/update \
 ```
 
 #### `POST /dispatch/kordp`
-Command-Routing an Zielservice.
+
+Command-Routing an Zielservice via Option-2-Flow.
+
+```bash
+curl -s -X POST http://127.0.0.1:12344/dispatch/kordp \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "agent": "openwebui",
+    "action": "refresh_index",
+    "data": {"scope": "daily"}
+  }' | jq
+```
+
+**Älteres Format (weiterhin unterstützt):**
 
 ```bash
 curl -X POST http://127.0.0.1:12344/dispatch/kordp \
@@ -79,19 +119,51 @@ curl -X POST http://127.0.0.1:12344/dispatch/kordp \
   }'
 ```
 
-#### `GET /health`
-Health-Check.
+**Effekt:** opena1 bestätigt, schreibt Safepoint (`kind=DISPATCH`) via opena2.
+
+#### `POST /log/opena1`
+
+Ereignis-Logging (zentrale Log-Erfassung).
 
 ```bash
-curl http://127.0.0.1:12344/health | jq .
+curl -s -X POST http://127.0.0.1:12344/log/opena1 \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "source": "test",
+    "event": "ping",
+    "payload": {"note": "hello"},
+    "strict": true
+  }' | jq
 ```
 
 ---
 
 ### opena2 (OpenA2) - 12345
 
+#### `GET /health`
+
+Health-Check (keine Authentifizierung erforderlich).
+
+```bash
+curl -s http://127.0.0.1:12345/health | jq
+```
+
 #### `POST /store/archivp`
-Safepoint-Speicherung (CMD/RESP).
+
+Safepoint-Speicherung (CMD/RESP/NOTE/DISPATCH).
+
+```bash
+curl -s -X POST http://127.0.0.1:12345/store/archivp \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "src": "client",
+    "dst": "archivp",
+    "kind": "NOTE",
+    "body": {"k": "v"}
+  }' | jq
+```
+
+**Erweitert (mit Strict-Mode):**
 
 ```bash
 curl -X POST http://127.0.0.1:12345/store/archivp \
@@ -106,29 +178,40 @@ curl -X POST http://127.0.0.1:12345/store/archivp \
   }'
 ```
 
-**Safepoint-Format:**
+**Safepoint-Speicherorte:**
+
 ```
 archivp_store/
 ├── index.jsonl
 └── YYYY/
     └── MM/
         └── DD/
-            ├── SP00001_kordp→telep_CMD.json
-            └── SP00001_telep→kordp_RESP.json
+            ├── SP<timestamp>_kordp→telep_CMD.json
+            └── SP<timestamp>_telep→kordp_RESP.json
 ```
+
+**Naming Convention:** `SP<ts>_<src>→<dst>_<kind>.json` (Unicode-Pfeil → ist Pflicht)
 
 #### `GET /query/archivp`
-Safepoint-Suche.
+
+Safepoint-Suche (Filter nach src/dst/kind).
 
 ```bash
-curl "http://127.0.0.1:12345/query/archivp?src=kordp&dst=telep&limit=10" | jq .
+curl "http://127.0.0.1:12345/query/archivp?src=kordp&dst=telep&limit=10" | jq
 ```
 
-#### `GET /health`
-Health-Check.
+#### `POST /finalize/opena2`
+
+Audit-Finalisierung (Ticket-Abschluss).
 
 ```bash
-curl http://127.0.0.1:12345/health | jq .
+curl -s -X POST http://127.0.0.1:12345/finalize/opena2 \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "ticket": "T-2025-001",
+    "status": "closed",
+    "notes": "ok"
+  }' | jq
 ```
 
 ---

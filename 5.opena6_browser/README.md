@@ -7,6 +7,7 @@
 opena6 ist ein FastAPI-basierter Agent zur automatisierten Web-Automation. Er führt Browser-Playbooks deterministisch aus, archiviert alle Artefakte (Screenshots, HTML, HAR, PDFs) und unterliegt strikten Compliance-Kontrollen (Domain-Allowlist, robots.txt-Beachtung, Rate-Limiting).
 
 **Kernmerkmale:**
+
 - 🎬 Playwright-basierte Browser-Automation (Chromium, Firefox, WebKit)
 - 🔐 Domain-Allowlist + robots.txt-Enforcement
 - 📦 Artifact-Capture (Screenshots, HTML, HAR, PDFs)
@@ -124,6 +125,7 @@ curl -X POST http://127.0.0.1:12349/run \
 ```
 
 Erwartete Antwort:
+
 ```json
 {
   "request_id": "test-001",
@@ -304,6 +306,7 @@ Erwartete Antwort:
 ```
 
 **Behavior:**
+
 - Fetcht `robots.txt` vom Server
 - Prüft Disallow-Pfade
 - Blockt zuwiderlaufende Requests mit Policy-Fehler
@@ -333,6 +336,7 @@ Automatische Verzögerung zwischen Domain-Requests.
 ### Credential Masking
 
 Logs + HAR werden automatisch bereinigt:
+
 - Authorization-Header entfernt
 - Cookie-Header maskiert
 - Password-Felder anonymisiert
@@ -513,6 +517,7 @@ MAX_ARTIFACT_SIZE_MB=50
 ## Best Practices
 
 ✅ **DO:**
+
 - Stabile Selektoren verwenden (`data-testid` > CSS-Akrobatik)
 - Explizit warten (`wait_for` vor kritischen Steps)
 - Atomic Steps (ein Step = eine Aktion)
@@ -520,6 +525,7 @@ MAX_ARTIFACT_SIZE_MB=50
 - Nur erforderliche Artefakte archivieren
 
 ❌ **DON'T:**
+
 - Passwörter im Klartext übergeben
 - Zu lange Playbooks (>50 Steps)
 - Rate-Limits ignorieren
@@ -566,5 +572,5 @@ curl http://127.0.0.1:12345/archiv/last?n=5 | jq .
 
 ---
 
-**Letzte Aktualisierung:** 10. November 2025  
-**Status:** Production-Ready ✅
+**Letzte Aktualisierung:** 27. November 2025  
+**Status:** ✅ Production

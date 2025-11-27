@@ -1,8 +1,9 @@
-# 📞 opena10 - Telefon Anruf Chatbot
+# 📊 opena10 - Call Tracking Agent
 
 **Agent-ID:** `opena10`  
-**Port:** 12352  
-**Kürzel:** `answp`  
+**Port:** 12355  
+**Kürzel:** `calltrackp`  
+**Status:** ✅ RUNNING (PID: siehe logs/opena10.pid)  
 **Version:** 2.0  
 **Status:** ✅ Production
 

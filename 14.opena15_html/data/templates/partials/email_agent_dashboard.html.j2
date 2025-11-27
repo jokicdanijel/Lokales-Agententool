@@ -1,0 +1,125 @@
+<!-- ===== EMAIL AGENT UI ===== -->
+<div class="main-card">
+    <div class="section-card" style="border-left: 6px solid #d32f2f;">
+        <h3 style="color: #d32f2f;">📧 IMAP/SMTP Status</h3>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="p-3 bg-light rounded">
+                    <div class="text-muted small">IMAP Status</div>
+                    <div class="fw-bold fs-5" id="imapStatusValue">–</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-3 bg-light rounded">
+                    <div class="text-muted small">SMTP Status</div>
+                    <div class="fw-bold fs-5" id="smtpStatusValue">–</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-card">
+    <div class="section-card" style="border-left: 6px solid #d32f2f;">
+        <h3 style="color: #d32f2f;">📬 Inbox</h3>
+        <div id="inboxList" class="list-group">
+            <div class="text-muted text-center py-4">Lädt E-Mails...</div>
+        </div>
+    </div>
+</div>
+
+<div class="main-card">
+    <div class="section-card" style="border-left: 6px solid #d32f2f;">
+        <h3 style="color: #d32f2f;">✉️ Neue E-Mail senden</h3>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label for="inputEmailTo" class="form-label fw-bold">An</label>
+                <input id="inputEmailTo" type="email" class="form-control" placeholder="empfaenger@example.com" />
+            </div>
+            <div class="col-md-6">
+                <label for="inputEmailSubject" class="form-label fw-bold">Betreff</label>
+                <input id="inputEmailSubject" type="text" class="form-control" placeholder="Betreff" />
+            </div>
+            <div class="col-12">
+                <label for="inputEmailBody" class="form-label fw-bold">Nachricht</label>
+                <textarea id="inputEmailBody" class="form-control" rows="5" 
+                          placeholder="E-Mail-Text..."></textarea>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary btn-lg w-100" id="btnSendEmail" type="button">
+                    📤 E-Mail senden
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    const agentPort = "{{ port }}";
+    const endpoints = {
+        inbox: "{{ endpoints.inbox or '/inbox' }}",
+        outbox: "{{ endpoints.outbox or '/outbox' }}",
+    };
+
+    async function loadInbox() {
+        try {
+            const resp = await fetch(`http://127.0.0.1:${agentPort}${endpoints.inbox}`);
+            if (resp.ok) {
+                const data = await resp.json();
+                const list = document.getElementById("inboxList");
+                if (data.mails && data.mails.length > 0) {
+                    list.innerHTML = data.mails.map(m => `
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <strong>${m.subject || '(Kein Betreff)'}</strong>
+                                <small class="text-muted">${m.from || 'Unbekannt'}</small>
+                            </div>
+                            <small>${m.date || ''}</small>
+                        </div>
+                    `).join("");
+                } else {
+                    list.innerHTML = '<div class="text-muted text-center py-4">Keine E-Mails gefunden</div>';
+                }
+            }
+        } catch (e) {
+            console.warn("Inbox laden fehlgeschlagen", e);
+        }
+    }
+
+    document.getElementById("btnSendEmail")?.addEventListener("click", function() {
+        const to = document.getElementById("inputEmailTo").value.trim();
+        const subject = document.getElementById("inputEmailSubject").value.trim();
+        const body = document.getElementById("inputEmailBody").value.trim();
+
+        if (!to || !subject || !body) {
+            alert("❌ Bitte alle Felder ausfüllen");
+            return;
+        }
+
+        window.withOpenAIKey && window.withOpenAIKey(async function(apiKey) {
+            try {
+                const resp = await fetch(`http://127.0.0.1:${agentPort}${endpoints.outbox}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({ to, subject, body })
+                });
+
+                if (resp.ok) {
+                    alert("✅ E-Mail gesendet!");
+                    document.getElementById("inputEmailBody").value = "";
+                } else {
+                    alert(`❌ Fehler: HTTP ${resp.status}`);
+                }
+            } catch (e) {
+                alert(`❌ Fehler: ${e.message}`);
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", loadInbox);
+})();
+</script>

@@ -1,0 +1,134 @@
+{
+  "queue": [
+    {
+      "post_id": "post_1764244546719496",
+      "platforms": [
+        "linkedin"
+      ],
+      "text": "Scheduled post test",
+      "media_urls": [],
+      "hashtags": [
+        "scheduled"
+      ],
+      "status": "scheduled",
+      "created_at": "2025-11-27T11:55:46.719543Z",
+      "scheduled_at": "2025-11-27T12:55:46.717677Z",
+      "published_at": null,
+      "platform_urls": {},
+      "errors": {}
+    },
+    {
+      "post_id": "post_1764244659713120",
+      "platforms": [
+        "linkedin"
+      ],
+      "text": "Test post from opena12 - Social Media Automation Agent",
+      "media_urls": [],
+      "hashtags": [
+        "testing",
+        "automation"
+      ],
+      "status": "published",
+      "created_at": "2025-11-27T11:57:39.713210Z",
+      "scheduled_at": null,
+      "published_at": "2025-11-27T11:57:39.713453Z",
+      "platform_urls": {
+        "linkedin": "https://linkedin.com/posts/580be7a1a32a"
+      },
+      "errors": {}
+    },
+    {
+      "post_id": "post_1764244660219822",
+      "platforms": [
+        "linkedin",
+        "x",
+        "facebook"
+      ],
+      "text": "Multi-platform test post \ud83d\ude80",
+      "media_urls": [],
+      "hashtags": [
+        "multiplatform",
+        "socialmedia"
+      ],
+      "status": "published",
+      "created_at": "2025-11-27T11:57:40.219837Z",
+      "scheduled_at": null,
+      "published_at": "2025-11-27T11:57:40.267754Z",
+      "platform_urls": {
+        "linkedin": "https://linkedin.com/posts/ffa8fc427eb2",
+        "x": "https://x.com/posts/ffa8fc427eb2",
+        "facebook": "https://facebook.com/posts/ffa8fc427eb2"
+      },
+      "errors": {}
+    },
+    {
+      "post_id": "post_1764244660771517",
+      "platforms": [
+        "linkedin"
+      ],
+      "text": "Scheduled post test",
+      "media_urls": [],
+      "hashtags": [
+        "scheduled"
+      ],
+      "status": "scheduled",
+      "created_at": "2025-11-27T11:57:40.771583Z",
+      "scheduled_at": "2025-11-27T12:57:40.769764Z",
+      "published_at": null,
+      "platform_urls": {},
+      "errors": {}
+    },
+    {
+      "post_id": "post_1764244661276381",
+      "platforms": [
+        "x"
+      ],
+      "text": "Status check test post",
+      "media_urls": [],
+      "hashtags": [],
+      "status": "published",
+      "created_at": "2025-11-27T11:57:41.276393Z",
+      "scheduled_at": null,
+      "published_at": "2025-11-27T11:57:41.276556Z",
+      "platform_urls": {
+        "x": "https://x.com/posts/c43a3db9b06d"
+      },
+      "errors": {}
+    },
+    {
+      "post_id": "post_1764244662794755",
+      "platforms": [
+        "x"
+      ],
+      "text": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "media_urls": [],
+      "hashtags": [],
+      "status": "failed",
+      "created_at": "2025-11-27T11:57:42.794767Z",
+      "scheduled_at": null,
+      "published_at": null,
+      "platform_urls": {},
+      "errors": {
+        "x": "Text exceeds 280 character limit for x"
+      }
+    },
+    {
+      "post_id": "post_1764244663298288",
+      "platforms": [
+        "linkedin"
+      ],
+      "text": "Command endpoint test",
+      "media_urls": [],
+      "hashtags": [],
+      "status": "published",
+      "created_at": "2025-11-27T11:57:43.298300Z",
+      "scheduled_at": null,
+      "published_at": "2025-11-27T11:57:43.298427Z",
+      "platform_urls": {
+        "linkedin": "https://linkedin.com/posts/81458bcd42a1"
+      },
+      "errors": {}
+    }
+  ],
+  "last_updated": "2025-11-27T11:57:43.298438Z"
+}

@@ -1,0 +1,28 @@
+{
+  "site_id": "9c7a1bdc-43b",
+  "generator": "static",
+  "template": "default",
+  "pages": [
+    {
+      "slug": "home",
+      "title": "Welcome Home",
+      "content": "<p>This is the homepage content.</p>",
+      "meta_description": "Test homepage",
+      "meta_keywords": [
+        "test",
+        "homepage"
+      ],
+      "is_homepage": true
+    }
+  ],
+  "branding": {
+    "site_name": "Test Site",
+    "tagline": "A test website",
+    "logo_url": null,
+    "favicon_url": null,
+    "color_primary": "#007bff",
+    "color_secondary": "#6c757d"
+  },
+  "created_at": "2025-11-27T13:19:26.528988+00:00",
+  "output_path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.opena17_homepagecreator/data/output/9c7a1bdc-43b"
+}

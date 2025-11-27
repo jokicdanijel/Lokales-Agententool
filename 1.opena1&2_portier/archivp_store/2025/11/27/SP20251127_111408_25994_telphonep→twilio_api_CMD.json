@@ -1,0 +1,14 @@
+{
+  "sp_id": "20251127_111408_25994",
+  "timestamp": "2025-11-27T11:14:08.259941Z",
+  "src": "telphonep",
+  "dst": "twilio_api",
+  "type": "CMD",
+  "request_id": "20251127_111408_25962",
+  "data": {
+    "action": "call_start",
+    "to": "+49123456****",
+    "from": "",
+    "timeout": 30
+  }
+}

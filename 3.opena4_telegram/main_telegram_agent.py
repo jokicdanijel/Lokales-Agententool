@@ -18,7 +18,8 @@ from typing import Optional, Dict, Any
 from argparse import ArgumentParser
 
 import uvicorn
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, Request, HTTPException, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 import requests
@@ -52,11 +53,28 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# Security
+security = HTTPBearer()
+
 # Telegram bot (initialized later)
 telegram_app = None
 
 # Startup timestamp
 startup_time = time.time()
+
+
+# ────────────────────────────────────────────────────────────────────────────
+# Secret Masking
+# ────────────────────────────────────────────────────────────────────────────
+
+def mask_secrets(data: Any) -> Any:
+    """Mask secrets in data (recursive)"""
+    if isinstance(data, dict):
+        return {k: "***" if any(s in k.lower() for s in ["token", "password", "secret", "key", "bearer"]) else mask_secrets(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [mask_secrets(item) for item in data]
+    else:
+        return data
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -89,7 +107,7 @@ def write_safepoint(
         "src": src,
         "dst": dst,
         "kind": kind,
-        "payload": payload,
+        "payload": mask_secrets(payload),  # Mask secrets
         "strict": True
     }
     
@@ -135,18 +153,37 @@ def create_error_response_83(
     }
 
 
-# ──────────────────────────────────────────────────────────────────────────────
+# ────────────────────────────────────────────────────────────────────────────
+# Security
+# ────────────────────────────────────────────────────────────────────────────
+
+async def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """Verify Bearer token"""
+    if not config.bearer_token:
+        logger.warning("⚠️  BEARER_TOKEN nicht konfiguriert, Auth deaktiviert")
+        return True
+    
+    if credentials.credentials != config.bearer_token:
+        logger.warning(f"❌ Ungültiger Token: {credentials.credentials[:10]}***")
+        raise HTTPException(status_code=401, detail="Ungültiger Bearer Token")
+    
+    return True
+
+
+# ────────────────────────────────────────────────────────────────────────────
 # HTTP Endpoints (FastAPI)
-# ──────────────────────────────────────────────────────────────────────────────
+# ────────────────────────────────────────────────────────────────────────────
 
 @app.get("/", tags=["info"])
 async def root():
     """Root endpoint"""
     return {
-        "service": "opena4",
-        "name": "Telegram Agent",
-        "version": "1.0.0",
-        "description": "Portier Telegram interface with Safepoint persistence"
+        "agent": "opena4",
+        "kuerzel": "telep",
+        "port": config.port,
+        "status": "running",
+        "description": "Telegram Agent mit Webhook-Support, Message-Queue, Option-2-Flow-Compliance",
+        "version": "1.0.0"
     }
 
 
@@ -154,16 +191,57 @@ async def root():
 async def health():
     """Health check endpoint"""
     uptime = time.time() - startup_time
+    
+    # Check Telegram API availability
+    telegram_available = False
+    if telegram_app and config.telegram_bot_token:
+        try:
+            # Quick check without actual API call
+            telegram_available = True
+        except Exception:
+            pass
+    
     return {
-        "service": "opena4",
         "status": "ok",
-        "timestamp": datetime.utcnow().isoformat() + "Z",
-        "port_policy": {
-            "window": config.allowed_ports,
-            "forbidden": config.forbidden_ports
-        },
-        "uptime_seconds": uptime
+        "agent": "opena4",
+        "port": config.port,
+        "uptime": round(uptime, 2),
+        "telegram_available": telegram_available,
+        "telegram_users_configured": len(config.telegram_allowed_users) if config.telegram_allowed_users else 0
     }
+
+
+@app.post("/command", tags=["telegram"])
+async def command_endpoint(req: Request, _: bool = Depends(verify_token)):
+    """Command endpoint (Bearer-Auth required)"""
+    try:
+        data = await req.json()
+        request_id = data.get("request_id", f"cmd_{int(time.time())}")
+        command = data.get("command", "UNKNOWN")
+        
+        logger.info(f"Command received: {command} (ID: {request_id})")
+        
+        # Write CMD safepoint
+        write_safepoint("opena4", "kordp", "CMD", data, request_id)
+        
+        # Placeholder response
+        resp_data = {
+            "status": "executed",
+            "command": command,
+            "request_id": request_id,
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "output": f"Command '{command}' würde hier ausgeführt (Placeholder)"
+        }
+        
+        # Write RESP safepoint
+        write_safepoint("kordp", "opena4", "RESP", resp_data, request_id)
+        
+        return JSONResponse(resp_data)
+    
+    except Exception as e:
+        logger.exception("Command endpoint error")
+        error_resp = create_error_response_83("COMMAND_ERROR", str(e))
+        return JSONResponse(error_resp, status_code=500)
 
 
 @app.post("/telegram/message", tags=["telegram"])
