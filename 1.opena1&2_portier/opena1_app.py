@@ -26,6 +26,8 @@ from pathlib import Path
 from typing import Dict, Optional, Any
 
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import HTMLResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, ConfigDict
 import httpx
 
@@ -122,6 +124,15 @@ class RouteUpdateIn(BaseModel):
     mapping: Dict[str, Any]
 
 app = FastAPI(title="OpenA1 Coordinator (kordp)", version="1.0.0")
+
+# CORS Middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 ROUTES: Dict[str, Dict[str, Any]] = {}
 APP_META = {

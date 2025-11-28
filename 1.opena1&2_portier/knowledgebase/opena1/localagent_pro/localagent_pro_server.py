@@ -10,9 +10,9 @@ Shell‑Kommandos und Abrufen von Webseiten sowie eine einfache Chat‑API.
 
 Außerdem wird ein `/health`‑Endpunkt implementiert und die korrekte
 OpenWebUI‑Adresse anhand des Konfigurationswerts `open_webui_port`
-ausgegeben. Standardmäßig läuft Open WebUI auf Port 3000 (`-p 3000:8080`
-beim Docker‑Start). Passe `open_webui_port` in `config/config.yaml` an,
-falls du eine andere Port‑Zuordnung verwendest.
+ausgegeben. Standardmäßig läuft Open WebUI UI auf Port 8080 (Docker-intern,
+mappbar via `-p 8080:8080`). Passe `open_webui_port` in `config/config.yaml` an,
+falls du eine andere Port‑Zuordnung verwendest. Backend-Services nutzen 12344-12399.
 
 Starten des Servers:
 
@@ -59,7 +59,7 @@ except FileNotFoundError:
 SANDBOX: bool = config.get("sandbox", True)
 SANDBOX_PATH: str = config.get("sandbox_path", os.path.expanduser("~/localagent_sandbox"))
 ALLOWED_DOMAINS = config.get("allowed_domains", [])
-OPEN_WEBUI_PORT: int = config.get("open_webui_port", 3000)
+OPEN_WEBUI_PORT: int = config.get("open_webui_port", 8080)  # UI-only (not backend)
 
 llm_cfg = config.get("llm", {})
 LLM_BASE_URL: str = llm_cfg.get("base_url", "http://localhost:11434/v1")

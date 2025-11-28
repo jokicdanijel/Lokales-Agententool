@@ -488,7 +488,7 @@ class ToolRegistry:
             category=ToolCategory.BROWSE,
             description="Open and preview a URL",
             agent_id="opena3",
-            port=8080,
+            port=12347,
             endpoint="/tools/browse",
             params={"url": "string (required)", "timeout": "int (optional)"},
             timeout_seconds=30
@@ -501,7 +501,7 @@ class ToolRegistry:
             category=ToolCategory.ANALYZE,
             description="Analyze file content",
             agent_id="opena3",
-            port=8080,
+            port=12347,
             endpoint="/tools/analyze",
             params={"file": "string (required)", "depth": "int (optional)"},
             timeout_seconds=60

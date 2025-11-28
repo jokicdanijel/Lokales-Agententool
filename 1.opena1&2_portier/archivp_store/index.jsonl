@@ -186,3 +186,6 @@
 {"sp": "SP1764235556_kordp→opena4_RESP.json", "src": "kordp", "dst": "opena4", "kind": "RESP", "ts": "2025-11-27T10:25:56.037031Z", "request_id": "test_12346"}
 {"sp": "SP1764236118_opena5→kordp_CMD.json", "src": "opena5", "dst": "kordp", "kind": "CMD", "ts": "2025-11-27T10:35:18.020577Z", "request_id": "test_cmd_001"}
 {"sp": "SP1764236118_kordp→opena5_RESP.json", "src": "kordp", "dst": "opena5", "kind": "RESP", "ts": "2025-11-27T10:35:18.021013Z", "request_id": "test_cmd_001"}
+{"sp": "SP1764288014_kordp\u2192archivp_LOG.json", "ts": "2025-11-28T00:00:14.428352Z", "src": "kordp", "dst": "archivp", "kind": "LOG", "path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/archivp_store/2025/11/28/SP1764288014_kordp\u2192archivp_LOG.json"}
+{"sp": "SP1764288020_kordp\u2192archivp_LOG.json", "ts": "2025-11-28T00:00:20.307018Z", "src": "kordp", "dst": "archivp", "kind": "LOG", "path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/archivp_store/2025/11/28/SP1764288020_kordp\u2192archivp_LOG.json"}
+{"sp": "SP1764288088_kordp\u2192archivp_LOG.json", "ts": "2025-11-28T00:01:28.726641Z", "src": "kordp", "dst": "archivp", "kind": "LOG", "path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/archivp_store/2025/11/28/SP1764288088_kordp\u2192archivp_LOG.json"}

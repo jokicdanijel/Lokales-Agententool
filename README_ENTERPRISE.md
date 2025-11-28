@@ -98,7 +98,7 @@ Das System folgt dem **Option-2-Flow** Architekturprinzip, bei dem jede Anfrage 
 
 | Agent | Port | Rolle | Status | Hauptfunktion |
 |-------|------|-------|--------|---------------|
-| **opena3** | 12347 | OpenWebUI Terminal | ✅ Running | Chat-Interface, Terminal-Agent, Bearer Token Auth |
+| **opena3** | 12347 | OpenWebUI Terminal | ✅ Production | Chat-Interface, Terminal-Agent, LocalAgent-Pro |
 | **opena4** | 12348 | Telegram Bot | 🟡 Planned | Telegram API Integration, Bot-Commands |
 | **opena5** | 12349 | VS Code Agent | 🟡 Planned | Extension Host, Remote SSH, File Watcher |
 | **opena6** | 12350 | Browser Automation | 🟡 Planned | Selenium/Playwright, Scraping, Testing |
@@ -116,9 +116,10 @@ Das System folgt dem **Option-2-Flow** Architekturprinzip, bei dem jede Anfrage 
 | **opena18** | 12362 | Analytics | 🟡 Planned | Data Aggregation, Reporting, Dashboards |
 | **opena19** | 12363 | Aktien & Crypto | 🟡 Planned | Market Data, Portfolio Tracking, Alerts |
 | **opena20** | 12349 | Dashboard | ✅ Running | Web UI, Status Monitor, E2E Trigger |
-| **opena21** | 12364 | Workflow Engine | 🟡 Planned | Process Automation, Task Orchestration |
+| **opena21** | 12364 | Workflow Engine | ✅ Production | Multi-Step Workflows, State-Machine, Orchestration |
 
 **Legende:**
+
 - ✅ Running = Produktiv im Einsatz
 - 🟡 Planned = Ordnerstruktur vorhanden, noch nicht implementiert
 
@@ -364,6 +365,7 @@ SP<TIMESTAMP>_<SOURCE>→<DESTINATION>_<CATEGORY>.json
 ```
 
 **Komponenten:**
+
 - **SP**: Prefix (Safepoint)
 - **TIMESTAMP**: Unix Epoch (10 Ziffern)
 - **SOURCE**: opena1, opena2, kordp, tool, archivp
@@ -458,6 +460,7 @@ pytest tests/test_portier_stack.py -v
 ```
 
 **Abgedeckte Szenarien:**
+
 - ✅ Request71 Schema-Validierung
 - ✅ Decision72 Generierung
 - ✅ CMD Safepoint Creation
@@ -495,6 +498,7 @@ GITHUB_TOKEN=ghp_...
 ```
 
 **Sicherheitsmaßnahmen:**
+
 - ✅ `.gitignore` blockiert `.env` (40+ Patterns)
 - ✅ Pre-Commit Hook validiert Secrets
 - ✅ Secret Masking in Logs (API Keys → `***`)
@@ -586,6 +590,7 @@ curl -H "Authorization: Bearer 250886" http://127.0.0.1:12399/agenda/pages | jq 
 ```
 
 **16 Seiten:**
+
 1. Main Dashboard
 2. Logische Seite
 3. API Registry
@@ -651,6 +656,7 @@ xdg-open http://127.0.0.1:12349/dashboard
 ```
 
 **Features:**
+
 - ✅ Live Status Grid (alle Agenten)
 - ✅ E2E Test Trigger
 - ✅ Safepoint Inspector (heute)
@@ -835,12 +841,14 @@ async def health():
 6. ✅ **Produktiv** ist (Live Dashboard, Auto-Refresh, Realtime Monitoring)
 
 **Zielgruppe:**
+
 - Unternehmen mit komplexen KI-Workflows
 - Entwicklerteams, die Multi-Agent-Systeme orchestrieren
 - Data Scientists, die Experimente tracken müssen
 - DevOps Engineers, die Infrastruktur überwachen
 
 **Use Cases:**
+
 - ✅ HR-Dokument-Automatisierung (SCTA)
 - ✅ Social Media Management (opena12, opena13)
 - ✅ E-Commerce Integration (opena16)
@@ -858,6 +866,7 @@ Lead Developer: **Danijel Jokic**
 Team: AI Engineering & Automation
 
 **Technologie-Partner:**
+
 - OpenAI (GPT-4, Claude Sonnet 4.5)
 - GitHub (Repository Hosting, CI/CD)
 - Docker (Containerization)
@@ -865,13 +874,15 @@ Team: AI Engineering & Automation
 - Pydantic (Schema Validation)
 
 **Lizenzierung:**
+
 - MIT License (Open Source)
 - Internal Use Only (Enterprise Components)
 
 **Support:**
-- GitHub Issues: https://github.com/jokicdanijel/Gesamtprojekt-start/issues
-- Documentation: https://github.com/jokicdanijel/Gesamtprojekt-start/wiki
-- Email: contact@elion-tech.de (fiktiv)
+
+- GitHub Issues: <https://github.com/jokicdanijel/Gesamtprojekt-start/issues>
+- Documentation: <https://github.com/jokicdanijel/Gesamtprojekt-start/wiki>
+- Email: <contact@elion-tech.de> (fiktiv)
 
 ---
 
@@ -906,6 +917,7 @@ Team: AI Engineering & Automation
 **Name:** Danijel Jokic  
 **Rolle:** Lead Software Engineer, AI Orchestration Specialist  
 **Verantwortlich für:**
+
 - ✅ Konzeption & Architektur (Option-2-Flow)
 - ✅ Implementierung aller Kern-Services (opena1, opena2, kordp)
 - ✅ Dashboard-Entwicklung (opena20, 717 Zeilen)
@@ -915,6 +927,7 @@ Team: AI Engineering & Automation
 - ✅ Testing (450+ Zeilen E2E Tests)
 
 **Technologien:**
+
 - Python 3.13, FastAPI, Pydantic, SQLAlchemy
 - JavaScript (ES6+), CSS3, Jinja2
 - Docker, Git, Pytest, httpx
@@ -958,12 +971,14 @@ git log --oneline -3
 ## 🔮 **Roadmap (Zukunft)**
 
 ### **Phase 4: OpenWebUI Integration** (COMPLETED ✅)
+
 - [x] opena3 terminal agent (Port 12347)
 - [x] OpenWebUI adapter (Port 12350)
 - [ ] Chat modal in dashboard UI
 - [x] Bearer token authentication
 
 ### **Phase 5: Agenten-Expansion** (IN-PROGRESS 🟡)
+
 - [ ] opena4: Telegram Bot (12348)
 - [ ] opena5: VS Code Integration (12349)
 - [ ] opena6: Browser Automation (12350)
@@ -971,6 +986,7 @@ git log --oneline -3
 - [ ] opena8-opena21: Weitere 14 Agenten
 
 ### **Phase 6: SCTA Completion** (QUEUED ⏳)
+
 - [ ] Core Orchestrator (Phase 4)
 - [ ] Shared Layer (Queue, DB, Auth) (Phase 5)
 - [ ] Test Suite ≥85% Coverage (Phase 6)
@@ -980,6 +996,7 @@ git log --oneline -3
 - [ ] Integration & Acceptance (Phase 10)
 
 ### **Phase 7: Advanced Features** (LONG-TERM 🌟)
+
 - [ ] Persistent chat history
 - [ ] Multi-turn conversations
 - [ ] OAuth2 integration
@@ -993,12 +1010,12 @@ git log --oneline -3
 
 ## 📞 **Support & Kontakt**
 
-**GitHub Issues:** https://github.com/jokicdanijel/Gesamtprojekt-start/issues  
-**Discussions:** https://github.com/jokicdanijel/Gesamtprojekt-start/discussions  
-**Email:** contact@elion-tech.de (fiktiv)
+**GitHub Issues:** <https://github.com/jokicdanijel/Gesamtprojekt-start/issues>  
+**Discussions:** <https://github.com/jokicdanijel/Gesamtprojekt-start/discussions>  
+**Email:** <contact@elion-tech.de> (fiktiv)
 
-**Dokumentation:** https://github.com/jokicdanijel/Gesamtprojekt-start/wiki  
-**Changelog:** https://github.com/jokicdanijel/Gesamtprojekt-start/releases
+**Dokumentation:** <https://github.com/jokicdanijel/Gesamtprojekt-start/wiki>  
+**Changelog:** <https://github.com/jokicdanijel/Gesamtprojekt-start/releases>
 
 ---
 
@@ -1036,6 +1053,7 @@ SOFTWARE.
 **ELION / PORTIER 2.0** ist das Ergebnis von **10+ Sessions intensiver Entwicklung**, umfasst **4,422+ Zeilen produktionsreifen Code** und bietet eine **skalierbare, sichere, auditfähige Multi-Agent-Plattform** für Enterprise-Grade KI-Workflows.
 
 **Dieses System ist:**
+
 - ✅ **Produktionsbereit** (alle Kern-Services laufen stabil)
 - ✅ **Vollständig dokumentiert** (1,165+ Zeilen Markdown)
 - ✅ **Security-hardened** (Port Policy, Secret Masking, Bearer Token)
@@ -1047,9 +1065,9 @@ SOFTWARE.
 
 ---
 
-**🚀 Dashboard:** http://127.0.0.1:12349/dashboard  
-**📊 Status API:** http://127.0.0.1:12349/api/status  
-**💚 Health Check:** http://127.0.0.1:12349/health
+**🚀 Dashboard:** <http://127.0.0.1:12349/dashboard>  
+**📊 Status API:** <http://127.0.0.1:12349/api/status>  
+**💚 Health Check:** <http://127.0.0.1:12349/health>
 
 ---
 

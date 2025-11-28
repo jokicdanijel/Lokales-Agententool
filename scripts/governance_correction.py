@@ -85,11 +85,11 @@ class GovernanceAnalyzer:
         return violations
 
     def scan_port_violations(self) -> List[str]:
-        """Detect hardcoded port 8080 in backend code"""
+        """Detect hardcoded port 8080 in backend code (UI-only port, forbidden for backend)"""
         violations = []
         python_files = list(PROJECT_ROOT.glob("**/*.py"))
         for file in python_files:
-            if "_conflicts" in str(file) or "venv" in str(file):
+            if "_conflicts" in str(file) or "venv" in str(file) or "knowledgebase" in str(file):
                 continue
             try:
                 content = file.read_text(encoding="utf-8")

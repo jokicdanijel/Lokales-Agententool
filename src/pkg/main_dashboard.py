@@ -7,6 +7,7 @@ Kompatibilität: /api/agent/register (neu) und /api/command/register (legacy-ali
 import asyncio
 import json
 import logging
+import os
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -37,6 +38,25 @@ logging.basicConfig(
     ],
 )
 logger = logging.getLogger("dashboard")
+
+# -------------------------------------------------------------------
+# OpenAI Client (opena20)
+# -------------------------------------------------------------------
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY_OPENA20")
+if OPENAI_API_KEY:
+    try:
+        from openai import OpenAI
+        openai_client = OpenAI(api_key=OPENAI_API_KEY)
+        logger.info("✅ OpenAI Client (opena20) initialisiert")
+    except ImportError:
+        logger.warning("⚠️  OpenAI-Paket nicht installiert (pip install openai)")
+        openai_client = None
+    except Exception as e:
+        logger.error(f"❌ OpenAI Client Init-Fehler: {e}")
+        openai_client = None
+else:
+    logger.warning("⚠️  OPENAI_API_KEY_OPENA20 nicht gesetzt")
+    openai_client = None
 
 # -------------------------------------------------------------------
 # App + Security
@@ -117,9 +137,11 @@ async def validate_port_policy(request: Request, call_next):
 @app.get("/health")
 async def health_check():
     return {
-        "service": "opena19",
+        "service": "opena20",
         "status": "healthy",
         "strict": True,
+        "openai_key_present": bool(OPENAI_API_KEY),
+        "openai_client_ready": openai_client is not None,
         "timestamp": datetime.utcnow().isoformat()
     }
 
@@ -234,6 +256,65 @@ async def get_openwebui_status(token: HTTPAuthorizationCredentials = Security(se
     except Exception as e:
         logger.error(f"OpenWebUI Status error: {e}")
         raise HTTPException(status_code=502, detail="OpenWebUI Agent nicht erreichbar")
+
+
+@app.post("/api/ai/chat")
+@rate_limiter.limit()
+async def ai_chat(payload: Dict, token: HTTPAuthorizationCredentials = Security(security)):
+    """Direkte OpenAI-Chat-Integration (opena20 AI-Backend)"""
+    ok = verify_token(token.credentials)
+    security_log.log_access(token.credentials, "/api/ai/chat", ok)
+    if not ok:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    if not openai_client:
+        raise HTTPException(status_code=503, detail="OpenAI Client nicht verfügbar")
+    
+    try:
+        user_message = payload.get("message", "")
+        if not user_message:
+            raise HTTPException(status_code=400, detail="'message' erforderlich")
+        
+        # OpenAI Chat Completion
+        # DEFAULT MODEL: gpt-3.5-turbo (WICHTIG: Für gesamtes Dashboard vorerst merken!)
+        # KEINE Token-Begrenzung (max_tokens entfernt)
+        response = openai_client.chat.completions.create(
+            model=payload.get("model", "gpt-3.5-turbo"),
+            messages=[
+                {"role": "system", "content": "Du bist der ELION Hyper-Dashboard Assistant."},
+                {"role": "user", "content": user_message}
+            ],
+            temperature=payload.get("temperature", 0.7)
+        )
+        
+        answer = response.choices[0].message.content
+        
+        # SSE-Event publishen
+        await sse_bus.publish({
+            "event": "ai_chat_response",
+            "data": {
+                "message": user_message,
+                "response": answer,
+                "model": payload.get("model", "gpt-4"),
+                "timestamp": datetime.utcnow().isoformat() + "Z"
+            }
+        })
+        
+        return {
+            "strict": True,
+            "message": user_message,
+            "response": answer,
+            "model": response.model,
+            "usage": {
+                "prompt_tokens": response.usage.prompt_tokens,
+                "completion_tokens": response.usage.completion_tokens,
+                "total_tokens": response.usage.total_tokens
+            }
+        }
+    
+    except Exception as e:
+        logger.error(f"AI Chat Error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/api/openwebui/chat")

@@ -40,7 +40,7 @@ SANDBOX_ENABLED: bool = config.get("sandbox", True)
 SANDBOX_PATH: str = config.get("sandbox_path", os.path.join(os.path.expanduser("~"), "localagent_sandbox"))
 
 # OpenWebUI Port
-OPENWEBUI_PORT: int = config.get("open_webui_port", 3000)
+OPENWEBUI_PORT: int = config.get("open_webui_port", 8080)  # UI-only
 
 # Tools definieren
 def read_file(path: str) -> str:

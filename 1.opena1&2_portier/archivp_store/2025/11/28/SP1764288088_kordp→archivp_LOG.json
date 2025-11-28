@@ -1,0 +1,18 @@
+{
+  "src": "kordp",
+  "dst": "archivp",
+  "kind": "LOG",
+  "body": {
+    "source": "e2e_test",
+    "event": "option2_flow_validation",
+    "payload": {
+      "request_id": "OPT2-E2E-20251128010128",
+      "timestamp": "2025-11-28T00:01:28Z",
+      "message": "E2E Test für Option-2-Flow nach Key-Rotation"
+    },
+    "strict": true,
+    "ts": "2025-11-28T00:01:28.726576Z"
+  },
+  "strict": true,
+  "ts": "2025-11-28T00:01:28.726641Z"
+}

@@ -5,9 +5,10 @@
 **LocalAgent-Pro** ist ein lokaler KI-Agent mit OpenAI-kompatibler API, der natürliche Sprache in Tool-Aufrufe übersetzt.
 
 ### Tech-Stack
+
 - **Backend:** Python 3.12+, Flask 3.1.2, PyYAML 6.0.3
 - **API:** OpenAI-kompatibel auf Port 8001
-- **Frontend:** OpenWebUI auf Port 3000
+- **Frontend:** OpenWebUI UI auf Port 8080 (UI-only, PORTIER Policy)
 - **Sandbox:** Aktiv unter `/home/danijel-jd/localagent_sandbox`
 - **Modell:** llama3.1, localagent-pro
 
@@ -39,6 +40,7 @@ LocalAgent-Pro/
 ## Schnellstart für KI-Agenten
 
 ### 1. Repository-Scan
+
 ```bash
 # Manifestdateien finden
 find . -name "requirements.txt" -o -name "config.yaml" -o -name "package.json"
@@ -48,6 +50,7 @@ find . -name "requirements.txt" -o -name "config.yaml" -o -name "package.json"
 ```
 
 ### 2. Server starten/stoppen
+
 ```bash
 # Starten (im Hintergrund)
 ./start_server.sh
@@ -60,6 +63,7 @@ curl -s http://127.0.0.1:8001/health | python3 -m json.tool
 ```
 
 ### 3. API-Endpunkte testen
+
 ```bash
 # Health
 curl http://127.0.0.1:8001/health
@@ -76,20 +80,23 @@ curl -X POST http://127.0.0.1:8001/v1/chat/completions \
 ## API-Konfiguration
 
 ### Backend-API (Port 8001)
+
 - **Base URL:** `http://127.0.0.1:8001/v1`
 - **Health:** `GET /health`
 - **Models:** `GET /v1/models`
 - **Chat:** `POST /v1/chat/completions`
 - **Test:** `POST /test`
 
-### OpenWebUI (Port 3000)
-- **UI:** `http://127.0.0.1:3000`
+### OpenWebUI (Port 8080 - UI-only)
+
+- **UI:** `http://127.0.0.1:8080`
 - **API Base URL:** `http://127.0.0.1:8001/v1`
 - **API Key:** `dummy` (beliebig)
 
 ## Wichtige Regeln für Code-Änderungen
 
 ### ✅ DO
+
 - Port 8001 für alle Backend-API-Aufrufe nutzen
 - Natürliche Sprache für Tool-Aufrufe verwenden
 - Health-Endpoint vor anderen Tests prüfen
@@ -97,6 +104,7 @@ curl -X POST http://127.0.0.1:8001/v1/chat/completions \
 - Virtual Environment aktivieren: `source venv/bin/activate`
 
 ### ❌ DON'T
+
 - Port 3000 für API-Aufrufe nutzen (nur UI)
 - `/v1` allein aufrufen (404)
 - Dateien außerhalb der Sandbox erstellen (wenn Sandbox aktiv)
@@ -106,17 +114,18 @@ curl -X POST http://127.0.0.1:8001/v1/chat/completions \
 
 LocalAgent-Pro erkennt automatisch folgende natürlichsprachliche Befehle:
 
-| Tool | Beispiel-Prompt | Python-Funktion |
-|------|-----------------|-----------------|
-| **Datei lesen** | "Lies Datei config.yaml" | `read_file()` |
-| **Datei schreiben** | "Erstelle test.txt mit 'Hello'" | `write_file()` |
-| **Verzeichnis** | "Liste Verzeichnis workspace auf" | `list_files()` |
-| **Shell** | "Führe 'ls -la' aus" | `run_shell()` |
-| **Web** | "Hole Webseite github.com" | `fetch()` |
+| Tool                | Beispiel-Prompt                   | Python-Funktion |
+| ------------------- | --------------------------------- | --------------- |
+| **Datei lesen**     | "Lies Datei config.yaml"          | `read_file()`   |
+| **Datei schreiben** | "Erstelle test.txt mit 'Hello'"   | `write_file()`  |
+| **Verzeichnis**     | "Liste Verzeichnis workspace auf" | `list_files()`  |
+| **Shell**           | "Führe 'ls -la' aus"              | `run_shell()`   |
+| **Web**             | "Hole Webseite github.com"        | `fetch()`       |
 
 ## Development-Workflows
 
 ### Neues Feature hinzufügen
+
 1. **Backup erstellen:** `cp src/openwebui_agent_server.py src/openwebui_agent_server.py.bak`
 2. **Virtual Env aktivieren:** `source venv/bin/activate`
 3. **Code ändern:** In `src/openwebui_agent_server.py`
@@ -125,6 +134,7 @@ LocalAgent-Pro erkennt automatisch folgende natürlichsprachliche Befehle:
 6. **Logging prüfen:** `tail -f server.log`
 
 ### Neue Abhängigkeit hinzufügen
+
 ```bash
 source venv/bin/activate
 pip install <package>
@@ -132,6 +142,7 @@ pip freeze > requirements.txt
 ```
 
 ### Neuen Endpoint hinzufügen
+
 ```python
 # In src/openwebui_agent_server.py
 @app.route('/new_endpoint', methods=['POST'])
@@ -151,6 +162,7 @@ def new_endpoint():
 ## Integration Points
 
 ### 1. CLI Chat Interface
+
 ```bash
 ./chat-local.sh "Was kannst du alles machen?"
 ./chat-local.sh "Liste alle Dateien auf"
@@ -158,12 +170,14 @@ def new_endpoint():
 ```
 
 ### 2. OpenWebUI Verbindung
-1. Browser: http://127.0.0.1:3000
+
+1. Browser: http://127.0.0.1:8080
 2. Einstellungen → Connections → OpenAI API
 3. API Base URL: `http://127.0.0.1:8001/v1`
 4. API Key: `dummy`
 
 ### 3. Programmatische Nutzung
+
 ```python
 import requests
 
@@ -181,12 +195,15 @@ print(response.json()["choices"][0]["message"]["content"])
 ## Testing & Debugging
 
 ### Vollständiger Systemtest
+
 ```bash
 ./openwebui_test.sh
 ```
+
 **Testet:** Health, Models, Chat, Test-Endpoint, OpenWebUI UI
 
 ### Einzelne Tests
+
 ```bash
 # Health
 curl -s http://127.0.0.1:8001/health | python3 -m json.tool
@@ -201,6 +218,7 @@ curl -s -X POST -H "Content-Type: application/json" \
 ```
 
 ### Logs analysieren
+
 ```bash
 # Live-Logs
 tail -f server.log
@@ -215,12 +233,14 @@ grep -i error server.log
 ## Patterns & Anti-Patterns
 
 ### ✅ Patterns
+
 - **Self-contained Server:** Kein externes SDK, alles in einer Datei
 - **Natürliche Sprache:** Regex-basierte Erkennung von User-Intent
 - **OpenAI-kompatibel:** Standard-Response-Format für breite Kompatibilität
 - **Sandbox-first:** Alle Datei-Ops werden automatisch in Sandbox ausgeführt
 
 ### ❌ Anti-Patterns zu vermeiden
+
 - OpenAI SDK in `openwebui_agent_server.py` verwenden (bleibt SDK-frei)
 - Hardcoded Pfade außerhalb der Sandbox
 - Destruktive Operationen ohne Sandbox-Check
@@ -237,6 +257,7 @@ refactor: Code umstrukturieren
 ```
 
 **Beispiele:**
+
 ```
 feat: Add file deletion endpoint
 fix: Correct regex pattern for file read commands
@@ -247,6 +268,7 @@ test: Add integration tests for chat endpoint
 ## Nützliche Befehle für Agenten
 
 ### Repository-Analyse
+
 ```bash
 # Alle Python-Dateien finden
 find . -name "*.py" -type f
@@ -259,6 +281,7 @@ find . -name "*.sh" -type f -executable
 ```
 
 ### Server-Management
+
 ```bash
 # Status prüfen
 ps aux | grep openwebui_agent_server
@@ -271,6 +294,7 @@ pkill -f openwebui_agent_server
 ```
 
 ### Virtual Environment
+
 ```bash
 # Aktivieren
 source venv/bin/activate
@@ -296,16 +320,19 @@ pip freeze > requirements.txt
 ## Häufige Aufgaben
 
 ### Server neu starten
+
 ```bash
 ./stop_server.sh && sleep 2 && ./start_server.sh
 ```
 
 ### Alle Tests durchführen
+
 ```bash
 ./openwebui_test.sh && echo "✅ Alle Tests bestanden"
 ```
 
 ### Konfiguration ändern
+
 ```bash
 nano config/config.yaml
 # Dann Server neu starten
@@ -313,6 +340,7 @@ nano config/config.yaml
 ```
 
 ### Logs in Echtzeit verfolgen
+
 ```bash
 tail -f server.log | grep -v "GET /health"  # Health-Checks ausblenden
 ```

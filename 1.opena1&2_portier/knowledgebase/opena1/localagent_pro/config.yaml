@@ -12,11 +12,10 @@ allowed_domains:
   - "ubuntu.com"
   - "archlinux.org"
 
-# Port, auf dem deine Open WebUI Instanz läuft. Standardmäßig ist das 3000,
-# wenn du Open WebUI via Docker mit `-p 3000:8080` gestartet hast. Passe
-# diesen Wert an, falls du einen anderen Port verwendest (z.B. 8080 mit
-# `--network=host`).
-open_webui_port: 3000
+# Port, auf dem deine Open WebUI UI läuft (UI-only, gemäß PORTIER Port-Policy).
+# Standardmäßig ist das 8080 (Docker-intern). Backend-Services nutzen 12344-12399.
+# Passe diesen Wert an, falls du einen anderen Port verwendest.
+open_webui_port: 8080
 
 # Einstellungen für das lokale Sprachmodell. Passe diese Werte
 # entsprechend der von dir installierten LLM-Instanz an.

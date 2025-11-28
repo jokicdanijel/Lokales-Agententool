@@ -59,19 +59,24 @@ usage() {
 ELION Hyper-Dashboard OPS – Stack Controller
 
 Commands:
-  start             - Start all services (uses scripts/start_all.sh or delegates to Python)
-  stop              - Stop all services
-  health            - Check Dashboard /health endpoint (no token required)
-  status            - Check Dashboard /api/status/all (requires token)
+  start             - Start all services (opena1, opena2, Dashboard)
+  stop              - Stop all services (graceful shutdown via PID files)
+  restart           - Stop and start all services
+  health            - Quick health check (all core services)
+  status            - Full system status (requires Bearer token)
+  monitor           - Continuous health monitoring (Ctrl+C to stop)
   agents:register   - Register agents with dashboard
-  verify            - Run integration verification
-  logs              - Show service logs
+  verify            - Run integration verification + E2E test
+  logs              - Show recent service logs (tail -100)
+  logs:follow       - Follow logs in real-time
+  e2e               - Run Option-2-Flow E2E test
   help              - Show this help
 
 Examples:
   bin/ops.sh start
-  bin/ops.sh status
-  bin/ops.sh agents:register
+  bin/ops.sh monitor
+  bin/ops.sh e2e
+  bin/ops.sh logs:follow
 USAGE
 }
 
@@ -87,48 +92,87 @@ case "$cmd" in
   start)
     echo "🚀 Starting ELION Hyper-Dashboard services..."
     
-    # Check for OPENAI_API_KEY
-    if [[ -f "$PROJECT_ROOT/.env" ]]; then
-      if grep -q "^OPENAI_API_KEY=" "$PROJECT_ROOT/.env"; then
-        echo "✅ OPENAI_API_KEY found in .env"
-      else
-        echo "⚠️  OPENAI_API_KEY not found in .env"
-        echo "    To set it, run: echo 'OPENAI_API_KEY=your_key_here' >> .env"
-      fi
-    else
-      echo "⚠️  No .env file found. Creating from template..."
-      if [[ -f "$PROJECT_ROOT/.env.example" ]]; then
-        cp "$PROJECT_ROOT/.env.example" "$PROJECT_ROOT/.env"
-        echo "📝 Created .env from .env.example. Please edit it to add your keys."
-      fi
+    # Load .env tokens
+    if [[ ! -f "$PROJECT_ROOT/.env" ]]; then
+      echo "❌ .env nicht gefunden. Bitte zuerst bin/env_bootstrap.sh ausführen"
+      exit 1
     fi
     
-    # Delegate to start_all.sh if available, otherwise use Python services
-    if [[ -x "$PROJECT_ROOT/scripts/start_all.sh" ]]; then
-      exec "$PROJECT_ROOT/scripts/start_all.sh"
-    elif [[ -x "$PROJECT_ROOT/bin/start_all_agents.sh" ]]; then
-      exec "$PROJECT_ROOT/bin/start_all_agents.sh"
-    else
-      echo "ℹ️  No automated start script found. Starting core services manually..."
-      echo "    Please start services individually or use:"
-      echo "    - python3 src/services/portier/main.py"
-      echo "    - python3 1.opena1&2_portier/main_opena2.py"
-      echo "    - python3 src/services/telegram/main.py"
+    # Export OpenAI Keys aus .env
+    export OPENAI_API_KEY_OPENA1=$(grep '^OPENAI_API_KEY_OPENA1=' "$PROJECT_ROOT/.env" | cut -d= -f2 | tr -d '"')
+    export OPENAI_API_KEY_OPENA2=$(grep '^OPENAI_API_KEY_OPENA2=' "$PROJECT_ROOT/.env" | cut -d= -f2 | tr -d '"')
+    
+    if [[ -z "$OPENAI_API_KEY_OPENA1" ]] || [[ -z "$OPENAI_API_KEY_OPENA2" ]]; then
+      echo "⚠️  OpenAI Keys nicht vollständig in .env"
+      echo "    Benötigt: OPENAI_API_KEY_OPENA1 und OPENAI_API_KEY_OPENA2"
     fi
+    
+    echo ""
+    echo "=== Starting Core Services ==="
+    
+    # opena1 mit Key starten
+    cd "$PROJECT_ROOT/1.opena1&2_portier"
+    if [[ -x "bin/start_opena1_with_key.sh" ]]; then
+      echo "🔹 opena1 (Port 12344)..."
+      bin/start_opena1_with_key.sh
+    else
+      echo "⚠️  bin/start_opena1_with_key.sh nicht gefunden"
+    fi
+    
+    # opena2 mit Key starten
+    if [[ -x "bin/start_opena2_with_key.sh" ]]; then
+      echo "🔹 opena2 (Port 12345)..."
+      bin/start_opena2_with_key.sh
+    else
+      echo "⚠️  bin/start_opena2_with_key.sh nicht gefunden"
+    fi
+    
+    # Dashboard starten (falls vorhanden)
+    cd "$PROJECT_ROOT"
+    if [[ -f "19.opena20_dashboard_agent/main_dashboard.py" ]]; then
+      echo "🔹 Dashboard (Port 12349)..."
+      cd 19.opena20_dashboard_agent
+      mkdir -p ../logs
+      nohup python3 main_dashboard.py > ../logs/dashboard.nohup.log 2>&1 &
+      echo "✅ Dashboard gestartet (PID: $!)"
+      cd "$PROJECT_ROOT"
+    fi
+    
+    sleep 3
+    
+    echo ""
+    echo "=== Health Check ==="
+    curl -s http://127.0.0.1:12344/health 2>/dev/null | jq -c '{service, status, openai_key_present}' || echo "❌ opena1 nicht erreichbar"
+    curl -s http://127.0.0.1:12345/health 2>/dev/null | jq -c '{service, status, entries, openai_key_present}' || echo "❌ opena2 nicht erreichbar"
+    curl -s http://127.0.0.1:12349/health 2>/dev/null | jq -c '{service, status}' || echo "⚠️  Dashboard nicht erreichbar"
+    
+    echo ""
+    echo "✅ Stack gestartet. Verwende 'bin/ops.sh status' für Details."
     ;;
 
   stop)
     echo "🛑 Stopping ELION Hyper-Dashboard services..."
-    if [[ -x "$PROJECT_ROOT/scripts/stop_all.sh" ]]; then
-      exec "$PROJECT_ROOT/scripts/stop_all.sh"
-    else
-      echo "Stopping known processes..."
-      pkill -f "main_dashboard.py" 2>/dev/null || true
-      pkill -f "main_opena1.py" 2>/dev/null || true
-      pkill -f "main_opena2.py" 2>/dev/null || true
-      pkill -f "main_kordp.py" 2>/dev/null || true
-      echo "✅ Stopped"
+    
+    # Stop via PID files if available
+    if [[ -f "$PROJECT_ROOT/logs/opena1.pid" ]]; then
+      PID=$(cat "$PROJECT_ROOT/logs/opena1.pid")
+      kill "$PID" 2>/dev/null && echo "✅ opena1 gestoppt (PID: $PID)" || echo "⚠️  opena1 PID $PID nicht gefunden"
+      rm -f "$PROJECT_ROOT/logs/opena1.pid"
     fi
+    
+    if [[ -f "$PROJECT_ROOT/logs/opena2.pid" ]]; then
+      PID=$(cat "$PROJECT_ROOT/logs/opena2.pid")
+      kill "$PID" 2>/dev/null && echo "✅ opena2 gestoppt (PID: $PID)" || echo "⚠️  opena2 PID $PID nicht gefunden"
+      rm -f "$PROJECT_ROOT/logs/opena2.pid"
+    fi
+    
+    # Fallback: kill by process name
+    echo "Stoppe bekannte Prozesse..."
+    pkill -f "opena1_app.py" 2>/dev/null && echo "✅ opena1_app.py gestoppt" || true
+    pkill -f "opena2_app.py" 2>/dev/null && echo "✅ opena2_app.py gestoppt" || true
+    pkill -f "main_dashboard.py" 2>/dev/null && echo "✅ Dashboard gestoppt" || true
+    
+    echo "✅ Services gestoppt"
     ;;
 
   health)
@@ -184,6 +228,85 @@ case "$cmd" in
   logs)
     echo "📜 Showing recent logs..."
     tail -n 100 "$PROJECT_ROOT/logs"/*.log 2>/dev/null || echo "No logs found in logs/ directory"
+    ;;
+
+  logs:follow)
+    echo "📜 Following logs (Ctrl+C to stop)..."
+    tail -f "$PROJECT_ROOT/logs"/*.log 2>/dev/null || echo "No logs found in logs/ directory"
+    ;;
+
+  restart)
+    echo "🔄 Restarting services..."
+    "$0" stop
+    sleep 2
+    "$0" start
+    ;;
+
+  monitor)
+    echo "🔍 Starting continuous health monitoring (Ctrl+C to stop)..."
+    echo ""
+    
+    while true; do
+      clear
+      echo "=== ELION Health Monitor ($(date '+%Y-%m-%d %H:%M:%S')) ==="
+      echo ""
+      
+      # opena1
+      echo -n "🔹 opena1 (12344): "
+      if HEALTH=$(curl -s -m 2 http://127.0.0.1:12344/health 2>/dev/null); then
+        STATUS=$(echo "$HEALTH" | jq -r '.status' 2>/dev/null || echo "error")
+        KEY=$(echo "$HEALTH" | jq -r '.openai_key_present' 2>/dev/null || echo "false")
+        if [[ "$STATUS" == "ok" ]] && [[ "$KEY" == "true" ]]; then
+          echo "✅ OK (Key present)"
+        else
+          echo "⚠️  Status: $STATUS, Key: $KEY"
+        fi
+      else
+        echo "❌ UNREACHABLE"
+      fi
+      
+      # opena2
+      echo -n "🔹 opena2 (12345): "
+      if HEALTH=$(curl -s -m 2 http://127.0.0.1:12345/health 2>/dev/null); then
+        STATUS=$(echo "$HEALTH" | jq -r '.status' 2>/dev/null || echo "error")
+        ENTRIES=$(echo "$HEALTH" | jq -r '.entries' 2>/dev/null || echo "0")
+        KEY=$(echo "$HEALTH" | jq -r '.openai_key_present' 2>/dev/null || echo "false")
+        if [[ "$STATUS" == "ok" ]]; then
+          echo "✅ OK ($ENTRIES entries, Key: $KEY)"
+        else
+          echo "⚠️  Status: $STATUS"
+        fi
+      else
+        echo "❌ UNREACHABLE"
+      fi
+      
+      # Dashboard
+      echo -n "🔹 Dashboard (12349): "
+      if HEALTH=$(curl -s -m 2 http://127.0.0.1:12349/health 2>/dev/null); then
+        STATUS=$(echo "$HEALTH" | jq -r '.status' 2>/dev/null || echo "error")
+        if [[ "$STATUS" == "healthy" ]] || [[ "$STATUS" == "ok" ]]; then
+          echo "✅ OK"
+        else
+          echo "⚠️  Status: $STATUS"
+        fi
+      else
+        echo "❌ UNREACHABLE"
+      fi
+      
+      echo ""
+      echo "Next check in 5s... (Ctrl+C to stop)"
+      sleep 5
+    done
+    ;;
+
+  e2e)
+    echo "🧪 Running E2E Option-2-Flow Test..."
+    if [[ -x "$PROJECT_ROOT/tests/e2e_option2_flow.sh" ]]; then
+      exec "$PROJECT_ROOT/tests/e2e_option2_flow.sh"
+    else
+      echo "❌ E2E Test script nicht gefunden: tests/e2e_option2_flow.sh"
+      exit 1
+    fi
     ;;
 
   help|-h|--help)

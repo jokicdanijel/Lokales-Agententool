@@ -1,0 +1,16 @@
+{
+  "timestamp": "2025-11-28T03:50:24.489149",
+  "violations": {
+    "archiv": [],
+    "venv_leaks": [],
+    "tests_displaced": [],
+    "port_violations": [
+      "scripts/governance_correction.py",
+      "19.opena20_dashboard_agent/tests/test_openwebui.py",
+      "2.opena3_openwebui/LocalAgent-Pro/opena6/openwebui_tool_registration.py",
+      "2.opena3_openwebui/portier_env/lib/python3.12/site-packages/pip/_vendor/urllib3/exceptions.py"
+    ],
+    "doc_missing": []
+  },
+  "total": 4
+}

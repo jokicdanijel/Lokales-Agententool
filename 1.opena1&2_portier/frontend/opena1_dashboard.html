@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenA1 Coordinator - ELION Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .info-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            color: #666;
+        }
+        
+        .info-value {
+            color: #333;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .status-ok {
+            color: #10b981;
+            font-weight: bold;
+        }
+        
+        .status-error {
+            color: #ef4444;
+            font-weight: bold;
+        }
+        
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #5568d3;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .routes-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .routes-section h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .route-item {
+            background: #f9fafb;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: white;
+            font-size: 1.2em;
+        }
+        
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        pre {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/ui_index.html" class="back-link">← Zurück zum Dashboard</a>
+        
+        <header>
+            <h1>🎯 OpenA1 - Coordinator</h1>
+            <p class="subtitle">Zentrale Koordination & Routing aller Agenten</p>
+        </header>
+        
+        <div class="controls">
+            <button onclick="refreshData()" id="refreshBtn">🔄 Aktualisieren</button>
+            <button onclick="testLog()" id="logBtn">📝 Test Log</button>
+            <button onclick="testDispatch()" id="dispatchBtn">🚀 Test Dispatch</button>
+        </div>
+        
+        <div id="error" class="error" style="display: none;"></div>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>📊 Service Status</h3>
+                <div id="statusInfo">
+                    <div class="loading">Lade Daten...</div>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <h3>⚙️ Konfiguration</h3>
+                <div id="configInfo">
+                    <div class="loading">Lade Daten...</div>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <h3>🔑 OpenAI Integration</h3>
+                <div id="openaiInfo">
+                    <div class="loading">Lade Daten...</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="routes-section">
+            <h3>🛣️ Registrierte Routen</h3>
+            <div id="routesInfo">
+                <div class="loading">Lade Daten...</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const PORT = 12344;
+        const API_BASE = `http://127.0.0.1:${PORT}`;
+        
+        async function refreshData() {
+            const btn = document.getElementById('refreshBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Lädt...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                updateUI(data);
+                
+                document.getElementById('error').style.display = 'none';
+            } catch (error) {
+                showError(`Fehler beim Laden: ${error.message}`);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🔄 Aktualisieren';
+            }
+        }
+        
+        async function testLog() {
+            const btn = document.getElementById('logBtn');
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch(`${API_BASE}/log/opena1`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        source: 'dashboard',
+                        event: 'test_log',
+                        payload: { test: true, timestamp: new Date().toISOString() },
+                        strict: true
+                    })
+                });
+                
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const data = await response.json();
+                alert('✅ Log erfolgreich gespeichert!\n\n' + JSON.stringify(data, null, 2));
+            } catch (error) {
+                alert('❌ Log fehlgeschlagen: ' + error.message);
+            } finally {
+                btn.disabled = false;
+            }
+        }
+        
+        async function testDispatch() {
+            const btn = document.getElementById('dispatchBtn');
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch(`${API_BASE}/dispatch/kordp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        agent: 'test_agent',
+                        action: 'ping',
+                        data: { message: 'Hello from Dashboard' },
+                        strict: true
+                    })
+                });
+                
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const data = await response.json();
+                alert('✅ Dispatch erfolgreich!\n\n' + JSON.stringify(data, null, 2));
+            } catch (error) {
+                alert('❌ Dispatch fehlgeschlagen: ' + error.message);
+            } finally {
+                btn.disabled = false;
+            }
+        }
+        
+        function updateUI(data) {
+            // Status Info
+            const statusHTML = `
+                <div class="info-row">
+                    <span class="info-label">Status:</span>
+                    <span class="info-value status-ok">${data.status}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Service:</span>
+                    <span class="info-value">${data.service}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Rolle:</span>
+                    <span class="info-value">${data.role}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Host:</span>
+                    <span class="info-value">${data.host}</span>
+                </div>
+            `;
+            document.getElementById('statusInfo').innerHTML = statusHTML;
+            
+            // Config Info
+            const configHTML = `
+                <div class="info-row">
+                    <span class="info-label">Port:</span>
+                    <span class="info-value">${data.port}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Archivp Port:</span>
+                    <span class="info-value">${data.archivp_port}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Strict Mode:</span>
+                    <span class="info-value">${data.strict ? '✓ Aktiv' : '✗ Inaktiv'}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Routen:</span>
+                    <span class="info-value">${data.routes_count || 0}</span>
+                </div>
+            `;
+            document.getElementById('configInfo').innerHTML = configHTML;
+            
+            // OpenAI Info
+            const openaiHTML = `
+                <div class="info-row">
+                    <span class="info-label">API Key:</span>
+                    <span class="info-value ${data.openai_key_present ? 'status-ok' : 'status-error'}">
+                        ${data.openai_key_present ? '✓ Vorhanden' : '✗ Fehlt'}
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Fingerprint:</span>
+                    <span class="info-value">${data.openai_fp || 'N/A'}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Base URL:</span>
+                    <span class="info-value">${data.openai_base_url}</span>
+                </div>
+            `;
+            document.getElementById('openaiInfo').innerHTML = openaiHTML;
+            
+            // Routes Info
+            const routesHTML = data.routes_count > 0 
+                ? '<pre>' + JSON.stringify(data.routes || {}, null, 2) + '</pre>'
+                : '<p style="color: #666;">Keine Routen registriert</p>';
+            document.getElementById('routesInfo').innerHTML = routesHTML;
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+        
+        // Initialize
+        window.addEventListener('load', () => {
+            refreshData();
+        });
+    </script>
+</body>
+</html>

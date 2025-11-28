@@ -1,0 +1,18 @@
+{
+  "src": "kordp",
+  "dst": "archivp",
+  "kind": "LOG",
+  "body": {
+    "source": "openai",
+    "event": "e2e_test_option2_flow_v2",
+    "payload": {
+      "request_id": "OPT2-E2E-2025-11-28-02",
+      "user_query": "Option-2 E2E Test nach opena2 Bug-Fix",
+      "timestamp": "2025-11-28T00:58:00Z"
+    },
+    "strict": true,
+    "ts": "2025-11-28T00:00:14.428302Z"
+  },
+  "strict": true,
+  "ts": "2025-11-28T00:00:14.428352Z"
+}

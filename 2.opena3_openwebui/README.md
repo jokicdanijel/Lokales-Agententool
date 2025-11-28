@@ -1,4 +1,12 @@
-# 🤖 Lokales Agententool
+# 🤖 opena3 - OpenWebUI Terminal Agent
+
+**Agent-ID:** `opena3`  
+**Port:** 12347  
+**Kürzel:** `openp`  
+**Version:** 2.0  
+**Status:** ✅ **Production** (LocalAgent-Pro Integration)
+
+---
 
 > AI-Agent-Server für lokale Entwicklung mit GitHub Copilot-Integration
 

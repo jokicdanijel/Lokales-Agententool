@@ -1,6 +1,6 @@
 # 📚 README-Struktur des Gesamtprojekts
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 28. November 2025  
 **Status:** ✅ Konsolidiert
 
 ---
@@ -21,7 +21,7 @@ Dieses Dokument zeigt die **offizielle README-Struktur** für alle Agent-Module 
 |-------------|----------------|--------------|
 | **`/`** (Root) | [`README.md`](./README.md) | Haupt-Projektübersicht (PORTIER 3.0) |
 | **`1.opena1&2_portier/`** | [`README.md`](./1.opena1&2_portier/README.md) | opena1 (Koordinator) + opena2 (Archivator) |
-| **`2.opena3_openwebui/`** | [`README.md`](./2.opena3_openwebui/README.md) | OpenWebUI Terminal Agent |
+| **`2.opena3_openwebui/`** | [`README.md`](./2.opena3_openwebui/README.md) | OpenWebUI Terminal Agent (✅ Production) |
 | **`3.opena4_telegram/`** | [`README.md`](./3.opena4_telegram/README.md) | Telegram Bot Agent |
 | **`4.opena5_vscode/`** | [`README.md`](./4.opena5_vscode/README.md) | VS Code Integration |
 | **`5.opena6_browser/`** | [`README.md`](./5.opena6_browser/README.md) | Browser Automation |
@@ -39,7 +39,7 @@ Dieses Dokument zeigt die **offizielle README-Struktur** für alle Agent-Module 
 | **`17.opena18_CMR/`** | [`README.md`](./17.opena18_CMR/README.md) | CRM Agent |
 | **`18.opena19_Aktien&Crypto/`** | [`README.md`](./18.opena19_Aktien&Crypto/README.md) | Aktien & Crypto |
 | **`19.opena20_dashboard_agent/`** | [`README.md`](./19.opena20_dashboard_agent/README.md) | Dashboard Agent |
-| **`20.opena21_workflow/`** | [`README.md`](./20.opena21_workflow/README.md) | Workflow Engine (🟡 Geplant) |
+| **`20.opena21_workflow/`** | [`README.md`](./20.opena21_workflow/README.md) | Workflow Engine (✅ Production) |
 
 ---
 
@@ -85,6 +85,7 @@ Diese Dateien sind **nicht mehr aktuell** und wurden umbenannt:
 1. **Ein README pro Hauptverzeichnis:** Jedes Agent-Verzeichnis (`X.openaY_name/`) hat genau **eine** `README.md`
 2. **Keine Duplikate:** Alte oder zusätzliche READMEs werden als `*_DEPRECATED.md` markiert
 3. **Deprecation-Header:** Jede deprecated Datei enthält:
+
    ```markdown
    # ⚠️ VERALTET / DEPRECATED
    **Diese Datei ist veraltet und wird nicht mehr aktualisiert.**
@@ -135,7 +136,7 @@ Wenn du eine README aktualisieren willst:
 
 ## ✅ Validierung
 
-**Letzte Prüfung:** 27. November 2025 (09:00 Uhr)
+**Letzte Prüfung:** 28. November 2025 (aktuell)
 
 ```bash
 # Alle gültigen READMEs prüfen
@@ -154,5 +155,5 @@ find . -maxdepth 2 -name "*_DEPRECATED.md" -type f
 ---
 
 **Maintainer:** ELION Team  
-**Letzte Aktualisierung:** 27. November 2025  
-**Version:** 1.0
+**Letzte Aktualisierung:** 28. November 2025  
+**Version:** 1.1
