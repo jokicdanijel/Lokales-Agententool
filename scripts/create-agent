@@ -1,0 +1,681 @@
+#!/usr/bin/env python3
+"""
+PORTIER 3.0 Auto Agent Generator
+Enterprise Edition with Full CI/CD
+
+Usage: ./create-agent --name opena5_vscode --port 12350 --ci
+"""
+
+import os
+import sys
+import argparse
+import json
+from pathlib import Path
+from datetime import datetime
+from string import Template
+
+# PORTIER 3.0 Agent Template
+AGENT_MAIN_TEMPLATE = '''
+#!/usr/bin/env python3
+"""
+${agent_name} - PORTIER 3.0 Agent
+Port: ${port}
+Specialization: ${specialization}
+
+Generated: ${timestamp}
+"""
+
+import asyncio
+import logging
+from datetime import datetime, timezone
+from typing import Dict, Any, Optional
+
+import uvicorn
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse, HTMLResponse
+from pydantic import BaseModel, Field
+
+# Configuration
+PORT = ${port}
+SERVICE_NAME = "${agent_name}"
+SPECIALIZATION = "${specialization}"
+VERSION = "1.0.0"
+
+# Logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('logs/agent.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(SERVICE_NAME)
+
+# FastAPI App
+app = FastAPI(
+    title=f"PORTIER 3.0 - {SERVICE_NAME}",
+    description=f"Enterprise Agent - {SPECIALIZATION}",
+    version=VERSION
+)
+
+# CORS Middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Pydantic Models
+class CommandRequest(BaseModel):
+    command: str = Field(..., description="Command to execute")
+    params: Dict[str, Any] = Field(default_factory=dict, description="Command parameters")
+    
+    class Config:
+        extra = "forbid"
+
+class HealthResponse(BaseModel):
+    status: str
+    service: str
+    port: int
+    version: str
+    timestamp: str
+    specialization: str
+    uptime: float
+    
+    class Config:
+        extra = "forbid"
+
+# Global state
+START_TIME = datetime.now(timezone.utc)
+
+@app.get("/health", response_model=HealthResponse)
+async def health():
+    """Health check endpoint"""
+    uptime = (datetime.now(timezone.utc) - START_TIME).total_seconds()
+    
+    return HealthResponse(
+        status="ok",
+        service=SERVICE_NAME,
+        port=PORT,
+        version=VERSION,
+        timestamp=datetime.now(timezone.utc).isoformat(),
+        specialization=SPECIALIZATION,
+        uptime=uptime
+    )
+
+@app.get("/status")
+async def status():
+    """Detailed agent status"""
+    uptime = (datetime.now(timezone.utc) - START_TIME).total_seconds()
+    
+    return {
+        "agent_status": "active",
+        "service_name": SERVICE_NAME,
+        "specialization": SPECIALIZATION,
+        "port": PORT,
+        "version": VERSION,
+        "uptime_seconds": uptime,
+        "uptime_human": f"{uptime:.2f}s",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "capabilities": [
+            "health_check",
+            "status_reporting",
+            "command_execution",
+            "metrics_export"
+        ]
+    }
+
+@app.post("/command")
+async def execute_command(request: CommandRequest):
+    """Execute agent command"""
+    logger.info(f"Executing command: {request.command}")
+    
+    try:
+        # Command execution logic here
+        if request.command == "ping":
+            result = "pong"
+        elif request.command == "status":
+            result = await status()
+        elif request.command == "test":
+            result = {"test_result": "success", "params": request.params}
+        else:
+            result = {"error": f"Unknown command: {request.command}"}
+        
+        return {
+            "status": "success",
+            "command": request.command,
+            "result": result,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "execution_time_ms": 1.5  # Mock execution time
+        }
+        
+    except Exception as e:
+        logger.error(f"Command execution failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/metrics")
+async def metrics():
+    """Performance metrics"""
+    uptime = (datetime.now(timezone.utc) - START_TIME).total_seconds()
+    
+    return {
+        "metrics": {
+            "uptime_seconds": uptime,
+            "requests_total": 0,  # Implement counter
+            "errors_total": 0,    # Implement counter
+            "response_time_avg": 0.05,  # Mock
+            "memory_usage_mb": 128,     # Mock
+            "cpu_usage_percent": 2.5    # Mock
+        },
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "service": SERVICE_NAME
+    }
+
+@app.get("/logs")
+async def get_logs(lines: int = 50):
+    """Get recent log entries"""
+    try:
+        with open('logs/agent.log', 'r') as f:
+            log_lines = f.readlines()[-lines:]
+        
+        return {
+            "logs": [line.strip() for line in log_lines],
+            "lines_returned": len(log_lines),
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+    except FileNotFoundError:
+        return {"logs": [], "error": "Log file not found"}
+
+@app.get("/")
+async def dashboard():
+    """Serve HTML dashboard"""
+    try:
+        with open('html/index.html', 'r') as f:
+            html_content = f.read()
+        return HTMLResponse(content=html_content)
+    except FileNotFoundError:
+        return HTMLResponse(
+            content="<h1>Dashboard Not Available</h1><p>HTML dashboard not found.</p>",
+            status_code=404
+        )
+
+if __name__ == "__main__":
+    logger.info(f"🚀 Starting {SERVICE_NAME} on port {PORT}...")
+    logger.info(f"📡 Specialization: {SPECIALIZATION}")
+    logger.info(f"🔗 Health: http://127.0.0.1:{PORT}/health")
+    logger.info(f"🎯 Dashboard: http://127.0.0.1:{PORT}/")
+    
+    uvicorn.run(
+        app,
+        host="127.0.0.1",
+        port=PORT,
+        log_level="info"
+    )
+'''
+
+# CI/CD Template
+CICD_TEMPLATE = '''
+name: CI/CD – ${agent_name} Enterprise
+
+on:
+  push:
+    branches: ["main", "develop"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+env:
+  SERVICE_NAME: ${agent_name}
+  PORT: ${port}
+  PYTHON_VERSION: "3.13"
+  REGISTRY: ghcr.io
+  IMAGE_NAME: $${{ github.repository }}/${agent_name}
+
+jobs:
+  build-test-deploy:
+    name: 🚀 Build, Test & Deploy
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: $${{ env.PYTHON_VERSION }}
+          
+      - name: 📦 Install Dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest flake8 black
+          
+      - name: 🔍 Lint & Test
+        run: |
+          flake8 .
+          black --check .
+          pytest -v
+          
+      - name: 🏗️ Build Docker
+        run: docker build -t ${agent_name} .
+        
+      - name: 🩺 Health Check
+        run: |
+          docker run -d -p ${port}:${port} --name test_${agent_name} ${agent_name}
+          sleep 10
+          curl -f http://localhost:${port}/health
+          docker stop test_${agent_name}
+'''
+
+# HTML Dashboard Template
+HTML_TEMPLATE = '''
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${agent_name} - PORTIER 3.0 Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            background: #0d1117;
+            color: #e6edf3;
+            font-family: system-ui, sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #161b22;
+            border-radius: 8px;
+        }
+        .card {
+            background: #161b22;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #30363d;
+        }
+        button {
+            background: #238636;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #2ea043;
+        }
+        .status {
+            padding: 8px 12px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .status.ok {
+            background: #238636;
+        }
+        .status.error {
+            background: #da3633;
+        }
+        pre {
+            background: #0d1117;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            border: 1px solid #30363d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 ${agent_name}</h1>
+            <p>PORTIER 3.0 Enterprise Agent</p>
+            <p><strong>Port:</strong> ${port} | <strong>Specialization:</strong> ${specialization}</p>
+            <div id="status">Status wird geladen...</div>
+        </div>
+        
+        <div class="card">
+            <h2>🩺 Health Check</h2>
+            <button onclick="checkHealth()">Health prüfen</button>
+            <pre id="health-output">Klicke auf "Health prüfen"</pre>
+        </div>
+        
+        <div class="card">
+            <h2>📊 Agent Status</h2>
+            <button onclick="getStatus()">Status abrufen</button>
+            <pre id="status-output">Klicke auf "Status abrufen"</pre>
+        </div>
+        
+        <div class="card">
+            <h2>⚡ Command Execution</h2>
+            <input type="text" id="command-input" placeholder="Command (z.B. ping, test)" style="width: 200px; margin-right: 10px;">
+            <button onclick="executeCommand()">Execute</button>
+            <pre id="command-output">Gib einen Command ein</pre>
+        </div>
+        
+        <div class="card">
+            <h2>📈 Metrics</h2>
+            <button onclick="getMetrics()">Metrics abrufen</button>
+            <pre id="metrics-output">Klicke auf "Metrics abrufen"</pre>
+        </div>
+    </div>
+    
+    <script>
+        const BASE_URL = 'http://127.0.0.1:${port}';
+        
+        async function api(path, method = 'GET', body = null) {
+            try {
+                const response = await fetch(BASE_URL + path, {
+                    method,
+                    headers: body ? {'Content-Type': 'application/json'} : {},
+                    body: body ? JSON.stringify(body) : null
+                });
+                return await response.json();
+            } catch (error) {
+                return { error: error.message };
+            }
+        }
+        
+        function updateOutput(id, data) {
+            document.getElementById(id).textContent = JSON.stringify(data, null, 2);
+        }
+        
+        async function checkHealth() {
+            const result = await api('/health');
+            updateOutput('health-output', result);
+            
+            const statusDiv = document.getElementById('status');
+            if (result.status === 'ok') {
+                statusDiv.innerHTML = '<span class="status ok">🟢 Online</span>';
+            } else {
+                statusDiv.innerHTML = '<span class="status error">🔴 Error</span>';
+            }
+        }
+        
+        async function getStatus() {
+            const result = await api('/status');
+            updateOutput('status-output', result);
+        }
+        
+        async function executeCommand() {
+            const command = document.getElementById('command-input').value;
+            if (!command) {
+                alert('Bitte einen Command eingeben');
+                return;
+            }
+            
+            const result = await api('/command', 'POST', {
+                command: command,
+                params: {}
+            });
+            updateOutput('command-output', result);
+        }
+        
+        async function getMetrics() {
+            const result = await api('/metrics');
+            updateOutput('metrics-output', result);
+        }
+        
+        // Auto-refresh status
+        setInterval(checkHealth, 30000);
+        checkHealth();
+    </script>
+</body>
+</html>
+'''
+
+# Requirements template
+REQUIREMENTS_TEMPLATE = '''
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+aiohttp>=3.9.0
+requests>=2.31.0
+pytest>=7.4.0
+flake8>=6.1.0
+black>=23.11.0
+'''
+
+# README template
+README_TEMPLATE = '''
+# ${agent_name} - PORTIER 3.0 Agent
+
+## 🎯 Überblick
+
+**Agent:** ${agent_display_name}
+**Port:** ${port}
+**Spezialisierung:** ${specialization}
+**Status:** ✅ Enterprise-Ready
+**Generated:** ${timestamp}
+
+## 🚀 Quick Start
+
+```bash
+# Agent starten
+python3 main.py
+
+# Health Check
+curl http://127.0.0.1:${port}/health
+
+# Dashboard
+open http://127.0.0.1:${port}/
+```
+
+## 🐳 Docker
+
+```bash
+# Build
+docker build -t ${agent_name} .
+
+# Run
+docker run -d -p ${port}:${port} ${agent_name}
+```
+
+## 🔗 API Endpoints
+
+- `GET /health` - Health Status
+- `GET /status` - Agent Status
+- `POST /command` - Execute Commands
+- `GET /metrics` - Performance Metrics
+- `GET /logs` - Recent Logs
+- `GET /` - HTML Dashboard
+
+## 🧪 Testing
+
+```bash
+pytest -v
+flake8 .
+black --check .
+```
+
+---
+
+**Generated by PORTIER 3.0 Auto-Generator** | ${timestamp}
+'''
+
+def create_agent(name: str, port: int, specialization: str, enable_ci: bool = False):
+    """Create a new PORTIER 3.0 agent with full structure"""
+    
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    agent_display_name = name.replace('_', ' ').title()
+    
+    # Create agent directory
+    agent_dir = Path(name)
+    agent_dir.mkdir(exist_ok=True)
+    
+    # Create subdirectories
+    (agent_dir / "html").mkdir(exist_ok=True)
+    (agent_dir / "logs").mkdir(exist_ok=True)
+    (agent_dir / "tests").mkdir(exist_ok=True)
+    
+    # Template variables
+    template_vars = {
+        'agent_name': name,
+        'agent_display_name': agent_display_name,
+        'port': port,
+        'specialization': specialization,
+        'timestamp': timestamp
+    }
+    
+    # Create main.py
+    main_content = Template(AGENT_MAIN_TEMPLATE).substitute(template_vars)
+    (agent_dir / "main.py").write_text(main_content)
+    
+    # Create requirements.txt
+    (agent_dir / "requirements.txt").write_text(REQUIREMENTS_TEMPLATE.strip())
+    
+    # Create HTML dashboard
+    html_content = Template(HTML_TEMPLATE).substitute(template_vars)
+    (agent_dir / "html" / "index.html").write_text(html_content)
+    
+    # Create README.md
+    readme_content = Template(README_TEMPLATE).substitute(template_vars)
+    (agent_dir / "README.md").write_text(readme_content)
+    
+    # Create .version file
+    (agent_dir / ".version").write_text("1.0.0")
+    
+    # Create Dockerfile
+    dockerfile_content = Template('''
+# PORTIER 3.0 - ${agent_name} Docker Image
+FROM python:3.13-slim
+
+# Security: Create non-root user
+RUN groupadd -r portier && useradd -r -g portier -d /app -s /bin/bash portier
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy and install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application
+COPY --chown=portier:portier . .
+
+# Create directories
+RUN mkdir -p logs html tests && chown -R portier:portier /app
+
+USER portier
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:${port}/health || exit 1
+
+EXPOSE ${port}
+
+ENV PYTHONPATH=/app
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+CMD ["python3", "main.py"]
+    ''').substitute(template_vars)
+    (agent_dir / "Dockerfile").write_text(dockerfile_content.strip())
+    
+    # Create basic test
+    test_content = f'''
+import pytest
+import requests
+import time
+import subprocess
+import threading
+from main import app
+import uvicorn
+
+class TestAgent:
+    @classmethod
+    def setup_class(cls):
+        """Start the agent for testing"""
+        def run_server():
+            uvicorn.run(app, host="127.0.0.1", port={port}, log_level="error")
+        
+        cls.server_thread = threading.Thread(target=run_server, daemon=True)
+        cls.server_thread.start()
+        time.sleep(2)  # Wait for server to start
+    
+    def test_health_endpoint(self):
+        """Test health endpoint"""
+        response = requests.get(f"http://127.0.0.1:{port}/health")
+        assert response.status_code == 200
+        data = response.json()
+        assert data["status"] == "ok"
+        assert data["service"] == "{name}"
+    
+    def test_status_endpoint(self):
+        """Test status endpoint"""
+        response = requests.get(f"http://127.0.0.1:{port}/status")
+        assert response.status_code == 200
+        data = response.json()
+        assert data["agent_status"] == "active"
+    
+    def test_command_endpoint(self):
+        """Test command execution"""
+        response = requests.post(f"http://127.0.0.1:{port}/command", json={{
+            "command": "ping",
+            "params": {{}}
+        }})
+        assert response.status_code == 200
+        data = response.json()
+        assert data["status"] == "success"
+    
+    def test_metrics_endpoint(self):
+        """Test metrics endpoint"""
+        response = requests.get(f"http://127.0.0.1:{port}/metrics")
+        assert response.status_code == 200
+        data = response.json()
+        assert "metrics" in data
+    '''
+    (agent_dir / "tests" / "test_agent.py").write_text(test_content)
+    
+    # Create CI/CD if requested
+    if enable_ci:
+        github_dir = agent_dir / ".github" / "workflows"
+        github_dir.mkdir(parents=True, exist_ok=True)
+        
+        cicd_content = Template(CICD_TEMPLATE).substitute(template_vars)
+        (github_dir / "ci_cd.yml").write_text(cicd_content)
+    
+    print(f"✅ Agent '{name}' created successfully!")
+    print(f"📁 Location: {agent_dir.absolute()}")
+    print(f"🚀 Start: cd {name} && python3 main.py")
+    print(f"🌐 Dashboard: http://127.0.0.1:{port}/")
+    print(f"🩺 Health: http://127.0.0.1:{port}/health")
+    if enable_ci:
+        print(f"⚙️ CI/CD: .github/workflows/ci_cd.yml")
+
+def main():
+    parser = argparse.ArgumentParser(description="PORTIER 3.0 Agent Generator")
+    parser.add_argument("--name", required=True, help="Agent name (e.g. opena5_vscode)")
+    parser.add_argument("--port", type=int, required=True, help="Port number (e.g. 12350)")
+    parser.add_argument("--specialization", default="general_purpose", help="Agent specialization")
+    parser.add_argument("--ci", action="store_true", help="Include CI/CD pipeline")
+    
+    args = parser.parse_args()
+    
+    # Validate port range
+    if not (12344 <= args.port <= 12399):
+        print(f"❌ Error: Port {args.port} outside allowed range (12344-12399)")
+        sys.exit(1)
+    
+    # Validate name format
+    if not args.name.startswith('opena') or '_' not in args.name:
+        print(f"❌ Error: Agent name should follow format 'openaX_description'")
+        sys.exit(1)
+    
+    create_agent(args.name, args.port, args.specialization, args.ci)
+
+if __name__ == "__main__":
+    main()

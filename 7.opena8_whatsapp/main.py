@@ -1,38 +1,44 @@
-#!/usr/bin/env python3
-"""
-opena8 WhatsApp Agent - Meta Business API Integration
-Port: 12351 | Service: WhatsApp Messaging
-"""
+# 📱 WhatsApp Agent 6.0 - PORTIER PAS-6.0 (opena8)
+# Advanced WhatsApp Business API Automation with AI Integration
 
-import asyncio
-import logging
+import os
+import sys
 from datetime import datetime
-from typing import Optional, Dict, Any
-from fastapi import FastAPI, Request, HTTPException, BackgroundTasks
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel
+from typing import Dict, Any, Optional, List
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI, HTTPException, Depends, Request, BackgroundTasks
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse, FileResponse
+from pydantic import BaseModel, Field
 import uvicorn
+from dotenv import load_dotenv
 
-from app.config import config
-from app.whatsapp_client import WhatsAppClient, MessageClassifier
-from app.models import WhatsAppMessage, MessageDirection, MessageType
+# Load environment variables
+load_dotenv()
 
-# Logging konfiguration
-logging.basicConfig(
-    level=getattr(logging, config.LOG_LEVEL),
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger("opena8")
+# Import custom modules
+try:
+    from modules.whatsapp_core import WhatsAppCore
+    from modules.whatsapp_api import WhatsAppAPI
+    from modules.ai_reply_engine import AIReplyEngine
+    from modules.metrics import Metrics
+except ImportError as e:
+    print(f"❌ Module import error: {e}")
+    # Fallback for development
+    WhatsAppCore = WhatsAppAPI = AIReplyEngine = Metrics = None
 
-# FastAPI App
-app = FastAPI(
-    title="opena8 WhatsApp Agent",
-    description="Meta WhatsApp Business API Integration",
-    version="1.0.0"
-)
+# Security
+security = HTTPBearer()
+BEARER_TOKEN = os.getenv("BEARER_TOKEN", "fallback-token-whatsapp-6.0")
 
-# WhatsApp Client
-whatsapp_client = WhatsAppClient()
+# Global instances
+core: Optional[WhatsAppCore] = None
+api: Optional[WhatsAppAPI] = None
+ai_engine: Optional[AIReplyEngine] = None
+metrics: Optional[Metrics] = None
 
 # Pydantic Models für API
 class WebhookVerification(BaseModel):

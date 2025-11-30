@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Agent (opena18) | ELION PAS-6.0 Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-left">
+            <span class="logo">📇</span>
+            <div class="header-info">
+                <h1>CRM Dashboard</h1>
+                <span class="version">PAS-6.0 | opena18 | Customer Relationship Management</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="status-badge" id="statusBadge">
+                <span class="status-dot"></span>
+                <span class="status-text">Checking...</span>
+            </div>
+            <span class="port-badge">Port 12364</span>
+            <button class="btn btn-primary" id="refreshBtn">🔄 Refresh</button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="dashboard-nav">
+        <button class="nav-btn active" data-section="overview">📊 Overview</button>
+        <button class="nav-btn" data-section="contacts">👥 Contacts</button>
+        <button class="nav-btn" data-section="leads">🎯 Leads</button>
+        <button class="nav-btn" data-section="deals">💰 Deals</button>
+        <button class="nav-btn" data-section="companies">🏢 Companies</button>
+        <button class="nav-btn" data-section="tasks">✅ Tasks</button>
+        <button class="nav-btn" data-section="pipeline">📈 Pipeline</button>
+        <button class="nav-btn" data-section="reports">📋 Reports</button>
+        <button class="nav-btn" data-section="api">🔌 API Console</button>
+        <button class="nav-btn" data-section="settings">⚙️ Settings</button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <div class="section-header">
+                <h2>📊 CRM Overview</h2>
+            </div>
+
+            <!-- Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card primary">
+                    <span class="metric-icon">👥</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="totalContacts">0</span>
+                        <span class="metric-label">Total Contacts</span>
+                    </div>
+                </div>
+                <div class="metric-card success">
+                    <span class="metric-icon">🎯</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="activeLeads">0</span>
+                        <span class="metric-label">Active Leads</span>
+                    </div>
+                </div>
+                <div class="metric-card warning">
+                    <span class="metric-icon">💰</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="openDeals">0</span>
+                        <span class="metric-label">Open Deals</span>
+                    </div>
+                </div>
+                <div class="metric-card info">
+                    <span class="metric-icon">🏢</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="companies">0</span>
+                        <span class="metric-label">Companies</span>
+                    </div>
+                </div>
+                <div class="metric-card success">
+                    <span class="metric-icon">💵</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="revenue">€0</span>
+                        <span class="metric-label">Pipeline Value</span>
+                    </div>
+                </div>
+                <div class="metric-card error">
+                    <span class="metric-icon">📋</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="pendingTasks">0</span>
+                        <span class="metric-label">Pending Tasks</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Capabilities -->
+            <div class="card">
+                <h3>⚡ CRM Capabilities (10)</h3>
+                <div class="capabilities-grid">
+                    <div class="capability-card" data-capability="contact_management">
+                        <span class="capability-icon">👤</span>
+                        <div class="capability-info">
+                            <h4>Contact Management</h4>
+                            <p>Store & organize contacts</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="lead_tracking">
+                        <span class="capability-icon">🎯</span>
+                        <div class="capability-info">
+                            <h4>Lead Tracking</h4>
+                            <p>Track lead sources</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="deal_pipeline">
+                        <span class="capability-icon">📈</span>
+                        <div class="capability-info">
+                            <h4>Deal Pipeline</h4>
+                            <p>Visual sales pipeline</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="task_automation">
+                        <span class="capability-icon">⚡</span>
+                        <div class="capability-info">
+                            <h4>Task Automation</h4>
+                            <p>Automated workflows</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="email_integration">
+                        <span class="capability-icon">📧</span>
+                        <div class="capability-info">
+                            <h4>Email Integration</h4>
+                            <p>Sync email conversations</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="activity_log">
+                        <span class="capability-icon">📝</span>
+                        <div class="capability-info">
+                            <h4>Activity Log</h4>
+                            <p>Track all interactions</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="reporting">
+                        <span class="capability-icon">📊</span>
+                        <div class="capability-info">
+                            <h4>Reporting</h4>
+                            <p>Sales analytics</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="segmentation">
+                        <span class="capability-icon">🏷️</span>
+                        <div class="capability-info">
+                            <h4>Segmentation</h4>
+                            <p>Custom contact lists</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="notes">
+                        <span class="capability-icon">📌</span>
+                        <div class="capability-info">
+                            <h4>Notes & Comments</h4>
+                            <p>Add context to records</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="import_export">
+                        <span class="capability-icon">🔄</span>
+                        <div class="capability-info">
+                            <h4>Import/Export</h4>
+                            <p>CSV data management</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <h3>🚀 Quick Actions</h3>
+                <div class="action-grid">
+                    <button class="action-btn" data-action="addContact">
+                        <span class="action-icon">➕</span>
+                        <span>Add Contact</span>
+                    </button>
+                    <button class="action-btn" data-action="createLead">
+                        <span class="action-icon">🎯</span>
+                        <span>New Lead</span>
+                    </button>
+                    <button class="action-btn" data-action="createDeal">
+                        <span class="action-icon">💰</span>
+                        <span>New Deal</span>
+                    </button>
+                    <button class="action-btn" data-action="addTask">
+                        <span class="action-icon">✅</span>
+                        <span>Add Task</span>
+                    </button>
+                    <button class="action-btn" data-action="viewPipeline">
+                        <span class="action-icon">📈</span>
+                        <span>Pipeline</span>
+                    </button>
+                    <button class="action-btn" data-action="exportData">
+                        <span class="action-icon">📤</span>
+                        <span>Export</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card">
+                <h3>🕐 Recent Activity</h3>
+                <div id="recentActivityList" class="activity-list">
+                    <div class="loading">Loading activity...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contacts Section -->
+        <section id="contacts" class="section">
+            <div class="section-header">
+                <h2>👥 Contacts</h2>
+                <button class="btn btn-primary" onclick="dashboard.showAddContactModal()">➕ Add Contact</button>
+            </div>
+            <div class="card">
+                <h3>Contact List</h3>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="contactSearch" placeholder="Search contacts...">
+                </div>
+                <div id="contactsList" class="contacts-list">
+                    <div class="loading">Loading contacts...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Leads Section -->
+        <section id="leads" class="section">
+            <div class="section-header">
+                <h2>🎯 Leads</h2>
+                <button class="btn btn-primary" onclick="dashboard.showAddLeadModal()">➕ Add Lead</button>
+            </div>
+            <div class="card">
+                <h3>Lead Pipeline</h3>
+                <div id="leadsList" class="leads-list">
+                    <div class="loading">Loading leads...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Deals Section -->
+        <section id="deals" class="section">
+            <div class="section-header">
+                <h2>💰 Deals</h2>
+                <button class="btn btn-primary" onclick="dashboard.showAddDealModal()">➕ Add Deal</button>
+            </div>
+            <div class="card">
+                <h3>Active Deals</h3>
+                <div id="dealsList" class="deals-list">
+                    <div class="loading">Loading deals...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Companies Section -->
+        <section id="companies" class="section">
+            <div class="section-header">
+                <h2>🏢 Companies</h2>
+                <button class="btn btn-primary" onclick="dashboard.showAddCompanyModal()">➕ Add Company</button>
+            </div>
+            <div class="card">
+                <h3>Company Directory</h3>
+                <div id="companiesList" class="companies-list">
+                    <div class="loading">Loading companies...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tasks Section -->
+        <section id="tasks" class="section">
+            <div class="section-header">
+                <h2>✅ Tasks</h2>
+                <button class="btn btn-primary" onclick="dashboard.showAddTaskModal()">➕ Add Task</button>
+            </div>
+            <div class="card">
+                <h3>My Tasks</h3>
+                <div id="tasksList" class="tasks-list">
+                    <div class="loading">Loading tasks...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pipeline Section -->
+        <section id="pipeline" class="section">
+            <div class="section-header">
+                <h2>📈 Sales Pipeline</h2>
+            </div>
+            <div class="card">
+                <h3>Pipeline Stages</h3>
+                <div class="pipeline-board" id="pipelineBoard">
+                    <div class="pipeline-stage">
+                        <h4>🆕 New</h4>
+                        <div class="stage-deals" data-stage="new"></div>
+                    </div>
+                    <div class="pipeline-stage">
+                        <h4>📞 Contacted</h4>
+                        <div class="stage-deals" data-stage="contacted"></div>
+                    </div>
+                    <div class="pipeline-stage">
+                        <h4>💬 Negotiation</h4>
+                        <div class="stage-deals" data-stage="negotiation"></div>
+                    </div>
+                    <div class="pipeline-stage">
+                        <h4>✅ Won</h4>
+                        <div class="stage-deals" data-stage="won"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reports Section -->
+        <section id="reports" class="section">
+            <div class="section-header">
+                <h2>📋 Reports</h2>
+                <button class="btn btn-primary" onclick="dashboard.generateReport()">📊 Generate Report</button>
+            </div>
+            <div class="card">
+                <h3>Report Templates</h3>
+                <div class="templates-grid">
+                    <div class="template-item" onclick="dashboard.useTemplate('sales')">
+                        <span class="template-icon">💰</span>
+                        <span>Sales Summary</span>
+                    </div>
+                    <div class="template-item" onclick="dashboard.useTemplate('activity')">
+                        <span class="template-icon">📝</span>
+                        <span>Activity Report</span>
+                    </div>
+                    <div class="template-item" onclick="dashboard.useTemplate('pipeline')">
+                        <span class="template-icon">📈</span>
+                        <span>Pipeline Analysis</span>
+                    </div>
+                    <div class="template-item" onclick="dashboard.useTemplate('performance')">
+                        <span class="template-icon">🏆</span>
+                        <span>Performance</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API Console Section -->
+        <section id="api" class="section">
+            <div class="section-header">
+                <h2>🔌 API Console</h2>
+            </div>
+            <div class="card">
+                <h3>Test API</h3>
+                <div class="form-group">
+                    <label>Endpoint</label>
+                    <input type="text" class="form-control" id="apiEndpoint" value="/health">
+                </div>
+                <div class="form-group">
+                    <label>Method</label>
+                    <select class="form-control" id="apiMethod">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Body (JSON)</label>
+                    <textarea class="form-control" id="apiBody"></textarea>
+                </div>
+                <button class="btn btn-primary" id="testApiBtn">🚀 Send</button>
+            </div>
+            <div class="card">
+                <h3>Response</h3>
+                <pre id="apiResponse" style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; overflow-x: auto;">// Response</pre>
+            </div>
+            <div class="card">
+                <h3>Available Endpoints</h3>
+                <div class="endpoint-grid">
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/health</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/contacts</code></div>
+                    <div class="endpoint-item"><span class="method post">POST</span><code>/api/contacts/create</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/leads</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/deals</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/companies</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/tasks</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/pipeline</code></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="section">
+            <div class="section-header">
+                <h2>⚙️ Settings</h2>
+            </div>
+            <div class="card">
+                <h3>CRM Settings</h3>
+                <div class="form-group">
+                    <label>Currency</label>
+                    <select class="form-control" id="currency">
+                        <option value="EUR">EUR (€)</option>
+                        <option value="USD">USD ($)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Date Format</label>
+                    <select class="form-control" id="dateFormat">
+                        <option value="DD.MM.YYYY">DD.MM.YYYY</option>
+                        <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary">💾 Save Settings</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <span>ELION CRM Agent | PAS-6.0</span>
+        <span>opena18 | Port 12364</span>
+        <span id="currentTime"></span>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        setInterval(() => {
+            document.getElementById('currentTime').textContent = new Date().toLocaleString('de-DE');
+        }, 1000);
+    </script>
+</body>
+</html>

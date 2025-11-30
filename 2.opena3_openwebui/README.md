@@ -1,537 +1,442 @@
-# 🤖 opena3 - OpenWebUI Terminal Agent
+# Portier Dashboard Suite 1.0.0
 
-**Agent-ID:** `opena3`  
-**Port:** 12347  
-**Kürzel:** `openp`  
-**Version:** 2.0  
-**Status:** ✅ **Production** (LocalAgent-Pro Integration)
-
----
-
-> AI-Agent-Server für lokale Entwicklung mit GitHub Copilot-Integration
-
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![GitHub Copilot](https://img.shields.io/badge/GitHub_Copilot-ready-brightgreen.svg)](https://github.com/features/copilot)
-[![Lizenz: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
----
+🎉 **Vollständiges, produktionsreifes Dashboard-System für OpenWebUI mit Admin- und User-Versionen.**
 
 ## 📋 Überblick
 
-Dieses Repository enthält **LocalAgent-Pro**, einen production-ready AI-Agent-Server mit OpenWebUI-Integration, der speziell für die Arbeit mit GitHub Copilot optimiert ist.
+Portier ist eine professionelle Suite für OpenWebUI mit separaten Interfaces für Administratoren und Benutzer:
 
-### 🎯 Hauptprojekt: LocalAgent-Pro
+- **Admin Dashboard 3.0.0**: Vollständige Systemkontrolle, Benutzerverwaltung, Monitoring
+- **User Dashboard 1.0.0**: Sichere, begrenzte Funktionen für reguläre Benutzer
+- **PDF Viewer 1.0.0**: Sichere PDF-Anzeige mit Base64-Encoding und OCR
+- **Dispatcher FlowMap 1.0.0**: Visualisierung von CMD/RESP Flows und Safepoints
+- **Theme Pack**: 5 professionelle UI-Themes
 
-**Verzeichnis:** [`LocalAgent-Pro/`](LocalAgent-Pro/)
+## 🚀 Installation
 
-LocalAgent-Pro ist ein intelligenter AI-Agent-Server mit den folgenden Features:
+### Voraussetzungen
 
-- 📝 **Datei-Management:** Lesen, Schreiben, Löschen (Sandbox-isoliert)
-- 🔧 **Shell-Befehle:** Sichere Ausführung whitelisteter Befehle
-- 🌐 **Web-Requests:** HTTP-Anfragen an vertrauenswürdige Domains
-- 🔒 **Loop-Protection:** MD5-basierte Request-Deduplizierung
-- 📊 **Prometheus-Monitoring:** 33 Metriken für Production-Deployment
+- OpenWebUI installiert und läuft
+- Python 3.8+
+- Bash Shell
 
----
-
-## 🚀 Quick Start
-
-### Für GitHub Copilot-Nutzer
-
-Wenn du mit GitHub Copilot arbeitest, beachte folgende Hinweise:
-
-1. **Hauptdokumentation:** Siehe [`LocalAgent-Pro/README.md`](LocalAgent-Pro/README.md)
-2. **Copilot-Systemaufforderung:** [`LocalAgent-Pro/COPILOT_SYSTEM_PROMPT.md`](LocalAgent-Pro/COPILOT_SYSTEM_PROMPT.md)
-3. **Copilot-Anleitung:** [`LocalAgent-Pro/COPILOT_PROMPT.md`](LocalAgent-Pro/COPILOT_PROMPT.md)
-4. **Commit-Richtlinien:** [`.github/copilot-commit-instructions.md`](.github/copilot-commit-instructions.md)
-
-### Installation
-
-#### Docker-Installation (2 Minuten)
+### Automatische Installation
 
 ```bash
-# Repository klonen
-git clone https://github.com/jokicdanijel/Lokales-Agententool.git
-cd Lokales-Agententool/LocalAgent-Pro
-
-# Docker-basierte Installation (empfohlen)
-docker-compose up -d
-
-# Server läuft auf: http://localhost:8001
-# OpenWebUI auf: http://localhost:3000
+cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.opena3_openwebui/OpenWebUI-Portier
+bash install_portier_dashboards.sh
 ```
 
-#### Manuelle Installation (5 Minuten)
+Der Installer:
+- ✅ Erstellt automatische Backups
+- ✅ Prüft Python-Syntax
+- ✅ Kopiert Dateien in OpenWebUI
+- ✅ Setzt korrekte Berechtigungen
+- ✅ Meldet Erfolg/Fehler
 
-```bash
-cd LocalAgent-Pro
+### Manuelle Installation
 
-# Virtuelle Umgebung
-python3 -m venv venv
-source venv/bin/activate
-
-# Abhängigkeiten installieren
-pip install -r requirements.txt
-
-# Ollama starten (separates Terminal)
-ollama serve
-ollama pull llama3.1:8b-instruct-q4_K_M
-
-# Server starten
-python src/openwebui_agent_server.py
-```
-
----
-
-## 📚 Wichtige Dokumentation
-
-### Für Entwickler
-
-| Dokument | Beschreibung |
-|----------|--------------|
-| [LocalAgent-Pro/README.md](LocalAgent-Pro/README.md) | Vollständige Projekt-Dokumentation |
-| [LocalAgent-Pro/INSTALLATION.md](LocalAgent-Pro/INSTALLATION.md) | Detaillierte Installationsanleitung |
-| [LocalAgent-Pro/QUICK_START.md](LocalAgent-Pro/QUICK_START.md) | Schnelleinstieg |
-| [LocalAgent-Pro/DOCKER.md](LocalAgent-Pro/DOCKER.md) | Docker-Deployment |
-
-### Für GitHub Copilot
-
-| Dokument | Beschreibung |
-|----------|--------------|
-| [LocalAgent-Pro/COPILOT_SYSTEM_PROMPT.md](LocalAgent-Pro/COPILOT_SYSTEM_PROMPT.md) | System-Prompt für VSCode Copilot |
-| [LocalAgent-Pro/COPILOT_PROMPT.md](LocalAgent-Pro/COPILOT_PROMPT.md) | Copilot-Integration mit OpenWebUI |
-| [.github/copilot-commit-instructions.md](.github/copilot-commit-instructions.md) | Commit-Message-Guidelines |
-
-### API & Testing
-
-| Dokument | Beschreibung |
-|----------|--------------|
-| [LocalAgent-Pro/docs/API.md](LocalAgent-Pro/docs/API.md) | API-Dokumentation |
-| [LocalAgent-Pro/tests/README.md](LocalAgent-Pro/tests/README.md) | Test-Dokumentation |
-| [LocalAgent-Pro/SECURITY.md](LocalAgent-Pro/SECURITY.md) | Security-Features |
-
----
-
-## 🔧 GitHub Copilot Konfiguration
-
-### VSCode Copilot einrichten
-
-1. **Systemaufforderung einfügen:**
-   - Drücke `Ctrl+Shift+P` (oder `Cmd+Shift+P` auf Mac)
-   - Suche: "Copilot: Edit Custom Instructions"
-   - Füge den Inhalt von [`LocalAgent-Pro/COPILOT_SYSTEM_PROMPT.md`](LocalAgent-Pro/COPILOT_SYSTEM_PROMPT.md) ein
-
-2. **Repository-Kontext:**
-
-   ```text
-   Backend-API: http://127.0.0.1:8001/v1
-   OpenWebUI: http://127.0.0.1:3000
-   Hauptprojekt: LocalAgent-Pro/
+1. Kopieren Sie die Python-Dateien nach `open-webui/extensions/functions/`:
+   ```bash
+   cp portier_*.py /path/to/open-webui/extensions/functions/
+   cp dispatcher_*.py /path/to/open-webui/extensions/functions/
    ```
 
-3. **Wichtige Endpoints:**
-   - Health Check: `GET http://127.0.0.1:8001/health`
-   - Modelle: `GET http://127.0.0.1:8001/v1/models`
-   - Chat: `POST http://127.0.0.1:8001/v1/chat/completions`
+2. Kopieren Sie Theme Pack:
+   ```bash
+   cp theme_pack.json /path/to/open-webui/extensions/functions/
+   ```
 
-### Commit-Messages mit Copilot
+3. Laden Sie OpenWebUI neu im Browser
 
-Folge den Guidelines in [`.github/copilot-commit-instructions.md`](.github/copilot-commit-instructions.md):
+## 🎯 Nutzung in OpenWebUI
 
-**Format:**
+### User Dashboard
 
-```text
-<typ>(<scope>): <kurze Beschreibung>
-
-<ausführliche Beschreibung>
-
-Relates-to: <Bezug>
+```
+@portier_dashboard_user_1_0_0 page="home"
+@portier_dashboard_user_1_0_0 page="invoices"
+@portier_dashboard_user_1_0_0 page="documents"
+@portier_dashboard_user_1_0_0 page="integrations"
 ```
 
-**Typen:** `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
+**Funktionen:**
+- Rechnungen erstellen und verwalten
+- Dokumente hochladen und analysieren
+- Read-only Integrations-Status
+- Limitierte Navigation (4 Seiten)
 
-**Beispiel:**
+### Admin Dashboard
 
-```text
-docs(readme): Füge Root-README für Copilot-Nutzer hinzu
-
-- Zentraler Einstiegspunkt für Repository
-- Copilot-spezifische Konfigurationshinweise
-- Quick-Start-Anleitung für verschiedene Installationsmethoden
-- Verlinkungen auf Detaildokumentationen
-
-Verbessert: Developer-Onboarding, Copilot-Integration
+```
+@portier_hyperdashboard_3_0_0 page="dashboard"
+@portier_hyperdashboard_3_0_0 page="users"
+@portier_hyperdashboard_3_0_0 page="roles"
+@portier_hyperdashboard_3_0_0 page="system"
 ```
 
----
+**Funktionen:**
+- Vollständige Systemmetriken (CPU, Memory, Disk)
+- Benutzerverwaltung (CRUD)
+- Rollenverwaltung (RBAC)
+- Systemkonfiguration
+- Backup & Export
+- Logging & Protokolle
+- 8 Admin-Seiten
 
-## 🎯 Verfügbare Tools (via Chat-API)
+### PDF Viewer
 
-LocalAgent-Pro erkennt und führt folgende Tools automatisch aus:
-
-| Tool | Beschreibung | Beispiel |
-|------|--------------|----------|
-| `write_file` | Datei in Sandbox erstellen | "Erstelle hello.txt mit Inhalt 'Hello World'" |
-| `read_file` | Datei aus Sandbox lesen | "Lies die Datei config.yaml" |
-| `delete_file` | Datei aus Sandbox löschen | "Lösche test.txt" |
-| `shell_exec` | Shell-Befehl ausführen | "Liste alle Dateien auf" |
-| `fetch_webpage` | Webseite abrufen | "Hole den Inhalt von example.com" |
-
-**Wichtig:** Alle Dateioperationen sind sandbox-isoliert (`~/localagent_sandbox/`)
-
----
-
-## 🎤 Voice-Programme (Sprachsteuerung)
-
-LocalAgent-Pro enthält 6 production-ready Voice-Programme für Sprachsteuerung und -verarbeitung:
-
-### 1. 🗣️ Voice Command Parser
-**Datei:** `tools/voice_command_parser.py` (147 Zeilen)
-
-Konvertiert Sprachbefehle in Systemaktionen:
-- Datei-Management (öffnen, erstellen, löschen)
-- Verzeichnis-Operationen
-- System-Informationen abrufen
-- Parameter-Extraktion aus Sprache
-
-**Nutzung:**
-```bash
-python3 tools/voice_command_parser.py
-# Befehle: "datei öffnen <pfad>", "datei erstellen <pfad>", etc.
+```
+@portier_pdf_viewer_1_0_0 file_path="/path/to/document.pdf"
+@portier_pdf_viewer_1_0_0 file_path="/path/to/document.pdf" preview_only=true
 ```
 
-### 2. 📝 Voice Note Recorder
+**Funktionen:**
+- PDF Base64-Encoding
+- Textextraktion
+- OCR-Unterstützung
+- Dokumentenanalyse (Invoice, Contract, General)
+- Sichere Preview-Rendering
 
-**Datei:** `tools/voice_note_recorder.py` (187 Zeilen)
+### Dispatcher FlowMap
 
-Sprachnotizen aufnehmen und verwalten:
-
-- Live-Aufnahme von Notizen mit Sprache
-- JSON-Persistierung
-- Durchsuchen und Filterung
-- Export als TXT oder JSON
-
-**Nutzung:**
-
-```bash
-python3 tools/voice_note_recorder.py
-# Menü: Neue Notiz → Aufnehmen → Speichern → Durchsuchen
+```
+@dispatcher_flowmap_1_0_0 max_entries=50
+@dispatcher_flowmap_1_0_0
 ```
 
-**Datenverwaltung:**
+**Funktionen:**
+- CMD/RESP Flow-Visualisierung
+- Safepoint-Management
+- Kritischen Pfad berechnen
+- Flow-Tracing für Debugging
+- Agent-Statistiken
 
-- Speichert in: `voice_notes/notes.json`
-- Exportiert zu: `voice_notes/notizen_export_*.{txt,json}`
+## 🎨 Themes
 
-### 3. 📞 Voice Call System
+### Verfügbare Themes
 
-**Datei:** `tools/voice_call_system.py` (173 Zeilen)
+1. **Bot Factory** (Neon Dark Purple)
+   - High-Tech Neon Aesthetic
+   - Perfekt für Admin Dashboard
 
-Kontakt- und Anrufverwaltung:
+2. **Minimal** (Grayscale)
+   - Clean & Professional
+   - Produktive Umgebung
 
-- Kontakte speichern/laden
-- Sprachanrufe simulieren
-- SMS-Versand über Sprachbefehl
-- Anrufverlauf-Tracking
+3. **Lucid** (Light Modern)
+   - Helles, modernes Design
+   - Ideal für User Dashboard
 
-**Nutzung:**
+4. **Midnight** (Dark Blue)
+   - Deep Dark mit Cool-Tönen
+   - Professional Look
 
-```bash
-python3 tools/voice_call_system.py
-# Optionen: Kontakt hinzufügen → Anrufen → SMS → Verlauf ansehen
+5. **Forest** (Green)
+   - Natürliche grüne Palette
+   - Beruhigende Umgebung
+
+### Theme anpassen
+
+Theme Pack importieren und konfigurieren:
+
+```json
+{
+  "primary": "#8d3cff",
+  "secondary": "#4c1d95",
+  "background": "#12001a",
+  "panel": "#1e0030",
+  "glow": "#c084fc",
+  "accent": "#f5d0fe",
+  "text_primary": "#FFFFFF",
+  "text_secondary": "#E9D5FF"
+}
 ```
 
-**Datenverwaltung:**
+## 🔐 Sicherheit
 
-- Speichert in: `contacts.json`
-- Anrufverlauf im RAM
+### User Dashboard - Sicherheit
 
-### 4. 🤖 Voice Assistant
+✅ **Eingeschränkte Funktionen:**
+- Nur 4 Navigations-Seiten
+- Keine Admin-Funktionen
+- Read-only Integrationen
+- Keine System-Kontrolle
+- Sicheres PDF Sandbox
 
-**Datei:** `tools/voice_assistant.py` (138 Zeilen)
+✅ **Authentifizierung:**
+- Bearer-Token Support
+- Session Management
+- User-Isolation
 
-Intelligente Sprachassistentin mit Befehlen:
+### Admin Dashboard - Sicherheit
 
-- Uhrzeit und Datum abrufen
-- Wetter-Integrationen (Placeholder)
-- Taschenrechner-Funktionen
-- System-Monitor (RAM, Festplatte, Prozesse)
-- Sitzungs-Logging
+✅ **Vollständige Kontrolle:**
+- Role-Based Access Control (RBAC)
+- Bearer-Token Auth
+- Admin-only Funktionen
+- Audit Logging
+- Backup & Restore
 
-**Nutzung:**
+✅ **System-Kontrolle:**
+- Konfiguration
+- Benutzer-Management
+- Logs & Monitoring
 
-```bash
-python3 tools/voice_assistant.py
-# Befehle: "uhrzeit", "datum", "rechnen 2+2", "speicher", etc.
-```
+### PDF Viewer - Sicherheit
 
-**Features:**
+✅ **Sandbox-Umgebung:**
+- Base64-Encoding (sicher)
+- Keine direkten Filesystem-Zugriffe
+- OCR Sandbox
+- Datei-Validierung
 
-- Sitzungen werden in `conversation_*.log` gespeichert
-- System-Information in Echtzeit
+### Dispatcher FlowMap - Sicherheit
 
-### 5. 📄 Voice Transcriber
+✅ **Read-Only Zugriff:**
+- Keine Modifikations-Befugnisse
+- Safepoint View
+- Flow Tracing für Debugging
+- Automatische Mock-Daten bei Offline
 
-**Datei:** `tools/voice_transcriber.py` (226 Zeilen)
+## ⚙️ Konfiguration
 
-Audio-Transkription mit Analyse:
-
-- Live-Transkription von Sprache
-- Datei-Transkription (WAV, AIFF, FLAC, AU)
-- Statistiken und Wortanzahl
-- Suchfunktion
-- Export-Funktionen
-
-**Nutzung:**
-
-```bash
-python3 tools/voice_transcriber.py
-# Optionen: Live transkribieren → Datei transkribieren → Statistiken
-```
-
-**Datenverwaltung:**
-
-- Speichert in: `transcripts/`
-- Export-Formate: TXT, JSON
-- Metadaten: Wortanzahl, Sprache, Zeitstempel
-
-### 6. 📅 Voice Scheduler
-
-**Datei:** `tools/voice_scheduler.py` (176 Zeilen)
-
-Aufgabenverwaltung per Sprachbefehl:
-
-- Aufgaben per Sprache erfassen
-- Manuelle Aufgabeneingabe
-- Completion-Tracking
-- Persistierung in JSON
-- Pending-Tasks-Übersicht
-
-**Nutzung:**
+### Umgebungsvariablen
 
 ```bash
-python3 tools/voice_scheduler.py
-# Optionen: Aufgabe diktieren → Abschließen → Löschen → Übersicht
+# Portier Konfiguration
+export PORTIER_DATA_DIR=/path/to/portier/data
+export PORTIER_CACHE_DIR=/path/to/portier/cache
+
+# Dispatcher Integration
+export DISPATCHER_URL=http://localhost:8100
+
+# OpenWebUI Path
+export OPENWEBUI_DIR=/path/to/open-webui
 ```
 
-**Datenverwaltung:**
+### Dateistruktur
 
-- Speichert in: `tasks.json`
-- Persistent zwischen Sessions
-- Status-Tracking (erledigt/ausstehend)
+```
+/OpenWebUI-Portier/
+├── portier_dashboard_user_1_0_0.py       (User Edition, 14 KB)
+├── portier_hyperdashboard_3_0_0.py       (Admin Edition, 15 KB)
+├── portier_pdf_viewer_1_0_0.py           (PDF Tools, 8.9 KB)
+├── dispatcher_flowmap_1_0_0.py           (Dispatcher Viz, 12 KB)
+├── theme_pack.json                       (UI Themes, 3.9 KB)
+├── install_portier_dashboards.sh         (Installer, 5.6 KB)
+└── README.md                             (Dokumentation)
+```
 
-### Voice-Programme Summary
+## 📊 Statistiken
 
-| Programm | Zeilen | Features | Daten |
-|----------|--------|----------|-------|
-| voice_command_parser | 147 | Befehle, Datei-Ops | RAM |
-| voice_note_recorder | 187 | Notizen, Suche, Export | `voice_notes/` |
-| voice_call_system | 173 | Kontakte, Anrufe, SMS | `contacts.json` |
-| voice_assistant | 138 | System-Info, Rechner | `conversation.log` |
-| voice_transcriber | 226 | Transkription, Statistik | `transcripts/` |
-| voice_scheduler | 176 | Aufgaben, Tracking | `tasks.json` |
-| **Gesamt** | **1.041** | **40+ Methoden** | **JSON-basiert** |
+| Metrik | Wert |
+|--------|------|
+| **Gesamt Code** | ~60 KB |
+| **Zeilen Code** | 1.800+ |
+| **Docstrings & Comments** | 400+ |
+| **Funktionen** | 28+ |
+| **Klassen** | 10+ |
+| **Pydantic Models** | 8 |
+| **Themes** | 5 |
+| **OpenWebUI-Kompatibilität** | 100% |
 
-**Technologie-Stack:**
+## 🔧 Technische Details
 
-- 🎤 SpeechRecognition 3.14.4 (Google Speech API)
-- 📝 JSON für Persistierung
-- 🔄 Error-Handling durchgehend
-- 📊 Statistiken und Logging
+### Python Version
+- Python 3.8+
+- Type Hints vollständig
+- Pydantic Models für Validierung
 
-**Installation der Dependencies:**
+### Dependencies (Optional)
+```
+psutil          # System Metrics
+PyPDF2          # PDF Processing
+pdf2image       # PDF to Image
+pytesseract     # OCR Support
+Pillow          # Image Processing
+requests        # HTTP Calls
+```
+
+Wichtig: Alle Dependencies sind **optional**. Core-Funktionalität läuft auch ohne diese.
+
+### OpenWebUI Integration
+
+Funktionen sind vollständig mit OpenWebUI-Tools-Standard kompatibel:
+
+- `async` Support
+- Pydantic `Field` Descriptors
+- Type Annotations
+- Error Handling
+
+## 📖 API Referenz
+
+### User Dashboard
+
+```python
+# Render dashboard
+await dashboard_user_render(page: str = "home")
+
+# Create invoice
+await create_invoice(client: str, amount: float, description: str = "")
+
+# List invoices
+await list_invoices()
+
+# Upload document
+await upload_document(filename: str, file_type: str, size_bytes: int)
+
+# List documents
+await list_documents()
+
+# Get integration status
+await get_integration_status()
+```
+
+### Admin Dashboard
+
+```python
+# Render dashboard
+await dashboard_admin_render(page: str = "dashboard")
+
+# User Management
+await create_user(username: str, email: str, role: str = "user")
+
+# Role Management
+await create_role(role_id: str, name: str, permissions: List[str], level: int)
+
+# System
+await get_system_status()
+await create_backup(backup_name: str = "default")
+await export_users(format: str = "csv")
+await get_logs(limit: int = 100)
+```
+
+### PDF Viewer
+
+```python
+# Load PDF
+await pdf_viewer_load(file_path: str, preview_only: bool = True)
+
+# Extract text
+await pdf_extract_text(file_path: str, page_range: Optional[str] = None)
+
+# Analyze document
+await pdf_analyze_document(file_path: str, analysis_type: str = "general")
+
+# OCR Scan
+await pdf_ocr_scan(file_path: str, language: str = "deu")
+
+# Convert to images
+await pdf_to_images(file_path: str, dpi: int = 150)
+```
+
+### Dispatcher FlowMap
+
+```python
+# Generate FlowMap
+await dispatcher_flowmap_generate(max_entries: int = 50)
+
+# Check status
+await dispatcher_status_check()
+
+# List safepoints
+await dispatcher_safepoint_list()
+
+# Trace flow
+await dispatcher_flow_trace(flow_id: str)
+```
+
+## 🐛 Fehlerbehebung
+
+### Installation schlägt fehl
+
+**Problem:** `Permission denied` auf Installer
 
 ```bash
-pip install SpeechRecognition==3.14.4
-# Optional für besseres Microphone-Support:
-pip install PyAudio==0.2.14
+chmod +x install_portier_dashboards.sh
+bash install_portier_dashboards.sh
 ```
 
----
-
-## 🔒 Security-Features
-
-- ✅ **Sandbox-Isolation:** Alle Dateioperationen im separaten Verzeichnis
-- ✅ **Shell-Whitelisting:** Nur sichere Befehle (ls, cat, grep, etc.)
-- ✅ **Domain-Whitelisting:** Nur vertrauenswürdige Domains
-- ✅ **Loop-Protection:** Verhindert Endlosschleifen
-- ✅ **Escape-Prevention:** Blockiert `../` in Dateinamen
-- ✅ **Dangerous-Commands:** Blockiert rm -rf, sudo, dd, etc.
-
-**Details:** [LocalAgent-Pro/SECURITY.md](LocalAgent-Pro/SECURITY.md)
-
----
-
-## 📊 Projekt-Struktur
-
-```text
-Lokales-Agententool/
-├── LocalAgent-Pro/          # Hauptprojekt (AI-Agent-Server)
-│   ├── src/                 # Source-Code
-│   ├── tests/               # Unit- & Integration-Tests
-│   ├── docs/                # API-Dokumentation
-│   ├── config/              # Konfigurationsdateien
-│   ├── README.md            # Hauptdokumentation
-│   ├── COPILOT_*.md         # Copilot-Konfiguration
-│   └── docker-compose.yml   # Docker-Setup
-├── .github/
-│   ├── workflows/           # CI/CD-Pipeline
-│   └── copilot-commit-instructions.md
-└── README.md                # Diese Datei
-```
-
----
-
-## 🧪 Testing
+**Problem:** Python Syntax Error
 
 ```bash
-cd LocalAgent-Pro
-
-# Alle Tests ausführen
-./run_tests.sh all
-
-# Nur Unit-Tests
-./run_tests.sh unit
-
-# Mit Coverage-Report
-./run_tests.sh coverage
+python3 -m py_compile portier_*.py
 ```
 
-**Test-Abdeckung:** ≥80%
-**Test-Suiten:** 100+ Unit-Tests, 10+ Integrations-Tests
+### OpenWebUI erkennt Tools nicht
 
----
+1. Laden Sie OpenWebUI neu: `Ctrl+Shift+R`
+2. Überprüfen Sie Dateipfade in `open-webui/extensions/functions/`
+3. Prüfen Sie Python Syntax: `python3 -m py_compile portier_*.py`
 
-## 📦 Deployment-Optionen
+### PDF Viewer funktioniert nicht
 
-### 1. Docker (empfohlen)
+**Fehler:** `Module not found: PyPDF2`
 
+Installieren Sie optionale Dependencies:
 ```bash
-cd LocalAgent-Pro
-docker-compose up -d
+pip install PyPDF2 pdf2image pytesseract pillow
 ```
 
-**Services:**
+### Dispatcher FlowMap zeigt keine Daten
 
-- LocalAgent-Pro: `http://localhost:8001`
-- Ollama: `http://localhost:11434`
-- Prometheus: `http://localhost:9090` (optional)
-- Grafana: `http://localhost:3001` (optional)
+**Fehler:** `Dispatcher nicht erreichbar`
 
-### 2. Systemd-Service
+- Überprüfen Sie `DISPATCHER_URL` Environment Variable
+- Starten Sie Dispatcher: `http://localhost:8100`
+- Mock-Daten werden automatisch verwendet wenn offline
 
-```bash
-cd LocalAgent-Pro
-sudo ./install_systemd_service.sh
-```
+## 📝 Changelog
 
-**Auto-Start:** Server startet automatisch beim Booten
+### Version 1.0.0 (2025-11-25)
 
-### 3. Manuelle Ausführung
+✅ **Initial Release**
+- User Dashboard 1.0.0
+- Admin Dashboard 3.0.0
+- PDF Viewer 1.0.0
+- Dispatcher FlowMap 1.0.0
+- Theme Pack mit 5 Themes
+- Automatischer Installer
+- Vollständige Dokumentation
 
-```bash
-cd LocalAgent-Pro
-source venv/bin/activate
-python src/openwebui_agent_server.py
-```
+## 🎯 Roadmap
 
----
+### Version 1.1.0 (Geplant)
 
-## 🤝 Beiträge
+- [ ] Live-Agent Monitor (Echtzeit Status)
+- [ ] System Diagramme (CPU, RAM, Requests)
+- [ ] BrowserAgent Recorder
+- [ ] Voice Note Viewer
+- [ ] OCR + Table Extraction (Advanced)
 
-Beiträge sind willkommen! Bitte beachte:
+### Version 1.2.0 (Geplant)
 
-1. **Issues:** Erstelle ein Issue für Bugs/Feature-Requests
-2. **Pull-Requests:** Fork → Branch → Commit → PR
-3. **Tests:** Alle PRs müssen Tests enthalten
-4. **Commit-Format:** Folge den [Copilot-Guidelines](.github/copilot-commit-instructions.md)
-5. **Code-Style:** flake8 + black
+- [ ] Multi-Tool Panel (HyperTiles)
+- [ ] Custom Branding System
+- [ ] Auto-Start Splashscreen
+- [ ] Email Integration
+- [ ] WebSocket Live Updates
 
----
+## 📞 Support
+
+**Probleme?**
+
+1. Überprüfen Sie Logs: `PORTIER_DATA_DIR/logs/`
+2. Aktivieren Sie Debug Logging: `export PORTIER_DEBUG=1`
+3. Überprüfen Sie OpenWebUI Konsole (F12)
 
 ## 📄 Lizenz
 
-**MIT-Lizenz** - Copyright (c) 2025 Danijel Jokic
+MIT License - Frei verwendbar für private und kommerzielle Projekte
 
-Siehe [LICENSE](LocalAgent-Pro/README.md#-lizenz) für Details.
+## 👨‍💻 Author
 
----
-
-## 📧 Kontakt
-
-- **Autor:** Danijel Jokic
-- **Email:** [jokicdanijel@protonmail.com](mailto:jokicdanijel@protonmail.com)
-- **GitHub:** [https://github.com/jokicdanijel/Lokales-Agententool](https://github.com/jokicdanijel/Lokales-Agententool)
+**LocalAgentPro**
+- Advanced OpenWebUI Integration
+- Distributed Multi-Agent Architecture
+- Security-First Dashboard System
 
 ---
 
-## 🚀 Los geht's
-
-```bash
-# Schnellstart mit Docker
-git clone https://github.com/jokicdanijel/Lokales-Agententool.git
-cd Lokales-Agententool/LocalAgent-Pro
-docker-compose up -d
-
-# Gesundheitscheck
-curl http://localhost:8001/health
-
-# Erste Chat-Anfrage
-curl -X POST http://localhost:8001/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{"messages":[{"role":"user","content":"Hallo LocalAgent-Pro!"}]}'
-```
-
-**Weitere Informationen:** [`LocalAgent-Pro/README.md`](LocalAgent-Pro/README.md)
-
----
-
-**🎉 Viel Erfolg mit LocalAgent-Pro und GitHub Copilot!**
-
----
-
-## 🌐 Externe Server-Freigabe für Remote Geräte
-
-Dein lokaler Browser Agent Tool Server (Port 8765) ist jetzt für externe Geräte erreichbar!
-
-### 3 Zugriffsmethoden zur Wahl
-
-**1. 📱 LAN-Zugriff** (Schnellste - 5 Min)
-
-```bash
-python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
-# Dann: http://192.168.0.70:8765 von anderem Gerät
-```
-
-**2. 🌍 Internet mit ngrok** (Einfachste - 15 Min)
-
-```bash
-ngrok http 8765
-# Weltweit erreichbar via https://*.ngrok.io
-```
-
-**3. 🔐 SSH Tunneling** (Sicherste - 20 Min)
-
-```bash
-ssh -L 8765:localhost:8765 user@remote.host -N
-```
-
-### Dokumentation
-
-- **DEPLOYMENT_QUICK_START.md** - Ultra-kurze Anleitung (5 Min Lesen)
-- **EXTERNAL_SERVER_OVERVIEW.md** - Visuelle Übersicht mit Entscheidungshilfe
-- **EXTERNAL_ACCESS_GUIDE.md** - Detaillierte Dokumentation (500 Zeilen)
-- **QUICK_REFERENCE_EXTERNAL_ACCESS.md** - Schnelle Referenz
-
-### Tools
-
-```bash
-# Interaktives Menü
-bash setup_external_access.sh
-
-# Konfiguration überprüfen
-python3 LocalAgent-Pro/opena6/external_access_manager.py --method firewall
-```
-
----
-
+**🚀 Portier Suite 1.0.0 - Ready for Production!**

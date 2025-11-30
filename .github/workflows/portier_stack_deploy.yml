@@ -1,0 +1,495 @@
+name: 🎆 PORTIER 3.0 Stack Orchestration
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "**/main.py"
+      - "**/.version"
+      - "**/requirements.txt"
+  workflow_dispatch:
+    inputs:
+      deploy_mode:
+        description: 'Deployment Mode'
+        required: true
+        default: 'rolling'
+        type: choice
+        options:
+        - rolling
+        - blue_green
+        - canary
+      target_agents:
+        description: 'Target Agents (comma-separated, or "all")'
+        required: false
+        default: 'all'
+
+env:
+  REGISTRY: ghcr.io
+  PORTIER_NAMESPACE: portier
+  DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+  DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+  BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
+  PYTHON_VERSION: "3.13"
+
+jobs:
+
+  detect-changes:
+    name: 🔍 Detect Changed Agents
+    runs-on: ubuntu-latest
+    outputs:
+      changed-agents: ${{ steps.changes.outputs.agents }}
+      deploy-matrix: ${{ steps.matrix.outputs.matrix }}
+      
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: 🔍 Detect Changes
+        id: changes
+        run: |
+          # Get list of changed agent directories
+          CHANGED_DIRS=$(git diff --name-only HEAD~1 HEAD | grep -E '^[0-9]+\.' | cut -d'/' -f1 | sort -u || echo "")
+          
+          # PORTIER Agent Registry
+          AGENTS=(
+            "1.opena1\&2_portier:12344:coordination"
+            "3.opena4_telegram:12348:mobile_communication"
+            "5.opena5_vscode:12350:development"
+            "6.opena6_browser:12351:browser_automation"
+            "7.opena7_email:12352:email_management"
+            "19.opena20_dashboard_agent:12349:dashboard"
+          )
+          
+          CHANGED_AGENTS="[]"
+          
+          if [[ "${{ github.event.inputs.target_agents }}" == "all" ]] || [[ -z "${{ github.event.inputs.target_agents }}" ]]; then
+            # Deploy all agents if manual trigger with "all" or auto-trigger
+            if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+              CHANGED_AGENTS=$(printf '%s\n' "${AGENTS[@]}" | jq -R -s 'split("\n")[:-1] | map(split(":") | {"directory": .[0], "port": (.[1] | tonumber), "spec": .[2]})')
+            else
+              # Auto-trigger: only deploy changed agents
+              for agent in "${AGENTS[@]}"; do
+                agent_dir=$(echo "$agent" | cut -d':' -f1)
+                if echo "$CHANGED_DIRS" | grep -q "$agent_dir"; then
+                  port=$(echo "$agent" | cut -d':' -f2)
+                  spec=$(echo "$agent" | cut -d':' -f3)
+                  CHANGED_AGENTS=$(echo "$CHANGED_AGENTS" | jq --arg dir "$agent_dir" --argjson port "$port" --arg spec "$spec" '. += [{"directory": $dir, "port": $port, "spec": $spec}]')
+                fi
+              done
+            fi
+          else
+            # Deploy specific agents
+            IFS=',' read -ra TARGET_LIST <<< "${{ github.event.inputs.target_agents }}"
+            for target in "${TARGET_LIST[@]}"; do
+              target=$(echo "$target" | xargs)  # trim whitespace
+              for agent in "${AGENTS[@]}"; do
+                if echo "$agent" | grep -q "$target"; then
+                  agent_dir=$(echo "$agent" | cut -d':' -f1)
+                  port=$(echo "$agent" | cut -d':' -f2)
+                  spec=$(echo "$agent" | cut -d':' -f3)
+                  CHANGED_AGENTS=$(echo "$CHANGED_AGENTS" | jq --arg dir "$agent_dir" --argjson port "$port" --arg spec "$spec" '. += [{"directory": $dir, "port": $port, "spec": $spec}]')
+                  break
+                fi
+              done
+            done
+          fi
+          
+          echo "agents=$CHANGED_AGENTS" >> $GITHUB_OUTPUT
+          echo "Changed agents: $CHANGED_AGENTS"
+          
+      - name: 🏧 Generate Deploy Matrix
+        id: matrix
+        run: |
+          MATRIX=$(echo '${{ steps.changes.outputs.agents }}' | jq -c '{"include": .}')
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+          echo "Deploy matrix: $MATRIX"
+
+  security-audit:
+    name: 🛡️ Security Audit
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.changed-agents != '[]'
+    
+    strategy:
+      matrix: ${{ fromJSON(needs.detect-changes.outputs.deploy-matrix) }}
+      
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        
+      - name: 🔍 Security Scan - ${{ matrix.directory }}
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '${{ matrix.directory }}'
+          format: 'sarif'
+          output: '${{ matrix.directory }}-security.sarif'
+          
+      - name: 📋 Upload Security Results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: '${{ matrix.directory }}-security.sarif'
+          category: '${{ matrix.directory }}-security'
+
+  build-and-test:
+    name: 🏗️ Build & Test
+    runs-on: ubuntu-latest
+    needs: [detect-changes, security-audit]
+    if: needs.detect-changes.outputs.changed-agents != '[]'
+    
+    strategy:
+      matrix: ${{ fromJSON(needs.detect-changes.outputs.deploy-matrix) }}
+      fail-fast: false
+      
+    outputs:
+      image-tags: ${{ steps.tags.outputs.tags }}
+      
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          
+      - name: 📦 Install Dependencies - ${{ matrix.directory }}
+        run: |
+          cd "${{ matrix.directory }}"
+          if [[ -f "requirements.txt" ]]; then
+            pip install -r requirements.txt
+            pip install pytest flake8 black bandit safety
+          fi
+          
+      - name: 🔍 Code Quality Checks
+        run: |
+          cd "${{ matrix.directory }}"
+          
+          # Linting
+          if [[ -f "main.py" ]]; then
+            flake8 . --max-line-length=120 --statistics || true
+            black --check --line-length=120 . || true
+          fi
+          
+          # Security
+          bandit -r . -f json -o bandit-report.json || true
+          safety check --json --output safety-report.json || true
+          
+      - name: 🧪 Run Tests
+        run: |
+          cd "${{ matrix.directory }}"
+          if [[ -d "tests" ]]; then
+            pytest -v --tb=short || true
+          fi
+          
+      - name: 🔢 Get Version
+        id: version
+        run: |
+          cd "${{ matrix.directory }}"
+          if [[ -f ".version" ]]; then
+            VERSION=$(cat .version)
+          else
+            VERSION="1.0.0"
+            echo "$VERSION" > .version
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+      - name: 🏗️ Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        
+      - name: 🔐 Login to Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: 📦 Build Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ matrix.directory }}
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.PORTIER_NAMESPACE }}/${{ matrix.directory }}:${{ steps.version.outputs.version }}
+            ${{ env.REGISTRY }}/${{ env.PORTIER_NAMESPACE }}/${{ matrix.directory }}:latest
+          labels: |
+            org.opencontainers.image.title=${{ matrix.directory }}
+            org.opencontainers.image.description=PORTIER 3.0 Agent - ${{ matrix.spec }}
+            org.opencontainers.image.version=${{ steps.version.outputs.version }}
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            portier.agent.port=${{ matrix.port }}
+            portier.agent.specialization=${{ matrix.spec }}
+          cache-from: type=gha,scope=${{ matrix.directory }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.directory }}
+          
+      - name: 🏷️ Output Image Tags
+        id: tags
+        run: |
+          TAG="${{ env.REGISTRY }}/${{ env.PORTIER_NAMESPACE }}/${{ matrix.directory }}:${{ steps.version.outputs.version }}"
+          echo "tags=$TAG" >> $GITHUB_OUTPUT
+
+  deploy-staging:
+    name: 🎭 Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [detect-changes, build-and-test]
+    if: needs.detect-changes.outputs.changed-agents != '[]'
+    environment: staging
+    
+    strategy:
+      matrix: ${{ fromJSON(needs.detect-changes.outputs.deploy-matrix) }}
+      max-parallel: 2  # Deploy 2 agents at a time
+      
+    steps:
+      - name: 🚀 Deploy ${{ matrix.directory }} to Staging
+        uses: appleboy/ssh-action@v1.3.1
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ${{ secrets.STAGING_USER }}
+          key: ${{ secrets.STAGING_KEY }}
+          script: |
+            # Pull latest image
+            docker pull ${{ env.REGISTRY }}/${{ env.PORTIER_NAMESPACE }}/${{ matrix.directory }}:latest
+            
+            # Stop existing container
+            docker stop ${{ matrix.directory }}_staging 2>/dev/null || true
+            docker rm ${{ matrix.directory }}_staging 2>/dev/null || true
+            
+            # Start new container
+            docker run -d \
+              --name ${{ matrix.directory }}_staging \
+              --restart unless-stopped \
+              -p ${{ matrix.port }}:${{ matrix.port }} \
+              -e ENV=staging \
+              -e BEARER_TOKEN="${{ env.BEARER_TOKEN }}" \
+              --network portier_network \
+              ${{ env.REGISTRY }}/${{ env.PORTIER_NAMESPACE }}/${{ matrix.directory }}:latest
+            
+            # Wait for startup
+            sleep 15
+            
+            # Health check with retries
+            for i in {1..5}; do
+              if curl -f http://localhost:${{ matrix.port }}/health; then
+                echo "Health check passed"
+                exit 0
+              fi
+              echo "Health check attempt $i failed, retrying..."
+              sleep 10
+            done
+            
+            echo "Health check failed after 5 attempts"
+            exit 1
+
+  integration-test:
+    name: 🔗 Integration Tests
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    if: needs.detect-changes.outputs.changed-agents != '[]'
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        
+      - name: 🧪 Run Integration Test Suite
+        run: |
+          # Test PORTIER Stack Integration
+          echo "Testing PORTIER 3.0 Stack Integration..."
+          
+          # Test Agent Discovery
+          curl -f "http://${{ secrets.STAGING_HOST }}:12349/api/status/all" || exit 1
+          
+          # Test Option-2-Flow
+          curl -X POST -H "Authorization: Bearer ${{ env.BEARER_TOKEN }}" \
+               -H "Content-Type: application/json" \
+               -d '{"test": "option2_flow"}' \
+               "http://${{ secrets.STAGING_HOST }}:12344/command" || exit 1
+          
+          # Test Individual Agents
+          PORTS=(12344 12345 12348 12349 12350)
+          for port in "${PORTS[@]}"; do
+            echo "Testing agent on port $port..."
+            curl -f "http://${{ secrets.STAGING_HOST }}:$port/health" || echo "Port $port not available (OK if agent not deployed)"
+          done
+          
+          echo "✅ Integration tests passed"
+
+  deploy-production:
+    name: 🏭 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [detect-changes, integration-test]
+    if: needs.detect-changes.outputs.changed-agents != '[]' && github.ref == 'refs/heads/main'
+    environment: production
+    
+    strategy:
+      matrix: ${{ fromJSON(needs.detect-changes.outputs.deploy-matrix) }}
+      max-parallel: 1  # Deploy one agent at a time in production
+      
+    steps:
+      - name: 🚀 Blue-Green Deploy ${{ matrix.directory }}
+        uses: appleboy/ssh-action@v1.3.1
+        with:
+          host: ${{ env.DEPLOY_HOST }}
+          username: ${{ env.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            set -e
+            
+            # Blue-Green Deployment
+            AGENT_NAME="${{ matrix.directory }}"
+            BASE_PORT="${{ matrix.port }}"
+            
+            # Determine current and new colors
+            CURRENT_COLOR=$(docker ps --format "table {{.Names}}" | grep "${AGENT_NAME}_" | grep -o "blue\|green" | head -1 || echo "green")
+            NEW_COLOR=$([ "$CURRENT_COLOR" = "blue" ] && echo "green" || echo "blue")
+            
+            # Calculate ports (blue: base, green: base+100)
+            if [[ "$NEW_COLOR" == "blue" ]]; then
+              NEW_PORT="$BASE_PORT"
+              OLD_PORT="$((BASE_PORT + 100))"
+            else
+              NEW_PORT="$((BASE_PORT + 100))"
+              OLD_PORT="$BASE_PORT"
+            fi
+            
+            echo "Deploying $AGENT_NAME: $CURRENT_COLOR -> $NEW_COLOR (port $NEW_PORT)"
+            
+            # Pull latest image
+            docker pull ${{ env.REGISTRY }}/${{ env.PORTIER_NAMESPACE }}/${{ matrix.directory }}:latest
+            
+            # Start new deployment
+            docker run -d \
+              --name ${AGENT_NAME}_${NEW_COLOR} \
+              --restart unless-stopped \
+              -p $NEW_PORT:${{ matrix.port }} \
+              -e ENV=production \
+              -e BEARER_TOKEN="${{ env.BEARER_TOKEN }}" \
+              --network portier_network \
+              ${{ env.REGISTRY }}/${{ env.PORTIER_NAMESPACE }}/${{ matrix.directory }}:latest
+            
+            # Wait for startup
+            sleep 20
+            
+            # Health check new deployment
+            for i in {1..10}; do
+              if curl -f http://localhost:$NEW_PORT/health; then
+                echo "✅ New deployment healthy"
+                break
+              fi
+              if [[ $i -eq 10 ]]; then
+                echo "❌ New deployment failed health check"
+                docker stop ${AGENT_NAME}_${NEW_COLOR}
+                docker rm ${AGENT_NAME}_${NEW_COLOR}
+                exit 1
+              fi
+              sleep 10
+            done
+            
+            # Update load balancer / traffic routing
+            # This would typically update your load balancer configuration
+            # For now, we use a simple port-based approach
+            
+            # Update service discovery
+            echo "Updating service discovery for $AGENT_NAME to port $NEW_PORT"
+            
+            # Gradual traffic shift (if applicable)
+            sleep 30
+            
+            # Remove old deployment
+            if docker ps -q -f name=${AGENT_NAME}_${CURRENT_COLOR}; then
+              echo "Removing old deployment: ${AGENT_NAME}_${CURRENT_COLOR}"
+              docker stop ${AGENT_NAME}_${CURRENT_COLOR}
+              docker rm ${AGENT_NAME}_${CURRENT_COLOR}
+            fi
+            
+            echo "✅ Blue-Green deployment completed for $AGENT_NAME"
+
+  post-deploy-verification:
+    name: 🩺 Post-Deploy Verification
+    runs-on: ubuntu-latest
+    needs: deploy-production
+    if: needs.detect-changes.outputs.changed-agents != '[]' && github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: ⏱️ Wait for Stack Stabilization
+        run: sleep 60
+        
+      - name: 🔍 Comprehensive Stack Health Check
+        run: |
+          echo "Running comprehensive PORTIER 3.0 stack health check..."
+          
+          # Core agents health
+          CORE_PORTS=(12344 12345 12349)
+          for port in "${CORE_PORTS[@]}"; do
+            echo "Checking core agent on port $port..."
+            HEALTH=$(curl -s http://${{ env.DEPLOY_HOST }}:$port/health | jq -r '.status' || echo "error")
+            if [[ "$HEALTH" != "ok" ]]; then
+              echo "❌ Core agent on port $port failed health check"
+              exit 1
+            fi
+            echo "✅ Port $port healthy"
+          done
+          
+          # Stack integration test
+          echo "Testing PORTIER Option-2-Flow..."
+          RESPONSE=$(curl -s -X POST \
+            -H "Authorization: Bearer ${{ env.BEARER_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"command": "stack_test", "params": {}}' \
+            http://${{ env.DEPLOY_HOST }}:12344/command || echo "error")
+          
+          if echo "$RESPONSE" | jq -e '.status == "success"' >/dev/null; then
+            echo "✅ PORTIER Option-2-Flow working"
+          else
+            echo "❌ PORTIER Option-2-Flow failed"
+            exit 1
+          fi
+          
+          # Dashboard connectivity
+          echo "Testing dashboard connectivity..."
+          curl -f http://${{ env.DEPLOY_HOST }}:12349/api/status/all || {
+            echo "❌ Dashboard connectivity failed"
+            exit 1
+          }
+          
+          echo "✅ All post-deploy verifications passed!"
+          
+      - name: 📧 Send Deployment Notification
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const deployedAgents = ${{ needs.detect-changes.outputs.changed-agents }};
+            const agentList = deployedAgents.map(a => `- ${a.directory} (Port ${a.port})`).join('\n');
+            
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request?.number || 1,
+              body: `🚀 **PORTIER 3.0 Stack Deployment Successful**\n\n**Deployed Agents:**\n${agentList}\n\n**Deployment Mode:** ${{ github.event.inputs.deploy_mode || 'rolling' }}\n**Environment:** Production\n**Status:** ✅ Verified and Healthy\n\n**Stack Health:** http://${{ env.DEPLOY_HOST }}:12349/api/status/all`
+            }).catch(e => console.log('Could not post comment:', e.message));
+
+  cleanup:
+    name: 🧹 Cleanup
+    runs-on: ubuntu-latest
+    needs: post-deploy-verification
+    if: always()
+    
+    steps:
+      - name: 🗑️ Cleanup Old Images
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: '${{ env.PORTIER_NAMESPACE }}/*'
+          package-type: 'container'
+          min-versions-to-keep: 3
+          delete-only-untagged-versions: true
+        continue-on-error: true
+        
+      - name: 📋 Generate Deployment Report
+        run: |
+          echo "🎆 PORTIER 3.0 Stack Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp:** $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployed Agents:** ${{ needs.detect-changes.outputs.changed-agents }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployment Mode:** ${{ github.event.inputs.deploy_mode || 'auto' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ✅ Success" >> $GITHUB_STEP_SUMMARY

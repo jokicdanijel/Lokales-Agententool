@@ -1,0 +1,25 @@
+{
+  "ts": "2025-11-28T03:58:34.232993Z",
+  "src": "opena3",
+  "dst": "dashboard",
+  "kind": "RESP",
+  "body": {
+    "detail": [
+      {
+        "type": "missing",
+        "loc": [
+          "body",
+          "prompt"
+        ],
+        "msg": "Field required",
+        "input": {
+          "message": "Hallo OpenWebUI Test",
+          "model": null,
+          "stream": false
+        },
+        "url": "https://errors.pydantic.dev/2.5/v/missing"
+      }
+    ]
+  },
+  "strict": true
+}

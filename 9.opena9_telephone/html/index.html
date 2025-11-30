@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📞 OPENA9 Telephone - PORTIER PAS-6.0 Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="logo-section">
+                <span class="logo-icon">📞</span>
+                <h1>OPENA9 Telephone Agent</h1>
+                <span class="version-badge">v6.0.0 PAS-6.0</span>
+            </div>
+            <div class="status-section">
+                <span id="connection-status" class="status-indicator status-loading">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Verbinde...</span>
+                </span>
+                <span id="uptime" class="uptime-display">--:--:--</span>
+            </div>
+        </header>
+
+        <!-- Main Grid -->
+        <main class="main-grid">
+            <!-- Status Cards Row -->
+            <section class="status-cards">
+                <div class="card status-card">
+                    <div class="card-icon">📞</div>
+                    <div class="card-content">
+                        <h3>Anrufe Gesamt</h3>
+                        <span id="calls-total" class="metric-value">0</span>
+                    </div>
+                </div>
+                <div class="card status-card">
+                    <div class="card-icon">✅</div>
+                    <div class="card-content">
+                        <h3>Erfolgreiche</h3>
+                        <span id="calls-success" class="metric-value success">0</span>
+                    </div>
+                </div>
+                <div class="card status-card">
+                    <div class="card-icon">❌</div>
+                    <div class="card-content">
+                        <h3>Fehlgeschlagen</h3>
+                        <span id="calls-failed" class="metric-value error">0</span>
+                    </div>
+                </div>
+                <div class="card status-card">
+                    <div class="card-icon">🔊</div>
+                    <div class="card-content">
+                        <h3>Aktive Anrufe</h3>
+                        <span id="active-calls" class="metric-value highlight">0</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Left Panel -->
+            <section class="left-panel">
+                <!-- Call Control -->
+                <div class="card control-card">
+                    <h2>📱 Anruf starten</h2>
+                    <form id="call-form">
+                        <div class="form-group">
+                            <label for="phone-number">Telefonnummer</label>
+                            <input type="tel" id="phone-number" placeholder="+49 123 456789" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="caller-id">Absender (Caller ID)</label>
+                            <input type="tel" id="caller-id" placeholder="+49 987 654321">
+                        </div>
+                        <div class="form-group">
+                            <label for="voice-message">AI Voice Nachricht (optional)</label>
+                            <textarea id="voice-message" rows="3" placeholder="Guten Tag, dies ist eine automatische Nachricht..."></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <span class="btn-icon">📞</span> Anrufen
+                            </button>
+                            <button type="button" id="btn-hangup" class="btn btn-danger" disabled>
+                                <span class="btn-icon">📴</span> Auflegen
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Voice Generation -->
+                <div class="card">
+                    <h2>🎙️ Voice Generation</h2>
+                    <form id="voice-form">
+                        <div class="form-group">
+                            <label for="voice-text">Text für Sprachsynthese</label>
+                            <textarea id="voice-text" rows="4" placeholder="Text eingeben, der in Sprache umgewandelt werden soll..."></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="voice-style">Stimme</label>
+                                <select id="voice-style">
+                                    <option value="alloy">Alloy</option>
+                                    <option value="echo">Echo</option>
+                                    <option value="fable">Fable</option>
+                                    <option value="onyx">Onyx</option>
+                                    <option value="nova">Nova</option>
+                                    <option value="shimmer">Shimmer</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="voice-speed">Geschwindigkeit</label>
+                                <input type="range" id="voice-speed" min="0.5" max="2.0" step="0.1" value="1.0">
+                                <span id="speed-value">1.0x</span>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-secondary">
+                            <span class="btn-icon">🔊</span> Generieren
+                        </button>
+                    </form>
+                    <div id="audio-output" class="audio-output hidden">
+                        <audio id="generated-audio" controls></audio>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel -->
+            <section class="right-panel">
+                <!-- Active Calls -->
+                <div class="card">
+                    <h2>📊 Aktive Anrufe</h2>
+                    <div id="active-calls-list" class="calls-list">
+                        <p class="empty-state">Keine aktiven Anrufe</p>
+                    </div>
+                </div>
+
+                <!-- Service Status -->
+                <div class="card">
+                    <h2>🔧 Service Status</h2>
+                    <div class="service-grid">
+                        <div class="service-item">
+                            <span class="service-name">Twilio API</span>
+                            <span id="status-twilio" class="service-status status-unknown">●</span>
+                        </div>
+                        <div class="service-item">
+                            <span class="service-name">SIP Gateway</span>
+                            <span id="status-sip" class="service-status status-unknown">●</span>
+                        </div>
+                        <div class="service-item">
+                            <span class="service-name">Asterisk PBX</span>
+                            <span id="status-asterisk" class="service-status status-unknown">●</span>
+                        </div>
+                        <div class="service-item">
+                            <span class="service-name">OpenAI Voice</span>
+                            <span id="status-openai" class="service-status status-unknown">●</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card">
+                    <h2>📋 Letzte Aktivitäten</h2>
+                    <div id="activity-log" class="activity-log">
+                        <p class="empty-state">Keine Aktivitäten</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bottom Panel - Metrics -->
+            <section class="bottom-panel">
+                <div class="card metrics-card">
+                    <h2>📈 Metriken</h2>
+                    <div class="metrics-grid">
+                        <div class="metric-item">
+                            <span class="metric-label">Durchschn. Anrufdauer</span>
+                            <span id="avg-duration" class="metric-value">0s</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Sprachgenerierungen</span>
+                            <span id="voice-generations" class="metric-value">0</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Transkriptionen</span>
+                            <span id="transcriptions" class="metric-value">0</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">API Response</span>
+                            <span id="api-response" class="metric-value">0ms</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Fehlerrate</span>
+                            <span id="error-rate" class="metric-value">0%</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Anrufe/Stunde</span>
+                            <span id="calls-per-hour" class="metric-value">0</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <span>ELION PORTIER PAS-6.0 | opena9_telephone</span>
+            <span>Port: 12355</span>
+            <span id="last-update">Letztes Update: --:--:--</span>
+        </footer>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

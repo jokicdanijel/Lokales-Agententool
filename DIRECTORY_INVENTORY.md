@@ -1,4 +1,4 @@
-# 📁 Gesamtprojekt - Verzeichnisstruktur & Inventar
+
 
 **Erstellt:** 24. November 2025
 **Projekt:** ELION Multi-Agent System

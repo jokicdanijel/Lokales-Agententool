@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📧 Email Agent 6.0 - PORTIER Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="config.js"></script>
+    <script defer src="app.js"></script>
+</head>
+<body>
+
+<!-- 📱 Header Navigation -->
+<header class="header">
+    <div class="header-content">
+        <div class="logo-section">
+            <div class="logo-icon">📧</div>
+            <div class="logo-text">
+                <h1>Email Agent 6.0</h1>
+                <p class="subtitle">AI-Powered Email Automation • IMAP/SMTP Integration</p>
+            </div>
+        </div>
+        
+        <div class="status-section">
+            <div class="connection-status">
+                <div id="statusDot" class="status-dot"></div>
+                <span id="statusText">Disconnected</span>
+            </div>
+            <div class="timestamp">
+                Last Updated: <span id="lastUpdated">--:--:--</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- 🔐 Authentication Section -->
+<section class="container">
+    <div class="auth-card">
+        <h2>🔐 Authentication</h2>
+        <div class="auth-form">
+            <input 
+                type="password" 
+                id="token" 
+                placeholder="Bearer Token eingeben..."
+                class="auth-input"
+            >
+            <button onclick="authenticate()" class="btn btn-primary">
+                🔓 Connect
+            </button>
+        </div>
+        <div class="auth-status">
+            Connection: <span id="connectionStatus">Disconnected</span>
+        </div>
+    </div>
+</section>
+
+<!-- 📊 Main Dashboard -->
+<div class="container">
+    
+    <!-- Health & Status Row -->
+    <div class="grid-row">
+        <!-- Health Check -->
+        <div class="card">
+            <div class="card-header">
+                <h3>🩺 Health Check</h3>
+                <button onclick="runHealth()" class="btn btn-success btn-sm">
+                    Check Health
+                </button>
+            </div>
+            <div class="card-body">
+                <pre id="health_output" class="log-output"></pre>
+            </div>
+        </div>
+        
+        <!-- Agent Status -->
+        <div class="card">
+            <div class="card-header">
+                <h3>📊 Agent Status</h3>
+                <button onclick="runStatus()" class="btn btn-info btn-sm">
+                    Get Status
+                </button>
+            </div>
+            <div class="card-body">
+                <pre id="status_output" class="log-output"></pre>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Email Commands Row -->
+    <div class="grid-row">
+        <!-- Email Commands -->
+        <div class="card card-large">
+            <div class="card-header">
+                <h3>📧 Email Commands</h3>
+                <div class="btn-group">
+                    <button onclick="loadCommandTemplate('check_inbox')" class="btn btn-outline btn-sm">
+                        📥 Check Inbox
+                    </button>
+                    <button onclick="loadCommandTemplate('send_email')" class="btn btn-outline btn-sm">
+                        📤 Send Email
+                    </button>
+                    <button onclick="loadCommandTemplate('search_emails')" class="btn btn-outline btn-sm">
+                        🔍 Search
+                    </button>
+                    <button onclick="validateCommand()" class="btn btn-secondary btn-sm">
+                        ✅ Validate
+                    </button>
+                    <button onclick="clearCommand()" class="btn btn-danger btn-sm">
+                        🗑️ Clear
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="editor-section">
+                    <textarea 
+                        id="cmd_payload" 
+                        class="json-editor"
+                        placeholder="Enter email command JSON payload..."
+                    >{
+  "command": "check_inbox",
+  "args": {
+    "folder": "INBOX",
+    "limit": 10
+  }
+}</textarea>
+                </div>
+                <div class="action-section">
+                    <button onclick="runCommand()" class="btn btn-primary">
+                        🚀 Execute Command
+                    </button>
+                </div>
+                <div class="output-section">
+                    <h4>Output:</h4>
+                    <pre id="cmd_output" class="log-output tall"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- AI Functions Row -->
+    <div class="grid-row">
+        <!-- AI Specialized Functions -->
+        <div class="card card-large">
+            <div class="card-header">
+                <h3>🤖 AI Email Functions</h3>
+                <div class="btn-group">
+                    <button onclick="loadAITemplate('generate_reply')" class="btn btn-outline btn-sm">
+                        ✍️ Generate Reply
+                    </button>
+                    <button onclick="loadAITemplate('classify_email')" class="btn btn-outline btn-sm">
+                        🏷️ Classify
+                    </button>
+                    <button onclick="loadAITemplate('sentiment_analysis')" class="btn btn-outline btn-sm">
+                        😊 Sentiment
+                    </button>
+                    <button onclick="loadAITemplate('auto_response')" class="btn btn-outline btn-sm">
+                        🤖 Auto Response
+                    </button>
+                    <button onclick="validateSpecialized()" class="btn btn-secondary btn-sm">
+                        ✅ Validate
+                    </button>
+                    <button onclick="clearSpecialized()" class="btn btn-danger btn-sm">
+                        🗑️ Clear
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="editor-section">
+                    <textarea 
+                        id="spec_payload" 
+                        class="json-editor"
+                        placeholder="Enter AI function JSON payload..."
+                    >{
+  "action": "generate_reply",
+  "email_text": "Hallo, ich habe eine Frage zu Ihrem Service...",
+  "tone": "professional",
+  "language": "german"
+}</textarea>
+                </div>
+                <div class="action-section">
+                    <button onclick="runSpecialized()" class="btn btn-primary">
+                        🧠 Execute AI Function
+                    </button>
+                </div>
+                <div class="output-section">
+                    <h4>AI Output:</h4>
+                    <pre id="spec_output" class="log-output tall"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Metrics & Logs Row -->
+    <div class="grid-row">
+        <!-- Metrics -->
+        <div class="card">
+            <div class="card-header">
+                <h3>📈 Performance Metrics</h3>
+                <button onclick="loadMetrics()" class="btn btn-info btn-sm">
+                    📊 Refresh
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="metrics-grid">
+                    <div class="metric-item">
+                        <div class="metric-label">Emails Processed</div>
+                        <div id="emails_processed" class="metric-value">--</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">AI Replies</div>
+                        <div id="ai_replies" class="metric-value">--</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Uptime</div>
+                        <div id="uptime" class="metric-value">--</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Success Rate</div>
+                        <div id="success_rate" class="metric-value">--</div>
+                    </div>
+                </div>
+                <pre id="metrics_output" class="log-output"></pre>
+            </div>
+        </div>
+        
+        <!-- Logs -->
+        <div class="card">
+            <div class="card-header">
+                <h3>📜 System Logs</h3>
+                <div class="btn-group">
+                    <button onclick="loadLogs()" class="btn btn-info btn-sm">
+                        📄 Refresh
+                    </button>
+                    <button onclick="clearLogs()" class="btn btn-danger btn-sm">
+                        🗑️ Clear
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <pre id="logs_output" class="log-output tall scroll"></pre>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Configuration -->
+    <div class="grid-row">
+        <div class="card card-full">
+            <div class="card-header">
+                <h3>⚙️ Agent Configuration</h3>
+                <button onclick="loadConfig()" class="btn btn-secondary btn-sm">
+                    🔧 Load Config
+                </button>
+            </div>
+            <div class="card-body">
+                <pre id="config_output" class="log-output"></pre>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<!-- 🦶 Footer -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-left">
+            <span>📧 Email Agent 6.0</span>
+            <span class="separator">•</span>
+            <span>PORTIER PAS-6.0</span>
+        </div>
+        <div class="footer-right">
+            <span>Status: <span id="footerStatus">Disconnected</span></span>
+            <span class="separator">•</span>
+            <span>Port 12351</span>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

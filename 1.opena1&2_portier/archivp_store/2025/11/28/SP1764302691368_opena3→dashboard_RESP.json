@@ -1,0 +1,25 @@
+{
+  "ts": "2025-11-28T04:04:51.368376Z",
+  "src": "opena3",
+  "dst": "dashboard",
+  "kind": "RESP",
+  "body": {
+    "detail": [
+      {
+        "type": "missing",
+        "loc": [
+          "body",
+          "prompt"
+        ],
+        "msg": "Field required",
+        "input": {
+          "message": "Test vom Terminal",
+          "model": null,
+          "stream": false
+        },
+        "url": "https://errors.pydantic.dev/2.5/v/missing"
+      }
+    ]
+  },
+  "strict": true
+}

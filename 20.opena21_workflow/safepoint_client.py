@@ -1,0 +1,290 @@
+import os
+import httpx
+from datetime import datetime, timezone
+
+OPENA2_URL=os.getenv("OPENA2_URL","http://127.0.0.1:12345")
+BEARER_TOKEN=os.getenv("BEARER_TOKEN","c899b90d-xxx")
+
+class SafepointClient:
+    """Safepoint-Client 3.0 für opena21 (Workflow-Agent)."""
+    @staticmethod
+    async def write(category: str, source: str, destination: str, request_id: str, payload: dict):
+        iso=datetime.now(timezone.utc).isoformat()
+        ts=int(datetime.now().timestamp())
+
+        def mask(x):
+            if isinstance(x,dict):
+                return {k:("***" if k.lower() in ["token","auth","password","secret","apikey","key"] else mask(v))
+                        for k,v in x.items()}
+            if isinstance(x,list): return [mask(i) for i in x]
+            return x
+
+        body={
+            "timestamp":iso,
+            "sp_timestamp":ts,
+            "source":source,
+            "destination":destination,
+            "category":category,
+            "request_id":request_id,
+            "payload":mask(payload),
+            "strict":True
+        }
+
+        async with httpx.AsyncClient() as c:
+            await c.post(f"{OPENA2_URL}/store/{category}",json=body,
+                         headers={"Authorization":f"Bearer {BEARER_TOKEN}"},timeout=15.0)
+        return body
+    
+    CATEGORIES = {"CMD", "RESP", "ROUTE", "DISPATCH"}
+    SECRET_KEYS = {"token", "auth", "password", "apikey", "key", "secret", "credentials", "bearer"}
+    
+    def __init__(
+        self, 
+        agent_id: str,
+        archivp_root: str = "/tmp/archivp_store",
+        dashboard_url: str = "http://127.0.0.1:12349",
+        bearer_token: Optional[str] = None
+    ):
+        self.agent_id = agent_id
+        self.archivp_root = Path(archivp_root)
+        self.dashboard_url = dashboard_url
+        self.bearer_token = bearer_token or "c899b90d-faf8-485b-afa4-078357cf5313"
+        self.index_file = self.archivp_root / "index.jsonl"
+        
+        # Logging Setup
+        self.logger = logging.getLogger(f"safepoint_client_{agent_id}")
+        
+        # Struktur sicherstellen
+        self._ensure_structure()
+    
+    def _ensure_structure(self) -> None:
+        """Erstellt YYYY/MM/DD Struktur und index.jsonl"""
+        self.archivp_root.mkdir(parents=True, exist_ok=True)
+        if not self.index_file.exists():
+            self.index_file.write_text("", encoding="utf-8")
+    
+    def _mask_secrets(self, data: Any) -> Any:
+        """Maskiert Secrets rekursiv nach PORTIER 3.0 Spezifikation"""
+        if isinstance(data, dict):
+            return {
+                k: "***" if any(secret in k.lower() for secret in self.SECRET_KEYS)
+                else self._mask_secrets(v)
+                for k, v in data.items()
+            }
+        elif isinstance(data, list):
+            return [self._mask_secrets(item) for item in data]
+        return data
+    
+    def write_cmd_safepoint(self, request_id: str, payload: Dict[str, Any]) -> str:
+        """Schreibt CMD Safepoint (Agent → opena2)"""
+        return self.write_safepoint("opena2", "CMD", request_id, payload)
+    
+    def write_resp_safepoint(self, request_id: str, payload: Dict[str, Any]) -> str:
+        """Schreibt RESP Safepoint (Agent → opena2)"""
+        return self.write_safepoint("opena2", "RESP", request_id, payload)
+    
+    def write_route_safepoint(self, request_id: str, payload: Dict[str, Any]) -> str:
+        """Schreibt ROUTE Safepoint (opena2 → kordp)"""
+        return self.write_safepoint("kordp", "ROUTE", request_id, payload)
+    
+    def write_dispatch_safepoint(self, target_agent: str, request_id: str, payload: Dict[str, Any]) -> str:
+        """Schreibt DISPATCH Safepoint (kordp → Agent)"""
+        return self.write_safepoint(target_agent, "DISPATCH", request_id, payload)
+    
+    def write_safepoint(
+        self,
+        destination: str,
+        category: str,
+        request_id: str,
+        payload: Dict[str, Any]
+    ) -> str:
+        """Schreibt Safepoint nach PORTIER 3.0 Spezifikation"""
+        
+        # Validierung
+        if category not in self.CATEGORIES:
+            raise ValueError(f"Invalid category: {category}. Must be one of {self.CATEGORIES}")
+        
+        # Timestamps
+        sp_timestamp = int(time.time())
+        iso_timestamp = datetime.now(timezone.utc).isoformat()
+        
+        # YYYY/MM/DD Pfad
+        now = datetime.now()
+        date_path = self.archivp_root / now.strftime("%Y") / now.strftime("%m") / now.strftime("%d")
+        date_path.mkdir(parents=True, exist_ok=True)
+        
+        # Dateiname mit Unicode-Pfeil →
+        filename = f"SP{sp_timestamp}_{self.agent_id}→{destination}_{category}.json"
+        filepath = date_path / filename
+        
+        # Safepoint-Objekt (PORTIER 3.0 Schema)
+        safepoint_obj = {
+            "timestamp": iso_timestamp,
+            "sp_timestamp": sp_timestamp,
+            "source": self.agent_id,
+            "destination": destination,
+            "category": category,
+            "request_id": request_id,
+            "payload": self._mask_secrets(payload),
+            "strict": True
+        }
+        
+        # Atomic Write mit Retry-Logic (schwere Fehler)
+        try:
+            self._atomic_write(filepath, safepoint_obj)
+        except Exception as e:
+            # 3x Retry mit exponential backoff
+            for attempt in range(3):
+                try:
+                    time.sleep(0.1 * (2 ** attempt))  # 0.1s, 0.2s, 0.4s
+                    self._atomic_write(filepath, safepoint_obj)
+                    break
+                except Exception:
+                    if attempt == 2:  # Letzter Versuch
+                        raise RuntimeError(f"Failed to write safepoint after 3 attempts: {e}")
+        
+        # index.jsonl Update (Thread-safe append)
+        self._update_index(filename, safepoint_obj)
+        
+        # SSE Dashboard-Event (async, non-blocking)
+        asyncio.create_task(self._publish_sse_event(category, filename))
+        
+        self.logger.info(f"Safepoint written: {filename}")
+        return filename
+    
+    def _atomic_write(self, filepath: Path, data: Dict[str, Any]) -> None:
+        """Atomic File Write (JSON kompakt ohne pretty-print)"""
+        content = json.dumps(data, ensure_ascii=False, separators=(',', ':'))
+        filepath.write_text(content, encoding="utf-8")
+    
+    def _update_index(self, filename: str, safepoint_obj: Dict[str, Any]) -> None:
+        """Updates index.jsonl (Thread-safe)"""
+        index_entry = {
+            "file": filename,
+            "ts": safepoint_obj["timestamp"],
+            "category": safepoint_obj["category"],
+            "source": safepoint_obj["source"],
+            "destination": safepoint_obj["destination"],
+            "request_id": safepoint_obj["request_id"]
+        }
+        
+        try:
+            with open(self.index_file, "a", encoding="utf-8") as f:
+                f.write(json.dumps(index_entry, ensure_ascii=False, separators=(',', ':')) + "\n")
+        except Exception as e:
+            # Leichter Fehler - Safepoint ist geschrieben, Index nicht
+            self.logger.warning(f"Failed to update index.jsonl: {e}")
+    
+    async def _publish_sse_event(self, category: str, filename: str) -> None:
+        """Publiziert SSE Event für Dashboard-Integration (async)"""
+        try:
+            event_data = {
+                "event_type": "safepoint",
+                "agent": self.agent_id,
+                "category": category,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "file": filename
+            }
+            
+            async with httpx.AsyncClient() as client:
+                await client.post(
+                    f"{self.dashboard_url}/api/sse/publish",
+                    json=event_data,
+                    headers={"Authorization": f"Bearer {self.bearer_token}"},
+                    timeout=5.0
+                )
+        except Exception as e:
+            # SSE Events sind nicht kritisch - nur loggen
+            self.logger.debug(f"SSE Event failed (non-critical): {e}")
+    
+    def get_stats(self) -> Dict[str, Any]:
+        """Holt Safepoint-Statistiken"""
+        try:
+            if not self.index_file.exists():
+                return {"total_safepoints": 0, "by_category": {}}
+            
+            lines = self.index_file.read_text(encoding="utf-8").strip().split('\n')
+            entries = [json.loads(line) for line in lines if line.strip()]
+            
+            # Filter für diesen Agent
+            agent_entries = [e for e in entries if e.get("source") == self.agent_id]
+            
+            # Statistiken
+            total = len(agent_entries)
+            by_category = {}
+            for entry in agent_entries:
+                cat = entry.get("category", "unknown")
+                by_category[cat] = by_category.get(cat, 0) + 1
+            
+            return {
+                "agent_id": self.agent_id,
+                "total_safepoints": total,
+                "by_category": by_category,
+                "last_update": datetime.now(timezone.utc).isoformat()
+            }
+        except Exception as e:
+            self.logger.error(f"Failed to get stats: {e}")
+            return {"error": str(e)}
+    
+    def validate_portier30_compliance(self) -> Dict[str, bool]:
+        """Validiert PORTIER 3.0 Konformität"""
+        return {
+            "categories_correct": self.CATEGORIES == {"CMD", "RESP", "ROUTE", "DISPATCH"},
+            "secret_keys_complete": len(self.SECRET_KEYS) >= 7,
+            "archivp_structure": self.archivp_root.exists(),
+            "index_file": self.index_file.exists(),
+            "unicode_arrow_support": "→" in "SP123_opena3→opena2_CMD.json"
+        }
+
+
+# Convenience Functions für Agent-Integration
+def create_safepoint_client(agent_id: str) -> SafepointClient:
+    """Factory für Safepoint Client"""
+    return SafepointClient(
+        agent_id=agent_id,
+        archivp_root="/tmp/archivp_store",
+        dashboard_url="http://127.0.0.1:12349"
+    )
+
+def write_cmd_safepoint(agent_id: str, request_id: str, payload: Dict[str, Any]) -> str:
+    """Shortcut für CMD Safepoint"""
+    client = create_safepoint_client(agent_id)
+    return client.write_cmd_safepoint(request_id, payload)
+
+def write_resp_safepoint(agent_id: str, request_id: str, payload: Dict[str, Any]) -> str:
+    """Shortcut für RESP Safepoint"""
+    client = create_safepoint_client(agent_id)
+    return client.write_resp_safepoint(request_id, payload)
+
+
+# Demo & Testing
+if __name__ == "__main__":
+    # Demo der Safepoint-Client Funktionalität
+    client = SafepointClient("opena4_demo")
+    
+    print("🔥 PORTIER 3.0 Safepoint Client Demo")
+    print("=" * 40)
+    
+    # CMD Safepoint
+    cmd_file = client.write_cmd_safepoint("demo_req_001", {
+        "command": "telegram_send",
+        "message": "Hello Telegram",
+        "token": "bot-secret-key"  # Wird maskiert
+    })
+    print(f"✓ CMD Safepoint: {cmd_file}")
+    
+    # RESP Safepoint
+    resp_file = client.write_resp_safepoint("demo_req_001", {
+        "success": True,
+        "response": "Message sent successfully",
+        "message_id": 12345
+    })
+    print(f"✓ RESP Safepoint: {resp_file}")
+    
+    # Statistiken
+    stats = client.get_stats()
+    print(f"✓ Stats: {stats}")
+    
+    # Konformitäts-Check
+    compliance = client.validate_portier30_compliance()
+    print(f"✓ PORTIER 3.0 Compliance: {all(compliance.values())}")

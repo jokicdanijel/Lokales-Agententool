@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📧 Email Agent 6.0 - PORTIER Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="config.js"></script>
+    <script defer src="app.js"></script>
+</head>
+<body>
+
+<!-- 📱 Header Navigation -->
+<header class="header">
+    <div class="header-content">
+        <div class="logo-section">
+            <div class="logo-icon">📧</div>
+            <div class="logo-text">
+                <h1>Email Agent 6.0</h1>
+                <p class="subtitle">AI-Powered Email Automation • IMAP/SMTP Integration</p>
+            </div>
+        </div>
+        
+        <div class="status-section">
+            <div class="connection-status">
+                <div id="statusDot" class="status-dot"></div>
+                <span id="statusText">Disconnected</span>
+            </div>
+            <div class="timestamp">
+                Last Updated: <span id="lastUpdated">--:--:--</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- 🔐 Authentication Section -->
+<section class="container">
+    <div class="auth-card">
+        <h2>🔐 Authentication</h2>
+        <div class="auth-form">
+            <input 
+                type="password" 
+                id="token" 
+                placeholder="Bearer Token eingeben..."
+                class="auth-input"
+            >
+            <button onclick="authenticate()" class="btn btn-primary">
+                🔓 Connect
+            </button>
+        </div>
+        <div class="auth-status">
+            Connection: <span id="connectionStatus">Disconnected</span>
+        </div>
+    </div>
+</section>
+
+<!-- 📊 Main Dashboard -->
+<div class="container">
+    
+    <!-- Health & Status Row -->
+    <div class="grid-row">
+        <!-- Health Check -->
+        <div class="card">
+            <div class="card-header">
+                <h3>🩺 Health Check</h3>
+                <button onclick="runHealth()" class="btn btn-success btn-sm">
+                    Check Health
+                </button>
+            </div>
+            <div class="card-body">
+                <pre id="health_output" class="log-output"></pre>
+            </div>
+        </div>
+        
+        <!-- Agent Status -->
+        <div class="card">
+            <div class="card-header">
+                <h3>📊 Agent Status</h3>
+                <button onclick="runStatus()" class="btn btn-info btn-sm">
+                    Get Status
+                </button>
+            </div>
+            <div class="card-body">
+                <pre id="status_output" class="log-output"></pre>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Email Commands Row -->
+    <div class="grid-row">
+        <!-- Email Commands -->
+        <div class="card card-large">
+            <div class="card-header">
+                <h3>📧 Email Commands</h3>
+                <div class="btn-group">
+                    <button onclick="loadCommandTemplate('check_inbox')" class="btn btn-outline btn-sm">
+                        📥 Check Inbox
+                    </button>
+                    <button onclick="loadCommandTemplate('send_email')" class="btn btn-outline btn-sm">
+                        📤 Send Email
+                    </button>
+                    <button onclick="loadCommandTemplate('search_emails')" class="btn btn-outline btn-sm">
+                        🔍 Search
+                    </button>
+                    <button onclick="validateCommand()" class="btn btn-secondary btn-sm">
+                        ✅ Validate
+                    </button>
+                    <button onclick="clearCommand()" class="btn btn-danger btn-sm">
+                        🗑️ Clear
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="editor-section">
+                    <textarea 
+                        id="cmd_payload" 
+                        class="json-editor"
+                        placeholder="Enter email command JSON payload..."
+                    >{
+  "command": "check_inbox",
+  "args": {
+    "folder": "INBOX",
+    "limit": 10
+  }
+}</textarea>
+                </div>
+                <div class="action-section">
+                    <button onclick="runCommand()" class="btn btn-primary">
+                        🚀 Execute Command
+                    </button>
+                </div>
+                <div class="output-section">
+                    <h4>Output:</h4>
+                    <pre id="cmd_output" class="log-output tall"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- AI Functions Row -->
+    <div class="grid-row">
+        <!-- AI Specialized Functions -->
+        <div class="card card-large">
+            <div class="card-header">
+                <h3>🤖 AI Email Functions</h3>
+                <div class="btn-group">
+                    <button onclick="loadAITemplate('generate_reply')" class="btn btn-outline btn-sm">
+                        ✍️ Generate Reply
+                    </button>
+                    <button onclick="loadAITemplate('classify_email')" class="btn btn-outline btn-sm">
+                        🏷️ Classify
+                    </button>
+                    <button onclick="loadAITemplate('sentiment_analysis')" class="btn btn-outline btn-sm">
+                        😊 Sentiment
+                    </button>
+                    <button onclick="loadAITemplate('auto_response')" class="btn btn-outline btn-sm">
+                        🤖 Auto Response
+                    </button>
+                    <button onclick="validateSpecialized()" class="btn btn-secondary btn-sm">
+                        ✅ Validate
+                    </button>
+                    <button onclick="clearSpecialized()" class="btn btn-danger btn-sm">
+                        🗑️ Clear
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="editor-section">
+                    <textarea 
+                        id="spec_payload" 
+                        class="json-editor"
+                        placeholder="Enter AI function JSON payload..."
+                    >{
+  "action": "generate_reply",
+  "email_text": "Hallo, ich habe eine Frage zu Ihrem Service...",
+  "tone": "professional",
+  "language": "german"
+}</textarea>
+                </div>
+                <div class="action-section">
+                    <button onclick="runSpecialized()" class="btn btn-primary">
+                        🧠 Execute AI Function
+                    </button>
+                </div>
+                <div class="output-section">
+                    <h4>AI Output:</h4>
+                    <pre id="spec_output" class="log-output tall"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+        .log-container {
+            max-height: 300px;
+            overflow-y: auto;
+            background: #1a1a1a;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            padding: 1rem;
+            border-radius: 0.375rem;
+        }
+        
+        .agent-icon {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--agent-color);
+            margin: 0 auto 1rem;
+        }
+        
+        .feature-card {
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--agent-color);">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-robot me-2"></i>
+                Email Chatbot
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="http://127.0.0.1:12349/html-systems-dashboard">
+                    <i class="fas fa-tachometer-alt me-1"></i>
+                    Haupt-Dashboard
+                </a>
+                <a class="nav-link" href="#" onclick="refreshStatus()">
+                    <i class="fas fa-sync-alt me-1"></i>
+                    Aktualisieren
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Agent Header -->
+    <div class="agent-header">
+        <div class="container text-center">
+            <div class="agent-icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+            <h1>Email Chatbot</h1>
+            <p class="lead">Email Automation & Responses</p>
+            <span class="badge bg-light text-dark fs-6">Port: 12351</span>
+            <span class="badge bg-light text-dark fs-6">Speciality: email_automation</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Status Overview -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card status-card">
+                    <div class="card-body text-center">
+                        <div class="metric-value" id="status-indicator">●</div>
+                        <div>Status</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card status-card">
+                    <div class="card-body text-center">
+                        <div class="metric-value" id="uptime">--</div>
+                        <div>Uptime</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card status-card">
+                    <div class="card-body text-center">
+                        <div class="metric-value" id="requests">--</div>
+                        <div>Requests</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card status-card">
+                    <div class="card-body text-center">
+                        <div class="metric-value" id="performance">--</div>
+                        <div>Performance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agent Controls -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-play-circle me-2"></i>Agent Steuerung</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-agent" onclick="executeAgentFunction('health')">
+                                <i class="fas fa-heartbeat me-2"></i>
+                                Health Check
+                            </button>
+                            <button class="btn btn-agent" onclick="executeAgentFunction('status')">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Status Abrufen
+                            </button>
+                            <button class="btn btn-agent" onclick="executeAgentFunction('command')">
+                                <i class="fas fa-terminal me-2"></i>
+                                Command Ausführen
+                            </button>
+                            <button class="btn btn-outline-secondary" onclick="showLogs()">
+                                <i class="fas fa-file-alt me-2"></i>
+                                Logs Anzeigen
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-cogs me-2"></i>Spezialisierte Funktionen</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="specialized-functions">
+                            
+            <button class="btn btn-outline-primary btn-sm mb-2 w-100" onclick="executeSpecialized('default')">
+                <i class="fas fa-cog me-2"></i>Standard Funktion
+            </button>
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agent Features -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h3><i class="fas fa-star me-2"></i>Agent Features</h3>
+                
+                <div class="feature-card">
+                    <h6><i class="fas fa-check-circle me-2 text-success"></i>Enterprise Ready</h6>
+                    <p class="text-muted mb-0">Production-ready Implementation</p>
+                </div>
+            
+                <div class="feature-card">
+                    <h6><i class="fas fa-check-circle me-2 text-success"></i>Real-time Processing</h6>
+                    <p class="text-muted mb-0">Sofortige Anfragen-Bearbeitung</p>
+                </div>
+            
+                <div class="feature-card">
+                    <h6><i class="fas fa-check-circle me-2 text-success"></i>API Integration</h6>
+                    <p class="text-muted mb-0">RESTful API Endpoints</p>
+                </div>
+            
+                <div class="feature-card">
+                    <h6><i class="fas fa-check-circle me-2 text-success"></i>Monitoring & Logging</h6>
+                    <p class="text-muted mb-0">Umfassende Überwachung</p>
+                </div>
+            
+            </div>
+        </div>
+
+        <!-- Real-time Logs -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-terminal me-2"></i>Real-time Agent Logs</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="log-container" id="log-output">
+                            <div>🚀 Agent Email Chatbot bereit...</div>
+                            <div>📡 Port 12351 aktiv</div>
+                            <div>✅ Spezialisierung: email_automation</div>
+                            <div>🔄 Warte auf Commands...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const AGENT_PORT = 12351;
+        const AGENT_NAME = 'Email Chatbot';
+        const BEARER_TOKEN = localStorage.getItem('bearer_token') || 'c899b90d-faf8-485b-afa4-078357cf5313';
+
+        // Status checking
+        async function refreshStatus() {
+            try {
+                const response = await fetch(`http://127.0.0.1:${AGENT_PORT}/health`, {
+                    headers: { 'Authorization': `Bearer ${BEARER_TOKEN}` }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    updateStatusDisplay(data);
+                    addLogEntry('✅ Status erfolgreich abgerufen');
+                } else {
+                    addLogEntry('❌ Status-Abruf fehlgeschlagen: ' + response.status);
+                    document.getElementById('status-indicator').textContent = '●';
+                    document.getElementById('status-indicator').style.color = '#dc3545';
+                }
+            } catch (error) {
+                addLogEntry('❌ Verbindungsfehler: ' + error.message);
+                document.getElementById('status-indicator').textContent = '●';
+                document.getElementById('status-indicator').style.color = '#dc3545';
+            }
+        }
+
+        function updateStatusDisplay(data) {
+            const statusEl = document.getElementById('status-indicator');
+            statusEl.textContent = '●';
+            statusEl.style.color = data.status === 'ok' ? '#28a745' : '#dc3545';
+            
+            if (data.uptime_seconds) {
+                document.getElementById('uptime').textContent = Math.floor(data.uptime_seconds / 60) + 'm';
+            }
+            
+            if (data.requests_total) {
+                document.getElementById('requests').textContent = data.requests_total;
+            }
+            
+            if (data.performance_score) {
+                document.getElementById('performance').textContent = data.performance_score + '%';
+            }
+        }
+
+        async function executeAgentFunction(functionType) {
+            addLogEntry(`🔄 Führe ${functionType} aus...`);
+            
+            try {
+                let endpoint = '';
+                switch (functionType) {
+                    case 'health':
+                        endpoint = '/health';
+                        break;
+                    case 'status':
+                        endpoint = '/status';
+                        break;
+                    case 'command':
+                        endpoint = '/command';
+                        break;
+                }
+                
+                const response = await fetch(`http://127.0.0.1:${AGENT_PORT}${endpoint}`, {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${BEARER_TOKEN}` }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addLogEntry(`✅ ${functionType} erfolgreich: ${JSON.stringify(data).substring(0, 100)}`);
+                } else {
+                    addLogEntry(`❌ ${functionType} fehlgeschlagen: ${response.status}`);
+                }
+            } catch (error) {
+                addLogEntry(`❌ ${functionType} Fehler: ${error.message}`);
+            }
+        }
+
+        function addLogEntry(message) {
+            const logOutput = document.getElementById('log-output');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            logOutput.appendChild(logEntry);
+            logOutput.scrollTop = logOutput.scrollHeight;
+            
+            // Keep only last 50 log entries
+            while (logOutput.children.length > 50) {
+                logOutput.removeChild(logOutput.firstChild);
+            }
+        }
+
+        function showLogs() {
+            addLogEntry('📄 Zeige detaillierte Logs...');
+            // Could implement log viewer modal here
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            addLogEntry('🚀 Agent Dashboard initialisiert');
+            refreshStatus();
+            
+            // Auto-refresh every 30 seconds
+            setInterval(refreshStatus, 30000);
+        });
+
+        // Specialized function handlers
+        
+        async function executeSpecialized(action) {
+            addLogEntry(`🔧 Führe spezialisierte Aktion aus: ${action}`);
+            
+            try {
+                const payload = {
+                    action: action,
+                    speciality: 'email_automation',
+                    timestamp: new Date().toISOString()
+                };
+                
+                const response = await fetch(`http://127.0.0.1:${AGENT_PORT}/specialized`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${BEARER_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addLogEntry(`✅ Spezialisierte Aktion erfolgreich: ${action}`);
+                } else {
+                    addLogEntry(`❌ Spezialisierte Aktion fehlgeschlagen: ${response.status}`);
+                }
+            } catch (error) {
+                addLogEntry(`❌ Spezialisierte Aktion Fehler: ${error.message}`);
+            }
+        }
+        
+    </script>
+</body>
+</html>

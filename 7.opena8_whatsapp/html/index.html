@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💬 opena8 - WhatsApp Chatbot | PAS-6.0</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>">
+</head>
+<body>
+    <header class="dashboard-header">
+        <div class="header-left">
+            <span class="logo">💬</span>
+            <div class="header-info">
+                <h1>WhatsApp Chatbot Agent</h1>
+                <span class="version">PAS-6.0 | opena8 | Business Messaging</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div id="statusBadge" class="status-badge">
+                <span class="status-dot"></span>
+                <span id="statusText">Connecting...</span>
+            </div>
+            <span class="port-badge">Port 12352</span>
+        </div>
+    </header>
+
+    <nav class="dashboard-nav">
+        <button class="nav-btn active" data-section="overview">📊 Overview</button>
+        <button class="nav-btn" data-section="inbox">📥 Inbox</button>
+        <button class="nav-btn" data-section="compose">✍️ Compose</button>
+        <button class="nav-btn" data-section="contacts">👥 Contacts</button>
+        <button class="nav-btn" data-section="templates">📝 Templates</button>
+        <button class="nav-btn" data-section="media">📎 Media</button>
+        <button class="nav-btn" data-section="webhook">🔗 Webhook</button>
+        <button class="nav-btn" data-section="analytics">📈 Analytics</button>
+        <button class="nav-btn" data-section="api">📡 API</button>
+        <button class="nav-btn" data-section="settings">⚙️ Settings</button>
+    </nav>
+
+    <main class="dashboard-main">
+        <!-- OVERVIEW -->
+        <section id="overview" class="section active">
+            <div class="section-header">
+                <h2>📊 System Overview</h2>
+                <button class="btn btn-secondary" onclick="app.refreshAll()">🔄 Refresh</button>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card primary"><span class="metric-icon">📥</span><div class="metric-content"><span id="metricIncoming" class="metric-value">0</span><span class="metric-label">Incoming</span></div></div>
+                <div class="metric-card success"><span class="metric-icon">📤</span><div class="metric-content"><span id="metricOutgoing" class="metric-value">0</span><span class="metric-label">Sent</span></div></div>
+                <div class="metric-card warning"><span class="metric-icon">👥</span><div class="metric-content"><span id="metricContacts" class="metric-value">0</span><span class="metric-label">Contacts</span></div></div>
+                <div class="metric-card info"><span class="metric-icon">📝</span><div class="metric-content"><span id="metricTemplates" class="metric-value">0</span><span class="metric-label">Templates</span></div></div>
+            </div>
+
+            <div class="card">
+                <h3>🚀 12 WhatsApp Capabilities</h3>
+                <div class="capabilities-grid" id="capabilitiesGrid"></div>
+            </div>
+
+            <div class="card">
+                <h3>⚡ Quick Actions</h3>
+                <div class="action-grid">
+                    <button class="action-btn" onclick="app.showSection('inbox')"><span class="action-icon">📥</span><span>Inbox</span></button>
+                    <button class="action-btn" onclick="app.showSection('compose')"><span class="action-icon">✍️</span><span>Send</span></button>
+                    <button class="action-btn" onclick="app.showSection('contacts')"><span class="action-icon">👥</span><span>Contacts</span></button>
+                    <button class="action-btn" onclick="app.showSection('templates')"><span class="action-icon">📝</span><span>Templates</span></button>
+                    <button class="action-btn" onclick="app.showSection('media')"><span class="action-icon">📎</span><span>Media</span></button>
+                    <button class="action-btn" onclick="app.checkAccountHealth()"><span class="action-icon">💚</span><span>Health</span></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- INBOX -->
+        <section id="inbox" class="section">
+            <div class="section-header">
+                <h2>📥 Message Inbox</h2>
+                <button class="btn btn-secondary" onclick="app.loadInbox()">🔄 Refresh</button>
+            </div>
+            <div class="inbox-container">
+                <div class="conversation-list" id="conversationList">
+                    <div class="loading">Loading conversations...</div>
+                </div>
+                <div class="message-view" id="messageView">
+                    <div class="message-header">
+                        <span id="currentContact">Select a conversation</span>
+                    </div>
+                    <div class="message-list" id="messageList"></div>
+                    <div class="message-input-area">
+                        <input type="text" id="quickReply" class="form-control" placeholder="Type a reply...">
+                        <button class="btn btn-primary" onclick="app.sendQuickReply()">Send</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPOSE -->
+        <section id="compose" class="section">
+            <div class="section-header">
+                <h2>✍️ Compose Message</h2>
+            </div>
+            <div class="card">
+                <h3>📱 Send WhatsApp Message</h3>
+                <div class="form-group">
+                    <label>Phone Number:</label>
+                    <input type="tel" id="sendPhone" class="form-control" placeholder="+49 123 456789">
+                </div>
+                <div class="form-group">
+                    <label>Message Type:</label>
+                    <select id="msgType" class="form-control" onchange="app.toggleMessageType()">
+                        <option value="text">Text Message</option>
+                        <option value="template">Template Message</option>
+                        <option value="media">Media Message</option>
+                    </select>
+                </div>
+                <div id="textInput" class="form-group">
+                    <label>Message:</label>
+                    <textarea id="sendMessage" class="form-control" rows="4" placeholder="Enter your message..."></textarea>
+                </div>
+                <div id="templateInput" class="form-group" style="display:none;">
+                    <label>Template:</label>
+                    <select id="templateSelect" class="form-control"></select>
+                </div>
+                <div id="mediaInput" class="form-group" style="display:none;">
+                    <label>Media URL:</label>
+                    <input type="url" id="mediaUrl" class="form-control" placeholder="https://...">
+                    <label>Caption:</label>
+                    <input type="text" id="mediaCaption" class="form-control" placeholder="Optional caption">
+                </div>
+                <button class="btn btn-primary btn-lg" onclick="app.sendMessage()">📤 Send Message</button>
+            </div>
+        </section>
+
+        <!-- CONTACTS -->
+        <section id="contacts" class="section">
+            <div class="section-header">
+                <h2>👥 Contact Manager</h2>
+                <button class="btn btn-primary" onclick="app.addContact()">➕ Add Contact</button>
+            </div>
+            <div class="card">
+                <input type="text" id="contactSearch" class="form-control" placeholder="🔍 Search contacts..." oninput="app.searchContacts()">
+                <div class="contact-list" id="contactList">
+                    <div class="loading">Loading contacts...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEMPLATES -->
+        <section id="templates" class="section">
+            <div class="section-header">
+                <h2>📝 Message Templates</h2>
+                <button class="btn btn-primary" onclick="app.createTemplate()">➕ New Template</button>
+            </div>
+            <div class="templates-grid" id="templatesGrid">
+                <div class="loading">Loading templates...</div>
+            </div>
+        </section>
+
+        <!-- MEDIA -->
+        <section id="media" class="section">
+            <div class="section-header">
+                <h2>📎 Media Library</h2>
+                <button class="btn btn-primary" onclick="app.uploadMedia()">📤 Upload</button>
+            </div>
+            <div class="card">
+                <div class="media-grid" id="mediaGrid">
+                    <div class="loading">Loading media...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WEBHOOK -->
+        <section id="webhook" class="section">
+            <div class="section-header">
+                <h2>🔗 Webhook Configuration</h2>
+            </div>
+            <div class="card">
+                <h3>📡 Webhook Settings</h3>
+                <div class="form-group">
+                    <label>Webhook URL:</label>
+                    <input type="url" id="webhookUrl" class="form-control" value="http://127.0.0.1:12352/webhook">
+                </div>
+                <div class="form-group">
+                    <label>Verify Token:</label>
+                    <input type="text" id="verifyToken" class="form-control" placeholder="Your verify token">
+                </div>
+                <div class="webhook-events">
+                    <h4>Events:</h4>
+                    <label><input type="checkbox" checked> messages</label>
+                    <label><input type="checkbox" checked> message_deliveries</label>
+                    <label><input type="checkbox" checked> message_reads</label>
+                    <label><input type="checkbox"> account_updates</label>
+                </div>
+                <button class="btn btn-primary" onclick="app.saveWebhook()">💾 Save</button>
+            </div>
+            <div class="card">
+                <h3>📋 Recent Webhook Events</h3>
+                <div class="webhook-log" id="webhookLog"></div>
+            </div>
+        </section>
+
+        <!-- ANALYTICS -->
+        <section id="analytics" class="section">
+            <div class="section-header">
+                <h2>📈 Analytics Dashboard</h2>
+                <select id="analyticsPeriod" class="form-control" style="width:auto;" onchange="app.loadAnalytics()">
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                </select>
+            </div>
+            <div class="analytics-grid">
+                <div class="card"><h3>📊 Message Volume</h3><div id="msgVolumeChart" class="chart-container"></div></div>
+                <div class="card"><h3>📈 Delivery Rate</h3><div id="deliveryChart" class="chart-container"></div></div>
+                <div class="card"><h3>⏱️ Response Time</h3><div id="responseChart" class="chart-container"></div></div>
+                <div class="card"><h3>👥 Active Users</h3><div id="usersChart" class="chart-container"></div></div>
+            </div>
+        </section>
+
+        <!-- API -->
+        <section id="api" class="section">
+            <div class="section-header"><h2>📡 API Endpoints</h2></div>
+            <div class="card">
+                <h3>Core Endpoints</h3>
+                <div class="endpoint-grid">
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/health</code><button class="btn btn-sm" onclick="app.testEndpoint('GET','/health')">Test</button></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/status</code><button class="btn btn-sm" onclick="app.testEndpoint('GET','/status')">Test</button></div>
+                    <div class="endpoint-item"><span class="method post">POST</span><code>/command</code><button class="btn btn-sm" onclick="app.testEndpoint('POST','/command')">Test</button></div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>WhatsApp Endpoints</h3>
+                <div class="endpoint-grid">
+                    <div class="endpoint-item"><span class="method post">POST</span><code>/api/send</code><button class="btn btn-sm" onclick="app.testEndpoint('POST','/api/send')">Test</button></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/messages</code><button class="btn btn-sm" onclick="app.testEndpoint('GET','/api/messages')">Test</button></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/contacts</code><button class="btn btn-sm" onclick="app.testEndpoint('GET','/api/contacts')">Test</button></div>
+                    <div class="endpoint-item"><span class="method post">POST</span><code>/api/template</code><button class="btn btn-sm" onclick="app.testEndpoint('POST','/api/template')">Test</button></div>
+                    <div class="endpoint-item"><span class="method post">POST</span><code>/api/media</code><button class="btn btn-sm" onclick="app.testEndpoint('POST','/api/media')">Test</button></div>
+                    <div class="endpoint-item"><span class="method post">POST</span><code>/webhook</code><button class="btn btn-sm" onclick="app.testEndpoint('POST','/webhook')">Test</button></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section id="settings" class="section">
+            <div class="section-header"><h2>⚙️ Settings</h2></div>
+            <div class="card">
+                <h3>🔑 API Configuration</h3>
+                <div class="form-group">
+                    <label>WhatsApp Business API Token:</label>
+                    <input type="password" id="waToken" class="form-control" placeholder="Enter token...">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number ID:</label>
+                    <input type="text" id="phoneId" class="form-control" placeholder="e.g., 123456789012345">
+                </div>
+                <div class="form-group">
+                    <label>Bearer Token:</label>
+                    <input type="password" id="bearerToken" class="form-control" placeholder="PORTIER token">
+                </div>
+                <button class="btn btn-primary" onclick="app.saveSettings()">💾 Save Settings</button>
+            </div>
+            <div class="card">
+                <h3>⚡ Rate Limiting</h3>
+                <div class="form-group">
+                    <label>Messages per minute:</label>
+                    <input type="number" id="rateLimit" class="form-control" value="60">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal" id="responseModal">
+        <div class="modal-content">
+            <div class="modal-header"><h3 id="modalTitle">Response</h3><button class="modal-close" onclick="app.closeModal()">×</button></div>
+            <div class="modal-body"><pre id="modalContent"></pre></div>
+            <div class="modal-footer"><button class="btn btn-primary" onclick="app.closeModal()">Close</button></div>
+        </div>
+    </div>
+    <div class="toast-container" id="toastContainer"></div>
+    <footer class="dashboard-footer"><span>💬 WhatsApp Agent PAS-6.0</span><span id="lastUpdate">--:--:--</span></footer>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

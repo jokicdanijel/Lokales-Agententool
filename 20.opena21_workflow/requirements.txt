@@ -1,7 +1,24 @@
+# opena21 Workflow Engine Dependencies
+# PORTIER 3.0 kompatibel
+
+# FastAPI & Web Framework
 fastapi==0.104.1
-uvicorn==0.24.0
+uvicorn[standard]==0.24.0
+
+# Data Validation & Serialization
 pydantic==2.5.0
-aiohttp==3.9.1
+
+# HTTP Client (für Agent-Calls)
+httpx==0.25.2
+
+# Environment & Configuration  
 python-dotenv==1.0.0
+
+# Testing Framework
 pytest==7.4.3
 pytest-asyncio==0.21.1
+
+# Optional: Production Dependencies
+# redis==5.0.1          # Für Persistent Storage
+# celery==5.3.4         # Für Async Workflows  
+# psycopg2-binary==2.9.9  # Für PostgreSQL Storage

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Start Script für opena19 (Stocks & Crypto Agent)
-# Port: 12364
+# Port: 12365
 # Kürzel: stockcryptop
 
 set -euo pipefail
@@ -10,7 +10,7 @@ PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 cd "$PROJECT_DIR"
 
 AGENT_ID="opena19"
-PORT=12364
+PORT=12365
 MAIN_FILE="main_stocks_crypto_agent.py"
 PID_FILE="logs/${AGENT_ID}.pid"
 LOG_FILE="logs/${AGENT_ID}.nohup.log"

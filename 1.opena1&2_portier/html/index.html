@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portier (opena1 & opena2) | ELION PAS-6.0 Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-left">
+            <span class="logo">🎯</span>
+            <div class="header-info">
+                <h1>Portier Dashboard</h1>
+                <span class="version">PAS-6.0 | opena1 (Koordinator) + opena2 (Archivator)</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="status-badge" id="statusBadge">
+                <span class="status-dot"></span>
+                <span class="status-text">Checking...</span>
+            </div>
+            <span class="port-badge">12344</span>
+            <span class="port-badge">12345</span>
+            <button class="btn btn-primary" id="refreshBtn">🔄 Refresh</button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="dashboard-nav">
+        <button class="nav-btn active" data-section="overview">📊 Overview</button>
+        <button class="nav-btn" data-section="coordinator">🎯 Koordinator</button>
+        <button class="nav-btn" data-section="archivator">💾 Archivator</button>
+        <button class="nav-btn" data-section="safepoints">📁 Safepoints</button>
+        <button class="nav-btn" data-section="agents">👥 Agents</button>
+        <button class="nav-btn" data-section="flow">🔄 Option-2 Flow</button>
+        <button class="nav-btn" data-section="api">🔌 API Console</button>
+        <button class="nav-btn" data-section="logs">📜 Logs</button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <div class="section-header">
+                <h2>🏠 System Overview</h2>
+            </div>
+
+            <!-- Dual Agent Status -->
+            <div class="dual-panel">
+                <div class="agent-panel">
+                    <div class="agent-header">
+                        <h3>🎯 opena1 - Koordinator (kordp)</h3>
+                        <span class="agent-status" id="opena1Status">Checking...</span>
+                    </div>
+                    <div class="agent-content">
+                        <p><strong>Port:</strong> 12344</p>
+                        <p><strong>Rolle:</strong> Request Coordinator & Tool Dispatcher</p>
+                        <p><strong>Aufgabe:</strong> Empfängt Requests, wählt Tools, baut Envelope</p>
+                    </div>
+                </div>
+                <div class="agent-panel">
+                    <div class="agent-header">
+                        <h3>💾 opena2 - Archivator (archivp)</h3>
+                        <span class="agent-status" id="opena2Status">Checking...</span>
+                    </div>
+                    <div class="agent-content">
+                        <p><strong>Port:</strong> 12345</p>
+                        <p><strong>Rolle:</strong> Safepoint Storage & Index Manager</p>
+                        <p><strong>Aufgabe:</strong> Archiviert CMD/RESP, verwaltet Index</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card primary">
+                    <span class="metric-icon">📨</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="totalRequests">0</span>
+                        <span class="metric-label">Total Requests</span>
+                    </div>
+                </div>
+                <div class="metric-card success">
+                    <span class="metric-icon">💾</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="safepointsCreated">0</span>
+                        <span class="metric-label">Safepoints</span>
+                    </div>
+                </div>
+                <div class="metric-card warning">
+                    <span class="metric-icon">🤖</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="agentsActive">0</span>
+                        <span class="metric-label">Active Agents</span>
+                    </div>
+                </div>
+                <div class="metric-card error">
+                    <span class="metric-icon">⏱️</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="lastDispatchTime">N/A</span>
+                        <span class="metric-label">Last Dispatch</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Capabilities -->
+            <div class="card">
+                <h3>⚡ System Capabilities (10)</h3>
+                <div class="capabilities-grid">
+                    <div class="capability-card" data-capability="request_routing">
+                        <span class="capability-icon">🔀</span>
+                        <div class="capability-info">
+                            <h4>Request Routing</h4>
+                            <p>Route to appropriate agents</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="tool_dispatch">
+                        <span class="capability-icon">🛠️</span>
+                        <div class="capability-info">
+                            <h4>Tool Dispatch</h4>
+                            <p>Option-2 flow dispatch</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="agent_registry">
+                        <span class="capability-icon">📋</span>
+                        <div class="capability-info">
+                            <h4>Agent Registry</h4>
+                            <p>Manage registered agents</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="load_balancing">
+                        <span class="capability-icon">⚖️</span>
+                        <div class="capability-info">
+                            <h4>Load Balancing</h4>
+                            <p>Distribute workload</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="health_monitor">
+                        <span class="capability-icon">💓</span>
+                        <div class="capability-info">
+                            <h4>Health Monitor</h4>
+                            <p>Monitor all agents</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="safepoint_create">
+                        <span class="capability-icon">💾</span>
+                        <div class="capability-info">
+                            <h4>Safepoint Create</h4>
+                            <p>Create CMD/RESP archives</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="safepoint_query">
+                        <span class="capability-icon">🔍</span>
+                        <div class="capability-info">
+                            <h4>Safepoint Query</h4>
+                            <p>Search archived data</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="index_search">
+                        <span class="capability-icon">📚</span>
+                        <div class="capability-info">
+                            <h4>Index Search</h4>
+                            <p>JSONL index queries</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="archive_stats">
+                        <span class="capability-icon">📊</span>
+                        <div class="capability-info">
+                            <h4>Archive Stats</h4>
+                            <p>View statistics</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="data_integrity">
+                        <span class="capability-icon">✅</span>
+                        <div class="capability-info">
+                            <h4>Data Integrity</h4>
+                            <p>Verify archive integrity</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <h3>🚀 Quick Actions</h3>
+                <div class="action-grid">
+                    <button class="action-btn" data-action="checkAllHealth">
+                        <span class="action-icon">💓</span>
+                        <span>Health</span>
+                    </button>
+                    <button class="action-btn" data-action="showFlowDiagram">
+                        <span class="action-icon">🔄</span>
+                        <span>Flow</span>
+                    </button>
+                    <button class="action-btn" data-action="listAgents">
+                        <span class="action-icon">📋</span>
+                        <span>Agents</span>
+                    </button>
+                    <button class="action-btn" data-action="showSafepoints">
+                        <span class="action-icon">💾</span>
+                        <span>Safepoints</span>
+                    </button>
+                    <button class="action-btn" data-action="showDispatchModal">
+                        <span class="action-icon">🚀</span>
+                        <span>Dispatch</span>
+                    </button>
+                    <button class="action-btn" data-action="showLogs">
+                        <span class="action-icon">📜</span>
+                        <span>Logs</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Coordinator Section -->
+        <section id="coordinator" class="section">
+            <div class="section-header">
+                <h2>🎯 opena1 - Koordinator</h2>
+                <span class="port-badge">Port 12344</span>
+            </div>
+            <div class="card">
+                <h3>Status</h3>
+                <div class="metrics-grid">
+                    <div class="metric-card primary">
+                        <span class="metric-icon">⏱️</span>
+                        <div class="metric-info">
+                            <span class="metric-value" id="kordpUptime">N/A</span>
+                            <span class="metric-label">Uptime</span>
+                        </div>
+                    </div>
+                    <div class="metric-card success">
+                        <span class="metric-icon">📦</span>
+                        <div class="metric-info">
+                            <span class="metric-value" id="kordpVersion">1.0.0</span>
+                            <span class="metric-label">Version</span>
+                        </div>
+                    </div>
+                    <div class="metric-card warning">
+                        <span class="metric-icon">📨</span>
+                        <div class="metric-info">
+                            <span class="metric-value" id="kordpRequests">0</span>
+                            <span class="metric-label">Requests</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Registered Tools</h3>
+                <div class="endpoint-grid" id="toolsList">
+                    <div class="loading">Loading tools...</div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Dispatch Request</h3>
+                <button class="btn btn-primary btn-lg" id="dispatchBtn">🚀 Dispatch Tool</button>
+            </div>
+        </section>
+
+        <!-- Archivator Section -->
+        <section id="archivator" class="section">
+            <div class="section-header">
+                <h2>💾 opena2 - Archivator</h2>
+                <span class="port-badge">Port 12345</span>
+            </div>
+            <div class="card">
+                <h3>Archive Status</h3>
+                <div class="metrics-grid">
+                    <div class="metric-card primary">
+                        <span class="metric-icon">💾</span>
+                        <div class="metric-info">
+                            <span class="metric-value" id="totalSafepoints">0</span>
+                            <span class="metric-label">Total Safepoints</span>
+                        </div>
+                    </div>
+                    <div class="metric-card success">
+                        <span class="metric-icon">📤</span>
+                        <div class="metric-info">
+                            <span class="metric-value" id="cmdCount">0</span>
+                            <span class="metric-label">CMD Records</span>
+                        </div>
+                    </div>
+                    <div class="metric-card warning">
+                        <span class="metric-icon">📥</span>
+                        <div class="metric-info">
+                            <span class="metric-value" id="respCount">0</span>
+                            <span class="metric-label">RESP Records</span>
+                        </div>
+                    </div>
+                    <div class="metric-card error">
+                        <span class="metric-icon">💽</span>
+                        <div class="metric-info">
+                            <span class="metric-value" id="archiveSize">N/A</span>
+                            <span class="metric-label">Archive Size</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Safepoint Naming Convention</h3>
+                <code style="display: block; background: var(--bg-dark); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    SP&lt;laufnummer&gt;_src→dst_{CMD|RESP}.json
+                </code>
+                <p style="color: var(--text-secondary);">
+                    <strong>Beispiel:</strong> SP00001_opena1→kordp_CMD.json<br>
+                    <strong>Pfeil:</strong> Unicode → (U+2192)<br>
+                    <strong>Storage:</strong> archivp/YYYY/MM/DD/
+                </p>
+            </div>
+            <div class="card">
+                <h3>Actions</h3>
+                <button class="btn btn-primary" id="createSafepointBtn">💾 Create Safepoint</button>
+            </div>
+        </section>
+
+        <!-- Safepoints Section -->
+        <section id="safepoints" class="section">
+            <div class="section-header">
+                <h2>📁 Safepoints</h2>
+                <button class="btn btn-primary" onclick="dashboard.showCreateSafepointModal()">+ New Safepoint</button>
+            </div>
+            <div class="card">
+                <h3>Recent Safepoints</h3>
+                <div class="safepoint-list" id="safepointList">
+                    <div class="loading">Loading safepoints...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Agents Section -->
+        <section id="agents" class="section">
+            <div class="section-header">
+                <h2>👥 Registered Agents</h2>
+            </div>
+            <div class="card">
+                <div id="agentsTable">
+                    <div class="loading">Loading agents...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Flow Section -->
+        <section id="flow" class="section">
+            <div class="section-header">
+                <h2>🔄 Option-2 Flow</h2>
+            </div>
+            <div class="card" id="flowDiagram">
+                <div class="loading">Loading flow diagram...</div>
+            </div>
+        </section>
+
+        <!-- API Console Section -->
+        <section id="api" class="section">
+            <div class="section-header">
+                <h2>🔌 API Console</h2>
+            </div>
+            <div class="card">
+                <h3>Test API</h3>
+                <div class="form-group">
+                    <label>Agent</label>
+                    <select class="form-control" id="apiAgent">
+                        <option value="opena1">opena1 (12344)</option>
+                        <option value="opena2">opena2 (12345)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Endpoint</label>
+                    <input type="text" class="form-control" id="apiEndpoint" value="/health" placeholder="/health">
+                </div>
+                <div class="form-group">
+                    <label>Method</label>
+                    <select class="form-control" id="apiMethod">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Body (JSON)</label>
+                    <textarea class="form-control" id="apiBody" placeholder='{"key": "value"}'></textarea>
+                </div>
+                <button class="btn btn-primary" id="testApiBtn">🚀 Send Request</button>
+            </div>
+            <div class="card">
+                <h3>Response</h3>
+                <pre id="apiResponse" style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; max-height: 300px; overflow: auto;">// Response will appear here</pre>
+            </div>
+            <div class="card">
+                <h3>Available Endpoints</h3>
+                <h4 style="color: var(--primary-light); margin: 1rem 0;">opena1 (Koordinator)</h4>
+                <div class="endpoint-grid">
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/health</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/status</code></div>
+                    <div class="endpoint-item"><span class="method post">POST</span><code>/api/dispatch</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/registry</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/agents</code></div>
+                </div>
+                <h4 style="color: var(--primary-light); margin: 1rem 0;">opena2 (Archivator)</h4>
+                <div class="endpoint-grid">
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/health</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/safepoints</code></div>
+                    <div class="endpoint-item"><span class="method post">POST</span><code>/api/safepoints/create</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/stats</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/search</code></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Logs Section -->
+        <section id="logs" class="section">
+            <div class="section-header">
+                <h2>📜 System Logs</h2>
+            </div>
+            <div class="card">
+                <div class="log-viewer" id="logViewer">
+                    <div class="loading">Loading logs...</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <!-- Dispatch Modal -->
+    <div class="modal" id="dispatchModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🚀 Dispatch Tool</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Tool Name</label>
+                    <input type="text" class="form-control" id="dispatchTool" placeholder="tool_text_analyzer">
+                </div>
+                <div class="form-group">
+                    <label>Payload (JSON)</label>
+                    <textarea class="form-control" id="dispatchPayload" placeholder='{"action": "analyze", "data": "..."}'></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Result</label>
+                    <pre id="dispatchResult" style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; min-height: 100px;">// Dispatch result will appear here</pre>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close">Cancel</button>
+                <button class="btn btn-primary" id="sendDispatchBtn">🚀 Dispatch</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Safepoint Modal -->
+    <div class="modal" id="createSafepointModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>💾 Create Safepoint</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Source (src)</label>
+                    <input type="text" class="form-control" id="safepointSrc" placeholder="opena1">
+                </div>
+                <div class="form-group">
+                    <label>Destination (dst)</label>
+                    <input type="text" class="form-control" id="safepointDst" placeholder="kordp">
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <select class="form-control" id="safepointType">
+                        <option value="CMD">CMD</option>
+                        <option value="RESP">RESP</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Payload (JSON)</label>
+                    <textarea class="form-control" id="safepointPayload" placeholder='{"action": "test"}'></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close">Cancel</button>
+                <button class="btn btn-primary" id="createSafepointSubmitBtn">💾 Create</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Safepoint Detail Modal -->
+    <div class="modal" id="safepointModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📄 Safepoint Details</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <pre id="safepointDetailContent" style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; max-height: 400px; overflow: auto;"></pre>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <span>ELION Portier Dashboard | PAS-6.0</span>
+        <span>opena1: 12344 | opena2: 12345</span>
+        <span id="currentTime"></span>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        setInterval(() => {
+            document.getElementById('currentTime').textContent = new Date().toLocaleString('de-DE');
+        }, 1000);
+    </script>
+</body>
+</html>

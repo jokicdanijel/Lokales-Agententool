@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 opena19 - Stocks & Crypto Agent
-Port: 12364
+Port: 12365
 Kürzel: stockcryptop
 
 Features:
@@ -48,7 +48,7 @@ import uvicorn
 import requests
 
 # ========== CONFIG ==========
-PORT = 12364
+PORT = 12365
 AGENT_ID = "opena19"
 KUERZEL = "stockcryptop"
 BEARER_TOKEN = os.getenv("BEARER_TOKEN", "c899b90d-faf8-485b-afa4-078357cf5313")

@@ -1,0 +1,147 @@
+# PORTIER 3.0 - opena4_telegram Docker Ignore
+
+# ===============================================
+# Environment & Config
+# ===============================================
+.env
+.env.*
+!.env.example
+
+# ===============================================
+# Development Files
+# ===============================================
+.git/
+.github/
+.vscode/
+.idea/
+*.code-workspace
+
+# ===============================================
+# Python
+# ===============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ===============================================
+# Virtual Environments
+# ===============================================
+.venv/
+venv/
+ENV/
+env/
+.env/
+
+# ===============================================
+# Testing & Coverage
+# ===============================================
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# ===============================================
+# Logs & Data
+# ===============================================
+logs/
+*.log
+*.log.*
+data/
+tmp/
+temp/
+
+# ===============================================
+# Media & Downloads
+# ===============================================
+media/
+uploads/
+downloads/
+*.tmp
+
+# ===============================================
+# Documentation
+# ===============================================
+docs/_build/
+*.md
+!README.md
+
+# ===============================================
+# OS Files
+# ===============================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ===============================================
+# CI/CD & Deployment
+# ===============================================
+docker-compose.override.yml
+.dockerignore
+Dockerfile.*
+!Dockerfile
+
+# ===============================================
+# Security
+# ===============================================
+*.pem
+*.key
+*.crt
+*.p12
+secrets/
+keys/
+
+# ===============================================
+# Backup & Archive
+# ===============================================
+*.bak
+*.backup
+*.old
+*.orig
+*.rej
+*.swp
+*.swo
+*~
+
+# ===============================================
+# Node.js (if present)
+# ===============================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# ===============================================
+# Other
+# ===============================================
+*.sqlite
+*.db
+*.pid
+*.sock

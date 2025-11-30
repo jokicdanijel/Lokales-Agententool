@@ -1,100 +1,101 @@
 #!/usr/bin/env python3
 """
-opena7 – E-Mail Client Agent (IMAP/SMTP)
-Port: 12352 | Kürzel: emailp
-Compliance: PORTIER 3.0 (Option-2-Flow, Strict JSON, ENV-only Secrets)
+🚀 opena7_email – Email Agent 6.0 (PORTIER PAS-6.0 Compliant)
+Port: 12351 | Specialization: email_automation | AI Reply Engine
+Compliance: PORTIER PAS-6.0 (Option-2-Flow, Strict JSON, OpenAI Integration)
 """
 
 import os
 import sys
 import json
+import asyncio
 import logging
 import time
-import re
+import uvicorn
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-from uuid import uuid4
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.utils import formataddr
 
-from fastapi import FastAPI, HTTPException, Depends, status
+from fastapi import FastAPI, HTTPException, Depends, status, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, ConfigDict
 
-# IMAP/SMTP Imports (mit Fallback)
-try:
-    import imaplib
-    import smtplib
-    EMAIL_AVAILABLE = True
-except ImportError:
-    EMAIL_AVAILABLE = False
+# Import our modules
+from modules.email_core import EmailCore
+from modules.ai_reply_engine import AIReplyEngine
+from modules.smtp_sender import SMTPSender  
+from modules.imap_handler import IMAPHandler
+from modules.metrics import EmailMetrics
 
 # ============================================================================
-# KONFIGURATION (ENV-only, niemals hardcoded)
+# 🔧 CONFIGURATION (ENV-only, PORTIER PAS-6.0 compliant)
 # ============================================================================
 
-PORT = int(os.getenv("OPENA7_PORT", "12352"))
+PORT = int(os.getenv("OPENA7_PORT", "12351"))
 BEARER_TOKEN = os.getenv("BEARER_TOKEN", "")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 ARCHIVP_ROOT = Path(os.getenv("ARCHIVP_ROOT", "../1.opena1&2_portier/archivp_store"))
 
-# IMAP/SMTP Config
-IMAP_SERVER = os.getenv("IMAP_SERVER", "imap.example.com")
+# Email Configuration (IMAP/SMTP)
+IMAP_SERVER = os.getenv("IMAP_SERVER", "imap.gmail.com")
 IMAP_PORT = int(os.getenv("IMAP_PORT", "993"))
-IMAP_USE_SSL = os.getenv("IMAP_USE_SSL", "true").lower() == "true"
-SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.example.com")
+SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com") 
 SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
-SMTP_USE_TLS = os.getenv("SMTP_USE_TLS", "true").lower() == "true"
-EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS", "agent@example.com")
+EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS", "")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD", "")
-DEFAULT_FOLDER = os.getenv("DEFAULT_FOLDER", "INBOX")
-MAX_MESSAGES = int(os.getenv("MAX_MESSAGES", "50"))
 
-# Port-Policy (PORTIER 3.0 Standard)
-PORTS_ALLOWED = list(range(12344, 12400))
-PORT_FORBIDDEN = [8080]
+# AI Configuration
+AI_MODEL = os.getenv("AI_MODEL", "gpt-4o-mini")
+AI_MAX_TOKENS = int(os.getenv("AI_MAX_TOKENS", "1000"))
 
 # ============================================================================
-# LOGGING SETUP
+# 🚀 FASTAPI APPLICATION SETUP (PAS-6.0)
 # ============================================================================
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s – %(message)s",
-    handlers=[
-        logging.FileHandler("logs/opena7.nohup.log"),
-        logging.StreamHandler(sys.stdout)
-    ]
+# Logging setup
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# FastAPI app initialization
+app = FastAPI(
+    title="opena7_email - Email Agent 6.0",
+    description="AI-powered Email Automation with IMAP/SMTP integration",
+    version="6.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc"
 )
-logger = logging.getLogger("opena7")
 
-# ============================================================================
-# PORT-POLICY ENFORCEMENT (Startup)
-# ============================================================================
+# CORS Middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-if PORT not in PORTS_ALLOWED:
-    logger.error(f"❌ FATAL: Port {PORT} nicht im erlaubten Bereich {PORTS_ALLOWED[0]}-{PORTS_ALLOWED[-1]}")
-    sys.exit(1)
-
-if PORT in PORT_FORBIDDEN:
-    logger.error(f"❌ FATAL: Port {PORT} ist für Backend verboten (nur UI)!")
-    sys.exit(1)
-
-logger.info(f"✅ Port-Policy OK: {PORT} in Bereich {PORTS_ALLOWED[0]}-{PORTS_ALLOWED[-1]}")
-
-# ============================================================================
-# BEARER TOKEN VALIDATION
-# ============================================================================
-
-if not BEARER_TOKEN:
-    logger.error("❌ FATAL: BEARER_TOKEN nicht gesetzt in .env")
-    sys.exit(1)
-
+# Security
 security = HTTPBearer()
 
+# Initialize modules
+email_core = EmailCore()
+ai_engine = AIReplyEngine(openai_api_key=OPENAI_API_KEY, model=AI_MODEL)
+smtp_sender = SMTPSender()
+imap_handler = IMAPHandler()
+metrics = EmailMetrics()
+
+# ============================================================================
+# 🛡️ AUTHENTICATION & SECURITY (PAS-6.0)
+# ============================================================================
+
 def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) -> bool:
+    """Verify Bearer token for API access"""
+    if not BEARER_TOKEN:
+        raise HTTPException(status_code=500, detail="Server configuration error")
+    
     if credentials.credentials != BEARER_TOKEN:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -103,24 +104,138 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) 
     return True
 
 # ============================================================================
-# FASTAPI APP
+# 🚀 API ENDPOINTS (PORTIER PAS-6.0 Compliant)  
 # ============================================================================
 
-app = FastAPI(
-    title="opena7 – E-Mail Client Agent",
-    description="IMAP/SMTP E-Mail integration (PORTIER 3.0)",
-    version="1.0.0"
-)
+@app.get("/")
+async def root():
+    """Root endpoint - redirect to dashboard"""
+    return HTMLResponse("""
+        <html>
+            <head><title>Email Agent 6.0</title></head>
+            <body>
+                <h1>🚀 Email Agent 6.0</h1>
+                <p>Dashboard: <a href="/html/index.html">Dashboard</a></p>
+                <p>API Docs: <a href="/docs">OpenAPI Documentation</a></p>
+            </body>
+        </html>
+    """)
+
+@app.get("/health")
+async def health():
+    """Health check endpoint"""
+    metrics.record_api_call()
+    return {
+        "status": "ok",
+        "service": "opena7_email", 
+        "version": "6.0.0",
+        "port": PORT,
+        "timestamp": datetime.now().isoformat()
+    }
+
+@app.get("/status")
+async def status(authorized: bool = Depends(verify_token)):
+    """Get detailed agent status"""
+    metrics.record_api_call()
+    return email_core.get_status()
+
+@app.post("/command")
+async def command(payload: Dict[str, Any], authorized: bool = Depends(verify_token)):
+    """Execute email commands"""
+    metrics.record_api_call()
+    
+    try:
+        result = await email_core.execute_command(payload)
+        
+        # Update metrics based on command
+        command_type = payload.get("command", "")
+        if command_type == "send_email":
+            metrics.record_email_sent()
+        elif command_type == "check_inbox":
+            metrics.record_email_received()
+        
+        return result
+        
+    except Exception as e:
+        metrics.record_error()
+        logger.error(f"❌ Command execution failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Command failed: {str(e)}")
+
+@app.post("/specialized")
+async def specialized(payload: Dict[str, Any], authorized: bool = Depends(verify_token)):
+    """AI-powered specialized email functions"""
+    metrics.record_api_call()
+    
+    try:
+        result = await ai_engine.handle_specialized(payload)
+        
+        # Update metrics based on action
+        action_type = payload.get("action", "")
+        if action_type == "generate_reply":
+            metrics.record_ai_reply()
+        elif action_type == "classify_email":
+            metrics.record_classification()
+        elif action_type == "auto_response":
+            metrics.record_auto_response()
+        
+        return result
+        
+    except Exception as e:
+        metrics.record_error()
+        logger.error(f"❌ Specialized action failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Specialized action failed: {str(e)}")
+
+@app.get("/metrics")
+async def get_metrics(authorized: bool = Depends(verify_token)):
+    """Get performance metrics"""
+    return metrics.get_metrics()
+
+@app.get("/logs")
+async def get_logs(authorized: bool = Depends(verify_token)):
+    """Get recent log entries"""
+    metrics.record_api_call()
+    return email_core.get_logs()
+
+@app.get("/config")
+async def get_config(authorized: bool = Depends(verify_token)):
+    """Get agent configuration"""
+    metrics.record_api_call()
+    return email_core.get_config()
+
+# Mount static files (HTML dashboard)
+app.mount("/html", StaticFiles(directory="html"), name="html")
 
 # ============================================================================
-# STARTUP
+# 🎯 STARTUP & MAIN
 # ============================================================================
 
-START_TIME = time.time()
-ARCHIVP_ROOT.mkdir(parents=True, exist_ok=True)
+@app.on_event("startup")
+async def startup_event():
+    """Application startup"""
+    logger.info("🚀 Email Agent 6.0 starting up...")
+    logger.info(f"   Port: {PORT}")
+    logger.info(f"   AI Engine: {'Enabled' if OPENAI_API_KEY else 'Mock Mode'}")
+    logger.info(f"   Email: {EMAIL_ADDRESS if EMAIL_ADDRESS else 'Not configured'}")
+    logger.info("✅ Email Agent 6.0 ready!")
 
-logger.info("🚀 opena7 (E-Mail Agent) startet...")
-logger.info(f"   Port: {PORT}")
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Application shutdown"""
+    logger.info("📧 Email Agent 6.0 shutting down...")
+    metrics.save_stats()
+
+if __name__ == "__main__":
+    # Ensure logs directory exists
+    Path("logs").mkdir(exist_ok=True)
+    
+    # Start the server
+    uvicorn.run(
+        app,
+        host="127.0.0.1",
+        port=PORT,
+        log_level="info",
+        access_log=True
+    )
 logger.info(f"   IMAP: {IMAP_SERVER}:{IMAP_PORT} (SSL: {IMAP_USE_SSL})")
 logger.info(f"   SMTP: {SMTP_SERVER}:{SMTP_PORT} (TLS: {SMTP_USE_TLS})")
 logger.info(f"   E-Mail: {EMAIL_ADDRESS}")

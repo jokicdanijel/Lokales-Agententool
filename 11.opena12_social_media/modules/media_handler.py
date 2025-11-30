@@ -1,0 +1,184 @@
+# 📱 Media Handler Module - PORTIER PAS-6.0
+# Image & Video Processing for Social Media
+
+import os
+import logging
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, Any, Optional, List
+import hashlib
+import base64
+
+logger = logging.getLogger(__name__)
+
+
+class MediaHandler:
+    """Media Upload & Processing Handler"""
+    
+    def __init__(self):
+        self.media_dir = Path(__file__).parent.parent / "data" / "media"
+        self.media_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Supported formats per platform
+        self.supported_formats = {
+            "linkedin": {
+                "image": ["jpg", "jpeg", "png", "gif"],
+                "video": ["mp4", "avi", "mov"],
+                "max_image_size_mb": 8,
+                "max_video_size_mb": 200
+            },
+            "x": {
+                "image": ["jpg", "jpeg", "png", "gif", "webp"],
+                "video": ["mp4", "mov"],
+                "max_image_size_mb": 5,
+                "max_video_size_mb": 512
+            },
+            "facebook": {
+                "image": ["jpg", "jpeg", "png", "bmp", "gif", "tiff"],
+                "video": ["mp4", "mov", "avi", "wmv"],
+                "max_image_size_mb": 4,
+                "max_video_size_mb": 4096
+            },
+            "instagram": {
+                "image": ["jpg", "jpeg", "png"],
+                "video": ["mp4", "mov"],
+                "max_image_size_mb": 8,
+                "max_video_size_mb": 100,
+                "aspect_ratios": ["1:1", "4:5", "1.91:1"]
+            }
+        }
+        
+        logger.info("✅ MediaHandler initialized")
+    
+    def validate_media(self, file_path: str, platform: str) -> Dict[str, Any]:
+        """Validate media file for platform requirements"""
+        if not os.path.exists(file_path):
+            return {
+                "valid": False,
+                "error": "File not found"
+            }
+        
+            with open(file_path, "wb") as f:
+                f.write(file_data)
+            
+            self.stats["uploads"] += 1
+            self.stats["total_size_bytes"] += len(file_data)
+            
+            media_type = "image" if ext in self.supported_images else "video"
+            
+            return {
+                "status": "success",
+                "media_id": unique_id,
+                "filename": stored_filename,
+                "path": file_path,
+                "type": media_type,
+                "format": ext,
+                "size_bytes": len(file_data),
+                "size_mb": round(size_mb, 2),
+                "timestamp": datetime.now().isoformat()
+            }
+            
+        except Exception as e:
+            logger.error(f"Failed to save media: {e}")
+            return {
+                "status": "error",
+                "error": str(e)
+            }
+    
+    async def process_base64(self, base64_data: str, filename: str) -> Dict[str, Any]:
+        """Process base64 encoded media"""
+        try:
+            # Remove data URL prefix if present
+            if "," in base64_data:
+                base64_data = base64_data.split(",")[1]
+            
+            file_data = base64.b64decode(base64_data)
+            return await self.process_upload(file_data, filename)
+            
+        except Exception as e:
+            logger.error(f"Base64 decode failed: {e}")
+            return {
+                "status": "error",
+                "error": f"Invalid base64 data: {e}"
+            }
+    
+    async def get_media(self, media_id: str) -> Optional[Dict[str, Any]]:
+        """Get stored media by ID"""
+        for filename in os.listdir(self.upload_dir):
+            if filename.startswith(media_id):
+                file_path = os.path.join(self.upload_dir, filename)
+                
+                return {
+                    "media_id": media_id,
+                    "filename": filename,
+                    "path": file_path,
+                    "size_bytes": os.path.getsize(file_path)
+                }
+        
+        return None
+    
+    async def delete_media(self, media_id: str) -> Dict[str, Any]:
+        """Delete stored media"""
+        for filename in os.listdir(self.upload_dir):
+            if filename.startswith(media_id):
+                file_path = os.path.join(self.upload_dir, filename)
+                
+                try:
+                    os.remove(file_path)
+                    return {
+                        "status": "deleted",
+                        "media_id": media_id
+                    }
+                except Exception as e:
+                    return {
+                        "status": "error",
+                        "error": str(e)
+                    }
+        
+        return {
+            "status": "error",
+            "error": f"Media {media_id} not found"
+        }
+    
+    async def resize_image(self, media_id: str, width: int, height: int) -> Dict[str, Any]:
+        """Resize an image (requires Pillow)"""
+        try:
+            from PIL import Image
+            
+            media = await self.get_media(media_id)
+            if not media:
+                return {"status": "error", "error": "Media not found"}
+            
+            # Open and resize
+            img = Image.open(media["path"])
+            img_resized = img.resize((width, height), Image.Resampling.LANCZOS)
+            
+            # Save resized
+            new_id = uuid.uuid4().hex[:12]
+            ext = media["filename"].split(".")[-1]
+            new_filename = f"{new_id}_resized.{ext}"
+            new_path = os.path.join(self.upload_dir, new_filename)
+            
+            img_resized.save(new_path)
+            
+            return {
+                "status": "success",
+                "media_id": new_id,
+                "filename": new_filename,
+                "path": new_path,
+                "dimensions": {"width": width, "height": height}
+            }
+            
+        except ImportError:
+            return {"status": "error", "error": "Pillow not installed"}
+        except Exception as e:
+            return {"status": "error", "error": str(e)}
+    
+    def get_stats(self) -> Dict[str, Any]:
+        """Get media handler statistics"""
+        return {
+            **self.stats,
+            "upload_dir": self.upload_dir,
+            "max_size_mb": self.max_size_mb,
+            "supported_formats": self.supported_images + self.supported_videos
+        }

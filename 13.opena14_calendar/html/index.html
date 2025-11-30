@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📅 OPENA14 Kalender - PORTIER PAS-6.0 Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="logo-section">
+                <span class="logo-icon">📅</span>
+                <h1>Kalender Agent 6.0</h1>
+                <span class="version-badge">v6.0.0 PAS-6.0</span>
+            </div>
+            <div class="status-section">
+                <span id="connection-status" class="status-indicator status-loading">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Verbinde...</span>
+                </span>
+                <span id="uptime" class="uptime-display">--:--:--</span>
+            </div>
+        </header>
+
+        <main class="main-grid">
+            <section class="platform-cards">
+                <div class="card metric-card" data-metric="events">
+                    <div class="card-icon">📋</div>
+                    <div class="card-content"><h3>Events</h3><span id="total-events" class="metric-value">0</span></div>
+                </div>
+                <div class="card metric-card" data-metric="today">
+                    <div class="card-icon">📆</div>
+                    <div class="card-content"><h3>Heute</h3><span id="today-events" class="metric-value">0</span></div>
+                </div>
+                <div class="card metric-card" data-metric="upcoming">
+                    <div class="card-icon">⏰</div>
+                    <div class="card-content"><h3>Diese Woche</h3><span id="week-events" class="metric-value">0</span></div>
+                </div>
+                <div class="card metric-card" data-metric="calendars">
+                    <div class="card-icon">��</div>
+                    <div class="card-content"><h3>Kalender</h3><span id="total-calendars" class="metric-value">1</span></div>
+                </div>
+            </section>
+
+            <section class="left-panel">
+                <div class="card">
+                    <h2>🔐 Authentication</h2>
+                    <div class="form-group">
+                        <input type="password" id="token" placeholder="Bearer Token...">
+                        <button onclick="saveToken()" class="btn btn-sm">Speichern</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>➕ Event erstellen</h2>
+                    <form id="event-form">
+                        <div class="form-group">
+                            <input type="text" id="event-title" placeholder="Event Titel" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="event-description" rows="2" placeholder="Beschreibung (optional)"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <input type="date" id="event-date" required>
+                            <input type="time" id="event-time" value="09:00">
+                        </div>
+                        <div class="form-row">
+                            <input type="number" id="event-duration" placeholder="Dauer (Min)" value="60" min="15">
+                            <select id="event-type">
+                                <option value="meeting">📞 Meeting</option>
+                                <option value="appointment">📋 Termin</option>
+                                <option value="reminder">⏰ Erinnerung</option>
+                                <option value="task">✅ Aufgabe</option>
+                                <option value="birthday">🎂 Geburtstag</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="event-location" placeholder="Ort (optional)">
+                        </div>
+                        <div class="form-group">
+                            <select id="event-repeat">
+                                <option value="none">Keine Wiederholung</option>
+                                <option value="daily">Täglich</option>
+                                <option value="weekly">Wöchentlich</option>
+                                <option value="monthly">Monatlich</option>
+                                <option value="yearly">Jährlich</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">📅 Event erstellen</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h2>📥 iCal Import/Export</h2>
+                    <div class="form-group">
+                        <input type="file" id="ical-file" accept=".ics,.ical">
+                    </div>
+                    <div class="form-actions">
+                        <button onclick="importIcal()" class="btn btn-secondary">📥 Import</button>
+                        <button onclick="exportIcal()" class="btn btn-secondary">📤 Export</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="right-panel">
+                <div class="card">
+                    <h2>📆 Heute (<span id="date-today"></span>)</h2>
+                    <div id="today-list" class="event-list"><p class="empty-state">Keine Events heute</p></div>
+                </div>
+
+                <div class="card">
+                    <h2>⏰ Kommende Events</h2>
+                    <div id="upcoming-list" class="event-list"><p class="empty-state">Keine kommenden Events</p></div>
+                </div>
+
+                <div class="card">
+                    <h2>📜 Aktivitäten</h2>
+                    <div id="activity-log" class="activity-log"><p class="empty-state">Keine Aktivitäten</p></div>
+                </div>
+            </section>
+
+            <section class="bottom-panel">
+                <div class="card calendar-view">
+                    <h2>📅 Kalenderübersicht</h2>
+                    <div class="calendar-nav">
+                        <button onclick="calendar.prevMonth()" class="btn btn-sm">◀</button>
+                        <span id="calendar-month">November 2025</span>
+                        <button onclick="calendar.nextMonth()" class="btn btn-sm">▶</button>
+                    </div>
+                    <div id="calendar-grid" class="calendar-grid"></div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="dashboard-footer">
+            <span>ELION PORTIER PAS-6.0 | opena14_calendar</span>
+            <span>Port: 12359</span>
+            <span id="last-update">--:--:--</span>
+        </footer>
+    </div>
+    <div id="toast-container" class="toast-container"></div>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telephone Agent (opena9) | ELION PAS-6.0 Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-left">
+            <span class="logo">📞</span>
+            <div class="header-info">
+                <h1>Telephone Agent Dashboard</h1>
+                <span class="version">PAS-6.0 | opena9 | VoIP & Telephony Automation</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="status-badge" id="statusBadge">
+                <span class="status-dot"></span>
+                <span class="status-text">Checking...</span>
+            </div>
+            <span class="port-badge">Port 12355</span>
+            <button class="btn btn-primary" id="refreshBtn">🔄 Refresh</button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="dashboard-nav">
+        <button class="nav-btn active" data-section="overview">📊 Overview</button>
+        <button class="nav-btn" data-section="incoming">📥 Incoming</button>
+        <button class="nav-btn" data-section="outgoing">📤 Outgoing</button>
+        <button class="nav-btn" data-section="voicemail">📧 Voicemail</button>
+        <button class="nav-btn" data-section="ivr">🎛️ IVR</button>
+        <button class="nav-btn" data-section="recordings">🎙️ Recordings</button>
+        <button class="nav-btn" data-section="contacts">👥 Contacts</button>
+        <button class="nav-btn" data-section="analytics">📈 Analytics</button>
+        <button class="nav-btn" data-section="api">🔌 API Console</button>
+        <button class="nav-btn" data-section="settings">⚙️ Settings</button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <div class="section-header">
+                <h2>🏠 Telephone System Overview</h2>
+            </div>
+
+            <!-- Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card primary">
+                    <span class="metric-icon">📥</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="incomingCalls">0</span>
+                        <span class="metric-label">Incoming Calls</span>
+                    </div>
+                </div>
+                <div class="metric-card success">
+                    <span class="metric-icon">📤</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="outgoingCalls">0</span>
+                        <span class="metric-label">Outgoing Calls</span>
+                    </div>
+                </div>
+                <div class="metric-card warning">
+                    <span class="metric-icon">📧</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="voicemailCount">0</span>
+                        <span class="metric-label">Voicemails</span>
+                    </div>
+                </div>
+                <div class="metric-card info">
+                    <span class="metric-icon">⏱️</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="avgDuration">0m</span>
+                        <span class="metric-label">Avg Duration</span>
+                    </div>
+                </div>
+                <div class="metric-card success">
+                    <span class="metric-icon">✅</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="answeredRate">0%</span>
+                        <span class="metric-label">Answered Rate</span>
+                    </div>
+                </div>
+                <div class="metric-card error">
+                    <span class="metric-icon">❌</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="missedCalls">0</span>
+                        <span class="metric-label">Missed Calls</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Capabilities -->
+            <div class="card">
+                <h3>⚡ Telephone Capabilities (12)</h3>
+                <div class="capabilities-grid">
+                    <div class="capability-card" data-capability="incoming_handler">
+                        <span class="capability-icon">📥</span>
+                        <div class="capability-info">
+                            <h4>Incoming Handler</h4>
+                            <p>Auto-answer incoming calls</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="outgoing_dialer">
+                        <span class="capability-icon">📤</span>
+                        <div class="capability-info">
+                            <h4>Outgoing Dialer</h4>
+                            <p>Automated outbound calls</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="voicemail_system">
+                        <span class="capability-icon">📧</span>
+                        <div class="capability-info">
+                            <h4>Voicemail System</h4>
+                            <p>Record & manage voicemails</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="ivr_menu">
+                        <span class="capability-icon">🎛️</span>
+                        <div class="capability-info">
+                            <h4>IVR Menu</h4>
+                            <p>Interactive voice response</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="call_recording">
+                        <span class="capability-icon">🎙️</span>
+                        <div class="capability-info">
+                            <h4>Call Recording</h4>
+                            <p>Record all conversations</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="stt_engine">
+                        <span class="capability-icon">🗣️</span>
+                        <div class="capability-info">
+                            <h4>Speech-to-Text</h4>
+                            <p>Transcribe conversations</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="tts_engine">
+                        <span class="capability-icon">🔊</span>
+                        <div class="capability-info">
+                            <h4>Text-to-Speech</h4>
+                            <p>AI voice responses</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="caller_id">
+                        <span class="capability-icon">🆔</span>
+                        <div class="capability-info">
+                            <h4>Caller ID</h4>
+                            <p>Identify incoming callers</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="call_routing">
+                        <span class="capability-icon">🔀</span>
+                        <div class="capability-info">
+                            <h4>Call Routing</h4>
+                            <p>Smart call distribution</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="conference">
+                        <span class="capability-icon">👥</span>
+                        <div class="capability-info">
+                            <h4>Conference</h4>
+                            <p>Multi-party calls</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="sms_gateway">
+                        <span class="capability-icon">💬</span>
+                        <div class="capability-info">
+                            <h4>SMS Gateway</h4>
+                            <p>Send/receive SMS</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="ai_assistant">
+                        <span class="capability-icon">🤖</span>
+                        <div class="capability-info">
+                            <h4>AI Assistant</h4>
+                            <p>AI-powered responses</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <h3>🚀 Quick Actions</h3>
+                <div class="action-grid">
+                    <button class="action-btn" data-action="makeCall">
+                        <span class="action-icon">📞</span>
+                        <span>Call</span>
+                    </button>
+                    <button class="action-btn" data-action="sendSms">
+                        <span class="action-icon">💬</span>
+                        <span>SMS</span>
+                    </button>
+                    <button class="action-btn" data-action="voicemail">
+                        <span class="action-icon">📧</span>
+                        <span>Voicemail</span>
+                    </button>
+                    <button class="action-btn" data-action="recordings">
+                        <span class="action-icon">🎙️</span>
+                        <span>Recordings</span>
+                    </button>
+                    <button class="action-btn" data-action="ivrSetup">
+                        <span class="action-icon">🎛️</span>
+                        <span>IVR</span>
+                    </button>
+                    <button class="action-btn" data-action="analytics">
+                        <span class="action-icon">📈</span>
+                        <span>Analytics</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Active Calls -->
+            <div class="card">
+                <h3>📞 Active Calls</h3>
+                <div id="activeCallsList" class="call-list">
+                    <div class="loading">No active calls</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Incoming Section -->
+        <section id="incoming" class="section">
+            <div class="section-header">
+                <h2>📥 Incoming Calls</h2>
+            </div>
+            <div class="card">
+                <h3>Recent Incoming</h3>
+                <div id="incomingCallsList" class="call-history">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Outgoing Section -->
+        <section id="outgoing" class="section">
+            <div class="section-header">
+                <h2>📤 Outgoing Calls</h2>
+                <button class="btn btn-primary" onclick="dashboard.showMakeCallModal()">📞 Make Call</button>
+            </div>
+            <div class="card">
+                <h3>Dial Pad</h3>
+                <div class="dialpad">
+                    <input type="text" class="form-control" id="phoneNumber" placeholder="+49 123 456789">
+                    <div class="dialpad-grid">
+                        <button class="dial-btn" onclick="dashboard.dialDigit('1')">1</button>
+                        <button class="dial-btn" onclick="dashboard.dialDigit('2')">2</button>
+                        <button class="dial-btn" onclick="dashboard.dialDigit('3')">3</button>
+                        <button class="dial-btn" onclick="dashboard.dialDigit('4')">4</button>
+                        <button class="dial-btn" onclick="dashboard.dialDigit('5')">5</button>
+                        <button class="dial-btn" onclick="dashboard.dialDigit('6')">6</button>
+                        <button class="dial-btn" onclick="dashboard.dialDigit('7')">7</button>
+                        <button class="dial-btn" onclick="dashboard.dialDigit('8')">8</button>
+                        <button class="dial-btn" onclick="dashboard.dialDigit('9')">9</button>
+                        <button class="dial-btn" onclick="dashboard.dialDigit('*')">*</button>
+                        <button class="dial-btn" onclick="dashboard.dialDigit('0')">0</button>
+                        <button class="dial-btn" onclick="dashboard.dialDigit('#')">#</button>
+                    </div>
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <button class="btn btn-success btn-lg" style="flex: 1;" onclick="dashboard.makeCall()">📞 Call</button>
+                        <button class="btn btn-secondary btn-lg" onclick="dashboard.clearDialpad()">⌫</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Voicemail Section -->
+        <section id="voicemail" class="section">
+            <div class="section-header">
+                <h2>📧 Voicemail</h2>
+            </div>
+            <div class="card">
+                <h3>Voicemail Inbox</h3>
+                <div id="voicemailList" class="voicemail-list">
+                    <div class="loading">Loading voicemails...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- IVR Section -->
+        <section id="ivr" class="section">
+            <div class="section-header">
+                <h2>🎛️ IVR Menu Configuration</h2>
+            </div>
+            <div class="card">
+                <h3>Menu Structure</h3>
+                <div class="ivr-builder" id="ivrBuilder">
+                    <div class="ivr-node">
+                        <h4>🎯 Main Menu</h4>
+                        <p>Press 1: Sales</p>
+                        <p>Press 2: Support</p>
+                        <p>Press 3: Billing</p>
+                        <p>Press 0: Operator</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Greeting Message</h3>
+                <div class="form-group">
+                    <label>Welcome Message (TTS)</label>
+                    <textarea class="form-control" id="ivrGreeting" placeholder="Willkommen bei ELION. Bitte wählen Sie..."></textarea>
+                </div>
+                <button class="btn btn-primary">💾 Save IVR</button>
+            </div>
+        </section>
+
+        <!-- Recordings Section -->
+        <section id="recordings" class="section">
+            <div class="section-header">
+                <h2>🎙️ Call Recordings</h2>
+            </div>
+            <div class="card">
+                <h3>Recent Recordings</h3>
+                <div id="recordingsList" class="recordings-list">
+                    <div class="loading">Loading recordings...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contacts Section -->
+        <section id="contacts" class="section">
+            <div class="section-header">
+                <h2>👥 Contacts</h2>
+                <button class="btn btn-primary" onclick="dashboard.showAddContactModal()">+ Add Contact</button>
+            </div>
+            <div class="card">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="contactSearch" placeholder="🔍 Search contacts...">
+                </div>
+                <div id="contactsList" class="contact-list">
+                    <div class="loading">Loading contacts...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="section">
+            <div class="section-header">
+                <h2>📈 Call Analytics</h2>
+            </div>
+            <div class="metrics-grid">
+                <div class="metric-card primary">
+                    <span class="metric-icon">📊</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="totalCallsToday">0</span>
+                        <span class="metric-label">Today's Calls</span>
+                    </div>
+                </div>
+                <div class="metric-card success">
+                    <span class="metric-icon">⏱️</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="totalDuration">0h</span>
+                        <span class="metric-label">Total Duration</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Call Volume</h3>
+                <div class="chart-container" id="callVolumeChart">
+                    <div class="loading">Chart loading...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API Console -->
+        <section id="api" class="section">
+            <div class="section-header">
+                <h2>🔌 API Console</h2>
+            </div>
+            <div class="card">
+                <h3>Test API</h3>
+                <div class="form-group">
+                    <label>Endpoint</label>
+                    <input type="text" class="form-control" id="apiEndpoint" value="/health">
+                </div>
+                <div class="form-group">
+                    <label>Method</label>
+                    <select class="form-control" id="apiMethod">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Body (JSON)</label>
+                    <textarea class="form-control" id="apiBody"></textarea>
+                </div>
+                <button class="btn btn-primary" id="testApiBtn">🚀 Send</button>
+            </div>
+            <div class="card">
+                <h3>Response</h3>
+                <pre id="apiResponse" style="background: var(--bg-dark); padding: 1rem; border-radius: 8px;">// Response</pre>
+            </div>
+            <div class="card">
+                <h3>Available Endpoints</h3>
+                <div class="endpoint-grid">
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/health</code></div>
+                    <div class="endpoint-item"><span class="method post">POST</span><code>/api/call/make</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/calls/incoming</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/calls/outgoing</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/voicemails</code></div>
+                    <div class="endpoint-item"><span class="method post">POST</span><code>/api/sms/send</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/recordings</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/analytics</code></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="section">
+            <div class="section-header">
+                <h2>⚙️ Settings</h2>
+            </div>
+            <div class="card">
+                <h3>VoIP Configuration</h3>
+                <div class="form-group">
+                    <label>SIP Server</label>
+                    <input type="text" class="form-control" id="sipServer" placeholder="sip.example.com">
+                </div>
+                <div class="form-group">
+                    <label>SIP Username</label>
+                    <input type="text" class="form-control" id="sipUsername">
+                </div>
+                <div class="form-group">
+                    <label>Caller ID</label>
+                    <input type="text" class="form-control" id="callerId" placeholder="+49 123 456789">
+                </div>
+                <button class="btn btn-primary">💾 Save Settings</button>
+            </div>
+            <div class="card">
+                <h3>Recording Settings</h3>
+                <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                    <input type="checkbox" id="autoRecord" checked>
+                    Auto-record all calls
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                    <input type="checkbox" id="transcribeRecordings">
+                    Auto-transcribe recordings
+                </label>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <div class="modal" id="makeCallModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📞 Make Call</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" class="form-control" id="modalPhoneNumber" placeholder="+49 123 456789">
+                </div>
+                <div class="form-group">
+                    <label>Caller ID</label>
+                    <input type="text" class="form-control" id="modalCallerId" placeholder="Default">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close">Cancel</button>
+                <button class="btn btn-success" onclick="dashboard.makeCallFromModal()">📞 Call</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <span>ELION Telephone Agent | PAS-6.0</span>
+        <span>opena9 | Port 12355</span>
+        <span id="currentTime"></span>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        setInterval(() => {
+            document.getElementById('currentTime').textContent = new Date().toLocaleString('de-DE');
+        }, 1000);
+    </script>
+</body>
+</html>

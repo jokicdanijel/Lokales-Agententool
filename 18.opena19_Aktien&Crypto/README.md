@@ -1,12 +1,174 @@
-# 📈 opena19 - Stocks & Crypto Agent
+# 🤖 opena19 - Aktien & Crypto
 
 **Agent-ID:** `opena19`  
-**Port:** 12364  
+**Port:** 12365  
 **Kürzel:** `stockcryptop`  
-**Version:** 1.0  
-**Status:** ✅ RUNNING (PID: 1819135)
+**Version:** 3.0  
+**Status:** 🟡 **Planned** (PORTIER 3.0 Architecture Ready)  
+**Letzte Aktualisierung:** 29. November 2025
 
 ---
+
+## 📖 Überblick
+
+**opena19** ist der **Aktien & Crypto** im ELION Hyper-Dashboard System - ein spezialisierter Agent für die PORTIER 3.0 Multi-Agent-Architektur.
+
+### 🎯 PORTIER 3.0 Integration
+
+opena19 ist architektonisch vorbereitet für die PORTIER 3.0 Integration:
+
+- ✅ **Option-2-Flow Ready:** OpenAI → opena1 → opena2 → kordp → opena19
+- ✅ **Port Policy Compliant:** Port 12365 (Backend-Range 12344-12399)
+- ✅ **Safepoint Integration:** Automatische Archivierung via opena2
+- ✅ **Bearer Token Security:** Authentifizierung vorbereitet
+- 🟡 **Implementation Status:** Ordnerstruktur vorhanden, Code pending
+
+### 🚀 Zukünftige Features
+
+- 🔄 **Multi-Agent Coordination:** Integration mit anderen Agenten
+- 📊 **Real-time Monitoring:** Dashboard-Integration (opena20)
+- 🛡️ **Security First:** Vollständige Bearer Token Implementation
+- ⚡ **High Performance:** Async FastAPI Architecture
+
+---
+
+## 📡 API-Endpoints (Planned)
+
+### `GET /health`
+
+Health-Check des Agents.
+
+```bash
+curl http://127.0.0.1:12365/health | jq .
+```
+
+### `POST /invoke`
+
+Service-spezifische Aktion ausführen.
+
+```bash
+curl -X POST http://127.0.0.1:12365/invoke \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "service_action",
+    "params": {...}
+  }'
+```
+
+---
+
+## 🚀 Quick Start (When Implemented)
+
+### Agent starten
+
+```bash
+cd 18.opena19_Aktien&Crypto
+python3 main.py
+
+# Oder via ops.sh
+cd ..
+bin/ops.sh start
+```
+
+### Health Check
+
+```bash
+curl http://127.0.0.1:12365/health | jq .
+```
+
+---
+
+## 🔗 Integration mit PORTIER 3.0
+
+### Service-Registrierung
+
+```bash
+curl -X POST http://127.0.0.1:12344/route/update \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "service_name": "opena19",
+    "endpoint": "http://127.0.0.1:12365",
+    "program_target": "stockcryptop"
+  }'
+```
+
+### Action via Portier auslösen
+
+```bash
+curl -X POST http://127.0.0.1:12344/dispatch/kordp \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "service_target": "stockcryptop",
+    "action": "service_action",
+    "params": {...}
+  }'
+```
+
+---
+
+## 📁 Verzeichnisstruktur (Planned)
+
+```txt
+18.opena19_Aktien&Crypto/
+├── main.py                  # FastAPI Agent Entry Point (planned)
+├── config.py                # Konfiguration (planned)
+├── requirements.txt         # Dependencies
+├── bin/
+│   └── start.sh             # Start-Script (planned)
+├── tests/
+│   └── test_opena19.py  # Unit-Tests (planned)
+└── README.md                # Diese Datei
+```
+
+---
+
+## 🔐 Sicherheit
+
+- ✅ **Bearer-Token** für alle Endpoints außer `/health`
+- ✅ **Port-Policy** Enforcement (12344-12399)
+- ✅ **Strict JSON** (Pydantic `extra="forbid"`)
+- ✅ **Option-2-Flow** Compliance
+
+---
+
+## 🧪 Testing (Planned)
+
+```bash
+# Unit-Tests
+pytest tests/test_opena19.py -v
+
+# Health-Check
+curl http://127.0.0.1:12365/health
+
+# Integration-Test via Portier
+python3 ../scripts/test_opena19_integration.py
+```
+
+---
+
+## 📊 Monitoring (Planned)
+
+```bash
+# Prometheus Metrics (wenn aktiviert)
+curl http://127.0.0.1:12365/metrics
+```
+
+---
+
+## 📚 Weitere Dokumentation
+
+- [Service Matrix](../docs/SERVICE_MATRIX.md)
+- [Operations Guide](../docs/OPERATIONS.md)
+- [Option-2-Flow](../.github/copilot-master-prompt.md)
+
+---
+
+**Maintainer:** Danijel Jokic (ELION Team)  
+**Letzte Aktualisierung:** 29. November 2025  
+**Status:** 🟡 **Architecture Ready** (Implementation Pending)
 
 ## 📖 Überblick
 

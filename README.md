@@ -3,14 +3,14 @@
 **Version:** 3.0.0  
 **Status:** ✅ **PRODUCTION-READY**  
 **Release Date:** 21. November 2025  
-**Last Updated:** 28. November 2025 03:22 UTC  
+**Last Updated:** 29. November 2025 12:00 UTC  
 **Lead Developer:** Danijel Jokic  
 **Repository:** [jokicdanijel/Gesamtprojekt-start](https://github.com/jokicdanijel/Gesamtprojekt-start)  
 **License:** MIT + Internal Use Only (Enterprise Components)
 
 ---
 
-## 🔄 **Recent Updates (28. Nov 2025)**
+## 🔄 **Recent Updates (29. Nov 2025)**
 
 ### ✅ **Security Incident Resolved**
 
@@ -291,7 +291,7 @@ flowchart TB
         opena17["opena17<br>Homepage Creator<br>Port 12363<br>✅ Online"]
         opena18["opena18<br>CRM / Local Archiv<br>Port 12364<br>✅ Online"]
         opena19["opena19<br>Aktien & Crypto<br>Port 12365<br>✅ Online"]
-        opena21["opena21<br>Workflow Engine<br>Port 12366<br>🟡 Planned"]
+        opena21["opena21<br>Workflow Engine<br>Port 12364<br>✅ Running"]
     end
     
     %% =====================
@@ -387,7 +387,7 @@ flowchart TB
     class opena1,opena2,kordp,archivp,opena20,agenda_api running
     class opena3,opena5,opena6,opena7,opena8,opena9,opena10,opena11,opena12,opena13,opena14,opena15,opena16,opena17,opena18,opena19 online
     class opena4 offline
-    class opena21 planned
+    class opena21 running
     class openwebui_ui forbidden
 ```
 
@@ -396,7 +396,8 @@ flowchart TB
 - 🟢 **Grün (Running):** Core-Services aktiv (opena1, opena2, kordp, opena20, archivp, agenda_api)
 - ✅ **Grün (Online):** Agenten produktiv (opena3, opena5-opena19) — **16/17 Agenten**
 - ❌ **Rot (Offline):** Agent nicht erreichbar (opena4 Telegram) — **1/17 Agenten**
-- 🟡 **Gelb (Planned):** Zukünftige Implementierung (opena21 Workflow)
+- 🟡 **Gelb (Planned):** Zukünftige Implementierung
+- ✅ **Grün (Running):** opena21 Workflow Engine produktiv
 - 🔴 **Rot (Forbidden):** Port 8080 ist für Backend-Services gesperrt (UI-only)
 - 🟠 **Orange (Dashboard):** Dashboard-Service mit Web UI
 
@@ -452,6 +453,7 @@ OpenAI → opena1:12344 → opena2:12345 → kordp:12346 → Tools
 | **12363** | **opena17** | Homepage Creator (hpcreatep) | ❌ Offline |
 | **12364** | **opena18** | CRM / Local Archiv (crmp) | ✅ **Online** |
 | **12365** | **opena19** | Aktien & Crypto (stockcryptop) | ❌ Offline |
+| **12364** | **opena21** | Workflow Engine (workflowp) | ✅ **Running** |
 | **12366-12399** | **Reserved** | Future Expansion | 📅 Available |
 
 **Live-Status:** 28.11.2025 03:30:00 | **16/17 Agenten online** (❌ nur opena4 offline)
@@ -635,7 +637,7 @@ Gesamtprojekt/  (PORTIER 3.0 Root)
 │   └── bin/
 │       └── start_opena20.sh
 │
-├── 20.opena21_workflow/                     # 🟡 Workflow Engine
+├── 20.opena21_workflow/                     # ✅ Workflow Engine (Production)
 │
 ├── src/                                     # ✅ SCTA Shared Modules
 │   ├── agents/

@@ -1,13 +1,174 @@
-# ☎️ opena9 - Telefonie Agent (Twilio)
+# 🤖 opena9 - Telefonie Agent
 
 **Agent-ID:** `opena9`  
-**Port:** 12354  
-**Kürzel:** `telphonep`  
-**Status:** ✅ RUNNING (PID: siehe logs/opena9.pid)  
-**Version:** 2.0  
-**Status:** ✅ Production
+**Port:** 12355  
+**Kürzel:** `telephonep`  
+**Version:** 3.0  
+**Status:** 🟡 **Planned** (PORTIER 3.0 Architecture Ready)  
+**Letzte Aktualisierung:** 29. November 2025
 
 ---
+
+## 📖 Überblick
+
+**opena9** ist der **Telefonie Agent** im ELION Hyper-Dashboard System - ein spezialisierter Agent für die PORTIER 3.0 Multi-Agent-Architektur.
+
+### 🎯 PORTIER 3.0 Integration
+
+opena9 ist architektonisch vorbereitet für die PORTIER 3.0 Integration:
+
+- ✅ **Option-2-Flow Ready:** OpenAI → opena1 → opena2 → kordp → opena9
+- ✅ **Port Policy Compliant:** Port 12355 (Backend-Range 12344-12399)
+- ✅ **Safepoint Integration:** Automatische Archivierung via opena2
+- ✅ **Bearer Token Security:** Authentifizierung vorbereitet
+- 🟡 **Implementation Status:** Ordnerstruktur vorhanden, Code pending
+
+### 🚀 Zukünftige Features
+
+- 🔄 **Multi-Agent Coordination:** Integration mit anderen Agenten
+- 📊 **Real-time Monitoring:** Dashboard-Integration (opena20)
+- 🛡️ **Security First:** Vollständige Bearer Token Implementation
+- ⚡ **High Performance:** Async FastAPI Architecture
+
+---
+
+## 📡 API-Endpoints (Planned)
+
+### `GET /health`
+
+Health-Check des Agents.
+
+```bash
+curl http://127.0.0.1:12355/health | jq .
+```
+
+### `POST /invoke`
+
+Service-spezifische Aktion ausführen.
+
+```bash
+curl -X POST http://127.0.0.1:12355/invoke \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "service_action",
+    "params": {...}
+  }'
+```
+
+---
+
+## 🚀 Quick Start (When Implemented)
+
+### Agent starten
+
+```bash
+cd 8.opena9_telephone
+python3 main.py
+
+# Oder via ops.sh
+cd ..
+bin/ops.sh start
+```
+
+### Health Check
+
+```bash
+curl http://127.0.0.1:12355/health | jq .
+```
+
+---
+
+## 🔗 Integration mit PORTIER 3.0
+
+### Service-Registrierung
+
+```bash
+curl -X POST http://127.0.0.1:12344/route/update \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "service_name": "opena9",
+    "endpoint": "http://127.0.0.1:12355",
+    "program_target": "telephonep"
+  }'
+```
+
+### Action via Portier auslösen
+
+```bash
+curl -X POST http://127.0.0.1:12344/dispatch/kordp \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "service_target": "telephonep",
+    "action": "service_action",
+    "params": {...}
+  }'
+```
+
+---
+
+## 📁 Verzeichnisstruktur (Planned)
+
+```txt
+8.opena9_telephone/
+├── main.py                  # FastAPI Agent Entry Point (planned)
+├── config.py                # Konfiguration (planned)
+├── requirements.txt         # Dependencies
+├── bin/
+│   └── start.sh             # Start-Script (planned)
+├── tests/
+│   └── test_opena9.py  # Unit-Tests (planned)
+└── README.md                # Diese Datei
+```
+
+---
+
+## 🔐 Sicherheit
+
+- ✅ **Bearer-Token** für alle Endpoints außer `/health`
+- ✅ **Port-Policy** Enforcement (12344-12399)
+- ✅ **Strict JSON** (Pydantic `extra="forbid"`)
+- ✅ **Option-2-Flow** Compliance
+
+---
+
+## 🧪 Testing (Planned)
+
+```bash
+# Unit-Tests
+pytest tests/test_opena9.py -v
+
+# Health-Check
+curl http://127.0.0.1:12355/health
+
+# Integration-Test via Portier
+python3 ../scripts/test_opena9_integration.py
+```
+
+---
+
+## 📊 Monitoring (Planned)
+
+```bash
+# Prometheus Metrics (wenn aktiviert)
+curl http://127.0.0.1:12355/metrics
+```
+
+---
+
+## 📚 Weitere Dokumentation
+
+- [Service Matrix](../docs/SERVICE_MATRIX.md)
+- [Operations Guide](../docs/OPERATIONS.md)
+- [Option-2-Flow](../.github/copilot-master-prompt.md)
+
+---
+
+**Maintainer:** Danijel Jokic (ELION Team)  
+**Letzte Aktualisierung:** 29. November 2025  
+**Status:** 🟡 **Architecture Ready** (Implementation Pending)
 
 ## 📖 Überblick
 
