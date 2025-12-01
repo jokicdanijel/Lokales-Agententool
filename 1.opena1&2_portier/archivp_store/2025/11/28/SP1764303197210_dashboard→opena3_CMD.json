@@ -1,0 +1,13 @@
+{
+  "ts": "2025-11-28T04:13:17.210877Z",
+  "src": "dashboard",
+  "dst": "opena3",
+  "kind": "CMD",
+  "body": {
+    "message": "17\nGesamt Agenten\n17\nOnline\n0\nOffline\nOpenWebUI Terminal\n✓ Online\nID: opena3\nKürzel: owuip\nPort: 12347\nOnline\n🎛️ Agent bedienen\nTelegram Agent\n✓ Online\nID: opena4\nKürzel: telep\nPort: 12348\nUptime: -3947s\n🎛️ Agent bedienen\nVS Code Agent\n✓ Online\nID: opena5\nKürzel: vscop\nPort: 12351\nOnline\n🎛️ Agent bedienen\nBrowser Agent\n✓ Online\nID: opena6\nKürzel: browsep\nPort: 12352\nOnline\n🎛️ Agent bedienen\nEmail Agent\n✓ Online\nID: opena7\nKürzel: emailp\nPort: 12353\nOnline\n🎛️ Agent bedienen\nWhatsApp Agent\n✓ Online\nID: opena8\nKürzel: whatsappp\nPort: 12354\nOnline\n🎛️ Agent bedienen\nTelefonie Agent\n✓ Online\nID: opena9\nKürzel: telphonep\nPort: 12355\nOnline\n🎛️ Agent bedienen\nCall Tracking Agent\n✓ Online\nID: opena10\nKürzel: calltrackp\nPort: 12356\nOnline\n🎛️ Agent bedienen\nUnlock Agent\n✓ Online\nID: opena11\nKürzel: unlockp\nPort: 12357\nOnline\n🎛️ Agent bedienen\nSocial Media Agent\n✓ Online\nID: opena12\nKürzel: smp\nPort: 12358\nOnline\n🎛️ Agent bedienen\nInfluencer Agent\n✓ Online\nID: opena13\nKürzel: influp\nPort: 12359\nOnline\n🎛️ Agent bedienen\nCalendar Agent\n✓ Online\nID: opena14\nKürzel: calp\nPort: 12360\nOnline\n🎛️ Agent bedienen\nHTML Creator\n✓ Online\nID: opena15\nKürzel: htmlp\nPort: 12361\nOnline\n🎛️ Agent bedienen\nShop Agent\n✓ Online\nID: opena16\nKürzel: shopp\nPort: 12362\nOnline\n🎛️ Agent bedienen\nHomepage Creator\n✓ Online\nID: opena17\nKürzel: hpcreatep\nPort: 12363\nOnline\n🎛️ Agent bedienen\nCRM Agent\n✓ Online\nID: opena18\nKürzel: crmp\nPort: 12364\nUptime: 9690s\n🎛️ Agent bedienen\nStocks & Crypto\n✓ Online\nID: opena19\nKürzel: stockcryptop\nPort: 12365\nUptime: 3778s\n🎛️ Agent bedienen",
+    "model": null,
+    "stream": false,
+    "timestamp": "2025-11-28T04:13:17.210730Z"
+  },
+  "strict": true
+}

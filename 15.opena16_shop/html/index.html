@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛒 OPENA16 Shop - PORTIER PAS-6.0 Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="logo-section">
+                <span class="logo-icon">🛒</span>
+                <h1>Shop Creator 6.0</h1>
+                <span class="version-badge">v6.0.0 PAS-6.0</span>
+            </div>
+            <div class="status-section">
+                <span id="connection-status" class="status-indicator status-loading">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Verbinde...</span>
+                </span>
+                <span id="uptime" class="uptime-display">--:--:--</span>
+            </div>
+        </header>
+
+        <main class="main-grid">
+            <section class="platform-cards">
+                <div class="card metric-card" data-metric="products">
+                    <div class="card-icon">📦</div>
+                    <div class="card-content"><h3>Produkte</h3><span id="total-products" class="metric-value">0</span></div>
+                </div>
+                <div class="card metric-card" data-metric="orders">
+                    <div class="card-icon">🧾</div>
+                    <div class="card-content"><h3>Bestellungen</h3><span id="total-orders" class="metric-value">0</span></div>
+                </div>
+                <div class="card metric-card" data-metric="revenue">
+                    <div class="card-icon">💰</div>
+                    <div class="card-content"><h3>Umsatz</h3><span id="total-revenue" class="metric-value">€0</span></div>
+                </div>
+                <div class="card metric-card" data-metric="inventory">
+                    <div class="card-icon">📊</div>
+                    <div class="card-content"><h3>Lagerbestand</h3><span id="total-inventory" class="metric-value">0</span></div>
+                </div>
+            </section>
+
+            <section class="left-panel">
+                <div class="card">
+                    <h2>🔐 Authentication</h2>
+                    <div class="form-group">
+                        <input type="password" id="token" placeholder="Bearer Token...">
+                        <button onclick="saveToken()" class="btn btn-sm">Speichern</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>📦 Produkt erstellen</h2>
+                    <form id="product-form">
+                        <div class="form-group">
+                            <input type="text" id="product-title" placeholder="Produktname" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="product-description" rows="2" placeholder="Beschreibung"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <input type="text" id="product-sku" placeholder="SKU" required>
+                            <input type="number" id="product-price" placeholder="Preis €" step="0.01" min="0" required>
+                        </div>
+                        <div class="form-row">
+                            <input type="number" id="product-stock" placeholder="Lagerbestand" min="0" value="0">
+                            <select id="product-category">
+                                <option value="electronics">🔌 Elektronik</option>
+                                <option value="clothing">👕 Kleidung</option>
+                                <option value="home">🏠 Haushalt</option>
+                                <option value="food">🍕 Lebensmittel</option>
+                                <option value="other">📦 Sonstiges</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select id="product-status">
+                                <option value="active">✅ Aktiv</option>
+                                <option value="draft">📝 Entwurf</option>
+                                <option value="archived">📁 Archiviert</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">➕ Produkt erstellen</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h2>🧾 Bestellung erstellen</h2>
+                    <form id="order-form">
+                        <div class="form-row">
+                            <input type="text" id="order-customer" placeholder="Kundenname" required>
+                            <input type="email" id="order-email" placeholder="E-Mail" required>
+                        </div>
+                        <div class="form-group">
+                            <select id="order-product">
+                                <option value="">-- Produkt wählen --</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <input type="number" id="order-quantity" placeholder="Menge" min="1" value="1">
+                            <input type="text" id="order-address" placeholder="Lieferadresse">
+                        </div>
+                        <button type="submit" class="btn btn-primary">🛒 Bestellen</button>
+                    </form>
+                </div>
+            </section>
+
+            <section class="right-panel">
+                <div class="card">
+                    <h2>📦 Produkte (<span id="products-count">0</span>)</h2>
+                    <div id="products-list" class="list-container"><p class="empty-state">Keine Produkte</p></div>
+                </div>
+
+                <div class="card">
+                    <h2>🧾 Letzte Bestellungen</h2>
+                    <div id="orders-list" class="list-container"><p class="empty-state">Keine Bestellungen</p></div>
+                </div>
+
+                <div class="card">
+                    <h2>�� Aktivitäten</h2>
+                    <div id="activity-log" class="activity-log"><p class="empty-state">Keine Aktivitäten</p></div>
+                </div>
+            </section>
+
+            <section class="bottom-panel">
+                <div class="card metrics-card">
+                    <h2>📊 Shop-Statistiken</h2>
+                    <div class="metrics-grid">
+                        <div class="metric-item"><span class="metric-label">Aktive</span><span id="active-products" class="metric-value">0</span></div>
+                        <div class="metric-item"><span class="metric-label">Entwürfe</span><span id="draft-products" class="metric-value">0</span></div>
+                        <div class="metric-item"><span class="metric-label">Ausstehend</span><span id="pending-orders" class="metric-value">0</span></div>
+                        <div class="metric-item"><span class="metric-label">Versendet</span><span id="shipped-orders" class="metric-value">0</span></div>
+                        <div class="metric-item"><span class="metric-label">Ø Preis</span><span id="avg-price" class="metric-value">€0</span></div>
+                        <div class="metric-item"><span class="metric-label">Kategorien</span><span id="total-categories" class="metric-value">0</span></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="dashboard-footer">
+            <span>ELION PORTIER PAS-6.0 | opena16_shop</span>
+            <span>Port: 12361</span>
+            <span id="last-update">--:--:--</span>
+        </footer>
+    </div>
+    <div id="toast-container" class="toast-container"></div>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

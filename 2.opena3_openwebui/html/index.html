@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>opena3 - OpenWebUI Terminal Agent | PORTIER PAS-6.0</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="dashboard-header">
+        <div class="header-left">
+            <span class="logo">🌐</span>
+            <div class="header-info">
+                <h1>OpenWebUI Terminal Agent</h1>
+                <span class="version">PAS-6.0 | opena3</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div id="statusBadge" class="status-badge">
+                <span class="status-dot"></span>
+                <span id="statusText">Connecting...</span>
+            </div>
+            <span class="port-badge">Port 12347</span>
+        </div>
+    </header>
+
+    <nav class="dashboard-nav">
+        <button class="nav-btn active" data-section="overview">📊 Overview</button>
+        <button class="nav-btn" data-section="chat">💬 Chat</button>
+        <button class="nav-btn" data-section="models">🤖 Models</button>
+        <button class="nav-btn" data-section="history">📜 History</button>
+        <button class="nav-btn" data-section="tools">🔧 Tools</button>
+        <button class="nav-btn" data-section="files">📁 Files</button>
+        <button class="nav-btn" data-section="stream">📡 SSE</button>
+        <button class="nav-btn" data-section="option2">🔄 Option-2</button>
+        <button class="nav-btn" data-section="logs">📋 Logs</button>
+        <button class="nav-btn" data-section="settings">⚙️ Settings</button>
+    </nav>
+
+    <main class="dashboard-main">
+        <!-- OVERVIEW -->
+        <section id="overview" class="section active">
+            <div class="section-header">
+                <h2>📊 System Overview</h2>
+                <button class="btn btn-secondary" onclick="dashboard.loadOverviewData()">🔄 Refresh</button>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card primary"><span class="metric-icon">💬</span><div class="metric-content"><span id="metricChats" class="metric-value">0</span><span class="metric-label">Active Chats</span></div></div>
+                <div class="metric-card success"><span class="metric-icon">✅</span><div class="metric-content"><span id="metricResponses" class="metric-value">0</span><span class="metric-label">AI Responses</span></div></div>
+                <div class="metric-card info"><span class="metric-icon">🤖</span><div class="metric-content"><span id="metricModels" class="metric-value">0</span><span class="metric-label">Models</span></div></div>
+                <div class="metric-card warning"><span class="metric-icon">📡</span><div class="metric-content"><span id="metricStream" class="metric-value">0</span><span class="metric-label">SSE Clients</span></div></div>
+            </div>
+
+            <div class="card">
+                <h3>🚀 10 OpenWebUI Capabilities</h3>
+                <div class="capabilities-grid">
+                    <div class="capability-item" data-section="chat"><span class="cap-icon">💬</span><span class="cap-name">Chat Window</span><span class="cap-status online">Active</span></div>
+                    <div class="capability-item" data-section="models"><span class="cap-icon">🤖</span><span class="cap-name">Model Selector</span><span class="cap-status online">Active</span></div>
+                    <div class="capability-item" data-section="history"><span class="cap-icon">📜</span><span class="cap-name">History</span><span class="cap-status online">Active</span></div>
+                    <div class="capability-item" data-section="stream"><span class="cap-icon">📡</span><span class="cap-name">SSE Stream</span><span class="cap-status online">Active</span></div>
+                    <div class="capability-item" data-section="models"><span class="cap-icon">🔀</span><span class="cap-name">Multi-Model</span><span class="cap-status online">Active</span></div>
+                    <div class="capability-item" data-section="files"><span class="cap-icon">📁</span><span class="cap-name">File Upload</span><span class="cap-status online">Active</span></div>
+                    <div class="capability-item" data-section="chat"><span class="cap-icon">⌨️</span><span class="cap-name">Commands</span><span class="cap-status online">Active</span></div>
+                    <div class="capability-item" data-section="option2"><span class="cap-icon">🔄</span><span class="cap-name">Option-2-Flow</span><span class="cap-status online">Active</span></div>
+                    <div class="capability-item" data-section="tools"><span class="cap-icon">🔧</span><span class="cap-name">Tool Registry</span><span class="cap-status online">Active</span></div>
+                    <div class="capability-item" data-section="stream"><span class="cap-icon">🔔</span><span class="cap-name">Notifications</span><span class="cap-status online">Active</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>⚡ Quick Actions</h3>
+                <div class="action-grid">
+                    <button class="action-btn" onclick="dashboard.showSection('chat')"><span class="action-icon">💬</span><span class="action-label">New Chat</span></button>
+                    <button class="action-btn" onclick="dashboard.showSection('models')"><span class="action-icon">🤖</span><span class="action-label">Select Model</span></button>
+                    <button class="action-btn" onclick="dashboard.showSection('history')"><span class="action-icon">📜</span><span class="action-label">View History</span></button>
+                    <button class="action-btn" onclick="dashboard.connectSSE()"><span class="action-icon">📡</span><span class="action-label">Connect SSE</span></button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🌐 OpenWebUI Status</h3>
+                <div class="webhook-status">
+                    <div class="status-item"><span class="status-label">WebUI URL</span><span id="webuiUrl" class="status-value">http://127.0.0.1:8080</span></div>
+                    <div class="status-item"><span class="status-label">Connection</span><span id="webuiConnection" class="status-value">Checking...</span></div>
+                    <div class="status-item"><span class="status-label">API Version</span><span id="webuiVersion" class="status-value">-</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAT -->
+        <section id="chat" class="section">
+            <div class="section-header"><h2>💬 Chat Interface</h2><div><button class="btn btn-secondary" onclick="dashboard.clearChat()">🗑️ Clear</button><button class="btn btn-primary" onclick="dashboard.newChat()">➕ New</button></div></div>
+            <div class="card chat-card">
+                <div class="chat-header"><span id="currentModel">Model: gpt-4</span><span id="chatStatus">Ready</span></div>
+                <div id="chatMessages" class="chat-messages"><div class="chat-empty"><span>🤖</span><p>Start a conversation...</p></div></div>
+                <div class="chat-input-container">
+                    <textarea id="chatInput" class="chat-input" placeholder="Type your message..." rows="3"></textarea>
+                    <div class="chat-actions"><button class="btn btn-secondary" onclick="dashboard.attachFile()">📎</button><button class="btn btn-secondary" onclick="dashboard.toggleCommands()">⌨️</button><button class="btn btn-primary" onclick="dashboard.sendChat()">📤 Send</button></div>
+                </div>
+            </div>
+            <div id="commandsPanel" class="card hidden">
+                <h3>⌨️ Commands</h3>
+                <div class="commands-list">
+                    <div class="command-item" onclick="dashboard.insertCommand('/help')"><code>/help</code><span>Show commands</span></div>
+                    <div class="command-item" onclick="dashboard.insertCommand('/clear')"><code>/clear</code><span>Clear chat</span></div>
+                    <div class="command-item" onclick="dashboard.insertCommand('/model')"><code>/model [name]</code><span>Switch model</span></div>
+                    <div class="command-item" onclick="dashboard.insertCommand('/export')"><code>/export</code><span>Export history</span></div>
+                </div>
+            </div>
+            <div class="card"><h3>⚙️ Chat Settings</h3>
+                <div class="form-row"><div class="form-group"><label>System Prompt</label><textarea id="systemPrompt" class="form-control" rows="3">Du bist ein hilfreicher Assistent.</textarea></div></div>
+                <div class="form-row"><div class="form-group"><label>Temperature</label><input type="range" id="chatTemperature" min="0" max="2" step="0.1" value="0.7"><span id="tempValue">0.7</span></div><div class="form-group"><label>Max Tokens</label><input type="number" id="chatMaxTokens" class="form-control" value="2048"></div></div>
+                <button class="btn btn-primary" onclick="dashboard.saveChatSettings()">💾 Save</button>
+            </div>
+        </section>
+
+        <!-- MODELS -->
+        <section id="models" class="section">
+            <div class="section-header"><h2>🤖 Model Selector</h2><button class="btn btn-secondary" onclick="dashboard.loadModels()">🔄 Refresh</button></div>
+            <div class="card"><h3>📋 Available Models</h3><div id="modelsList" class="models-grid"><div class="loading">Loading models...</div></div></div>
+            <div class="card"><h3>🔀 Multi-Model Comparison</h3>
+                <div class="form-group"><label>Select Models</label><div id="multiModelSelect" class="checkbox-group"></div></div>
+                <div class="form-group"><label>Test Prompt</label><textarea id="comparePrompt" class="form-control" rows="3" placeholder="Enter prompt..."></textarea></div>
+                <button class="btn btn-primary" onclick="dashboard.runComparison()">🔀 Compare</button>
+                <div id="comparisonResults" class="comparison-results hidden"></div>
+            </div>
+        </section>
+
+        <!-- HISTORY -->
+        <section id="history" class="section">
+            <div class="section-header"><h2>📜 Chat History</h2><div><button class="btn btn-secondary" onclick="dashboard.exportHistory()">📤 Export</button><button class="btn btn-danger" onclick="dashboard.clearHistory()">🗑️ Clear</button></div></div>
+            <div class="card"><h3>🔍 Filter</h3><div class="form-row"><div class="form-group"><label>Search</label><input type="text" id="historySearch" class="form-control" placeholder="Search..."></div><div class="form-group"><label>Model</label><select id="historyModel" class="form-control"><option value="">All</option></select></div></div></div>
+            <div class="card"><h3>📋 Conversations</h3><div id="historyList" class="history-list"><div class="loading">Loading...</div></div></div>
+        </section>
+
+        <!-- TOOLS -->
+        <section id="tools" class="section">
+            <div class="section-header"><h2>🔧 Tool Registry</h2><button class="btn btn-primary" onclick="dashboard.registerTool()">➕ Register</button></div>
+            <div class="card"><h3>📋 Registered Tools</h3>
+                <div id="toolsList" class="tools-list">
+                    <div class="tool-item"><div class="tool-icon">📝</div><div class="tool-info"><div class="tool-name">tool_text_analyzer</div><div class="tool-desc">Text analysis</div></div><div class="tool-status online">Active</div></div>
+                    <div class="tool-item"><div class="tool-icon">🔍</div><div class="tool-info"><div class="tool-name">tool_file_searcher</div><div class="tool-desc">File search</div></div><div class="tool-status online">Active</div></div>
+                    <div class="tool-item"><div class="tool-icon">📅</div><div class="tool-info"><div class="tool-name">tool_scheduler</div><div class="tool-desc">Task scheduling</div></div><div class="tool-status online">Active</div></div>
+                    <div class="tool-item"><div class="tool-icon">📊</div><div class="tool-info"><div class="tool-name">tool_monitor</div><div class="tool-desc">System monitoring</div></div><div class="tool-status online">Active</div></div>
+                </div>
+            </div>
+            <div class="card"><h3>🧪 Test Tool</h3>
+                <div class="form-row"><div class="form-group"><label>Tool</label><select id="testToolName" class="form-control"><option value="tool_text_analyzer">tool_text_analyzer</option><option value="tool_file_searcher">tool_file_searcher</option></select></div></div>
+                <div class="form-group"><label>Input (JSON)</label><textarea id="toolTestInput" class="form-control" rows="3">{}</textarea></div>
+                <button class="btn btn-primary" onclick="dashboard.executeToolTest()">▶️ Execute</button>
+                <div id="toolTestResult" class="ai-response hidden"><pre class="response-content"></pre></div>
+            </div>
+        </section>
+
+        <!-- FILES -->
+        <section id="files" class="section">
+            <div class="section-header"><h2>📁 File Upload</h2><button class="btn btn-secondary" onclick="dashboard.loadFiles()">🔄 Refresh</button></div>
+            <div class="card"><h3>📤 Upload</h3><div id="fileUploadZone" class="upload-zone"><span>📁</span><p>Drag & Drop or click</p></div><input type="file" id="fileInput" multiple hidden></div>
+            <div class="card"><h3>📋 Files</h3><div id="filesList" class="files-list"><div class="file-item"><span class="file-icon">📄</span><div class="file-info"><div class="file-name">README.md</div><div class="file-size">2.4 KB</div></div></div></div></div>
+        </section>
+
+        <!-- SSE -->
+        <section id="stream" class="section">
+            <div class="section-header"><h2>📡 SSE Stream</h2><div><button id="sseConnectBtn" class="btn btn-primary" onclick="dashboard.connectSSE()">🔌 Connect</button><button id="sseDisconnectBtn" class="btn btn-danger hidden" onclick="dashboard.disconnectSSE()">🔌 Disconnect</button></div></div>
+            <div class="card"><h3>📊 Status</h3><div class="webhook-status"><div class="status-item"><span class="status-label">Endpoint</span><span id="sseEndpoint" class="status-value">/sse/events</span></div><div class="status-item"><span class="status-label">Status</span><span id="sseStatus" class="status-value">Disconnected</span></div><div class="status-item"><span class="status-label">Events</span><span id="sseEventCount" class="status-value">0</span></div></div></div>
+            <div class="card"><h3>📋 Events</h3><div id="sseEvents" class="webhook-events"><div class="event-empty">Connect to see events</div></div></div>
+            <div class="card"><h3>🔔 Notifications</h3><div class="checkbox-group"><label><input type="checkbox" id="notifyChat" checked> Chat</label><label><input type="checkbox" id="notifySystem" checked> System</label><label><input type="checkbox" id="notifyError" checked> Errors</label></div></div>
+        </section>
+
+        <!-- OPTION-2 -->
+        <section id="option2" class="section">
+            <div class="section-header"><h2>🔄 Option-2 Flow</h2><button class="btn btn-secondary" onclick="dashboard.loadOption2Status()">🔄 Refresh</button></div>
+            <div class="card"><h3>🔀 Message Flow</h3>
+                <div class="flow-diagram">
+                    <div class="flow-step"><div class="flow-icon">🌐</div><div class="flow-label">OpenAI</div></div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step active"><div class="flow-icon">📡</div><div class="flow-label">opena1</div><div class="flow-port">:12344</div></div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step"><div class="flow-icon">📦</div><div class="flow-label">opena2</div><div class="flow-port">:12345</div></div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step highlight"><div class="flow-icon">🌐</div><div class="flow-label">opena3</div><div class="flow-port">:12347</div></div>
+                </div>
+            </div>
+            <div class="card"><h3>💾 Safepoints</h3><div id="safepointsList" class="safepoints-list"><div class="loading">Loading...</div></div></div>
+            <div class="card"><h3>🧪 Test Flow</h3>
+                <div class="form-group"><label>Message</label><textarea id="option2Message" class="form-control" rows="2">Test Option-2</textarea></div>
+                <button class="btn btn-primary" onclick="dashboard.testOption2()">🔄 Test</button>
+                <div id="option2Result" class="ai-response hidden"><pre class="response-content"></pre></div>
+            </div>
+            <div class="card"><h3>🔗 PORTIER Status</h3><div class="webhook-status"><div class="status-item"><span class="status-label">opena1</span><span id="opena1Status" class="status-value">-</span></div><div class="status-item"><span class="status-label">opena2</span><span id="opena2Status" class="status-value">-</span></div><div class="status-item"><span class="status-label">Dashboard</span><span id="dashboardStatus" class="status-value">-</span></div></div><button class="btn btn-secondary" onclick="dashboard.checkPortierStatus()">🔍 Check</button></div>
+        </section>
+
+        <!-- LOGS -->
+        <section id="logs" class="section">
+            <div class="section-header"><h2>📋 Logs</h2><div class="log-controls"><button class="btn btn-secondary" onclick="dashboard.clearLogs()">🗑️ Clear</button><button class="btn btn-secondary" onclick="dashboard.downloadLogs()">📥 Download</button></div></div>
+            <div class="card"><div class="log-filter"><label>Level:</label><select id="logLevel" class="form-control"><option value="all">All</option><option value="info">Info</option><option value="warning">Warning</option><option value="error">Error</option></select></div></div>
+            <div class="card log-card"><h3>📋 Output</h3><div id="logOutput" class="log-output"></div></div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section id="settings" class="section">
+            <div class="section-header"><h2>⚙️ Settings</h2></div>
+            <div class="card"><h3>🌐 OpenWebUI Connection</h3>
+                <div class="form-row"><div class="form-group"><label>URL</label><input type="url" id="webuiUrlConfig" class="form-control" value="http://127.0.0.1:8080"></div><div class="form-group"><label>API Key</label><input type="password" id="webuiApiKey" class="form-control"></div></div>
+                <button class="btn btn-primary" onclick="dashboard.saveWebuiConfig()">💾 Save</button>
+                <button class="btn btn-secondary" onclick="dashboard.testWebuiConnection()">🔍 Test</button>
+            </div>
+            <div class="card"><h3>🤖 Agent Settings</h3>
+                <div class="form-row"><div class="form-group"><label>Default Model</label><select id="defaultModel" class="form-control"><option value="gpt-4">GPT-4</option><option value="gpt-3.5-turbo">GPT-3.5</option></select></div><div class="form-group"><label>Timeout (ms)</label><input type="number" id="responseTimeout" class="form-control" value="30000"></div></div>
+                <button class="btn btn-primary" onclick="dashboard.saveAgentSettings()">💾 Save</button>
+            </div>
+            <div class="card"><h3>🔗 PORTIER</h3>
+                <div class="form-row"><div class="form-group"><label>Coordinator</label><input type="url" id="coordinatorUrl" class="form-control" value="http://127.0.0.1:12344"></div><div class="form-group"><label>Archivator</label><input type="url" id="archivatorUrl" class="form-control" value="http://127.0.0.1:12345"></div></div>
+                <div class="form-group"><label><input type="checkbox" id="option2Enabled" checked> Option-2 Flow</label></div>
+                <button class="btn btn-primary" onclick="dashboard.savePortierSettings()">💾 Save</button>
+            </div>
+            <div class="card danger"><h3>⚠️ System</h3><div class="action-grid"><button class="action-btn" onclick="dashboard.restartAgent()"><span class="action-icon">🔄</span><span class="action-label">Restart</span></button><button class="action-btn" onclick="dashboard.clearCache()"><span class="action-icon">🗑️</span><span class="action-label">Clear Cache</span></button></div></div>
+        </section>
+    </main>
+
+    <div id="modal" class="modal"><div class="modal-content"><div class="modal-header"><h3 id="modalTitle">Modal</h3><button class="modal-close" onclick="dashboard.closeModal()">×</button></div><div id="modalBody" class="modal-body"></div><div class="modal-footer"><button class="btn btn-secondary" onclick="dashboard.closeModal()">Close</button></div></div></div>
+    <div id="toastContainer" class="toast-container"></div>
+    <footer class="dashboard-footer"><span>PORTIER PAS-6.0 | opena3 OpenWebUI</span><span>Port: 12347 | WebUI: 8080</span></footer>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

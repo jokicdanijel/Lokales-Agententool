@@ -1,0 +1,25 @@
+{
+  "site_id": "f037d76e-0df",
+  "generator": "static",
+  "template": "default",
+  "pages": [
+    {
+      "slug": "home",
+      "title": "Custom Styles",
+      "content": "<p>Testing custom styles</p>",
+      "meta_description": null,
+      "meta_keywords": [],
+      "is_homepage": true
+    }
+  ],
+  "branding": {
+    "site_name": "Custom Test",
+    "tagline": null,
+    "logo_url": null,
+    "favicon_url": null,
+    "color_primary": "#007bff",
+    "color_secondary": "#6c757d"
+  },
+  "created_at": "2025-11-27T13:19:26.552607+00:00",
+  "output_path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.opena17_homepagecreator/data/output/f037d76e-0df"
+}

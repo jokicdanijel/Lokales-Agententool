@@ -1,0 +1,17 @@
+{
+  "src": "kordp",
+  "dst": "archivp",
+  "kind": "ROUTE",
+  "body": {
+    "agent": "test_tool",
+    "route": {
+      "agent_id": "test_001",
+      "port": 12399,
+      "program": "/path/to/test_tool",
+      "archivator_port": 12345,
+      "mapping_ts": "2025-11-21T12:00:00Z"
+    }
+  },
+  "strict": true,
+  "ts": "2025-11-21T04:25:59.765574Z"
+}

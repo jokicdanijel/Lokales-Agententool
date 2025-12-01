@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call Tracking Agent (opena10) | ELION PAS-6.0 Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-left">
+            <span class="logo">📊</span>
+            <div class="header-info">
+                <h1>Call Tracking Dashboard</h1>
+                <span class="version">PAS-6.0 | opena10 | Analytics & Attribution</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="status-badge" id="statusBadge">
+                <span class="status-dot"></span>
+                <span class="status-text">Checking...</span>
+            </div>
+            <span class="port-badge">Port 12356</span>
+            <button class="btn btn-primary" id="refreshBtn">🔄 Refresh</button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="dashboard-nav">
+        <button class="nav-btn active" data-section="overview">📊 Overview</button>
+        <button class="nav-btn" data-section="tracking">🔍 Tracking</button>
+        <button class="nav-btn" data-section="sources">📡 Sources</button>
+        <button class="nav-btn" data-section="campaigns">🎯 Campaigns</button>
+        <button class="nav-btn" data-section="numbers">📱 Numbers</button>
+        <button class="nav-btn" data-section="attribution">🏷️ Attribution</button>
+        <button class="nav-btn" data-section="analytics">📈 Analytics</button>
+        <button class="nav-btn" data-section="reports">📋 Reports</button>
+        <button class="nav-btn" data-section="api">🔌 API Console</button>
+        <button class="nav-btn" data-section="settings">⚙️ Settings</button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <div class="section-header">
+                <h2>🏠 Call Tracking Overview</h2>
+            </div>
+
+            <!-- Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card primary">
+                    <span class="metric-icon">📞</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="totalCalls">0</span>
+                        <span class="metric-label">Total Calls</span>
+                    </div>
+                </div>
+                <div class="metric-card success">
+                    <span class="metric-icon">✅</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="conversionRate">0%</span>
+                        <span class="metric-label">Conversion Rate</span>
+                    </div>
+                </div>
+                <div class="metric-card warning">
+                    <span class="metric-icon">📡</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="activeSources">0</span>
+                        <span class="metric-label">Active Sources</span>
+                    </div>
+                </div>
+                <div class="metric-card info">
+                    <span class="metric-icon">🎯</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="activeCampaigns">0</span>
+                        <span class="metric-label">Campaigns</span>
+                    </div>
+                </div>
+                <div class="metric-card success">
+                    <span class="metric-icon">💰</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="totalRevenue">€0</span>
+                        <span class="metric-label">Revenue Attributed</span>
+                    </div>
+                </div>
+                <div class="metric-card error">
+                    <span class="metric-icon">📱</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="trackingNumbers">0</span>
+                        <span class="metric-label">Tracking Numbers</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Capabilities -->
+            <div class="card">
+                <h3>⚡ Tracking Capabilities (10)</h3>
+                <div class="capabilities-grid">
+                    <div class="capability-card" data-capability="call_logging">
+                        <span class="capability-icon">📝</span>
+                        <div class="capability-info">
+                            <h4>Call Logging</h4>
+                            <p>Track all call events</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="source_tracking">
+                        <span class="capability-icon">📡</span>
+                        <div class="capability-info">
+                            <h4>Source Tracking</h4>
+                            <p>Identify call origins</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="campaign_tracking">
+                        <span class="capability-icon">🎯</span>
+                        <div class="capability-info">
+                            <h4>Campaign Tracking</h4>
+                            <p>UTM & campaign attribution</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="dynamic_numbers">
+                        <span class="capability-icon">🔢</span>
+                        <div class="capability-info">
+                            <h4>Dynamic Numbers</h4>
+                            <p>Per-source phone numbers</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="conversion_tracking">
+                        <span class="capability-icon">💰</span>
+                        <div class="capability-info">
+                            <h4>Conversion Tracking</h4>
+                            <p>Call-to-sale attribution</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="keyword_tracking">
+                        <span class="capability-icon">🔑</span>
+                        <div class="capability-info">
+                            <h4>Keyword Tracking</h4>
+                            <p>PPC keyword attribution</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="roi_analysis">
+                        <span class="capability-icon">📈</span>
+                        <div class="capability-info">
+                            <h4>ROI Analysis</h4>
+                            <p>Marketing ROI calculation</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="webhook_integration">
+                        <span class="capability-icon">🔗</span>
+                        <div class="capability-info">
+                            <h4>Webhook Integration</h4>
+                            <p>Real-time data push</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="crm_sync">
+                        <span class="capability-icon">🔄</span>
+                        <div class="capability-info">
+                            <h4>CRM Sync</h4>
+                            <p>Auto-sync to CRM</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="custom_reports">
+                        <span class="capability-icon">📋</span>
+                        <div class="capability-info">
+                            <h4>Custom Reports</h4>
+                            <p>Scheduled reporting</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <h3>🚀 Quick Actions</h3>
+                <div class="action-grid">
+                    <button class="action-btn" data-action="viewTracking">
+                        <span class="action-icon">🔍</span>
+                        <span>Tracking</span>
+                    </button>
+                    <button class="action-btn" data-action="addSource">
+                        <span class="action-icon">➕</span>
+                        <span>Add Source</span>
+                    </button>
+                    <button class="action-btn" data-action="createCampaign">
+                        <span class="action-icon">🎯</span>
+                        <span>Campaign</span>
+                    </button>
+                    <button class="action-btn" data-action="viewReports">
+                        <span class="action-icon">📋</span>
+                        <span>Reports</span>
+                    </button>
+                    <button class="action-btn" data-action="exportData">
+                        <span class="action-icon">📤</span>
+                        <span>Export</span>
+                    </button>
+                    <button class="action-btn" data-action="viewAnalytics">
+                        <span class="action-icon">📈</span>
+                        <span>Analytics</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Calls -->
+            <div class="card">
+                <h3>📞 Recent Tracked Calls</h3>
+                <div id="recentCallsList" class="tracking-list">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tracking Section -->
+        <section id="tracking" class="section">
+            <div class="section-header">
+                <h2>🔍 Call Tracking</h2>
+            </div>
+            <div class="card">
+                <h3>Live Call Feed</h3>
+                <div id="liveCallFeed" class="tracking-list">
+                    <div class="loading">Loading live feed...</div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Call Details</h3>
+                <div class="tracking-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Today's Calls</span>
+                        <span class="stat-value" id="todaysCalls">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Avg Duration</span>
+                        <span class="stat-value" id="avgCallDuration">0m</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Conversion</span>
+                        <span class="stat-value" id="todayConversion">0%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sources Section -->
+        <section id="sources" class="section">
+            <div class="section-header">
+                <h2>📡 Traffic Sources</h2>
+                <button class="btn btn-primary" onclick="dashboard.showAddSourceModal()">+ Add Source</button>
+            </div>
+            <div class="card">
+                <h3>Active Sources</h3>
+                <div id="sourcesList" class="sources-list">
+                    <div class="loading">Loading sources...</div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Source Performance</h3>
+                <div class="chart-container" id="sourceChart">
+                    <div class="loading">Chart loading...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Campaigns Section -->
+        <section id="campaigns" class="section">
+            <div class="section-header">
+                <h2>🎯 Campaigns</h2>
+                <button class="btn btn-primary" onclick="dashboard.showCreateCampaignModal()">+ New Campaign</button>
+            </div>
+            <div class="card">
+                <h3>Active Campaigns</h3>
+                <div id="campaignsList" class="campaigns-list">
+                    <div class="loading">Loading campaigns...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Numbers Section -->
+        <section id="numbers" class="section">
+            <div class="section-header">
+                <h2>📱 Tracking Numbers</h2>
+                <button class="btn btn-primary" onclick="dashboard.showAddNumberModal()">+ Add Number</button>
+            </div>
+            <div class="card">
+                <h3>Number Pool</h3>
+                <div id="numbersList" class="numbers-list">
+                    <div class="loading">Loading numbers...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Attribution Section -->
+        <section id="attribution" class="section">
+            <div class="section-header">
+                <h2>🏷️ Attribution</h2>
+            </div>
+            <div class="card">
+                <h3>Attribution Model</h3>
+                <div class="form-group">
+                    <label>Model Type</label>
+                    <select class="form-control" id="attributionModel">
+                        <option value="first">First Touch</option>
+                        <option value="last">Last Touch</option>
+                        <option value="linear">Linear</option>
+                        <option value="position">Position Based</option>
+                    </select>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Attribution Data</h3>
+                <div id="attributionData" class="attribution-list">
+                    <div class="loading">Loading attribution data...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="section">
+            <div class="section-header">
+                <h2>📈 Analytics</h2>
+            </div>
+            <div class="metrics-grid">
+                <div class="metric-card primary">
+                    <span class="metric-icon">📞</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="weekCalls">0</span>
+                        <span class="metric-label">This Week</span>
+                    </div>
+                </div>
+                <div class="metric-card success">
+                    <span class="metric-icon">📈</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="growthRate">0%</span>
+                        <span class="metric-label">Growth</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Call Volume Over Time</h3>
+                <div class="chart-container" id="volumeChart">
+                    <div class="loading">Chart loading...</div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Source Breakdown</h3>
+                <div class="chart-container" id="sourceBreakdown">
+                    <div class="loading">Chart loading...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reports Section -->
+        <section id="reports" class="section">
+            <div class="section-header">
+                <h2>📋 Reports</h2>
+                <button class="btn btn-primary" onclick="dashboard.generateReport()">📊 Generate Report</button>
+            </div>
+            <div class="card">
+                <h3>Report Templates</h3>
+                <div class="templates-grid">
+                    <div class="template-item" onclick="dashboard.useTemplate('daily')">
+                        <span class="template-icon">📅</span>
+                        <span>Daily Summary</span>
+                    </div>
+                    <div class="template-item" onclick="dashboard.useTemplate('weekly')">
+                        <span class="template-icon">📆</span>
+                        <span>Weekly Report</span>
+                    </div>
+                    <div class="template-item" onclick="dashboard.useTemplate('campaign')">
+                        <span class="template-icon">🎯</span>
+                        <span>Campaign Analysis</span>
+                    </div>
+                    <div class="template-item" onclick="dashboard.useTemplate('roi')">
+                        <span class="template-icon">💰</span>
+                        <span>ROI Report</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Scheduled Reports</h3>
+                <div id="scheduledReports" class="reports-list">
+                    <div class="loading">No scheduled reports</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API Console Section -->
+        <section id="api" class="section">
+            <div class="section-header">
+                <h2>🔌 API Console</h2>
+            </div>
+            <div class="card">
+                <h3>Test API</h3>
+                <div class="form-group">
+                    <label>Endpoint</label>
+                    <input type="text" class="form-control" id="apiEndpoint" value="/health">
+                </div>
+                <div class="form-group">
+                    <label>Method</label>
+                    <select class="form-control" id="apiMethod">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Body (JSON)</label>
+                    <textarea class="form-control" id="apiBody"></textarea>
+                </div>
+                <button class="btn btn-primary" id="testApiBtn">🚀 Send</button>
+            </div>
+            <div class="card">
+                <h3>Response</h3>
+                <pre id="apiResponse" style="background: var(--bg-dark); padding: 1rem; border-radius: 8px;">// Response</pre>
+            </div>
+            <div class="card">
+                <h3>Available Endpoints</h3>
+                <div class="endpoint-grid">
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/health</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/calls</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/sources</code></div>
+                    <div class="endpoint-item"><span class="method post">POST</span><code>/api/sources/add</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/campaigns</code></div>
+                    <div class="endpoint-item"><span class="method post">POST</span><code>/api/campaigns/create</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/numbers</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/attribution</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/analytics</code></div>
+                    <div class="endpoint-item"><span class="method post">POST</span><code>/api/reports/generate</code></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="section">
+            <div class="section-header">
+                <h2>⚙️ Settings</h2>
+            </div>
+            <div class="card">
+                <h3>Tracking Configuration</h3>
+                <div class="form-group">
+                    <label>Default Attribution Window (days)</label>
+                    <input type="number" class="form-control" id="attributionWindow" value="30">
+                </div>
+                <div class="form-group">
+                    <label>Timezone</label>
+                    <select class="form-control" id="timezone">
+                        <option value="Europe/Berlin">Europe/Berlin</option>
+                        <option value="UTC">UTC</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary">💾 Save Settings</button>
+            </div>
+            <div class="card">
+                <h3>Integrations</h3>
+                <div class="form-group">
+                    <label>Webhook URL</label>
+                    <input type="text" class="form-control" id="webhookUrl" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label>CRM Integration</label>
+                    <select class="form-control" id="crmIntegration">
+                        <option value="none">None</option>
+                        <option value="salesforce">Salesforce</option>
+                        <option value="hubspot">HubSpot</option>
+                        <option value="pipedrive">Pipedrive</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <span>ELION Call Tracking Agent | PAS-6.0</span>
+        <span>opena10 | Port 12356</span>
+        <span id="currentTime"></span>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        setInterval(() => {
+            document.getElementById('currentTime').textContent = new Date().toLocaleString('de-DE');
+        }, 1000);
+    </script>
+</body>
+</html>

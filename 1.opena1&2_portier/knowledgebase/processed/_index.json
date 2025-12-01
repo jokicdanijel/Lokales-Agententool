@@ -1,0 +1,242 @@
+{
+  "processed_version": "1.0.0",
+  "last_update": "2025-11-21T00:00:00Z",
+  "documents": [
+    {
+      "id": "portier_architektur_core",
+      "source": "../raw/portier-system.md",
+      "sections": [
+        "systemumgebung",
+        "architekturprinzip",
+        "rollen",
+        "endpunkte",
+        "safepoint_logik",
+        "prozessablauf",
+        "tools",
+        "entwicklerregeln"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "koordinator_spec_core",
+      "source": "../raw/koordinator-opena1.md",
+      "sections": [
+        "rolle",
+        "verantwortungen",
+        "schema_7_1",
+        "schema_7_2",
+        "port_policy",
+        "tool_registry",
+        "datenbankmodell"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "archivator_spec_core",
+      "source": "../raw/archivator-opena2.md",
+      "sections": [
+        "rolle",
+        "cmd_resp_flow",
+        "safepoints",
+        "index_jsonl",
+        "routing"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "option_2_flow_core",
+      "source": "../raw/option-2-flow.md",
+      "sections": [
+        "hinweg",
+        "rueckweg",
+        "verboten",
+        "ablaufregeln",
+        "enforcement"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "port_policy_core",
+      "source": "../raw/port-policy.md",
+      "sections": [
+        "allowed_ports",
+        "forbidden_ports",
+        "enforcement",
+        "middleware",
+        "registry"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "safepoint_schema_core",
+      "source": "../raw/safepoint-format.md",
+      "sections": [
+        "naming_convention",
+        "unicode_arrow",
+        "storage_structure",
+        "index_jsonl",
+        "append_only_rules"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "dashboard_integration_core",
+      "source": "../raw/dashboard-opena20.md",
+      "sections": [
+        "fastapi_setup",
+        "sse_bus",
+        "security",
+        "routes",
+        "agent_registry"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "openwebui_integration_core",
+      "source": "../raw/openwebui-opena3.md",
+      "sections": [
+        "architecture",
+        "adapter_pattern",
+        "port_8080_ui_only",
+        "opena3_agent",
+        "endpoints"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "routing_telegram_webui",
+      "source": "../raw/routing-telegram-openwebui.md",
+      "sections": [
+        "eingangspfad",
+        "ereignisse",
+        "dedup_mechanismus",
+        "persistenz",
+        "fehlerbehandlung",
+        "routing_regeln"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "dashboard_agent_core",
+      "source": "../raw/dashboard-opena20.md",
+      "sections": [
+        "funktion",
+        "endpunkte",
+        "datenquellen",
+        "aufgaben",
+        "port_policy",
+        "sse_bus",
+        "metrics",
+        "security"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "openwebui_connector_core",
+      "source": "../raw/openwebui-connector.md",
+      "sections": [
+        "zweck",
+        "endpunkte",
+        "port_policy",
+        "sicherheitsmerkmale",
+        "integration",
+        "error_handling"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "master_prompts_core",
+      "source": "../raw/master-prompts.md",
+      "sections": [
+        "portier_gesetze",
+        "zwei_ebenen_denken",
+        "kapitelprozess",
+        "tool_module",
+        "ausgaberegel",
+        "code_qualitaet",
+        "error_handling",
+        "testing"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "system_chat_exports_core",
+      "source": "../raw/chat-exports.md",
+      "sections": [
+        "inhalte",
+        "verwendung",
+        "struktur",
+        "schutzregeln",
+        "export_format",
+        "privacy_security",
+        "retention_policy",
+        "use_cases",
+        "integration"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "logik_core",
+      "source": "../raw/llm-logik.md",
+      "sections": [
+        "basisprinzip",
+        "entscheidungslogik",
+        "fehlerlogik",
+        "rueckweg_logik",
+        "policy_enforcement",
+        "decision_tree",
+        "state_management",
+        "error_recovery"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "docker_openwebui_core",
+      "source": "../raw/docker-openwebui.md",
+      "sections": [
+        "openwebui_startregeln",
+        "dienste",
+        "port_policy",
+        "daten",
+        "sicherheit",
+        "docker_compose",
+        "deployment",
+        "integration"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "business_callassistant_core",
+      "source": "../raw/business-call-assistant.md",
+      "sections": [
+        "zweck",
+        "komponenten",
+        "ziele",
+        "nutzen",
+        "integration",
+        "callflow",
+        "daten_flow",
+        "metrics",
+        "compliance"
+      ],
+      "status": "complete"
+    },
+    {
+      "id": "dashboard_config_core",
+      "source": "../raw/dashboard-config.md",
+      "sections": [
+        "ziel",
+        "module",
+        "datenquellen",
+        "darstellung",
+        "policy",
+        "api_endpoints",
+        "ui_components",
+        "security",
+        "performance"
+      ],
+      "status": "complete"
+    }
+  ],
+  "strict": true
+}

@@ -1,0 +1,28 @@
+[Unit]
+Description=ELION opena7 - Email Agent
+Documentation=https://github.com/elion/portier
+After=network.target opena02.service
+
+[Service]
+Type=simple
+User=danijel-jd
+Group=danijel-jd
+WorkingDirectory=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/6.opena7_email
+Environment="PATH=/home/danijel-jd/.local/bin:/usr/local/bin:/usr/bin"
+Environment="BEARER_TOKEN=c899b90d-faf8-485b-afa4-078357cf5313"
+Environment="OPENA7_PORT=12353"
+ExecStart=/usr/bin/python3 main.py
+Restart=on-failure
+RestartSec=5
+StandardOutput=append:/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/6.opena7_email/logs/opena7.log
+StandardError=append:/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/6.opena7_email/logs/opena7.error.log
+
+# Security
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/6.opena7_email/logs
+ReadWritePaths=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/6.opena7_email/data
+
+[Install]
+WantedBy=multi-user.target

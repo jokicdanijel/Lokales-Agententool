@@ -1,0 +1,8 @@
+{
+  "document_id": "dashboard_integration_core",
+  "source": "knowledge/processed/dashboard_integration_core.md",
+  "model": "text-embedding-3-large",
+  "embedding": [],
+  "status": "pending",
+  "strict": true
+}

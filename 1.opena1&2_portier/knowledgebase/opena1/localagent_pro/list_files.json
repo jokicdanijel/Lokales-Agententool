@@ -1,0 +1,14 @@
+{
+  "name": "list_files",
+  "description": "Listet die Inhalte eines Verzeichnisses auf. Im Sandbox-Modus wird der Pfad unter sandbox_path verwendet.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "path": {
+        "type": "string",
+        "description": "Der relative oder absolute Pfad des Verzeichnisses, das aufgelistet werden soll."
+      }
+    },
+    "required": ["path"]
+  }
+}

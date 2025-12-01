@@ -1,0 +1,361 @@
+# 🤖 opena11 - Unlock Master
+
+**Agent-ID:** `opena11`  
+**Port:** 12357  
+**Kürzel:** `unlockp`  
+**Version:** 3.0  
+**Status:** 🟡 **Planned** (PORTIER 3.0 Architecture Ready)  
+**Letzte Aktualisierung:** 29. November 2025
+
+---
+
+## 📖 Überblick
+
+**opena11** ist der **Unlock Master** im ELION Hyper-Dashboard System - ein spezialisierter Agent für die PORTIER 3.0 Multi-Agent-Architektur.
+
+### 🎯 PORTIER 3.0 Integration
+
+opena11 ist architektonisch vorbereitet für die PORTIER 3.0 Integration:
+
+- ✅ **Option-2-Flow Ready:** OpenAI → opena1 → opena2 → kordp → opena11
+- ✅ **Port Policy Compliant:** Port 12357 (Backend-Range 12344-12399)
+- ✅ **Safepoint Integration:** Automatische Archivierung via opena2
+- ✅ **Bearer Token Security:** Authentifizierung vorbereitet
+- 🟡 **Implementation Status:** Ordnerstruktur vorhanden, Code pending
+
+### 🚀 Zukünftige Features
+
+- 🔄 **Multi-Agent Coordination:** Integration mit anderen Agenten
+- 📊 **Real-time Monitoring:** Dashboard-Integration (opena20)
+- 🛡️ **Security First:** Vollständige Bearer Token Implementation
+- ⚡ **High Performance:** Async FastAPI Architecture
+
+---
+
+## 📡 API-Endpoints (Planned)
+
+### `GET /health`
+
+Health-Check des Agents.
+
+```bash
+curl http://127.0.0.1:12357/health | jq .
+```
+
+### `POST /invoke`
+
+Service-spezifische Aktion ausführen.
+
+```bash
+curl -X POST http://127.0.0.1:12357/invoke \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "service_action",
+    "params": {...}
+  }'
+```
+
+---
+
+## 🚀 Quick Start (When Implemented)
+
+### Agent starten
+
+```bash
+cd 10.opena11_unlock
+python3 main.py
+
+# Oder via ops.sh
+cd ..
+bin/ops.sh start
+```
+
+### Health Check
+
+```bash
+curl http://127.0.0.1:12357/health | jq .
+```
+
+---
+
+## 🔗 Integration mit PORTIER 3.0
+
+### Service-Registrierung
+
+```bash
+curl -X POST http://127.0.0.1:12344/route/update \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "service_name": "opena11",
+    "endpoint": "http://127.0.0.1:12357",
+    "program_target": "unlockp"
+  }'
+```
+
+### Action via Portier auslösen
+
+```bash
+curl -X POST http://127.0.0.1:12344/dispatch/kordp \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "service_target": "unlockp",
+    "action": "service_action",
+    "params": {...}
+  }'
+```
+
+---
+
+## 📁 Verzeichnisstruktur (Planned)
+
+```txt
+10.opena11_unlock/
+├── main.py                  # FastAPI Agent Entry Point (planned)
+├── config.py                # Konfiguration (planned)
+├── requirements.txt         # Dependencies
+├── bin/
+│   └── start.sh             # Start-Script (planned)
+├── tests/
+│   └── test_opena11.py  # Unit-Tests (planned)
+└── README.md                # Diese Datei
+```
+
+---
+
+## 🔐 Sicherheit
+
+- ✅ **Bearer-Token** für alle Endpoints außer `/health`
+- ✅ **Port-Policy** Enforcement (12344-12399)
+- ✅ **Strict JSON** (Pydantic `extra="forbid"`)
+- ✅ **Option-2-Flow** Compliance
+
+---
+
+## 🧪 Testing (Planned)
+
+```bash
+# Unit-Tests
+pytest tests/test_opena11.py -v
+
+# Health-Check
+curl http://127.0.0.1:12357/health
+
+# Integration-Test via Portier
+python3 ../scripts/test_opena11_integration.py
+```
+
+---
+
+## 📊 Monitoring (Planned)
+
+```bash
+# Prometheus Metrics (wenn aktiviert)
+curl http://127.0.0.1:12357/metrics
+```
+
+---
+
+## 📚 Weitere Dokumentation
+
+- [Service Matrix](../docs/SERVICE_MATRIX.md)
+- [Operations Guide](../docs/OPERATIONS.md)
+- [Option-2-Flow](../.github/copilot-master-prompt.md)
+
+---
+
+**Maintainer:** Danijel Jokic (ELION Team)  
+**Letzte Aktualisierung:** 29. November 2025  
+**Status:** 🟡 **Architecture Ready** (Implementation Pending)
+
+## 📖 Überblick
+
+**opena11** ist der **Unlock Master (RBAC & Permission Store)** - ein spezialisierter Agent für Zugriffskontrolle und Berechtigungsverwaltung im ELION Hyper-Dashboard Ökosystem.
+
+### Kernfunktionen
+
+- 🔐 **RBAC** - Role-Based Access Control
+- 📦 **Permission Store** - JSON-basierte Berechtigungsverwaltung
+- 🔑 **Grant/Revoke** - Berechtigungen erteilen und entziehen
+- ✅ **Check** - Berechtigungen prüfen (mit Expiration & Wildcards)
+- 📜 **Audit Log** - WORM-compliant Zugriffsprotokolle
+
+---
+
+## 🏗️ Architektur
+
+```
+Client/UI
+    ↓
+Portier (12344) → OpenA2 (12345)
+    ↓
+kordp (Dispatcher)
+    ↓
+opena11 (12356) ← Dieser Agent
+    ↓
+OpenA2 (12345) → Portier (12344)
+    ↓
+Client/UI
+```
+
+**Integration:** Vollständig in Option-2-Flow integriert.
+
+---
+
+## 📡 API-Endpoints
+
+### `GET /health`
+
+Health-Check des Agents.
+
+```bash
+curl http://127.0.0.1:12356/health | jq .
+```
+
+**Response:**
+
+```json
+{
+  "status": "ok",
+  "service": "opena11",
+  "kürzel": "unlockp",
+  "port": 12356,
+  "uptime_seconds": 3661.23,
+  "permissions_count": 42,
+  "timestamp": "2025-11-27T12:00:00Z"
+}
+```
+
+### `POST /grant`
+
+Berechtigung erteilen.
+
+```bash
+curl -X POST http://127.0.0.1:12356/grant \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "subject": "user123",
+    "resource": "/files/documents",
+    "action": "read"
+  }'
+```
+
+---
+
+## 🚀 Quick Start
+
+### Agent starten
+
+```bash
+cd 10.opena11_unlock
+python3 main.py
+
+# Oder via ops.sh
+cd ..
+bin/ops.sh start
+```
+
+### Health Check
+
+```bash
+curl http://127.0.0.1:12356/health | jq .
+```
+
+---
+
+## 🔗 Integration mit Portier
+
+### Service-Registrierung
+
+```bash
+curl -X POST http://127.0.0.1:12344/route/update \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "service_name": "opena11",
+    "endpoint": "http://127.0.0.1:12356",
+    "program_target": "unlockp"
+  }'
+```
+
+### Action via Portier auslösen
+
+```bash
+curl -X POST http://127.0.0.1:12344/dispatch/kordp \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "service_target": "unlockp",
+    "action": "grant",
+    "params": {
+      "subject": "user123",
+      "resource": "/files/documents",
+      "action": "read"
+    }
+  }'
+```
+
+---
+
+## 📁 Verzeichnisstruktur
+
+```
+10.opena11_unlock/
+├── main.py                  # FastAPI Agent Entry Point
+├── config.py                # Konfiguration
+├── requirements.txt         # Dependencies
+├── bin/
+│   └── start.sh             # Start-Script
+├── tests/
+│   └── test_opena11.py      # Unit-Tests
+└── README.md                # Diese Datei
+```
+
+---
+
+## 🔐 Sicherheit
+
+- ✅ **Bearer-Token** für alle Endpoints außer `/health`
+- ✅ **Port-Policy** Enforcement (12344-12399)
+- ✅ **Strict JSON** (Pydantic `extra="forbid"`)
+- ✅ **Option-2-Flow** Compliance
+
+---
+
+## 🧪 Testing
+
+```bash
+# Unit-Tests
+pytest tests/test_opena11.py -v
+
+# Health-Check
+curl http://127.0.0.1:12353/health
+
+# Integration-Test via Portier
+python3 ../scripts/test_opena11_integration.py
+```
+
+---
+
+## 📊 Monitoring
+
+```bash
+# Prometheus Metrics (wenn aktiviert)
+curl http://127.0.0.1:12356/metrics
+```
+
+---
+
+## 📚 Weitere Dokumentation
+
+- [Service Matrix](../docs/SERVICE_MATRIX.md)
+- [Operations Guide](../docs/OPERATIONS.md)
+- [Option-2-Flow](../.github/copilot-master-prompt.md)
+
+---
+
+**Maintainer:** ELION Team  
+**Letzte Aktualisierung:** 21. November 2025

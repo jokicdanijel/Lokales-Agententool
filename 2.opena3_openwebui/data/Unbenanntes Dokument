@@ -1,3 +1,5 @@
 sg docker -c "docker run --rm -v 2openwebui_openwebui_data:/data nouchka/sqlite3 \
   /data/webui.db \"UPDATE auth SET password='$2508' WHERE email='jokicdanijel@gmail.com';\""
+ 
 
+    

@@ -1,0 +1,36 @@
+{
+  "knowledge_base": "Elion Hyper-Dashboard KnowledgeBase",
+  "version": "1.0.0",
+  "created_at": "2025-11-21T00:00:00Z",
+  "structure": {
+    "raw": "Unveraenderte Originaldateien des Projekts",
+    "processed": "Bereinigte, segmentierte und modellfreundliche Textdateien",
+    "vectors": "Embedding-Datenbanken fuer Agents und Tools",
+    "index": "Globale Metadaten- und Suchindexdatei"
+  },
+  "project_rules": {
+    "encoding": "UTF-8",
+    "language": "de",
+    "strict": true,
+    "port_policy": {
+      "allowed": [12344, 12345, 12346, 12347, 12348, 12349],
+      "forbidden": [8080]
+    }
+  },
+  "agents": {
+    "opena1": "Koordinator",
+    "opena2": "Archivator",
+    "kordp": "Kordinatport",
+    "archivp": "Archivport",
+    "opena20": "Dashboard",
+    "total_defined": 20
+  },
+  "paths": {
+    "raw": "knowledge/raw/",
+    "processed": "knowledge/processed/",
+    "index": "knowledge/index.json",
+    "map": "knowledge/map.md",
+    "vectors": "knowledge/vectors/"
+  },
+  "strict": true
+}

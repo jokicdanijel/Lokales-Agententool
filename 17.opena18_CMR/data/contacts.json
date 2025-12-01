@@ -1,0 +1,31 @@
+[
+  {
+    "contact_id": "ff3634a5-822",
+    "first_name": "Max",
+    "last_name": "Mustermann",
+    "email": "max.mustermann@example.com",
+    "phone": "+49 987 654321",
+    "organization_id": null,
+    "position": "Managing Director",
+    "tags": [
+      "vip",
+      "decision-maker"
+    ],
+    "notes": null,
+    "created_at": "2025-11-27T13:33:03.297522+00:00",
+    "updated_at": "2025-11-27T13:33:03.334805+00:00"
+  },
+  {
+    "contact_id": "b2d86bcf-84d",
+    "first_name": "Jane",
+    "last_name": "Doe",
+    "email": "jane.doe@example.com",
+    "phone": null,
+    "organization_id": null,
+    "position": "CTO",
+    "tags": [],
+    "notes": null,
+    "created_at": "2025-11-27T13:33:03.326408+00:00",
+    "updated_at": "2025-11-27T13:33:03.326408+00:00"
+  }
+]

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage Creator Agent (opena17) | ELION PAS-6.0 Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-left">
+            <span class="logo">🏠</span>
+            <div class="header-info">
+                <h1>Homepage Creator Dashboard</h1>
+                <span class="version">PAS-6.0 | opena17 | Website Builder & Servicetool</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="status-badge" id="statusBadge">
+                <span class="status-dot"></span>
+                <span class="status-text">Checking...</span>
+            </div>
+            <span class="port-badge">Port 12360</span>
+            <button class="btn btn-primary" id="refreshBtn">🔄 Refresh</button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="dashboard-nav">
+        <button class="nav-btn active" data-section="overview">🏠 Overview</button>
+        <button class="nav-btn" data-section="templates">📄 Templates</button>
+        <button class="nav-btn" data-section="projects">📁 Projects</button>
+        <button class="nav-btn" data-section="builder">🔨 Builder</button>
+        <button class="nav-btn" data-section="components">🧩 Components</button>
+        <button class="nav-btn" data-section="hosting">☁️ Hosting</button>
+        <button class="nav-btn" data-section="seo">🔍 SEO</button>
+        <button class="nav-btn" data-section="analytics">📈 Analytics</button>
+        <button class="nav-btn" data-section="api">🔌 API Console</button>
+        <button class="nav-btn" data-section="settings">⚙️ Settings</button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <div class="section-header">
+                <h2>🏠 Homepage Creator Overview</h2>
+            </div>
+
+            <!-- Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card primary">
+                    <span class="metric-icon">🌐</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="totalSites">0</span>
+                        <span class="metric-label">Total Websites</span>
+                    </div>
+                </div>
+                <div class="metric-card success">
+                    <span class="metric-icon">✅</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="liveSites">0</span>
+                        <span class="metric-label">Live Sites</span>
+                    </div>
+                </div>
+                <div class="metric-card warning">
+                    <span class="metric-icon">📄</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="templates">0</span>
+                        <span class="metric-label">Templates</span>
+                    </div>
+                </div>
+                <div class="metric-card info">
+                    <span class="metric-icon">🧩</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="components">0</span>
+                        <span class="metric-label">Components</span>
+                    </div>
+                </div>
+                <div class="metric-card success">
+                    <span class="metric-icon">📊</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="totalViews">0</span>
+                        <span class="metric-label">Total Views</span>
+                    </div>
+                </div>
+                <div class="metric-card error">
+                    <span class="metric-icon">🔧</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="drafts">0</span>
+                        <span class="metric-label">Drafts</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Capabilities -->
+            <div class="card">
+                <h3>⚡ Creator Capabilities (10)</h3>
+                <div class="capabilities-grid">
+                    <div class="capability-card" data-capability="drag_drop">
+                        <span class="capability-icon">🖱️</span>
+                        <div class="capability-info">
+                            <h4>Drag & Drop Builder</h4>
+                            <p>Visual page construction</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="templates">
+                        <span class="capability-icon">📄</span>
+                        <div class="capability-info">
+                            <h4>Template Library</h4>
+                            <p>Pre-built page templates</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="responsive">
+                        <span class="capability-icon">📱</span>
+                        <div class="capability-info">
+                            <h4>Responsive Design</h4>
+                            <p>Mobile-first layouts</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="components">
+                        <span class="capability-icon">🧩</span>
+                        <div class="capability-info">
+                            <h4>Component System</h4>
+                            <p>Reusable UI blocks</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="seo">
+                        <span class="capability-icon">🔍</span>
+                        <div class="capability-info">
+                            <h4>SEO Optimization</h4>
+                            <p>Built-in SEO tools</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="hosting">
+                        <span class="capability-icon">☁️</span>
+                        <div class="capability-info">
+                            <h4>Auto-Hosting</h4>
+                            <p>One-click deployment</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="forms">
+                        <span class="capability-icon">📝</span>
+                        <div class="capability-info">
+                            <h4>Form Builder</h4>
+                            <p>Contact & lead forms</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="media">
+                        <span class="capability-icon">🖼️</span>
+                        <div class="capability-info">
+                            <h4>Media Manager</h4>
+                            <p>Images, videos, assets</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="custom_code">
+                        <span class="capability-icon">💻</span>
+                        <div class="capability-info">
+                            <h4>Custom Code</h4>
+                            <p>HTML/CSS/JS injection</p>
+                        </div>
+                    </div>
+                    <div class="capability-card" data-capability="analytics">
+                        <span class="capability-icon">📈</span>
+                        <div class="capability-info">
+                            <h4>Analytics Integration</h4>
+                            <p>Track visitor behavior</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <h3>🚀 Quick Actions</h3>
+                <div class="action-grid">
+                    <button class="action-btn" data-action="newSite">
+                        <span class="action-icon">➕</span>
+                        <span>New Site</span>
+                    </button>
+                    <button class="action-btn" data-action="openBuilder">
+                        <span class="action-icon">🔨</span>
+                        <span>Builder</span>
+                    </button>
+                    <button class="action-btn" data-action="browseTemplates">
+                        <span class="action-icon">📄</span>
+                        <span>Templates</span>
+                    </button>
+                    <button class="action-btn" data-action="viewProjects">
+                        <span class="action-icon">📁</span>
+                        <span>Projects</span>
+                    </button>
+                    <button class="action-btn" data-action="publishSite">
+                        <span class="action-icon">🚀</span>
+                        <span>Publish</span>
+                    </button>
+                    <button class="action-btn" data-action="viewAnalytics">
+                        <span class="action-icon">📊</span>
+                        <span>Analytics</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Projects -->
+            <div class="card">
+                <h3>📁 Recent Projects</h3>
+                <div id="recentProjectsList" class="projects-list">
+                    <div class="loading">Loading projects...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Templates Section -->
+        <section id="templates" class="section">
+            <div class="section-header">
+                <h2>📄 Template Library</h2>
+                <button class="btn btn-primary" onclick="dashboard.uploadTemplate()">📤 Upload Template</button>
+            </div>
+            <div class="card">
+                <h3>Template Categories</h3>
+                <div class="templates-grid">
+                    <div class="template-item" onclick="dashboard.filterTemplates('landing')">
+                        <span class="template-icon">🎯</span>
+                        <span>Landing Pages</span>
+                    </div>
+                    <div class="template-item" onclick="dashboard.filterTemplates('business')">
+                        <span class="template-icon">💼</span>
+                        <span>Business</span>
+                    </div>
+                    <div class="template-item" onclick="dashboard.filterTemplates('portfolio')">
+                        <span class="template-icon">🎨</span>
+                        <span>Portfolio</span>
+                    </div>
+                    <div class="template-item" onclick="dashboard.filterTemplates('blog')">
+                        <span class="template-icon">📰</span>
+                        <span>Blog</span>
+                    </div>
+                    <div class="template-item" onclick="dashboard.filterTemplates('ecommerce')">
+                        <span class="template-icon">🛒</span>
+                        <span>E-Commerce</span>
+                    </div>
+                    <div class="template-item" onclick="dashboard.filterTemplates('restaurant')">
+                        <span class="template-icon">🍽️</span>
+                        <span>Restaurant</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Available Templates</h3>
+                <div id="templatesList" class="templates-list">
+                    <div class="loading">Loading templates...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section">
+            <div class="section-header">
+                <h2>📁 My Projects</h2>
+                <button class="btn btn-primary" onclick="dashboard.createProject()">➕ New Project</button>
+            </div>
+            <div class="card">
+                <h3>All Projects</h3>
+                <div id="allProjectsList" class="projects-list">
+                    <div class="loading">Loading projects...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Builder Section -->
+        <section id="builder" class="section">
+            <div class="section-header">
+                <h2>🔨 Page Builder</h2>
+            </div>
+            <div class="card">
+                <h3>Builder Canvas</h3>
+                <div class="builder-container">
+                    <div class="builder-sidebar">
+                        <h4>Elements</h4>
+                        <div class="element-palette">
+                            <div class="element-item" draggable="true" data-element="header">📑 Header</div>
+                            <div class="element-item" draggable="true" data-element="text">📝 Text Block</div>
+                            <div class="element-item" draggable="true" data-element="image">🖼️ Image</div>
+                            <div class="element-item" draggable="true" data-element="button">🔘 Button</div>
+                            <div class="element-item" draggable="true" data-element="form">📋 Form</div>
+                            <div class="element-item" draggable="true" data-element="gallery">🎭 Gallery</div>
+                            <div class="element-item" draggable="true" data-element="video">🎬 Video</div>
+                            <div class="element-item" draggable="true" data-element="map">🗺️ Map</div>
+                        </div>
+                    </div>
+                    <div class="builder-canvas" id="builderCanvas">
+                        <div class="canvas-placeholder">
+                            <span>🎨</span>
+                            <p>Drag elements here to build your page</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Components Section -->
+        <section id="components" class="section">
+            <div class="section-header">
+                <h2>🧩 Component Library</h2>
+                <button class="btn btn-primary" onclick="dashboard.createComponent()">➕ New Component</button>
+            </div>
+            <div class="card">
+                <h3>UI Components</h3>
+                <div class="components-grid" id="componentsList">
+                    <div class="loading">Loading components...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hosting Section -->
+        <section id="hosting" class="section">
+            <div class="section-header">
+                <h2>☁️ Hosting & Deployment</h2>
+            </div>
+            <div class="card">
+                <h3>Deployment Settings</h3>
+                <div class="form-group">
+                    <label>Domain</label>
+                    <input type="text" class="form-control" id="customDomain" placeholder="www.example.com">
+                </div>
+                <div class="form-group">
+                    <label>SSL Certificate</label>
+                    <select class="form-control" id="sslCert">
+                        <option value="auto">Auto (Let's Encrypt)</option>
+                        <option value="custom">Custom Certificate</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary">🚀 Deploy</button>
+            </div>
+            <div class="card">
+                <h3>Hosted Sites</h3>
+                <div id="hostedSites" class="sites-list">
+                    <div class="loading">Loading sites...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEO Section -->
+        <section id="seo" class="section">
+            <div class="section-header">
+                <h2>🔍 SEO Tools</h2>
+            </div>
+            <div class="card">
+                <h3>SEO Settings</h3>
+                <div class="form-group">
+                    <label>Page Title</label>
+                    <input type="text" class="form-control" id="seoTitle" placeholder="Your Page Title">
+                </div>
+                <div class="form-group">
+                    <label>Meta Description</label>
+                    <textarea class="form-control" id="seoDescription" placeholder="Page description for search engines..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Keywords</label>
+                    <input type="text" class="form-control" id="seoKeywords" placeholder="keyword1, keyword2, keyword3">
+                </div>
+                <button class="btn btn-primary">💾 Save SEO Settings</button>
+            </div>
+            <div class="card">
+                <h3>SEO Score</h3>
+                <div class="seo-score" id="seoScore">
+                    <div class="score-circle">
+                        <span class="score-value">--</span>
+                        <span class="score-label">/ 100</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="section">
+            <div class="section-header">
+                <h2>📈 Site Analytics</h2>
+            </div>
+            <div class="metrics-grid">
+                <div class="metric-card primary">
+                    <span class="metric-icon">👥</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="totalVisitors">0</span>
+                        <span class="metric-label">Total Visitors</span>
+                    </div>
+                </div>
+                <div class="metric-card success">
+                    <span class="metric-icon">📄</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="pageViews">0</span>
+                        <span class="metric-label">Page Views</span>
+                    </div>
+                </div>
+                <div class="metric-card warning">
+                    <span class="metric-icon">⏱️</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="avgTime">0m</span>
+                        <span class="metric-label">Avg. Time</span>
+                    </div>
+                </div>
+                <div class="metric-card info">
+                    <span class="metric-icon">📉</span>
+                    <div class="metric-info">
+                        <span class="metric-value" id="bounceRate">0%</span>
+                        <span class="metric-label">Bounce Rate</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Traffic Over Time</h3>
+                <div class="chart-container" id="trafficChart">
+                    <div class="loading">Chart loading...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API Console Section -->
+        <section id="api" class="section">
+            <div class="section-header">
+                <h2>🔌 API Console</h2>
+            </div>
+            <div class="card">
+                <h3>Test API</h3>
+                <div class="form-group">
+                    <label>Endpoint</label>
+                    <input type="text" class="form-control" id="apiEndpoint" value="/health">
+                </div>
+                <div class="form-group">
+                    <label>Method</label>
+                    <select class="form-control" id="apiMethod">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Body (JSON)</label>
+                    <textarea class="form-control" id="apiBody"></textarea>
+                </div>
+                <button class="btn btn-primary" id="testApiBtn">🚀 Send</button>
+            </div>
+            <div class="card">
+                <h3>Response</h3>
+                <pre id="apiResponse" style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; overflow-x: auto;">// Response</pre>
+            </div>
+            <div class="card">
+                <h3>Available Endpoints</h3>
+                <div class="endpoint-grid">
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/health</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/projects</code></div>
+                    <div class="endpoint-item"><span class="method post">POST</span><code>/api/projects/create</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/templates</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/components</code></div>
+                    <div class="endpoint-item"><span class="method post">POST</span><code>/api/publish</code></div>
+                    <div class="endpoint-item"><span class="method get">GET</span><code>/api/analytics</code></div>
+                    <div class="endpoint-item"><span class="method post">POST</span><code>/api/seo/update</code></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="section">
+            <div class="section-header">
+                <h2>⚙️ Settings</h2>
+            </div>
+            <div class="card">
+                <h3>General Settings</h3>
+                <div class="form-group">
+                    <label>Default Language</label>
+                    <select class="form-control" id="defaultLang">
+                        <option value="de">Deutsch</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Auto-Save</label>
+                    <select class="form-control" id="autoSave">
+                        <option value="30">Every 30 seconds</option>
+                        <option value="60">Every minute</option>
+                        <option value="300">Every 5 minutes</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary">💾 Save Settings</button>
+            </div>
+            <div class="card">
+                <h3>Integration</h3>
+                <div class="form-group">
+                    <label>Google Analytics ID</label>
+                    <input type="text" class="form-control" id="gaId" placeholder="UA-XXXXXXXX-X">
+                </div>
+                <div class="form-group">
+                    <label>Facebook Pixel ID</label>
+                    <input type="text" class="form-control" id="fbPixel" placeholder="XXXXXXXXXX">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <span>ELION Homepage Creator Agent | PAS-6.0</span>
+        <span>opena17 | Port 12360</span>
+        <span id="currentTime"></span>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        setInterval(() => {
+            document.getElementById('currentTime').textContent = new Date().toLocaleString('de-DE');
+        }, 1000);
+    </script>
+</body>
+</html>

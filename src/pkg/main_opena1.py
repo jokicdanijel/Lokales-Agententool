@@ -18,14 +18,55 @@ Fixe Labels/Endpoints (bindend):
 import json
 import logging
 import time
-from datetime import datetime
+import uuid
+from contextlib import asynccontextmanager
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Callable, Awaitable, Optional
 
 from fastapi import FastAPI, HTTPException, Security, Request, Query
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.responses import Response
+from pydantic import BaseModel, ConfigDict, Field
 
-from security import verify_token, RateLimiter, _read_env_token
+# Local Security Utils
+def _read_env_token() -> str:
+    """Liest Bearer-Token aus .env oder generiert neuen."""
+    env_path = Path(__file__).parent.parent.parent / ".env"
+    
+    if env_path.exists():
+        with open(env_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                if line.startswith('BEARER_TOKEN='):
+                    token = line.split('=', 1)[1].strip()
+                    if token:
+                        return token
+    
+    # Fallback: Generiere neuen Token
+    new_token = str(uuid.uuid4())
+    
+    # Schreibe .env
+    with open(env_path, 'a', encoding='utf-8') as f:
+        f.write(f"\nBEARER_TOKEN={new_token}\n")
+    
+    return new_token
+
+def verify_token(token: Optional[str]) -> bool:
+    """Validiert Bearer-Token gegen .env."""
+    if not token:
+        return False
+    return token == _read_env_token()
+
+class RateLimiter:
+    """Simple Rate Limiter für ELION-Archivator."""
+    def __init__(self, requests_per_minute: int = 90):
+        self.requests_per_minute = requests_per_minute
+    
+    def limit(self) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+        """Decorator für Rate-Limiting."""
+        def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
+            return func
+        return decorator
 
 # -------------------------------------------------------------------
 # Konfiguration/Policy
@@ -52,9 +93,59 @@ logging.basicConfig(
 logger = logging.getLogger("opena2")
 
 # -------------------------------------------------------------------
+# Models
+# -------------------------------------------------------------------
+class SafepointRequest(BaseModel):
+    """Type-safe Safepoint Request Model."""
+    model_config = ConfigDict(extra="forbid")
+    src: str = Field(..., min_length=1)
+    dst: str = Field(..., min_length=1)
+    kind: str = Field(..., pattern=r"^(CMD|RESP|ACK)$")
+    data: Dict[str, Any] = Field(default_factory=dict)
+    relpath: Optional[str] = None
+
+class SafepointResponse(BaseModel):
+    """Type-safe Safepoint Response Model."""
+    model_config = ConfigDict(extra="forbid")
+    strict: bool = True
+    written: bool
+    sp_name: str
+    path: str
+
+class HealthResponse(BaseModel):
+    """Health Response Model."""
+    model_config = ConfigDict(extra="forbid")
+    service: str
+    status: str
+    strict: bool
+    timestamp: str
+
+# -------------------------------------------------------------------
+# Lifespan Handler
+# -------------------------------------------------------------------
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """ELION-konformer Lifespan Handler für opena2 Archivator."""
+    # Startup Logic
+    logger.info("🚀 opena2 Archivator startet...")
+    _read_env_token()  # Initialisiert Token-System
+    _ensure_dirs_for_today()
+    logger.info("opena2 gestartet, Archivpfad: %s", ARCHIVP_ROOT)
+    
+    yield  # Application läuft
+    
+    # Shutdown Logic
+    logger.info("🛑 opena2 Archivator stoppt...")
+
+# -------------------------------------------------------------------
 # App
 # -------------------------------------------------------------------
-app = FastAPI(title="Portier-Archivator (opena2)", version="1.0", description="Archivport für Safepoints")
+app = FastAPI(
+    title="Portier-Archivator (opena2)", 
+    version="2.0", 
+    description="ELION Archivport für Safepoints mit Type-Safety",
+    lifespan=lifespan
+)
 security = HTTPBearer()
 rate_limiter = RateLimiter(requests_per_minute=90)
 
@@ -62,13 +153,28 @@ rate_limiter = RateLimiter(requests_per_minute=90)
 # Middleware: Port-Policy
 # -------------------------------------------------------------------
 @app.middleware("http")
-async def validate_port_policy(request: Request, call_next):
+async def validate_port_policy(
+    request: Request, 
+    call_next: Callable[[Request], Awaitable[Response]]
+) -> Response:
+    """Port-Policy Middleware mit Type-Safety."""
     port = request.url.port
-    if port in FORBIDDEN_PORTS:
-        raise HTTPException(status_code=403, detail=f"Port {port} ist verboten")
-    if not (ALLOWED_PORT_MIN <= port <= ALLOWED_PORT_MAX):
-        raise HTTPException(status_code=403, detail=f"Port {port} außerhalb {ALLOWED_PORT_MIN}–{ALLOWED_PORT_MAX}")
-    return await call_next(request)
+    
+    # None-Check für Port
+    if port is not None:
+        if port in FORBIDDEN_PORTS:
+            raise HTTPException(
+                status_code=403, 
+                detail=f"Port {port} ist verboten (OpenWebUI UI-only)"
+            )
+        if not (ALLOWED_PORT_MIN <= port <= ALLOWED_PORT_MAX):
+            raise HTTPException(
+                status_code=403, 
+                detail=f"Port {port} außerhalb {ALLOWED_PORT_MIN}–{ALLOWED_PORT_MAX}"
+            )
+    
+    response = await call_next(request)
+    return response
 
 # -------------------------------------------------------------------
 # Utils
@@ -90,9 +196,10 @@ def _safe_join_in_archivp(rel_path: str) -> Path:
     return p
 
 def _write_index(sp_name: str, src: str, dst: str, kind: str, path: str) -> None:
-    entry = {
+    """Schreibt Index-Eintrag mit Type-Safety."""
+    entry: Dict[str, Any] = {
         "sp": sp_name,
-        "ts": datetime.now().isoformat(),
+        "ts": datetime.now(timezone.utc).isoformat(),
         "src": src,
         "dst": dst,
         "kind": kind,
@@ -107,71 +214,60 @@ def _make_sp_name(src: str, dst: str, kind: str) -> str:
     return f"SP{ep}_{src}→{dst}_{kind}.json"
 
 # -------------------------------------------------------------------
-# Lifecycle
-# -------------------------------------------------------------------
-@app.on_event("startup")
-async def on_start():
-    _ = _read_env_token()
-    _ensure_dirs_for_today()
-    logger.info("opena2 gestartet, Archivpfad: %s", ARCHIVP_ROOT)
-
-# -------------------------------------------------------------------
 # Endpunkte
 # -------------------------------------------------------------------
-@app.get("/health")
-async def health():
-    return {
-        "service": "opena2",
-        "status": "healthy",
-        "strict": True,
-        "timestamp": datetime.utcnow().isoformat()
-    }
+@app.get("/health", response_model=HealthResponse)
+async def health() -> HealthResponse:
+    """Health Check für opena2 Archivator."""
+    return HealthResponse(
+        service="opena2",
+        status="healthy",
+        strict=True,
+        timestamp=datetime.now(timezone.utc).isoformat()
+    )
 
-@app.post("/store/archivp")
+@app.post("/store/archivp", response_model=SafepointResponse)
 @rate_limiter.limit()
 async def store_archivp(
-    body: Dict[str, Any],
+    body: SafepointRequest,
     token: HTTPAuthorizationCredentials = Security(security)
-):
+) -> SafepointResponse:
+    """Speichert Safepoint mit Type-Safety."""
     if not verify_token(token.credentials):
         raise HTTPException(status_code=401, detail="Ungültiger Token")
 
-    src = (body or {}).get("src", "")
-    dst = (body or {}).get("dst", "")
-    kind = (body or {}).get("kind", "")
-    data = (body or {}).get("data", {})
-    relpath = (body or {}).get("relpath", "")
+    if not (body.src and body.dst and body.kind):
+        raise HTTPException(status_code=400, detail="src/dst/kind erforderlich")
 
-    if not (src and dst and kind and isinstance(data, dict)):
-        raise HTTPException(status_code=400, detail="src/dst/kind/data erforderlich")
-
-    sp_name = _make_sp_name(src, dst, kind)
+    sp_name = _make_sp_name(body.src, body.dst, body.kind)
     day_dir = _ensure_dirs_for_today()
     target_dir = day_dir
-    if relpath:
-        target_dir = _safe_join_in_archivp(relpath)
+    
+    if body.relpath:
+        target_dir = _safe_join_in_archivp(body.relpath)
         target_dir.mkdir(parents=True, exist_ok=True)
 
     out_file = (target_dir / sp_name).resolve()
-    content = dict(data)
+    content: Dict[str, Any] = dict(body.data)
     content.setdefault("strict", True)
 
     out_file.write_text(json.dumps(content, ensure_ascii=False, indent=2), encoding="utf-8")
-    _write_index(sp_name, src, dst, kind, str(out_file))
+    _write_index(sp_name, body.src, body.dst, body.kind, str(out_file))
 
-    return {
-        "strict": True,
-        "written": True,
-        "sp_name": sp_name,
-        "path": str(out_file)
-    }
+    return SafepointResponse(
+        strict=True,
+        written=True,
+        sp_name=sp_name,
+        path=str(out_file)
+    )
 
 @app.get("/store/archivp")
 @rate_limiter.limit()
 async def read_archivp(
     path: str = Query(..., description="Pfad relativ zu archivp, z.B. '2025/11/06/SP...json'"),
     token: HTTPAuthorizationCredentials = Security(security)
-):
+) -> Dict[str, Any]:
+    """Liest Safepoint mit Type-Safety."""
     if not verify_token(token.credentials):
         raise HTTPException(status_code=401, detail="Ungültiger Token")
 
@@ -181,7 +277,7 @@ async def read_archivp(
 
     try:
         text = p.read_text(encoding="utf-8")
-        obj = json.loads(text)
+        obj: Dict[str, Any] = json.loads(text)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Lesefehler: {e}")
 
@@ -192,7 +288,8 @@ async def read_archivp(
 async def finalize(
     info: Dict[str, Any],
     token: HTTPAuthorizationCredentials = Security(security)
-):
+) -> Dict[str, Any]:
+    """Finalisiert Safepoint mit Type-Safety."""
     if not verify_token(token.credentials):
         raise HTTPException(status_code=401, detail="Ungültiger Token")
 
@@ -204,7 +301,7 @@ async def finalize(
     day_dir = _ensure_dirs_for_today()
     out_file = (day_dir / sp_name).resolve()
 
-    payload = {"ack_for": ack_for, "note": note, "strict": True}
+    payload: Dict[str, Any] = {"ack_for": ack_for, "note": note, "strict": True}
     out_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     _write_index(sp_name, src, "opena2", "RESP", str(out_file))
 
@@ -216,5 +313,5 @@ async def finalize(
 if __name__ == "__main__":
     import uvicorn
     Path("logs").mkdir(parents=True, exist_ok=True)
-    uvicorn.run("main_opena2:app", host="127.0.0.1", port=12348, reload=False)
+    uvicorn.run(app, host="127.0.0.1", port=12348, reload=False)
 

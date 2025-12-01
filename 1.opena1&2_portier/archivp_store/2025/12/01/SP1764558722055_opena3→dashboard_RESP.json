@@ -1,0 +1,13 @@
+{
+  "ts": "2025-12-01T03:12:02.055871Z",
+  "src": "opena3",
+  "dst": "dashboard",
+  "kind": "RESP",
+  "body": {
+    "model": "llama3.1:8b",
+    "status": "error",
+    "error_code": "GATEWAY_TIMEOUT",
+    "timestamp": "2025-12-01T03:12:02.055707Z"
+  },
+  "strict": true
+}

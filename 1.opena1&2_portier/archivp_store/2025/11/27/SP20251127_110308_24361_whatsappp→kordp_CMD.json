@@ -1,0 +1,14 @@
+{
+  "sp_id": "20251127_110308_24361",
+  "timestamp": "2025-11-27T11:03:08.243618Z",
+  "src": "whatsappp",
+  "dst": "kordp",
+  "type": "CMD",
+  "request_id": "20251127_110308_24349",
+  "data": {
+    "command": "test_command",
+    "params": {
+      "test": "data"
+    }
+  }
+}

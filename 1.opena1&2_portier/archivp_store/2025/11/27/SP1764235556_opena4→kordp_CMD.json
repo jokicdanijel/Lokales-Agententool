@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-11-27T10:25:56.036573Z",
+  "src": "opena4",
+  "dst": "kordp",
+  "kind": "CMD",
+  "payload": {
+    "request_id": "test_12346",
+    "command": "test",
+    "extra_field": "should_be_rejected"
+  },
+  "strict": true
+}

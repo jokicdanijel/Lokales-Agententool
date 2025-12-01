@@ -1,0 +1,33 @@
+{
+  "site_id": "30356007-1e9",
+  "generator": "static",
+  "template": "default",
+  "pages": [
+    {
+      "slug": "home",
+      "title": "Home",
+      "content": "<p>Home</p>",
+      "meta_description": null,
+      "meta_keywords": [],
+      "is_homepage": true
+    },
+    {
+      "slug": "about",
+      "title": "About",
+      "content": "<p>About</p>",
+      "meta_description": null,
+      "meta_keywords": [],
+      "is_homepage": false
+    }
+  ],
+  "branding": {
+    "site_name": "Nav Test",
+    "tagline": "Testing navigation",
+    "logo_url": null,
+    "favicon_url": null,
+    "color_primary": "#007bff",
+    "color_secondary": "#6c757d"
+  },
+  "created_at": "2025-11-27T13:19:26.538556+00:00",
+  "output_path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.opena17_homepagecreator/data/output/30356007-1e9"
+}

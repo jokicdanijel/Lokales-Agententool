@@ -1,0 +1,17 @@
+{
+  "src": "kordp",
+  "dst": "archivp",
+  "kind": "LOG",
+  "body": {
+    "source": "openai",
+    "event": "e2e_test_v2",
+    "payload": {
+      "request_id": "OPT2-E2E-02",
+      "msg": "Test"
+    },
+    "strict": true,
+    "ts": "2025-11-28T00:00:20.306971Z"
+  },
+  "strict": true,
+  "ts": "2025-11-28T00:00:20.307018Z"
+}

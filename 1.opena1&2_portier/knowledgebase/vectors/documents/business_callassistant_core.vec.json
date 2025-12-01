@@ -1,0 +1,8 @@
+{
+  "document_id": "business_callassistant_core",
+  "source": "knowledge/processed/business_callassistant_core.md",
+  "model": "text-embedding-3-large",
+  "embedding": [],
+  "status": "pending",
+  "strict": true
+}

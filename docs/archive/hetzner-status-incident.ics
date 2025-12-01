@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+PRODID:Status - Hetzner Online GmbH | DE
+METHOD:PUBLISH
+X-PUBLISHED-TTL:PT24H
+BEGIN:VEVENT
+UID:3908eba3-402b-4cbe-9012-b6ecf2c51260-de
+SUMMARY:iPXE-Update in FSN1 & NBG1
+DTSTAMP:20251103T130300Z
+DTSTART:20251103T090000Z
+DESCRIPTION:Wir aktualisieren die in unserer NetBoot-Infrastruktur verwendete iPXE-Version an den Standorten FSN1 und NBG1.\n\nDas Update enthält allgemeine Verbesserungen und bringt uns auf den aktuellen Upstream Stand. Auswirkungen werden nicht erwartet.\n\nBei ungewöhnlichem Verhalten melden Sie sich bitte an unser Support-Team.\n\nhttps://status.hetzner.com/de/incident/3908eba3-402b-4cbe-9012-b6ecf2c51260
+URL:https://status.hetzner.com/de/incident/3908eba3-402b-4cbe-9012-b6ecf2c51260/calendar.ics
+CATEGORIES:other
+END:VEVENT
+END:VCALENDAR

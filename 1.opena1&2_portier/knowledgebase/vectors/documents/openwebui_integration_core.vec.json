@@ -1,0 +1,8 @@
+{
+  "document_id": "openwebui_integration_core",
+  "source": "knowledge/processed/openwebui_integration_core.md",
+  "model": "text-embedding-3-large",
+  "embedding": [],
+  "status": "pending",
+  "strict": true
+}

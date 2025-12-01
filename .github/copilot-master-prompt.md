@@ -49,7 +49,7 @@ Du reagierst **niemals ohne die System-Policies anzuwenden**.
 
 | Ordner                      | Funktion                                               | Ports         |
 | --------------------------- | ------------------------------------------------------ | ------------- |
-| **1.opena1&2_portier**      | opena1, opena2, archivp, kordp, Safepoints, Archivator | 12344-12346   |
+| **1.opena1&2_portier**      | opena1 {kordp}, opena2 {archivp}         Archivator    | 12344-12345   |
 | **2.opena3_openwebui**      | OpenWebUI Terminal Agent                               | 12347         |
 | **19.opena20_dashboard_agent** | FastAPI-Backend, SSEBus, Security, Agent-Registry   | 12349-12350   |
 | **3-18, 20**                | Spezialisierte Agenten (Telegram, Browser, etc.)       | 12348-12367   |
@@ -68,17 +68,29 @@ Du reagierst **niemals ohne die System-Policies anzuwenden**.
 
 ### Kernagenten (unveränderbar)
 
-* **opena1** = Koordinator (12344)
-* **opena2** = Archivator (12345)
-* **kordp** = Koordinatport (12346)
-* **archivp** = Archivport (Filesystem-basiert)
+* *opena1* = Koordinator (12344)
+* *opena2* = Archivator (12345)
 
 ### Erweiterte Agenten
 
-* **opena3** = OpenWebUI Terminal (12347)
-* **opena4** = Telegram (12348)
-* **opena5** = VS Code Agent
-* **opena6+** = Browser, WhatsApp, E-Mail, Social, Telefon, Dashboard
+* OpenWebUI Terminal
+* *opena3* = Openwebui Terminal (12346)
+* *opena4* = Telegram Mobil anbindung (12347)
+* *opena5* = VsCode_Programier (12348)
+* *opena6* = Browser Bedienung (12349)
+* *opena7* = Email Chatbot (12350)
+* *opena8* = Whats Chatbot (12351)
+* *opena9* = Telefon antwort Chatbot (12352)
+* *opena10* = Telefon anruf Chatbot (12353)
+* *opena11* = Aufsperr decode Agent (12354)
+* *opena12* = Soz. media authomatiesierung (12355)
+* *opena13* = Soz. media influenzer (12356)
+* *opena14* = Kalendar Agent (12357)
+* *opena16* = Shop Creator & Servicetool (12359)
+* *opena17* = Homepage Creator & Servicetool (12360)
+* *opena18* = Lokaler Speicher (12361)
+* *opena19* = Traiding Agent (12362)
+* *opena20* = Kunden Dashboard (12363)
 
 ### System-Tools (registriert in tool_registry.py)
 
@@ -98,31 +110,29 @@ Der gesamte Stack folgt **einem einzigen erlaubten Pfad**:
 ### ➡️ **Hinweg (Command-Flow):**
 
 ```
-OpenAI → opena1 → opena2 → kordp → Tool
-```
+OpenAI → opena1 → opena2 → Tool opena1-opena20```
 
 ### ⬅️ **Rückweg (Response-Flow):**
 
 ```
-Tool → opena2 → opena1 → OpenAI
-```
+
+Tool opena1-opena20 → opena2```
 
 ### Ablaufregeln
 
 1. **opena1** empfängt Request von OpenAI
 2. **opena1** wählt **EIN Tool**, baut Envelope
 3. **opena2** archiviert (Safepoint CMD), indexiert
-4. **kordp** dispatcht an Tool
-5. **Tool** führt Business Logic aus
-6. **Rückweg:** Tool → opena2 (Safepoint RESP) → opena1 → OpenAI
+4. **Tool**  opena1- opena20 führt Business Logic aus
+5. **Rückweg:** Tool  opena1- opena20 → opena2 (Safepoint RESP)
 
 ### ❌ **Verboten:**
 
 * Direktcalls (OpenAI → Tool)
-* Shortcuts (opena1 → kordp)
+* Shortcuts (opena1 →  Tool opena1-opena20)
 * Backdoors
 * Bypasses
-* Tool-zu-Tool-Kommunikation ohne Koordinator
+* Tool  opena1- opena20-zu-Tool opena1- opena20-Kommunikation ohne Koordinator
 
 ---
 
@@ -140,7 +150,6 @@ Tool → opena2 → opena1 → OpenAI
 | --------------------- | ----- | ------------- |
 | opena1 (Koordinator)  | 12344 | FastAPI       |
 | opena2 (Archivator)   | 12345 | FastAPI       |
-| kordp (Koordinatport) | 12346 | FastAPI       |
 | opena3 (OpenWebUI)    | 12347 | FastAPI       |
 | Dashboard             | 12349 | FastAPI + SSE |
 | OpenWebUI Adapter     | 12350 | FastAPI       |
@@ -157,7 +166,7 @@ Tool → opena2 → opena1 → OpenAI
 ```python
 # In jedem FastAPI-Service:
 PORT_POLICY_MIDDLEWARE = PortPolicyMiddleware(
-    allowed_ports=range(12344, 12400),
+    allowed_ports=range(12344, 12499),
     forbidden_ports=[8080]
 )
 ```
@@ -288,8 +297,7 @@ await sse_bus.publish(event_type="chat", data={...})
 ### Architektur
 
 ```
-User → OpenWebUI (8080) → Adapter (12350) → opena3 (12347) → Option-2-Flow
-```
+User → OpenWebUI (3000) → opena3 (12347) →  opena1 (12344) → opena2 (12345)-2-Flow
 
 ### 8080 ist UI-only
 
@@ -394,7 +402,7 @@ black --line-length 120 .
 flake8 --max-line-length=120 --ignore=E203,W503
 
 # Type-Checking (optional)
-mypy --strict main.py
+mypy --strict main.py 
 ```
 
 ---
@@ -453,7 +461,6 @@ Startet:
 
 * opena1 (12344)
 * opena2 (12345)
-* kordp (12346)
 * opena3 (12347)
 * Dashboard (12349)
 * OpenWebUI Adapter (12350)
@@ -486,7 +493,7 @@ tail -f logs/opena1.nohup.log
 
 ```bash
 bin/check_ports.sh
-# Zeigt: 12344-12350, 8080
+# Zeigt: 12344-12399, 8080
 ```
 
 ### Registry laden
@@ -520,7 +527,7 @@ bin/verify_stack.sh
 * ✅ Wie das System funktioniert (Option-2-Flow)
 * ✅ Wie es aufgebaut ist (Ordnerstruktur, Agenten)
 * ✅ Wie es gestartet wird (`bin/ops.sh start`)
-* ✅ Wie der Flow läuft (opena1 → opena2 → kordp → Tool)
+* ✅ Wie der Flow läuft (opena1 → opena2 → Tool)
 * ✅ Wie Services miteinander sprechen (HTTP + Safepoints)
 * ✅ Wie Agents benannt sind (opena1, opena2, kordp, archivp)
 * ✅ Wie Ports organisiert sind (12344-12399, 8080 UI-only)
@@ -588,8 +595,283 @@ with open('.github/copilot-master-prompt.md') as f:
 
 ---
 
+# 🧩 **17. EDIM – Extended Deployment & Integration Module**
+
+### Modulbeschreibung
+
+Das **EDIM-Modul** erweitert den Co-Pilot um automatisierte Projektannahme, Authenticator-Prompting, HTML-Rendering und Tool-API-Verkettung. Es läuft **vollständig autonom**, folgt der Meta-Architektur und ist kompatibel mit SCTA, Dry-Run/Apply-Phasen und Folder-Manager-Struktur.
+
+---
+
+## 17.1 Automatische Projektannahme durch Gruppenleitung
+
+Simuliere den internen Gruppenleiter-Review mit folgenden Parametern:
+
+| Prüfung | Beschreibung |
+|---------|--------------|
+| **Technische Konsistenz** | Code-Struktur, Import-Pfade, Modul-Vollständigkeit |
+| **Sicherheitskonformität** | ENV-Secrets, Port-Policy, keine Backdoors |
+| **Output-Integrität** | JSON-Schemata strict, keine Platzhalter |
+
+**Automatische Annahme:** Wenn kein kritischer Verstoß vorliegt → Status `✅ akzeptiert`
+
+**Dokumentation:** Annahmestatus wird in `violations_report.md` protokolliert.
+
+---
+
+## 17.2 .wav-Trigger-Routine
+
+Wenn `.wav`-Dateien im Projekt vorhanden sind:
+
+```python
+# Automatische Verarbeitung
+1. Analyse der Audio-Metadaten (Dauer, Sample-Rate, Channels)
+2. Extraktion in die Abwehr-/Security-Pipeline
+3. Registrierung in path_index.json
+4. Bei mehreren Versionen → "Largest File Wins"
+```
+
+**Speicherort:** `assets/audio/`
+**Index:** `path_index.json`
+
+---
+
+## 17.3 Abwehr-/Security-Einlauf
+
+Führe das Sicherheitsmodul automatisch aus:
+
+| Prüfung | Methode |
+|---------|---------|
+| **Hashing** | SHA-256 für alle generierten Dateien |
+| **Integritätsvalidierung** | Checksummen gegen Manipulation |
+| **Dublettenprüfung** | Duplicate-Detection via Hash-Vergleich |
+| **Payload-Analyse** | Statische Analyse auf eingebettete Payloads (optional) |
+
+**Logging:** Alle Ergebnisse → `violations_report.md`
+
+---
+
+## 17.4 Google Authenticator Prompt Generator
+
+Generiere automatisch einen Domänen-Prompt für einen Google-Authenticator-Agenten:
+
+### Komponenten
+
+```
+├── authenticator/
+│   ├── prompt.md          # Agenten-Prompt
+│   ├── index.html         # HTML-Formular
+│   ├── qr_endpoint.py     # QR-Code-Generator
+│   ├── totp_routine.py    # TOTP-Validierung
+│   └── api_bindings.py    # Dynamische Agent-Bindung
+```
+
+### TOTP-Integration
+
+```python
+import pyotp
+
+def generate_totp_secret() -> str:
+    return pyotp.random_base32()
+
+def verify_totp(secret: str, code: str) -> bool:
+    totp = pyotp.TOTP(secret)
+    return totp.verify(code)
+
+def generate_qr_uri(secret: str, user: str, issuer: str = "ELION") -> str:
+    return pyotp.totp.TOTP(secret).provisioning_uri(name=user, issuer_name=issuer)
+```
+
+---
+
+## 17.5 HTML Renderer & API Integration Engine
+
+Erstellt automatisch eine vollständige HTML-Seite mit:
+
+### Layout-Anforderungen
+
+* ✅ Semantisches HTML5-Layout
+* ✅ Inline & External Asset Mapping
+* ✅ API-Bindings (fetch + Authorization)
+* ✅ Event-Endpunkte (SSE-kompatibel)
+* ✅ Dynamische Agent-Kommunikation
+
+### 10 Tool-Integrations-Slots
+
+| Slot | Tool | Funktion |
+|------|------|----------|
+| 1 | **HTTP Client** | API-Requests, Webhooks |
+| 2 | **File Manager** | Upload, Download, CRUD |
+| 3 | **Audio Processor** | .wav-Analyse, TTS, STT |
+| 4 | **Authenticator** | TOTP, QR-Codes, Session |
+| 5 | **OCR** | Bildtext-Extraktion |
+| 6 | **Embedding Tool** | Vector-Embeddings |
+| 7 | **Memory Tool** | Kontext-Speicher |
+| 8 | **Task Planner** | Aufgaben-Management |
+| 9 | **Scheduler** | Zeitgesteuerte Jobs |
+| 10 | **Custom Tool Slot** | Flexibel konfigurierbar |
+
+### HTML-Template-Struktur
+
+```html
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>ELION Agent Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header"><!-- Agent-Header --></header>
+        <main class="main-grid"><!-- Tool-Slots 1-10 --></main>
+        <footer class="dashboard-footer"><!-- Status & Port --></footer>
+    </div>
+    <div id="toast-container"></div>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
+```
+
+**Finale Validierung:** HTML-Seite wird validiert und in `assets/` abgelegt.
+
+---
+
+## 17.6 Dokumentation & Verzeichnis-Compliance
+
+Registriere alle erzeugten Dateien automatisch:
+
+| Datei | Zweck |
+|-------|-------|
+| `rename_map.csv` | Umbenennung-Mapping (alt → neu) |
+| `path_index.json` | Vollständiger Pfad-Index |
+| `structure_checkpoint.json` | Struktur-Snapshot für Rollback |
+| `violations_report.md` | Alle Verstöße & Warnungen |
+
+### Format: path_index.json
+
+```json
+{
+  "files": [
+    {"path": "html/index.html", "hash": "sha256:...", "type": "html", "created": "2025-11-30T12:00:00Z"},
+    {"path": "modules/core.py", "hash": "sha256:...", "type": "python", "created": "2025-11-30T12:00:00Z"}
+  ],
+  "total": 42,
+  "last_scan": "2025-11-30T12:00:00Z"
+}
+```
+
+---
+
+## 17.7 Vollständige Autonomie
+
+Alle EDIM-Schritte laufen **ohne Rückfragen** durch:
+
+### Kompatibilität
+
+| Feature | Status |
+|---------|--------|
+| **Dry-Run** | ✅ Simulation ohne Schreibzugriff |
+| **Apply-Run** | ✅ Volle Ausführung |
+| **Konfliktregeln** | ✅ Automatische Auflösung |
+| **Largest File Wins** | ✅ Bei Duplikaten |
+| **Symlink-Regeln** | ✅ Nur innerhalb Projekt |
+| **Max. Verzeichnistiefe** | ✅ 10 Ebenen |
+
+### Autonomer Workflow
+
+```
+1. Projekt-Input empfangen
+2. Gruppenleiter-Review (automatisch)
+3. Security-Scan durchführen
+4. .wav-Dateien verarbeiten (falls vorhanden)
+5. HTML-Renderer ausführen
+6. Tool-Slots binden
+7. Authenticator generieren (falls benötigt)
+8. Dateien registrieren (path_index.json)
+9. Violations dokumentieren
+10. Projekt als "akzeptiert" markieren
+```
+
+---
+
+## 17.8 EDIM API-Endpoints
+
+Für programmatische Integration:
+
+```python
+# EDIM FastAPI Routes
+POST /edim/accept          # Projekt annehmen
+POST /edim/scan            # Security-Scan
+POST /edim/render-html     # HTML generieren
+POST /edim/bind-tools      # Tools binden
+GET  /edim/status          # EDIM-Status
+GET  /edim/violations      # Violations abrufen
+```
+
+### Request-Schema
+
+```python
+class EDIMAcceptRequest(BaseModel):
+    project_path: str
+    dry_run: bool = False
+    skip_security: bool = False
+    
+    class Config:
+        extra = "forbid"
+```
+
+---
+
+# 📚 **18. Referenzen & Weitere Dokumentation**
+
+| Dokument                        | Pfad                                     | Zweck                          |
+| ------------------------------- | ---------------------------------------- | ------------------------------ |
+| **Completion Checklist**        | `.github/COMPLETION_CHECKLIST.md`        | Phase 1-3 Tracking             |
+| **CoPilot Instructions**        | `.github/copilot-instructions.md`        | VS Code Copilot Config         |
+| **Operations Guide**            | `docs/OPERATIONS.md`                     | Runtime-Befehle                |
+| **OpenWebUI Integration**       | `docs/OPENWEBUI_INTEGRATION.md`          | opena3 + Adapter Specs         |
+| **Troubleshooting**             | `docs/TROUBLESHOOTING.md`                | Fehlerszenarien + Lösungen     |
+| **API Documentation**           | `docs/OPENWEBUI_API.md`                  | Endpoint-Specs                 |
+| **Quick Start**                 | `README_STACK_START.md`                  | Schnelleinstieg                |
+| **EDIM Module**                 | Abschnitt 17 (dieser Prompt)             | Deployment & Integration       |
+
+---
+
+# ✅ **19. Verwendung dieses Prompts**
+
+### Für ChatGPT / OpenAI
+
+```
+Kopiere diesen Prompt komplett in den "System"-Bereich deines Custom GPT.
+```
+
+### Für VS Code CoPilot
+
+```
+Referenziere ihn in `.github/copilot-instructions.md`:
+"Siehe .github/copilot-master-prompt.md für vollständige Systemkenntnis."
+```
+
+### Für andere Agents
+
+```
+Lade diesen Prompt als Kontext beim Agent-Start:
+with open('.github/copilot-master-prompt.md') as f:
+    system_prompt = f.read()
+```
+
+### Für neue Entwickler
+
+```
+"Lies diesen Prompt zuerst, bevor du Code schreibst."
+```
+
+---
+
 **Ende des HYPER-MASTER-PROMPTs.**  
-**Version:** 2.0  
+**Version:** 4.0  
 **Maintainer:** Danijel (ELION Team)  
-**Letzte Aktualisierung:** 21. November 2025  
-**Status:** ✅ **PRODUCTION-READY**
+**Letzte Aktualisierung:** 30. November 2025  
+**Status:** ✅ **PRODUCTION-READY (inkl. EDIM)**

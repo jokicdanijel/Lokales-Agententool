@@ -1,0 +1,75 @@
+# 📱 opena4 - Telegram Agent
+
+**Agent-ID:** `opena4`  
+**Port:** 12348  
+**Kürzel:** `telep`  
+**Status:** ✅ RUNNING (PID: siehe logs/opena4.pid)  
+**Version:** 2.0  
+**Status:** ✅ Production  
+**Letzte Aktualisierung:** 27. November 2025
+
+---
+
+## 📖 Überblick
+
+**Role:** Bot-Connector (Telegram) – empfängt/sendet Nachrichten und integriert in die Portier-Architektur.
+
+**Ingress:** Telegram Webhook → FastAPI  
+**Egress:** Archivierung via `opena2` (`/store/archivp`) und Dispatch via `kordp` (`/dispatch/kordp`)
+
+---
+
+## Quickstart (Docker)
+
+```bash
+cp .env.example .env
+# .env anpassen (TELEGRAM_BOT_TOKEN, PUBLIC_BASE_URL, etc.)
+docker compose up -d --build
+```
+
+### Webhook setzen (einmalig)
+
+```bash
+curl -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/setWebhook" \
+     -d "url=$PUBLIC_BASE_URL/telegram/webhook?secret=$(grep WEBHOOK_SECRET .env | cut -d= -f2)"
+```
+
+### Healthcheck
+
+```bash
+curl http://localhost:12347/health
+```
+
+## Ports & Endpoints
+
+- **Listen-Port:** 12347
+- **Inbound:** `POST /telegram/webhook` (von Telegram)
+- **Internal:**
+  - `POST /inbox` (alternative lokale Ingestion)
+  - `POST /outbox` (Nachrichten an Telegram senden)
+- **Ops:** `GET /health`, `GET /metrics`
+
+## Architekturkopplung
+
+- **opena2** (Archiv-Agent): jede eingehende Nachricht wird als Safepoint persistiert (`/store/archivp`).
+- **kordp** (Dispatch): Befehle Richtung Ziel-Tools laufen über `/dispatch/kordp`.
+- **opena1** (Koordinator): bleibt Master der Entscheidung; dieser Agent führt nur Bot-IO aus.
+
+## Default-URLs (lokal)
+
+```
+OPENA2_URL=http://localhost:12345
+KORDP_URL=http://localhost:12346
+```
+
+## Security Baseline
+
+- Nur Webhook-Pfad nach außen publishen (TLS, Reverse Proxy). App-Port intern halten.
+- Eingehende Telegram-Updates per Sekret-Token im Webhook-URL absichern (Query `secret=`).
+- Rate-Limits und Basic-Request-Validation aktiv.
+
+## Test-Plan (Smoke)
+
+1. `/health` ⟹ 200 OK
+2. Webhook setzen, eine Testnachricht an den Bot schicken
+3. Prüfen: Logeintrag in opena2 angekommen (Safepoint), Antwort zurück via `/outbox` möglich

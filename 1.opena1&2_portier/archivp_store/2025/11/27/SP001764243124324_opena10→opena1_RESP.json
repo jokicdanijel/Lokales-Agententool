@@ -1,0 +1,18 @@
+{
+  "sp_id": "1764243124324",
+  "timestamp": "2025-11-27T11:32:04.324436+00:00",
+  "source": "opena10",
+  "destination": "opena1",
+  "type": "RESP",
+  "data": {
+    "campaigns": [
+      {
+        "campaign_id": "test_campaign_1764243124",
+        "name": "Test Campaign",
+        "description": "Automated test campaign",
+        "active": true,
+        "created_at": "2025-11-27T11:32:04"
+      }
+    ]
+  }
+}

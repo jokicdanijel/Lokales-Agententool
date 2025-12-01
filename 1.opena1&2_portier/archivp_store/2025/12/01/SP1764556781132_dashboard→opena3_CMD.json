@@ -1,0 +1,13 @@
+{
+  "ts": "2025-12-01T02:39:41.132472Z",
+  "src": "dashboard",
+  "dst": "opena3",
+  "kind": "CMD",
+  "body": {
+    "message": "Test Safepoint",
+    "model": null,
+    "stream": true,
+    "timestamp": "2025-12-01T02:39:41.132287Z"
+  },
+  "strict": true
+}

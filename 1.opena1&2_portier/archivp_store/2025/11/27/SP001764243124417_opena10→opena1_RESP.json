@@ -1,0 +1,13 @@
+{
+  "sp_id": "1764243124417",
+  "timestamp": "2025-11-27T11:32:04.417070+00:00",
+  "source": "opena10",
+  "destination": "opena1",
+  "type": "RESP",
+  "data": {
+    "total_calls": 1,
+    "avg_duration_seconds": 120.0,
+    "completed_calls": 1,
+    "success_rate_percent": 100.0
+  }
+}

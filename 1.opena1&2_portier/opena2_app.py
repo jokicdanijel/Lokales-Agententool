@@ -25,6 +25,8 @@ from pathlib import Path
 from typing import Dict, Any
 
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import HTMLResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, ConfigDict
 
 # -------- PORTABLE PATHS (Server-Transfer Ready) --------
@@ -112,6 +114,15 @@ class FinalizeIn(BaseModel):
 
 app = FastAPI(title="OpenA2 Archivator (archivp)", version="1.0.0")
 
+# CORS Middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 def _write_safepoint(item: StoreIn) -> Path:
     day = datetime.utcnow()
     target_dir = ARCHIVE_DIR / f"{day:%Y/%m/%d}"
@@ -147,6 +158,14 @@ async def health() -> Dict[str, Any]:
         "openai_base_url": OPENAI_BASE_URL,
         "strict": True
     }
+
+@app.get("/ui", response_class=HTMLResponse)
+async def dashboard_ui() -> str:
+    """Serve OpenA2 Dashboard HTML"""
+    html_path = Path(__file__).parent / "frontend" / "opena2_dashboard.html"
+    if not html_path.exists():
+        raise HTTPException(404, "Dashboard HTML not found")
+    return html_path.read_text(encoding="utf-8")
 
 @app.post("/store/archivp")
 async def store(item: StoreIn) -> Dict[str, Any]:

@@ -1,0 +1,10 @@
+{"timestamp": "2025-11-27T13:33:03.297896+00:00", "event": "create_contact", "data": {"contact_id": "ff3634a5-822", "email": "max.mustermann@example.com", "organization_id": null}}
+{"timestamp": "2025-11-27T13:33:03.308227+00:00", "event": "create_contact", "data": {"contact_id": "2c56ec21-583", "email": "delete.test@example.com", "organization_id": null}}
+{"timestamp": "2025-11-27T13:33:03.311195+00:00", "event": "delete_contact", "data": {"contact_id": "2c56ec21-583", "email": "delete.test@example.com"}}
+{"timestamp": "2025-11-27T13:33:03.318580+00:00", "event": "create_organization", "data": {"organization_id": "7eea9b36-a4b", "name": "ACME Corp", "industry": "Technology"}}
+{"timestamp": "2025-11-27T13:33:03.326766+00:00", "event": "create_contact", "data": {"contact_id": "b2d86bcf-84d", "email": "jane.doe@example.com", "organization_id": null}}
+{"timestamp": "2025-11-27T13:33:03.335136+00:00", "event": "update_contact", "data": {"contact_id": "ff3634a5-822", "updated_fields": ["phone", "position"]}}
+{"timestamp": "2025-11-27T13:33:03.338496+00:00", "event": "update_organization", "data": {"organization_id": "7eea9b36-a4b", "updated_fields": ["size", "website"]}}
+{"timestamp": "2025-11-27T13:33:03.342431+00:00", "event": "create_deal", "data": {"deal_id": "a9356d71-ad9", "title": "Enterprise License Deal", "value": 50000.0, "stage": "proposal"}}
+{"timestamp": "2025-11-27T13:33:03.347620+00:00", "event": "update_deal", "data": {"deal_id": "a9356d71-ad9", "updated_fields": ["stage", "probability"], "new_stage": "negotiation"}}
+{"timestamp": "2025-11-27T13:33:03.353470+00:00", "event": "create_activity", "data": {"activity_id": "5f57efe3-036", "type": "call", "contact_id": "ff3634a5-822", "deal_id": "a9356d71-ad9"}}

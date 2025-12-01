@@ -1,0 +1,66 @@
+{
+  "project_root": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/tools",
+  "generated_at": "2025-12-01T06:50:31.070422Z",
+  "generator": "generate_macdir.py",
+  "version": "1.0.0",
+  "total_entries": 7,
+  "total_files": 6,
+  "total_dirs": 1,
+  "entries": [
+    {
+      "path": "/",
+      "type": "dir",
+      "mtime": "2025-12-01T07:49:51.208829Z",
+      "permissions": "775",
+      "entries": 6
+    },
+    {
+      "path": "README_SCANNER.md",
+      "type": "file",
+      "size": 10009,
+      "mtime": "2025-11-09T04:05:55.593642Z",
+      "permissions": "664",
+      "sha256": "a95718466fcef1538230970f32b39844d5b6f9f5351575c28c9c260dc3776c6e"
+    },
+    {
+      "path": "_common.py",
+      "type": "file",
+      "size": 5967,
+      "mtime": "2025-11-09T03:48:23.131879Z",
+      "permissions": "775",
+      "sha256": "ba0ab360856287704cec4ac4ecfc188211272f7aa79b795a79345a09af44280a"
+    },
+    {
+      "path": "commit_and_pr.py",
+      "type": "file",
+      "size": 6335,
+      "mtime": "2025-12-01T07:50:04.064191Z",
+      "permissions": "775",
+      "sha256": "44f903c8c2ac54f8a1c708632d58ccd05a183d96daa36cd559f83b86cbc21392"
+    },
+    {
+      "path": "generate_macdir.py",
+      "type": "file",
+      "size": 6004,
+      "mtime": "2025-12-01T07:50:04.064191Z",
+      "permissions": "775",
+      "sha256": "2cd3f40d782efc2547f6660b488bf78c9e3006ac16a282cddc816ba4aed4bc83"
+    },
+    {
+      "path": "safepoint_cleaner.py",
+      "type": "file",
+      "size": 14737,
+      "mtime": "2025-11-29T17:44:10.993743Z",
+      "permissions": "664",
+      "sha256": "b27ce58dd0fdc9764cdfd3ea41418de18a18c107c75cc6888b14c3405fd30329"
+    },
+    {
+      "path": "scan_project.py",
+      "type": "file",
+      "size": 14030,
+      "mtime": "2025-11-09T03:50:19.439303Z",
+      "permissions": "775",
+      "sha256": "d3233bdd494cd26cfdfcb24f39627c74557320c7b6235d998c5e822092eb944a"
+    }
+  ]
+}

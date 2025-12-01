@@ -1,0 +1,8 @@
+{
+  "document_id": "routing_telegram_webui",
+  "source": "knowledge/processed/routing_telegram_webui.md",
+  "model": "text-embedding-3-large",
+  "embedding": [],
+  "status": "pending",
+  "strict": true
+}

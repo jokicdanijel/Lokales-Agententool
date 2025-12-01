@@ -1,0 +1,18 @@
+[
+  {
+    "calendar_id": "default",
+    "name": "Default Calendar",
+    "description": "System default calendar",
+    "timezone": "Europe/Berlin",
+    "color": null,
+    "created_at": "2025-11-27T12:42:09.995593+00:00"
+  },
+  {
+    "calendar_id": "e1d01528-465e-4d73-859e-7aca37714d54",
+    "name": "Work Calendar",
+    "description": "Professional meetings and deadlines",
+    "timezone": "Europe/Berlin",
+    "color": "#FF5733",
+    "created_at": "2025-11-27T12:43:38.491173+00:00"
+  }
+]

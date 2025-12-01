@@ -1,0 +1,44 @@
+{
+  "git_repo": "https://github.com/jokicdanijel/Gesamtprojekt-start.git",
+  "branch": "main",
+  "check_interval_hours": 6,
+  "auto_update": false,
+  "backup_retention_days": 30,
+  "health_check_url": "http://127.0.0.1:12349/health",
+  "health_check_timeout": 10,
+  "max_rollback_attempts": 3,
+  "files_to_update": [
+    "main_dashboard_final.py",
+    "requirements.txt",
+    "static/",
+    "templates/",
+    "safepoint_client.py",
+    "auto_updater.py"
+  ],
+  "files_to_preserve": [
+    "logs/",
+    "data/",
+    ".env",
+    "auto_update_config.json",
+    "backups/",
+    "agent_registry.json"
+  ],
+  "pre_update_commands": [
+    ["systemctl", "stop", "opena20"]
+  ],
+  "post_update_commands": [
+    ["pip", "install", "-r", "requirements.txt", "--upgrade"]
+  ],
+  "restart_command": ["systemctl", "start", "opena20"],
+  "notification_webhook": null,
+  "security": {
+    "verify_signatures": true,
+    "allowed_origins": ["github.com"],
+    "max_file_size_mb": 100
+  },
+  "monitoring": {
+    "enable_metrics": true,
+    "prometheus_port": 9090,
+    "health_check_retries": 3
+  }
+}

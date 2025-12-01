@@ -52,6 +52,14 @@ class ToolResolver:
                 "url": "http://127.0.0.1:12346/dispatch/fallback",
                 "timeout": 10,
                 "enabled": True
+            },
+            "workflowp": {
+                "agent_id": "opena21",
+                "port": 12364,
+                "endpoint": "/invoke",
+                "url": "http://127.0.0.1:12364/invoke",
+                "timeout": 60,
+                "enabled": True
             }
         }
         logger.info(f"ToolResolver initialized with {len(self.routes)} routes")

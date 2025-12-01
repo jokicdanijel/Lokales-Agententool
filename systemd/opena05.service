@@ -1,0 +1,28 @@
+[Unit]
+Description=ELION opena5 - VS Code Agent
+Documentation=https://github.com/elion/portier
+After=network.target opena02.service
+
+[Service]
+Type=simple
+User=danijel-jd
+Group=danijel-jd
+WorkingDirectory=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/4.opena5_vscode
+Environment="PATH=/home/danijel-jd/.local/bin:/usr/local/bin:/usr/bin"
+Environment="BEARER_TOKEN=c899b90d-faf8-485b-afa4-078357cf5313"
+Environment="OPENA5_PORT=12351"
+ExecStart=/usr/bin/python3 main.py
+Restart=on-failure
+RestartSec=5
+StandardOutput=append:/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/4.opena5_vscode/logs/opena5.log
+StandardError=append:/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/4.opena5_vscode/logs/opena5.error.log
+
+# Security
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/4.opena5_vscode/logs
+ReadWritePaths=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/4.opena5_vscode/data
+
+[Install]
+WantedBy=multi-user.target

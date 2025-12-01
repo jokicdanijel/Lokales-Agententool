@@ -1,0 +1,45 @@
+{
+  "name": "vscode_copilot_bridge",
+  "type": "action",
+  "description": "Triggers VSCode Copilot Bridge Automations - Connects OpenWebUI with VSCode for advanced code generation, refactoring, and testing workflows",
+  "endpoint": "http://localhost:8765/tools/vscode_copilot_bridge",
+  "method": "POST",
+  "timeout": 30000,
+  "parameters": {
+    "action": {
+      "type": "string",
+      "description": "Action type: test_generation, structure_reorganization, zip_deployment, health_check, code_generation, refactor",
+      "required": true,
+      "enum": ["test_generation", "structure_reorganization", "zip_deployment", "health_check", "code_generation", "refactor"]
+    },
+    "project_path": {
+      "type": "string",
+      "description": "Path to project root",
+      "required": true
+    },
+    "target_module": {
+      "type": "string",
+      "description": "Specific module or file to target (optional)",
+      "required": false
+    },
+    "options": {
+      "type": "object",
+      "description": "Additional options for the action",
+      "required": false,
+      "properties": {
+        "coverage": {"type": "boolean"},
+        "format": {"type": "boolean"},
+        "lint": {"type": "boolean"}
+      }
+    }
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "status": {"type": "string", "enum": ["success", "error", "in_progress"]},
+      "action": {"type": "string"},
+      "result": {"type": "object"},
+      "timestamp": {"type": "string"}
+    }
+  }
+}

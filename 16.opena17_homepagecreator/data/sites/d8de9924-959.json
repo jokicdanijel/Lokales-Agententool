@@ -1,0 +1,41 @@
+{
+  "site_id": "d8de9924-959",
+  "generator": "static",
+  "template": "default",
+  "pages": [
+    {
+      "slug": "home",
+      "title": "Home",
+      "content": "<h2>Welcome</h2><p>Homepage content.</p>",
+      "meta_description": null,
+      "meta_keywords": [],
+      "is_homepage": true
+    },
+    {
+      "slug": "about",
+      "title": "About",
+      "content": "<h2>About Us</h2><p>Company information.</p>",
+      "meta_description": null,
+      "meta_keywords": [],
+      "is_homepage": false
+    },
+    {
+      "slug": "contact",
+      "title": "Contact",
+      "content": "<h2>Contact Us</h2><p>Email: test@example.com</p>",
+      "meta_description": null,
+      "meta_keywords": [],
+      "is_homepage": false
+    }
+  ],
+  "branding": {
+    "site_name": "Multi-Page Test",
+    "tagline": "Testing multiple pages",
+    "logo_url": null,
+    "favicon_url": null,
+    "color_primary": "#007bff",
+    "color_secondary": "#6c757d"
+  },
+  "created_at": "2025-11-27T13:19:26.535406+00:00",
+  "output_path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.opena17_homepagecreator/data/output/d8de9924-959"
+}

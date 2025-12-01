@@ -1,0 +1,103 @@
+/* Portier Agent PAS-6.0 | Configuration | Ports 12344/12345 */
+const PortierConfig = {
+    agent: {
+        id: 'opena1_2',
+        name: 'Portier (opena1 & opena2)',
+        version: '6.0.0',
+        description: 'Koordinator (opena1) & Archivator (opena2) - Core System'
+    },
+    opena1: {
+        id: 'opena1',
+        name: 'Koordinator (kordp)',
+        port: 12344,
+        baseUrl: 'http://127.0.0.1:12344',
+        role: 'Request Coordinator & Tool Dispatcher'
+    },
+    opena2: {
+        id: 'opena2',
+        name: 'Archivator (archivp)',
+        port: 12345,
+        baseUrl: 'http://127.0.0.1:12345',
+        role: 'Safepoint Storage & Index Manager'
+    },
+    api: {
+        opena1: {
+            health: '/health',
+            status: '/status',
+            dispatch: '/api/dispatch',
+            route: '/api/route',
+            registry: '/api/registry',
+            agents: '/api/agents',
+            tools: '/api/tools',
+            invoke: '/api/invoke'
+        },
+        opena2: {
+            health: '/health',
+            status: '/status',
+            safepoints: '/api/safepoints',
+            latest: '/api/safepoints/latest',
+            create: '/api/safepoints/create',
+            index: '/api/index',
+            search: '/api/search',
+            stats: '/api/stats'
+        },
+        timeout: 30000
+    },
+    capabilities: [
+        // opena1 Capabilities
+        { id: 'request_routing', name: 'Request Routing', icon: '🔀', agent: 'opena1', description: 'Route requests to appropriate agents', endpoint: '/api/route' },
+        { id: 'tool_dispatch', name: 'Tool Dispatch', icon: '🛠️', agent: 'opena1', description: 'Dispatch tools via Option-2 flow', endpoint: '/api/dispatch' },
+        { id: 'agent_registry', name: 'Agent Registry', icon: '📋', agent: 'opena1', description: 'Manage registered agents', endpoint: '/api/registry' },
+        { id: 'load_balancing', name: 'Load Balancing', icon: '⚖️', agent: 'opena1', description: 'Distribute workload across agents', endpoint: '/api/balance' },
+        { id: 'health_monitor', name: 'Health Monitor', icon: '💓', agent: 'opena1', description: 'Monitor all agent health status', endpoint: '/api/agents/health' },
+        // opena2 Capabilities
+        { id: 'safepoint_create', name: 'Safepoint Create', icon: '💾', agent: 'opena2', description: 'Create new safepoints (CMD/RESP)', endpoint: '/api/safepoints/create' },
+        { id: 'safepoint_query', name: 'Safepoint Query', icon: '🔍', agent: 'opena2', description: 'Query archived safepoints', endpoint: '/api/safepoints' },
+        { id: 'index_search', name: 'Index Search', icon: '📚', agent: 'opena2', description: 'Search safepoint index', endpoint: '/api/search' },
+        { id: 'archive_stats', name: 'Archive Stats', icon: '📊', agent: 'opena2', description: 'View archive statistics', endpoint: '/api/stats' },
+        { id: 'data_integrity', name: 'Data Integrity', icon: '✅', agent: 'opena2', description: 'Verify archive integrity', endpoint: '/api/verify' }
+    ],
+    quickActions: [
+        { id: 'check_health', icon: '💓', label: 'Health', action: 'checkAllHealth' },
+        { id: 'view_flow', icon: '🔄', label: 'Flow', action: 'showFlowDiagram' },
+        { id: 'list_agents', icon: '📋', label: 'Agents', action: 'listAgents' },
+        { id: 'safepoints', icon: '💾', label: 'Safepoints', action: 'showSafepoints' },
+        { id: 'dispatch', icon: '🚀', label: 'Dispatch', action: 'showDispatchModal' },
+        { id: 'logs', icon: '📜', label: 'Logs', action: 'showLogs' }
+    ],
+    option2Flow: {
+        steps: [
+            { id: 'openai', name: 'OpenAI', icon: '🤖' },
+            { id: 'opena1', name: 'opena1 (kordp)', icon: '🎯' },
+            { id: 'opena2', name: 'opena2 (archivp)', icon: '💾' },
+            { id: 'tool', name: 'Tool Agent', icon: '🛠️' }
+        ],
+        description: 'OpenAI → opena1 → opena2 → Tool → opena2 (Response)'
+    },
+    safepointNaming: {
+        pattern: 'SP<laufnummer>_src→dst_{CMD|RESP}.json',
+        arrow: '→',
+        types: ['CMD', 'RESP'],
+        storage: 'archivp/YYYY/MM/DD/'
+    },
+    registeredAgents: [
+        { id: 'opena3', name: 'OpenWebUI', port: 12347 },
+        { id: 'opena4', name: 'Telegram', port: 12348 },
+        { id: 'opena5', name: 'VSCode', port: 12351 },
+        { id: 'opena6', name: 'Browser', port: 12350 },
+        { id: 'opena7', name: 'Email', port: 12351 },
+        { id: 'opena8', name: 'WhatsApp', port: 12352 },
+        { id: 'opena9', name: 'Telephone', port: 12355 },
+        { id: 'opena10', name: 'Call Tracking', port: 12356 },
+        { id: 'opena11', name: 'Unlock', port: 12357 }
+    ],
+    ui: {
+        theme: 'portier-cyan',
+        primaryColor: '#06b6d4',
+        refreshInterval: 5000
+    }
+};
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = PortierConfig;
+}

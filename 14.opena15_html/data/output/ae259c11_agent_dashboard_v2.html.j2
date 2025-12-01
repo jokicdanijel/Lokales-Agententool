@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stocks &amp; Crypto Dashboard</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<style>
+        :root { --primary: #667eea; --secondary: #764ba2; }
+        body {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            min-height: 100vh;
+            padding: 40px 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .main-card {
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.35);
+            padding: 50px;
+            margin-bottom: 30px;
+        }
+        .agent-icon {
+            font-size: 6em;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .agent-title {
+            color: var(--primary);
+            font-size: 3.5em;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.1);
+        }
+        .section-card {
+            background: linear-gradient(145deg, #f8f9fa, #ffffff);
+            border-left: 6px solid var(--primary);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 25px 0;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .section-card h3 {
+            color: var(--primary);
+            font-weight: bold;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 15px 0;
+            border-bottom: 2px solid #e9ecef;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+        }
+        .feature-list li:before {
+            content: "✓";
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.8em;
+            margin-right: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .status-dot {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-right: 12px;
+            animation: pulse-dot 2s infinite;
+        }
+        .status-online { background: #10b981; }
+        .status-offline { background: #ef4444; }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            color: white;
+            padding: 18px 45px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        .btn-primary-custom:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.5);
+            color: white;
+        }
+        .info-badge {
+            background: var(--primary);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            font-weight: bold;
+            margin: 8px 5px;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .api-endpoint {
+            background: #2d3748;
+            color: #48bb78;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            border-left: 4px solid #48bb78;
+        }
+        
+        /* ===== OpenAI Key Panel Styles ===== */
+        .api-key-card {
+            background: linear-gradient(145deg, #fef3c7, #fde68a);
+            border-left: 6px solid #f59e0b;
+        }
+        .api-key-card .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5em;
+        }
+        .api-key-card .badge {
+            padding: 8px 16px;
+            font-size: 0.9em;
+        }
+        .api-key-card .badge[data-status="active"] {
+            background: #10b981;
+            color: white;
+        }
+        .api-key-card .badge[data-status="paused"] {
+            background: #f59e0b;
+            color: white;
+        }
+        .api-key-card .badge[data-status="none"] {
+            background: #6b7280;
+            color: white;
+        }
+        .settings-grid {
+            display: grid;
+            gap: 20px;
+        }
+        .field label {
+            font-weight: 600;
+            color: #374151;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .field input, .field textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        .field input:focus, .field textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .field small {
+            display: block;
+            margin-top: 6px;
+            color: #6b7280;
+        }
+        .btn-icon {
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 8px;
+        }
+        .settings-footer {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #e5e7eb;
+        }
+        .mono {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #6b7280;
+        }
+    </style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/></head>
+<body data-agent-id="opena19" data-agent-slug="opena19">
+<div class="container">
+<div class="main-card text-center">
+<div class="agent-icon">🤖</div>
+<h1 class="agent-title">Stocks &amp; Crypto</h1>
+<p class="lead text-muted fs-4">opena19 ist der Stocks &amp; Crypto Agent - Marktdaten, Portfolio &amp; Alerts für Aktien und Kryptowährungen.</p>
+<div class="mt-4">
+<span class="status-dot status-offline" id="statusDot"></span>
+<span class="fw-bold fs-5" id="statusText">Status wird geprüft...</span>
+</div>
+</div>
+<div class="main-card">
+<section class="section-card api-key-card">
+<div class="card-header">
+<div class="card-title">
+<span class="icon">🔑</span>
+<span>OpenAI API Key</span>
+</div>
+<span class="badge" data-status="none" id="openaiKeyStatusBadge">kein Key gesetzt</span>
+</div>
+<p class="card-subtitle mb-4">
+                    Dieser Key wird ausschließlich lokal im Browser (localStorage) gespeichert und für OpenAI-Aufrufe dieses Agents verwendet.
+                </p>
+<div class="settings-grid">
+<div class="field">
+<label for="openaiKeyInput">API Key</label>
+<div style="display:flex; gap:6px; align-items:center;">
+<input autocomplete="off" id="openaiKeyInput" placeholder="sk-..." type="password"/>
+<button class="btn btn-icon" id="openaiKeyToggleVisibility" title="Anzeigen/Verbergen" type="button">
+                                👁
+                            </button>
+</div>
+<small>Key wird nicht geloggt, nicht an den Server gesendet und bleibt nur in diesem Browser gespeichert.</small>
+</div>
+<div class="field">
+<label> </label>
+<div style="display:flex; flex-wrap:wrap; gap:6px;">
+<button class="btn btn-primary-custom" id="openaiKeySaveBtn" style="padding:12px 30px; font-size:1em;" type="button">Speichern / Aktualisieren</button>
+<button class="btn btn-secondary" id="openaiKeyTogglePauseBtn" style="padding:12px 30px;" type="button">Pausieren</button>
+<button class="btn btn-danger" id="openaiKeyDeleteBtn" style="padding:12px 30px;" type="button">Löschen</button>
+</div>
+</div>
+</div>
+<div class="settings-footer">
+<span class="mono" id="openaiKeyInfo"></span>
+</div>
+</section>
+</div>
+<div class="row">
+<div class="col-lg-6">
+<div class="main-card">
+<div class="section-card">
+<h3>📋 Agent-Details</h3>
+<table class="table table-borderless fs-5">
+<tr>
+<td class="fw-bold">Agent-ID:</td>
+<td><code class="fs-5">opena19</code></td>
+</tr>
+<tr>
+<td class="fw-bold">Kürzel:</td>
+<td><code class="fs-5">stockcryptop</code></td>
+</tr>
+<tr>
+<td class="fw-bold">Port:</td>
+<td><code class="fs-5">12365</code></td>
+</tr>
+<tr>
+<td class="fw-bold">UI-Profile:</td>
+<td><code class="fs-6">email_agent</code></td>
+</tr>
+<tr>
+<td class="fw-bold">Health-URL:</td>
+<td><code class="fs-6">http://127.0.0.1:12365/health</code></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="col-lg-6">
+<div class="main-card">
+<div class="section-card">
+<h3>⚡ Kernfunktionen</h3>
+<ul class="feature-list">
+<li>Stocks &amp; Crypto Agent</li>
+<li>RUNNING (PID: 1819135)</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- ===== EMAIL AGENT UI ===== -->
+<div class="main-card">
+<div class="section-card" style="border-left: 6px solid #d32f2f;">
+<h3 style="color: #d32f2f;">📧 IMAP/SMTP Status</h3>
+<div class="row g-3">
+<div class="col-md-6">
+<div class="p-3 bg-light rounded">
+<div class="text-muted small">IMAP Status</div>
+<div class="fw-bold fs-5" id="imapStatusValue">–</div>
+</div>
+</div>
+<div class="col-md-6">
+<div class="p-3 bg-light rounded">
+<div class="text-muted small">SMTP Status</div>
+<div class="fw-bold fs-5" id="smtpStatusValue">–</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="main-card">
+<div class="section-card" style="border-left: 6px solid #d32f2f;">
+<h3 style="color: #d32f2f;">📬 Inbox</h3>
+<div class="list-group" id="inboxList">
+<div class="text-muted text-center py-4">Lädt E-Mails...</div>
+</div>
+</div>
+</div>
+<div class="main-card">
+<div class="section-card" style="border-left: 6px solid #d32f2f;">
+<h3 style="color: #d32f2f;">✉️ Neue E-Mail senden</h3>
+<div class="row g-3">
+<div class="col-md-6">
+<label class="form-label fw-bold" for="inputEmailTo">An</label>
+<input class="form-control" id="inputEmailTo" placeholder="empfaenger@example.com" type="email"/>
+</div>
+<div class="col-md-6">
+<label class="form-label fw-bold" for="inputEmailSubject">Betreff</label>
+<input class="form-control" id="inputEmailSubject" placeholder="Betreff" type="text"/>
+</div>
+<div class="col-12">
+<label class="form-label fw-bold" for="inputEmailBody">Nachricht</label>
+<textarea class="form-control" id="inputEmailBody" placeholder="E-Mail-Text..." rows="5"></textarea>
+</div>
+<div class="col-12">
+<button class="btn btn-primary btn-lg w-100" id="btnSendEmail" type="button">
+                    📤 E-Mail senden
+                </button>
+</div>
+</div>
+</div>
+</div>
+<script>
+(function() {
+    const agentPort = "12365";
+    const endpoints = {
+        inbox: "/inbox",
+        outbox: "/outbox",
+    };
+
+    async function loadInbox() {
+        try {
+            const resp = await fetch(`http://127.0.0.1:${agentPort}${endpoints.inbox}`);
+            if (resp.ok) {
+                const data = await resp.json();
+                const list = document.getElementById("inboxList");
+                if (data.mails && data.mails.length > 0) {
+                    list.innerHTML = data.mails.map(m => `
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <strong>${m.subject || '(Kein Betreff)'}</strong>
+                                <small class="text-muted">${m.from || 'Unbekannt'}</small>
+                            </div>
+                            <small>${m.date || ''}</small>
+                        </div>
+                    `).join("");
+                } else {
+                    list.innerHTML = '<div class="text-muted text-center py-4">Keine E-Mails gefunden</div>';
+                }
+            }
+        } catch (e) {
+            console.warn("Inbox laden fehlgeschlagen", e);
+        }
+    }
+
+    document.getElementById("btnSendEmail")?.addEventListener("click", function() {
+        const to = document.getElementById("inputEmailTo").value.trim();
+        const subject = document.getElementById("inputEmailSubject").value.trim();
+        const body = document.getElementById("inputEmailBody").value.trim();
+
+        if (!to || !subject || !body) {
+            alert("❌ Bitte alle Felder ausfüllen");
+            return;
+        }
+
+        window.withOpenAIKey && window.withOpenAIKey(async function(apiKey) {
+            try {
+                const resp = await fetch(`http://127.0.0.1:${agentPort}${endpoints.outbox}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({ to, subject, body })
+                });
+
+                if (resp.ok) {
+                    alert("✅ E-Mail gesendet!");
+                    document.getElementById("inputEmailBody").value = "";
+                } else {
+                    alert(`❌ Fehler: HTTP ${resp.status}`);
+                }
+            } catch (e) {
+                alert(`❌ Fehler: ${e.message}`);
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", loadInbox);
+})();
+</script>
+<div class="text-center mt-5">
+<a class="btn btn-secondary btn-lg px-5 py-3" href="http://127.0.0.1:12349/">
+                ← Zurück zum Haupt-Dashboard
+            </a>
+</div>
+</div>
+<script>
+    (function () {
+        "use strict";
+
+        // ===== OpenAI API Key – State & Storage =====
+        const agentSlug = document.body.dataset.agentSlug || "unknown";
+        const KEY_STORAGE_KEY = `opena_${agentSlug}_openai_api_key`;
+        const STATUS_STORAGE_KEY = `opena_${agentSlug}_openai_api_key_status`;
+
+        const elsOpenAI = {
+            input: document.getElementById("openaiKeyInput"),
+            toggleVisibility: document.getElementById("openaiKeyToggleVisibility"),
+            saveBtn: document.getElementById("openaiKeySaveBtn"),
+            togglePauseBtn: document.getElementById("openaiKeyTogglePauseBtn"),
+            deleteBtn: document.getElementById("openaiKeyDeleteBtn"),
+            statusBadge: document.getElementById("openaiKeyStatusBadge"),
+            info: document.getElementById("openaiKeyInfo"),
+        };
+
+        function loadOpenAIState() {
+            let key = null;
+            let status = "none";
+            try {
+                key = window.localStorage.getItem(KEY_STORAGE_KEY);
+                status = window.localStorage.getItem(STATUS_STORAGE_KEY) || "none";
+            } catch (e) {
+                // localStorage disabled
+            }
+            if (!key) {
+                status = "none";
+            }
+            return { key, status };
+        }
+
+        function saveOpenAIState(key, status) {
+            try {
+                if (key) {
+                    window.localStorage.setItem(KEY_STORAGE_KEY, key);
+                    window.localStorage.setItem(STATUS_STORAGE_KEY, status || "active");
+                } else {
+                    window.localStorage.removeItem(KEY_STORAGE_KEY);
+                    window.localStorage.removeItem(STATUS_STORAGE_KEY);
+                }
+            } catch (e) {
+                console.warn("localStorage not available for OpenAI key", e);
+            }
+        }
+
+        function updateOpenAIUI() {
+            const { key, status } = loadOpenAIState();
+            if (!elsOpenAI.statusBadge) return;
+
+            let label = "kein Key gesetzt";
+            if (status === "active" && key) {
+                label = "aktiv";
+            } else if (status === "paused" && key) {
+                label = "pausiert";
+            }
+
+            elsOpenAI.statusBadge.textContent = label;
+            elsOpenAI.statusBadge.dataset.status = status;
+
+            if (elsOpenAI.input) {
+                elsOpenAI.input.value = key ? "••••••••••" : "";
+            }
+
+            if (elsOpenAI.togglePauseBtn) {
+                elsOpenAI.togglePauseBtn.textContent = (status === "paused" ? "Fortsetzen" : "Pausieren");
+            }
+
+            if (elsOpenAI.info) {
+                const ts = new Date().toLocaleTimeString();
+                elsOpenAI.info.textContent = `Status: ${label} · Agent: ${agentSlug} · ${ts}`;
+            }
+        }
+
+        function attachOpenAIEvents() {
+            if (!elsOpenAI.input) return; // Panel existiert nicht
+
+            elsOpenAI.toggleVisibility.addEventListener("click", function () {
+                const currentType = elsOpenAI.input.type;
+                elsOpenAI.input.type = currentType === "password" ? "text" : "password";
+            });
+
+            elsOpenAI.saveBtn.addEventListener("click", function () {
+                const raw = elsOpenAI.input.value.trim();
+                if (!raw || raw === "••••••••••") {
+                    elsOpenAI.info.textContent = "Kein Key eingegeben oder Key bereits gespeichert.";
+                    return;
+                }
+                saveOpenAIState(raw, "active");
+                updateOpenAIUI();
+                elsOpenAI.info.textContent = "✅ Key gespeichert!";
+            });
+
+            elsOpenAI.togglePauseBtn.addEventListener("click", function () {
+                const current = loadOpenAIState();
+                if (!current.key) {
+                    elsOpenAI.info.textContent = "Kein Key vorhanden – nichts zu pausieren.";
+                    return;
+                }
+                const newStatus = current.status === "paused" ? "active" : "paused";
+                saveOpenAIState(current.key, newStatus);
+                updateOpenAIUI();
+            });
+
+            elsOpenAI.deleteBtn.addEventListener("click", function () {
+                if (confirm("OpenAI API Key wirklich löschen?")) {
+                    saveOpenAIState(null, "none");
+                    if (elsOpenAI.input) elsOpenAI.input.value = "";
+                    updateOpenAIUI();
+                    elsOpenAI.info.textContent = "🗑️ Key gelöscht";
+                }
+            });
+        }
+
+        // Helper, den du überall für OpenAI-Aufrufe verwendest
+        window.withOpenAIKey = function (fnIfAvailable) {
+            const { key, status } = loadOpenAIState();
+            if (!key) {
+                alert("Kein OpenAI API Key gesetzt. Bitte im OpenAI-Panel hinterlegen.");
+                return;
+            }
+            if (status === "paused") {
+                alert("OpenAI API Key ist pausiert. Bitte im Panel fortsetzen.");
+                return;
+            }
+            return fnIfAvailable(key);
+        };
+
+        // ===== Health Check =====
+        async function checkHealth() {
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            const output = document.getElementById('healthOutput');
+            
+            if (!output) return; // Generic partial might not have healthOutput
+            
+            statusText.textContent = 'Prüfe Status...';
+            output.className = 'alert alert-warning fs-5';
+            output.textContent = 'Verbinde mit Agent...';
+            
+            try {
+                const response = await fetch('http://127.0.0.1:12365/health');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    statusDot.className = 'status-dot status-online';
+                    statusText.textContent = '✅ Online & Erreichbar';
+                    output.className = 'alert alert-success fs-5';
+                    output.innerHTML = '<h5 class="mb-3">✅ Agent antwortet!</h5><pre class="bg-dark text-light p-3 rounded">' + 
+                                      JSON.stringify(data, null, 2) + '</pre>';
+                } else {
+                    throw new Error('HTTP ' + response.status);
+                }
+            } catch (error) {
+                statusDot.className = 'status-dot status-offline';
+                statusText.textContent = '❌ Offline / Nicht erreichbar';
+                output.className = 'alert alert-danger fs-5';
+                output.innerHTML = '<h5>❌ Agent antwortet nicht</h5><p class="mb-0">Fehler: ' + error.message + '</p>' +
+                                  '<p class="mt-3 mb-0"><small>Stelle sicher dass der Agent läuft: <code>./bin/start_opena19.sh</code></small></p>';
+            }
+        }
+        
+        window.checkHealth = checkHealth;
+
+        document.addEventListener("DOMContentLoaded", function () {
+            attachOpenAIEvents();
+            updateOpenAIUI();
+            checkHealth();
+        });
+    })();
+    </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

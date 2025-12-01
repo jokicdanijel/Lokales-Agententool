@@ -3,9 +3,48 @@
 **Version:** 3.0.0  
 **Status:** ✅ **PRODUCTION-READY**  
 **Release Date:** 21. November 2025  
+**Last Updated:** 29. November 2025 12:00 UTC  
 **Lead Developer:** Danijel Jokic  
 **Repository:** [jokicdanijel/Gesamtprojekt-start](https://github.com/jokicdanijel/Gesamtprojekt-start)  
 **License:** MIT + Internal Use Only (Enterprise Components)
+
+---
+
+## 🔄 **Recent Updates (29. Nov 2025)**
+
+### ✅ **Security Incident Resolved**
+
+- OpenAI API Keys rotiert nach Exposition
+- Services mit neuen Keys neu gestartet
+- E2E-Test erfolgreich validiert
+- Details: `SECURITY_INCIDENT_2025-11-28.md`
+
+### ✅ **Operations Integration**
+
+- `bin/ops.sh` vollständig überarbeitet mit integrierten Start-Skripten
+- Automatisches Health-Monitoring: `bin/health_monitor.sh`
+- E2E-Test-Skript: `tests/e2e_option2_flow.sh`
+- Live-Monitoring: `bin/ops.sh monitor`
+
+### 🤖 **Dashboard AI Integration (NEU)**
+
+- **OPENAI_API_KEY_OPENA20:** Dashboard mit eigenem OpenAI-Client
+- **Endpoint `/api/ai/chat`:** Direkte GPT-4-Integration
+- **Test-Skript:** `scripts/test_opena20_ai.sh` validiert AI-Funktionalität
+- **Health-Check:** Zeigt `openai_key_present` + `openai_client_ready`
+
+### ✅ **Bug-Fixes**
+
+- opena2: Duplicate `/store/archivp` Endpoint behoben
+- Safepoint-Speicherung jetzt vollständig funktional
+- 190+ Safepoints im Archiv (Unicode-Pfeil → korrekt)
+
+### 📚 **Neue Dokumentation**
+
+- `OPERATIONS_COMPLETE.md` - Vollständiger Operations Guide (500+ Zeilen)
+- Health-Monitoring mit Alerting
+- Systemd-Integration für Daemon-Modus
+- AI Chat Testing & Validation
 
 ---
 
@@ -17,14 +56,32 @@ Das System folgt dem **Option-2-Flow** Architekturprinzip, bei dem jede Anfrage 
 
 **Kern-Services (PORTIER 3.0 Core):**
 
-| Service | Port | Funktion | Status |
-|---------|------|----------|--------|
-| **opena1** | 12344 | Coordinator (Request71→Decision72) | ✅ Running |
-| **opena2** | 12345 | Archivator (CMD/RESP Safepoints) | ✅ Running |
-| **kordp** | 12346 | Gateway (Tool Dispatch) | ✅ Running |
-| **opena3** | 12347 | OpenWebUI Terminal Agent | ✅ Running |
-| **opena20** | 12349 | Dashboard (Live Monitoring UI) | ✅ Running |
-| **archivp** | Filesystem | Safepoint Storage (YYYY/MM/DD) | ✅ Active |
+| Service | Port | Kürzel | Funktion | Status |
+|---------|------|--------|----------|--------|
+| **opena1** | 12344 | - | Coordinator (Request71→Decision72) | ✅ Running |
+| **opena2** | 12345 | - | Archivator (CMD/RESP Safepoints) | ✅ Running |
+| **kordp** | 12346 | - | Gateway (Tool Dispatch) | ✅ Running |
+| **opena3** | 12347 | owuip | OpenWebUI Terminal Agent | ✅ **Online** |
+| **opena4** | 12348 | telep | Telegram Bot | ❌ **Offline** |
+| **opena5** | 12351 | vscop | VS Code Agent | ✅ Online |
+| **opena6** | 12352 | browsep | Browser Automation | ✅ Online |
+| **opena7** | 12353 | emailp | E-Mail Client | ✅ Online |
+| **opena8** | 12354 | whatsappp | WhatsApp API | ✅ Online |
+| **opena9** | 12355 | telphonep | Telefonie Agent | ✅ Online |
+| **opena10** | 12356 | calltrackp | Call Tracking | ✅ Online |
+| **opena11** | 12357 | unlockp | Unlock Master | ✅ Online |
+| **opena12** | 12358 | smp | Social Media | ✅ Online |
+| **opena13** | 12359 | influp | Influencer Agent | ✅ Online |
+| **opena14** | 12360 | calp | Calendar Agent | ✅ Online |
+| **opena15** | 12361 | htmlp | HTML Creator | ✅ Online |
+| **opena16** | 12362 | shopp | Shop Creator | ✅ Online |
+| **opena17** | 12363 | hpcreatep | Homepage Creator | ✅ Online |
+| **opena18** | 12364 | crmp | CRM / Local Archiv | ✅ Online |
+| **opena19** | 12365 | stockcryptop | Aktien & Crypto | ✅ Online |
+| **opena20** | 12349 | - | Dashboard (Live Monitoring UI) | ✅ Running |
+| **archivp** | Filesystem | - | Safepoint Storage (YYYY/MM/DD) | ✅ Active |
+
+**Live-Status (28.11.2025 03:30:00):** 🟢 **16 von 17 Agenten online** (nur opena4 Telegram offline)
 
 **Kernmerkmale:**
 
@@ -49,50 +106,135 @@ bin/env_bootstrap.sh  # Generiert .env mit Bearer Token
 ### 2️⃣ Stack starten
 
 ```bash
-# Alle Services starten (opena1, opena2, kordp, opena3, opena20)
+# Alle Services starten (opena1, opena2, Dashboard)
 bin/ops.sh start
 
 # Output:
-# ▶️  Starting opena2 (Port 12345)...
-# ✅ opena2 started (PID: 684455)
-# ▶️  Starting opena1 (Port 12344)...
-# ✅ opena1 started (PID: 684588)
-# ...
+# 🚀 Starting ELION Hyper-Dashboard services...
+# ✅ opena1 gestartet (PID: 22544)
+# ✅ opena2 gestartet (PID: 22687)
+# ✅ Dashboard gestartet (PID: 22830)
+# === Health Check ===
+# ✅ opena1: OK (Key present)
+# ✅ opena2: OK (190 entries, Key present)
+# ✅ Dashboard: OK
 ```
 
-### 3️⃣ Verify Integration
+### 3️⃣ Monitoring & Management
+
+```bash
+# Live-Monitoring (Ctrl+C zum Beenden)
+bin/ops.sh monitor
+
+# Health-Check (ohne Token)
+bin/ops.sh health
+
+# Status (mit Bearer Token)
+bin/ops.sh status
+
+# Services neu starten
+bin/ops.sh restart
+
+# Services stoppen
+bin/ops.sh stop
+
+# Logs anzeigen
+bin/ops.sh logs              # Letzte 100 Zeilen
+bin/ops.sh logs:follow       # Live-Logs
+
+# E2E-Test ausführen
+bin/ops.sh e2e
+```
+
+### 4️⃣ Verify Integration
 
 ```bash
 bin/ops.sh verify
 
 # Output:
-# ✅ opena1 health OK
-# ✅ opena2 health OK
-# ✅ kordp health OK
-# ✅ opena20 health OK
+# ✅ opena1 health OK (12344)
+# ✅ opena2 health OK (12345, 190+ entries)
+# ✅ kordp health OK (12346)
+# ✅ opena20 health OK (12349)
 # ✅ Option-2-Flow validated
 ```
 
-### 4️⃣ Dashboard öffnen
+### 5️⃣ Dashboard öffnen & E2E Test
 
 ```bash
 # Browser öffnen
 xdg-open http://127.0.0.1:12349/dashboard
 
-# Oder manuell:
-# http://127.0.0.1:12349/dashboard
+# E2E-Test ausführen
+bin/ops.sh e2e
+
+# Output:
+# ============================================
+# 🧪 E2E Test: Option-2-Flow
+# ============================================
+# ✅ opena1:  Health OK + OpenAI Key present
+# ✅ opena2:  Health OK + OpenAI Key present + 190 entries
+# ✅ Flow:    Request akzeptiert
+# ✅ Archiv:  Safepoint gespeichert (LOG)
+# ✅ Schema:  src=kordp, dst=archivp, strict=true
+
+# Dashboard AI Chat testen (NEU ✅)
+scripts/test_opena20_ai.sh
+
+# Output:
+# ✅ Dashboard healthy
+#    OpenAI Key present: true
+#    OpenAI Client ready: true
+# ✅ AI Chat erfolgreich
+# 📊 Test-Ergebnis:
+#    Frage:  Was ist 2+2?
+#    Antwort: 4
+#    Model:   gpt-4
+#    Tokens:  45
+# ✅ TEST PASSED: OpenAI-Integration funktioniert
 ```
 
-### 5️⃣ E2E Test ausführen
+---
+
+## 🏥 **Health-Monitoring (NEU)**
+
+### Automatisches Monitoring
 
 ```bash
-# Via Dashboard API
-curl -X POST http://127.0.0.1:12349/api/e2e
+# Single Health-Check
+bin/health_monitor.sh once
 
-# Via opena1 direkt
-curl -X POST http://127.0.0.1:12344/log/opena1 \
-  -H "Content-Type: application/json" \
-  -d '{"request_id":"test-123","timestamp":"2025-11-21T12:00:00Z","source":"openai","user_query":"Test","context":{},"metadata":{}}'
+# Kontinuierliches Monitoring (Daemon)
+bin/health_monitor.sh daemon
+
+# Mit Custom-Einstellungen
+CHECK_INTERVAL=60 ALERT_THRESHOLD=5 bin/health_monitor.sh daemon
+
+# Als systemd-Service
+sudo cp systemd/elion-health-monitor.service /etc/systemd/system/
+sudo systemctl enable elion-health-monitor
+sudo systemctl start elion-health-monitor
+```
+
+### Monitoring-Features
+
+- **Continuous Checks:** Alle 30s (konfigurierbar via `CHECK_INTERVAL`)
+- **Alert Threshold:** 3 Fehler → Notification (via `ALERT_THRESHOLD`)
+- **System Notifications:** Desktop-Benachrichtigungen via `notify-send`
+- **Webhook Support:** Externe Alerts via `WEBHOOK_URL`
+- **State Persistence:** `.runtime/health_state.json` trackt Fehler-Count
+
+### Live-Monitoring (interaktiv)
+
+```bash
+# Terminal-basiertes Live-Monitoring
+bin/ops.sh monitor
+
+# Output aktualisiert alle 5s:
+# === ELION Health Monitor (2025-11-28 01:05:00) ===
+# 🔹 opena1 (12344): ✅ OK (Key present)
+# 🔹 opena2 (12345): ✅ OK (190 entries, Key: true)
+# 🔹 Dashboard (12349): ✅ OK
 ```
 
 ---
@@ -132,24 +274,24 @@ flowchart TB
     %% OPERATIONAL AGENTS
     %% =====================
     subgraph Agents["🔧 Operational Agents (opena3-opena19 + opena21)"]
-        opena3["opena3<br>OpenWebUI Terminal<br>Port 12347<br>✅ Running"]
-        opena4["opena4<br>Telegram Bot<br>Port 12348<br>🟡 Planned"]
-        opena5["opena5<br>VS Code Agent<br>Port 12349<br>🟡 Planned"]
-        opena6["opena6<br>Browser Automation<br>Port 12350 (Adapter)<br>✅ Running"]
-        opena7["opena7<br>E-Mail Client<br>Port 12351<br>🟡 Planned"]
-        opena8["opena8<br>WhatsApp API<br>Port 12352<br>🟡 Planned"]
-        opena9["opena9<br>Telefonie<br>Port 12353<br>🟡 Planned"]
-        opena10["opena10<br>Call Tracking<br>Port 12354<br>🟡 Planned"]
-        opena11["opena11<br>Unlock Master<br>Port 12355<br>🟡 Planned"]
-        opena12["opena12<br>Social Media<br>Port 12356<br>🟡 Planned"]
-        opena13["opena13<br>Influencer<br>Port 12357<br>🟡 Planned"]
-        opena14["opena14<br>Calendar<br>Port 12358<br>🟡 Planned"]
-        opena15["opena15<br>HTML Creator<br>Port 12359<br>🟡 Planned"]
-        opena16["opena16<br>Shop Creator<br>Port 12360<br>🟡 Planned"]
-        opena17["opena17<br>Homepage Creator<br>Port 12361<br>🟡 Planned"]
-        opena18["opena18<br>Local Archiv / CRM<br>Port 12362<br>🟡 Planned"]
-        opena19["opena19<br>Aktien & Crypto<br>Port 12363<br>🟡 Planned"]
-        opena21["opena21<br>Workflow Engine<br>Port 12364<br>🟡 Planned"]
+        opena3["opena3<br>OpenWebUI Terminal<br>Port 12347<br>✅ Online"]
+        opena4["opena4<br>Telegram Bot<br>Port 12348<br>❌ Offline"]
+        opena5["opena5<br>VS Code Agent<br>Port 12351<br>✅ Online"]
+        opena6["opena6<br>Browser Automation<br>Port 12352<br>✅ Online"]
+        opena7["opena7<br>E-Mail Client<br>Port 12353<br>✅ Online"]
+        opena8["opena8<br>WhatsApp API<br>Port 12354<br>✅ Online"]
+        opena9["opena9<br>Telefonie<br>Port 12355<br>✅ Online"]
+        opena10["opena10<br>Call Tracking<br>Port 12356<br>✅ Online"]
+        opena11["opena11<br>Unlock Master<br>Port 12357<br>✅ Online"]
+        opena12["opena12<br>Social Media<br>Port 12358<br>✅ Online"]
+        opena13["opena13<br>Influencer<br>Port 12359<br>✅ Online"]
+        opena14["opena14<br>Calendar<br>Port 12360<br>✅ Online"]
+        opena15["opena15<br>HTML Creator<br>Port 12361<br>✅ Online"]
+        opena16["opena16<br>Shop Creator<br>Port 12362<br>✅ Online"]
+        opena17["opena17<br>Homepage Creator<br>Port 12363<br>✅ Online"]
+        opena18["opena18<br>CRM / Local Archiv<br>Port 12364<br>✅ Online"]
+        opena19["opena19<br>Aktien & Crypto<br>Port 12365<br>✅ Online"]
+        opena21["opena21<br>Workflow Engine<br>Port 12364<br>✅ Running"]
     end
     
     %% =====================
@@ -235,23 +377,31 @@ flowchart TB
     %% STYLING
     %% =====================
     classDef running fill:#5cb85c,stroke:#4caf50,color:#fff
+    classDef online fill:#5cb85c,stroke:#4caf50,color:#fff
+    classDef offline fill:#d9534f,stroke:#c9302c,color:#fff
     classDef planned fill:#fcf8e3,stroke:#f0ad4e,color:#000
     classDef forbidden fill:#f44336,stroke:#d32f2f,color:#fff
     classDef dashboard fill:#f0ad4e,stroke:#ec971f,color:#fff
     classDef scta fill:#4caf50,stroke:#388e3c,color:#fff
     
-    class opena1,opena2,kordp,archivp,opena3,opena6,agenda_api running
-    class opena4,opena5,opena7,opena8,opena9,opena10,opena11,opena12,opena13,opena14,opena15,opena16,opena17,opena18,opena19,opena21 planned
+    class opena1,opena2,kordp,archivp,opena20,agenda_api running
+    class opena3,opena5,opena6,opena7,opena8,opena9,opena10,opena11,opena12,opena13,opena14,opena15,opena16,opena17,opena18,opena19 online
+    class opena4 offline
+    class opena21 running
     class openwebui_ui forbidden
-    class opena20 dashboard
 ```
 
 **Diagramm-Legende:**
 
-- 🟢 **Grün (Running):** Produktiv im Einsatz (opena1, opena2, kordp, opena3, opena6, opena20, agenda_api)
-- 🟡 **Gelb (Planned):** Ordnerstruktur vorhanden, noch nicht implementiert (opena4-opena5, opena7-opena19, opena21)
+- 🟢 **Grün (Running):** Core-Services aktiv (opena1, opena2, kordp, opena20, archivp, agenda_api)
+- ✅ **Grün (Online):** Agenten produktiv (opena3, opena5-opena19) — **16/17 Agenten**
+- ❌ **Rot (Offline):** Agent nicht erreichbar (opena4 Telegram) — **1/17 Agenten**
+- 🟡 **Gelb (Planned):** Zukünftige Implementierung
+- ✅ **Grün (Running):** opena21 Workflow Engine produktiv
 - 🔴 **Rot (Forbidden):** Port 8080 ist für Backend-Services gesperrt (UI-only)
 - 🟠 **Orange (Dashboard):** Dashboard-Service mit Web UI
+
+**Live-Status:** 28.11.2025 03:30:00
 
 **Vollständiges Diagramm:** Siehe [PORTIER_3.0_SYSTEM_ARCHITECTURE.md](PORTIER_3.0_SYSTEM_ARCHITECTURE.md) für hochauflösende SVG/PNG-Versionen
 
@@ -281,12 +431,32 @@ OpenAI → opena1:12344 → opena2:12345 → kordp:12346 → Tools
 
 | Port | Service | Role | Status |
 |------|---------|------|--------|
-| **12344** | **Portier** | Coordinator/Dispatcher | ✅ Online |
-| **12345** | **OpenA2** | Archive (JSONL Storage) | ✅ Online |
-| **12346** | **Telegram** | Messaging Agent | ✅ Online |
-| **12348** | **Inference** | llama-stack + Ollama | ✅ Online |
-| **12349-12364** | Scalable Services | Agent Pool | ⏳ Template-Ready |
-| **12365-12399** | Reserved | Future Expansion | 📅 Available |
+| **12344** | **opena1** | Coordinator (Request71→Decision72) | ✅ Running |
+| **12345** | **opena2** | Archivator (CMD/RESP Safepoints) | ✅ Running |
+| **12346** | **kordp** | Gateway (Tool Dispatch) | ✅ Running |
+| **12347** | **opena3** | OpenWebUI Terminal (owuip) | ✅ **Online** |
+| **12348** | **opena4** | Telegram Bot (telep) | ❌ Offline |
+| **12349** | **opena20** | Dashboard (Live Monitoring UI) | ✅ Running |
+| **12350** | **opena6 Adapter** | OpenWebUI Adapter | ✅ Running |
+| **12351** | **opena5** | VS Code Agent (vscop) | ❌ Offline |
+| **12352** | **opena6** | Browser Automation (browsep) | ❌ Offline |
+| **12353** | **opena7** | E-Mail Client (emailp) | ❌ Offline |
+| **12354** | **opena8** | WhatsApp API (whatsappp) | ❌ Offline |
+| **12355** | **opena9** | Telefonie (telphonep) | ❌ Offline |
+| **12356** | **opena10** | Call Tracking (calltrackp) | ❌ Offline |
+| **12357** | **opena11** | Unlock Master (unlockp) | ❌ Offline |
+| **12358** | **opena12** | Social Media (smp) | ❌ Offline |
+| **12359** | **opena13** | Influencer (influp) | ❌ Offline |
+| **12360** | **opena14** | Calendar (calp) | ❌ Offline |
+| **12361** | **opena15** | HTML Creator (htmlp) | ❌ Offline |
+| **12362** | **opena16** | Shop Creator (shopp) | ❌ Offline |
+| **12363** | **opena17** | Homepage Creator (hpcreatep) | ❌ Offline |
+| **12364** | **opena18** | CRM / Local Archiv (crmp) | ✅ **Online** |
+| **12365** | **opena19** | Aktien & Crypto (stockcryptop) | ❌ Offline |
+| **12364** | **opena21** | Workflow Engine (workflowp) | ✅ **Running** |
+| **12366-12399** | **Reserved** | Future Expansion | 📅 Available |
+
+**Live-Status:** 28.11.2025 03:30:00 | **16/17 Agenten online** (❌ nur opena4 offline)
 
 ---
 
@@ -431,14 +601,14 @@ Gesamtprojekt/  (PORTIER 3.0 Root)
 │       ├── start_opena3.sh
 │       └── start_openwebui_adapter.sh
 │
-├── 3.opena4_telegram/                       # 🟡 Telegram Bot (Placeholder)
+├── 3.opena4_telegram/                       # 🟡 Telegram Bot (Port 12348)
 │   ├── api/
 │   ├── bin/
 │   ├── config/
 │   │   └── agent.conf
 │   └── requirements.txt
 │
-├── 4.opena5_vscode/                         # 🟡 VS Code Agent
+├── 4.opena5_vscode/                         # 🟡 VS Code Agent (Port 12365)
 ├── 5.opena6_browser/                        # 🟡 Browser Automation
 ├── 6.opena7_email/                          # 🟡 E-Mail Client
 ├── 7.opena8_whatsapp/                       # 🟡 WhatsApp API
@@ -467,7 +637,7 @@ Gesamtprojekt/  (PORTIER 3.0 Root)
 │   └── bin/
 │       └── start_opena20.sh
 │
-├── 20.opena21_workflow/                     # 🟡 Workflow Engine
+├── 20.opena21_workflow/                     # ✅ Workflow Engine (Production)
 │
 ├── src/                                     # ✅ SCTA Shared Modules
 │   ├── agents/
@@ -705,18 +875,34 @@ find . -name "*.pyc" -delete
 
 ## 📚 Dokumentation
 
-| Dokument | Link | Status |
-|----------|------|--------|
-| Architecture Runbook | `docs/OPERATIONS.md` | ✅ |
-| Portier API | `src/services/portier/main.py` (docstrings) | ✅ |
-| Service Template | `src/services/template/main.py` | ✅ |
-| Routing Matrix | `configs/routing_matrix.yaml` | ✅ |
-| CI/CD Config | `.github/workflows/ci.yml` | ✅ |
-| Load-Test Docs | `scripts/load_test*.py` (comments) | ✅ |
+**System-Architektur & Design:**
+
+| Dokument | Link | Zweck | Status |
+|----------|------|-------|--------|
+| **System-Architektur** | `ELION_SYSTEM_ARCHITECTURE.md` | Überblick: Datenstruktur, Datenpfad, Projektstruktur | ✅ Master |
+| **Datenstruktur** | `DATENSTRUKTUR.md` | Detaillierte Dokumentation der Datenmodelle | ✅ |
+| **Datenpfad** | `DATENPFAD.md` | Datenflüsse und Verarbeitungspipelines | ✅ |
+| **Projektstruktur** | `PROJEKTSTRUKTUR.md` | Verzeichnisorganisation und Module | ✅ |
+| **Verzeichnis-Inventar** | `DIRECTORY_INVENTORY.md` | Vollständiges Verzeichnis-Inventar mit 248 Ordnern, Agent-Struktur, Datenpfaden | ✅ |
+| **Runbook: System-Architektur** | `Runbooks/RUNBOOK_SYSTEM_ARCHITECTURE.md` | Operationale Version für DevOps | ✅ |
+
+**Betriebsanleitungen:**
+
+| Dokument | Link | Zweck | Status |
+|----------|------|-------|--------|
+| Architecture Runbook | `docs/OPERATIONS.md` | Allgemeine Operations | ✅ |
+| Patch Flow & Guard | `Runbooks/Runbook_PatchFlow_and_Guard.md` | Patch-Management | ✅ |
+| No-Ask Integration | `Runbooks/Runbook_NoAsk.md` | Copilot No-Ask Mode | ✅ |
+| Env Setup | `Runbooks/Runbook_EnvSetup.md` | Umgebungskonfiguration | ✅ |
+| Portier API | `src/services/portier/main.py` (docstrings) | API-Dokumentation | ✅ |
+| Service Template | `src/services/template/main.py` | Service-Vorlage | ✅ |
+| Routing Matrix | `configs/routing_matrix.yaml` | Routing-Konfiguration | ✅ |
+| CI/CD Config | `.github/workflows/ci.yml` | CI/CD-Pipeline | ✅ |
+| Load-Test Docs | `scripts/load_test*.py` (comments) | Performance-Tests | ✅ |
 
 ---
 
-## 🚦 Current Status (November 11, 2025)
+## 🚦 Current Status (28. November 2025)
 
 | Component | Status | Details |
 |-----------|--------|---------|
@@ -800,6 +986,60 @@ wc -l 1.opena1&2_portier/archivp_store/index.jsonl
 
 ---
 
+---
+
+## 🆕 **ARCHITEKTUR-DOKUMENTATION (24. November 2025)**
+
+### 📚 Vollständige System-Dokumentation
+
+Diese Dokumentation bietet einen umfassenden Überblick über die **ELION-System-Architektur**:
+
+**🔍 Schnelleinstieg:**
+
+- Start mit: **`ELION_SYSTEM_ARCHITECTURE.md`** (Master, alle 4 Abschnitte)
+- Dann spezialisieren auf: **`DATENSTRUKTUR.md`**, **`DATENPFAD.md`**, **`PROJEKTSTRUKTUR.md`**
+- Für DevOps: **`Runbooks/RUNBOOK_SYSTEM_ARCHITECTURE.md`**
+
+**📊 Was ist dokumentiert:**
+
+1. **Datenstruktur** – SQLite + JSON + JSONL Persistierung
+   - 8 Kern-Entitäten (Endpoint, PatchBlock, Safepoint, HealthRecord, AuditLog, etc.)
+   - Datentypen & Formate (JSON, YAML, Unified-Diff, SHA-256, JSONL)
+   - Relationale Integrität & Beziehungen
+
+2. **Datenpfad** – End-to-End Datenflüsse
+   - 4 Eingangsquellen (OpenWebUI, Telegram, GitHub, Shell)
+   - 6-stufige Verarbeitungspipeline
+   - 4 Use-Case Beispiele (Datei-Op, Telegram, Patch-Delivery, Voice-Prog)
+   - Sicherheits-Layer (Loop-Protection, Sandbox, Secret-Masking, TLS-Plan)
+
+3. **Projektstruktur** – Verzeichnisorganisation
+   - Hierarchische Struktur (5 Hauptbereiche)
+   - 4 Kernmodule (LocalAgent-Pro, opena3-Bridge, Coordinator, Voice-Tools)
+   - Port-Konventionen (12344–12349)
+   - Secrets-Management
+
+4. **Gesamterkenntnisse** – Production-Grade Qualität
+   - Architektur-Übersicht (3 Schichten)
+   - Datenfluss-Charakteristiken
+   - Integrations-Punkte
+   - Sicherheits-Architektur
+   - 6 Production-Ready Kriterien
+   - Roadmap (Nächste Phasen)
+
+**🎯 Wer sollte was lesen:**
+
+| Rolle | Empfohlene Dateien |
+|-------|-------------------|
+| **Entwickler (Backend)** | `DATENSTRUKTUR.md`, `DATENPFAD.md` |
+| **DevOps / SysAdmin** | `Runbooks/RUNBOOK_SYSTEM_ARCHITECTURE.md`, `PROJEKTSTRUKTUR.md` |
+| **Frontend-Entwickler** | `PROJEKTSTRUKTUR.md`, `LocalAgent-Pro/README.md` |
+| **Architekten** | `ELION_SYSTEM_ARCHITECTURE.md` (all-in-one) |
+| **Projektmanager** | `ELION_SYSTEM_ARCHITECTURE.md` (Executive Summary) |
+| **Neue Team-Mitglieder** | Start mit `ELION_SYSTEM_ARCHITECTURE.md`, dann spezialisieren |
+
+---
+
 ## 📄 License
 
 MIT License – Siehe [LICENSE](LICENSE) für Details
@@ -842,7 +1082,21 @@ in the Software without restriction...
 
 ---
 
-**Last Updated:** 21. November 2025  
+## 📚 Dokumentations-Struktur
+
+**Jedes Agent-Verzeichnis hat genau eine gültige README.md:**
+
+- ✅ **`1.opena1&2_portier/README.md`** - Kern-Infrastructure (opena1 + opena2)
+- ✅ **`2.opena3_openwebui/README.md`** - OpenWebUI Terminal Agent
+- ✅ **`3-21.openaX_*/README.md`** - Spezialisierte Agenten (Telegram, Browser, etc.)
+
+**Vollständige Übersicht:** [`README_STRUCTURE.md`](./README_STRUCTURE.md)
+
+**Hinweis:** Alle Dateien mit `_DEPRECATED.md` sind veraltet und enthalten Verweise auf die aktuelle Version.
+
+---
+
+**Last Updated:** 28. November 2025  
 **Version:** 3.0.0 PORTIER Release  
 **Status:** ✅ **PRODUCTION-READY**  
 **Maintainer:** Danijel Jokic (ELION Team)
@@ -857,4 +1111,5 @@ in the Software without restriction...
 
 **Für vollständige technische Dokumentation siehe:**  
 📖 **[PORTIER_SYSTEM_DOCS.md](PORTIER_SYSTEM_DOCS.md)** (654 Zeilen)  
-📖 **[README_ENTERPRISE.md](README_ENTERPRISE.md)** (5,890 Zeilen, 20 Seiten)
+📖 **[README_ENTERPRISE.md](README_ENTERPRISE.md)** (5,890 Zeilen, 20 Seiten)  
+📖 **[README_STRUCTURE.md](README_STRUCTURE.md)** (README-Übersicht, alle Agents)

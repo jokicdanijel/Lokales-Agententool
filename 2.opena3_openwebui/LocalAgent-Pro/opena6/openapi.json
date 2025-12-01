@@ -1,0 +1,437 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Browser Agent Tool Server",
+    "version": "1.0.0",
+    "description": "Local Browser Automation API for OpenWebUI Integration",
+    "contact": {
+      "name": "PORTIER 3.0 System",
+      "url": "http://192.168.0.70:8765"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://192.168.0.70:8765",
+      "description": "Production Tool Server"
+    },
+    {
+      "url": "http://localhost:8765",
+      "description": "Local Tool Server"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Tool Server Dashboard",
+        "description": "HTML Dashboard for monitoring and testing",
+        "operationId": "getDashboard",
+        "tags": ["Dashboard"],
+        "responses": {
+          "200": {
+            "description": "HTML Dashboard",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health Check",
+        "description": "Check if the tool server is running",
+        "operationId": "getHealth",
+        "tags": ["Health"],
+        "responses": {
+          "200": {
+            "description": "Server is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/status": {
+      "get": {
+        "summary": "Detailed Status",
+        "description": "Get detailed server status including uptime and metrics",
+        "operationId": "getStatus",
+        "tags": ["Status"],
+        "responses": {
+          "200": {
+            "description": "Detailed server status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/manifest": {
+      "get": {
+        "summary": "Tool Manifest",
+        "description": "Get the tool definition for OpenWebUI integration",
+        "operationId": "getManifest",
+        "tags": ["Tool Definition"],
+        "responses": {
+          "200": {
+            "description": "Tool function definition",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ToolManifest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/execute": {
+      "post": {
+        "summary": "Execute Browser Action",
+        "description": "Execute a browser automation action",
+        "operationId": "executeBrowserAction",
+        "tags": ["Browser Actions"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrowserAction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Action executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/call": {
+      "post": {
+        "summary": "Tool Call (OpenWebUI Compatible)",
+        "description": "Tool call endpoint compatible with OpenWebUI function calling",
+        "operationId": "callTool",
+        "tags": ["Tool Calling"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToolCall"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tool call executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HealthResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-11-24T23:37:04.301042"
+          },
+          "service": {
+            "type": "string",
+            "example": "Browser Agent Tool Server"
+          },
+          "version": {
+            "type": "string",
+            "example": "1.0.0"
+          }
+        },
+        "required": ["status", "timestamp", "service", "version"]
+      },
+      "StatusResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "operational"
+          },
+          "uptime": {
+            "type": "string",
+            "example": "00:05:12"
+          },
+          "calls_total": {
+            "type": "integer",
+            "example": 42
+          },
+          "last_call": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ToolManifest": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["function"],
+            "example": "function"
+          },
+          "function": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "browser_agent"
+              },
+              "description": {
+                "type": "string",
+                "example": "Local Browser Automation"
+              },
+              "parameters": {
+                "$ref": "#/components/schemas/FunctionParameters"
+              }
+            }
+          }
+        }
+      },
+      "FunctionParameters": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["object"],
+            "example": "object"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "required": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["action", "url"]
+          }
+        }
+      },
+      "BrowserAction": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "open",
+              "click",
+              "type",
+              "extract_text",
+              "extract_html",
+              "query_selector",
+              "screenshot",
+              "scroll",
+              "wait_for"
+            ],
+            "description": "Browser action to execute"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com",
+            "description": "Target URL"
+          },
+          "selector": {
+            "type": "string",
+            "example": "button.submit",
+            "description": "CSS or XPath selector"
+          },
+          "text": {
+            "type": "string",
+            "example": "user@example.com",
+            "description": "Text to input (for 'type' action)"
+          },
+          "wait_ms": {
+            "type": "integer",
+            "default": 500,
+            "minimum": 0,
+            "maximum": 30000,
+            "description": "Wait time in milliseconds"
+          },
+          "return_format": {
+            "type": "string",
+            "enum": ["text", "html", "json", "raw"],
+            "default": "text",
+            "description": "Return format"
+          }
+        },
+        "required": ["action", "url"]
+      },
+      "ToolCall": {
+        "type": "object",
+        "properties": {
+          "function": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "browser_agent"
+              },
+              "arguments": {
+                "$ref": "#/components/schemas/BrowserAction"
+              }
+            }
+          }
+        }
+      },
+      "ActionResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["success", "error"],
+            "example": "success"
+          },
+          "action": {
+            "type": "string",
+            "example": "open"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "session_id": {
+            "type": "string",
+            "example": "sess_12345"
+          }
+        },
+        "required": ["status"]
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["error"],
+            "example": "error"
+          },
+          "error_code": {
+            "type": "string",
+            "example": "INVALID_SELECTOR"
+          },
+          "message": {
+            "type": "string",
+            "example": "CSS selector '.nonexistent' did not match any elements"
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": ["status", "message"]
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Bearer token authentication"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Health",
+      "description": "Health check endpoints"
+    },
+    {
+      "name": "Tool Definition",
+      "description": "Tool manifest and definition"
+    },
+    {
+      "name": "Browser Actions",
+      "description": "Browser automation actions"
+    },
+    {
+      "name": "Tool Calling",
+      "description": "OpenWebUI tool calling endpoints"
+    },
+    {
+      "name": "Dashboard",
+      "description": "Monitoring and testing dashboard"
+    }
+  ]
+}

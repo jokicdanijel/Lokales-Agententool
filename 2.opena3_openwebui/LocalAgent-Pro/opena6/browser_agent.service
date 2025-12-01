@@ -1,0 +1,39 @@
+[Unit]
+Description=5.opena6_browser - PORTIER 3.0 Browser Agent
+Documentation=file:///opt/opena6/README.md
+After=network.target
+
+[Service]
+Type=simple
+User=portier
+Group=portier
+WorkingDirectory=/opt/opena6
+
+# Start command
+ExecStart=/usr/bin/python3 /opt/opena6/main.py /opt/opena6/config.json 12350
+
+# Restart policy
+Restart=on-failure
+RestartSec=10
+StartLimitInterval=60s
+StartLimitBurst=3
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+
+# Environment
+Environment="PYTHONUNBUFFERED=1"
+Environment="PYTHONPATH=/opt/opena6:/opt/portier"
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=opena6
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=4096
+
+[Install]
+WantedBy=multi-user.target

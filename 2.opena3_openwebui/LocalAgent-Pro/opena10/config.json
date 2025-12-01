@@ -1,0 +1,16 @@
+{
+  "service": "opena10",
+  "port": 12354,
+  "role": "compute",
+  "version": "3.0.0",
+  "features": {
+    "health_check": true,
+    "metrics": true,
+    "sandbox": true,
+    "api_auth": true
+  },
+  "bearer_token": "sk_opena10_compute_v3_production",
+  "max_workers": 4,
+  "timeout": 30,
+  "log_level": "INFO"
+}

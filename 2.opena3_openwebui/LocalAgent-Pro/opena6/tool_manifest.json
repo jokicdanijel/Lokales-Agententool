@@ -1,0 +1,59 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browser_agent",
+    "description": "Lokale Browser-Automation für Web-Scraping, Datenextraktion und DOM-Manipulation. Wird vom PORTIER 3.0 System bereitgestellt.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "open",
+            "click",
+            "type",
+            "extract_text",
+            "extract_html",
+            "query_selector",
+            "screenshot",
+            "scroll",
+            "wait_for"
+          ],
+          "description": "Zu führende Browser-Aktion"
+        },
+        "url": {
+          "type": "string",
+          "description": "Zielseite URL (z.B. https://example.com)"
+        },
+        "selector": {
+          "type": "string",
+          "description": "CSS oder XPath Selektor"
+        },
+        "text": {
+          "type": "string",
+          "description": "Text zum eingeben (für 'type' Aktion)"
+        },
+        "wait_ms": {
+          "type": "integer",
+          "default": 500,
+          "description": "Wartezeit nach Aktion in Millisekunden"
+        },
+        "return_format": {
+          "type": "string",
+          "enum": [
+            "text",
+            "html",
+            "json",
+            "raw"
+          ],
+          "default": "text",
+          "description": "Format der Rückgabe"
+        }
+      },
+      "required": [
+        "action",
+        "url"
+      ]
+    }
+  }
+}

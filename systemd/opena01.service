@@ -1,0 +1,28 @@
+[Unit]
+Description=ELION opena1 - Koordinator Portier Agent
+Documentation=https://github.com/elion/portier
+After=network.target
+
+[Service]
+Type=simple
+User=danijel-jd
+Group=danijel-jd
+WorkingDirectory=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier
+Environment="PATH=/home/danijel-jd/.local/bin:/usr/local/bin:/usr/bin"
+Environment="BEARER_TOKEN=c899b90d-faf8-485b-afa4-078357cf5313"
+Environment="OPENA1_PORT=12344"
+ExecStart=/usr/bin/python3 main_opena1.py
+Restart=on-failure
+RestartSec=5
+StandardOutput=append:/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/logs/opena1.log
+StandardError=append:/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/logs/opena1.error.log
+
+# Security
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/logs
+ReadWritePaths=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/data
+
+[Install]
+WantedBy=multi-user.target

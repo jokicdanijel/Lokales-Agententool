@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>opena4 – Developer Overview</title>
+    <style>
+        :root {
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #212529;
+            --text-muted: #6c757d;
+            --border: #dee2e6;
+            --primary: #0088cc;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --code-bg: #1e1e1e;
+            --code-text: #d4d4d4;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .container { max-width: 1100px; margin: 0 auto; }
+        header {
+            background: linear-gradient(135deg, #005f99 0%, #0088cc 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        header .subtitle { opacity: 0.8; }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        .card h3 {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin: 1rem 0 0.5rem 0;
+        }
+        ul { list-style: disc; margin-left: 1.5rem; }
+        ul li { padding: 0.25rem 0; }
+        code {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-family: "JetBrains Mono", "SF Mono", monospace;
+            font-size: 0.85em;
+        }
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            margin: 1rem 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th { background: var(--bg); font-weight: 600; }
+        .status-done { color: var(--success); font-weight: 600; }
+        .status-partial { color: var(--warning); font-weight: 600; }
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-done { background: #dcfce7; color: #166534; }
+        .badge-partial { background: #fef3c7; color: #92400e; }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        a { color: var(--primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .schema-block {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+        .schema-block h4 {
+            color: #166534;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📱 opena4 – Developer Overview</h1>
+            <p class="subtitle">Technische Dokumentation für Telegram Gateway Agent | PORTIER 3.0</p>
+        </header>
+
+        <section class="card">
+            <h2>🏗️ Architektur</h2>
+            <pre>
+3.opena4_telegram/
+├── main_telegram_agent.py    # FastAPI Entry Point (Port 12346) ✅
+├── config.py                 # Pydantic V2 Config ✅
+├── schemas.py                # Pydantic V2 Request/Response Schemas ✅
+├── tests/                    # Pytest-Suite
+│   ├── test_config.py        # Config + Whitelist Tests ✅
+│   └── test_health.py        # Health Endpoint Tests ✅
+├── bin/
+│   ├── start_opena4.sh       # PID-basiertes Start-Skript ✅
+│   └── stop_opena4.sh        # Stop-Skript ✅
+├── docs/                     # HTML-Dokumentation ✅
+├── logs/                     # Nohup-Logs
+└── archivp/                  # Lokaler Safepoint-Speicher</pre>
+
+            <h3>Hauptkomponenten</h3>
+            <ul>
+                <li><strong>FastAPI-Service</strong> auf Port 12346 – <code>uvicorn</code> mit CLI-Args</li>
+                <li><strong>Telegram Bot:</strong> <code>python-telegram-bot</code> Library</li>
+                <li><strong>Polling/Webhook:</strong> Konfigurierbar via <code>--telegram-polling</code> (mit Background-Thread)</li>
+                <li><strong>Auth:</strong> Bearer Token Middleware + Telegram User Whitelist</li>
+                <li><strong>Safepoints:</strong> Automatische Archivierung aller CMD/RESP mit Secret-Masking</li>
+                <li><strong>datetime:</strong> Alle Timestamps mit <code>datetime.now(timezone.utc)</code> (UTC-aware)</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>⚙️ Konfiguration (ENV-Variablen)</h2>
+            <pre>
+# Telegram (PFLICHT)
+TELEGRAM_BOT_TOKEN=123456789:ABC...xyz   # Bot-Token von @BotFather
+TELEGRAM_ALLOWED_USER_IDS=7664467819     # Komma-separierte IDs
+
+# PORTIER Integration
+OPENA1_URL=http://127.0.0.1:12344        # kordp (Koordinator)
+OPENA2_URL=http://127.0.0.1:12345        # archivp (Archivator)
+BEARER_TOKEN=&lt;uuid&gt;                      # Bearer Auth für /command
+
+# Optional
+LOG_LEVEL=INFO                           # DEBUG, INFO, WARNING, ERROR
+ARCHIVP_ROOT=../1.opena1&2_portier/archivp_store</pre>
+
+            <h3>Pydantic V2 Config</h3>
+            <ul>
+                <li><code>ServiceConfig(BaseSettings)</code> mit <code>SettingsConfigDict</code></li>
+                <li><code>AgentInfo</code> mit <code>model_config = ConfigDict(extra="forbid")</code></li>
+                <li>Alle Schemas in <code>schemas.py</code> sind V2-konform (Command71, Response71, etc.)</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>📐 API-Design – Request/Response Schemas</h2>
+            
+            <div class="grid-2">
+                <div class="schema-block">
+                    <h4>Command71 (Incoming Request)</h4>
+                    <pre style="margin: 0; background: transparent; padding: 0;">
+{
+  "request_id": "uuid4-or-timestamp",
+  "timestamp": "2025-12-01T10:00:00Z",
+  "command": "TELEGRAM_MSG",
+  "payload": {"chat_id": 123, "text": "..."},
+  "project": {"name": "telegram_relay"},
+  "strict": true
+}</pre>
+                </div>
+                <div class="schema-block">
+                    <h4>Response71 (Outgoing Response)</h4>
+                    <pre style="margin: 0; background: transparent; padding: 0;">
+{
+  "request_id": "echoed-request-id",
+  "timestamp": "2025-12-01T10:00:01Z",
+  "response_type": "SUCCESS",
+  "payload": {"result": "..."},
+  "source": "opena4",
+  "strict": true
+}</pre>
+                </div>
+                <div class="schema-block">
+                    <h4>TelegramMessage (Webhook Input)</h4>
+                    <pre style="margin: 0; background: transparent; padding: 0;">
+{
+  "chat_id": 7664467819,
+  "user_id": 7664467819,
+  "message_id": 123456,
+  "text": "Hello Bot!",
+  "timestamp": "2025-12-01T10:00:00Z"
+}</pre>
+                </div>
+                <div class="schema-block">
+                    <h4>ErrorSchema83 (Error Response)</h4>
+                    <pre style="margin: 0; background: transparent; padding: 0;">
+{
+  "request_id": "original-request-id",
+  "timestamp": "2025-12-01T10:00:01Z",
+  "source": "opena4",
+  "error": {
+    "code": "UNAUTHORIZED",
+    "message": "User not whitelisted"
+  },
+  "strict": true
+}</pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>🔄 Kommunikationsfluss</h2>
+            <pre>
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│  Telegram   │ ──► │   opena4    │ ──► │   opena1    │ ──► │  Tool/Agent │
+│    User     │     │   (tgap)    │     │   (kordp)   │     │             │
+└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
+      ▲                    │                    │                    │
+      │                    │                    │                    │
+      └────────────────────┴────────────────────┴────────────────────┘
+                           Antwort zurück via Option-2-Flow</pre>
+
+            <h3>Fluss-Details</h3>
+            <ul>
+                <li><strong>1. Telegram → opena4:</strong> User sendet Nachricht oder Command</li>
+                <li><strong>2. Whitelist-Check:</strong> Prüfe <code>user_id</code> gegen <code>TELEGRAM_ALLOWED_USER_IDS</code></li>
+                <li><strong>3. CMD Safepoint:</strong> Request wird archiviert (src=opena4, dst=kordp)</li>
+                <li><strong>4. Forward to kordp:</strong> HTTP POST an opena1/opena2</li>
+                <li><strong>5. RESP Safepoint:</strong> Antwort wird archiviert</li>
+                <li><strong>6. Reply to Telegram:</strong> Ergebnis an User senden</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>🧪 Tests & Coverage</h2>
+            
+            <table>
+                <tr><th>Test-Datei</th><th>Beschreibung</th><th>Status</th></tr>
+                <tr>
+                    <td><code>tests/test_config.py</code></td>
+                    <td>Config Loading, Port-Policy, Whitelist-Logik</td>
+                    <td><span class="status-done">✅ 8 Tests</span></td>
+                </tr>
+                <tr>
+                    <td><code>tests/test_health.py</code></td>
+                    <td>Health + Root Endpoint Tests</td>
+                    <td><span class="status-done">✅ 6 Tests</span></td>
+                </tr>
+                <tr>
+                    <td><code>tests/test_agent.py</code></td>
+                    <td>Basic Directory + HTML Checks</td>
+                    <td><span class="status-done">✅ 4 Tests</span></td>
+                </tr>
+            </table>
+
+            <h3>Test-Ausführung</h3>
+            <pre>
+# Alle Tests ausführen
+cd 3.opena4_telegram
+python -m pytest tests/ -v
+
+# Nur Config-Tests
+python -m pytest tests/test_config.py -v
+
+# Coverage-Report
+python -m pytest tests/ --cov=. --cov-report=html</pre>
+        </section>
+
+        <section class="card">
+            <h2>💻 cURL-Beispiele</h2>
+            
+            <h3>Health-Check (ohne Auth)</h3>
+            <pre>curl -s http://127.0.0.1:12346/health | jq .</pre>
+
+            <h3>Root-Info (ohne Auth)</h3>
+            <pre>curl -s http://127.0.0.1:12346/ | jq .</pre>
+
+            <h3>Status (ohne Auth)</h3>
+            <pre>curl -s http://127.0.0.1:12346/status | jq .</pre>
+
+            <h3>Command (mit Bearer Token)</h3>
+            <pre>curl -s -X POST http://127.0.0.1:12346/command \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "request_id": "test_123",
+    "command": "PING",
+    "params": {}
+  }' | jq .</pre>
+
+            <h3>Telegram Message Webhook</h3>
+            <pre>curl -s -X POST http://127.0.0.1:12346/telegram/message \
+  -H "Content-Type: application/json" \
+  -d '{
+    "chat_id": 7664467819,
+    "user_id": 7664467819,
+    "message_id": 12345,
+    "text": "Test Message",
+    "timestamp": "2025-12-01T10:00:00Z"
+  }' | jq .</pre>
+        </section>
+
+        <section class="card">
+            <h2>🔧 Entwickler-Befehle</h2>
+            <pre>
+# Service starten
+cd 3.opena4_telegram
+./bin/start_opena4.sh
+
+# Health-Check
+curl -s http://127.0.0.1:12346/health | jq .
+
+# Logs verfolgen
+tail -f logs/opena4.nohup.log
+
+# Service stoppen
+./bin/stop_opena4.sh
+
+# Mit Telegram Polling starten (Background-Thread)
+python main_telegram_agent.py --telegram-polling
+# → Startet: threading.Thread(target=telegram_app.run_polling)
+
+# Ohne Telegram (nur HTTP)
+python main_telegram_agent.py --no-telegram
+
+# Port überschreiben
+python main_telegram_agent.py --port 12347</pre>
+            
+            <h3>Telegram Polling (Background-Thread)</h3>
+            <p style="margin-bottom: 0.5rem; color: var(--text-muted);">
+                Mit <code>--telegram-polling</code> wird der Telegram-Bot in einem separaten Daemon-Thread gestartet:
+            </p>
+            <pre>
+telegram_mode = "polling"
+def run_telegram_polling():
+    telegram_app.run_polling(drop_pending_updates=True)
+    
+telegram_thread = threading.Thread(target=run_telegram_polling, daemon=True)
+telegram_thread.start()</pre>
+        </section>
+
+        <section class="card">
+            <h2>🔐 Security-Hinweise</h2>
+            
+            <h3>Telegram User Whitelist</h3>
+            <ul>
+                <li><strong>ENV-Only:</strong> User-IDs nur via <code>TELEGRAM_ALLOWED_USER_IDS</code></li>
+                <li><strong>Format:</strong> Komma-separierte Liste: <code>7664467819,123456789</code></li>
+                <li><strong>Keine Hardcodes:</strong> IDs niemals im Code speichern</li>
+                <li><strong>Unauthorized:</strong> Nicht-whitelisted User erhalten "Nicht autorisiert" Antwort</li>
+            </ul>
+
+            <h3>Secret-Masking</h3>
+            <ul>
+                <li><strong>Automatisch maskiert:</strong> <code>token</code>, <code>password</code>, <code>secret</code>, <code>key</code>, <code>bearer</code></li>
+                <li><strong>Safepoints:</strong> Alle Secrets werden vor Archivierung maskiert</li>
+                <li><strong>Logs:</strong> Keine Tokens in Log-Ausgaben</li>
+            </ul>
+
+            <h3>Port-Policy (PORTIER 3.0)</h3>
+            <ul>
+                <li><strong>Erlaubter Bereich:</strong> 12344–12399</li>
+                <li><strong>Verbotene Ports:</strong> 8080 (reserviert für OpenWebUI UI)</li>
+                <li><strong>Enforcement:</strong> <code>PortPolicy.is_valid_port()</code> bei Startup</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>📋 TODO-Blöcke Status</h2>
+            <table>
+                <tr><th>Block</th><th>Beschreibung</th><th>Status</th></tr>
+                <tr>
+                    <td>1. Architektur & Setup</td>
+                    <td>FastAPI, Config, Health, Telegram Bot</td>
+                    <td><span class="badge badge-done">✅ DONE</span></td>
+                </tr>
+                <tr>
+                    <td>2. API-Design</td>
+                    <td>Endpoints, Pydantic-Schemas, Error-Handling</td>
+                    <td><span class="badge badge-done">✅ DONE</span></td>
+                </tr>
+                <tr>
+                    <td>3. Portier-Integration</td>
+                    <td>kordp-Routing, Safepoints, Option-2-Flow</td>
+                    <td><span class="badge badge-done">✅ DONE</span></td>
+                </tr>
+                <tr>
+                    <td>4. Telegram Bot</td>
+                    <td>Commands (/start, /browse, /status, etc.)</td>
+                    <td><span class="badge badge-done">✅ DONE</span></td>
+                </tr>
+                <tr>
+                    <td>5. Tests & Qualität</td>
+                    <td>Config, Health, Whitelist Tests</td>
+                    <td><span class="badge badge-done">✅ DONE</span></td>
+                </tr>
+                <tr>
+                    <td>6. Dokumentation</td>
+                    <td>Status-Page, Dev-Docs, cURL-Beispiele</td>
+                    <td><span class="badge badge-done">✅ DONE</span></td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="card">
+            <h2>🚀 Offene Erweiterungen (Optional)</h2>
+            <ul>
+                <li>⬜ <strong>Inline Keyboards:</strong> Interaktive Buttons in Telegram</li>
+                <li>⬜ <strong>File Upload:</strong> Telegram-Dateien an PORTIER weiterleiten</li>
+                <li>⬜ <strong>Voice Messages:</strong> Audio-Transkription via OpenAI Whisper</li>
+                <li>⬜ <strong>Multi-Bot:</strong> Mehrere Telegram-Bots gleichzeitig</li>
+                <li>⬜ <strong>Webhook Mode:</strong> Nginx/Caddy Reverse-Proxy Setup</li>
+                <li>⬜ <strong>Rate-Limiting:</strong> Telegram-spezifisches Throttling</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>opena4 – Developer Overview | ELION Team | Stand: 1. Dezember 2025</p>
+            <p>
+                <a href="opena4_status.html">Status-Dashboard</a> |
+                <a href="../TODO.md">TODO-Liste</a> |
+                <a href="../README.md">README</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

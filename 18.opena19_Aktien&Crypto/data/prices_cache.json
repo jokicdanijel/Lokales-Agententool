@@ -1,0 +1,22 @@
+{
+  "stock:AAPL": {
+    "price": null,
+    "timestamp": 1764252067.7364109
+  },
+  "stock:TSLA": {
+    "price": null,
+    "timestamp": 1764252067.7364109
+  },
+  "crypto:bitcoin": {
+    "price": 90923.0,
+    "timestamp": 1764252068.1349337
+  },
+  "crypto:ethereum": {
+    "price": 2996.15,
+    "timestamp": 1764252068.1349337
+  },
+  "stock:MSFT": {
+    "price": 485.5,
+    "timestamp": 1764252068.33556
+  }
+}

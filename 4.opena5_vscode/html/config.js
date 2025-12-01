@@ -1,0 +1,29 @@
+/* opena5 VSCode Agent | PAS-6.0 Config */
+const CONFIG = {
+    agent: { id: 'opena5', name: 'VSCode Programmierung', shortName: 'vscodep', port: 12351, version: '6.0.0', type: 'development_tools' },
+    api: {
+        baseUrl: 'http://127.0.0.1:12351',
+        endpoints: { health: '/health', status: '/status', command: '/command', metrics: '/metrics', logs: '/logs',
+            analyze: '/vscode/analyze', refactor: '/vscode/refactor', format: '/vscode/format', fix: '/vscode/fix',
+            tests: '/vscode/tests', fileCreate: '/vscode/file/create', fileModify: '/vscode/file/modify',
+            terminal: '/vscode/terminal', git: '/vscode/git', debug: '/vscode/debug', agents: '/vscode/agents' }
+    },
+    portier: { opena1: 'http://127.0.0.1:12344', opena2: 'http://127.0.0.1:12345', dashboard: 'http://127.0.0.1:12349' },
+    capabilities: [
+        { id: 'file_explorer', name: 'File Explorer', icon: '📁', description: 'Browse & manage files' },
+        { id: 'code_editor', name: 'Code Editor', icon: '📝', description: 'Edit code with syntax highlighting' },
+        { id: 'terminal', name: 'Integrated Terminal', icon: '⚡', description: 'Run shell commands' },
+        { id: 'git_integration', name: 'Git Integration', icon: '🔀', description: 'Version control operations' },
+        { id: 'debugger', name: 'Debugger', icon: '🐛', description: 'Debug code with breakpoints' },
+        { id: 'ai_explain', name: 'AI Code Explanation', icon: '💡', description: 'Explain code snippets' },
+        { id: 'ai_refactor', name: 'AI Refactoring', icon: '🛠️', description: 'Auto-refactor code' },
+        { id: 'ai_tests', name: 'AI Test Generator', icon: '🧪', description: 'Generate unit tests' },
+        { id: 'code_format', name: 'Code Formatting', icon: '✨', description: 'Auto-format code' },
+        { id: 'extensions', name: 'Extensions Manager', icon: '🧩', description: 'Install & manage extensions' },
+        { id: 'live_preview', name: 'Live Preview', icon: '👁️', description: 'Preview HTML/CSS' },
+        { id: 'multi_agent', name: 'Multi-Agent Routing', icon: '🔗', description: 'Route to PORTIER agents' }
+    ],
+    settings: { autoSave: true, formatOnSave: true, theme: 'purple' },
+    auth: { tokenKey: 'opena5_bearer_token' }
+};
+Object.freeze(CONFIG);

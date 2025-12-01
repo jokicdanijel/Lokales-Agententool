@@ -1,0 +1,3 @@
+{"ts": "2025-12-01T06:50:43.237304Z", "action": "PRE_COMMIT", "path": "agent-generated/macdir-test", "entries": 0, "agent": "commit_and_pr"}
+{"ts": "2025-12-01T06:50:43.884118Z", "action": "POST_COMMIT", "path": "agent-generated/macdir-test", "entries": 224, "agent": "commit_and_pr"}
+{"ts": "2025-12-01T06:55:20.139114Z", "action": "PRE_COMMIT", "path": "agent-generated/macdir-inventory", "entries": 0, "agent": "commit_and_pr"}

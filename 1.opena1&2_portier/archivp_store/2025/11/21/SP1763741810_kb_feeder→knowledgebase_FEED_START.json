@@ -1,0 +1,11 @@
+{
+  "ts": "2025-11-21T16:16:50.506854Z",
+  "src": "kb_feeder",
+  "dst": "knowledgebase",
+  "kind": "FEED_START",
+  "body": {
+    "timestamp": "2025-11-21T16:16:50.506666Z",
+    "kb_dir": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/knowledgebase"
+  },
+  "strict": true
+}

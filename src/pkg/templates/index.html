@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELION Hyper-Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card .value {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-card .label {
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .agent-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .agent-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .agent-card .name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .agent-card .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .agent-card .status.online {
+            background: #10b981;
+            color: white;
+        }
+        
+        .agent-card .status.offline {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .agent-card .info {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.8;
+        }
+        
+        .agent-card .info strong {
+            color: #333;
+        }
+        
+        .toolbar {
+            background: white;
+            border-radius: 10px;
+            padding: 15px 25px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        #lastUpdate {
+            margin-left: auto;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 ELION Dashboard</h1>
+            <p class="subtitle">ELION Hyper-Dashboard - Zentrale Übersicht aller Agenten</p>
+        </div>
+        
+        <div class="toolbar">
+            <button class="btn" id="refreshBtn" onclick="refreshStatus()">🔄 Status aktualisieren</button>
+            <span id="lastUpdate"></span>
+        </div>
+        
+        <div class="error" id="error"></div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="value" id="totalAgents">-</div>
+                <div class="label">Gesamt Agenten</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="onlineAgents">-</div>
+                <div class="label">Online</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="offlineAgents">-</div>
+                <div class="label">Offline</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="coreAgents">-</div>
+                <div class="label">Core Services</div>
+            </div>
+        </div>
+        
+        <div class="agents-grid" id="agentsGrid"></div>
+    </div>
+    
+    <script>
+        const BEARER_TOKEN = localStorage.getItem('bearer_token') || 'c899b90d-faf8-485b-afa4-078357cf5313';
+        localStorage.setItem('bearer_token', BEARER_TOKEN);
+        
+        const AGENTS = [
+            {id: 'opena1', name: 'Koordinator', port: 12344, kuerzel: 'kordp'},
+            {id: 'opena2', name: 'Archivator', port: 12345, kuerzel: 'archivp'},
+            {id: 'kordp', name: 'Koordinatport', port: 12346, kuerzel: 'kordp'},
+            {id: 'opena3', name: 'OpenWebUI Terminal', port: 12347, kuerzel: 'owuip'},
+            {id: 'opena4', name: 'Telegram Agent', port: 12348, kuerzel: 'telep'},
+            {id: 'opena5', name: 'VS Code Agent', port: 12351, kuerzel: 'vscop'},
+            {id: 'opena6', name: 'Browser Agent', port: 12352, kuerzel: 'browsep'},
+            {id: 'opena7', name: 'Email Agent', port: 12353, kuerzel: 'emailp'},
+            {id: 'opena8', name: 'WhatsApp Agent', port: 12354, kuerzel: 'whatsappp'},
+            {id: 'opena9', name: 'Telefonie Agent', port: 12355, kuerzel: 'telphonep'},
+            {id: 'opena10', name: 'Call Tracking Agent', port: 12356, kuerzel: 'calltrackp'},
+            {id: 'opena11', name: 'Unlock Agent', port: 12357, kuerzel: 'unlockp'},
+            {id: 'opena12', name: 'Social Media Agent', port: 12358, kuerzel: 'smp'},
+            {id: 'opena13', name: 'Influencer Agent', port: 12359, kuerzel: 'influp'},
+            {id: 'opena14', name: 'Calendar Agent', port: 12360, kuerzel: 'calp'},
+            {id: 'opena15', name: 'HTML Creator', port: 12361, kuerzel: 'htmlp'},
+            {id: 'opena16', name: 'Shop Agent', port: 12362, kuerzel: 'shopp'},
+            {id: 'opena17', name: 'Homepage Creator', port: 12363, kuerzel: 'hpcreatep'},
+            {id: 'opena18', name: 'CRM Agent', port: 12364, kuerzel: 'crmp'},
+            {id: 'opena19', name: 'Stocks & Crypto', port: 12365, kuerzel: 'stockcryptop'},
+            {id: 'opena20', name: 'Dashboard Agent', port: 12349, kuerzel: 'dashp'},
+            {id: 'opena21', name: 'Workflow Agent', port: 12366, kuerzel: 'workflowp'}
+        ];
+        
+        async function checkAgentHealth(agent) {
+            try {
+                const response = await fetch(`http://127.0.0.1:${agent.port}/health`, {
+                    signal: AbortSignal.timeout(2000)
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    return {
+                        ...agent,
+                        status: 'online',
+                        uptime: data.uptime_seconds || data.uptime || null,
+                        details: data
+                    };
+                }
+            } catch (error) {
+                return {
+                    ...agent,
+                    status: 'offline',
+                    error: error.message
+                };
+            }
+            
+            return {
+                ...agent,
+                status: 'offline',
+                error: 'Keine Antwort'
+            };
+        }
+        
+        async function refreshStatus() {
+            const btn = document.getElementById('refreshBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Lädt...';
+            
+            try {
+                const results = await Promise.all(AGENTS.map(checkAgentHealth));
+                updateUI(results);
+                document.getElementById('error').style.display = 'none';
+            } catch (error) {
+                showError(`Fehler: ${error.message}`);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🔄 Status aktualisieren';
+            }
+        }
+        
+        function updateUI(agents) {
+            const online = agents.filter(a => a.status === 'online').length;
+            const offline = agents.filter(a => a.status === 'offline').length;
+            const coreOnline = agents.filter(a => 
+                ['opena1', 'opena2', 'kordp', 'opena20'].includes(a.id) && a.status === 'online'
+            ).length;
+            
+            document.getElementById('totalAgents').textContent = agents.length;
+            document.getElementById('onlineAgents').textContent = online;
+            document.getElementById('offlineAgents').textContent = offline;
+            document.getElementById('coreAgents').textContent = `${coreOnline}/4`;
+            
+            const grid = document.getElementById('agentsGrid');
+            grid.innerHTML = '';
+            
+            // Sortiere: Core zuerst, dann opena3-21
+            const coreAgents = agents.filter(a => ['opena1', 'opena2', 'kordp', 'opena20'].includes(a.id));
+            const operationalAgents = agents.filter(a => !['opena1', 'opena2', 'kordp', 'opena20'].includes(a.id));
+            
+            [...coreAgents, ...operationalAgents].forEach(agent => {
+                const card = document.createElement('div');
+                card.className = 'agent-card';
+                
+                const isCore = ['opena1', 'opena2', 'kordp', 'opena20'].includes(agent.id);
+                const coreLabel = isCore ? '<span style="background: #f59e0b; color: white; padding: 2px 8px; border-radius: 3px; font-size: 0.8em; margin-left: 5px;">CORE</span>' : '';
+                
+                const uptimeText = agent.uptime 
+                    ? `Uptime: ${Math.round(agent.uptime)}s` 
+                    : (agent.error || 'Offline');
+                
+                card.innerHTML = `
+                    <div class="name">${agent.name}${coreLabel}</div>
+                    <div class="status ${agent.status}">
+                        ${agent.status === 'online' ? '✓ Online' : '✗ Offline'}
+                    </div>
+                    <div class="info">
+                        <strong>ID:</strong> ${agent.id}<br>
+                        <strong>Kürzel:</strong> ${agent.kuerzel}<br>
+                        <strong>Port:</strong> ${agent.port}<br>
+                        ${uptimeText}
+                    </div>
+                    <a href="/agent/${agent.id}" style="display: block; margin-top: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px; border-radius: 5px; text-align: center; text-decoration: none; font-weight: bold; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        🎛️ Agent bedienen
+                    </a>
+                `;
+                
+                grid.appendChild(card);
+            });
+            
+            document.getElementById('lastUpdate').textContent = 
+                `Letztes Update: ${new Date().toLocaleString('de-DE')}`;
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+        
+        // Initial load
+        refreshStatus();
+        
+        // Auto-refresh every 30 seconds
+        setInterval(refreshStatus, 30000);
+    </script>
+</body>
+</html>

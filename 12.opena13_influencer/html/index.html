@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👤 OPENA13 Influencer - PORTIER PAS-6.0 Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="logo-section">
+                <span class="logo-icon">👤</span>
+                <h1>Influencer Agent 6.0</h1>
+                <span class="version-badge">v6.0.0 PAS-6.0</span>
+            </div>
+            <div class="status-section">
+                <span id="connection-status" class="status-indicator status-loading">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Verbinde...</span>
+                </span>
+                <span id="uptime" class="uptime-display">--:--:--</span>
+            </div>
+        </header>
+
+        <main class="main-grid">
+            <section class="platform-cards">
+                <div class="card metric-card" data-metric="profiles">
+                    <div class="card-icon">👥</div>
+                    <div class="card-content"><h3>Profile</h3><span id="total-profiles" class="metric-value">0</span></div>
+                </div>
+                <div class="card metric-card" data-metric="campaigns">
+                    <div class="card-icon">🎯</div>
+                    <div class="card-content"><h3>Kampagnen</h3><span id="total-campaigns" class="metric-value">0</span></div>
+                </div>
+                <div class="card metric-card" data-metric="matches">
+                    <div class="card-icon">🤝</div>
+                    <div class="card-content"><h3>Matches</h3><span id="total-matches" class="metric-value">0</span></div>
+                </div>
+                <div class="card metric-card" data-metric="reach">
+                    <div class="card-icon">📊</div>
+                    <div class="card-content"><h3>Reichweite</h3><span id="total-reach" class="metric-value">0</span></div>
+                </div>
+            </section>
+
+            <section class="left-panel">
+                <div class="card">
+                    <h2>🔐 Authentication</h2>
+                    <div class="form-group">
+                        <input type="password" id="token" placeholder="Bearer Token...">
+                        <button onclick="saveToken()" class="btn btn-sm">Speichern</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>👤 Profil erstellen</h2>
+                    <form id="profile-form">
+                        <div class="form-group">
+                            <input type="text" id="profile-name" placeholder="Influencer Name" required>
+                        </div>
+                        <div class="form-group">
+                            <select id="profile-platform">
+                                <option value="instagram">📸 Instagram</option>
+                                <option value="tiktok">🎵 TikTok</option>
+                                <option value="youtube">📺 YouTube</option>
+                                <option value="x">𝕏 X (Twitter)</option>
+                                <option value="linkedin">💼 LinkedIn</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <input type="number" id="profile-followers" placeholder="Follower" min="0">
+                            <input type="number" id="profile-engagement" placeholder="Engagement %" step="0.1" min="0" max="100">
+                        </div>
+                        <div class="form-group">
+                            <select id="profile-niche">
+                                <option value="fashion">👗 Fashion</option>
+                                <option value="tech">💻 Tech</option>
+                                <option value="lifestyle">🌴 Lifestyle</option>
+                                <option value="fitness">💪 Fitness</option>
+                                <option value="food">🍕 Food</option>
+                                <option value="travel">✈️ Travel</option>
+                                <option value="gaming">🎮 Gaming</option>
+                                <option value="beauty">💄 Beauty</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="profile-email" placeholder="Kontakt E-Mail">
+                        </div>
+                        <button type="submit" class="btn btn-primary">➕ Profil erstellen</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h2>🎯 Kampagne erstellen</h2>
+                    <form id="campaign-form">
+                        <div class="form-group">
+                            <input type="text" id="campaign-name" placeholder="Kampagnenname" required>
+                        </div>
+                        <div class="form-row">
+                            <input type="number" id="campaign-budget" placeholder="Budget €" min="0">
+                            <input type="number" id="campaign-min-followers" placeholder="Min. Follower" min="0">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="campaign-audience" placeholder="Zielgruppe (z.B. Women 25-40)">
+                        </div>
+                        <div class="form-row">
+                            <input type="date" id="campaign-start">
+                            <input type="date" id="campaign-end">
+                        </div>
+                        <button type="submit" class="btn btn-primary">🚀 Kampagne starten</button>
+                    </form>
+                </div>
+            </section>
+
+            <section class="right-panel">
+                <div class="card">
+                    <h2>🤝 Matching</h2>
+                    <form id="match-form">
+                        <div class="form-group">
+                            <select id="match-campaign">
+                                <option value="">-- Kampagne wählen --</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <input type="number" id="match-max" placeholder="Max. Ergebnisse" value="10" min="1" max="100">
+                            <input type="number" id="match-min-score" placeholder="Min. Score" value="60" min="0" max="100">
+                        </div>
+                        <button type="submit" class="btn btn-accent">🔍 Influencer matchen</button>
+                    </form>
+                    <div id="match-results" class="results-container"></div>
+                </div>
+
+                <div class="card">
+                    <h2>👥 Profile (<span id="profiles-count">0</span>)</h2>
+                    <div id="profiles-list" class="list-container"><p class="empty-state">Keine Profile</p></div>
+                </div>
+
+                <div class="card">
+                    <h2>📜 Aktivitäten</h2>
+                    <div id="activity-log" class="activity-log"><p class="empty-state">Keine Aktivitäten</p></div>
+                </div>
+            </section>
+
+            <section class="bottom-panel">
+                <div class="card metrics-card">
+                    <h2>📊 Plattform-Metriken</h2>
+                    <div class="metrics-grid">
+                        <div class="metric-item"><span class="metric-label">📸 Instagram</span><span id="instagram-count" class="metric-value">0</span></div>
+                        <div class="metric-item"><span class="metric-label">🎵 TikTok</span><span id="tiktok-count" class="metric-value">0</span></div>
+                        <div class="metric-item"><span class="metric-label">📺 YouTube</span><span id="youtube-count" class="metric-value">0</span></div>
+                        <div class="metric-item"><span class="metric-label">𝕏 X</span><span id="x-count" class="metric-value">0</span></div>
+                        <div class="metric-item"><span class="metric-label">💼 LinkedIn</span><span id="linkedin-count" class="metric-value">0</span></div>
+                        <div class="metric-item"><span class="metric-label">Ø Engagement</span><span id="avg-engagement" class="metric-value">0%</span></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="dashboard-footer">
+            <span>ELION PORTIER PAS-6.0 | opena13_influencer</span>
+            <span>Port: 12358</span>
+            <span id="last-update">--:--:--</span>
+        </footer>
+    </div>
+    <div id="toast-container" class="toast-container"></div>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

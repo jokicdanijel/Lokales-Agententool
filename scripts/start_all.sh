@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # --- feste Pfade ---
-BASE="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai"
+BASE="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier"
 VENV="$BASE/venv313"
 PY="$VENV/bin/python3"
 PIP="$VENV/bin/pip"

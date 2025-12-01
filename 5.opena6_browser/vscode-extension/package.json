@@ -1,0 +1,242 @@
+{
+  "name": "portier-vscode-agent",
+  "displayName": "PORTIER VSCode Integration 3.0",
+  "description": "Enterprise AI-Dev Assistant with PORTIER 3.0 Stack Integration",
+  "version": "3.0.0",
+  "publisher": "elion",
+  "icon": "media/portier-icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jokicdanijel/Gesamtprojekt-start"
+  },
+  "engines": {
+    "vscode": "^1.86.0"
+  },
+  "categories": [
+    "AI",
+    "Other",
+    "Debuggers",
+    "Formatters",
+    "Linters"
+  ],
+  "keywords": [
+    "ai", 
+    "portier",
+    "assistant",
+    "refactor",
+    "analysis",
+    "automation"
+  ],
+  "activationEvents": [
+    "onCommand:portier.runCommand",
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "portier.runCommand",
+        "title": "PORTIER: Run Command on VSCode Agent",
+        "category": "PORTIER"
+      },
+      {
+        "command": "portier.analyzeFile", 
+        "title": "PORTIER: Analyze Active File",
+        "category": "PORTIER",
+        "icon": "$(search)"
+      },
+      {
+        "command": "portier.refactor",
+        "title": "PORTIER: Auto-Refactor", 
+        "category": "PORTIER",
+        "icon": "$(tools)"
+      },
+      {
+        "command": "portier.explain",
+        "title": "PORTIER: Explain Code",
+        "category": "PORTIER", 
+        "icon": "$(info)"
+      },
+      {
+        "command": "portier.tests",
+        "title": "PORTIER: Generate Unit Tests",
+        "category": "PORTIER",
+        "icon": "$(beaker)"
+      },
+      {
+        "command": "portier.format",
+        "title": "PORTIER: Format Active File",
+        "category": "PORTIER",
+        "icon": "$(symbol-namespace)"
+      },
+      {
+        "command": "portier.fix",
+        "title": "PORTIER: Fix Issues",
+        "category": "PORTIER", 
+        "icon": "$(lightbulb)"
+      },
+      {
+        "command": "portier.dashboard",
+        "title": "PORTIER: Open Agent Dashboard",
+        "category": "PORTIER",
+        "icon": "$(dashboard)"
+      },
+      {
+        "command": "portier.logs",
+        "title": "PORTIER: View Logs",
+        "category": "PORTIER",
+        "icon": "$(output)"
+      },
+      {
+        "command": "portier.reload",
+        "title": "PORTIER: Reload Agent Status", 
+        "category": "PORTIER",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "portier.createFile",
+        "title": "PORTIER: Create File (AI)",
+        "category": "PORTIER",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "portier.applySuggestions",
+        "title": "PORTIER: Apply Suggestions",
+        "category": "PORTIER",
+        "icon": "$(check)"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "portier.analyzeFile",
+          "group": "portier@1",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "portier.refactor", 
+          "group": "portier@2",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "portier.explain",
+          "group": "portier@3",
+          "when": "editorHasSelection"  
+        },
+        {
+          "command": "portier.fix",
+          "group": "portier@4",
+          "when": "editorHasSelection"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "portier.format",
+          "group": "navigation@1",
+          "when": "resourceExtname =~ /\\.(py|js|ts|jsx|tsx|java|c|cpp|cs|php|rb|go|rs|swift)$/"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "portier.analyzeFile",
+        "key": "ctrl+shift+a",
+        "mac": "cmd+shift+a",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "portier.refactor", 
+        "key": "ctrl+shift+r",
+        "mac": "cmd+shift+r", 
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "portier.explain",
+        "key": "ctrl+shift+e",
+        "mac": "cmd+shift+e",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "portier.dashboard",
+        "key": "ctrl+shift+d",
+        "mac": "cmd+shift+d"
+      }
+    ],
+    "configuration": {
+      "title": "PORTIER",
+      "properties": {
+        "portier.agentUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:12348",
+          "description": "PORTIER opena5_vscode Agent URL"
+        },
+        "portier.dashboardUrl": {
+          "type": "string", 
+          "default": "http://127.0.0.1:12349",
+          "description": "PORTIER Dashboard URL"
+        },
+        "portier.bearerToken": {
+          "type": "string",
+          "default": "",
+          "description": "Bearer token for agent authentication"
+        },
+        "portier.autoConnect": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically connect to agent on startup"
+        },
+        "portier.statusBarEnabled": {
+          "type": "boolean", 
+          "default": true,
+          "description": "Show PORTIER status in status bar"
+        },
+        "portier.codeLensEnabled": {
+          "type": "boolean",
+          "default": true, 
+          "description": "Enable inline CodeLens actions"
+        },
+        "portier.logLevel": {
+          "type": "string",
+          "enum": ["debug", "info", "warn", "error"],
+          "default": "info",
+          "description": "Logging level for PORTIER extension"
+        }
+      }
+    },
+    "views": {
+      "explorer": [
+        {
+          "id": "portierPanel",
+          "name": "PORTIER Agent",
+          "when": "portier:connected"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "panel": [
+        {
+          "id": "portier",
+          "title": "PORTIER",
+          "icon": "$(robot)"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "node ./node_modules/typescript/bin/tsc -p ./",
+    "watch": "node ./node_modules/typescript/bin/tsc -watch -p ./",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.86.0",
+    "@types/node": "^18.0.0",
+    "typescript": "^5.0.0",
+    "vsce": "^2.21.0"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2",
+    "ws": "^8.14.0"
+  }
+}

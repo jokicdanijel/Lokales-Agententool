@@ -1,0 +1,14 @@
+{
+  "sp_id": "1764243124406",
+  "timestamp": "2025-11-27T11:32:04.406299+00:00",
+  "source": "opena10",
+  "destination": "opena9",
+  "type": "RESP",
+  "data": {
+    "status": "success",
+    "event_id": 1,
+    "call_id": "test_call_1764243124",
+    "campaign_id": "test_campaign_1764243124",
+    "ingested_at": "2025-11-27T11:32:04"
+  }
+}

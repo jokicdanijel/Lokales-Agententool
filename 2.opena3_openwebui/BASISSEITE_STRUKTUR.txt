@@ -1,0 +1,275 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 📄 OPENA3 BASISSEITE - STRUKTUR ÜBERSICHT                   ║
+║                         Einheitliches Design System                         ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+🏗️  KERN-ARCHITEKTUR
+═════════════════════════════════════════════════════════════════════════════
+
+┌─ BASE.HTML (Zentrale Template-Basis) ─────────────────────────────────────┐
+│                                                                             │
+│  ┌─ GLOBALE STYLES ──────────────────────────────────────────────────────┐ │
+│  │  • Basis-Reset (*, margin, padding, box-sizing)                        │ │
+│  │  • Body Gradient Background                                             │ │
+│  │  • Container max-width: 1400px                                          │ │
+│  │  • Font-Familie: Segoe UI                                              │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                             │
+│  ┌─ NAVIGATION BAR (.navbar) ────────────────────────────────────────────┐ │
+│  │  ┌──────────────────────┐           ┌──────────────────────────────┐  │ │
+│  │  │ 🤖 OpenA3 (Logo)     │           │ 📊 🛠️ 📖 ⚙️ (Links)          │  │ │
+│  │  │ .nav-brand           │           │ .nav-links a                 │  │ │
+│  │  └──────────────────────┘           └──────────────────────────────┘  │ │
+│  │  Glasmorphism: rgba(255,255,255,0.1) + backdrop-filter: blur(10px)    │ │
+│  │  Responsive: flex-wrap, mobile: flex-direction: column                  │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                             │
+│  ┌─ HEADER ──────────────────────────────────────────────────────────────┐ │
+│  │                                                                        │ │
+│  │          🧠 OpenA3                                                    │ │
+│  │          AI Agent Dashboard System                                    │ │
+│  │          Version 3.0 | Powered by Ollama + LocalAgent-Pro             │ │
+│  │                                                                        │ │
+│  │  <h1> 3.5em | text-shadow: 2px 2px 4px rgba(0,0,0,0.3)               │ │
+│  │  <p> 1.2em | opacity: 0.95                                            │ │
+│  │  .subtitle: 0.9em | opacity: 0.8                                       │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                             │
+│  ┌─ CONTENT CONTAINERS ──────────────────────────────────────────────────┐ │
+│  │                                                                        │ │
+│  │  ┌─ .dashboard ┐  ┌─ .tools-grid ┐  ┌─ .card ┐  ┌─ .alert ┐         │ │
+│  │  │ Grid Layout │  │ Grid Layout  │  │ White  │  │ Color   │         │ │
+│  │  │ minmax:280  │  │ minmax:350   │  │ Box    │  │ Coded   │         │ │
+│  │  │ gap: 20px   │  │ gap: 25px    │  │ Hover  │  │ Auto    │         │ │
+│  │  │             │  │              │  │        │  │ Fade    │         │ │
+│  │  └─────────────┘  └──────────────┘  └────────┘  └─────────┘         │ │
+│  │                                                                        │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                             │
+│  ┌─ BUTTON SYSTEM ───────────────────────────────────────────────────────┐ │
+│  │                                                                        │ │
+│  │  ┌──────────────────┐  ┌──────────────────┐                           │ │
+│  │  │ .btn-primary     │  │ .btn-secondary   │                           │ │
+│  │  │ Gradient         │  │ Light Background │                           │ │
+│  │  │ #667eea→#764ba2  │  │ + Border         │                           │ │
+│  │  │ Hover: Shadow    │  │ Hover: Lighter   │                           │ │
+│  │  └──────────────────┘  └──────────────────┘                           │ │
+│  │                                                                        │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                             │
+│  ┌─ FORM ELEMENTS ───────────────────────────────────────────────────────┐ │
+│  │                                                                        │ │
+│  │  .tool-input                                                          │ │
+│  │  ├─ <label> (font-weight: 600)                                       │ │
+│  │  ├─ <input> (padding: 10px, border: 1px solid #ddd)                  │ │
+│  │  ├─ <textarea> (min-height: 100px, resize: vertical)                 │ │
+│  │  ├─ <select> (same styling)                                          │ │
+│  │  └─ :focus (border: #667eea, box-shadow: rgba(102,126,234,0.1))      │ │
+│  │                                                                        │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                             │
+│  ┌─ FOOTER ──────────────────────────────────────────────────────────────┐ │
+│  │  Copyright © 2025 OpenA3 | Links | Responsive                        │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+🎨  FARBSCHEMA
+═════════════════════════════════════════════════════════════════════════════
+
+Primary Gradient:
+  ┌─────────────────────┐
+  │  #667eea    #764ba2 │
+  │  (Deep Blue) (Purple)
+  └─────────────────────┘
+  Verwendet in: Buttons, Hover-Effekte, Navigation
+
+Status Farben:
+  ┌──────────────────────────────────────┐
+  │ ✅ Success: #d4edda / #155724        │
+  │ ❌ Error:   #f8d7da / #721c24        │
+  │ ℹ️  Info:    #d1ecf1 / #0c5460       │
+  │ ⚠️  Warning: #fff3cd / #856404       │
+  └──────────────────────────────────────┘
+
+Text Farben:
+  ┌──────────────────────┐
+  │ Primary:  #333       │
+  │ Secondary: #666      │
+  │ Light:    #999       │
+  │ White:    #fff       │
+  └──────────────────────┘
+
+📐  RESPONSIVE BREAKPOINTS
+═════════════════════════════════════════════════════════════════════════════
+
+Desktop (> 768px)          Mobile (≤ 768px)
+┌─────────────────┐       ┌──────────────────┐
+│ .navbar         │       │ .navbar          │
+│ grid-template   │  →→→→→│ flex-direction   │
+│ columns: auto   │       │ columns: column  │
+│                 │       │                  │
+│ nav-links       │       │ nav-links        │
+│ gap: 30px       │       │ gap: 10px        │
+│                 │       │ width: 100%      │
+│                 │       │                  │
+│ .dashboard      │       │ .dashboard       │
+│ columns: repeat │       │ columns: 1fr     │
+│ (auto-fit,...)  │       │                  │
+└─────────────────┘       └──────────────────┘
+
+📋  KOMPONENTEN-HIERARCHIE
+═════════════════════════════════════════════════════════════════════════════
+
+┌─ INDEX.HTML (Dashboard) ───────────────────────────────────────────────────┐
+│                                                                             │
+│ ├─ .navbar (Navigation)                                                   │
+│ ├─ <header> (Titel + Subtitle)                                            │
+│ ├─ .dashboard (Grid Container)                                             │
+│ │  ├─ .card (LocalAgent-Pro)                                              │
+│ │  ├─ .card (OpenWebUI)                                                   │
+│ │  ├─ .card (Ollama)                                                      │
+│ │  └─ ...                                                                 │
+│ ├─ .services-grid                                                         │
+│ ├─ .metrics (System Metrics)                                              │
+│ ├─ .tools-section (Verfügbare Tools)                                      │
+│ ├─ .logs-section (System Logs)                                            │
+│ ├─ .interactive-tools (Quick Tools)                                       │
+│ ├─ .api-tester (API Test Panel)                                           │
+│ ├─ .about-section (Info)                                                  │
+│ ├─ <footer>                                                               │
+│ └─ .refresh-btn (Fixed Position)                                          │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ TOOLS.HTML (Tools Panel) ─────────────────────────────────────────────────┐
+│                                                                             │
+│ ├─ .navbar (Navigation)                                                   │
+│ ├─ <header> (Titel + Subtitle)                                            │
+│ ├─ .tools-grid (8 Tool-Cards)                                             │
+│ │  ├─ .tool-card (write_file)                                             │
+│ │  ├─ .tool-card (read_file)                                              │
+│ │  ├─ .tool-card (delete_file)                                            │
+│ │  ├─ .tool-card (shell_exec)                                             │
+│ │  ├─ .tool-card (fetch_webpage)                                          │
+│ │  ├─ .tool-card (execute_query)                                          │
+│ │  ├─ .tool-card (list_directory)                                         │
+│ │  └─ .tool-card (execute_function)                                       │
+│ ├─ <footer>                                                               │
+│ └─ JavaScript: Tool-Ausführung + API-Calls                                │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+🔄  RESPONSIVE FLOW
+═════════════════════════════════════════════════════════════════════════════
+
+Desktop (1400px):
+┌──────────────────────────────────────────────────┐
+│ Header                                           │
+├──────────────────────────────────────────────────┤
+│ Card 1        │ Card 2        │ Card 3           │
+├──────────────────────────────────────────────────┤
+│ Card 4        │ Card 5        │ Card 6           │
+└──────────────────────────────────────────────────┘
+
+Tablet (900px):
+┌──────────────────────────────────────────────────┐
+│ Header                                           │
+├──────────────────────────────────────────────────┤
+│ Card 1        │ Card 2                           │
+├──────────────────────────────────────────────────┤
+│ Card 3        │ Card 4                           │
+├──────────────────────────────────────────────────┤
+│ Card 5        │ Card 6                           │
+└──────────────────────────────────────────────────┘
+
+Mobile (375px):
+┌──────────────────────────────────────────────────┐
+│ Header                                           │
+├──────────────────────────────────────────────────┤
+│ Card 1                                           │
+├──────────────────────────────────────────────────┤
+│ Card 2                                           │
+├──────────────────────────────────────────────────┤
+│ Card 3                                           │
+├──────────────────────────────────────────────────┤
+│ ... (Single Column Layout)                       │
+└──────────────────────────────────────────────────┘
+
+✨  ANIMATIONS & EFFECTS
+═════════════════════════════════════════════════════════════════════════════
+
+Hover Effekte:
+  • .card:hover           → transform: translateY(-5px), shadow++
+  • .btn:hover            → transform: translateY(-2px), shadow++
+  • .nav-links a:hover    → opacity: 0.8, border-bottom: 2px solid white
+  • input:focus           → border: #667eea, box-shadow: rgba(...)
+
+Keyframes:
+  • @keyframes slideIn    → 0%: opacity 0, translateY(20px) → 100%: 1, 0
+  • @keyframes fadeIn     → 0%: opacity 0 → 100%: opacity 1
+  • @keyframes pulse      → scale animation
+
+Transitions:
+  • All: 0.3s ease
+  • Buttons: 0.2s
+  • Forms: 0.3s
+
+📊  DATEISTRUKTUR
+═════════════════════════════════════════════════════════════════════════════
+
+2.opena3_openwebui/
+├── base.html (13 KB)                   ← Template-Basis
+│   ├─ Alle globalen Styles (1500+ Zeilen CSS)
+│   ├─ Navigation Component
+│   ├─ Alert System
+│   ├─ Button Styles
+│   ├─ Form Styles
+│   └─ Footer Component
+│
+├── index.html (41 KB)                  ← Dashboard (angepasst)
+│   ├─ base.html Struktur + Navigation
+│   ├─ Dashboard Cards (LocalAgent, OpenWebUI, Ollama)
+│   ├─ Metrics Section
+│   ├─ Tools Section
+│   ├─ Logs Viewer
+│   ├─ Interactive Tools
+│   ├─ API Tester
+│   └─ About Section
+│
+├── tools.html (27 KB)                  ← Tools Panel (angepasst)
+│   ├─ base.html Struktur + Navigation
+│   ├─ 8 Tool-Cards (write, read, delete, shell, fetch, query, list, exec)
+│   ├─ Form Elements
+│   ├─ Result Panels
+│   └─ JavaScript Tool-Ausführung
+│
+└── BASISSEITE_DOKUMENTATION.md         ← Diese Dokumentation
+
+✅  STATUS
+═════════════════════════════════════════════════════════════════════════════
+
+Fertiggestellt:
+✅ base.html (Zentrale Template-Basis)
+✅ index.html (Mit base.html Struktur)
+✅ tools.html (Mit base.html Struktur)
+✅ Konsistente Navigation auf allen Seiten
+✅ Responsive Design (Mobile, Tablet, Desktop)
+✅ Button & Form Styles
+✅ Alert System
+✅ Footer & Branding
+✅ Dokumentation
+
+Nächste Schritte:
+□ Weitere Seiten standardisieren (Docs, Settings, etc.)
+□ Dark Mode Support
+□ CSS Minifikation
+□ JavaScript Module Bundling
+□ PWA Support
+□ Performance Optimization
+
+═════════════════════════════════════════════════════════════════════════════
+
+Generiert: 24. November 2025 | Version: 3.0 | Status: ✅ COMPLETE
+
+╚══════════════════════════════════════════════════════════════════════════════╝

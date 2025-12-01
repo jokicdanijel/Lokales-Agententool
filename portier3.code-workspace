@@ -1,0 +1,82 @@
+{
+    "folders": [
+        { "path": "." },
+        { "path": "1.opena1&2_portier" },
+        { "path": "2.opena3_openwebui" },
+        { "path": "19.opena20_dashboard_agent" },
+        { "path": "20.opena21_workflow" },
+        { "path": "3.opena4_telegram" },
+        { "path": "4.opena5_vscode" },
+        { "path": "5.opena6_browser" },
+        { "path": "6.opena7_email" },
+        { "path": "7.opena8_whatsapp" },
+        { "path": "8.opena9_telephone" },
+        { "path": "9.opena10_call_tracking" },
+        { "path": "10.opena11_unlock" },
+        { "path": "11.opena12_social_media" },
+        { "path": "12.opena13_influencer" },
+        { "path": "13.opena14_calendar" },
+        { "path": "14.opena15_html" },
+        { "path": "15.opena16_shop" },
+        { "path": "16.opena17_homepagecreator" },
+        { "path": "17.opena18_CMR" },
+        { "path": "18.opena19_Aktien&Crypto" }
+    ],
+    "settings": {
+        "python.defaultInterpreterPath": "/usr/bin/python3",
+        "python.analysis.typeCheckingMode": "basic",
+        "python.languageServer": "Pylance",
+        "files.exclude": {
+            "**/__pycache__": true,
+            "**/.mypy_cache": true,
+            "**/.pytest_cache": true,
+            "**/venv*": true
+        },
+        "files.watcherExclude": {
+            "**/.venv/**": true,
+            "**/tmp/**": true
+        },
+        "explorer.confirmDelete": true,
+        "editor.formatOnSave": true,
+        "editor.wordWrap": "on",
+        "terminal.integrated.defaultProfile.linux": "bash"
+    },
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "Start ALL Agents",
+                "type": "shell",
+                "command": "./bin/start_all_agents.sh",
+                "problemMatcher": []
+            },
+            {
+                "label": "Stop ALL Agents",
+                "type": "shell",
+                "command": "./bin/stop_all_agents.sh",
+                "problemMatcher": []
+            },
+            {
+                "label": "Restart Dashboard",
+                "type": "shell",
+                "command": "cd 19.opena20_dashboard_agent && pkill -f main_dashboard.py; nohup python3 main_dashboard.py > logs/dashboard.nohup.log 2>&1 &",
+                "problemMatcher": []
+            },
+            {
+                "label": "Health Check",
+                "type": "shell",
+                "command": "bash ./scripts/check_health.sh",
+                "problemMatcher": []
+            }
+        ]
+    },
+    "extensions": {
+        "recommendations": [
+            "ms-python.python",
+            "ms-python.vscode-pylance",
+            "ms-python.black-formatter",
+            "github.copilot",
+            "github.copilot-chat"
+        ]
+    }
+}

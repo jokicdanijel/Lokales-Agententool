@@ -1,0 +1,12 @@
+{
+  "ts": "2025-12-01T03:15:37.863098Z",
+  "src": "opena3",
+  "dst": "dashboard",
+  "kind": "RESP",
+  "body": {
+    "model": "llama3.1:8b",
+    "content_length": 4,
+    "timestamp": "2025-12-01T03:15:37.863014Z"
+  },
+  "strict": true
+}

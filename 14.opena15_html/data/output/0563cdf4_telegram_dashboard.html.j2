@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Telegram Agent Dashboard</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<style>
+        :root { --telegram-blue: #0088cc; --success: #4CAF50; }
+        body {
+            background: linear-gradient(135deg, var(--telegram-blue), #1da1f2);
+            min-height: 100vh;
+            padding: 40px 0;
+        }
+        .dashboard-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .endpoint-item {
+            background: #f8f9fa;
+            padding: 12px;
+            margin: 8px 0;
+            border-left: 4px solid var(--telegram-blue);
+        }
+    </style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/></head>
+<body>
+<div class="container">
+<!-- Header -->
+<div class="dashboard-card text-center">
+<h1 class="display-4">📱 Telegram Agent</h1>
+<p class="lead">Bot-Connector (Telegram) – empfängt/sendet Nachrichten und integriert in die Portier-Architektur.</p>
+<div class="mt-3">
+<span class="status-badge bg-success text-white">✅ RUNNING</span>
+<span class="status-badge bg-info text-white">Port 12348</span>
+<span class="status-badge bg-secondary text-white">telep</span>
+</div>
+</div>
+<!-- Webhook Status -->
+<div class="dashboard-card">
+<h3>🔗 Webhook Status</h3>
+<div class="row mt-3">
+<div class="col-md-6">
+<h5>Inbound</h5>
+<div class="endpoint-item">
+<code>POST /telegram/webhook</code>
+<p class="mb-0 small text-muted">Telegram Updates empfangen</p>
+</div>
+</div>
+<div class="col-md-6">
+<h5>Outbound</h5>
+<div class="endpoint-item">
+<code>POST /outbox</code>
+<p class="mb-0 small text-muted">Nachrichten senden</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Message Flow -->
+<div class="dashboard-card">
+<h3>💬 Nachrichtenfluss</h3>
+<div class="text-center py-4">
+<div class="d-inline-block p-3 bg-light rounded">Telegram API</div>
+<span class="mx-2">→</span>
+<div class="d-inline-block p-3 bg-primary text-white rounded">telep</div>
+<span class="mx-2">→</span>
+<div class="d-inline-block p-3 bg-light rounded">opena2 (Archiv)</div>
+<span class="mx-2">→</span>
+<div class="d-inline-block p-3 bg-light rounded">kordp (Dispatch)</div>
+</div>
+</div>
+<!-- Endpoints -->
+<div class="dashboard-card">
+<h3>🔌 API Endpoints</h3>
+<div class="endpoint-item">RUNNING (PID: siehe logs/opena4.pid)</div>
+</div>
+<!-- Security -->
+<div class="dashboard-card">
+<h3>🔒 Security</h3>
+<ul>
+<li>Webhook Secret Token (Query Parameter)</li>
+<li>Rate-Limiting aktiv</li>
+<li>TLS/HTTPS enforced (Production)</li>
+<li>Request Validation</li>
+</ul>
+</div>
+<!-- Quick Actions -->
+<div class="dashboard-card">
+<h3>⚡ Quick Actions</h3>
+<div class="btn-group" role="group">
+<button class="btn btn-primary" onclick="checkHealth()">Health Check</button>
+<button class="btn btn-info" onclick="viewMetrics()">Metriken</button>
+<button class="btn btn-success" onclick="testWebhook()">Webhook Test</button>
+</div>
+</div>
+</div>
+<script>
+        function checkHealth() {
+            fetch('http://localhost:12348/health')
+                .then(r => r.json())
+                .then(data => alert(JSON.stringify(data, null, 2)))
+                .catch(e => alert('Fehler: ' + e));
+        }
+        function viewMetrics() {
+            window.open('http://localhost:12348/metrics', '_blank');
+        }
+        function testWebhook() {
+            alert('Sende Testnachricht an deinen Telegram Bot!');
+        }
+    </script>
+</body>
+</html>

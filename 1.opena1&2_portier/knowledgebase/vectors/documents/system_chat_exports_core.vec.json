@@ -1,0 +1,8 @@
+{
+  "document_id": "system_chat_exports_core",
+  "source": "knowledge/processed/system_chat_exports_core.md",
+  "model": "text-embedding-3-large",
+  "embedding": [],
+  "status": "pending",
+  "strict": true
+}

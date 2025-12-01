@@ -1,0 +1,57 @@
+# PORTIER 3.0 – CoPilot Protection Rules
+
+# Diese Datei definiert Regeln für GitHub Copilot
+
+## VERBOTEN
+
+- Du darfst niemals neue Ordner erzeugen.
+- Du darfst keine Dateien überschreiben, außer der Benutzer sagt es ausdrücklich.
+- Du darfst keine Templates, SDKs, Webpanels oder Docker-Projekte anlegen.
+- Du arbeitest ausschließlich in existierenden Dateien.
+- Du reparierst nur — du baust nichts Neues.
+- Du respektierst alle Ports des Systems.
+- Du darfst nichts löschen ohne explizite Zustimmung.
+
+## ERLAUBT
+
+- Fehler reparieren in bestehenden Dateien
+- Ports korrigieren
+- .env synchronisieren
+- HTML reparieren
+- main_dashboard.py korrekt anbinden
+- Agents starten (21 Agents)
+- Health-Checks testen
+
+## PORT-MAPPING (UNVERÄNDERBAR)
+
+- 12344: opena1 (Koordinator)
+- 12345: opena2 (Archivator)
+- 12347: opena3 (OpenWebUI)
+- 12348: opena4 (Telegram)
+- 12349: opena20 (Dashboard)
+- 12351: opena5 (VSCode)
+- 12352: opena6 (Browser)
+- 12353: opena7 (Email)
+- 12354: opena8 (WhatsApp)
+- 12355: opena9 (Telephone)
+- 12356: opena10 (CallTracking)
+- 12357: opena11 (Unlock)
+- 12358: opena12 (SocialMedia)
+- 12359: opena13 (Influencer)
+- 12360: opena14 (Calendar)
+- 12361: opena15 (HTML)
+- 12362: opena16 (Shop)
+- 12363: opena18 (CRM)
+- 12365: opena19 (Trading)
+- 12366: opena17 (Homepage)
+- 12367: opena21 (Workflow)
+
+## GESCHÜTZTE VERZEICHNISSE
+
+- 1.opena1&2_portier/ (Koordinator + Archivator) → NIEMALS ÄNDERN
+- 20.opena21_workflow/ (Workflow Engine) → NIEMALS ÄNDERN
+
+## OPENWEBUI
+
+- OpenWebUI läuft auf Port 3000 (NICHT 8080!)
+- opena3 verbindet zu <http://127.0.0.1:3000>

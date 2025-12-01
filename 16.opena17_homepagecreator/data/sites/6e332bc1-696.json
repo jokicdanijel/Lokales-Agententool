@@ -1,0 +1,25 @@
+{
+  "site_id": "6e332bc1-696",
+  "generator": "static",
+  "template": "default",
+  "pages": [
+    {
+      "slug": "about",
+      "title": "About Us",
+      "content": "<p>About page content.</p>",
+      "meta_description": null,
+      "meta_keywords": [],
+      "is_homepage": true
+    }
+  ],
+  "branding": {
+    "site_name": "Command Test Site",
+    "tagline": "Generated via command endpoint",
+    "logo_url": null,
+    "favicon_url": null,
+    "color_primary": "#007bff",
+    "color_secondary": "#6c757d"
+  },
+  "created_at": "2025-11-27T13:19:26.532303+00:00",
+  "output_path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.opena17_homepagecreator/data/output/6e332bc1-696"
+}

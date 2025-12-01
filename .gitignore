@@ -81,3 +81,15 @@ ChatGPT\ -\ Agent\ *
 # Drawio backups
 docs/architektur/*.drawio.bak
 *.drawio.bak
+
+# Empty documentation files
+docs/BRIDGE_PHASE_1_SUMMARY.md
+docs/HINWEIS.md
+docs/BRIDGE_API.md
+docs/SESSION_11_SCHRITT_2_3_4_SUMMARY.md
+docs/validation_report.md
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class

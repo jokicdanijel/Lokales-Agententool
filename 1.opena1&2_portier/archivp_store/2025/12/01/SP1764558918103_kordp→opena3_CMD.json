@@ -1,0 +1,14 @@
+{
+  "ts": "2025-12-01T03:15:18.103273Z",
+  "src": "kordp",
+  "dst": "opena3",
+  "kind": "CMD",
+  "body": {
+    "tool": "test_tool",
+    "parameters": {
+      "x": 1
+    },
+    "timestamp": "2025-12-01T03:15:18.103149Z"
+  },
+  "strict": true
+}

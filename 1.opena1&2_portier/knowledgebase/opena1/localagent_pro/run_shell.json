@@ -1,0 +1,14 @@
+{
+  "name": "run_shell",
+  "description": "Führt ein Shell-Kommando aus. Nur im Live-Modus erlaubt.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "cmd": {
+        "type": "string",
+        "description": "Das auszuführende Shell-Kommando."
+      }
+    },
+    "required": ["cmd"]
+  }
+}

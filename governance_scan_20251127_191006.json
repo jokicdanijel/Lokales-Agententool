@@ -1,0 +1,26 @@
+{
+  "timestamp": "2025-11-27T19:10:06.722293",
+  "violations": {
+    "archiv": [],
+    "venv_leaks": [],
+    "tests_displaced": [
+      "_conflicts/2025-11-09_032949/test_jwt_auth.py",
+      "_conflicts/2025-11-09_032949/test_phase5.py",
+      "_conflicts/2025-11-09_032949/test_openwebui.py",
+      "_conflicts/2025-11-09_032949/test_agent.py",
+      "_conflicts/2025-11-09_032949/test_phase_4_agents.py"
+    ],
+    "port_violations": [
+      "1.opena1&2_portier/tool_registry.py",
+      "scripts/governance_correction.py",
+      "1.opena1&2_portier/knowledgebase/opena1/localagent_pro/localagent_pro_server.py",
+      "1.opena1&2_portier/knowledgebase/opena1/localagent_pro/simple_agent.py",
+      "2.opena3_openwebui/LocalAgent-Pro/opena6/openwebui_tool_registration.py",
+      "2.opena3_openwebui/portier_env/lib/python3.12/site-packages/pip/_vendor/urllib3/exceptions.py"
+    ],
+    "doc_missing": [
+      "docs/QUICKSTART.md"
+    ]
+  },
+  "total": 12
+}

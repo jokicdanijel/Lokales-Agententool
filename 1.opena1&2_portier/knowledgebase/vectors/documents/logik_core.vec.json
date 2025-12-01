@@ -1,0 +1,8 @@
+{
+  "document_id": "logik_core",
+  "source": "knowledge/processed/logik_core.md",
+  "model": "text-embedding-3-large",
+  "embedding": [],
+  "status": "pending",
+  "strict": true
+}

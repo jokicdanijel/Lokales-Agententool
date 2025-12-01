@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>opena3 – OpenWebUI Terminal Agent Status</title>
+    <style>
+        :root {
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #212529;
+            --text-muted: #6c757d;
+            --border: #dee2e6;
+            --primary: #0d6efd;
+            --success: #198754;
+            --warning: #ffc107;
+            --info: #0dcaf0;
+            --code-bg: #e9ecef;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .container { max-width: 960px; margin: 0 auto; }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        header .subtitle { opacity: 0.9; font-size: 1.1rem; }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+        }
+        .badge-success { background: var(--success); color: white; }
+        .badge-info { background: var(--info); color: black; }
+        .badge-warning { background: var(--warning); color: black; }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .meta-item {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 6px;
+        }
+        .meta-item .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .meta-item .value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+        ul { list-style: none; }
+        ul li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        ul li:last-child { border-bottom: none; }
+        ul li::before {
+            content: "→";
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+        code {
+            background: var(--code-bg);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-family: "SF Mono", Monaco, "Courier New", monospace;
+            font-size: 0.9em;
+        }
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        a:hover { text-decoration: underline; }
+        .endpoint-list { margin-top: 1rem; }
+        .endpoint {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background: var(--code-bg);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+        .endpoint .method {
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            margin-right: 0.75rem;
+            min-width: 50px;
+            text-align: center;
+        }
+        .method-get { background: var(--success); color: white; }
+        .method-post { background: var(--primary); color: white; }
+        .endpoint .path { font-family: monospace; flex: 1; }
+        .endpoint .desc { color: var(--text-muted); font-size: 0.85rem; }
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>opena3 (owuip) – Status Dashboard</h1>
+            <p class="subtitle">OpenWebUI Terminal Agent | PORTIER 3.0</p>
+            <div style="margin-top: 1rem;">
+                <span class="badge badge-success">✅ Running</span>
+                <span class="badge badge-info">Port 12347</span>
+                <span class="badge badge-warning">v2.0.1</span>
+            </div>
+        </header>
+
+        <section class="card">
+            <h2>🤖 Agent-Info</h2>
+            <div class="meta-grid">
+                <div class="meta-item">
+                    <div class="label">Name</div>
+                    <div class="value">opena3</div>
+                </div>
+                <div class="meta-item">
+                    <div class="label">Kürzel</div>
+                    <div class="value">owuip</div>
+                </div>
+                <div class="meta-item">
+                    <div class="label">Version</div>
+                    <div class="value">2.0.1</div>
+                </div>
+                <div class="meta-item">
+                    <div class="label">Port</div>
+                    <div class="value">12347</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>🔗 Backend-Verbindungen</h2>
+            <ul>
+                <li><strong>LocalAgent-Pro</strong> – <code>http://127.0.0.1:8001</code> (Ollama-Bridge, llama3.1:8b)</li>
+                <li><strong>OpenWebUI-Adapter</strong> – <code>http://127.0.0.1:12350</code> (HTTP-Forwarder)</li>
+                <li><strong>opena1 (kordp)</strong> – <code>http://127.0.0.1:12344</code> (Koordinator)</li>
+                <li><strong>opena2 (archivp)</strong> – <code>http://127.0.0.1:12345</code> (Archivator)</li>
+                <li><strong>opena20 (Dashboard)</strong> – <code>http://127.0.0.1:12349</code> (HyperDashboard)</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>💚 Health & Models</h2>
+            <p style="margin-bottom: 1rem;">
+                Der <code>/health</code>-Endpoint liefert aggregierte Status-Informationen:
+            </p>
+            <ul>
+                <li><code>status</code> – "ok" wenn Agent läuft</li>
+                <li><code>agent</code> – Agent-Name (opena3)</li>
+                <li><code>port</code> – Service-Port (12347)</li>
+                <li><code>uptime</code> – Laufzeit in Sekunden</li>
+                <li><code>openwebui_available</code> – Backend erreichbar?</li>
+                <li><code>models_count</code> – Anzahl verfügbarer Modelle</li>
+            </ul>
+            <div class="endpoint-list">
+                <div class="endpoint">
+                    <span class="method method-get">GET</span>
+                    <span class="path">/health</span>
+                    <span class="desc">Health-Check mit Status-Aggregation</span>
+                </div>
+                <div class="endpoint">
+                    <span class="method method-get">GET</span>
+                    <span class="path">/models/list</span>
+                    <span class="desc">Config-Modelle + Backend-Modelle</span>
+                </div>
+                <div class="endpoint">
+                    <span class="method method-get">GET</span>
+                    <span class="path">/v1/models</span>
+                    <span class="desc">OpenAI-kompatibler Alias</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>💬 Chat-Endpoints</h2>
+            <p style="margin-bottom: 1rem;">
+                opena3 leitet Chat-Requests an LocalAgent-Pro weiter, welches Ollama (llama3.1:8b) anspricht.
+            </p>
+            <div class="endpoint-list">
+                <div class="endpoint">
+                    <span class="method method-post">POST</span>
+                    <span class="path">/chat</span>
+                    <span class="desc">Non-Streaming Chat (Dashboard → opena3 → LocalAgent-Pro)</span>
+                </div>
+                <div class="endpoint">
+                    <span class="method method-post">POST</span>
+                    <span class="path">/chat/stream</span>
+                    <span class="desc">SSE-Streaming (Events: start, chunk, end, error)</span>
+                </div>
+                <div class="endpoint">
+                    <span class="method method-post">POST</span>
+                    <span class="path">/v1/chat/completions</span>
+                    <span class="desc">OpenAI-kompatibler Alias</span>
+                </div>
+                <div class="endpoint">
+                    <span class="method method-post">POST</span>
+                    <span class="path">/command</span>
+                    <span class="desc">Command-Execution-Endpoint</span>
+                </div>
+                <div class="endpoint">
+                    <span class="method method-post">POST</span>
+                    <span class="path">/invoke</span>
+                    <span class="desc">Direct Tool Invocation</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>📦 Safepoints & Archiv</h2>
+            <p>
+                Jeder Chat-Request erzeugt CMD/RESP-Safepoints im Archiv:
+            </p>
+            <ul>
+                <li><strong>Pfad:</strong> <code>BASE_ROOT/1.opena1&2_portier/archivp_store</code></li>
+                <li><strong>Format:</strong> <code>SP&lt;laufnummer&gt;_src→dst_{CMD|RESP}.json</code></li>
+                <li><strong>Index:</strong> <code>index.jsonl</code> (append-only)</li>
+                <li><strong>Stream-Safepoints:</strong> RESP-Safepoint nach Stream-Ende mit Zusammenfassung</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>🔄 Option-2-Flow</h2>
+            <p>
+                Der Nachrichtenfluss im PORTIER-System:
+            </p>
+            <ul>
+                <li><strong>Hinweg:</strong> OpenAI → opena1 → opena2 → opena3 (owuip)</li>
+                <li><strong>Rückweg:</strong> opena3 → opena2 (Safepoint RESP)</li>
+                <li><strong>Kein Bypass:</strong> Direktcalls zu opena3 sind verboten (nur via kordp)</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>opena3 – OpenWebUI Terminal Agent | ELION Team | Stand: 1. Dezember 2025</p>
+            <p>
+                <a href="opena3_dev.html">Developer-Dokumentation</a> |
+                <a href="../TODO.md">TODO-Liste</a> |
+                <a href="../README.md">README</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

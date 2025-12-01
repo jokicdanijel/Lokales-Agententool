@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 OPENA11 Unlock Master - PORTIER PAS-6.0 Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="logo-section">
+                <span class="logo-icon">🔐</span>
+                <div>
+                    <h1>Unlock Master 6.0</h1>
+                    <p class="subtitle">RBAC • Permission Store • WORM Audit</p>
+                </div>
+                <span class="version-badge">v6.0.0 PAS-6.0</span>
+            </div>
+            <div class="status-section">
+                <span id="connection-status" class="status-indicator status-loading">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Verbinde...</span>
+                </span>
+                <span id="uptime" class="uptime-display">--:--:--</span>
+            </div>
+        </header>
+
+        <!-- Main Grid -->
+        <main class="main-grid">
+            <!-- Status Cards Row -->
+            <section class="status-cards">
+                <div class="card status-card">
+                    <div class="card-icon">👥</div>
+                    <div class="card-content">
+                        <h3>Subjects</h3>
+                        <span id="subjects-count" class="metric-value">0</span>
+                    </div>
+                </div>
+                <div class="card status-card">
+                    <div class="card-icon">🔑</div>
+                    <div class="card-content">
+                        <h3>Berechtigungen</h3>
+                        <span id="permissions-count" class="metric-value highlight">0</span>
+                    </div>
+                </div>
+                <div class="card status-card">
+                    <div class="card-icon">✅</div>
+                    <div class="card-content">
+                        <h3>Prüfungen</h3>
+                        <span id="checks-count" class="metric-value success">0</span>
+                    </div>
+                </div>
+                <div class="card status-card">
+                    <div class="card-icon">📜</div>
+                    <div class="card-content">
+                        <h3>Audit Events</h3>
+                        <span id="audit-count" class="metric-value">0</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Left Panel -->
+            <section class="left-panel">
+                <!-- Authentication -->
+                <div class="card">
+                    <h2>🔒 Authentifizierung</h2>
+                    <div class="form-group">
+                        <label for="bearer-token">Bearer Token</label>
+                        <input type="password" id="bearer-token" placeholder="Token eingeben...">
+                        <button onclick="saveToken()" class="btn btn-secondary btn-sm">Speichern</button>
+                    </div>
+                </div>
+
+                <!-- Grant Permission -->
+                <div class="card">
+                    <h2>➕ Berechtigung erteilen</h2>
+                    <form id="grant-form">
+                        <div class="form-group">
+                            <label for="grant-subject">Subject (User/Entity)</label>
+                            <input type="text" id="grant-subject" placeholder="user1, admin, service-x" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="grant-resource">Resource</label>
+                            <input type="text" id="grant-resource" placeholder="/api/data, /admin/*, *" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="grant-action">Action</label>
+                                <select id="grant-action">
+                                    <option value="read">read</option>
+                                    <option value="write">write</option>
+                                    <option value="delete">delete</option>
+                                    <option value="admin">admin</option>
+                                    <option value="*">* (alle)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="grant-expires">Ablauf (Stunden, 0=nie)</label>
+                                <input type="number" id="grant-expires" value="0" min="0">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <span class="btn-icon">✅</span> Berechtigung erteilen
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Check Permission -->
+                <div class="card">
+                    <h2>🔍 Berechtigung prüfen</h2>
+                    <form id="check-form">
+                        <div class="form-group">
+                            <label for="check-subject">Subject</label>
+                            <input type="text" id="check-subject" placeholder="user1" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="check-resource">Resource</label>
+                                <input type="text" id="check-resource" placeholder="/api/data" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="check-action">Action</label>
+                                <select id="check-action">
+                                    <option value="read">read</option>
+                                    <option value="write">write</option>
+                                    <option value="delete">delete</option>
+                                    <option value="admin">admin</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-secondary">
+                            <span class="btn-icon">🔍</span> Prüfen
+                        </button>
+                    </form>
+                    <div id="check-result" class="result-box hidden"></div>
+                </div>
+            </section>
+
+            <!-- Right Panel -->
+            <section class="right-panel">
+                <!-- Permission List -->
+                <div class="card">
+                    <h2>📋 Berechtigungen
+                        <button onclick="loadPermissions()" class="btn btn-sm btn-icon-only">🔄</button>
+                    </h2>
+                    <div class="form-group">
+                        <input type="text" id="filter-subject" placeholder="Subject filtern...">
+                    </div>
+                    <div id="permissions-list" class="permissions-list">
+                        <p class="empty-state">Berechtigungen laden...</p>
+                    </div>
+                </div>
+
+                <!-- AI Analysis -->
+                <div class="card">
+                    <h2>🤖 AI Sicherheitsanalyse</h2>
+                    <div class="form-group">
+                        <label for="ai-query">Analyse-Frage (optional)</label>
+                        <textarea id="ai-query" rows="2" placeholder="z.B. Welche Subjects haben zu viele Berechtigungen?"></textarea>
+                    </div>
+                    <button onclick="runAIAnalysis()" class="btn btn-accent">
+                        <span class="btn-icon">🧠</span> AI Analyse starten
+                    </button>
+                    <div id="ai-result" class="result-box hidden"></div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card">
+                    <h2>⚡ Quick Actions</h2>
+                    <div class="quick-actions">
+                        <button onclick="runSecurityScan()" class="btn btn-warning">
+                            🛡️ Security Scan
+                        </button>
+                        <button onclick="exportPermissions()" class="btn btn-secondary">
+                            📥 Export
+                        </button>
+                        <button onclick="verifyIntegrity()" class="btn btn-secondary">
+                            🔗 Integrität prüfen
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bottom Panel - Audit Log -->
+            <section class="bottom-panel">
+                <div class="card">
+                    <h2>📜 Audit Log (WORM)
+                        <button onclick="loadAuditLog()" class="btn btn-sm btn-icon-only">🔄</button>
+                    </h2>
+                    <div id="audit-log" class="audit-log">
+                        <p class="empty-state">Audit Log laden...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <span>ELION PORTIER PAS-6.0 | opena11_unlock</span>
+            <span>Port: 12357</span>
+            <span id="last-update">Letztes Update: --:--:--</span>
+        </footer>
+    </div>
+
+    <!-- Modals -->
+    <div id="result-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Ergebnis</h3>
+                <button onclick="closeModal()" class="btn-close">×</button>
+            </div>
+            <div id="modal-body" class="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

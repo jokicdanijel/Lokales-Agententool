@@ -1,0 +1,21 @@
+{
+  "agent_name": "5.opena6_browser",
+  "type": "local_agent",
+  "description": "Browser-Automation, Scraping, DOM-Interaktion",
+  "entrypoint": "main.py",
+  "portier_integration": {
+    "dispatcher": "../1.opena1&2_portier/opena1",
+    "archivator": "../1.opena1&2_portier/opena2",
+    "flow_model": "option-2-flow"
+  },
+  "browser_engine": {
+    "headless": true,
+    "default_wait_ms": 500,
+    "timeout_ms": 15000
+  },
+  "logging": {
+    "enabled": true,
+    "store_html_snapshots": true,
+    "verbose": false
+  }
+}

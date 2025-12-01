@@ -1,0 +1,116 @@
+{
+  // ========================================
+  // Git & GitLens Optimierungen
+  // ========================================
+
+  // GitLens - Token-Verbrauch reduzieren
+  "gitlens.codeLens.enabled": false,
+  "gitlens.currentLine.enabled": false,
+  "gitlens.hovers.currentLine.over": "line",
+  "gitlens.blame.highlight.enabled": false,
+  "gitlens.changes.locations": [],
+
+  // Git - Ignoriere große Binärdateien
+  "git.ignoreLimitWarning": true,
+  "git.scanRepositories": [],
+
+  // ========================================
+  // Python-Optimierungen (LocalAgent-Pro)
+  // ========================================
+
+  "python.defaultInterpreterPath": "${workspaceFolder}/LocalAgent-Pro/venv/bin/python",
+  "python.terminal.activateEnvironment": true,
+  "python.analysis.indexing": true,
+
+  // Testing
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": [
+    "LocalAgent-Pro/tests",
+    "-v"
+  ],
+  "python.testing.unittestEnabled": false,
+
+  // Formatting
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python",
+    "editor.formatOnSave": true,
+    "editor.rulers": [120],
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+
+  "black-formatter.args": [
+    "--line-length=120"
+  ],
+
+  // ========================================
+  // Editor-Leistung
+  // ========================================
+
+  "editor.largeFileOptimizations": true,
+  "editor.semanticHighlighting.enabled": false,
+  "editor.minimap.enabled": false,
+
+  // ========================================
+  // Dateien & Suche
+  // ========================================
+
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/.pytest_cache": true,
+    "**/.venv": true,
+    "**/node_modules": true,
+    "**/.coverage": true,
+    "**/htmlcov": true,
+    "**/auto_indexed": true
+  },
+
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.venv": true,
+    "**/__pycache__": true,
+    "**/auto_indexed": true
+  },
+
+  "files.watcherExclude": {
+    "**/.venv/**": true,
+    "**/node_modules/**": true,
+    "**/__pycache__/**": true,
+    "**/auto_indexed/**": true
+  },
+
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.associations": {
+    "*.md": "markdown"
+  },
+
+  // YAML
+  "[yaml]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+
+  "yaml.schemas": {
+    "./LocalAgent-Pro/config/config.yaml": "config/*.yaml"
+  },
+
+  // Copilot-Kontextfenster
+  "github.copilot.editor.enableAutoCompletions": true,
+
+  // ========================================
+  // Weitere Leistungsoptimierungen
+  // ========================================
+
+  "extensions.autoUpdate": false,
+  "extensions.autoCheckUpdates": false,
+  "update.mode": "none",
+
+  // Terminal-Leistung
+  "terminal.integrated.persistentSessionReviveProcess": "never",
+  "terminal.integrated.enablePersistentSessions": false
+}

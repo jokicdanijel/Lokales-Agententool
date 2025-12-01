@@ -33,7 +33,7 @@ class OpenaConfig(BaseSettings):
     
     # Meta WhatsApp Configuration
     META_API_VERSION: str = os.getenv("META_API_VERSION", "v20.0")
-    META_PHONE_NUMBER_ID: str = os.getenv("+4366493257981", "id=609991825523516")
+    META_PHONE_NUMBER_ID: str = os.getenv("META_PHONE_NUMBER_ID", "123456789012345")
     META_BUSINESS_ACCOUNT_ID: str = os.getenv("META_BUSINESS_ACCOUNT_ID", "123456789012345")
     META_ACCESS_TOKEN: str = os.getenv("META_ACCESS_TOKEN", "EAAxxxxxxxxxx...")
     META_WEBHOOK_VERIFY_TOKEN: str = os.getenv("META_WEBHOOK_VERIFY_TOKEN", "webhook_secret_32chars_min_12345")

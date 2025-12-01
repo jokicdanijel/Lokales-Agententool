@@ -1,0 +1,13 @@
+{
+  "sp_id": "20251127_110308_24776",
+  "timestamp": "2025-11-27T11:03:08.247762Z",
+  "src": "whatsappp",
+  "dst": "whatsapp_api",
+  "type": "CMD",
+  "request_id": "20251127_110308_24764",
+  "data": {
+    "action": "send_text",
+    "to": "+49123456****",
+    "text": "Test message from opena8"
+  }
+}

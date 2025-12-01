@@ -1,0 +1,12 @@
+{
+  "ts": "2025-12-01T02:44:07.765191Z",
+  "src": "kordp",
+  "dst": "opena3",
+  "kind": "CMD",
+  "body": {
+    "command": "echo test",
+    "context": {},
+    "timestamp": "2025-12-01T02:44:07.765095Z"
+  },
+  "strict": true
+}

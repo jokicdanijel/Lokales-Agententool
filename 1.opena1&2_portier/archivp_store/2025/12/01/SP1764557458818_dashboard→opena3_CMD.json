@@ -1,0 +1,13 @@
+{
+  "ts": "2025-12-01T02:50:58.818424Z",
+  "src": "dashboard",
+  "dst": "opena3",
+  "kind": "CMD",
+  "body": {
+    "message": "Hello",
+    "model": "llama3.1:8b",
+    "stream": false,
+    "timestamp": "2025-12-01T02:50:58.818106Z"
+  },
+  "strict": true
+}

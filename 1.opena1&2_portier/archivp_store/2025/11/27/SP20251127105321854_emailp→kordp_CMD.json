@@ -1,0 +1,15 @@
+{
+  "sp_id": "20251127105321854",
+  "request_id": "949337ad-91a2-4159-b6a3-748e314deee6",
+  "timestamp": "2025-11-27T10:53:21.854294Z",
+  "src": "emailp",
+  "dst": "kordp",
+  "type": "CMD",
+  "data": {
+    "endpoint": "/inbox/list",
+    "folder": "INBOX",
+    "limit": 10,
+    "offset": 0,
+    "search_criteria": null
+  }
+}
