@@ -607,8 +607,21 @@ def main():
                 logger.info("Starting Telegram bot (polling mode, background thread)...")
 
                 def _run_polling() -> None:
+                    """Run polling in a separate thread with its own event loop."""
                     try:
-                        telegram_app.run_polling()
+                        import asyncio
+                        loop = asyncio.new_event_loop()
+                        asyncio.set_event_loop(loop)
+                        
+                        async def polling_task():
+                            await telegram_app.initialize()
+                            await telegram_app.start()
+                            await telegram_app.updater.start_polling(drop_pending_updates=True)
+                            # Keep running until stopped
+                            while True:
+                                await asyncio.sleep(1)
+                        
+                        loop.run_until_complete(polling_task())
                     except Exception as e:  # noqa: BLE001
                         logger.exception("Telegram polling stopped with error: %s", e)
 

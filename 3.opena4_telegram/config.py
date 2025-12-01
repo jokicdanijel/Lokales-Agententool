@@ -12,7 +12,7 @@ PORTIER 3.0 konform – Pydantic V2
 import os
 from pathlib import Path
 from typing import List, Optional
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -67,6 +67,20 @@ class ServiceConfig(BaseSettings):
     telegram_bot_token: str = Field(default="", alias="TELEGRAM_BOT_TOKEN")
     telegram_allowed_users: List[int] = Field(default_factory=list, alias="TELEGRAM_ALLOWED_USER_IDS")
     archiv_dir: Path = Field(default=Path("../1.opena1&2_portier/archivp_store"), alias="ARCHIVP_ROOT")
+
+    @field_validator("telegram_allowed_users", mode="before")
+    @classmethod
+    def parse_allowed_users(cls, v):
+        """Parse comma-separated string or single int to list of ints"""
+        if v is None or v == "":
+            return []
+        if isinstance(v, list):
+            return [int(x) for x in v]
+        if isinstance(v, int):
+            return [v]
+        if isinstance(v, str):
+            return [int(x.strip()) for x in v.split(",") if x.strip()]
+        return []
 
     @property
     def data_dir(self) -> Path:
