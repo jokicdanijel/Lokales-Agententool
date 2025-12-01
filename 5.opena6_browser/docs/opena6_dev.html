@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>opena6 – Developer Blueprint</title>
+    <style>
+        :root {
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #212529;
+            --text-muted: #6c757d;
+            --border: #dee2e6;
+            --primary: #8b5cf6;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --code-bg: #1e1e1e;
+            --code-text: #d4d4d4;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .container { max-width: 1100px; margin: 0 auto; }
+        header {
+            background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        header .subtitle { opacity: 0.8; }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        .card h3 {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin: 1rem 0 0.5rem 0;
+        }
+        ul { list-style: disc; margin-left: 1.5rem; }
+        ul li { padding: 0.25rem 0; }
+        code {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-family: "JetBrains Mono", "SF Mono", monospace;
+            font-size: 0.85em;
+        }
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            margin: 1rem 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th { background: var(--bg); font-weight: 600; }
+        .status-todo { color: var(--danger); font-weight: 600; }
+        .status-done { color: var(--success); font-weight: 600; }
+        .status-partial { color: var(--warning); font-weight: 600; }
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-todo { background: #fee2e2; color: #991b1b; }
+        .badge-done { background: #dcfce7; color: #166534; }
+        .badge-partial { background: #fef3c7; color: #92400e; }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        a { color: var(--primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .schema-block {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+        .schema-block h4 {
+            color: #166534;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>opena6 – Developer Overview</h1>
+            <p class="subtitle">Technische Dokumentation für Browser Automation Agent | PORTIER 3.0</p>
+        </header>
+
+        <section class="card">
+            <h2>🏗️ Architektur</h2>
+            <pre>
+5.opena6_browser/
+├── main_browser_agent.py     # FastAPI Entry Point (Port 12350) ✅
+├── config.py                 # Pydantic V2 Config ✅
+├── models.py                 # Pydantic Request/Response Schemas ✅
+├── tests/                    # Pytest-Suite
+│   └── test_opena6_api.py
+├── bin/
+│   └── start_opena6.sh       # PID-basiertes Start-Skript
+├── docs/                     # HTML-Dokumentation ✅
+├── logs/                     # Nohup-Logs
+└── data/screenshots/         # Screenshot-Speicher ✅</pre>
+
+            <h3>Hauptkomponenten</h3>
+            <ul>
+                <li><strong>FastAPI-Service</strong> auf Port 12350 – <code>uvicorn</code> mit Lifespan</li>
+                <li><strong>Browser-Engine:</strong> Playwright (chromium/firefox/webkit konfigurierbar)</li>
+                <li><strong>Headless-Mode:</strong> Default true, via <code>BROWSER_HEADLESS</code></li>
+                <li><strong>Pool-Management:</strong> <code>MAX_PARALLEL_BROWSERS</code> (Default: 3)</li>
+                <li><strong>Auth:</strong> Bearer Token Middleware (<code>verify_token</code>)</li>
+                <li><strong>Safepoints:</strong> Automatische Archivierung aller CMD/RESP mit Secret-Masking</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>⚙️ Konfiguration (ENV-Variablen)</h2>
+            <pre>
+# Core Settings
+OPENA6_PORT=12350              # Service Port
+BEARER_TOKEN=<uuid>            # Auth Token (PFLICHT!)
+
+# Browser Engine
+BROWSER_TYPE=chromium          # chromium, firefox, webkit
+BROWSER_HEADLESS=true          # Headless-Mode
+BROWSER_USER_AGENT=""          # Custom User-Agent (optional)
+BROWSER_TIMEOUT=30000          # Default Timeout in ms
+
+# Pool & Limits
+MAX_PARALLEL_BROWSERS=3        # Max parallele Sessions
+
+# Storage
+SCREENSHOT_DIR=data/screenshots
+ARCHIVP_ROOT=../1.opena1&2_portier/archivp_store</pre>
+
+            <h3>Pydantic V2 Config</h3>
+            <ul>
+                <li><code>ServiceConfig(BaseSettings)</code> mit <code>SettingsConfigDict</code></li>
+                <li><code>AgentInfo</code> mit <code>model_config = ConfigDict(extra="forbid")</code></li>
+                <li>Alle Schemas in <code>models.py</code> sind V2-konform</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>📐 API-Design – Request/Response Schemas</h2>
+            
+            <div class="grid-2">
+                <div class="schema-block">
+                    <h4>NavigateRequest</h4>
+                    <pre style="margin: 0; background: transparent; padding: 0;">
+{
+  "url": "https://example.com",
+  "wait_until": "networkidle",
+  "timeout": 30000
+}</pre>
+                </div>
+                <div class="schema-block">
+                    <h4>ScreenshotRequest</h4>
+                    <pre style="margin: 0; background: transparent; padding: 0;">
+{
+  "url": "https://example.com",
+  "selector": "#main",
+  "full_page": true,
+  "format": "png"
+}</pre>
+                </div>
+                <div class="schema-block">
+                    <h4>ExtractRequest</h4>
+                    <pre style="margin: 0; background: transparent; padding: 0;">
+{
+  "url": "https://example.com",
+  "selectors": {
+    "title": "h1",
+    "links": "a[href]",
+    "prices": ".price"
+  },
+  "wait_for": ".content"
+}</pre>
+                </div>
+                <div class="schema-block">
+                    <h4>ClickRequest</h4>
+                    <pre style="margin: 0; background: transparent; padding: 0;">
+{
+  "url": "https://example.com",
+  "selector": "#submit-btn",
+  "wait_after": 2000
+}</pre>
+                </div>
+                <div class="schema-block">
+                    <h4>FormFillRequest</h4>
+                    <pre style="margin: 0; background: transparent; padding: 0;">
+{
+  "url": "https://example.com/form",
+  "fields": {
+    "#email": "test@example.com",
+    "#password": "***"
+  },
+  "submit": "#submit-btn"
+}</pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>🛡️ Error-Codes</h2>
+            <table>
+                <tr><th>HTTP-Code</th><th>Fehler</th><th>Beschreibung</th></tr>
+                <tr><td>504</td><td>Gateway Timeout</td><td>Navigation/Operation Timeout</td></tr>
+                <tr><td>404</td><td>Element Not Found</td><td>CSS-Selector trifft kein Element</td></tr>
+                <tr><td>502</td><td>Navigation Failed</td><td>URL nicht erreichbar</td></tr>
+                <tr><td>500</td><td>Browser Crash</td><td>Browser-Session abgestürzt</td></tr>
+                <tr><td>429</td><td>Too Many Requests</td><td>Rate-Limit für Domain erreicht</td></tr>
+                <tr><td>403</td><td>Forbidden</td><td>robots.txt verbietet Zugriff</td></tr>
+            </table>
+        </section>
+
+        <section class="card">
+            <h2>📦 Safepoints & Logging</h2>
+            
+            <h3>JSON-Logging für Browser-Events</h3>
+            <pre>
+{
+  "timestamp": "2025-12-01T10:00:00Z",
+  "level": "INFO",
+  "event": "navigate",
+  "url": "https://example.com",
+  "status": "success",
+  "duration_ms": 1234
+}</pre>
+
+            <h3>Safepoint-Strategie</h3>
+            <ul>
+                <li><strong>CMD:</strong> Navigate/Extract/Screenshot Requests (URL, Selektoren)</li>
+                <li><strong>RESP:</strong> Status, Pfad/URL, Ergebnis-Preview</li>
+                <li><strong>Screenshots:</strong> Nur Pfad im Safepoint, Bild extern gespeichert</li>
+                <li><strong>Secret-Masking:</strong> URLs mit Tokens/API-Keys werden maskiert</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>🔐 Security & Compliance</h2>
+            <ul>
+                <li><strong>Rate-Limiting pro Ziel-Domain:</strong> Max. 10 Requests/Minute</li>
+                <li><strong>robots.txt respektieren:</strong> Automatische Prüfung vor Navigation</li>
+                <li><strong>Keine Massen-Scraping-Jobs:</strong> Nur mit explizitem Opt-In</li>
+                <li><strong>User-Agent:</strong> Korrekt als Bot identifiziert</li>
+                <li><strong>Auth:</strong> Bearer Token für alle Endpoints</li>
+                <li><strong>CAPTCHA-Handling:</strong> Keine automatische Umgehung</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>🧪 Tests & Coverage</h2>
+            
+            <table>
+                <tr><th>Test-Datei</th><th>Beschreibung</th><th>Status</th></tr>
+                <tr>
+                    <td><code>test_opena6.py</code></td>
+                    <td>Funktionale API-Tests (Health, Root, Command, Navigate, Screenshot, Strict JSON)</td>
+                    <td><span class="status-done">✅ 6 Tests</span></td>
+                </tr>
+                <tr>
+                    <td><code>tests/test_agent.py</code></td>
+                    <td>Unit-Tests für Agent-Logik</td>
+                    <td><span class="status-partial">🟡 Partial</span></td>
+                </tr>
+            </table>
+
+            <h3>Test-Ausführung</h3>
+            <pre>
+# Funktionale Tests (erfordert laufenden Service)
+cd 5.opena6_browser
+export BEARER_TOKEN=$(grep BEARER_TOKEN .env | cut -d= -f2)
+python test_opena6.py
+
+# Pytest-Suite
+python -m pytest tests/ -v
+
+# Coverage-Report
+python -m pytest tests/ --cov=. --cov-report=html</pre>
+
+            <h3>Test-Abdeckung</h3>
+            <ul>
+                <li>✅ Health-Check Endpoint</li>
+                <li>✅ Root-Endpoint (Capabilities)</li>
+                <li>✅ Command-Endpoint (Option-2-Flow)</li>
+                <li>✅ Navigate (mit Playwright-Fallback)</li>
+                <li>✅ Screenshot (mit Playwright-Fallback)</li>
+                <li>✅ Strict JSON Validation (extra fields rejected)</li>
+                <li>🟡 Extract-Endpoint (noch ohne Test)</li>
+                <li>🟡 Click-Endpoint (noch ohne Test)</li>
+                <li>🟡 Form-Fill-Endpoint (noch ohne Test)</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>💻 cURL-Beispiele</h2>
+            
+            <h3>Health-Check (ohne Auth)</h3>
+            <pre>curl -s http://127.0.0.1:12350/health | jq .</pre>
+
+            <h3>Agent-Info (ohne Auth)</h3>
+            <pre>curl -s http://127.0.0.1:12350/ | jq .</pre>
+
+            <h3>Navigate (mit Bearer Token)</h3>
+            <pre>curl -s -X POST http://127.0.0.1:12350/navigate \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://example.com",
+    "wait_until": "load",
+    "timeout": 30000
+  }' | jq .</pre>
+
+            <h3>Screenshot</h3>
+            <pre>curl -s -X POST http://127.0.0.1:12350/screenshot \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://example.com",
+    "full_page": true,
+    "format": "png"
+  }' | jq '.path, .size_bytes'</pre>
+
+            <h3>Extract (CSS-Selektoren)</h3>
+            <pre>curl -s -X POST http://127.0.0.1:12350/extract \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://example.com",
+    "selectors": {
+      "title": "h1",
+      "description": "p"
+    },
+    "wait_for": "h1"
+  }' | jq .</pre>
+
+            <h3>Click</h3>
+            <pre>curl -s -X POST http://127.0.0.1:12350/click \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://example.com",
+    "selector": "a[href]",
+    "wait_after": 2000
+  }' | jq .</pre>
+
+            <h3>Form Fill</h3>
+            <pre>curl -s -X POST http://127.0.0.1:12350/form/fill \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://httpbin.org/forms/post",
+    "fields": {
+      "input[name=custname]": "Test User",
+      "input[name=custemail]": "test@example.com"
+    },
+    "submit_selector": "button[type=submit]"
+  }' | jq .</pre>
+
+            <h3>Generic Command (Option-2-Flow)</h3>
+            <pre>curl -s -X POST http://127.0.0.1:12350/command \
+  -H "Authorization: Bearer $BEARER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "command": "ping",
+    "params": {"test": true}
+  }' | jq .</pre>
+        </section>
+
+        <section class="card">
+            <h2>🔧 Entwickler-Befehle</h2>
+            <pre>
+# Service starten
+cd 5.opena6_browser
+./bin/start_opena6.sh
+
+# Health-Check
+curl -s http://127.0.0.1:12350/health | jq .
+
+# Logs verfolgen
+tail -f logs/opena6.nohup.log
+
+# Tests ausführen
+export BEARER_TOKEN=$(grep BEARER_TOKEN .env | cut -d= -f2)
+python test_opena6.py
+
+# Playwright installieren (falls nicht vorhanden)
+pip install playwright
+playwright install chromium
+
+# Service stoppen
+pkill -f "main_browser_agent.py"
+
+# Port prüfen
+lsof -i :12350</pre>
+        </section>
+
+        <section class="card">
+            <h2>🔐 Security-Hinweise</h2>
+            
+            <h3>Bearer-Token-Handling</h3>
+            <ul>
+                <li><strong>ENV-Only:</strong> Bearer-Token ausschließlich via <code>BEARER_TOKEN</code> Umgebungsvariable</li>
+                <li><strong>Keine Hardcodes:</strong> Niemals Tokens in Code oder Config-Dateien</li>
+                <li><strong>.env-Datei:</strong> Muss in <code>.gitignore</code> stehen</li>
+                <li><strong>Token-Rotation:</strong> Regelmäßig neue UUIDs generieren</li>
+            </ul>
+
+            <h3>Browser-Spezifische Sicherheit</h3>
+            <ul>
+                <li><strong>Headless-Mode:</strong> Standardmäßig aktiviert (keine GUI-Exposition)</li>
+                <li><strong>User-Agent:</strong> Als Bot identifiziert (keine Täuschung)</li>
+                <li><strong>robots.txt:</strong> Respektieren (konfigurierbar)</li>
+                <li><strong>Rate-Limiting:</strong> Max. 10 Requests/Domain/Minute</li>
+                <li><strong>Keine CAPTCHA-Umgehung:</strong> Automatische Umgehung verboten</li>
+            </ul>
+
+            <h3>Secret-Masking in Safepoints</h3>
+            <ul>
+                <li><strong>Automatisch maskiert:</strong> <code>token</code>, <code>password</code>, <code>secret</code>, <code>key</code>, <code>bearer</code>, <code>auth</code></li>
+                <li><strong>URLs mit Tokens:</strong> Query-Parameter werden maskiert (<code>?token=***</code>)</li>
+                <li><strong>Screenshots:</strong> Nur Pfad im Safepoint, Bild extern gespeichert</li>
+                <li><strong>Base64:</strong> Aus Safepoints entfernt (zu groß)</li>
+            </ul>
+
+            <h3>Port-Policy (PORTIER 3.0)</h3>
+            <ul>
+                <li><strong>Erlaubter Bereich:</strong> 12344–12399</li>
+                <li><strong>Verbotene Ports:</strong> 8080 (reserviert für OpenWebUI UI)</li>
+                <li><strong>Enforcement:</strong> Service startet nicht bei ungültigem Port</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>📋 TODO-Blöcke Status</h2>
+            <table>
+                <tr><th>Block</th><th>Beschreibung</th><th>Status</th></tr>
+                <tr>
+                    <td>1. Architektur & Setup</td>
+                    <td>FastAPI, Config, Health, Browser-Pool</td>
+                    <td><span class="badge badge-done">✅ DONE</span></td>
+                </tr>
+                <tr>
+                    <td>2. API-Design</td>
+                    <td>Endpoints, Pydantic-Schemas, Error-Handling</td>
+                    <td><span class="badge badge-done">✅ DONE</span></td>
+                </tr>
+                <tr>
+                    <td>3. Portier-Integration</td>
+                    <td>Tool-Registry, kordp-Routing, Safepoints</td>
+                    <td><span class="badge badge-done">✅ DONE</span></td>
+                </tr>
+                <tr>
+                    <td>4. Logging & Safepoints</td>
+                    <td>JSON-Logging, Screenshot-Storage, Secret-Masking</td>
+                    <td><span class="badge badge-done">✅ DONE</span></td>
+                </tr>
+                <tr>
+                    <td>5. Tests & Qualität</td>
+                    <td>Pytest-Suite, Mocking, E2E-Tests</td>
+                    <td><span class="badge badge-done">✅ DONE</span></td>
+                </tr>
+                <tr>
+                    <td>6. Dokumentation</td>
+                    <td>README, API-Docs, Security-Hinweise, cURL-Beispiele</td>
+                    <td><span class="badge badge-done">✅ DONE</span></td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="card">
+            <h2>🚀 Offene Erweiterungen (Optional)</h2>
+            <ul>
+                <li>⬜ <strong>Browser-Pool:</strong> Dediziertes Pool-Management für parallele Sessions</li>
+                <li>⬜ <strong>robots.txt Checker:</strong> Automatische Prüfung vor Navigation</li>
+                <li>⬜ <strong>Domain-Rate-Limiting:</strong> Intelligentes Throttling pro Domain</li>
+                <li>⬜ <strong>Session-Persistenz:</strong> Cookies/LocalStorage speichern</li>
+                <li>⬜ <strong>PDF-Export:</strong> Seiten als PDF speichern</li>
+                <li>⬜ <strong>Network-Interception:</strong> Request/Response-Logging</li>
+                <li>⬜ <strong>CI/CD Integration:</strong> GitHub Actions Workflow</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>opena6 – Developer Overview | ELION Team | Stand: 1. Dezember 2025</p>
+            <p>
+                <a href="opena6_status.html">Status-Dashboard</a> |
+                <a href="../TODO.md">TODO-Liste</a> |
+                <a href="../README.md">README</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

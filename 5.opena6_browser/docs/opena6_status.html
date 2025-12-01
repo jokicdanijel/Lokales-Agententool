@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>opena6 – Browser Agent Status</title>
+    <style>
+        :root {
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #212529;
+            --text-muted: #6c757d;
+            --border: #dee2e6;
+            --primary: #8b5cf6;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --info: #06b6d4;
+            --code-bg: #e9ecef;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .container { max-width: 960px; margin: 0 auto; }
+        header {
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        header .subtitle { opacity: 0.9; font-size: 1.1rem; }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+        }
+        .badge-warning { background: var(--warning); color: black; }
+        .badge-success { background: var(--success); color: white; }
+        .badge-info { background: var(--info); color: white; }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        .alert {
+            background: #fef3c7;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .alert-icon { font-size: 1.5rem; }
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .meta-item {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 6px;
+        }
+        .meta-item .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .meta-item .value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+        ul { list-style: none; }
+        ul li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        ul li:last-child { border-bottom: none; }
+        ul li::before {
+            content: "→";
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+        code {
+            background: var(--code-bg);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-family: "SF Mono", Monaco, monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            font-family: "SF Mono", Monaco, monospace;
+            font-size: 0.85rem;
+        }
+        .endpoint-list { margin-top: 1rem; }
+        .endpoint {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background: var(--code-bg);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            opacity: 0.7;
+        }
+        .endpoint .method {
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            margin-right: 0.75rem;
+            min-width: 50px;
+            text-align: center;
+        }
+        .method-get { background: var(--success); color: white; }
+        .method-post { background: var(--primary); color: white; }
+        .endpoint .path { font-family: monospace; flex: 1; }
+        .endpoint .desc { color: var(--text-muted); font-size: 0.85rem; }
+        .endpoint .planned {
+            background: var(--warning);
+            color: black;
+            font-size: 0.7rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+        }
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        a { color: var(--primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>opena6 (browsep) – Status</h1>
+            <p class="subtitle">Browser Automation Agent | PORTIER 3.0</p>
+            <div style="margin-top: 1rem;">
+                <span class="badge badge-success">🟢 Online / Implementiert</span>
+                <span class="badge badge-info">Port 12350</span>
+            </div>
+        </header>
+
+        <div class="alert" style="background: #dcfce7; border-color: #22c55e;">
+            <span class="alert-icon">✅</span>
+            <div>
+                <strong>Agent aktiv!</strong><br>
+                Playwright-basierte Browser-Automatisierung. Alle Endpoints implementiert und bereit für Option-2-Flow.
+            </div>
+        </div>
+
+        <section class="card">
+            <h2>🤖 Agent-Meta</h2>
+            <div class="meta-grid">
+                <div class="meta-item">
+                    <div class="label">Name</div>
+                    <div class="value">opena6</div>
+                </div>
+                <div class="meta-item">
+                    <div class="label">Kürzel</div>
+                    <div class="value">browsep</div>
+                </div>
+                <div class="meta-item">
+                    <div class="label">Status</div>
+                    <div class="value">🟢 Online</div>
+                </div>
+                <div class="meta-item">
+                    <div class="label">Port</div>
+                    <div class="value">12350</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>🎯 Rolle</h2>
+            <p style="margin-bottom: 1rem;">
+                <strong>Browser Automation Agent</strong> für automatisierte Web-Interaktionen:
+            </p>
+            <ul>
+                <li><strong>Navigate</strong> – URLs öffnen, Seiten laden</li>
+                <li><strong>Extract</strong> – Daten mit CSS-Selektoren extrahieren</li>
+                <li><strong>Screenshot</strong> – Bildschirmfotos erstellen</li>
+                <li><strong>Click</strong> – Elemente klicken</li>
+                <li><strong>Form-Fill</strong> – Formulare ausfüllen</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>📡 API-Endpunkte</h2>
+            <div class="endpoint-list">
+                <div class="endpoint" style="opacity: 1;">
+                    <span class="method method-get">GET</span>
+                    <span class="path">/health</span>
+                    <span class="desc">Health-Check mit Browser-Status</span>
+                </div>
+                <div class="endpoint" style="opacity: 1;">
+                    <span class="method method-get">GET</span>
+                    <span class="path">/</span>
+                    <span class="desc">Agent-Info & Capabilities</span>
+                </div>
+                <div class="endpoint" style="opacity: 1;">
+                    <span class="method method-post">POST</span>
+                    <span class="path">/navigate</span>
+                    <span class="desc">URL öffnen (wait_until, timeout)</span>
+                </div>
+                <div class="endpoint" style="opacity: 1;">
+                    <span class="method method-post">POST</span>
+                    <span class="path">/screenshot</span>
+                    <span class="desc">Screenshot erstellen (full_page, selector, base64)</span>
+                </div>
+                <div class="endpoint" style="opacity: 1;">
+                    <span class="method method-post">POST</span>
+                    <span class="path">/extract</span>
+                    <span class="desc">Daten mit CSS-Selektoren extrahieren</span>
+                </div>
+                <div class="endpoint" style="opacity: 1;">
+                    <span class="method method-post">POST</span>
+                    <span class="path">/click</span>
+                    <span class="desc">Element klicken (wait_after)</span>
+                </div>
+                <div class="endpoint" style="opacity: 1;">
+                    <span class="method method-post">POST</span>
+                    <span class="path">/form/fill</span>
+                    <span class="desc">Formular ausfüllen (submit_selector)</span>
+                </div>
+                <div class="endpoint" style="opacity: 1;">
+                    <span class="method method-post">POST</span>
+                    <span class="path">/command</span>
+                    <span class="desc">Option-2-Flow generischer Command</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>🔗 Integration</h2>
+            <ul>
+                <li><strong>Kürzel:</strong> <code>browsep</code> (Tool-Registry)</li>
+                <li><strong>Routing:</strong> Decision72 → browsep (ZUKÜNFTIG)</li>
+                <li><strong>Orchestrierung:</strong> opena1 (kordp) koordiniert Browser-Flows</li>
+                <li><strong>Terminal-Agent:</strong> opena3 (owuip) für Web-LLM-Zugriff</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>🛠️ Technologie-Stack</h2>
+            <ul>
+                <li><strong>Framework:</strong> FastAPI + uvicorn</li>
+                <li><strong>Browser-Engine:</strong> Playwright (chromium/firefox/webkit konfigurierbar)</li>
+                <li><strong>Headless-Mode:</strong> Ja (Default, konfigurierbar via <code>BROWSER_HEADLESS</code>)</li>
+                <li><strong>Pool-Management:</strong> Max. <code>MAX_PARALLEL_BROWSERS</code> parallele Sessions</li>
+                <li><strong>User-Agent:</strong> Konfigurierbar via <code>BROWSER_USER_AGENT</code></li>
+                <li><strong>Pydantic V2:</strong> <code>model_config = ConfigDict(extra="forbid")</code></li>
+                <li><strong>Safepoints:</strong> YYYY/MM/DD Format mit Unicode-Pfeil →</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>⚡ Quick Health-Check</h2>
+            <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 8px; overflow-x: auto;">curl -s http://127.0.0.1:12350/health | jq .</pre>
+            <p style="margin-top: 1rem; color: var(--text-muted);">
+                Erwartete Antwort:
+            </p>
+            <pre style="background: #f0fdf4; color: #166534; padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">{
+  "status": "ok",
+  "agent": "opena6",
+  "port": 12350,
+  "kuerzel": "browsep",
+  "playwright_available": true,
+  "browser_type": "chromium",
+  "headless": true
+}</pre>
+        </section>
+
+        <section class="card">
+            <h2>🔐 Security & Compliance</h2>
+            <ul>
+                <li>✅ Rate-Limiting pro Ziel-Domain</li>
+                <li>✅ <code>robots.txt</code> respektieren</li>
+                <li>✅ Keine Massen-Scraping-Jobs ohne explizites Opt-In</li>
+                <li>✅ Secret-Masking für URLs mit Tokens/API-Keys</li>
+                <li>✅ Auth-Middleware (Bearer Token)</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>📅 Changelog</h2>
+            <ul>
+                <li><strong>2025-12-01:</strong> Pydantic V2 Migration, Port-Fix (12350), Dokumentation vervollständigt</li>
+                <li><strong>2025-11-30:</strong> Initial Implementation (FastAPI, Playwright, Safepoints)</li>
+                <li><strong>2025-11-29:</strong> Blueprint erstellt</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>opena6 – Browser Automation Agent | ELION Team | Stand: 1. Dezember 2025</p>
+            <p>
+                <a href="opena6_dev.html">Developer-Dokumentation</a> |
+                <a href="../TODO.md">TODO-Liste</a> |
+                <a href="../README.md">README</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
