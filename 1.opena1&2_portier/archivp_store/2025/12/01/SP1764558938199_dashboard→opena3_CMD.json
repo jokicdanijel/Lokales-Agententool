@@ -1,0 +1,13 @@
+{
+  "ts": "2025-12-01T03:15:38.199651Z",
+  "src": "dashboard",
+  "dst": "opena3",
+  "kind": "CMD",
+  "body": {
+    "message": "Hello exception test",
+    "model": "llama3.1:8b",
+    "stream": false,
+    "timestamp": "2025-12-01T03:15:38.199455Z"
+  },
+  "strict": true
+}

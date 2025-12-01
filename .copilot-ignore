@@ -1,5 +1,12 @@
 # .copilot-ignore
+# PORTIER 3.0 – CoPilot Ausschlussliste
 # Verhindert, dass Copilot sensible oder irrelevante Dateien in Suggestions einbezieht
+# Version: 3.0.0 | Stand: 2025-01-19 | Status: GESCHÜTZT
+
+# ============================================================
+# ⚠️  WARNUNG: Diese Datei ist Teil des PORTIER 3.0 Systems
+# ⚠️  NICHT MODIFIZIEREN ohne Freigabe vom Systemarchitekten
+# ============================================================
 
 # Secrets & Environment
 .env
@@ -98,3 +105,56 @@ htmlcov/
 .mypy_cache/
 .ruff_cache/
 .tox/
+
+# ============================================================
+# PORTIER 3.0 – Zusätzliche Ausschlüsse
+# ============================================================
+
+# HTML-Dateien (geschützt, nicht auto-generieren)
+**/html/**/*.html
+**/html/**/*.css
+**/html/**/*.js
+hyper_dashboard_ultimate.html
+
+# Systemd Service-Definitionen (nicht modifizieren)
+systemd/**/*.service
+
+# Docker Konfigurationen (produktionsstabil)
+docker/
+docker-compose*.yml
+Dockerfile*
+
+# Dokumentation (wird manuell gepflegt)
+docs/**/*.md
+OPERATIONS.md
+TROUBLESHOOTING.md
+
+# Agent-Konfigurationen (strikt geschützt)
+**/config.py
+**/agent_config.py
+
+# Governance Files (NIEMALS auto-ändern)
+.copilot-*
+.github/copilot-*.md
+
+# Test-Daten (nicht als Beispiel verwenden)
+tests/fixtures/
+tests/data/
+
+# Prod-Scripts (nicht vorschlagen)
+bin/*.sh
+scripts/*.sh
+scripts/*.py
+
+# Enterprise Features
+enterprise_config.json
+MASTER_PROMPTS_*.json
+
+# Session Logs (sensibel)
+*_SESSION_*.md
+*_REPORT_*.md
+
+# Backup-Ordner
+*.backup/
+*_backup/
+archivp_store.backup*/

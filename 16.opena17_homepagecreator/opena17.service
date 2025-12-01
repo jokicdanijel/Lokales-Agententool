@@ -1,0 +1,29 @@
+[Unit]
+Description=ELION opena17 - Homepage Creator Agent
+Documentation=https://github.com/elion/portier
+After=network.target
+
+[Service]
+Type=simple
+User=danijel-jd
+Group=danijel-jd
+WorkingDirectory=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.opena17_homepagecreator
+Environment="PATH=/home/danijel-jd/.local/bin:/usr/local/bin:/usr/bin"
+Environment="BEARER_TOKEN=c899b90d-faf8-485b-afa4-078357cf5313"
+Environment="OPENA17_PORT=12362"
+ExecStart=/usr/bin/python3 main_homepage_agent.py
+Restart=on-failure
+RestartSec=5
+StandardOutput=append:/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.opena17_homepagecreator/logs/opena17.log
+StandardError=append:/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.opena17_homepagecreator/logs/opena17.error.log
+
+# Security
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.opena17_homepagecreator/logs
+ReadWritePaths=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.opena17_homepagecreator/data
+ReadWritePaths=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.opena17_homepagecreator/exports
+
+[Install]
+WantedBy=multi-user.target

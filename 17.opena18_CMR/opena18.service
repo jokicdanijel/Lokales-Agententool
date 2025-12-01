@@ -1,0 +1,28 @@
+[Unit]
+Description=ELION opena18 - CRM Agent
+Documentation=https://github.com/elion/portier
+After=network.target
+
+[Service]
+Type=simple
+User=danijel-jd
+Group=danijel-jd
+WorkingDirectory=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/17.opena18_CMR
+Environment="PATH=/home/danijel-jd/.local/bin:/usr/local/bin:/usr/bin"
+Environment="BEARER_TOKEN=c899b90d-faf8-485b-afa4-078357cf5313"
+Environment="OPENA18_PORT=12363"
+ExecStart=/usr/bin/python3 main_crm_agent.py
+Restart=on-failure
+RestartSec=5
+StandardOutput=append:/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/17.opena18_CMR/logs/opena18.log
+StandardError=append:/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/17.opena18_CMR/logs/opena18.error.log
+
+# Security
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/17.opena18_CMR/logs
+ReadWritePaths=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/17.opena18_CMR/data
+
+[Install]
+WantedBy=multi-user.target

@@ -206,8 +206,59 @@ def shell_exec(command: str) -> dict:
         return {"status": "error", "message": str(e)}
 
 
+def classify_content_type(content_type: str) -> str:
+    """
+    Klassifiziert Content-Type grob in 'text', 'json' oder 'binary'.
+    """
+    ct = (content_type or "").lower()
+    if ct.startswith("application/json"):
+        return "json"
+    if ct.startswith("text/") or "html" in ct or "xml" in ct:
+        return "text"
+    return "binary"
+
+
+def get_filename_from_response(response, url: str) -> str:
+    """
+    Extrahiere Dateinamen aus Content-Disposition Header oder URL.
+    """
+    # Versuche Content-Disposition Header
+    content_disposition = response.headers.get("Content-Disposition", "")
+    if "filename=" in content_disposition:
+        # filename="example.gpg" oder filename=example.gpg
+        import re
+        match = re.search(r'filename="?([^";\s]+)"?', content_disposition)
+        if match:
+            return match.group(1)
+    
+    # Fallback: Extrahiere aus URL
+    from urllib.parse import urlparse, unquote
+    path = urlparse(url).path
+    filename = unquote(path.split("/")[-1]) if path else ""
+    
+    if filename and "." in filename:
+        return filename
+    
+    # Letzter Fallback: Timestamp-basierter Name
+    return f"download_{datetime.now().strftime('%Y%m%d_%H%M%S')}.bin"
+
+
+def format_file_size(size_bytes: int) -> str:
+    """Formatiere Dateigröße für Menschen lesbar."""
+    if size_bytes < 1024:
+        return f"{size_bytes} B"
+    elif size_bytes < 1024 * 1024:
+        return f"{size_bytes / 1024:.1f} KB"
+    else:
+        return f"{size_bytes / (1024 * 1024):.1f} MB"
+
+
 def fetch_webpage(url: str) -> dict:
-    """Fetch webpage content (whitelisted domains only)"""
+    """Fetch webpage content (whitelisted domains only)
+    
+    Behandelt Text/HTML/JSON wie bisher, aber speichert Binärdateien
+    lokal ab und gibt nur Metadaten zurück (kein Binär-Müll im Chat).
+    """
     try:
         # Check domain whitelist
         from urllib.parse import urlparse
@@ -220,12 +271,112 @@ def fetch_webpage(url: str) -> dict:
         response = requests.get(url, timeout=10)
         response.raise_for_status()
         
-        logger.info(f"Webpage fetched: {url}")
-        return {
-            "status": "success",
-            "content": response.text[:5000],  # Limit response size
-            "status_code": response.status_code
-        }
+        # Content-Type analysieren
+        content_type = response.headers.get("Content-Type", "application/octet-stream")
+        kind = classify_content_type(content_type)
+        size_bytes = len(response.content)
+        
+        logger.info(f"Webpage fetched: {url} (type: {kind}, size: {size_bytes})")
+        
+        # === TEXT / HTML Content ===
+        if kind == "text":
+            content = response.text
+            # Große Inhalte kürzen
+            MAX_LEN = 8000
+            if len(content) > MAX_LEN:
+                content = content[:MAX_LEN] + "\n\n[...] (gekürzt)"
+            
+            return {
+                "status": "success",
+                "kind": "text",
+                "url": url,
+                "content": content,
+                "content_type": content_type,
+                "status_code": response.status_code,
+                "size_bytes": size_bytes
+            }
+        
+        # === JSON Content ===
+        elif kind == "json":
+            try:
+                json_data = response.json()
+                # JSON hübsch formatiert
+                content = json.dumps(json_data, indent=2, ensure_ascii=False)
+                # Auch JSON kürzen wenn zu groß
+                MAX_LEN = 8000
+                if len(content) > MAX_LEN:
+                    content = content[:MAX_LEN] + "\n\n[...] (gekürzt)"
+                
+                return {
+                    "status": "success",
+                    "kind": "json",
+                    "url": url,
+                    "content": content,
+                    "content_type": content_type,
+                    "status_code": response.status_code,
+                    "size_bytes": size_bytes
+                }
+            except json.JSONDecodeError:
+                # Falls JSON-Parsing fehlschlägt, als Text behandeln
+                return {
+                    "status": "success",
+                    "kind": "text",
+                    "url": url,
+                    "content": response.text[:8000],
+                    "content_type": content_type,
+                    "status_code": response.status_code,
+                    "size_bytes": size_bytes
+                }
+        
+        # === BINARY Content (NEU: Speichern statt ausgeben) ===
+        else:
+            # Downloads-Verzeichnis erstellen
+            downloads_dir = SANDBOX_DIR / "downloads"
+            downloads_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Dateinamen ermitteln
+            filename = get_filename_from_response(response, url)
+            file_path = downloads_dir / filename
+            
+            # Bei Namenskollision: Timestamp anhängen
+            if file_path.exists():
+                stem = file_path.stem
+                suffix = file_path.suffix
+                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                filename = f"{stem}_{timestamp}{suffix}"
+                file_path = downloads_dir / filename
+            
+            # Binärdatei speichern
+            with open(file_path, 'wb') as f:
+                f.write(response.content)
+            
+            logger.info(f"Binary saved: {file_path} ({format_file_size(size_bytes)})")
+            
+            # Saubere Zusammenfassung für Chat (KEIN Binärinhalt!)
+            relative_path = f"localagent_sandbox/downloads/{filename}"
+            
+            return {
+                "status": "success",
+                "kind": "binary",
+                "url": url,
+                "content_type": content_type,
+                "status_code": response.status_code,
+                "size_bytes": size_bytes,
+                "size_human": format_file_size(size_bytes),
+                "filename": filename,
+                "binary_path": str(file_path),
+                "relative_path": relative_path,
+                "message": f"""🌐 Binary-Download erfolgreich
+
+• URL: {url}
+• MIME-Type: {content_type}
+• Dateiname: {filename}
+• Größe: {format_file_size(size_bytes)}
+• Speicherort: {relative_path}
+
+Hinweis: Das ist eine Binärdatei. Der Inhalt wurde lokal gespeichert und nicht im Chat angezeigt."""
+            }
+    
     except SecurityError as e:
         logger.error(f"Security error: {e}")
         return {"status": "error", "message": str(e)}
@@ -280,6 +431,59 @@ def process_tool_call(messages: List[dict]) -> Optional[dict]:
     return None
 
 
+def format_tool_result(tool_result: dict) -> str:
+    """
+    Formatiert das Tool-Ergebnis für die Chat-Ausgabe.
+    Bei Binary-Downloads: Nur saubere Zusammenfassung, kein Binär-Müll.
+    """
+    if tool_result.get("status") == "error":
+        return f"❌ Fehler: {tool_result.get('message', 'Unbekannter Fehler')}"
+    
+    kind = tool_result.get("kind")
+    
+    # Binary-Download: Verwende die vorformatierte message
+    if kind == "binary":
+        return tool_result.get("message", "Binary-Download abgeschlossen.")
+    
+    # JSON: Hübsch formatiert
+    if kind == "json":
+        url = tool_result.get("url", "")
+        status = tool_result.get("status_code", "")
+        content = tool_result.get("content", "")
+        size = tool_result.get("size_bytes", 0)
+        
+        return f"""🌐 JSON-Response
+
+• URL: {url}
+• Status: {status}
+• Größe: {format_file_size(size)}
+
+```json
+{content}
+```"""
+    
+    # Text/HTML: Standard-Ausgabe
+    if kind == "text":
+        url = tool_result.get("url", "")
+        status = tool_result.get("status_code", "")
+        content = tool_result.get("content", "")
+        size = tool_result.get("size_bytes", 0)
+        content_type = tool_result.get("content_type", "text/plain")
+        
+        return f"""🌐 Webseite geladen
+
+• URL: {url}
+• Status: {status}
+• Content-Type: {content_type}
+• Größe: {format_file_size(size)}
+
+---
+{content}"""
+    
+    # Andere Tool-Ergebnisse (write_file, read_file, shell_exec, etc.)
+    return f"Tool executed:\n```json\n{json.dumps(tool_result, indent=2, ensure_ascii=False)}\n```"
+
+
 @app.route('/health', methods=['GET'])
 def health_check():
     """Health check endpoint"""
@@ -291,7 +495,18 @@ def health_check():
     })
 
 
+@app.route('/v1', methods=['GET'])
+def api_info():
+    """API info endpoint für OpenWebUI-Kompatibilität"""
+    return jsonify({
+        "status": "ok",
+        "version": "1.0.0",
+        "endpoints": ["/v1/models", "/v1/chat/completions"]
+    })
+
+
 @app.route('/v1/models', methods=['GET'])
+@app.route('/models', methods=['GET'])  # Alias für OpenWebUI-Kompatibilität
 def list_models():
     """List available models"""
     try:
@@ -315,6 +530,7 @@ def list_models():
 
 
 @app.route('/v1/chat/completions', methods=['POST'])
+@app.route('/chat/completions', methods=['POST'])  # Alias für OpenWebUI-Kompatibilität
 def chat_completions():
     """Chat completions endpoint"""
     try:
@@ -329,21 +545,50 @@ def chat_completions():
         tool_result = process_tool_call(messages)
         
         if tool_result:
-            # Return tool result
-            response_content = f"Tool executed: {json.dumps(tool_result, indent=2)}"
+            # Return tool result - use smart formatter
+            response_content = format_tool_result(tool_result)
         else:
-            # Forward to Ollama
-            ollama_response = requests.post(
-                f"{OLLAMA_BASE_URL}/api/chat",
-                json={
-                    "model": OLLAMA_MODEL,
-                    "messages": messages,
-                    "stream": False
-                }
-            )
+            # Forward to Ollama - with proper error handling
+            ollama_url = f"{OLLAMA_BASE_URL}/api/chat"
+            ollama_payload = {
+                "model": OLLAMA_MODEL,
+                "messages": messages,
+                "stream": False
+            }
             
-            ollama_data = ollama_response.json()
-            response_content = ollama_data.get('message', {}).get('content', '')
+            try:
+                ollama_response = requests.post(ollama_url, json=ollama_payload, timeout=120)
+                
+                # Log Ollama response status for debugging
+                if ollama_response.status_code != 200:
+                    error_detail = ollama_response.text[:200] if ollama_response.text else "No response body"
+                    logger.error(f"Ollama error: status={ollama_response.status_code}, url={ollama_url}, detail={error_detail}")
+                    
+                    # Return proper error instead of empty response
+                    return jsonify({
+                        "error": {
+                            "message": f"Ollama backend error: {ollama_response.status_code}",
+                            "type": "backend_error",
+                            "detail": error_detail
+                        }
+                    }), 502
+                
+                ollama_data = ollama_response.json()
+                response_content = ollama_data.get('message', {}).get('content', '')
+                
+                # Warn if response is empty
+                if not response_content:
+                    logger.warning(f"Ollama returned empty content. Response: {ollama_data}")
+                    
+            except requests.exceptions.Timeout:
+                logger.error(f"Ollama timeout after 120s: {ollama_url}")
+                return jsonify({"error": {"message": "Ollama timeout", "type": "timeout"}}), 504
+            except requests.exceptions.ConnectionError as ce:
+                logger.error(f"Ollama connection error: {ce}")
+                return jsonify({"error": {"message": "Ollama not reachable", "type": "connection_error"}}), 503
+            except Exception as oe:
+                logger.error(f"Ollama request failed: {oe}")
+                return jsonify({"error": {"message": str(oe), "type": "ollama_error"}}), 500
         
         return jsonify({
             "id": f"chatcmpl-{hashlib.md5(str(datetime.now()).encode()).hexdigest()[:8]}",

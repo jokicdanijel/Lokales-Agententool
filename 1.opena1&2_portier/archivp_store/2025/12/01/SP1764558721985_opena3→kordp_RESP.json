@@ -1,0 +1,11 @@
+{
+  "ts": "2025-12-01T03:12:01.985412Z",
+  "src": "opena3",
+  "dst": "kordp",
+  "kind": "RESP",
+  "body": {
+    "ok": true,
+    "result": "tool_executed"
+  },
+  "strict": true
+}

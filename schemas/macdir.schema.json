@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://portier.local/schemas/macdir.schema.json",
+  "title": "MAC_DIR Schema",
+  "description": "Schema für MAC_DIR.json - Verzeichnisinventar mit Metadaten",
+  "type": "object",
+  "required": ["project_root", "generated_at", "entries"],
+  "properties": {
+    "project_root": {
+      "type": "string",
+      "description": "Absoluter Pfad zum Projekt-Root"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 Zeitstempel der Generierung"
+    },
+    "generator": {
+      "type": "string",
+      "description": "Name des Generator-Tools"
+    },
+    "version": {
+      "type": "string",
+      "description": "Version des Schemas/Generators"
+    },
+    "total_entries": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Gesamtzahl der Einträge"
+    },
+    "total_files": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Anzahl der Dateien"
+    },
+    "total_dirs": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Anzahl der Verzeichnisse"
+    },
+    "entries": {
+      "type": "array",
+      "description": "Liste aller Dateien und Verzeichnisse",
+      "items": {
+        "type": "object",
+        "required": ["path", "type", "mtime"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Relativer Pfad vom project_root"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["file", "dir"],
+            "description": "Typ: Datei oder Verzeichnis"
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Dateigröße in Bytes (nur bei type=file)"
+          },
+          "mtime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Letzte Änderung (ISO 8601)"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "SHA256-Hash des Dateiinhalts"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Besitzer der Datei"
+          },
+          "permissions": {
+            "type": "string",
+            "pattern": "^[0-7]{3}$",
+            "description": "Unix-Berechtigungen (oktal)"
+          },
+          "entries": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Anzahl direkter Einträge (nur bei type=dir)"
+          }
+        }
+      }
+    }
+  }
+}

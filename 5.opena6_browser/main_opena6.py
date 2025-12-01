@@ -38,7 +38,7 @@ from contextlib import asynccontextmanager
 
 # Konfiguration
 AGENT_ID = "opena6"
-PORT = 12350
+PORT = 12352  # PORTIER 3.0: opena6 = Browser Agent
 BEARER_TOKEN = os.getenv("BEARER_TOKEN", "c899b90d-faf8-485b-afa4-078357cf5313")
 DASHBOARD_URL = "http://127.0.0.1:12349"
 

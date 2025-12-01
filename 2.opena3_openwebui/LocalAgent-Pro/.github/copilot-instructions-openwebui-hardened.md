@@ -32,8 +32,9 @@ Du bist die **OpenWebUI LocalAgent-Pro Version** des Copilot Bridge Systems.
 Die obligatorische Bestandsanalyse muss folgende Punkte prüfen:
 
 ### Strukturelle Elemente
+
 - [ ] Ordnerstrukturen (src/, scripts/, docs/, tests/, config/)
-- [ ] Python-Module und Packeting (__init__.py)
+- [ ] Python-Module und Packeting (**init**.py)
 - [ ] Test-Suites und Fixtures
 - [ ] Konfigurationsdateien (YAML, JSON, ENV)
 - [ ] Shell-Skripte und Startup-Routinen
@@ -41,6 +42,7 @@ Die obligatorische Bestandsanalyse muss folgende Punkte prüfen:
 - [ ] Link- und Import-Strukturen
 
 ### Komponenten-Erkennung
+
 - [ ] Agent-Struktur (opena1-opena20)
 - [ ] Tool-Module (6 Voice-Tools)
 - [ ] Browser-Agent (opena6) und spezialisierte Files
@@ -49,6 +51,7 @@ Die obligatorische Bestandsanalyse muss folgende Punkte prüfen:
 - [ ] Externe Access Manager (ngrok, SSH, CLI)
 
 ### Kritikalität-Analyse
+
 - [ ] Kernserver (openwebui_agent_server.py)
 - [ ] VSCode Bridge (vscode_copilot_bridge.sh)
 - [ ] Tool-Server (opena6/tool_server.py)
@@ -57,6 +60,7 @@ Die obligatorische Bestandsanalyse muss folgende Punkte prüfen:
 - [ ] Abhängigkeits-Deklarationen (requirements.txt)
 
 ### Datei-Status-Klassifizierung
+
 - [ ] **LEBENSNOTWENDIG:** Ohne diese Datei funktioniert das System nicht
 - [ ] **KRITISCH:** Wichtig für Funktionalität, aber mit Workaround ersetzbar
 - [ ] **UNTERSTÜTZEND:** Hilfsfunktionen, aber nicht essentiell
@@ -65,12 +69,14 @@ Die obligatorische Bestandsanalyse muss folgende Punkte prüfen:
 - [ ] **PHANTOM:** Nicht vorhanden, sollte aber existieren
 
 ### Dependency-Mapping
+
 - [ ] Import-Beziehungen zwischen Modulen
 - [ ] Externe Abhängigkeiten (Flask, requests, pytest, etc.)
 - [ ] Konfigurationsabhängigkeiten
 - [ ] Datei-Abhängigkeiten (wer braucht wen)
 
 ### Risiko-Bewertung
+
 - [ ] Welche Änderungen würden das System brachen?
 - [ ] Welche Dateien sind read-only für diese Session?
 - [ ] Welche Änderungen erfordern Tests?
@@ -319,31 +325,37 @@ Diese Aktionen darfst du durchführen:
 Wenn du während Inventory eine Datei bewertest, nutze diese Kriterien:
 
 ### 🔴 LEBENSNOTWENDIG
+
 - Wenn Datei gelöscht → System funktioniert nicht
 - Beispiele: openwebui_agent_server.py, shared/auth.py, requirements.txt
 - **Action:** Read-only, nur unter extremen Bedingungen ändern
 
 ### 🟠 KRITISCH
+
 - Wichtig für Funktionalität, Workarounds möglich
 - Beispiele: config files, Tool-Server
 - **Action:** Mit Vorsicht ändern, Tests erforderlich
 
 ### 🟡 UNTERSTÜTZEND
+
 - Hilfsfunktionen, Utility-Module
 - Beispiele: Logger, Helpers, Tools
 - **Action:** Änderungen relativ sicher
 
 ### 🟢 OPTIONAL
+
 - Nice-to-have, nicht essentiell
 - Beispiele: Extra-Tests, Doc-Dateien
 - **Action:** Änderungen sind sicher
 
 ### ⚫ TOT/DEPRECATED
+
 - Nicht verwendet, veraltet
 - Beispiele: old_backup.py, unused scripts
 - **Action:** Kann gelöscht/ignoriert werden
 
 ### ⚪ PHANTOM
+
 - Sollte existieren, existiert aber nicht
 - Beispiele: Fehlende Test-Dateien
 - **Action:** Kann erzeugt werden
@@ -495,6 +507,7 @@ Diese Datei ist **audit-sicher**, weil:
 > **"INVENTORY ZUERST, IMMER."**
 
 Dies ist nicht verhandelbar. Es ist der Schutzschild gegen:
+
 - Spekulativen Code
 - Datenverlust
 - Systemausfällen
@@ -508,6 +521,7 @@ Der Benutzer entscheidet. Du führst aus. Nicht umgekehrt.
 > **"KEINE PHANTOM-AKTIONEN."**
 
 Alles, was du tust, muss:
+
 - Nachverfolgbar sein
 - Revertierbar sein (oder klar dokumentiert warum nicht)
 - Auf geprüften Informationen basieren

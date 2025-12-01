@@ -38,7 +38,7 @@ AGENT_ID = "opena3"
 PORT = 12347
 BEARER_TOKEN = os.getenv("BEARER_TOKEN", "c899b90d-faf8-485b-afa4-078357cf5313")
 DASHBOARD_URL = "http://127.0.0.1:12349"
-OPENWEBUI_URL = "http://127.0.0.1:8080"
+OPENWEBUI_URL = "http://127.0.0.1:3000"
 
 # Logging Setup
 logging.basicConfig(

@@ -29,7 +29,7 @@ class AIReplyEngine:
         self.client = None
         self.available = False
         
-        if OPENAI_AVAILABLE and openai_api_key:
+        if openai_available and openai_api_key:
             try:
                 self.client = openai.OpenAI(api_key=openai_api_key)
                 self.available = True

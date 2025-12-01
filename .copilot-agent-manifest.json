@@ -1,0 +1,141 @@
+{
+  "portier_version": "3.0",
+  "system_name": "PORTIER Hyper-Dashboard",
+  "agents_total": 21,
+  "agents": {
+    "opena1": {
+      "port": 12344,
+      "folder": "1.opena1&2_portier",
+      "role": "Koordinator",
+      "protected": true
+    },
+    "opena2": {
+      "port": 12345,
+      "folder": "1.opena1&2_portier",
+      "role": "Archivator",
+      "protected": true
+    },
+    "opena3": {
+      "port": 12347,
+      "folder": "2.opena3_openwebui",
+      "role": "OpenWebUI Bridge",
+      "openwebui_url": "http://127.0.0.1:3000"
+    },
+    "opena4": {
+      "port": 12348,
+      "folder": "3.opena4_telegram",
+      "role": "Telegram Agent"
+    },
+    "opena5": {
+      "port": 12351,
+      "folder": "4.opena5_vscode",
+      "role": "VSCode Agent"
+    },
+    "opena6": {
+      "port": 12352,
+      "folder": "5.opena6_browser",
+      "role": "Browser Agent"
+    },
+    "opena7": {
+      "port": 12353,
+      "folder": "6.opena7_email",
+      "role": "Email Agent"
+    },
+    "opena8": {
+      "port": 12354,
+      "folder": "7.opena8_whatsapp",
+      "role": "WhatsApp Agent"
+    },
+    "opena9": {
+      "port": 12355,
+      "folder": "8.opena9_telephone",
+      "role": "Telephone Agent"
+    },
+    "opena10": {
+      "port": 12356,
+      "folder": "9.opena10_call_tracking",
+      "role": "CallTracking Agent"
+    },
+    "opena11": {
+      "port": 12357,
+      "folder": "10.opena11_unlock",
+      "role": "Unlock Agent"
+    },
+    "opena12": {
+      "port": 12358,
+      "folder": "11.opena12_social_media",
+      "role": "SocialMedia Agent"
+    },
+    "opena13": {
+      "port": 12359,
+      "folder": "12.opena13_influencer",
+      "role": "Influencer Agent"
+    },
+    "opena14": {
+      "port": 12360,
+      "folder": "13.opena14_calendar",
+      "role": "Calendar Agent"
+    },
+    "opena15": {
+      "port": 12361,
+      "folder": "14.opena15_html",
+      "role": "HTML Generator"
+    },
+    "opena16": {
+      "port": 12362,
+      "folder": "15.opena16_shop",
+      "role": "Shop Agent"
+    },
+    "opena17": {
+      "port": 12366,
+      "folder": "16.opena17_homepagecreator",
+      "role": "Homepage Creator"
+    },
+    "opena18": {
+      "port": 12363,
+      "folder": "17.opena18_CMR",
+      "role": "CRM Agent"
+    },
+    "opena19": {
+      "port": 12365,
+      "folder": "18.opena19_Aktien&Crypto",
+      "role": "Trading Agent"
+    },
+    "opena20": {
+      "port": 12349,
+      "folder": "19.opena20_dashboard_agent",
+      "role": "Dashboard",
+      "is_main_dashboard": true
+    },
+    "opena21": {
+      "port": 12367,
+      "folder": "20.opena21_workflow",
+      "role": "Workflow Engine",
+      "protected": true
+    }
+  },
+  "rules": {
+    "file_creation": false,
+    "file_deletion": false,
+    "file_modification": "ask_first",
+    "auto_generation": false,
+    "docker_generation": false,
+    "template_generation": false,
+    "sdk_generation": false,
+    "webpanel_generation": false
+  },
+  "protected_folders": [
+    "1.opena1&2_portier",
+    "20.opena21_workflow"
+  ],
+  "dashboard": {
+    "url": "http://127.0.0.1:12349",
+    "html_file": "html/index.html",
+    "fallback_html": "hyper_dashboard_ultimate.html"
+  },
+  "openwebui": {
+    "ui_port": 3000,
+    "agent_port": 12347,
+    "url": "http://127.0.0.1:3000"
+  }
+}

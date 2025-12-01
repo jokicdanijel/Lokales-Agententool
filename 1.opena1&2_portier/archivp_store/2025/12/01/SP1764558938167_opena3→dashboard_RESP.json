@@ -1,0 +1,13 @@
+{
+  "ts": "2025-12-01T03:15:38.167998Z",
+  "src": "opena3",
+  "dst": "dashboard",
+  "kind": "RESP",
+  "body": {
+    "model": "llama3.1:8b",
+    "status": "error",
+    "error_code": "SERVICE_UNAVAILABLE",
+    "timestamp": "2025-12-01T03:15:38.167851Z"
+  },
+  "strict": true
+}

@@ -1,4 +1,4 @@
-#!/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/.venv/bin/python3
+#!/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/.venv/bin/python
 import sys
 from pytest import console_main
 if __name__ == '__main__':

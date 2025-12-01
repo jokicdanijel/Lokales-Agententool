@@ -1,0 +1,16 @@
+{
+  "ts": "2025-12-01T03:15:18.119494Z",
+  "src": "opena3",
+  "dst": "kordp",
+  "kind": "RESP",
+  "body": {
+    "error": {
+      "code": "INVOKE_FAILED",
+      "message": "fatal invoke error",
+      "details": {
+        "tool": "broken_tool"
+      }
+    }
+  },
+  "strict": true
+}

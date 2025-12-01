@@ -91,7 +91,7 @@ CALENDARS_FILE = DATA_DIR / "calendars.json"
 EVENT_HISTORY_FILE = DATA_DIR / "event_history.jsonl"
 
 # Port Policy Enforcement
-PORT = 12359
+PORT = 12360
 ALLOWED_PORTS = range(12344, 12400)
 FORBIDDEN_PORTS = [8080]
 

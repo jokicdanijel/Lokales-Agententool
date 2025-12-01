@@ -1,0 +1,15 @@
+{
+  "ts": "2025-12-01T02:45:35.250390Z",
+  "src": "opena3",
+  "dst": "dashboard",
+  "kind": "RESP",
+  "body": {
+    "model": "llama3.1:8b",
+    "backend": "localagent",
+    "total_length": 16,
+    "status": "ok",
+    "preview": "Streamed content",
+    "timestamp": "2025-12-01T02:45:35.250257Z"
+  },
+  "strict": true
+}

@@ -34,7 +34,7 @@ SERVICE_TARGET = "openwebui3"
 
 PORT = 12347
 
-OPENWEBUI_URL = os.getenv("OPENWEBUI_URL", "http://127.0.0.1:8080")
+OPENWEBUI_URL = os.getenv("OPENWEBUI_URL", "http://127.0.0.1:3000")
 TIMEOUT = float(os.getenv("OPENWEBUI_TIMEOUT", "15.0"))
 
 OPENA2_URL = os.getenv("OPENA2_URL", "http://127.0.0.1:12345")     # Safepoint handler

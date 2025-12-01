@@ -34,7 +34,7 @@ logger = logging.getLogger("opena8")
 # CONFIG
 # ============================================================================
 
-PORT = 12353
+PORT = 12354  # PORTIER 3.0: opena8 = WhatsApp Agent
 KUERZEL = "whatsappp"
 
 # Port-Policy Enforcement

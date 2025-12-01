@@ -19,7 +19,7 @@ class WorkflowEngineConfig(BaseModel):
     # Service-Identifikation
     service_name: str = Field("opena21", description="Service-Name")
     program_target: str = Field("workflowp", description="kordp-Kürzel")
-    port: int = Field(12364, description="Service-Port")
+    port: int = Field(12367, description="Service-Port")
     version: str = Field("2.0", description="Service-Version")
     
     # Authentifizierung
@@ -55,7 +55,7 @@ def load_config() -> WorkflowEngineConfig:
     return WorkflowEngineConfig(
         service_name=os.getenv("SERVICE_NAME", "opena21"),
         program_target=os.getenv("PROGRAM_TARGET", "workflowp"),
-        port=int(os.getenv("OPENA21_PORT", "12364")),
+        port=int(os.getenv("OPENA21_PORT", "12367")),
         version=os.getenv("VERSION", "2.0"),
         bearer_token=os.getenv("BEARER_TOKEN"),
         default_timeout=int(os.getenv("WORKFLOW_DEFAULT_TIMEOUT", "300")),

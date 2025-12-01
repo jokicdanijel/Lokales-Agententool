@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 opena21 - Workflow Engine Agent
-Port: 12364  
+Port: 12367  
 Kürzel: workflowp
 Version: 2.0
 Status: ✅ Production
@@ -38,7 +38,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Konfiguration
-PORT = int(os.getenv("OPENA21_PORT", "12364"))
+PORT = int(os.getenv("OPENA21_PORT", "12367"))
 BEARER_TOKEN = os.getenv("BEARER_TOKEN", "")
 SERVICE_NAME = "opena21"
 PROGRAM_TARGET = "workflowp"

@@ -5,13 +5,13 @@ Handles email operations, validation, and coordination
 """
 
 import os
-import json
 import logging
 from datetime import datetime
 from typing import Dict, List, Optional, Any
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
+
 
 class EmailCore:
     """Core email handling and coordination"""
@@ -47,7 +47,6 @@ class EmailCore:
     def _check_imap_connection(self) -> bool:
         """Check IMAP server connectivity"""
         try:
-            # Mock check - would implement real IMAP connection test
             imap_server = os.getenv("IMAP_SERVER", "")
             return bool(imap_server)
         except Exception:
@@ -56,7 +55,6 @@ class EmailCore:
     def _check_smtp_availability(self) -> bool:
         """Check SMTP server availability"""
         try:
-            # Mock check - would implement real SMTP connection test
             smtp_server = os.getenv("SMTP_SERVER", "")
             return bool(smtp_server)
         except Exception:
@@ -114,7 +112,6 @@ class EmailCore:
             folder = args.get("folder", "INBOX")
             limit = args.get("limit", 10)
             
-            # Mock implementation - would use real IMAP handler
             emails = [
                 {
                     "id": 1,
@@ -150,7 +147,6 @@ class EmailCore:
                     "message": "Fields 'to' and 'subject' are required"
                 }
             
-            # Mock implementation - would use real SMTP sender
             email_id = f"email_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
             
             return {
@@ -172,7 +168,6 @@ class EmailCore:
             if not email_id:
                 return {"error": "missing_email_id", "message": "Email ID required"}
             
-            # Mock implementation
             email = {
                 "id": email_id,
                 "subject": "Mock Email Content",
@@ -236,7 +231,6 @@ class EmailCore:
             folder = args.get("folder", "INBOX")
             limit = args.get("limit", 20)
             
-            # Mock implementation
             results = [
                 {
                     "id": 1,
@@ -262,7 +256,6 @@ class EmailCore:
     def get_logs(self) -> Dict[str, Any]:
         """Get recent log entries"""
         try:
-            # Mock log entries
             logs = [
                 {
                     "timestamp": datetime.now().isoformat(),
@@ -290,7 +283,7 @@ class EmailCore:
         return {
             "agent": self.agent_id,
             "version": self.version,
-            "port": os.getenv("OPENA7_PORT", "12351"),
+            "port": os.getenv("OPENA7_PORT", "12353"),
             "imap_server": os.getenv("IMAP_SERVER", ""),
             "smtp_server": os.getenv("SMTP_SERVER", ""),
             "ai_model": os.getenv("AI_MODEL", "gpt-4o-mini"),

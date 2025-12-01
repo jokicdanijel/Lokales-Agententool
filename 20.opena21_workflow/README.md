@@ -118,3 +118,84 @@ Bei Fragen oder Problemen:
 **Generiert:** 29.11.2025 13:22:43  
 **Version:** Enterprise 2.0  
 **Status:** ✅ Production Ready
+EXTREM WICHTIG — FILE-SCAN-PFLICHT FÜR DIESEN AGENT
+Bevor du irgendeine Datei erzeugst, MUSST du folgendes tun:
+
+✔ 1. Projektverzeichnis scannen
+Scanne rekursiv das Verzeichnis dieses Agents:
+
+css
+￼Code kopieren
+<AgentRoot>/   → z. B. 16.opena17_homepagecreator
+    main.py
+    routes.py
+    models.py
+    agent_logic.py
+    config.py
+    security.py
+    bin/
+    data/
+    templates/
+    tests/
+✔ 2. Existierende Dateien feststellen
+Alle vorhandenen Dateien müssen analysiert werden:
+
+nicht löschen
+
+nicht überschreiben
+
+nicht ignorieren
+
+nicht neuschreiben
+
+Du musst sie weiterverwenden.
+
+✔ 3. Wenn eine Datei existiert, MUSST du sie patchen, nicht ersetzen
+Patch-Regeln:
+
+Nur fehlende Funktionen ergänzen
+
+Nur fehlerhafte Bereiche reparieren
+
+Nur neue Features anhängen
+
+Nichts entfernen, außer explizit erlaubt
+
+Keine Duplikate erzeugen
+
+Beispiel:
+
+less
+￼Code kopieren
+Wenn main.py vorhanden ist:
+→ erweitere main.py
+→ verbessere main.py
+→ implementiere fehlende Endpoints
+→ füge neue Klassen hinzu
+→ aber überschreibe NIEMALS main.py komplett
+✔ 4. Wenn eine Datei NICHT existiert, dann erst erstellen
+Neue Dateien dürfen nur erstellt werden, wenn sie wirklich fehlen:
+
+sql
+￼Code kopieren
+if file_exists:
+    patch
+else:
+    create new file
+✔ 5. PRIORITÄT: EXISTING > NEW
+Immer:
+
+sql
+￼Code kopieren
+EXISTIERENDE STRUKTUR BEWAHREN
+LOGIK ONLY ERWEITERN
+NIEMALS Dateien ersetzen
+NIEMALS alles neu generieren
+✔ 6. Workflow-Agent opena21 MUSS besonders strikt sein
+opena21 darf:
+
+andere Agents analysieren
+
+deren Dateien lesen
+
+fehlende Workflows ergänzen

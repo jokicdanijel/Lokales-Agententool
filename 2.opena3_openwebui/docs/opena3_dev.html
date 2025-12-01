@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>opena3 – Developer Overview</title>
+    <style>
+        :root {
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #212529;
+            --text-muted: #6c757d;
+            --border: #dee2e6;
+            --primary: #6366f1;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --code-bg: #1e1e1e;
+            --code-text: #d4d4d4;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .container { max-width: 1100px; margin: 0 auto; }
+        header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        header .subtitle { opacity: 0.8; }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        .card h3 {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin: 1rem 0 0.5rem 0;
+        }
+        ul { list-style: disc; margin-left: 1.5rem; }
+        ul li { padding: 0.25rem 0; }
+        code {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-family: "JetBrains Mono", "SF Mono", monospace;
+            font-size: 0.85em;
+        }
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            margin: 1rem 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th { background: var(--bg); font-weight: 600; }
+        .status-done { color: var(--success); font-weight: 600; }
+        .status-partial { color: var(--warning); font-weight: 600; }
+        .status-todo { color: var(--danger); font-weight: 600; }
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-done { background: #dcfce7; color: #166534; }
+        .badge-partial { background: #fef3c7; color: #92400e; }
+        .badge-todo { background: #fee2e2; color: #991b1b; }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        a { color: var(--primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>opena3 – Developer Overview</h1>
+            <p class="subtitle">Technische Dokumentation für Entwickler | PORTIER 3.0</p>
+        </header>
+
+        <section class="card">
+            <h2>🏗️ Architektur</h2>
+            <ul>
+                <li><strong>FastAPI-App</strong> mit <code>lifespan</code>-Handler (kein <code>@app.on_event</code> mehr)</li>
+                <li><strong>Pydantic V2</strong> – alle Schemas mit <code>model_config = ConfigDict(extra="forbid")</code></li>
+                <li><strong>Sync HTTP-Client</strong> mit Retry + Exponential Backoff</li>
+                <li><strong>Safepoints</strong> – Append-Only Archiv mit <code>index.jsonl</code></li>
+                <li><strong>SSE-Streaming</strong> – Server-Sent Events für <code>/chat/stream</code></li>
+            </ul>
+
+            <h3>Hauptkomponenten</h3>
+            <pre>
+2.opena3_openwebui/
+├── main_openwebui_agent.py   # FastAPI Entry Point (Port 12347)
+├── config.py                 # Konfigurationsmodul (Pydantic V2)
+├── tests/                    # Pytest-Suite
+│   └── test_opena3_api.py    # ~95 Tests
+├── docs/                     # HTML-Dokumentation
+└── bin/                      # Start-Skripte</pre>
+        </section>
+
+        <section class="card">
+            <h2>⚙️ Config & Modelle</h2>
+            <p><code>config.py</code> enthält folgende Pydantic-Klassen:</p>
+            
+            <div class="grid-2">
+                <div>
+                    <h3>Core-Klassen</h3>
+                    <ul>
+                        <li><code>ServiceConfig</code> – Hauptkonfiguration (BaseSettings)</li>
+                        <li><code>AgentInfo</code> – Agent-Metadaten</li>
+                        <li><code>PortPolicy</code> – Port-Validierung (12344-12399)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Feature-Klassen</h3>
+                    <ul>
+                        <li><code>ModelInfo</code> / <code>ModelRegistry</code> – Multi-Model-Support</li>
+                        <li><code>RateLimitConfig</code> – Pro-Endpoint Limits</li>
+                        <li><code>RetryConfig</code> – Exponential Backoff</li>
+                        <li><code>LoggingConfig</code> – Log-Rotation, JSON-Logging</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Custom-Modelle via ENV</h3>
+            <pre>OPENA3_CUSTOM_MODELS='{"mymodel": {"id": "custom:7b", "name": "My Model", "type": "llm", "default": false}}'</pre>
+        </section>
+
+        <section class="card">
+            <h2>🛡️ Resilienz & Error-Handling</h2>
+            
+            <h3>handle_upstream_error() Mapping</h3>
+            <table>
+                <tr><th>Upstream-Status</th><th>Rückgabe</th><th>Beschreibung</th></tr>
+                <tr><td>5xx</td><td>502 Bad Gateway</td><td>Backend-Fehler</td></tr>
+                <tr><td>404</td><td>404 Not Found</td><td>Ressource nicht gefunden</td></tr>
+                <tr><td>401</td><td>401 Unauthorized</td><td>Auth-Fehler</td></tr>
+                <tr><td>429</td><td>429 Too Many Requests</td><td>Rate-Limit erreicht</td></tr>
+                <tr><td>Timeout</td><td>504 Gateway Timeout</td><td>Backend-Timeout</td></tr>
+                <tr><td>Connection Error</td><td>503 Service Unavailable</td><td>Backend nicht erreichbar</td></tr>
+            </table>
+
+            <h3>http_request_with_retry()</h3>
+            <pre>
+RetryConfig:
+  max_retries: 3
+  base_delay: 0.5s
+  max_delay: 30s
+  exponential_base: 2.0
+  retryable_status_codes: [502, 503, 504]
+  retry_on_connection_error: true
+  retry_on_timeout: true</pre>
+        </section>
+
+        <section class="card">
+            <h2>🧪 Tests & Coverage</h2>
+            
+            <table>
+                <tr><th>Modul</th><th>Coverage</th><th>Tests</th></tr>
+                <tr>
+                    <td><code>config.py</code></td>
+                    <td><span class="status-done">100%</span></td>
+                    <td>36 Tests</td>
+                </tr>
+                <tr>
+                    <td><code>main_openwebui_agent.py</code></td>
+                    <td><span class="status-partial">85%</span></td>
+                    <td>59 Tests</td>
+                </tr>
+                <tr>
+                    <td><strong>Gesamt</strong></td>
+                    <td><span class="status-done">~90%</span></td>
+                    <td><strong>95 Tests</strong></td>
+                </tr>
+            </table>
+
+            <h3>Migrations-Status</h3>
+            <ul>
+                <li>✅ Pydantic V2 Migration – <span class="badge badge-done">DONE</span></li>
+                <li>✅ FastAPI Lifespan Migration – <span class="badge badge-done">DONE</span></li>
+                <li>✅ ConfigDict mit <code>extra="forbid"</code> – <span class="badge badge-done">DONE</span></li>
+                <li>✅ SettingsConfigDict für BaseSettings – <span class="badge badge-done">DONE</span></li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>📋 TODO-Blöcke Status</h2>
+            
+            <table>
+                <tr><th>Block</th><th>Beschreibung</th><th>Status</th></tr>
+                <tr>
+                    <td>1. Architektur & Setup</td>
+                    <td>FastAPI, Config, Health-Endpoint</td>
+                    <td><span class="badge badge-done">✅ DONE</span></td>
+                </tr>
+                <tr>
+                    <td>2. API-Design</td>
+                    <td>Endpoints, Pydantic-Schemas, Error-Handling</td>
+                    <td><span class="badge badge-done">✅ DONE</span></td>
+                </tr>
+                <tr>
+                    <td>3. Portier-Integration</td>
+                    <td>Tool-Registry, kordp-Routing, Option-2-Flow</td>
+                    <td><span class="badge badge-partial">🟡 PARTIAL</span></td>
+                </tr>
+                <tr>
+                    <td>4. Logging & Safepoints</td>
+                    <td>JSON-Logging, Secret-Masking, Log-Rotation</td>
+                    <td><span class="badge badge-partial">🟡 PARTIAL</span></td>
+                </tr>
+                <tr>
+                    <td>5. Tests & Qualität</td>
+                    <td>Pytest-Suite, Coverage, Mocking</td>
+                    <td><span class="badge badge-partial">🟡 PARTIAL</span></td>
+                </tr>
+                <tr>
+                    <td>6. Dokumentation</td>
+                    <td>README, API-Docs, Security-Hinweise</td>
+                    <td><span class="badge badge-partial">🟡 PARTIAL</span></td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="card">
+            <h2>🔴 Offene TODOs</h2>
+            
+            <h3>Block 3: Portier-Integration</h3>
+            <ul>
+                <li>❌ Idempotente Agent-Registrierung via <code>register_if_absent()</code></li>
+                <li>❌ Integration in kordp-Routing (Decision72 → owuip)</li>
+                <li>❌ Test des vollständigen Option-2-Flows</li>
+            </ul>
+
+            <h3>Block 4: Logging</h3>
+            <ul>
+                <li>❌ Integration mit zentralem Logging-System</li>
+            </ul>
+
+            <h3>Block 5: Tests</h3>
+            <ul>
+                <li>❌ Integrationstests gegen echte OpenWebUI-Instanz</li>
+                <li>❌ Load-Tests (100+ parallele Chat-Requests)</li>
+                <li>❌ CI/CD-Integration (GitHub Actions)</li>
+            </ul>
+
+            <h3>Block 6: Dokumentation</h3>
+            <ul>
+                <li>❌ Vollständige Endpoint-Beschreibungen mit cURL-Beispielen</li>
+                <li>✅ Security-Hinweise (Bearer-Token-Handling, TLS-Empfehlungen) – <span class="badge badge-done">DONE</span></li>
+                <li>❌ Troubleshooting-Guide erweitern</li>
+                <li>❌ Architekturdiagramm (OpenWebUI ↔ Adapter ↔ opena3)</li>
+                <li>❌ Deployment-Anleitung (Docker, systemd)</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>🔐 Security-Hinweise</h2>
+            
+            <h3>Bearer-Token-Handling</h3>
+            <ul>
+                <li><strong>ENV-Only:</strong> Bearer-Token ausschließlich via <code>BEARER_TOKEN</code> Umgebungsvariable setzen</li>
+                <li><strong>Keine Hardcodes:</strong> Niemals Tokens in Code, Config-Dateien oder Git committen</li>
+                <li><strong>.env-Datei:</strong> Muss in <code>.gitignore</code> stehen (bereits konfiguriert)</li>
+                <li><strong>Token-Rotation:</strong> Regelmäßig neue UUIDs generieren (<code>uuidgen</code> oder <code>python -c "import uuid; print(uuid.uuid4())"</code>)</li>
+            </ul>
+            <pre>
+# Beispiel .env (NICHT committen!)
+BEARER_TOKEN=c899b90d-faf8-485b-afa4-078357cf5313
+OPENA3_TIMEOUT=30
+LOG_LEVEL=INFO</pre>
+
+            <h3>TLS/HTTPS-Empfehlungen</h3>
+            <ul>
+                <li><strong>TLS-Offload:</strong> opena3 läuft intern auf HTTP – TLS wird durch vorgelagerten Reverse-Proxy terminiert</li>
+                <li><strong>Empfohlene Proxies:</strong> nginx, Caddy, Traefik</li>
+                <li><strong>Interne Kommunikation:</strong> Zwischen opena1 ↔ opena2 ↔ opena3 ist HTTP akzeptabel (localhost/intranet)</li>
+                <li><strong>Externe Zugriffe:</strong> Immer über HTTPS (Port 443) via Reverse-Proxy</li>
+            </ul>
+            <pre>
+# Beispiel nginx-Config (Auszug)
+server {
+    listen 443 ssl;
+    server_name api.example.com;
+    
+    ssl_certificate /etc/ssl/certs/api.pem;
+    ssl_certificate_key /etc/ssl/private/api.key;
+    
+    location /opena3/ {
+        proxy_pass http://127.0.0.1:12347/;
+        proxy_set_header Authorization $http_authorization;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}</pre>
+
+            <h3>Rate-Limiting & 429-Handling</h3>
+            <table>
+                <tr><th>Limit-Typ</th><th>Wert</th><th>Konfiguration</th></tr>
+                <tr><td>Global Requests/Minute</td><td>60</td><td><code>OPENA3_GLOBAL_RPM</code></td></tr>
+                <tr><td>Client Requests/Minute</td><td>30</td><td><code>OPENA3_CLIENT_RPM</code></td></tr>
+                <tr><td>Chat Requests/Minute</td><td>20</td><td><code>OPENA3_CHAT_RPM</code></td></tr>
+                <tr><td>Stream Requests/Minute</td><td>10</td><td><code>OPENA3_STREAM_RPM</code></td></tr>
+            </table>
+            <ul>
+                <li><strong>Response bei Limit:</strong> HTTP 429 mit <code>Retry-After</code> Header</li>
+                <li><strong>Client-Verhalten:</strong> Nach 429 → warten gemäß <code>Retry-After</code>, dann erneut versuchen</li>
+                <li><strong>Deaktivieren (nur Dev):</strong> <code>OPENA3_RATE_LIMIT_ENABLED=false</code></li>
+            </ul>
+
+            <h3>Secret-Masking in Logs</h3>
+            <ul>
+                <li><strong>Automatisch maskiert:</strong> <code>token</code>, <code>password</code>, <code>secret</code>, <code>key</code>, <code>bearer</code>, <code>auth</code></li>
+                <li><strong>Log-Ausgabe:</strong> <code>Authorization: Bearer ***</code></li>
+                <li><strong>Safepoints:</strong> Secrets werden vor Archivierung entfernt/maskiert</li>
+            </ul>
+            <pre>
+# Beispiel: Maskierte Log-Ausgabe
+2025-12-01 10:00:00 [INFO] Request headers: {"Authorization": "***", "Content-Type": "application/json"}</pre>
+
+            <h3>Port-Policy (PORTIER 3.0)</h3>
+            <ul>
+                <li><strong>Erlaubter Bereich:</strong> 12344–12399</li>
+                <li><strong>Verbotene Ports:</strong> 8080 (reserviert für OpenWebUI UI)</li>
+                <li><strong>Enforcement:</strong> <code>PortPolicy.is_valid_port()</code> bei Startup</li>
+                <li><strong>Verstoß:</strong> Service startet nicht bei ungültigem Port</li>
+            </ul>
+
+            <h3>Option-2-Flow (Sicherheitsarchitektur)</h3>
+            <ul>
+                <li><strong>Kein Direktzugriff:</strong> OpenAI/externe Clients sprechen nie direkt mit opena3</li>
+                <li><strong>Fluss:</strong> OpenAI → opena1 (kordp) → opena2 (archivp) → opena3 (owuip)</li>
+                <li><strong>Safepoint-Audit:</strong> Jeder Request wird in <code>archivp_store</code> protokolliert</li>
+                <li><strong>Manipulation erschwert:</strong> Append-Only Archiv, keine Löschung/Änderung</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>🔧 Entwickler-Befehle</h2>
+            <pre>
+# Tests ausführen
+cd 2.opena3_openwebui
+python -m pytest tests/ -v
+
+# Coverage-Report
+python -m pytest tests/ --cov=. --cov-report=html
+
+# Service starten
+./bin/start_opena3.sh
+
+# Health-Check
+curl http://127.0.0.1:12347/health | jq .
+
+# Token-Test (mit Bearer)
+curl -H "Authorization: Bearer $BEARER_TOKEN" http://127.0.0.1:12347/models/list | jq .</pre>
+        </section>
+
+        <footer>
+            <p>opena3 – Developer Overview | ELION Team | Stand: 1. Dezember 2025</p>
+            <p>
+                <a href="opena3_status.html">Status-Dashboard</a> |
+                <a href="../TODO.md">TODO-Liste</a> |
+                <a href="../README.md">README</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

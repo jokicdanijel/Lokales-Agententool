@@ -1,12 +1,12 @@
 server:
-  host: 127.0.0.1
+  host: 0.0.0.0
   port: 8001
   debug: false
 
 ollama:
   base_url: http://localhost:11434
-  model: llama3.1:8b-instruct-q4_K_M
-  timeout: 60
+  model: llama3.1:8b
+  timeout: 120
 
 sandbox:
   enabled: true
@@ -34,6 +34,8 @@ security:
   domain_whitelist:
     - example.com
     - api.github.com
+    - cli.github.com
+    - github.com
     - httpbin.org
 
 logging:

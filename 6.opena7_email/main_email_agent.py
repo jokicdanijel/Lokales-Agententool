@@ -34,7 +34,7 @@ from modules.metrics import EmailMetrics
 # 🔧 CONFIGURATION (ENV-only, PORTIER PAS-6.0 compliant)
 # ============================================================================
 
-PORT = int(os.getenv("OPENA7_PORT", "12351"))
+PORT = int(os.getenv("OPENA7_PORT", "12353"))
 BEARER_TOKEN = os.getenv("BEARER_TOKEN", "")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 ARCHIVP_ROOT = Path(os.getenv("ARCHIVP_ROOT", "../1.opena1&2_portier/archivp_store"))
