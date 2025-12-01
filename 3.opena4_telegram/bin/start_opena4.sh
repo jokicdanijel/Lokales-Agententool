@@ -27,9 +27,10 @@ NOHUP_LOG="$LOG_DIR/opena4.nohup.log"
 # Log-Verzeichnis erstellen
 mkdir -p "$LOG_DIR"
 
-# Port & Service
-PORT=12348
+# Port & Service (PORTIER 3.0 Range: 12344-12399)
+PORT=12346
 SERVICE_NAME="opena4"
+KUERZEL="tgap"
 
 # PID-Check
 if [[ -f "$PID_FILE" ]]; then

@@ -12,8 +12,9 @@ import logging
 import logging.config
 import asyncio
 import time
+import threading
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, Dict, Any
 from argparse import ArgumentParser
 
@@ -23,7 +24,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 import requests
-from telegram import Update, Chat
+from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 from telegram.error import TelegramError
 
@@ -58,6 +59,7 @@ security = HTTPBearer()
 
 # Telegram bot (initialized later)
 telegram_app = None
+telegram_mode = "disabled"  # "polling", "webhook", or "disabled"
 
 # Startup timestamp
 startup_time = time.time()
@@ -83,7 +85,7 @@ def mask_secrets(data: Any) -> Any:
 
 def get_archive_dir() -> Path:
     """Get today's archive directory"""
-    today = datetime.utcnow().strftime("%Y/%m/%d")
+    today = datetime.now(timezone.utc).strftime("%Y/%m/%d")
     archive_dir = config.archiv_dir / today
     archive_dir.mkdir(parents=True, exist_ok=True)
     return archive_dir
@@ -97,8 +99,9 @@ def write_safepoint(
     request_id: Optional[str] = None
 ) -> Path:
     """Write safepoint to disk (append-only)"""
-    ts = datetime.utcnow().isoformat() + "Z"
-    sp_name = f"SP{int(datetime.utcnow().timestamp())}_{src}→{dst}_{kind}.json"
+    now = datetime.now(timezone.utc)
+    ts = now.isoformat()
+    sp_name = f"SP{int(now.timestamp())}_{src}→{dst}_{kind}.json"
     archive_dir = get_archive_dir()
     sp_path = archive_dir / sp_name
     
@@ -139,7 +142,7 @@ def create_error_response_83(
     details: Optional[Dict[str, Any]] = None
 ) -> Dict[str, Any]:
     """Create standard error response (schema 8.3)"""
-    ts = datetime.utcnow().isoformat() + "Z"
+    ts = datetime.now(timezone.utc).isoformat()
     return {
         "request_id": request_id,
         "timestamp": ts,
@@ -179,10 +182,11 @@ async def root():
     """Root endpoint"""
     return {
         "agent": "opena4",
-        "kuerzel": "telep",
+        "kuerzel": "tgap",
         "port": config.port,
         "status": "running",
-        "description": "Telegram Agent mit Webhook-Support, Message-Queue, Option-2-Flow-Compliance",
+        "telegram_mode": telegram_mode,
+        "description": "Telegram Gateway Agent mit Webhook-Support, Message-Queue, Option-2-Flow-Compliance",
         "version": "1.0.0"
     }
 
@@ -193,20 +197,16 @@ async def health():
     uptime = time.time() - startup_time
     
     # Check Telegram API availability
-    telegram_available = False
-    if telegram_app and config.telegram_bot_token:
-        try:
-            # Quick check without actual API call
-            telegram_available = True
-        except Exception:
-            pass
+    telegram_available = bool(telegram_app and config.telegram_bot_token)
     
     return {
         "status": "ok",
         "agent": "opena4",
+        "kuerzel": "tgap",
         "port": config.port,
         "uptime": round(uptime, 2),
         "telegram_available": telegram_available,
+        "telegram_mode": telegram_mode,
         "telegram_users_configured": len(config.telegram_allowed_users) if config.telegram_allowed_users else 0
     }
 
@@ -229,7 +229,7 @@ async def command_endpoint(req: Request, _: bool = Depends(verify_token)):
             "status": "executed",
             "command": command,
             "request_id": request_id,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "output": f"Command '{command}' würde hier ausgeführt (Placeholder)"
         }
         
@@ -421,7 +421,7 @@ async def browse_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         cmd = Command71(
             request_id=request_id,
-            timestamp=datetime.utcnow().isoformat() + "Z",
+            timestamp=datetime.now(timezone.utc).isoformat(),
             command="BROWSE",
             payload={"url": url},
             routing={"resolved_path": url},
@@ -463,7 +463,7 @@ async def analyze_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         cmd = Command71(
             request_id=request_id,
-            timestamp=datetime.utcnow().isoformat() + "Z",
+            timestamp=datetime.now(timezone.utc).isoformat(),
             command="ANALYZE_FILE",
             payload={"file": file},
             routing={"resolved_path": file},
@@ -526,7 +526,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         cmd = Command71(
             request_id=request_id,
-            timestamp=datetime.utcnow().isoformat() + "Z",
+            timestamp=datetime.now(timezone.utc).isoformat(),
             command="TELEGRAM_MESSAGE",
             payload={"text": text, "chat_id": update.effective_chat.id},
             project={"name": "telegram_relay"}
@@ -565,6 +565,7 @@ def main():
     logger.info(f"Starting opena4 @ {args.host}:{args.port}")
     
     # Initialize Telegram bot (if enabled and token provided)
+    global telegram_mode
     if not args.no_telegram and config.telegram_bot_token:
         try:
             logger.info("Initializing Telegram bot...")
@@ -584,17 +585,34 @@ def main():
             telegram_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message_handler))
             
             if args.telegram_polling:
-                logger.info("Starting Telegram bot (polling mode)...")
-                # Note: This would run in background, but for simplicity we start FastAPI first
-                # In production, use a background task runner or separate process
+                telegram_mode = "polling"
+                logger.info("🚀 Starting Telegram bot (polling mode) in background thread...")
+                
+                def run_telegram_polling():
+                    """Run Telegram polling in background thread"""
+                    try:
+                        telegram_app.run_polling(drop_pending_updates=True)
+                    except Exception as e:
+                        logger.error(f"❌ Telegram polling error: {e}")
+                
+                telegram_thread = threading.Thread(target=run_telegram_polling, daemon=True)
+                telegram_thread.start()
+                logger.info("✅ Telegram bot (polling) started successfully")
             else:
-                logger.info("Telegram bot ready (webhook mode)")
+                telegram_mode = "webhook"
+                logger.info("✅ Telegram bot initialized (webhook mode - manual setup required)")
             
-            logger.info("✅ Telegram bot initialized successfully")
         except Exception as e:
             logger.error(f"❌ Failed to initialize Telegram bot: {e}")
+            telegram_mode = "error"
             if config.telegram_bot_token:
                 sys.exit(1)
+    else:
+        telegram_mode = "disabled"
+        if args.no_telegram:
+            logger.info("⚠️  Telegram bot disabled via --no-telegram")
+        elif not config.telegram_bot_token:
+            logger.warning("⚠️  TELEGRAM_BOT_TOKEN nicht gesetzt - Bot deaktiviert")
     
     # Start FastAPI server
     logger.info(f"Starting FastAPI server @ {args.host}:{args.port}")
