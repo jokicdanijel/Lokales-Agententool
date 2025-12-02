@@ -63,6 +63,8 @@ Backup.zip
 backups/
 backups/**
 node_modules/
+release/
+release/**
 
 # Database
 *.db
