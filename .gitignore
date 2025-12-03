@@ -89,6 +89,12 @@ docs/BRIDGE_API.md
 docs/SESSION_11_SCHRITT_2_3_4_SUMMARY.md
 docs/validation_report.md
 
+# Structure manager artifacts
+rename_map.csv
+path_index.json
+violations_report.md
+structure_checkpoint.json
+
 # Python cache
 __pycache__/
 *.py[cod]
