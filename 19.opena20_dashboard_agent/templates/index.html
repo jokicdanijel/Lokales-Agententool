@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELION Dashboard | Zentrale Übersicht</title>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <span class="icon">🚀</span>
+                    <span>ELION</span>
+                </div>
+                <div class="sidebar-subtitle">Hyper-Dashboard v3.0</div>
+            </div>
+            
+            <div class="nav-section">Dashboard</div>
+            <a href="/" class="nav-item active">
+                <span>📊</span>
+                <span>Übersicht</span>
+            </a>
+            <a href="/api-console" class="nav-item">
+                <span>🔌</span>
+                <span>API Konsole</span>
+            </a>
+            <a href="/logs" class="nav-item">
+                <span>📋</span>
+                <span>System Logs</span>
+            </a>
+            
+            <div class="nav-section">Agenten</div>
+            <nav id="agents-nav">
+                <!-- Dynamisch generiert -->
+            </nav>
+            
+            <div class="nav-section">System</div>
+            <a href="/settings" class="nav-item">
+                <span>⚙️</span>
+                <span>Einstellungen</span>
+            </a>
+            <a href="/docs" class="nav-item">
+                <span>📚</span>
+                <span>Dokumentation</span>
+            </a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title"><span class="emoji">🎛️</span> Agent Control Center</h1>
+                <div class="header-actions">
+                    <button id="refresh-btn" class="btn btn-outline">🔄 Aktualisieren</button>
+                    <button id="start-all-btn" class="btn btn-success">▶️ Alle Starten</button>
+                    <button id="stop-all-btn" class="btn btn-danger">⏹️ Alle Stoppen</button>
+                </div>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="stats-grid">
+                <div class="stat-card highlight">
+                    <div class="stat-header">
+                        <div class="stat-icon blue">🤖</div>
+                    </div>
+                    <div class="stat-value blue" id="stat-total">0</div>
+                    <div class="stat-label">Gesamt Agenten</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green">✅</div>
+                    </div>
+                    <div class="stat-value green" id="stat-online">0</div>
+                    <div class="stat-label">Online</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon red">❌</div>
+                    </div>
+                    <div class="stat-value red" id="stat-offline">0</div>
+                    <div class="stat-label">Offline</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon purple">🕐</div>
+                    </div>
+                    <div class="stat-value" id="current-time">--:--:--</div>
+                    <div class="stat-label">Aktualisiert</div>
+                </div>
+            </div>
+
+            <!-- Agents Grid -->
+            <h2 style="margin-bottom: 1rem; font-size: 1.25rem;">🤖 Alle Agenten</h2>
+            <div class="agents-grid" id="agents-grid">
+                <!-- Dynamisch generiert -->
+            </div>
+
+            <!-- API Console -->
+            <div class="api-console">
+                <div class="console-header">
+                    <h3>🔌 API Konsole</h3>
+                    <div class="live-indicator">
+                        <span class="dot"></span>
+                        <span>Live</span>
+                    </div>
+                </div>
+                <div class="console-body">
+                    <div class="api-input-group">
+                        <select id="api-method">
+                            <option value="GET">GET</option>
+                            <option value="POST">POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="DELETE">DELETE</option>
+                        </select>
+                        <input type="text" id="api-endpoint" placeholder="http://127.0.0.1:12349/health">
+                        <button id="api-send-btn" class="btn btn-primary">📤 Senden</button>
+                    </div>
+                    <div class="api-response" id="api-response">// Antwort wird hier angezeigt...</div>
+                </div>
+            </div>
+
+            <!-- Activity Log -->
+            <div class="activity-section">
+                <div class="activity-header">
+                    <h3>📋 Aktivitätslog</h3>
+                    <div class="live-indicator">
+                        <span class="dot"></span>
+                        <span>Live Updates</span>
+                    </div>
+                </div>
+                <div class="activity-list" id="activity-list">
+                    <!-- Dynamisch generiert -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast-container"></div>
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>
