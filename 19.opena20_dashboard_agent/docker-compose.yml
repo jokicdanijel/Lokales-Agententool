@@ -1,0 +1,142 @@
+# PORTIER 3.0 Docker Compose - opena20 Dashboard Agent
+# Enterprise Production Setup
+
+services:
+  # opena20 Dashboard Agent
+  opena20-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: elion/opena20:latest
+    container_name: opena20-dashboard
+    hostname: opena20
+    restart: unless-stopped
+    
+    ports:
+      - "12349:12349"
+    
+    environment:
+      - PORT=12349
+      - BEARER_TOKEN=${BEARER_TOKEN:-c899b90d-faf8-485b-afa4-078357cf5313}
+      - OPENA2_URL=${OPENA2_URL:-http://opena2:12345}
+      - PYTHONPATH=/app
+      - TZ=Europe/Berlin
+    
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - dashboard_static:/app/static
+      - dashboard_templates:/app/templates
+    
+    networks:
+      - portier-network
+    
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.opena20.rule=Host(`dashboard.portier.local`)"
+      - "traefik.http.routers.opena20.entrypoints=web"
+      - "traefik.http.services.opena20.loadbalancer.server.port=12349"
+      - "com.elion.service=opena20"
+      - "com.elion.version=1.0.0"
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:12349/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # NGINX Reverse Proxy
+  nginx-gateway:
+    image: nginx:alpine
+    container_name: opena20-nginx
+    restart: unless-stopped
+    
+    ports:
+      - "80:80"
+      - "443:443"
+    
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - nginx_cache:/var/cache/nginx
+    
+    networks:
+      - portier-network
+    
+    depends_on:
+      - opena20-dashboard
+    
+    labels:
+      - "com.elion.service=nginx-gateway"
+
+  # Redis Cache (Optional)
+  redis-cache:
+    image: redis:alpine
+    container_name: opena20-redis
+    restart: unless-stopped
+    
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-portier2024}
+    
+    volumes:
+      - redis_data:/data
+    
+    networks:
+      - portier-network
+    
+    labels:
+      - "com.elion.service=redis-cache"
+
+  # Monitoring (Optional)
+  prometheus:
+    image: prom/prometheus
+    container_name: opena20-prometheus
+    restart: unless-stopped
+    
+    ports:
+      - "9090:9090"
+    
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    
+    networks:
+      - portier-network
+    
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    
+    labels:
+      - "com.elion.service=prometheus"
+
+networks:
+  portier-network:
+    driver: bridge
+    name: portier-network
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  dashboard_static:
+    driver: local
+  dashboard_templates:
+    driver: local
+  nginx_cache:
+    driver: local
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local

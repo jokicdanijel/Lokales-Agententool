@@ -1,0 +1,91 @@
+{
+  "check_interval": 30,
+  "prometheus": {
+    "enabled": true,
+    "port": 9090
+  },
+  "agents": [
+    {
+      "id": "opena1",
+      "name": "Koordinator",
+      "port": 12344,
+      "endpoint": "/health"
+    },
+    {
+      "id": "opena2",
+      "name": "Archivator",
+      "port": 12345,
+      "endpoint": "/health"
+    },
+    {
+      "id": "opena3",
+      "name": "OpenWebUI",
+      "port": 12347,
+      "endpoint": "/health"
+    },
+    {
+      "id": "opena4",
+      "name": "Telegram",
+      "port": 12348,
+      "endpoint": "/health"
+    },
+    {
+      "id": "opena5",
+      "name": "VSCode",
+      "port": 12349,
+      "endpoint": "/health"
+    },
+    {
+      "id": "opena20",
+      "name": "Dashboard",
+      "port": 12349,
+      "endpoint": "/health"
+    }
+  ],
+  "alerts": {
+    "enabled": true,
+    "webhook_url": null,
+    "thresholds": {
+      "response_time": 5.0,
+      "cpu_usage": 80.0,
+      "memory_usage": 85.0,
+      "disk_usage": 90.0,
+      "error_rate": 10.0
+    },
+    "notification_channels": {
+      "email": {
+        "enabled": false,
+        "smtp_server": "localhost",
+        "smtp_port": 587,
+        "username": "",
+        "password": "",
+        "from_address": "alerts@opena20.local",
+        "to_addresses": []
+      },
+      "slack": {
+        "enabled": false,
+        "webhook_url": "",
+        "channel": "#alerts"
+      }
+    }
+  },
+  "retention": {
+    "metrics_days": 30,
+    "logs_days": 7,
+    "alerts_days": 14
+  },
+  "dashboard": {
+    "refresh_interval": 5,
+    "auto_refresh": true,
+    "theme": "dark",
+    "charts": {
+      "enabled": true,
+      "history_hours": 24
+    }
+  },
+  "security": {
+    "enable_authentication": false,
+    "api_key": null,
+    "allowed_ips": ["127.0.0.1", "::1"]
+  }
+}
