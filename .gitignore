@@ -95,6 +95,9 @@ path_index.json
 violations_report.md
 structure_checkpoint.json
 
+# Workspace evaluation reports
+workspace_evaluation_report.json
+
 # Python cache
 __pycache__/
 *.py[cod]
