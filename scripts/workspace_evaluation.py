@@ -5,11 +5,10 @@ Comprehensive assessment of PORTIER 3.0 workspace health, configuration, and com
 """
 import json
 import socket
-import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict
 
 # Color codes for output
 class Colors:
@@ -185,7 +184,7 @@ class WorkspaceEvaluator:
         """Evaluate test file presence and structure"""
         self.print_header("Test Coverage Evaluation")
         
-        results = {"passed": 0, "failed": 0, "test_files": [], "coverage": 0}
+        results = {"passed": 0, "failed": 0, "test_files": []}
         
         tests_dir = self.root / "tests"
         if tests_dir.exists():
@@ -234,9 +233,11 @@ class WorkspaceEvaluator:
         # Check for .env file (should not be committed)
         env_file = self.root / ".env"
         env_committed = env_file.exists()
+        gitignore_path = self.root / ".gitignore"
+        
         if env_committed:
             # Check if it's in .gitignore
-            if gitignore.exists() and ".env" in gitignore.read_text():
+            if gitignore_path.exists() and ".env" in gitignore_path.read_text():
                 results["passed"] += 1
                 self.print_result(".env file", True, "Exists but properly ignored")
             else:
