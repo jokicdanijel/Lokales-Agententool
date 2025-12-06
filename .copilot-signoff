@@ -6,8 +6,8 @@ This file serves as a formal registry for signed-off changes made by GitHub Copi
 
 ### PR #8 - Fix structure workflow exit code 2
 - **Date:** 6. Dezember 2025
-- **Commit:** e4e1edf8 (Add formal sign-off document for all Copilot changes)
-- **Base Commit:** fdb7f43e (Merge pull request #8)
+- **Commit:** e4e1edf866fa2775229734936eb4d207b8381549 (Add formal sign-off document for all Copilot changes)
+- **Base Commit:** fdb7f43e2646d26925acafc565c7b5847ca92ee1 (Merge pull request #8)
 - **Files Changed:** 19,231 files
 - **Lines Added:** 4,371,896
 - **Status:** ✅ SIGNED OFF

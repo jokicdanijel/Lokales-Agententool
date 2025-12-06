@@ -13,7 +13,8 @@ Hiermit bestätige ich die Überprüfung und Freigabe aller Änderungen, die dur
 ## 🔍 Überprüfte Änderungen
 
 ### Commit Details
-- **Commit SHA:** `fdb7f43e2646d26925acafc565c7b5847ca92ee1`
+- **Base Commit SHA:** `fdb7f43e2646d26925acafc565c7b5847ca92ee1`
+- **Sign-off Commit SHA:** `e4e1edf866fa2775229734936eb4d207b8381549`
 - **Merge:** Pull Request #8 - "Fix structure workflow exit code 2 and add workspace evaluation framework"
 - **Autor:** Danijel Jokic
 - **Datum:** 4. Dezember 2025, 20:33:24 UTC+1
@@ -214,9 +215,11 @@ Alle Änderungen vom GitHub Copilot im Rahmen von Pull Request #8 wurden erfolgr
 
 ## 🔗 Referenzen
 
-- **Merge Commit:** fdb7f43e2646d26925acafc565c7b5847ca92ee1
+- **Base Merge Commit:** fdb7f43e2646d26925acafc565c7b5847ca92ee1
+- **Sign-off Commit:** e4e1edf866fa2775229734936eb4d207b8381549
 - **Pull Request:** #8
 - **Original Branch:** copilot/fix-process-exit-code-error
+- **Sign-off Branch:** copilot/signiere-aenderungen-vom-copilot
 - **Projekt:** PORTIER 3.0 Enterprise Multi-Agent Intelligence Platform
 - **Repository:** [jokicdanijel/Gesamtprojekt-start](https://github.com/jokicdanijel/Gesamtprojekt-start)
 
