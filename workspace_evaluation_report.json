@@ -1,0 +1,186 @@
+{
+  "timestamp": "2025-12-09T23:33:56.653616",
+  "evaluations": {
+    "file_structure": {
+      "passed": 9,
+      "failed": 0,
+      "details": [
+        {
+          "path": "scripts/",
+          "description": "Scripts directory",
+          "exists": true
+        },
+        {
+          "path": "tests/",
+          "description": "Test directory",
+          "exists": true
+        },
+        {
+          "path": "src/",
+          "description": "Source directory",
+          "exists": true
+        },
+        {
+          "path": "docs/",
+          "description": "Documentation directory",
+          "exists": true
+        },
+        {
+          "path": "configs/",
+          "description": "Configuration directory",
+          "exists": true
+        },
+        {
+          "path": ".github/workflows/",
+          "description": "CI/CD workflows",
+          "exists": true
+        },
+        {
+          "path": "pyproject.toml",
+          "description": "Python project config",
+          "exists": true
+        },
+        {
+          "path": "requirements.txt",
+          "description": "Python dependencies",
+          "exists": true
+        },
+        {
+          "path": ".gitignore",
+          "description": "Git ignore rules",
+          "exists": true
+        }
+      ]
+    },
+    "service_ports": {
+      "passed": 10,
+      "failed": 0,
+      "in_use": [],
+      "available": [
+        {
+          "service": "opena1 (Coordinator)",
+          "port": 12344
+        },
+        {
+          "service": "opena2 (Archivator)",
+          "port": 12345
+        },
+        {
+          "service": "kordp (Gateway)",
+          "port": 12346
+        },
+        {
+          "service": "opena3 (OpenWebUI)",
+          "port": 12347
+        },
+        {
+          "service": "opena4 (Telegram)",
+          "port": 12348
+        },
+        {
+          "service": "opena20 (Dashboard)",
+          "port": 12349
+        },
+        {
+          "service": "opena5 (VS Code)",
+          "port": 12351
+        },
+        {
+          "service": "opena6 (Browser)",
+          "port": 12352
+        },
+        {
+          "service": "opena7 (Email)",
+          "port": 12353
+        },
+        {
+          "service": "opena8 (WhatsApp)",
+          "port": 12354
+        }
+      ]
+    },
+    "configuration_files": {
+      "passed": 2,
+      "failed": 0,
+      "details": [
+        {
+          "file": "routing_matrix.yaml",
+          "valid": true
+        },
+        {
+          "file": "pyproject.toml",
+          "valid": true
+        }
+      ]
+    },
+    "test_coverage": {
+      "passed": 7,
+      "failed": 0,
+      "test_files": [
+        "test_mail_service.py",
+        "test_service_folders.py",
+        "test_whatsapp_service.py",
+        "test_ops_and_register.py",
+        "test_services.py",
+        "test_openwebui_service.py",
+        "test_browser_service.py"
+      ]
+    },
+    "security_compliance": {
+      "passed": 5,
+      "failed": 0,
+      "details": [
+        {
+          "pattern": ".env",
+          "present": true
+        },
+        {
+          "pattern": "*.key",
+          "present": true
+        },
+        {
+          "pattern": "*.pem",
+          "present": true
+        },
+        {
+          "pattern": "*.pub",
+          "present": true
+        }
+      ]
+    },
+    "scripts_executability": {
+      "passed": 5,
+      "failed": 0,
+      "details": [
+        {
+          "script": "start_all.sh",
+          "exists": true,
+          "executable": true
+        },
+        {
+          "script": "stop_all.sh",
+          "exists": true,
+          "executable": true
+        },
+        {
+          "script": "check_health.sh",
+          "exists": true,
+          "executable": true
+        },
+        {
+          "script": "verify_stack.sh",
+          "exists": true,
+          "executable": true
+        },
+        {
+          "script": "structure_manager.py",
+          "exists": true,
+          "executable": true
+        }
+      ]
+    }
+  },
+  "score": 38,
+  "max_score": 38,
+  "status": "excellent"
+}
