@@ -56,16 +56,14 @@
   // ========================================
   // Git & GitLens Optimierungen
   // ========================================
-  
-  // GitLens - reduziere Token-Verbrauch
+
   "gitlens.codeLens.enabled": false,
   "gitlens.currentLine.enabled": false,
   "gitlens.hovers.currentLine.over": "line",
   "gitlens.blame.highlight.enabled": false,
   "gitlens.changes.locations": [],
   "gitlens.fileAnnotations.command": null,
-  
-  // Git - Ignoriere große Binärdateien
+
   "git.ignoreLimitWarning": true,
   "git.scanRepositories": [],
   
@@ -94,7 +92,7 @@
   "python.analysis.indexing": true,
   
   // ========================================
-  // Editor Performance
+  // Editorleistung
   // ========================================
   
   "editor.largeFileOptimizations": true,
@@ -113,19 +111,17 @@
       "*": ["\n\n\n"]
     }
   },
-  
-  // Reduziere Copilot Context-Window
+
   "github.copilot.editor.enableAutoCompletions": true,
   
   // ========================================
-  // Weitere Performance-Tweaks
+  // Weitere Leistungsoptimierungen
   // ========================================
-  
+
   "extensions.autoUpdate": false,
   "extensions.autoCheckUpdates": false,
   "update.mode": "none",
-  
-  // Terminal Performance
+
   "terminal.integrated.persistentSessionReviveProcess": "never",
   "terminal.integrated.enablePersistentSessions": false
 }
