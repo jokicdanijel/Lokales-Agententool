@@ -5,7 +5,7 @@
 **Erscheinungsdatum:** 24. November 2025
 **Erfinder & Hauptentwickler:** Danijel Jokic
 **Firma:** JD Smart Vision EU
-**Repository:** jokicdanijel/Gesamtprojekt-Start
+**Repository:** jokicdanijel/Gesamtprojekt-start
 **Lizenz:** MIT + Nur Interner Gebrauch (Enterprise Components)
 **PHASE:** 🟣 PHASE 13 — Final Deployment & Production Launch
 
@@ -680,7 +680,7 @@ copies of the Software...
 - FastAPI (Framework)
 - Pydantic (Schema-Validierung)
 
-**GitHub:** jokicdanijel/Gesamtprojekt-Start
+**GitHub:** jokicdanijel/Gesamtprojekt-start
 
 ---
 

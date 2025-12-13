@@ -143,7 +143,7 @@ All third-party libraries are used in compliance with their respective licenses:
 - **Company:** JD Smart Vision EU
 - **Project:** Multi-Agent Enterprise Intelligence Platform
 
-**Repository:** <https://github.com/jokicdanijel/Gesamtprojekt-Start>
+**Repository:** <https://github.com/jokicdanijel/Gesamtprojekt-start>
 
 ---
 
