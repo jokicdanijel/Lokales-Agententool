@@ -1,0 +1,77 @@
+{
+  "name": "Terminal Store Safepoint",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "terminal-store-safepoint",
+        "httpMethod": "POST",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "Webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://127.0.0.1:12345/store/archivp",
+        "method": "POST",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "{\n  \"type\": \"cmd\",\n  \"source\": \"{{$json.source}}\",\n  \"target\": \"{{$json.target}}\",\n  \"payload\": {{$json.payload}}\n}"
+      },
+      "id": "Store Safepoint",
+      "name": "Store Safepoint",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        400,
+        300
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "Return",
+      "name": "Return",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        600,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Store Safepoint",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Safepoint": {
+      "main": [
+        [
+          {
+            "node": "Return",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "createdAt": "2025-12-12T00:00:00.000Z",
+  "updatedAt": "2025-12-12T00:00:00.000Z",
+  "versionId": 1
+}

@@ -1,0 +1,77 @@
+{
+  "name": "Terminal Query Archive Index",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "terminal-query-index",
+        "httpMethod": "POST",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "Webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://127.0.0.1:12345/index",
+        "method": "GET",
+        "jsonParameters": false,
+        "options": {},
+        "queryParametersJson": "{\n  \"date\": \"{{$json.date}}\"\n}"
+      },
+      "id": "Query Index",
+      "name": "Query Index",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        400,
+        300
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "Return",
+      "name": "Return",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        600,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Query Index",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query Index": {
+      "main": [
+        [
+          {
+            "node": "Return",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "createdAt": "2025-12-12T00:00:00.000Z",
+  "updatedAt": "2025-12-12T00:00:00.000Z",
+  "versionId": 1
+}
