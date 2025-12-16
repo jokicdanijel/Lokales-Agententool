@@ -138,9 +138,34 @@
             <button class="btn-secondary" onclick="showAgents()">Agenten</button>
             <button class="btn-secondary" onclick="testWrite()">Write Test</button>
             <button class="btn-openwebui" onclick="openChatModal()">💬 OpenWebUI Chat</button>
+            <button class="btn-secondary" onclick="openPrivacyModal()">🔒 Privacy & Security</button>
         </div>
         
         <div id="output" class="output"></div>
+    </div>
+
+    <!-- Privacy & Security Modal -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closePrivacyModal()">&times;</span>
+                <h2>🔒 Privacy & Security</h2>
+            </div>
+            <div style="margin-bottom:10px;">
+                <strong>Kurze Zusammenfassungen:</strong>
+                <ul>
+                    <li><a href="/docs/TELEGRAM_PRIVACY_POLICY.md" target="_blank">Telegram Privacy Policy (DE)</a></li>
+                    <li><a href="/docs/en/TELEGRAM_PRIVACY_POLICY.md" target="_blank">Telegram Privacy Policy (EN)</a></li>
+                    <li><a href="/docs/MTPROTO_OVERVIEW.md" target="_blank">MTProto Overview (DE)</a></li>
+                    <li><a href="/docs/en/MTPROTO_OVERVIEW.md" target="_blank">MTProto Overview (EN)</a></li>
+                </ul>
+            </div>
+            <div style="margin-bottom:10px;">
+                <strong>Kurzfassung:</strong>
+                <p id="privacyShort" style="background:#f7fafc;padding:10px;border-radius:5px;">Loading...</p>
+            </div>
+            <div style="text-align:right;"><button class="btn-primary" onclick="closePrivacyModal()">Close</button></div>
+        </div>
     </div>
 
     <!-- OpenWebUI Chat Modal -->
@@ -276,9 +301,22 @@
             }
         }
 
+        function openPrivacyModal() {
+            document.getElementById('privacyModal').style.display = 'block';
+            // load a short summary into the modal
+            const summary = `• Bots sammeln nur die nötigsten Daten\n• Datenverarbeitung: Bereitstellung, Sicherheit, Qualität\n• MTProto: AES‑256, MessageKey, PFS, Time sync\n\nWeitere Details: siehe die verlinkten Dokumente.`;
+            document.getElementById('privacyShort').textContent = summary;
+        }
+
+        function closePrivacyModal() {
+            document.getElementById('privacyModal').style.display = 'none';
+        }
+
         window.onclick = function(e) {
             const modal = document.getElementById('chatModal');
             if (e.target == modal) modal.style.display = 'none';
+            const pm = document.getElementById('privacyModal');
+            if (e.target == pm) pm.style.display = 'none';
         }
     </script>
 </body>

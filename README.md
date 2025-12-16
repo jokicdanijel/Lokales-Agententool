@@ -45,6 +45,8 @@
 - Health-Monitoring mit Alerting
 - Systemd-Integration für Daemon-Modus
 - AI Chat Testing & Validation
+- **Privacy & Security**: `docs/TELEGRAM_PRIVACY_POLICY.md` (DE) / `docs/en/TELEGRAM_PRIVACY_POLICY.md` (EN)
+- **MTProto & Encryption**: `docs/MTPROTO_OVERVIEW.md` (DE) / `docs/en/MTPROTO_OVERVIEW.md` (EN)
 
 ---
 
