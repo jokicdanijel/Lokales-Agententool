@@ -110,12 +110,14 @@ Commands:
   logs              - Show recent service logs (tail -100)
   logs:follow       - Follow logs in real-time
   e2e               - Run Option-2-Flow E2E test
+  eval              - Run workspace evaluation and produce report
   help              - Show this help
 
 Examples:
   bin/ops.sh start
   bin/ops.sh monitor
   bin/ops.sh e2e
+  bin/ops.sh eval
   bin/ops.sh logs:follow
 USAGE
 }
@@ -296,6 +298,23 @@ case "$cmd" in
           -d "{\"agent_id\":\"$agent\",\"endpoint\":\"http://127.0.0.1:$port\"}" | (command -v jq >/dev/null 2>&1 && jq . || cat)
       done
       echo "✅ Agent registration complete"
+    fi
+    ;;
+
+  eval)
+    echo "🧾 Running workspace evaluation (this may take a moment)..."
+    if [[ -f "$PROJECT_ROOT/scripts/workspace_evaluation.py" ]]; then
+      python3 "$PROJECT_ROOT/scripts/workspace_evaluation.py" --root "$PROJECT_ROOT"
+      rc=$?
+      if [[ $rc -eq 0 ]]; then
+        echo "✅ Evaluation completed: report saved (workspace_evaluation_report.json)"
+      else
+        echo "⚠ Evaluation completed with issues (exit code $rc). See workspace_evaluation_report.json"
+      fi
+      exit $rc
+    else
+      echo "❌ Evaluation script not found: scripts/workspace_evaluation.py"
+      exit 1
     fi
     ;;
 
