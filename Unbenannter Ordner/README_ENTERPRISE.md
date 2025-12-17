@@ -811,7 +811,7 @@ health_history = []
 
 @app.get("/health")
 async def health():
-    timestamp = datetime.utcnow().isoformat() + "Z"
+    timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     health_data = {
         "status": "ok",
         "timestamp": timestamp,

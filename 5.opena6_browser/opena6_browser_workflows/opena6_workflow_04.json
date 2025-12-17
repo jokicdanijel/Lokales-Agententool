@@ -1,0 +1,19 @@
+{
+  "name": "form_submit",
+  "description": "Füllt und sendet ein Formular",
+  "steps": [
+    {
+      "action": "open_url",
+      "url": "https://example.com/form"
+    },
+    {
+      "action": "fill_input",
+      "selector": "#email",
+      "text": "test@example.com"
+    },
+    {
+      "action": "click",
+      "selector": "#submit"
+    }
+  ]
+}

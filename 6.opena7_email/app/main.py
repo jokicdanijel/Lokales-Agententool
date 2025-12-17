@@ -6,7 +6,7 @@ Mail Agent — REST API & Orchestration
 import asyncio
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, List, Optional
 from pathlib import Path
 
@@ -156,7 +156,7 @@ async def health_check() -> HealthResponse:
         mailbox=config.MAIL_USER,
         imap_connected=imap_ok,
         smtp_connected=smtp_ok,
-        ts=datetime.utcnow().isoformat() + "Z"
+        ts=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     )
 
 
@@ -175,7 +175,7 @@ async def process_mail(request: MailRunRequest) -> MailRunResponse:
     if not mail_client:
         raise HTTPException(status_code=503, detail="Mail client not ready")
     
-    start_time = datetime.utcnow()
+    start_time = datetime.now(timezone.utc)
     
     try:
         if request.action == MailAction.FETCH:
@@ -195,7 +195,7 @@ async def process_mail(request: MailRunRequest) -> MailRunResponse:
     except Exception as e:
         logger.error(f"❌ Mail processing failed: {e}")
         
-        elapsed = int((datetime.utcnow() - start_time).total_seconds() * 1000)
+        elapsed = int((datetime.now(timezone.utc) - start_time).total_seconds() * 1000)
         return MailRunResponse(
             request_id=request.request_id,
             status="failed",
@@ -208,7 +208,7 @@ async def process_mail(request: MailRunRequest) -> MailRunResponse:
 async def _handle_fetch(request: MailRunRequest, client: MailClient) -> MailRunResponse:
     """Handle fetch action"""
     
-    start_time = datetime.utcnow()
+    start_time = datetime.now(timezone.utc)
     payload = request.payload
     
     try:
@@ -217,7 +217,7 @@ async def _handle_fetch(request: MailRunRequest, client: MailClient) -> MailRunR
             max_count=payload.get("max_count", 10)
         )
         
-        elapsed = int((datetime.utcnow() - start_time).total_seconds() * 1000)
+        elapsed = int((datetime.now(timezone.utc) - start_time).total_seconds() * 1000)
         
         response = MailRunResponse(
             request_id=request.request_id,
@@ -232,7 +232,7 @@ async def _handle_fetch(request: MailRunRequest, client: MailClient) -> MailRunR
         
         # Write RESP safepoint to opena2
         safepoint = Safepoint(
-            ts=datetime.utcnow().isoformat() + "Z",
+            ts=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             src=config.SERVICE_NAME,
             dst="opena2",
             kind="RESP",
@@ -246,7 +246,7 @@ async def _handle_fetch(request: MailRunRequest, client: MailClient) -> MailRunR
     
     except Exception as e:
         logger.error(f"Fetch failed: {e}")
-        elapsed = int((datetime.utcnow() - start_time).total_seconds() * 1000)
+        elapsed = int((datetime.now(timezone.utc) - start_time).total_seconds() * 1000)
         
         return MailRunResponse(
             request_id=request.request_id,
@@ -260,7 +260,7 @@ async def _handle_fetch(request: MailRunRequest, client: MailClient) -> MailRunR
 async def _handle_fetch_and_reply(request: MailRunRequest, client: MailClient) -> MailRunResponse:
     """Handle fetch and auto-reply action"""
     
-    start_time = datetime.utcnow()
+    start_time = datetime.now(timezone.utc)
     payload = request.payload
     
     try:
@@ -280,7 +280,7 @@ async def _handle_fetch_and_reply(request: MailRunRequest, client: MailClient) -
             if await client.send_message(msg.sender, reply_subject, reply_body):
                 replied += 1
         
-        elapsed = int((datetime.utcnow() - start_time).total_seconds() * 1000)
+        elapsed = int((datetime.now(timezone.utc) - start_time).total_seconds() * 1000)
         
         response = MailRunResponse(
             request_id=request.request_id,
@@ -295,7 +295,7 @@ async def _handle_fetch_and_reply(request: MailRunRequest, client: MailClient) -
         
         # Write RESP safepoint
         safepoint = Safepoint(
-            ts=datetime.utcnow().isoformat() + "Z",
+            ts=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             src=config.SERVICE_NAME,
             dst="opena2",
             kind="RESP",
@@ -309,7 +309,7 @@ async def _handle_fetch_and_reply(request: MailRunRequest, client: MailClient) -
     
     except Exception as e:
         logger.error(f"Fetch and reply failed: {e}")
-        elapsed = int((datetime.utcnow() - start_time).total_seconds() * 1000)
+        elapsed = int((datetime.now(timezone.utc) - start_time).total_seconds() * 1000)
         
         return MailRunResponse(
             request_id=request.request_id,
@@ -323,7 +323,7 @@ async def _handle_fetch_and_reply(request: MailRunRequest, client: MailClient) -
 async def _handle_send(request: MailRunRequest, client: MailClient) -> MailRunResponse:
     """Handle send action"""
     
-    start_time = datetime.utcnow()
+    start_time = datetime.now(timezone.utc)
     payload = request.payload
     
     try:
@@ -335,7 +335,7 @@ async def _handle_send(request: MailRunRequest, client: MailClient) -> MailRunRe
             raise ValueError("Missing required fields: recipient, subject, body_text")
         
         if await client.send_message(to, subject, body_text):
-            elapsed = int((datetime.utcnow() - start_time).total_seconds() * 1000)
+            elapsed = int((datetime.now(timezone.utc) - start_time).total_seconds() * 1000)
             
             response = MailRunResponse(
                 request_id=request.request_id,
@@ -348,7 +348,7 @@ async def _handle_send(request: MailRunRequest, client: MailClient) -> MailRunRe
             
             # Write safepoint
             safepoint = Safepoint(
-                ts=datetime.utcnow().isoformat() + "Z",
+                ts=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
                 src=config.SERVICE_NAME,
                 dst="opena2",
                 kind="RESP",
@@ -364,7 +364,7 @@ async def _handle_send(request: MailRunRequest, client: MailClient) -> MailRunRe
     
     except Exception as e:
         logger.error(f"Send failed: {e}")
-        elapsed = int((datetime.utcnow() - start_time).total_seconds() * 1000)
+        elapsed = int((datetime.now(timezone.utc) - start_time).total_seconds() * 1000)
         
         return MailRunResponse(
             request_id=request.request_id,

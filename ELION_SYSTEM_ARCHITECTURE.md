@@ -8,45 +8,87 @@
 
 ---
 
-## 1. Datenstruktur
+## 1. Detaillierte Dokumentation: Datenmodelle & Persistierung
 
-Die Datenstruktur des OpenWebUI-Portier-Systems ist multidimensional aufgebaut und verbindet mehrere Domänen: das OpenWebUI-Frontend, den LocalAgent-Pro-Backend-Server, die Portier-Architektur (Koordinator, Archivator, Connector) sowie externe Integrationen (Telegram, GitHub).
+**Datum:** 24. November 2025
+
+Die Datenstruktur des OpenWebUI‑Portier‑Systems ist multidimensional aufgebaut und verbindet mehrere Domänen: das OpenWebUI‑Frontend, den LocalAgent‑Pro Backend‑Server, die Portier‑Architektur (Koordinator, Archivator, Connector) sowie externe Integrationen (Telegram, GitHub).
 
 ### Persistente Datenspeicherung
 
-Das System nutzt mehrschichtige Persistence:
+Das System nutzt eine mehrschichtige Persistence-Strategie, abgestimmt auf Bedürfnisse an Integrität, Auditierbarkeit und Performance:
 
-- **SQLite-Datenbanken**: Strukturierte Event-Daten und Safepoints in `1.opena1&2_portier/archivp_store/`
-- **JSON-Dateien**: Konfigurationsdaten und Zustandsdaten in `LocalAgent-Pro/sandbox/`
-- **JSONL-Indexdateien**: Sequenzielle Safepoint-Protokollierung in `index.jsonl`
-- **Audit-Logs**: Transaktions- und Prüf-Logs in `/logs/` und `audit_hashes.log`
-- **Prometheus-Metriken**: Monitoring und Performance-Daten
+- **SQLite-Datenbanken**
+  - Zweck: Strukturierte Event-Daten, Health-Records, leichtgewichtige Indizes
+  - Beispiel: `1.opena1&2_portier/archivp_store/archive.db`
+- **JSON-Dateien**
+  - Zweck: Konfigurationen, lokale Zustandsdaten, Voice-Program-Daten
+  - Pfad-Beispiel: `LocalAgent-Pro/sandbox/` (contacts.json, tasks.json, notes.json)
+- **JSONL-Indexdateien**
+  - Zweck: Append-only Safepoint-Protokollierung (sequenziell, stream-freundlich)
+  - Beispiel: `archivp_store/index.jsonl`
+- **Audit-Logs**
+  - Zweck: SHA-256 Hashketten für jede Safepoint-Operation (Integrität & Nachvollziehbarkeit)
+  - Format: `audit_hashes.log` (append-only, timestamped)
+- **Prometheus-Metriken**
+  - Zweck: Monitoring und Performance-Analyse (Prometheus exposition format)
+  - Export: Endpoints unter `/metrics` für Scraping
+
+Die Persistenz-Speicher verwenden UTF-8 sowie ISO‑8601 Zeitstempel (UTC) für Interoperabilität und Konsistenz.
 
 ### Kern-Datenentitäten und Beziehungen
 
 | Entität | Beschreibung | Beziehungen | Speicherort |
-|---------|------------|-----------|-----------|
-| **Endpoint** (20) | Services auf Port 12344–12349 (opena1–opena20) | Hat viele HealthRecords; wird gepatcht via PatchBlock | SQLite, .env |
-| **PatchBlock** | Unified-Diff-Patches für Code-Updates | Gehört zu Endpoint; wird geauditet in AuditLog | `patches/` Verzeichnis |
-| **Safepoint** | Transaktions-Checkpoints (Gateway, Tool-Execution, Archive-Access) | Ist Teil von MessageRelay/GitHubWebhook-Flow | `archivp_store/index.jsonl` |
-| **HealthRecord** | Zeitstempel-basierte Gesundheitsprüfungen | Ist von Endpoint; Zeitreihen-Metadaten | SQLite, `/logs/` |
-| **AuditLog** | SHA-256 Hash-Ketten für alle Änderungen | Referenziert Endpoint & PatchBlock; vollständig verfolgbar | `audit_hashes.log` |
-| **Voice-Program-Daten** | Notizen, Kontakte, Aufgaben, Transkripte (1.041 Zeilen, 6 Programme) | Persistent in JSON | `LocalAgent-Pro/sandbox/` |
-| **MessageRelay** | Telegram → OpenWebUI Nachrichten-Routing | Wird zu Safepoint; loggt in archive.db | opena3 Bridge |
-| **GitHubWebhook** | GitHub-Events (Push, PR, Release) | Wird zu Safepoint; triggert optionale Updates | opena3 Bridge |
+|---------|--------------|------------|-------------|
+| **Endpoint** | Run‑time Services (opena1..opena21) | 1:n → HealthRecord, 1:n → Safepoint | SQLite / env-Config |
+| **PatchBlock** | Unified-Diff Patch-Objekte (Code-Updates) | Gehört zu Endpoint; Audit → AuditLog | `patches/` |
+| **Safepoint** | Transaktions-Checkpoint (CMD/RESP/ROUTE/DISPATCH) | Verknüpft mit MessageRelay & Archivator | `archivp_store/YYYY/MM/DD/` + `index.jsonl` |
+| **HealthRecord** | Zeitreihen-Metriken und Health-Checks | Von Endpoint generiert; aggregiert in Koordinator | SQLite, `/logs/` |
+| **AuditLog** | SHA-256 Hashkette für Änderungen | Referenziert Endpoint & PatchBlock; append-only | `audit_hashes.log` |
+| **Voice-Program-Daten** | Notizen, Kontakte, Aufgaben, Transkripte | JSON‑persistiert im Sandbox-Verzeichnis | `LocalAgent-Pro/sandbox/` |
+| **MessageRelay** | Messaging‑Routing (Telegram → OpenWebUI) | Erzeugt Safepoints; schreibt `archive.db` | opena3 Bridge |
+| **GitHubWebhook** | GitHub Event (Push/PR/Release) | Wird in Safepoint-Flow aufgenommen; optional Auto-Patch | opena3 Bridge |
 
-### Datentypen und Formate
+### Datentypen & Formate
 
-Das System arbeitet hauptsächlich mit:
+- **JSON** – API-Responses, Configs, Voice-Daten
+- **YAML** – Konfiguration (e.g. `config.yaml`)
+- **JSONL** – Sequenzielle Event-Logs / Safepoints (append-only)
+- **Unified-Diff** – Patch-Objekte für Code-Updates
+- **SHA-256** – Audit-Integritäts-Hashes
+- **SQLite** – Relationale Speicherung für Indexe, HealthRecords
 
-- **JSON** – REST-API-Responses, Konfigurationen, Voice-Daten
-- **YAML** – `config.yaml` für Konfigurationsdateien
-- **Unified-Diff** – Patch-Format für Code-Updates
-- **SHA-256 Hashes** – Audit-Trails und Integrität
-- **SQLite** – Relational für strukturierte Daten
-- **JSONL** – Log-Streaming für sequenzielle Events
+Alle Daten sind UTF‑8 kodiert und nutzen ISO‑8601 Zeitstempel (UTC) für Timestamps.
 
-Alle Daten sind **UTF-8 kodiert** und nutzen **ISO-8601 Zeitstempel**.
+---
+
+## 🔗 Weiterführende Dokumentation
+
+- **Gesamtübersicht:** `ELION_SYSTEM_ARCHITECTURE.md`
+- **Datenpfad:** `DATENPFAD.md`
+- **Projektstruktur:** `PROJEKTSTRUKTUR.md`
+
+---
+
+## 🔧 Was wurde installiert (Relevante Tools)
+
+- **tools/_common.py** – Utility-Funktionen (Paths, hashing, iso_utc, gitignore light parser)
+- **tools/scan_project.py** – Projektscanner (STRUCTURE.md, path_index.json, files.csv, violations.md)
+- **Makefile** – neue Targets: `make scan`, `make clean-map`
+- **tools/README_SCANNER.md** – Dokumentation, Quickstart, CI-Integration
+
+---
+
+## 📊 Scan-Resultat (Kurzüberblick)
+
+`project_map/` Artefakte (STRUCTURE.md, path_index.json, files.csv, stats.json, TREE.txt, violations.md)
+
+- Files: 5249 | Size: 379 MB | Skipped: 50
+- Typische Violations: Depth>6 (venv, cache), large files
+
+---
+
+
 
 ---
 

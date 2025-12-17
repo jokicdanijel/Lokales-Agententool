@@ -276,6 +276,21 @@
     "status": "core",
     "description": "Haupt-Dashboard mit UI, API und Self-Cleaning System"
   },
+  "browsep": {
+    "name": "Portier Browse Agent",
+    "port": 12370,
+    "endpoint": "http://127.0.0.1:12370",
+    "capabilities": [
+      "portier",
+      "browse",
+      "web_scraping",
+      "safepoint"
+    ],
+    "directory": "6.browsep_portier",
+    "script": "main_browsep.py",
+    "status": "planned",
+    "description": "Portier Browse Kanal (Prefix: browsep) für Web-Browsing und Analyse"
+  },
   "opena21": {
     "name": "Workflow Engine Agent",
     "port": 12364,

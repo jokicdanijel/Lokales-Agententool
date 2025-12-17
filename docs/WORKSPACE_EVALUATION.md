@@ -196,6 +196,19 @@ evaluate-quiet:
 	@python scripts/workspace_evaluation.py --no-save > /dev/null
 ```
 
+### Ops.sh Integration
+
+You can run the evaluation directly from the central operations script:
+
+```bash
+# Run evaluation and save JSON report
+bin/ops.sh eval
+
+# The command exits with code 0 when status is "excellent" or "good".
+# If status is "fair" or "poor" the exit code will be non-zero and
+# `workspace_evaluation_report.json` will contain the details.
+```
+
 ## Customization
 
 ### Adding New Evaluation Categories

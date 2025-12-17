@@ -6,7 +6,7 @@ import json
 import logging
 import asyncio
 from typing import Dict, Any, List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -85,7 +85,7 @@ class PermissionStore:
                 if perm["resource"] == resource and perm["action"] == action:
                     # Update expiration
                     perm["expires"] = expires
-                    perm["updated_at"] = datetime.utcnow().isoformat()
+                    perm["updated_at"] = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
                     logger.info(f"🔄 Updated permission: {subject} -> {action} on {resource}")
                     return {
                         "status": "updated",
@@ -99,8 +99,8 @@ class PermissionStore:
                 "resource": resource,
                 "action": action,
                 "expires": expires,
-                "created_at": datetime.utcnow().isoformat(),
-                "updated_at": datetime.utcnow().isoformat()
+                "created_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+                "updated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
             }
             
             self.data[subject].append(permission)

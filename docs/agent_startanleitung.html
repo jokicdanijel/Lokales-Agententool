@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ELION Hyper-Dashboard – Startanleitung aller Agenten</title>
+  <style>
+    :root{--bg:#0b0f14;--panel:#111824;--panel2:#0f1621;--txt:#e6edf3;--muted:#9fb0c3;--acc:#6ee7ff;--acc2:#a7f3d0;--warn:#ffd166;--bad:#ff5c7a;--ok:#5cffb0;--border:#223044}
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#06090d);color:var(--txt);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial}
+    header{padding:26px 16px;border-bottom:1px solid var(--border);background:radial-gradient(1200px 400px at 15% 0%,rgba(110,231,255,.12),transparent),radial-gradient(800px 320px at 70% 10%,rgba(167,243,208,.10),transparent)}
+    header h1{margin:0 0 6px;font-size:20px}
+    header p{margin:0;color:var(--muted);max-width:1100px}
+    main{max-width:1200px;margin:0 auto;padding:16px}
+    .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--border);border-radius:14px;padding:14px;margin-top:14px}
+    .card h2{margin:0 0 10px;font-size:16px}
+    .pill{display:inline-block;padding:3px 10px;border:1px solid var(--border);border-radius:999px;color:var(--muted);margin:0 6px 8px 0}
+    .pill b{color:var(--txt)}
+    .pill.ok{border-color:rgba(92,255,176,.35);color:var(--acc2)}
+    .pill.bad{border-color:rgba(255,92,122,.35);color:var(--bad)}
+    .pill.warn{border-color:rgba(255,209,102,.35);color:var(--warn)}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+    pre{margin:10px 0 0;padding:12px;border-radius:12px;background:#0a0f16;border:1px solid var(--border);overflow:auto}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+    table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:12px;border:1px solid var(--border)}
+    th,td{padding:10px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+    th{background:#0a0f16;color:var(--muted);text-align:left;font-weight:600}
+    tr:last-child td{border-bottom:none}
+    a{color:var(--acc);text-decoration:none}
+    a:hover{text-decoration:underline}
+    details{border:1px solid var(--border);border-radius:12px;padding:10px;background:#0a0f16}
+    details + details{margin-top:10px}
+    summary{cursor:pointer;color:var(--txt);font-weight:700}
+    .small{font-size:12px;color:var(--muted)}
+    .note{border-left:3px solid var(--acc);padding:8px 10px;background:rgba(110,231,255,.06);border-radius:10px;color:var(--muted);margin-top:10px}
+    .note strong{color:var(--txt)}
+    .danger{border-left:3px solid var(--bad);background:rgba(255,92,122,.06)}
+    .okbox{border-left:3px solid var(--ok);background:rgba(92,255,176,.05)}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 0}
+    input[type="search"]{flex:1;min-width:240px;background:#0a0f16;color:var(--txt);border:1px solid var(--border);border-radius:10px;padding:10px}
+    .btn{background:#0a0f16;color:var(--txt);border:1px solid var(--border);border-radius:10px;padding:10px 12px;cursor:pointer}
+    .btn:hover{border-color:#2b3d58}
+  </style>
+</head>
+<body>
+<header>
+  <h1>ELION Hyper-Dashboard – Startanleitung aller Agenten (opena1–opena21 + browsep)</h1>
+  <p>
+    Ziel: Jeder Agent läuft lokal auf seinem Port (<span class="mono">127.0.0.1:PORT</span>) und ist extern erreichbar über
+    <span class="mono">https://hyperdashboard-one.de/openaX/</span> (Reverse Proxy / Pfad-Routing).
+    Port-Policy: <span class="mono">12344–12399</span> ✅, <span class="mono">&lt;OPENWEBUI_UI_PORT&gt;</span> ❌.
+  </p>
+</header>
+<main>
+  <section class="card">
+    <h2>0) Pflicht: .env Setup (Vorlage)</h2>
+    <span class="pill ok"><b>Quelle</b>: <span class="mono">/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/mcp_server/.env.example</span></span>
+    <span class="pill warn"><b>Hinweis</b>: ops.sh liest <span class="mono">PROJECT_ROOT/.env</span></span>
+    <div class="note okbox">
+      <strong>Vorgehen:</strong> Kopiere die Vorlage ins Projekt-Root und setze Token/Keys. Ohne <span class="mono">.env</span> bricht <span class="mono">ops.sh start</span> ab.
+    </div>
+    <pre><code>cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
+
+cp /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/mcp_server/.env.example .env
+nano .env
+
+# Minimal-Check (Keys/Token)
+grep -E '^(DASHBOARD_ADMIN_TOKEN|OPENAI_API_KEY_OPENA1|OPENAI_API_KEY_OPENA2)=' .env</code></pre>
+    <div class="note danger"><strong>Security:</strong> .env nicht committen. Secrets gehören in CI/CD Secret Store.</div>
+  </section>
+  <section class="card">
+    <h2>1) Quickstart (zentrale Steuerung)</h2>
+    <pre><code># Projekt-Root
+chmod +x bin/ops.sh
+
+# Start: opena1, opena2, opena20 (Dashboard) + best-effort alle weiteren Agenten
+bin/ops.sh start
+
+# Health über alle Agenten
+bin/ops.sh health
+
+# Live Monitoring
+bin/ops.sh monitor</code></pre>
+  </section>
+  <section class="card">
+    <h2>2) Agentenübersicht (Ports, Health, Public URLs)</h2>
+    <div class="toolbar">
+      <input id="filter" type="search" placeholder="Filter… z.B. opena8, whatsapp, 12349, browsep" />
+      <button class="btn" onclick="resetFilter()">Reset</button>
+      <button class="btn" onclick="expandAll()">Expand all</button>
+      <button class="btn" onclick="collapseAll()">Collapse all</button>
+    </div>
+    <p class="small" style="margin:10px 0 0">
+      Start-Logik: <span class="mono">bin/start_AGENT.sh</span> → <span class="mono">bin/start.sh</span> → <span class="mono">python3 main_*.py</span>. Health: <span class="mono">/health</span>.
+    </p>
+    <table id="agentsTable">
+      <thead>
+        <tr>
+          <th>Agent</th>
+          <th>Ordner</th>
+          <th>Port</th>
+          <th>Lokal Health</th>
+          <th>Extern (Proxy)</th>
+          <th>Manual Start (Fallback)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mono">opena1</td>
+          <td class="mono">1.opena1&amp;2_portier</td>
+          <td class="mono">12344</td>
+          <td class="mono"><a href="http://127.0.0.1:12344/health">127.0.0.1:12344/health</a></td>
+          <td class="mono">/opena1/</td>
+          <td class="mono">cd 1.opena1&amp;2_portier &amp;&amp; bin/start_opena1_with_key.sh</td>
+        </tr>
+        <tr>
+          <td class="mono">opena2</td>
+          <td class="mono">1.opena1&amp;2_portier</td>
+          <td class="mono">12345</td>
+          <td class="mono"><a href="http://127.0.0.1:12345/health">127.0.0.1:12345/health</a></td>
+          <td class="mono">/opena2/</td>
+          <td class="mono">cd 1.opena1&amp;2_portier &amp;&amp; bin/start_opena2_with_key.sh</td>
+        </tr>
+        <tr>
+          <td class="mono">opena3</td>
+          <td class="mono">2.opena3_openwebui</td>
+          <td class="mono">12347</td>
+          <td class="mono"><a href="http://127.0.0.1:12347/health">127.0.0.1:12347/health</a></td>
+          <td class="mono">/opena3/</td>
+          <td class="mono">cd 2.opena3_openwebui &amp;&amp; (bin/start_opena3.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">opena4</td>
+          <td class="mono">3.opena4_telegram</td>
+          <td class="mono">12348</td>
+          <td class="mono"><a href="http://127.0.0.1:12348/health">127.0.0.1:12348/health</a></td>
+          <td class="mono">/opena4/</td>
+          <td class="mono">cd 3.opena4_telegram &amp;&amp; (bin/start_opena4.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">opena5</td>
+          <td class="mono">4.opena5_vscode</td>
+          <td class="mono">12351</td>
+          <td class="mono"><a href="http://127.0.0.1:12351/health">127.0.0.1:12351/health</a></td>
+          <td class="mono">/opena5/</td>
+          <td class="mono">cd 4.opena5_vscode &amp;&amp; (bin/start_opena5.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">opena6</td>
+          <td class="mono">5.opena6_browser</td>
+          <td class="mono">12352</td>
+          <td class="mono"><a href="http://127.0.0.1:12352/health">127.0.0.1:12352/health</a></td>
+          <td class="mono">/opena6/</td>
+          <td class="mono">cd 5.opena6_browser &amp;&amp; (bin/start_opena6.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">opena7</td>
+          <td class="mono">6.opena7_email</td>
+          <td class="mono">12353</td>
+          <td class="mono"><a href="http://127.0.0.1:12353/health">127.0.0.1:12353/health</a></td>
+          <td class="mono">/opena7/</td>
+          <td class="mono">cd 6.opena7_email &amp;&amp; (bin/start_opena7.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">opena8</td>
+          <td class="mono">7.opena8_whatsapp</td>
+          <td class="mono">12354</td>
+          <td class="mono"><a href="http://127.0.0.1:12354/health">127.0.0.1:12354/health</a></td>
+          <td class="mono">/opena8/</td>
+          <td class="mono">cd 7.opena8_whatsapp &amp;&amp; (bin/start_opena8.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">opena9</td>
+          <td class="mono">8.opena9_telephone</td>
+          <td class="mono">12355</td>
+          <td class="mono"><a href="http://127.0.0.1:12355/health">127.0.0.1:12355/health</a></td>
+          <td class="mono">/opena9/</td>
+          <td class="mono">cd 8.opena9_telephone &amp;&amp; (bin/start_opena9.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">opena10</td>
+          <td class="mono">9.opena10_call_tracking</td>
+          <td class="mono">12356</td>
+          <td class="mono"><a href="http://127.0.0.1:12356/health">127.0.0.1:12356/health</a></td>
+          <td class="mono">/opena10/</td>
+          <td class="mono">cd 9.opena10_call_tracking &amp;&amp; (bin/start_opena10.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">opena11</td>
+          <td class="mono">10.opena11_unlock</td>
+          <td class="mono">12357</td>
+          <td class="mono"><a href="http://127.0.0.1:12357/health">127.0.0.1:12357/health</a></td>
+          <td class="mono">/opena11/</td>
+          <td class="mono">cd 10.opena11_unlock &amp;&amp; (bin/start_opena11.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">opena12</td>
+          <td class="mono">11.opena12_social_media</td>
+          <td class="mono">12358</td>
+          <td class="mono"><a href="http://127.0.0.1:12358/health">127.0.0.1:12358/health</a></td>
+          <td class="mono">/opena12/</td>
+          <td class="mono">cd 11.opena12_social_media &amp;&amp; (bin/start_opena12.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">opena13</td>
+          <td class="mono">12.opena13_influencer</td>
+          <td class="mono">12359</td>
+          <td class="mono"><a href="http://127.0.0.1:12359/health">127.0.0.1:12359/health</a></td>
+          <td class="mono">/opena13/</td>
+          <td class="mono">cd 12.opena13_influencer &amp;&amp; (bin/start_opena13.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">opena14</td>
+          <td class="mono">13.opena14_calendar</td>
+          <td class="mono">12360</td>
+          <td class="mono"><a href="http://127.0.0.1:12360/health">127.0.0.1:12360/health</a></td>
+          <td class="mono">/opena14/</td>
+          <td class="mono">cd 13.opena14_calendar &amp;&amp; (bin/start_opena14.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">opena15</td>
+          <td class="mono">14.opena15_html</td>
+          <td class="mono">12361</td>
+          <td class="mono"><a href="http://127.0.0.1:12361/health">127.0.0.1:12361/health</a></td>
+          <td class="mono">/opena15/</td>
+          <td class="mono">cd 14.opena15_html &amp;&amp; (bin/start_opena15.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">opena16</td>
+          <td class="mono">15.opena16_shop</td>
+          <td class="mono">12362</td>
+          <td class="mono"><a href="http://127.0.0.1:12362/health">127.0.0.1:12362/health</a></td>
+          <td class="mono">/opena16/</td>
+          <td class="mono">cd 15.opena16_shop &amp;&amp; (bin/start_opena16.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">opena17</td>
+          <td class="mono">16.opena17_homepagecreator</td>
+          <td class="mono">12366</td>
+          <td class="mono"><a href="http://127.0.0.1:12366/health">127.0.0.1:12366/health</a></td>
+          <td class="mono">/opena17/</td>
+          <td class="mono">cd 16.opena17_homepagecreator &amp;&amp; (bin/start_opena17.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">opena18</td>
+          <td class="mono">17.opena18_CMR</td>
+          <td class="mono">12363</td>
+          <td class="mono"><a href="http://127.0.0.1:12363/health">127.0.0.1:12363/health</a></td>
+          <td class="mono">/opena18/</td>
+          <td class="mono">cd 17.opena18_CMR &amp;&amp; (bin/start_opena18.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">opena19</td>
+          <td class="mono">18.opena19_Aktien&amp;Crypto</td>
+          <td class="mono">12365</td>
+          <td class="mono"><a href="http://127.0.0.1:12365/health">127.0.0.1:12365/health</a></td>
+          <td class="mono">/opena19/</td>
+          <td class="mono">cd 18.opena19_Aktien&amp;Crypto &amp;&amp; (bin/start_opena19.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">browsep</td>
+          <td class="mono">6.browsep_portier</td>
+          <td class="mono">12370</td>
+          <td class="mono"><a href="http://127.0.0.1:12370/health">127.0.0.1:12370/health</a></td>
+          <td class="mono">/browsep/</td>
+          <td class="mono">cd 6.browsep_portier &amp;&amp; (bin/start_browsep.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+        <tr>
+          <td class="mono">opena20</td>
+          <td class="mono">19.opena20_dashboard_agent</td>
+          <td class="mono">12349</td>
+          <td class="mono"><a href="http://127.0.0.1:12349/health">127.0.0.1:12349/health</a></td>
+          <td class="mono">/opena20/</td>
+          <td class="mono">cd 19.opena20_dashboard_agent &amp;&amp; python3 main_dashboard.py</td>
+        </tr>
+        <tr>
+          <td class="mono">opena21</td>
+          <td class="mono">20.opena21_workflow</td>
+          <td class="mono">12367</td>
+          <td class="mono"><a href="http://127.0.0.1:12367/health">127.0.0.1:12367/health</a></td>
+          <td class="mono">/opena21/</td>
+          <td class="mono">cd 20.opena21_workflow &amp;&amp; (bin/start_opena21.sh || bin/start.sh || python3 main_*.py)</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>3) Pro Agent – Runbook (einzeln startbar)</h2>
+    <p class="small">Wenn “best-effort start” nicht reicht: nimm die Sektion deines Agenten und starte gezielt.</p>
+    <details class="agentDetail">
+      <summary>opena1 (12344) – Ordner: <span class="mono">1.opena1&amp;2_portier</span></summary>
+      <pre><code>Start:
+cd 1.opena1&2_portier && bin/start_opena1_with_key.sh
+
+Health:
+curl -s http://127.0.0.1:12344/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena1/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena2 (12345) – Ordner: <span class="mono">1.opena1&amp;2_portier</span></summary>
+      <pre><code>Start:
+cd 1.opena1&2_portier && bin/start_opena2_with_key.sh
+
+Health:
+curl -s http://127.0.0.1:12345/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena2/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena3 (12347) – Ordner: <span class="mono">2.opena3_openwebui</span></summary>
+      <pre><code>Start:
+cd 2.opena3_openwebui && (bin/start_opena3.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12347/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena3/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena4 (12348) – Ordner: <span class="mono">3.opena4_telegram</span></summary>
+      <pre><code>Start:
+cd 3.opena4_telegram && (bin/start_opena4.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12348/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena4/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena5 (12351) – Ordner: <span class="mono">4.opena5_vscode</span></summary>
+      <pre><code>Start:
+cd 4.opena5_vscode && (bin/start_opena5.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12351/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena5/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena6 (12352) – Ordner: <span class="mono">5.opena6_browser</span></summary>
+      <pre><code>Start:
+cd 5.opena6_browser && (bin/start_opena6.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12352/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena6/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena7 (12353) – Ordner: <span class="mono">6.opena7_email</span></summary>
+      <pre><code>Start:
+cd 6.opena7_email && (bin/start_opena7.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12353/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena7/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena8 (12354) – Ordner: <span class="mono">7.opena8_whatsapp</span></summary>
+      <pre><code>Start:
+cd 7.opena8_whatsapp && (bin/start_opena8.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12354/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena8/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena9 (12355) – Ordner: <span class="mono">8.opena9_telephone</span></summary>
+      <pre><code>Start:
+cd 8.opena9_telephone && (bin/start_opena9.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12355/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena9/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena10 (12356) – Ordner: <span class="mono">9.opena10_call_tracking</span></summary>
+      <pre><code>Start:
+cd 9.opena10_call_tracking && (bin/start_opena10.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12356/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena10/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena11 (12357) – Ordner: <span class="mono">10.opena11_unlock</span></summary>
+      <pre><code>Start:
+cd 10.opena11_unlock && (bin/start_opena11.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12357/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena11/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena12 (12358) – Ordner: <span class="mono">11.opena12_social_media</span></summary>
+      <pre><code>Start:
+cd 11.opena12_social_media && (bin/start_opena12.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12358/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena12/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena13 (12359) – Ordner: <span class="mono">12.opena13_influencer</span></summary>
+      <pre><code>Start:
+cd 12.opena13_influencer && (bin/start_opena13.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12359/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena13/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena14 (12360) – Ordner: <span class="mono">13.opena14_calendar</span></summary>
+      <pre><code>Start:
+cd 13.opena14_calendar && (bin/start_opena14.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12360/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena14/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena15 (12361) – Ordner: <span class="mono">14.opena15_html</span></summary>
+      <pre><code>Start:
+cd 14.opena15_html && (bin/start_opena15.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12361/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena15/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena16 (12362) – Ordner: <span class="mono">15.opena16_shop</span></summary>
+      <pre><code>Start:
+cd 15.opena16_shop && (bin/start_opena16.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12362/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena16/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena17 (12366) – Ordner: <span class="mono">16.opena17_homepagecreator</span></summary>
+      <pre><code>Start:
+cd 16.opena17_homepagecreator && (bin/start_opena17.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12366/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena17/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena18 (12363) – Ordner: <span class="mono">17.opena18_CMR</span></summary>
+      <pre><code>Start:
+cd 17.opena18_CMR && (bin/start_opena18.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12363/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena18/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena19 (12365) – Ordner: <span class="mono">18.opena19_Aktien&amp;Crypto</span></summary>
+      <pre><code>Start:
+cd 18.opena19_Aktien&Crypto && (bin/start_opena19.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12365/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena19/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>browsep (12370) – Ordner: <span class="mono">6.browsep_portier</span></summary>
+      <pre><code>Start:
+cd 6.browsep_portier && (bin/start_browsep.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12370/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/browsep/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena20 (12349) – Ordner: <span class="mono">19.opena20_dashboard_agent</span></summary>
+      <pre><code>Start:
+cd 19.opena20_dashboard_agent && python3 main_dashboard.py
+
+Health:
+curl -s http://127.0.0.1:12349/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena20/</code></pre>
+    </details>
+    <details class="agentDetail">
+      <summary>opena21 (12367) – Ordner: <span class="mono">20.opena21_workflow</span></summary>
+      <pre><code>Start:
+cd 20.opena21_workflow && (bin/start_opena21.sh || bin/start.sh || python3 main_*.py)
+
+Health:
+curl -s http://127.0.0.1:12367/health | (command -v jq >/dev/null 2>&1 && jq . || cat)
+
+Extern (Proxy):
+https://hyperdashboard-one.de/opena21/</code></pre>
+    </details>
+  </section>
+
+  <section class="card">
+    <h2>4) E2E Test</h2>
+    <pre><code># Via Dashboard API
+curl -X POST http://127.0.0.1:12349/api/e2e
+
+# Via opena1 direkt
+curl -X POST http://127.0.0.1:12344/log/opena1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "request_id":"test-123",
+    "timestamp":"2025-11-24T12:00:00Z",
+    "source":"openai",
+    "user_query":"Test",
+    "context":{},
+    "metadata":{}
+  }'</code></pre>
+  </section>
+
+<script>
+  const filter = document.getElementById('filter');
+  const table = document.getElementById('agentsTable');
+  const details = () => Array.from(document.querySelectorAll('.agentDetail'));
+
+  function rowText(tr){ return tr.innerText.toLowerCase(); }
+
+  function applyFilter(){
+    const q = (filter.value || '').trim().toLowerCase();
+    Array.from(table.querySelectorAll('tbody tr')).forEach(tr=>{
+      tr.style.display = (!q || rowText(tr).includes(q)) ? '' : 'none';
+    });
+    details().forEach(d=>{
+      const txt = (d.innerText || '').toLowerCase();
+      const show = (!q || txt.includes(q));
+      d.style.display = show ? '' : 'none';
+      if(show && q) d.open = true;
+    });
+  }
+  function resetFilter(){ filter.value=''; applyFilter(); }
+  function expandAll(){ details().forEach(d=> d.open = true); }
+  function collapseAll(){ details().forEach(d=> d.open = false); }
+
+  if(filter){
+    filter.addEventListener('input', applyFilter);
+    window.resetFilter = resetFilter;
+    window.expandAll = expandAll;
+    window.collapseAll = collapseAll;
+  }
+</script>
+
+</main>
+</body>
+</html>

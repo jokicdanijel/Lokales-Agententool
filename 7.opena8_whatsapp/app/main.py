@@ -5,7 +5,7 @@ WhatsApp Webhook handler, message sending, health endpoint
 
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any
 
 from fastapi import FastAPI, Request, HTTPException, BackgroundTasks
@@ -87,7 +87,7 @@ async def health():
         status=status,
         service="opena8",
         version="1.0.0",
-        timestamp=datetime.utcnow(),
+        timestamp=datetime.now(timezone.utc),
         meta_api_connected=True,  # Would check in real impl
         opena2_connected=opena2_ok,
         opena1_connected=opena1_ok
@@ -139,7 +139,7 @@ async def webhook_handler(request: Request, background_tasks: BackgroundTasks):
         
         # Archive to opena2
         safepoint = Safepoint(
-            ts=datetime.utcnow(),
+            ts=datetime.now(timezone.utc),
             src="opena8",
             dst="opena2",
             kind="MSG",
@@ -188,7 +188,7 @@ async def send_message(req: SendMessageRequest):
             success=success,
             message_id=msg_id,
             error=error,
-            sent_at=datetime.utcnow()
+            sent_at=datetime.now(timezone.utc)
         )
     
     except Exception as e:
@@ -212,7 +212,7 @@ async def run_action(req: MailRunRequest):
                     success=True,
                     action="ingest",
                     data=msg_obj.dict(),
-                    timestamp=datetime.utcnow()
+                    timestamp=datetime.now(timezone.utc)
                 )
         
         elif action == "send":
@@ -226,14 +226,14 @@ async def run_action(req: MailRunRequest):
                 action="send",
                 data={"message_id": msg_id},
                 error=error,
-                timestamp=datetime.utcnow()
+                timestamp=datetime.now(timezone.utc)
             )
         
         return MailRunResponse(
             success=False,
             action=action,
             error=f"Unknown action: {action}",
-            timestamp=datetime.utcnow()
+            timestamp=datetime.now(timezone.utc)
         )
     
     except Exception as e:
@@ -257,7 +257,7 @@ async def api_status():
         "port": config.PORT,
         "status": "running",
         "meta_phone": config.META_PHONE_NUMBER_ID[:8] + "***",
-        "timestamp": datetime.utcnow().isoformat()
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     }
 
 

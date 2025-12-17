@@ -11,7 +11,7 @@ import time
 import re
 import hmac
 import hashlib
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Optional, List
 from fastapi import FastAPI, HTTPException, Depends, Header, Request
@@ -117,7 +117,7 @@ def mask_secrets(data: Any) -> Any:
 
 def write_safepoint(src: str, dst: str, typ: str, data: Dict[str, Any], request_id: str) -> None:
     """Write Safepoint (CMD/RESP) to archivp"""
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     year = now.strftime("%Y")
     month = now.strftime("%m")
     day = now.strftime("%d")
@@ -136,7 +136,7 @@ def write_safepoint(src: str, dst: str, typ: str, data: Dict[str, Any], request_
     
     envelope = {
         "sp_id": timestamp,
-        "timestamp": now.isoformat() + "Z",
+        "timestamp": now.isoformat().replace("+00:00", "Z"),
         "src": src,
         "dst": dst,
         "type": typ,
@@ -337,7 +337,7 @@ async def health():
 @app.post("/command")
 async def command(req: CommandRequest, _: bool = Depends(verify_token)):
     """Generic Command Endpoint (Option-2-Flow Compatibility)"""
-    request_id = datetime.utcnow().strftime("%Y%m%d_%H%M%S_%f")[:21]
+    request_id = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f")[:21]
     
     logger.info(f"📥 Command: {req.command}")
     
@@ -362,7 +362,7 @@ async def command(req: CommandRequest, _: bool = Depends(verify_token)):
 @app.post("/send/text")
 async def send_text(req: SendMessageRequest, _: bool = Depends(verify_token)):
     """Send WhatsApp Text Message"""
-    request_id = datetime.utcnow().strftime("%Y%m%d_%H%M%S_%f")[:21]
+    request_id = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f")[:21]
     
     logger.info(f"📤 Send text to {req.to}")
     
@@ -381,7 +381,7 @@ async def send_text(req: SendMessageRequest, _: bool = Depends(verify_token)):
             "status": "sent",
             "message_id": response.get("messages", [{}])[0].get("id"),
             "to": req.to,
-            "timestamp": datetime.utcnow().isoformat() + "Z"
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         }
         
         # Safepoint RESP
@@ -396,7 +396,7 @@ async def send_text(req: SendMessageRequest, _: bool = Depends(verify_token)):
 @app.post("/send/template")
 async def send_template(req: SendTemplateRequest, _: bool = Depends(verify_token)):
     """Send WhatsApp Template Message"""
-    request_id = datetime.utcnow().strftime("%Y%m%d_%H%M%S_%f")[:21]
+    request_id = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f")[:21]
     
     logger.info(f"📤 Send template '{req.template_name}' to {req.to}")
     
@@ -423,7 +423,7 @@ async def send_template(req: SendTemplateRequest, _: bool = Depends(verify_token
             "message_id": response.get("messages", [{}])[0].get("id"),
             "template_name": req.template_name,
             "to": req.to,
-            "timestamp": datetime.utcnow().isoformat() + "Z"
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         }
         
         # Safepoint RESP
@@ -465,7 +465,7 @@ async def webhook_receive(
         raise HTTPException(status_code=401, detail="Invalid signature")
     
     data = await request.json()
-    request_id = datetime.utcnow().strftime("%Y%m%d_%H%M%S_%f")[:21]
+    request_id = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f")[:21]
     
     logger.info(f"📥 Webhook received: {len(body)} bytes")
     

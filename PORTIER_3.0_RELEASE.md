@@ -13,8 +13,8 @@ PORTIER 3.0 ist ein vollständig funktionsfähiges Multi-Agent-System basierend 
 
 **Kerneigenschaften:**
 
-- ✅ 4 microservices (opena1, opena2, kordp, opena20)
-- ✅ Option-2-Flow Architecture (OpenAI → opena1 → opena2 → kordp → Tools)
+- ✅ 4 microservices (opena1, opena2, opena20)
+- ✅ Option-2-Flow Architecture (OpenAI → opena1 → opena2 → Tools)
 - ✅ Live Dashboard mit Real-Time Status Monitoring
 - ✅ Append-Only Safepoint System (YYYY/MM/DD struktur)
 - ✅ Port Policy Enforcement (12344-12399, 8080 verboten)
@@ -32,22 +32,22 @@ PORTIER 3.0 ist ein vollständig funktionsfähiges Multi-Agent-System basierend 
 │                                                             │
 │  OpenAI API                                                 │
 │      ↓                                                      │
-│  opena1 (Coordinator, Port 12344)                          │
-│      ↓ Request71 → Decision72                              │
-│  opena2 (Archivator, Port 12345)                           │
-│      ↓ CMD/RESP Safepoints                                 │
-│  kordp (Gateway, Port 12346)                               │
-│      ↓ Tool Dispatch                                       │
-│  Tools (file_manager, searcher, analyzer, default)         │
+│  opena1 (Coordinator, Port 12344)                           │
+│      ↓ Request71 → Decision72                               │
+│  opena2 (Archivator, Port 12345)                            │
+│      ↓ CMD/RESP Safepoints                                  │
 │                                                             │
-│  ┌───────────────────────────────────────┐                 │
-│  │ opena20 (Dashboard, Port 12349)       │                 │
-│  │ - Live Status Grid                    │                 │
-│  │ - E2E Test Trigger                    │                 │
-│  │ - Safepoint Inspector                 │                 │
-│  │ - Activity Log                        │                 │
-│  │ - Auto-Refresh (5s)                   │                 │
-│  └───────────────────────────────────────┘                 │
+│      ↓ Tool Dispatch                                        │
+│  Tools (file_manager, searcher, analyzer, default)          │
+│                                                             │
+│  ┌───────────────────────────────────────┐                  │
+│  │ opena20 (Dashboard, Port 12349)       │                  │
+│  │ - Live Status Grid                    │                  │
+│  │ - E2E Test Trigger                    │                  │
+│  │ - Safepoint Inspector                 │                  │
+│  │ - Activity Log                        │                  │
+│  │ - Auto-Refresh (5s)                   │                  │
+│  └───────────────────────────────────────┘                  │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -58,9 +58,8 @@ PORTIER 3.0 ist ein vollständig funktionsfähiges Multi-Agent-System basierend 
 
 | Service | Port | Rolle | Status | PID |
 |---------|------|-------|--------|-----|
-| **opena1** | 12344 | Coordinator (Request71→Decision72) | ✅ Running | 684588 |
-| **opena2** | 12345 | Archivator (CMD/RESP Safepoints) | ✅ Running | 684455 |
-| **kordp** | 12346 | Gateway (Tool Routing) | ✅ Running | 684607 |
+| **opena1**  | 12344 | Coordinator (Request71→Decision72) | ✅ Running | 684588 |
+| **opena2**  | 12345 | Archivator (CMD/RESP Safepoints) | ✅ Running | 684455 |
 | **opena20** | 12349 | Dashboard (WebUI + API) | ✅ Running | 705698 |
 
 **Health Check Endpoints:**
@@ -147,8 +146,7 @@ curl http://127.0.0.1:12349/health  # opena20
 4. opena1 forwards to opena2:12345/finalize/opena2
 5. opena2 creates CMD safepoint: SP<ts>_opena1→archivp_CMD.json
 6. opena2 forwards to kordp:12346/dispatch
-7. kordp resolves tool and executes
-8. Result flows back: kordp → opena2 (RESP safepoint) → opena1 → OpenAI
+7. Result flows back: kordp → opena2 (RESP safepoint) → opena1 → OpenAI
 ```
 
 **Test Results:**

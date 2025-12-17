@@ -6,7 +6,7 @@ Browser Automation Agent — REST API & Orchestration
 import asyncio
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, List, Optional
 from pathlib import Path
 
@@ -135,7 +135,7 @@ async def health_check() -> HealthResponse:
         component=config.SERVICE_COMPONENT,
         port=config.PORT,
         browser="playwright-chromium",
-        ts=datetime.utcnow().isoformat() + "Z"
+        ts=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     )
 
 
@@ -185,7 +185,7 @@ async def execute_playbook(request: PlaybookRequest) -> PlaybookResponse:
         
         # Write RESP safepoint to opena2
         safepoint = Safepoint(
-            ts=datetime.utcnow().isoformat() + "Z",
+            ts=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             src=config.SERVICE_NAME,
             dst="opena2",
             kind="RESP",
@@ -283,7 +283,7 @@ async def status():
         "browser_ready": browser_executor is not None,
         "headless": config.HEADLESS,
         "max_artifact_size_mb": config.MAX_ARTIFACT_SIZE_MB,
-        "ts": datetime.utcnow().isoformat() + "Z"
+        "ts": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     }
 
 

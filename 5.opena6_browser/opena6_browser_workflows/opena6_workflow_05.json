@@ -1,0 +1,14 @@
+{
+  "name": "news_scraper",
+  "description": "Sammelt Überschriften von Nachrichten",
+  "steps": [
+    {
+      "action": "open_url",
+      "url": "https://news.ycombinator.com"
+    },
+    {
+      "action": "scrape_all_texts",
+      "selector": ".titleline"
+    }
+  ]
+}

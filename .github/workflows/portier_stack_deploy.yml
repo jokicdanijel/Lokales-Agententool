@@ -47,6 +47,8 @@ jobs:
           fetch-depth: 0
           
       - name: 🔍 Detect Changes
+        # Only run detect step when a BEARER_TOKEN is configured to avoid noisy failures
+        if: ${{ secrets.BEARER_TOKEN != '' }}
         id: changes
         run: |
           # Get list of changed agent directories

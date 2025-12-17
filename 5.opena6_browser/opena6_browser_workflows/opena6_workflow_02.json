@@ -1,0 +1,32 @@
+{
+  "name": "login_and_scrape",
+  "description": "Login auf Webseite und Scraping von Daten",
+  "steps": [
+    {
+      "action": "open_url",
+      "url": "https://example.com/login"
+    },
+    {
+      "action": "fill_input",
+      "selector": "#username",
+      "text": "user"
+    },
+    {
+      "action": "fill_input",
+      "selector": "#password",
+      "text": "pass"
+    },
+    {
+      "action": "click",
+      "selector": "#submit"
+    },
+    {
+      "action": "wait_for_selector",
+      "selector": ".dashboard"
+    },
+    {
+      "action": "scrape_text",
+      "selector": ".user-info"
+    }
+  ]
+}

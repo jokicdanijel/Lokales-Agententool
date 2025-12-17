@@ -7,7 +7,7 @@ import pytest
 import asyncio
 import json
 from unittest.mock import AsyncMock, MagicMock, patch
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Test imports (assuming tests run from project root)
 import sys
@@ -34,7 +34,7 @@ class TestHealthEndpoints:
             component="browser",
             port=12349,
             browser="playwright-chromium",
-            ts=datetime.utcnow().isoformat() + "Z"
+            ts=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         )
         
         assert health.service == "opena6"
@@ -227,7 +227,7 @@ class TestSafepoint:
         }
         
         safepoint = Safepoint(
-            ts=datetime.utcnow().isoformat() + "Z",
+            ts=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             src="opena6",
             dst="opena2",
             kind="RESP",

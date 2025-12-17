@@ -11,7 +11,7 @@ import time
 import re
 import hmac
 import hashlib
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Optional
 from enum import Enum
@@ -143,7 +143,7 @@ def mask_secrets(data: Any) -> Any:
 
 def write_safepoint(src: str, dst: str, typ: str, data: Dict[str, Any], request_id: str) -> None:
     """Write Safepoint (CMD/RESP) to archivp"""
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     year = now.strftime("%Y")
     month = now.strftime("%m")
     day = now.strftime("%d")
@@ -162,7 +162,7 @@ def write_safepoint(src: str, dst: str, typ: str, data: Dict[str, Any], request_
     
     envelope = {
         "sp_id": timestamp,
-        "timestamp": now.isoformat() + "Z",
+        "timestamp": now.isoformat().replace("+00:00", "Z"),
         "src": src,
         "dst": dst,
         "type": typ,
@@ -373,7 +373,7 @@ async def health():
 @app.post("/command")
 async def command(req: CommandRequest, _: bool = Depends(verify_token)):
     """Generic Command Endpoint (Option-2-Flow Compatibility)"""
-    request_id = datetime.utcnow().strftime("%Y%m%d_%H%M%S_%f")[:21]
+    request_id = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f")[:21]
     
     logger.info(f"📥 Command: {req.command}")
     
@@ -398,7 +398,7 @@ async def command(req: CommandRequest, _: bool = Depends(verify_token)):
 @app.post("/call/start")
 async def call_start(req: CallStartRequest, _: bool = Depends(verify_token)):
     """Start Outbound Call"""
-    request_id = datetime.utcnow().strftime("%Y%m%d_%H%M%S_%f")[:21]
+    request_id = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f")[:21]
     
     logger.info(f"📞 Start call to {req.to}")
     
@@ -426,7 +426,7 @@ async def call_start(req: CallStartRequest, _: bool = Depends(verify_token)):
             "to": req.to,
             "from": req.from_number or TWILIO_PHONE_NUMBER,
             "status": call_status,
-            "start_time": datetime.utcnow().isoformat() + "Z"
+            "start_time": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         }
         
         result = {
@@ -435,7 +435,7 @@ async def call_start(req: CallStartRequest, _: bool = Depends(verify_token)):
             "to": req.to,
             "from": req.from_number or TWILIO_PHONE_NUMBER,
             "call_status": call_status,
-            "timestamp": datetime.utcnow().isoformat() + "Z"
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         }
         
         # Safepoint RESP
@@ -450,7 +450,7 @@ async def call_start(req: CallStartRequest, _: bool = Depends(verify_token)):
 @app.post("/call/hangup")
 async def call_hangup(req: CallHangupRequest, _: bool = Depends(verify_token)):
     """Hangup Active Call"""
-    request_id = datetime.utcnow().strftime("%Y%m%d_%H%M%S_%f")[:21]
+    request_id = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f")[:21]
     
     logger.info(f"📴 Hangup call {req.call_id}")
     
@@ -467,13 +467,13 @@ async def call_hangup(req: CallHangupRequest, _: bool = Depends(verify_token)):
         # Update status
         if req.call_id in active_calls:
             active_calls[req.call_id]["status"] = "completed"
-            active_calls[req.call_id]["end_time"] = datetime.utcnow().isoformat() + "Z"
+            active_calls[req.call_id]["end_time"] = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         
         result = {
             "status": "hangup",
             "call_id": req.call_id,
             "call_status": response.get("status"),
-            "timestamp": datetime.utcnow().isoformat() + "Z"
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         }
         
         # Safepoint RESP
@@ -528,7 +528,7 @@ async def webhook_status(
     #     logger.warning("❌ Invalid Twilio signature")
     #     raise HTTPException(status_code=401, detail="Invalid signature")
     
-    request_id = datetime.utcnow().strftime("%Y%m%d_%H%M%S_%f")[:21]
+    request_id = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f")[:21]
     
     call_sid = data.get("CallSid")
     call_status = data.get("CallStatus")
@@ -548,10 +548,7 @@ async def webhook_status(
     if call_sid in active_calls:
         active_calls[call_sid]["status"] = call_status
         if call_status in ["completed", "failed", "busy", "no-answer"]:
-            active_calls[call_sid]["end_time"] = datetime.utcnow().isoformat() + "Z"
-            active_calls[call_sid]["duration"] = data.get("CallDuration", 0)
-    
-    return {"status": "received", "call_sid": call_sid}
+            active_calls[call_sid]["end_time"] = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 # ============================================================================
 # MAIN

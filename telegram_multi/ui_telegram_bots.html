@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Bot Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #262635;
+            border: 1px solid #404050;
+            border-radius: 12px;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #404050;
+            color: #e0e0e0;
+        }
+        
+        .btn-secondary:hover {
+            background: #505060;
+        }
+        
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #ef4444;
+        }
+        
+        .btn-success {
+            background: #16a34a;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #22c55e;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #404050;
+            color: #e0e0e0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: #262635;
+            border: 1px solid #404050;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #0ea5e9;
+        }
+        
+        .bot-list {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .bot-card {
+            background: #262635;
+            border: 1px solid #404050;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+        }
+        
+        .bot-card:hover {
+            border-color: #0ea5e9;
+            box-shadow: 0 0 20px rgba(14, 165, 233, 0.1);
+        }
+        
+        .bot-info {
+            flex: 1;
+        }
+        
+        .bot-name {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #e0e0e0;
+        }
+        
+        .bot-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .detail-item {
+            background: #1a1a25;
+            border-left: 3px solid #0ea5e9;
+            padding: 10px 12px;
+            border-radius: 4px;
+        }
+        
+        .detail-label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+        
+        .detail-value {
+            font-size: 13px;
+            color: #e0e0e0;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        
+        .bot-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #16a34a;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-indicator.offline {
+            background: #dc2626;
+            animation: none;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .bot-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            font-size: 12px;
+            border: 1px solid #404050;
+            background: #1a1a25;
+            color: #e0e0e0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            border-color: #0ea5e9;
+            color: #0ea5e9;
+            background: rgba(14, 165, 233, 0.1);
+        }
+        
+        .action-btn.delete:hover {
+            border-color: #dc2626;
+            color: #dc2626;
+            background: rgba(220, 38, 38, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #e0e0e0;
+            text-transform: uppercase;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            background: #1a1a25;
+            border: 1px solid #404050;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-size: 14px;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 10px rgba(14, 165, 233, 0.2);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: #262635;
+            border: 1px solid #404050;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-header {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #888;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        
+        .close-btn:hover {
+            color: #e0e0e0;
+        }
+        
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #404050;
+        }
+        
+        .alert {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .alert.info {
+            background: #1e3a5f;
+            color: #60a5fa;
+            border-left: 4px solid #60a5fa;
+        }
+        
+        .alert.success {
+            background: #1a3a1a;
+            color: #4ade80;
+            border-left: 4px solid #4ade80;
+        }
+        
+        .alert.error {
+            background: #3a1a1a;
+            color: #f87171;
+            border-left: 4px solid #f87171;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+        
+        .spinner {
+            border: 3px solid #404050;
+            border-top: 3px solid #0ea5e9;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            background: #262635;
+            border: 1px dashed #404050;
+            border-radius: 8px;
+            color: #888;
+        }
+        
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .webhook-url {
+            background: #1a1a25;
+            border-left: 3px solid #0ea5e9;
+            padding: 12px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
+            color: #0ea5e9;
+            margin: 10px 0;
+        }
+        
+        .tab-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #404050;
+        }
+        
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #888;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            color: #0ea5e9;
+            border-bottom-color: #0ea5e9;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .bot-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-group {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div style="text-align: left;">
+                <h1>📱 Telegram Bot Manager</h1>
+                <p style="color: #888; font-size: 12px; margin-top: 5px;">Multi-Bot Orchestration Dashboard</p>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="openModal('addBotModal')">➕ Add Bot</button>
+                <button class="btn btn-secondary" onclick="refreshBots()">🔄 Refresh</button>
+                <button class="btn btn-secondary" onclick="viewSettings()">⚙️ Settings</button>
+            </div>
+        </div>
+        
+        <!-- Statistics -->
+        <div class="section">
+            <div class="section-title">📊 Overview</div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Active Bots</div>
+                    <div class="stat-value" id="active-bots">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Messages</div>
+                    <div class="stat-value" id="total-messages">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Active Chats</div>
+                    <div class="stat-value" id="active-chats">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">API Status</div>
+                    <div class="stat-value" style="font-size: 24px;">✅</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bots List -->
+        <div class="section">
+            <div class="section-title">🤖 Registered Bots</div>
+            
+            <!-- Tabs -->
+            <div class="tab-group">
+                <button class="tab-btn active" onclick="switchTab('active')">Active</button>
+                <button class="tab-btn" onclick="switchTab('inactive')">Inactive</button>
+                <button class="tab-btn" onclick="switchTab('all')">All</button>
+            </div>
+            
+            <!-- Active Bots Tab -->
+            <div id="active-tab" class="tab-content active">
+                <div id="active-bots-list" class="bot-list">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Loading bots...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Inactive Bots Tab -->
+            <div id="inactive-tab" class="tab-content">
+                <div id="inactive-bots-list" class="bot-list">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🚫</div>
+                        <p>No inactive bots</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- All Bots Tab -->
+            <div id="all-tab" class="tab-content">
+                <div id="all-bots-list" class="bot-list">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Loading bots...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Start Section -->
+        <div class="section">
+            <div class="section-title">🚀 Quick Start</div>
+            <div class="alert info">
+                <strong>New to Telegram Bot Manager?</strong> Get a bot token from <a href="https://t.me/BotFather" target="_blank" style="color: #60a5fa; text-decoration: underline;">@BotFather</a>, 
+                click "Add Bot" above, and register with your domain URL.
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Bot Modal -->
+    <div id="addBotModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('addBotModal')">&times;</button>
+            <div class="modal-header">➕ Add New Bot</div>
+            
+            <form onsubmit="handleAddBot(event)">
+                <div class="form-group">
+                    <label class="form-label">Bot Key</label>
+                    <input type="text" class="form-input" id="bot_key" placeholder="e.g., browser_bot" required>
+                    <small style="color: #888; font-size: 11px;">Unique identifier for this bot</small>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Bot Token</label>
+                    <input type="password" class="form-input" id="bot_token" placeholder="123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11" required>
+                    <small style="color: #888; font-size: 11px;">Get this from @BotFather on Telegram</small>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Webhook URL (Optional)</label>
+                    <input type="url" class="form-input" id="webhook_url" placeholder="https://api.example.com/telegram/webhook/browser_bot">
+                    <small style="color: #888; font-size: 11px;">Where Telegram sends updates</small>
+                </div>
+                
+                <div style="background: #1a1a25; padding: 12px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid #facc15;">
+                    <p style="color: #facc15; font-size: 12px; margin-bottom: 8px;"><strong>📌 Webhook Format:</strong></p>
+                    <p style="color: #e0e0e0; font-size: 12px; font-family: monospace;">https://your-domain.com/telegram/webhook/{bot_key}</p>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addBotModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Bot</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Bot Details Modal -->
+    <div id="botDetailsModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('botDetailsModal')">&times;</button>
+            <div class="modal-header" id="details-title">Bot Details</div>
+            
+            <div id="bot-details-content"></div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-danger" onclick="deleteBotConfirm()">Delete Bot</button>
+                <button class="btn btn-secondary" onclick="closeModal('botDetailsModal')">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Sample Bot Data (replace with API calls in production)
+        const sampleBots = [
+            {
+                bot_id: 1,
+                bot_key: 'browser_opena6_bot',
+                token: '8521041310:AAGAQpvjUH-...',
+                webhook_url: 'https://api.hyperdashboard-one.de/telegram/webhook/browser_opena6_bot',
+                active: true,
+                messages_count: 1240,
+                chats_count: 85,
+                created_at: '2025-12-10',
+                last_activity: '2025-12-17 14:32'
+            },
+            {
+                bot_id: 2,
+                bot_key: 'open2tele_bot',
+                token: '8559430186:AAHvPZMA2TTBT8-...',
+                webhook_url: 'https://api.hyperdashboard-one.de/telegram/webhook/open2tele_bot',
+                active: true,
+                messages_count: 856,
+                chats_count: 42,
+                created_at: '2025-12-12',
+                last_activity: '2025-12-17 13:15'
+            }
+        ];
+        
+        // Modal Management
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+        
+        function switchTab(tab) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(`${tab}-tab`).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        // Render Bots
+        function renderBots() {
+            const activeList = document.getElementById('active-bots-list');
+            const inactiveList = document.getElementById('inactive-bots-list');
+            const allList = document.getElementById('all-bots-list');
+            
+            const activeBots = sampleBots.filter(b => b.active);
+            const inactiveBots = sampleBots.filter(b => !b.active);
+            
+            // Render active
+            activeList.innerHTML = activeBots.map(bot => createBotCard(bot)).join('') || 
+                '<div class="empty-state"><div class="empty-state-icon">🤷</div><p>No active bots</p></div>';
+            
+            // Render inactive
+            inactiveList.innerHTML = inactiveBots.map(bot => createBotCard(bot)).join('') || 
+                '<div class="empty-state"><div class="empty-state-icon">🚫</div><p>No inactive bots</p></div>';
+            
+            // Render all
+            allList.innerHTML = sampleBots.map(bot => createBotCard(bot)).join('');
+            
+            // Update stats
+            document.getElementById('active-bots').textContent = activeBots.length;
+            document.getElementById('total-messages').textContent = sampleBots.reduce((sum, b) => sum + b.messages_count, 0);
+            document.getElementById('active-chats').textContent = sampleBots.reduce((sum, b) => sum + b.chats_count, 0);
+        }
+        
+        function createBotCard(bot) {
+            return `
+                <div class="bot-card">
+                    <div class="bot-info">
+                        <div class="bot-name">@${bot.bot_key}</div>
+                        <div class="bot-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Bot ID</div>
+                                <div class="detail-value">${bot.bot_id}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Messages</div>
+                                <div class="detail-value">${bot.messages_count}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Active Chats</div>
+                                <div class="detail-value">${bot.chats_count}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Last Activity</div>
+                                <div class="detail-value">${bot.last_activity}</div>
+                            </div>
+                        </div>
+                        <div class="bot-status">
+                            <div class="status-indicator ${!bot.active ? 'offline' : ''}"></div>
+                            <span>${bot.active ? 'Online' : 'Offline'}</span>
+                        </div>
+                        <div class="webhook-url" title="Webhook URL">${bot.webhook_url}</div>
+                    </div>
+                    <div class="bot-actions">
+                        <button class="action-btn" onclick="showBotDetails(${bot.bot_id})">📋 Details</button>
+                        <button class="action-btn" onclick="testBot(${bot.bot_id})">✅ Test</button>
+                        <button class="action-btn" onclick="editBot(${bot.bot_id})">✏️ Edit</button>
+                        <button class="action-btn delete" onclick="deleteBot(${bot.bot_id})">🗑️ Delete</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Actions
+        function handleAddBot(e) {
+            e.preventDefault();
+            const botKey = document.getElementById('bot_key').value;
+            const botToken = document.getElementById('bot_token').value;
+            const webhookUrl = document.getElementById('webhook_url').value;
+            
+            alert(`✅ Bot "${botKey}" added successfully!\n\nWebhook: ${webhookUrl || 'Not configured'}`);
+            closeModal('addBotModal');
+            e.target.reset();
+        }
+        
+        function showBotDetails(botId) {
+            const bot = sampleBots.find(b => b.bot_id === botId);
+            if (!bot) return;
+            
+            document.getElementById('details-title').textContent = `🤖 ${bot.bot_key}`;
+            document.getElementById('bot-details-content').innerHTML = `
+                <div class="alert info">
+                    <strong>Status:</strong> ${bot.active ? '🟢 Active' : '🔴 Inactive'}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Bot Key</label>
+                    <div class="form-input" style="background: #1a1a25; cursor: default;">${bot.bot_key}</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Webhook URL</label>
+                    <div class="webhook-url">${bot.webhook_url}</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Statistics</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div style="background: #1a1a25; padding: 10px; border-radius: 4px;">
+                            <div style="font-size: 11px; color: #888; margin-bottom: 5px;">Total Messages</div>
+                            <div style="font-size: 18px; font-weight: 700; color: #0ea5e9;">${bot.messages_count}</div>
+                        </div>
+                        <div style="background: #1a1a25; padding: 10px; border-radius: 4px;">
+                            <div style="font-size: 11px; color: #888; margin-bottom: 5px;">Active Chats</div>
+                            <div style="font-size: 18px; font-weight: 700; color: #0ea5e9;">${bot.chats_count}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Created</label>
+                    <div class="form-input" style="background: #1a1a25; cursor: default;">${bot.created_at}</div>
+                </div>
+            `;
+            
+            openModal('botDetailsModal');
+        }
+        
+        function testBot(botId) {
+            alert(`✅ Test message sent to bot ${botId}!`);
+        }
+        
+        function editBot(botId) {
+            alert(`Edit bot ${botId} - Coming soon!`);
+        }
+        
+        function deleteBot(botId) {
+            window.currentBotToDelete = botId;
+            if (confirm('Are you sure you want to delete this bot?')) {
+                deleteBotConfirm();
+            }
+        }
+        
+        function deleteBotConfirm() {
+            alert(`🗑️ Bot ${window.currentBotToDelete} deleted!`);
+            closeModal('botDetailsModal');
+            refreshBots();
+        }
+        
+        function refreshBots() {
+            renderBots();
+            alert('🔄 Bots refreshed!');
+        }
+        
+        function viewSettings() {
+            alert(`⚙️ Settings:\n\nAPI Endpoint: http://127.0.0.1:8000\nDatabase: PostgreSQL 5432\nRedis: Port 6379\nAdmin Key: Required`);
+        }
+        
+        // Close modals on background click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal(modal.id);
+                }
+            });
+        });
+        
+        // Initial load
+        document.addEventListener('DOMContentLoaded', renderBots);
+    </script>
+</body>
+</html>

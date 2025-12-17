@@ -1,0 +1,24 @@
+version: '3.7'
+services:
+  n8n:
+    image: n8nio/n8n:stable
+    container_name: local_n8n
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5678:5678"
+    environment:
+      - WEBHOOK_URL=http://hyperdashboard-one.de:5678/
+      - NODE_ENV=production
+      - GENERIC_TIMEZONE=Europe/Berlin
+      - TZ=Europe/Berlin
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=admin123
+      - N8N_API_KEY=dev-token-abc123
+      - N8N_PUBLIC_API=true
+    volumes:
+      - ./local-files:/files
+      - n8n_data:/home/node/.n8n
+
+volumes:
+  n8n_data:

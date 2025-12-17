@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  grafana-otel:
+    image: grafana/otel-lgtm:latest
+    container_name: grafana-otel
+    environment:
+      - ENABLE_OTEL=true
+      - ENABLE_OTEL_METRICS=true
+      - OTEL_EXPORTER_OTLP_INSECURE=true
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://grafana-otel:4318
+      - OTEL_SERVICE_NAME=grafana-otel
+    ports:
+      - "4318:4318" # OTLP HTTP
+      - "4317:4317" # OTLP gRPC
+      - "4319:4319" # metrics (if enabled)
+    restart: unless-stopped

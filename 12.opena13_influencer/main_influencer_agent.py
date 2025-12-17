@@ -177,7 +177,7 @@ class Campaign:
 
     def __post_init__(self):
         if not self.created_at:
-            self.created_at = datetime.utcnow().isoformat() + "Z"
+            self.created_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
 @dataclass

@@ -12,7 +12,7 @@ import asyncio
 import logging
 import time
 import uvicorn
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -130,7 +130,7 @@ async def health():
         "service": "opena7_email", 
         "version": "6.0.0",
         "port": PORT,
-        "timestamp": datetime.now().isoformat()
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     }
 
 @app.get("/status")

@@ -7,7 +7,7 @@ import asyncio
 import hashlib
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Tuple
 from urllib.parse import urlparse
@@ -93,11 +93,11 @@ class ArtifactWriter:
     async def capture_screenshot(self, page: Page, label: str, full_page: bool = False) -> Optional[ArtifactRef]:
         """Capture screenshot from page"""
         try:
-            timestamp = datetime.utcnow().strftime("%Y/%m/%d")
+            timestamp = datetime.now(timezone.utc).strftime("%Y/%m/%d")
             artifact_dir = self.archiv_base / timestamp
             artifact_dir.mkdir(parents=True, exist_ok=True)
             
-            filename = f"screenshot_{label}_{datetime.utcnow().timestamp():.0f}.png"
+            filename = f"screenshot_{label}_{datetime.now(timezone.utc).timestamp():.0f}.png"
             filepath = artifact_dir / filename
             
             await page.screenshot(path=str(filepath), full_page=full_page)
@@ -126,11 +126,11 @@ class ArtifactWriter:
         try:
             html_content = await page.content()
             
-            timestamp = datetime.utcnow().strftime("%Y/%m/%d")
+            timestamp = datetime.now(timezone.utc).strftime("%Y/%m/%d")
             artifact_dir = self.archiv_base / timestamp
             artifact_dir.mkdir(parents=True, exist_ok=True)
             
-            filename = f"page_{label}_{datetime.utcnow().timestamp():.0f}.html"
+            filename = f"page_{label}_{datetime.now(timezone.utc).timestamp():.0f}.html"
             filepath = artifact_dir / filename
             
             with open(filepath, "w", encoding="utf-8") as f:
@@ -155,11 +155,11 @@ class ArtifactWriter:
         try:
             # Playwright HAR recording (if context enabled)
             # This is a simplified version; full HAR capture requires context setup
-            timestamp = datetime.utcnow().strftime("%Y/%m/%d")
+            timestamp = datetime.now(timezone.utc).strftime("%Y/%m/%d")
             artifact_dir = self.archiv_base / timestamp
             artifact_dir.mkdir(parents=True, exist_ok=True)
             
-            filename = f"session_{label}_{datetime.utcnow().timestamp():.0f}.har"
+            filename = f"session_{label}_{datetime.now(timezone.utc).timestamp():.0f}.har"
             filepath = artifact_dir / filename
             
             # Placeholder HAR structure
@@ -252,7 +252,7 @@ class BrowserExecutor:
         # Create context & page
         context = None
         page = None
-        start_time = datetime.utcnow()
+        start_time = datetime.now(timezone.utc)
         artifacts = ArtifactCollection()
         event_logs: List[EventLog] = []
         
@@ -265,13 +265,13 @@ class BrowserExecutor:
             
             # Execute steps
             for step_idx, step in enumerate(request.steps):
-                step_start = datetime.utcnow()
+                step_start = datetime.now(timezone.utc)
                 try:
                     await self._execute_step(page, step, request, step_idx, artifacts, event_logs)
                 except Exception as e:
-                    error_elapsed = int((datetime.utcnow() - step_start).total_seconds() * 1000)
+                    error_elapsed = int((datetime.now(timezone.utc) - step_start).total_seconds() * 1000)
                     event_logs.append(EventLog(
-                        ts=datetime.utcnow().isoformat() + "Z",
+                        ts=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
                         request_id=request.request_id,
                         step=step_idx,
                         action=step.action.value,
@@ -295,7 +295,7 @@ class BrowserExecutor:
                     raise
             
             # Success response
-            total_elapsed = int((datetime.utcnow() - start_time).total_seconds() * 1000)
+            total_elapsed = int((datetime.now(timezone.utc) - start_time).total_seconds() * 1000)
             
             return PlaybookResponse(
                 request_id=request.request_id,
@@ -307,7 +307,7 @@ class BrowserExecutor:
             )
         
         except Exception as e:
-            total_elapsed = int((datetime.utcnow() - start_time).total_seconds() * 1000)
+            total_elapsed = int((datetime.now(timezone.utc) - start_time).total_seconds() * 1000)
             
             return PlaybookResponse(
                 request_id=request.request_id,
@@ -328,7 +328,7 @@ class BrowserExecutor:
                            step_idx: int, artifacts: ArtifactCollection, event_logs: List[EventLog]):
         """Execute a single playbook step"""
         
-        step_start = datetime.utcnow()
+        step_start = datetime.now(timezone.utc)
         
         try:
             if step.action == ActionType.GOTO:
@@ -381,9 +381,9 @@ class BrowserExecutor:
                 await asyncio.sleep((step.timeout_ms or 1000) / 1000)
             
             # Log success
-            step_elapsed = int((datetime.utcnow() - step_start).total_seconds() * 1000)
+            step_elapsed = int((datetime.now(timezone.utc) - step_start).total_seconds() * 1000)
             event_logs.append(EventLog(
-                ts=datetime.utcnow().isoformat() + "Z",
+                ts=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
                 request_id=request.request_id,
                 step=step_idx,
                 action=step.action.value,
@@ -394,9 +394,9 @@ class BrowserExecutor:
             ))
         
         except Exception as e:
-            step_elapsed = int((datetime.utcnow() - step_start).total_seconds() * 1000)
+            step_elapsed = int((datetime.now(timezone.utc) - step_start).total_seconds() * 1000)
             event_logs.append(EventLog(
-                ts=datetime.utcnow().isoformat() + "Z",
+                ts=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
                 request_id=request.request_id,
                 step=step_idx,
                 action=step.action.value,

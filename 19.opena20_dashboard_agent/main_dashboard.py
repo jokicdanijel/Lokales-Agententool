@@ -233,6 +233,13 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+# Optional tracing: initialize if environment and packages permit
+try:
+    from pkg.observability import init_tracing
+    init_tracing(app, service_name=AGENT_ID)
+except Exception as _e:
+    logger.debug("Tracing not initialized or not available: %s", _e)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -240,6 +247,24 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount static files (UI)
+static_dir = Path(__file__).parent / "static"
+if not static_dir.exists():
+    static_dir.mkdir(parents=True, exist_ok=True)
+    # Create placeholder index if it doesn't exist
+    (static_dir / "index.html").write_text("""
+    <!doctype html>
+    <html><head><title>ELION Dashboard</title></head>
+    <body><h1>Dashboard Loading...</h1></body>
+    </html>
+    """)
+
+try:
+    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+    logger.info(f"✅ Static files mounted from {static_dir}")
+except Exception as e:
+    logger.warning(f"⚠️  Could not mount static files: {e}")
 
 
 @app.get("/health")
