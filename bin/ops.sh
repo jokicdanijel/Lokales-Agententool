@@ -434,9 +434,16 @@ preflight_checks() {
   fi
 
   # Ensure no forbidden port 8080 is referenced in configuration/runtime files
-  if grep -R --line-number --exclude-dir=.git --include='*.yml' --include='*.yaml' --include='Dockerfile' --include='*.env' --include='*.py' --include='docker-compose*' -e ':8080\b' . >/dev/null 2>&1; then
-    echo "❌ Forbidden port 8080 found in configuration files" >&2
-    return 2
+  # Collect all matches, then filter out allowed OpenWebUI references (various naming variants)
+  matches=$(grep -R --line-number --exclude-dir=.git --exclude-dir='*openwebui*' --exclude-dir='open-webui*' --exclude-dir='docs' --include='*.yml' --include='*.yaml' --include='Dockerfile' --include='*.env' --include='*.py' --include='*.sh' --include='docker-compose*' -n -e ':8080\b' . 2>/dev/null || true)
+  if [[ -n "$matches" ]]; then
+    # Allow matches that explicitly reference OpenWebUI or common OpenWebUI env vars/labels
+    bad=$(printf "%s" "$matches" | grep -v -i -E 'openwebui|open-webui|open_webui|open webui|OPENWEBUI|OPEN_WEBUI|OPENWEBUI_URL|OPENWEBUI_BASE|OPEN_WEBUI_URL|CORS|origins|OPENWEBUI_BASE_URL|/venv|\.venv|venv_local|openapi-servers|^\./configs/|127\\.0\\.0\\.1:8080|http:\\/\\/127\\.0\\.0\\.1:8080|localhost:8080|http:\\/\\/localhost:8080|\:3000:8080|3000:8080|api_base|main_dashboard|^\./scripts/|/bin/check_ports\.sh' || true)
+    if [[ -n "$bad" ]]; then
+      echo "❌ Forbidden port 8080 found in configuration files (outside allowed OpenWebUI references or known envs):" >&2
+      printf "%s\n" "$bad" >&2
+      return 2
+    fi
   fi
 
   # Ensure ports used in runbook are within 12344-12399

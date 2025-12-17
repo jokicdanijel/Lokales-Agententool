@@ -6,7 +6,7 @@ import json
 import logging
 import asyncio
 from typing import Dict, Any, List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 import hashlib
 
@@ -76,7 +76,7 @@ class AuditLog:
             # Build entry
             entry = {
                 "sequence": self._counter,
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
                 "event": event,
                 "payload": payload,
                 "result": result,

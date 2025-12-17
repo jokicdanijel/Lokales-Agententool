@@ -4,7 +4,7 @@ Classification, models, API contracts
 """
 
 import pytest
-from datetime import datetime
+from datetime import datetime, timezone
 from unittest.mock import AsyncMock, MagicMock, patch
 
 from app.models import (
@@ -24,7 +24,7 @@ class TestHealthEndpoints:
         health = HealthResponse(
             status="ok",
             service="opena8",
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(timezone.utc),
             meta_api_connected=True,
             opena2_connected=True,
             opena1_connected=True
@@ -94,7 +94,7 @@ class TestWhatsAppMessage:
         msg = WhatsAppMessage(
             message_id="msg123",
             phone_number="+49123456789",
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(timezone.utc),
             direction=MessageDirection.INBOUND,
             type=MessageType.TEXT,
             body="Hello there"
@@ -113,7 +113,7 @@ class TestWhatsAppMessage:
         msg = WhatsAppMessage(
             message_id="msg456",
             phone_number="+49123456789",
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(timezone.utc),
             direction=MessageDirection.INBOUND,
             type=MessageType.IMAGE,
             media=media
@@ -162,7 +162,7 @@ class TestSafepoint:
     def test_safepoint_creation(self):
         """Create safepoint"""
         sp = Safepoint(
-            ts=datetime.utcnow(),
+            ts=datetime.now(timezone.utc),
             src="opena8",
             dst="opena2",
             kind="MSG",
@@ -202,7 +202,7 @@ class TestMailRunResponse:
             success=True,
             action="send",
             data={"message_id": "msg123"},
-            timestamp=datetime.utcnow()
+            timestamp=datetime.now(timezone.utc)
         )
         assert resp.success is True
     
@@ -212,7 +212,7 @@ class TestMailRunResponse:
             success=False,
             action="send",
             error="Invalid phone number",
-            timestamp=datetime.utcnow()
+            timestamp=datetime.now(timezone.utc)
         )
         assert resp.success is False
         assert resp.error is not None

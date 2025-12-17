@@ -1,0 +1,14 @@
+{
+  "name": "open_url_and_screenshot",
+  "description": "Öffnet eine URL und speichert einen Screenshot",
+  "steps": [
+    {
+      "action": "open_url",
+      "url": "https://example.com"
+    },
+    {
+      "action": "screenshot",
+      "path": "screenshots/example.png"
+    }
+  ]
+}

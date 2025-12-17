@@ -1,0 +1,14 @@
+{
+  "name": "navigate_and_extract_links",
+  "description": "Extrahiert alle Links von Seite",
+  "steps": [
+    {
+      "action": "open_url",
+      "url": "https://example.com"
+    },
+    {
+      "action": "scrape_links",
+      "selector": "a"
+    }
+  ]
+}

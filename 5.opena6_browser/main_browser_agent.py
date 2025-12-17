@@ -11,7 +11,7 @@ import json
 import logging
 import time
 import base64
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Optional
 from uuid import uuid4
@@ -103,6 +103,14 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# Optional tracing: initialize if environment and packages permit
+try:
+    from pkg.observability import init_tracing
+
+    init_tracing(app, service_name="opena6")
+except Exception as _e:  # pragma: no cover - optional
+    logger.debug("Tracing not initialized or not available: %s", _e)
+
 # ============================================================================
 # STARTUP
 # ============================================================================
@@ -190,7 +198,7 @@ def mask_secrets(data: Any) -> Any:
 def write_safepoint(src: str, dst: str, msg_type: str, data: Dict[str, Any], request_id: str):
     """Schreibt Safepoint im PORTIER 3.0 Format"""
     try:
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         date_path = ARCHIVP_ROOT / now.strftime("%Y/%m/%d")
         date_path.mkdir(parents=True, exist_ok=True)
         
@@ -204,7 +212,7 @@ def write_safepoint(src: str, dst: str, msg_type: str, data: Dict[str, Any], req
         envelope = {
             "sp_id": ts,
             "request_id": request_id,
-            "timestamp": now.isoformat() + "Z",
+            "timestamp": now.isoformat().replace("+00:00", "Z"),
             "src": src,
             "dst": dst,
             "type": msg_type,
@@ -336,7 +344,7 @@ async def screenshot(req: ScreenshotRequest, _: bool = Depends(verify_token)):
         page.goto(req.url, timeout=req.timeout)
         
         # Screenshot erstellen
-        timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
         filename = f"screenshot_{timestamp}.{req.format}"
         filepath = SCREENSHOT_DIR / filename
         

@@ -18,6 +18,18 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
+# Initialize OpenTelemetry tracing based on Settings at startup (no-op if disabled)
+# Use OTEL_* env vars or the Settings object to control behavior.
+@app.on_event("startup")
+async def _startup_init_tracing():
+    try:
+        from pkg.shared.config import init_tracing_from_settings
+
+        init_tracing_from_settings(app, service_name=os.environ.get("SERVICE_NAME", "opena1"))
+    except Exception as e:  # pragma: no cover - defensive
+        # Non-fatal: tracing is optional and import may fail if deps are not present
+        logger.debug("Tracing startup hook failed or is disabled: %s", e)
+
 PORT = int(os.getenv("PORT", "12344"))
 TOKEN = os.getenv("TOKEN", "")
 

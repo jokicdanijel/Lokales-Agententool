@@ -1,0 +1,15 @@
+{
+  "name": "multi_page_scrape",
+  "description": "Navigiert durch mehrere Seiten und scrapt Inhalte",
+  "steps": [
+    {
+      "action": "open_url",
+      "url": "https://example.com/catalog"
+    },
+    {
+      "action": "loop_pages",
+      "selector_next": ".next",
+      "scrape_selector": ".item"
+    }
+  ]
+}

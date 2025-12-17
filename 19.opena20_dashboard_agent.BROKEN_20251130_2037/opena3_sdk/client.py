@@ -124,8 +124,8 @@ class OpenA3Client:
     ) -> CMDRequest:
         """Helper to create CMD request"""
         return CMDRequest(
-            request_id=f"sdk-{datetime.utcnow().strftime('%Y%m%d-%H%M%S')}",
-            timestamp=datetime.utcnow().isoformat() + "Z",
+            request_id=f"sdk-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}",
+            timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             source=source,
             command=command,
             payload=payload

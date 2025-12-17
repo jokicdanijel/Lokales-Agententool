@@ -22,7 +22,7 @@ import sys
 import time
 import logging
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional, List, Dict, Any
 from enum import Enum
@@ -198,7 +198,7 @@ class PermissionStore:
         try:
             data = {
                 "permissions": [p.model_dump() for p in self.permissions],
-                "last_updated": datetime.utcnow().isoformat() + "Z"
+                "last_updated": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
             }
             with open(self.store_path, "w") as f:
                 json.dump(data, f, indent=2)
@@ -220,7 +220,7 @@ class PermissionStore:
             subject=req.subject,
             resource=req.resource,
             action=req.action.value,
-            created_at=datetime.utcnow().isoformat() + "Z",
+            created_at=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             expires_at=req.expires_at,
             active=True
         )
@@ -392,7 +392,7 @@ async def health():
         "port": PORT,
         "uptime_seconds": round(time.time() - START_TIME, 2),
         "permissions_count": len(perm_store.list_all()),
-        "timestamp": datetime.utcnow().isoformat() + "Z"
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     }
 
 
@@ -404,7 +404,7 @@ async def grant_permission(req: GrantRequest, actor: str = Depends(verify_token)
         
         # Audit log
         audit_log.log(AuditLogEntry(
-            timestamp=datetime.utcnow().isoformat() + "Z",
+            timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             operation="grant",
             subject=req.subject,
             resource=req.resource,
@@ -422,7 +422,7 @@ async def grant_permission(req: GrantRequest, actor: str = Depends(verify_token)
     
     except ValueError as e:
         audit_log.log(AuditLogEntry(
-            timestamp=datetime.utcnow().isoformat() + "Z",
+            timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             operation="grant",
             subject=req.subject,
             resource=req.resource,
@@ -446,7 +446,7 @@ async def revoke_permission(req: RevokeRequest, actor: str = Depends(verify_toke
         
         # Audit log
         audit_log.log(AuditLogEntry(
-            timestamp=datetime.utcnow().isoformat() + "Z",
+            timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             operation="revoke",
             subject=req.subject,
             resource=req.resource,
@@ -462,7 +462,7 @@ async def revoke_permission(req: RevokeRequest, actor: str = Depends(verify_toke
     
     except ValueError as e:
         audit_log.log(AuditLogEntry(
-            timestamp=datetime.utcnow().isoformat() + "Z",
+            timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             operation="revoke",
             subject=req.subject,
             resource=req.resource,
@@ -486,7 +486,7 @@ async def check_permission(req: CheckRequest, actor: str = Depends(verify_token)
         
         # Audit log
         audit_log.log(AuditLogEntry(
-            timestamp=datetime.utcnow().isoformat() + "Z",
+            timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             operation="check",
             subject=req.subject,
             resource=req.resource,

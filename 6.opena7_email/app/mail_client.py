@@ -8,7 +8,7 @@ import hashlib
 import json
 import logging
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Dict, Optional, Tuple, Any
 from email.mime.text import MIMEText
@@ -139,7 +139,7 @@ class AttachmentHandler:
         
         # Store attachment
         try:
-            timestamp = datetime.utcnow().strftime("%Y/%m/%d")
+            timestamp = datetime.now(timezone.utc).strftime("%Y/%m/%d")
             artifact_dir = self.archiv_base / timestamp / "mail" / "attachments"
             artifact_dir.mkdir(parents=True, exist_ok=True)
             
@@ -322,7 +322,7 @@ class MailClient:
                 recipients=self._parse_email_list(msg.get("To", "")),
                 cc=self._parse_email_list(msg.get("Cc", "")),
                 bcc=self._parse_email_list(msg.get("Bcc", "")),
-                date=msg.get("Date", datetime.utcnow().isoformat()),
+                date=msg.get("Date", datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")),
                 body_text=body_text,
                 body_preview=body_preview,
                 attachments=attachments,

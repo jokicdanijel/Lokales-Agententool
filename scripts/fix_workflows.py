@@ -15,7 +15,7 @@ import glob
 import os
 import shutil
 import argparse
-from datetime import datetime
+from datetime import datetime, timezone
 
 WORKFLOW_GLOB = '3.opena4_telegram/workflows/*.json'
 BACKUP_DIR = '3.opena4_telegram/workflows/.bak'
@@ -33,7 +33,7 @@ def safe_fix_workflow(obj):
         changed = True
 
     if 'createdAt' not in obj:
-        now = datetime.utcnow().isoformat() + 'Z'
+        now = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         obj['createdAt'] = now
         obj['updatedAt'] = now
         changes.append(f"added timestamps createdAt/updatedAt: {now}")
@@ -152,7 +152,7 @@ def main(apply=False):
             if apply:
                 # backup
                 base = os.path.basename(f)
-                stamp = datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')
+                stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
                 backup_name = os.path.join(BACKUP_DIR, f + '.' + stamp + '.bak')
                 # ensure parent dir exists
                 os.makedirs(os.path.dirname(backup_name), exist_ok=True)

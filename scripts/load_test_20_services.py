@@ -18,7 +18,7 @@ import json
 import statistics
 from pathlib import Path
 from typing import List, Dict, Any
-from datetime import datetime
+from datetime import datetime, timezone
 from collections import defaultdict
 
 # -------------------------------------------------------------------
@@ -190,7 +190,7 @@ async def dispatch_request(
                 "action": "process",
                 "params": {
                     "request_id": request_id,
-                    "timestamp": datetime.utcnow().isoformat()
+                    "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
                 }
             }
             
@@ -315,7 +315,7 @@ async def run_load_test():
     
     with open(output_file, "w") as f:
         json.dump({
-            "test_timestamp": datetime.utcnow().isoformat(),
+            "test_timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "config": {
                 "concurrency": CONCURRENCY,
                 "total_requests": TOTAL_REQUESTS,

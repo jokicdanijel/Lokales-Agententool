@@ -37,7 +37,7 @@ The release package is designed to:
 - ❌ Virtual environments (.venv, venv)
 - ❌ Python cache (\_\_pycache\_\_, *.pyc)
 - ❌ Log files (*.log, logs/)
-- ❌ Database files (*.db, *.sqlite)
+- ❌ Database files (*.db,*.sqlite)
 - ❌ Git history (.git/)
 - ❌ Backup files
 - ❌ Broken/deprecated components
@@ -81,6 +81,7 @@ bash bin/prepare_release.sh v1.0.0
 ```
 
 The script will:
+
 1. Clean up any previous release directory
 2. Copy all essential service directories
 3. Copy core infrastructure (bin, scripts, configs)
@@ -193,6 +194,7 @@ bash setup.sh
 ```
 
 The setup script will:
+
 - Create Python virtual environment
 - Install all dependencies
 - Set up directory structure
@@ -281,6 +283,7 @@ sha256sum -c portier-v1.0.0.tar.gz.sha256
 ### Issue: Checksum Verification Fails
 
 **Solution:**
+
 ```bash
 # Re-download the file
 # Ensure no corruption during download
@@ -292,6 +295,7 @@ cat portier-v1.0.0.tar.gz.sha256
 ### Issue: Setup Script Fails
 
 **Solution:**
+
 ```bash
 # Check Python version (requires 3.11+)
 python3 --version
@@ -306,6 +310,7 @@ bash -x setup.sh
 ### Issue: Missing Dependencies
 
 **Solution:**
+
 ```bash
 # Activate virtual environment
 source .venv/bin/activate
@@ -317,6 +322,7 @@ pip install -r requirements.txt
 ### Issue: Port Conflicts
 
 **Solution:**
+
 ```bash
 # Check which ports are in use
 bash bin/check_ports.sh
@@ -380,14 +386,14 @@ sha256sum "$ARCHIVE_NAME.tar.xz" > "$ARCHIVE_NAME.tar.xz.sha256"
 - **System Architecture:** `docs/PORTIER_3.0_SYSTEM_ARCHITECTURE.md`
 - **Operations Guide:** `OPERATIONS_COMPLETE.md`
 - **Security Guide:** `SECURITY.md`
-- **GitHub Repository:** https://github.com/jokicdanijel/Gesamtprojekt-start
+- **GitHub Repository:** <https://github.com/jokicdanijel/Gesamtprojekt-start>
 
 ## 📞 Support
 
 For issues with the release package:
 
-- **GitHub Issues:** https://github.com/jokicdanijel/Gesamtprojekt-start/issues
-- **Email:** jokicdanijel@gmail.com
+- **GitHub Issues:** <https://github.com/jokicdanijel/Gesamtprojekt-start/issues>
+- **Email:** <jokicdanijel@gmail.com>
 
 ---
 

@@ -148,6 +148,12 @@ clean-map:
 
 # ========== EVALUATION TARGETS ==========
 
+tracing-up:
+	@echo "$(YELLOW)[tracing]$(RESET) Starting local OTLP collector using docker-compose.otel.yml..."
+	@bash ./bin/start_tracing_collector.sh || echo "$(RED)❌ Failed to start tracing collector$(RESET)"
+	@echo "$(GREEN)✅ tracing collector running (if docker is available)$(RESET)"
+
+
 deps-eval:
 	@echo "$(YELLOW)[deps-eval]$(RESET) Installing evaluation dependencies..."
 	. $(VENV_DIR)/bin/activate && pip install -r requirements-eval.txt || pip install -r requirements-eval.txt

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELION Hyper-Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 { color: #333; margin-bottom: 30px; text-align: center; }
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #48bb78;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: #38a169;
+        }
+        .btn-openwebui {
+            background: #ed8936;
+            color: white;
+            grid-column: 1 / -1;
+        }
+        .btn-openwebui:hover {
+            background: #dd6b20;
+        }
+        .output {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .modal-header {
+            margin-bottom: 20px;
+        }
+        .modal-header h2 {
+            color: #333;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover { color: #000; }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+            margin-bottom: 15px;
+            min-height: 80px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+        .status.ok { background: #c6f6d5; color: #22543d; }
+        .status.error { background: #fed7d7; color: #742a2a; }
+        .status.loading { background: #feebc8; color: #7c2d12; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 ELION Hyper-Dashboard</h1>
+        
+        <div class="button-group">
+            <button class="btn-primary" onclick="checkHealth()">Health Check</button>
+            <button class="btn-primary" onclick="showStatus()">Status</button>
+            <button class="btn-secondary" onclick="showAgents()">Agenten</button>
+            <button class="btn-secondary" onclick="testWrite()">Write Test</button>
+            <button class="btn-openwebui" onclick="openChatModal()">💬 OpenWebUI Chat</button>
+            <button class="btn-secondary" onclick="openPrivacyModal()">🔒 Privacy & Security</button>
+        </div>
+        
+        <div id="output" class="output"></div>
+    </div>
+
+    <!-- Privacy & Security Modal -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closePrivacyModal()">&times;</span>
+                <h2>🔒 Privacy & Security</h2>
+            </div>
+            <div style="margin-bottom:10px;">
+                <strong>Kurze Zusammenfassungen:</strong>
+                <ul>
+                    <li><a href="/docs/TELEGRAM_PRIVACY_POLICY.md" target="_blank">Telegram Privacy Policy (DE)</a></li>
+                    <li><a href="/docs/en/TELEGRAM_PRIVACY_POLICY.md" target="_blank">Telegram Privacy Policy (EN)</a></li>
+                    <li><a href="/docs/MTPROTO_OVERVIEW.md" target="_blank">MTProto Overview (DE)</a></li>
+                    <li><a href="/docs/en/MTPROTO_OVERVIEW.md" target="_blank">MTProto Overview (EN)</a></li>
+                </ul>
+            </div>
+            <div style="margin-bottom:10px;">
+                <strong>Kurzfassung:</strong>
+                <p id="privacyShort" style="background:#f7fafc;padding:10px;border-radius:5px;">Loading...</p>
+            </div>
+            <div style="text-align:right;"><button class="btn-primary" onclick="closePrivacyModal()">Close</button></div>
+        </div>
+    </div>
+
+    <!-- OpenWebUI Chat Modal -->
+    <div id="chatModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closeChatModal()">&times;</span>
+                <h2>💬 OpenWebUI Chat</h2>
+            </div>
+            <div id="chatStatus" class="status" style="display:none;"></div>
+            <textarea id="chatPrompt" placeholder="Gib deine Frage ein...">What is ELION Hyper-Dashboard?</textarea>
+            <button class="btn-openwebui" onclick="sendChat()" style="width:100%;">Senden</button>
+            <div id="chatResponse" style="margin-top:15px; background:#f7fafc; padding:10px; border-radius:5px; min-height:50px; max-height:200px; overflow-y:auto; display:none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const TOKEN = localStorage.getItem('token') || '';
+        const BASE_URL = 'http://127.0.0.1:12349';
+
+        function getToken() {
+            const tok = localStorage.getItem('token') || prompt('Gib den Bearer Token ein (.env):');
+            if (tok) localStorage.setItem('token', tok);
+            return tok;
+        }
+
+        async function fetchAPI(path, method = 'GET', body = null) {
+            const tok = getToken();
+            const opts = {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${tok}`
+                }
+            };
+            if (body) opts.body = JSON.stringify(body);
+            
+            try {
+                const r = await fetch(`${BASE_URL}${path}`, opts);
+                return await r.json();
+            } catch (e) {
+                return { error: e.message };
+            }
+        }
+
+        function log(msg) {
+            const out = document.getElementById('output');
+            out.textContent += msg + '\n';
+            out.scrollTop = out.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('output').textContent = '';
+        }
+
+        async function checkHealth() {
+            clearLog();
+            log('📋 Health Check...');
+            const result = await fetch(`${BASE_URL}/health`).then(r => r.json());
+            log(JSON.stringify(result, null, 2));
+        }
+
+        async function showStatus() {
+            clearLog();
+            log('📊 Status all agents...');
+            const result = await fetchAPI('/api/status/all');
+            log(JSON.stringify(result, null, 2));
+        }
+
+        async function showAgents() {
+            clearLog();
+            log('🤖 Registrierte Agenten...');
+            const result = await fetchAPI('/api/status/all');
+            if (result.agents) {
+                Object.entries(result.agents).forEach(([id, status]) => {
+                    log(`✓ ${id}: ${status.endpoint}`);
+                });
+            } else {
+                log('Keine Agenten gefunden');
+            }
+        }
+
+        async function testWrite() {
+            clearLog();
+            log('✍️ Write Test...');
+            const result = await fetchAPI('/api/status/all');
+            log(JSON.stringify(result, null, 2));
+        }
+
+        function openChatModal() {
+            document.getElementById('chatModal').style.display = 'block';
+        }
+
+        function closeChatModal() {
+            document.getElementById('chatModal').style.display = 'none';
+        }
+
+        async function sendChat() {
+            const prompt = document.getElementById('chatPrompt').value;
+            const status = document.getElementById('chatStatus');
+            const response = document.getElementById('chatResponse');
+            
+            if (!prompt.trim()) {
+                status.textContent = '⚠️ Bitte Prompt eingeben';
+                status.className = 'status error';
+                status.style.display = 'block';
+                return;
+            }
+            
+            status.textContent = '⏳ Sende an OpenWebUI...';
+            status.className = 'status loading';
+            status.style.display = 'block';
+            response.style.display = 'none';
+            
+            try {
+                const result = await fetchAPI('/api/openwebui/chat', 'POST', {
+                    prompt,
+                    context: {}
+                });
+                
+                if (result.error) {
+                    status.textContent = `❌ Fehler: ${result.error}`;
+                    status.className = 'status error';
+                } else {
+                    status.textContent = '✓ Antwort erhalten';
+                    status.className = 'status ok';
+                    response.textContent = JSON.stringify(result, null, 2);
+                    response.style.display = 'block';
+                }
+            } catch (e) {
+                status.textContent = `❌ Fehler: ${e.message}`;
+                status.className = 'status error';
+            }
+        }
+
+        function openPrivacyModal() {
+            document.getElementById('privacyModal').style.display = 'block';
+            // load a short summary into the modal
+            const summary = `• Bots sammeln nur die nötigsten Daten\n• Datenverarbeitung: Bereitstellung, Sicherheit, Qualität\n• MTProto: AES‑256, MessageKey, PFS, Time sync\n\nWeitere Details: siehe die verlinkten Dokumente.`;
+            document.getElementById('privacyShort').textContent = summary;
+        }
+
+        function closePrivacyModal() {
+            document.getElementById('privacyModal').style.display = 'none';
+        }
+
+        window.onclick = function(e) {
+            const modal = document.getElementById('chatModal');
+            if (e.target == modal) modal.style.display = 'none';
+            const pm = document.getElementById('privacyModal');
+            if (e.target == pm) pm.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

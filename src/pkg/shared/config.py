@@ -9,6 +9,7 @@ from functools import lru_cache
 from typing import Optional
 
 from pydantic_settings import BaseSettings
+from pkg.observability import init_tracing
 
 
 logger = logging.getLogger(__name__)
@@ -152,3 +153,20 @@ def get_settings() -> Settings:
         logger.info(f"Configuration loaded (secrets masked): {settings.get_masked_dict()}")
 
     return settings
+
+
+def init_tracing_from_settings(app: Optional[object] = None, service_name: Optional[str] = None) -> bool:
+    """Initialize OpenTelemetry tracing based on Settings.
+
+    Uses the otel_* fields from Settings to configure the tracing endpoint and toggle.
+    """
+    settings = get_settings()
+    enabled = settings.otel_enabled
+    endpoint = settings.otel_exporter_otlp_endpoint
+
+    return init_tracing(
+        app,
+        service_name=service_name or settings.api_title,
+        enabled=enabled,
+        endpoint=endpoint,
+    )

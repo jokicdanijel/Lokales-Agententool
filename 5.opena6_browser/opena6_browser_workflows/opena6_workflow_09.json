@@ -1,0 +1,28 @@
+{
+  "name": "login_check_status",
+  "description": "Login und Statusprüfung",
+  "steps": [
+    {
+      "action": "open_url",
+      "url": "https://example.com/login"
+    },
+    {
+      "action": "fill_input",
+      "selector": "#user",
+      "text": "test"
+    },
+    {
+      "action": "fill_input",
+      "selector": "#pass",
+      "text": "1234"
+    },
+    {
+      "action": "click",
+      "selector": "#submit"
+    },
+    {
+      "action": "wait_for_selector",
+      "selector": ".status-ok"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "table_data_export",
+  "description": "Extrahiert Tabellendaten als CSV",
+  "steps": [
+    {
+      "action": "open_url",
+      "url": "https://example.com/data"
+    },
+    {
+      "action": "scrape_table",
+      "selector": "#data-table",
+      "output": "data.csv"
+    }
+  ]
+}

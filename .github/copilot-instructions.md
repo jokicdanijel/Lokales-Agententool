@@ -1,24 +1,38 @@
-# 🎯 ELION Hyper-Dashboard – Completion Checklist
+# ELION Hyper-Dashboard — Copilot Quick Guide
 
-**Finalized:** 2025-11-06 | **Status:** ✅ **COMPLETE (40/40 Tasks)**
+**Kurzversion (lese zuerst):** Dies ist eine kompakte Anleitung für AI-Coding-Agenten. Die vollständigen, verbindlichen Regeln und Policies stehen in `.github/copilot-master-prompt.md` — lies diese Datei vor nicht-trivialen Änderungen.
+
+## Schnellbefehle
+
+- Env bootstrap: `bin/env_bootstrap.sh` (erzeugt `.env` aus `.env.example`)
+- Start/Stop/Verify: `bin/ops.sh start|stop|verify|status|logs`
+- Tests: `python -m pytest -v tests/ -k <pattern>` (z.B. `openwebui`)
+- Lint/Format: `python -m flake8 <file>` / `python -m black <file>`
+
+## Unbedingte Regeln (Kurz)
+
+- Ports: **12344–12399** (niemals 8080 für Services). Änderungen an Ports sind _policy‑kritisch_ — verwerfen und Alternative vorschlagen.
+- Option-2-Flow: **opena1 → opena2 → kordp → Tool** (zwangsläufig).
+- Safepoints: Benennung `SP<number>_src→dst_{CMD|RESP|ERR}.json`, Ablage `archivp/YYYY/MM/DD/`.
+- Env & Secrets: `.env` im Projekt-Root ist Source-of-Truth; **keine** Secrets in Git.
+- JSON/Pydantic: `strict: true`, `extra="forbid"` — keine zusätzlichen Felder.
+
+## Konventionen für Codeänderungen
+
+- OpenWebUI / Tools: Pydantic-Models, **Tools class** mit `@staticmethod`, **async-ready**, Rückgabe `dict` mit `status` (`"success"|"error"`) und `data`.
+- Tests: Bei Agent-Code immer Unit‑ und Security‑Tests (inkl. negative cases).
+- Preflight PR-Checks: `.env` vorhanden, Ports geprüft, flake8/black ok, Tests laufen, `bin/ops.sh verify` (nach Infra-Änderungen).
+
+## Wo nachschlagen (Files)
+
+- `.github/copilot-master-prompt.md` (Policy & Start-Flow)
+- `bin/ops.sh`, `bin/verify_stack.sh`, `bin/check_ports.sh`
+- `docs/OPERATIONS.md`, `docs/OPENWEBUI_INTEGRATION.md`, `docs/TROUBLESHOOTING.md`
+- `1.opena1&2_portier/README.md`, `19.opena20_dashboard_agent/README.md`, `2.opena3_openwebui/.github/copilot-instructions.md`
 
 ---
 
-## 🚀 **HINWEIS: HYPER-MASTER-PROMPT**
-
-**Für vollständige Systemkenntnis siehe:**  
-📖 **[`.github/copilot-master-prompt.md`](./copilot-master-prompt.md)**
-
-Dieser Prompt enthält das **komplette, absolute, unhinterfragbare Wissen** über:
-
-- Architektur & Module
-- Agenten & Ports
-- Option-2-Flow
-- Safepoints & Archivator
-- Policies & Konventionen
-- Operations & Commands
-
-**Verwende ihn als zentrale Referenz für ChatGPT, CoPilot, Custom GPTs und alle AI-Interaktionen.**
+<!-- Archiv: ausführliche, ältere Instruktionen weiter unten — hilfreich für Kontext und Nachverfolgung -->
 
 ---
 

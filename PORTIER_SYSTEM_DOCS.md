@@ -579,7 +579,13 @@ bin/env_bootstrap.sh  # Generates .env with UUID token
 
 - [ ] Prometheus metrics
 - [ ] Grafana dashboards
-- [ ] Distributed tracing (Jaeger)
+- [ ] Distributed tracing (OpenTelemetry / OTLP) — see `docker-compose.otel.yml` for a local collector example. Start it with:
+
+```bash
+# Run a local OTLP-compatible collector (for testing traces)
+docker compose -f docker-compose.otel.yml up -d
+```
+
 - [ ] Log aggregation (ELK stack)
 
 ---

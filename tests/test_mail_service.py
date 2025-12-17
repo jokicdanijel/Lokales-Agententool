@@ -7,7 +7,7 @@ import pytest
 import asyncio
 import json
 from unittest.mock import AsyncMock, MagicMock, patch
-from datetime import datetime
+from datetime import datetime, timezone
 
 import sys
 sys.path.insert(0, "6.opena7_mail")
@@ -34,7 +34,7 @@ class TestHealthEndpoints:
             mailbox="inbox@example.org",
             imap_connected=True,
             smtp_connected=True,
-            ts=datetime.utcnow().isoformat() + "Z"
+            ts=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         )
         
         assert health.service == "opena7"
@@ -170,7 +170,7 @@ class TestMailMessage:
             subject="Report Delivery",
             sender="admin@example.org",
             recipients=["user@example.org"],
-            date=datetime.utcnow().isoformat(),
+            date=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             body_text="Please find attached reports.",
             body_preview="Please find attached reports.",
             attachments=attachments
@@ -292,7 +292,7 @@ class TestMockMailClient:
             subject="Test Subject",
             sender="test@example.org",
             recipients=["inbox@example.org"],
-            date=datetime.utcnow().isoformat(),
+            date=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             body_text="This is a test message.",
             body_preview="This is a test message."
         )
