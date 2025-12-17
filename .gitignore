@@ -52,6 +52,7 @@ Thumbs.db
 
 # Logs
 logs/
+6.browsep_portier/__pycache__/
 *.log
 
 # Large files & backups

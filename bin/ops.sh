@@ -64,7 +64,8 @@ AGENTS=(
   "opena16:15.opena16_shop:12362"
   "opena17:16.opena17_homepagecreator:12366"
   "opena18:17.opena18_CMR:12363"
-  "opena19:18.opena19_Aktien&Crypto:12365"
+  "opena19:18.opena19_Aktien&Crypto:12365",
+  "browsep:6.browsep_portier:12370"
   "opena20:19.opena20_dashboard_agent:12349"
   "opena21:20.opena21_workflow:12367"
 )
