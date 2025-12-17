@@ -590,6 +590,7 @@ find . -name "*.pyc" -delete
 | Routing-Matrix | configs/routing_matrix.yaml | ✅ |
 | CI/CD-Konfiguration | .github/workflows/ci.yml | ✅ |
 | Load-Test Docs | scripts/load_test*.py | ✅ |
+| **GitHub Copilot MCP Integration** | docs/GITHUB_COPILOT_MCP_INTEGRATION.md | ✅ **NEU** |
 
 ---
 
