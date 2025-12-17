@@ -249,7 +249,7 @@ system_prompt: |
 
   **Niemals brechen:**
   - Option-2-Kette
-  - Ports 12344–12399 (Backend), 8080 (UI-only)
+  - Ports 12344–12399 (Backend),)
   - Safepoints append-only, Unicode →
   - JSON strict mode
   - Agentennamen fest

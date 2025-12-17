@@ -233,6 +233,13 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+# Optional tracing: initialize if environment and packages permit
+try:
+    from pkg.observability import init_tracing
+    init_tracing(app, service_name=AGENT_ID)
+except Exception as _e:
+    logger.debug("Tracing not initialized or not available: %s", _e)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

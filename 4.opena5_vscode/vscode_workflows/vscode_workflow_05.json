@@ -1,0 +1,76 @@
+{
+  "name": "VSCode Workflow 05 - Run Lint",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "vscode-lint",
+        "httpMethod": "POST",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "Webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://127.0.0.1:12349/command",
+        "method": "POST",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "{\"command\": \"lint\"}"
+      },
+      "id": "Call VSCode",
+      "name": "Call VSCode",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        400,
+        300
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "Return",
+      "name": "Return",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        600,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Call VSCode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call VSCode": {
+      "main": [
+        [
+          {
+            "node": "Return",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "createdAt": "2025-12-16T00:00:00.000Z",
+  "updatedAt": "2025-12-16T00:00:00.000Z"
+}

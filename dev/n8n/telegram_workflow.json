@@ -1,0 +1,102 @@
+{
+  "name": "Telegram Webhook Send",
+  "versionId": 1,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "telegram-webhook",
+        "responseMode": "lastNode"
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {"name": "chat_id", "value": "={{$json[\"chat_id\"]}}"},
+            {"name": "text", "value": "={{$json[\"message\"]}}"}
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "=https://api.telegram.org/bot{{$env.BOT_TOKEN}}/sendMessage",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\"chat_id\": {{$json[\"chat_id\"]}}, \"text\": \"{{$json[\"text\"]}}\"}"
+      },
+      "name": "Telegram",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [650, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {"main": [[{"node": "Set", "type": "main", "index": 0}]]},
+    "Set": {"main": [[{"node": "Telegram", "type": "main", "index": 0}]]}
+  },
+  "active": false,
+  "settings": {},
+  "id": "auto_telegram_1",
+  "versions": {
+    "1": {
+      "id": "1",
+      "nodes": [
+        {
+          "parameters": {
+            "httpMethod": "POST",
+            "path": "telegram-webhook",
+            "responseMode": "lastNode"
+          },
+          "name": "Webhook",
+          "type": "n8n-nodes-base.webhook",
+          "typeVersion": 1,
+          "position": [250, 300]
+        },
+        {
+          "parameters": {
+            "values": {
+              "string": [
+                {"name": "chat_id", "value": "={{$json[\"chat_id\"]}}"},
+                {"name": "text", "value": "={{$json[\"message\"]}}"}
+              ]
+            },
+            "options": {}
+          },
+          "name": "Set",
+          "type": "n8n-nodes-base.set",
+          "typeVersion": 1,
+          "position": [450, 300]
+        },
+        {
+          "parameters": {
+            "requestMethod": "POST",
+            "url": "=https://api.telegram.org/bot{{$env.BOT_TOKEN}}/sendMessage",
+            "jsonParameters": true,
+            "options": {},
+            "bodyParametersJson": "={\"chat_id\": {{$json[\"chat_id\"]}}, \"text\": \"{{$json[\"text\"]}}\"}"
+          },
+          "name": "Telegram",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 1,
+          "position": [650, 300]
+        }
+      ],
+      "connections": {
+        "Webhook": {"main": [[{"node": "Set", "type": "main", "index": 0}]]},
+        "Set": {"main": [[{"node": "Telegram", "type": "main", "index": 0}]]}
+      }
+    }
+  }
+}

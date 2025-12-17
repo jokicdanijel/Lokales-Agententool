@@ -57,6 +57,12 @@
 - Integration test results
 - 100% pass rate
 
+### 🔬 I Want to Run Evaluations
+→ **[Evaluation Framework](docs/EVALUATION.md)** (How to run evaluation runner, datasets, CI integration)
+- Lightweight runner + sample datasets
+- CI job: `.github/workflows/evaluation.yml` (daily + on push)
+- Integration tests opt-in via `RUN_EVAL_INTEGRATION=1`
+
 ### 📊 I Need an Audit Report
 → **[AUDIT_REPORT_2025-11-24.md](AUDIT_REPORT_2025-11-24.md)** (Final System Audit)
 - Code quality metrics

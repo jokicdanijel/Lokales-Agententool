@@ -146,6 +146,17 @@ clean-map:
 	@rm -rf $(OUT)
 	@echo "$(GREEN)✅ Done$(RESET)"
 
+# ========== EVALUATION TARGETS ==========
+
+deps-eval:
+	@echo "$(YELLOW)[deps-eval]$(RESET) Installing evaluation dependencies..."
+	. $(VENV_DIR)/bin/activate && pip install -r requirements-eval.txt || pip install -r requirements-eval.txt
+
+eval: deps-eval
+	@echo "$(YELLOW)[eval]$(RESET) Running evaluation with sample dataset..."
+	. $(VENV_DIR)/bin/activate && python3 -m evaluation.runner evaluation/datasets/sample.jsonl --out evaluation/results/report.json
+	@echo "$(GREEN)✅ Evaluation complete - report at evaluation/results/report.json$(RESET)"
+
 # ========== INCLUDE PORTIER PORT-POLICY MAKEFILE ==========
 include make/portier.mk
 

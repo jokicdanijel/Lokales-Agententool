@@ -1,23 +1,22 @@
-# 5.opena6_browser
+# opena6 – Browser Automation Agent
 
-Browser-Automation · Scraping · DOM-Interaktion
-Local Execution Agent (Teil des Gesamtprojekts)
+**Kanal:** Portier
+**Prefix:** `browsep`
+**Port:** `12352`
+**Status:** ✅ Online
 
-## Übersicht
+## 1. Rolle im PORTIER 3.0 – Multi-Agent-Stack
 
-Der Browser-Agent dient zur lokalen Automatisierung von Webseiten.
-Er wird ausschließlich durch das Portier-System (`1.opena1&2_portier`) angesteuert und führt Aktionen wie Öffnen, Klicken, Schreiben und Extrahieren aus.
+opena6 ist der **Browser Automation Agent** im **PORTIER 3.0 – Multi-Agent-Stack**.
 
-## Hauptfunktionen
+**Kernaufgaben:**
 
-- Webseiten öffnen
-- Buttons klicken
-- Formulare ausfüllen
-- HTML extrahieren
-- Text extrahieren
-- DOM-Abfragen (Selectors)
-- Scroll-Events
-- Screenshots
+- Automatisierte Browser-Steuerung via Selenium/Playwright
+- Web-Scraping & Datenextraktion
+- UI-Testing & Automatisierte Workflows
+- Screenshot-Erstellung & Page-Monitoring
+- Integration in Option-2-Flow über `browsep`
+- Safepoint-Archivierung über opena2
 
 ## Datenfluss (Option-2-Flow)
 
@@ -42,3 +41,12 @@ Siehe: `CMD_SCHEMA.md`
 ## config.json
 
 Die Modulkonfiguration befindet sich unter `config.json`.
+
+## 7. Status & Roadmap
+
+- ✅ Selenium/Playwright Integration funktional
+- ✅ Browser-Pool-Management implementiert
+- ✅ Screenshot & DOM-Extraction
+- ✅ Option-2-Flow-Integration
+- ⏳ Geplant: Headless-Mode-Optimierung (Phase 18)
+- ⏳ Geplant: Multi-Browser-Support (Chrome, Firefox, Safari)
