@@ -38,8 +38,12 @@ def run_cmd(cmd, **kwargs):
 def check_files():
     if not (ROOT / ".github" / "copilot-master-prompt.md").is_file():
         fail("Missing .github/copilot-master-prompt.md")
-    if not (ROOT / "mcp_server" / ".env.example").is_file():
-        fail("Missing mcp_server/.env.example")
+    # Accept either mcp_server/.env.example or mcp-server/.env.example to be tolerant
+    # of small repo layout differences (migration from mcp-server → mcp_server).
+    env1 = ROOT / "mcp_server" / ".env.example"
+    env2 = ROOT / "mcp-server" / ".env.example"
+    if not (env1.is_file() or env2.is_file()):
+        fail("Missing mcp_server/.env.example (or mcp-server/.env.example)")
 
 
 def generate_doc():
