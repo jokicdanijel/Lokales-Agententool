@@ -1,0 +1,40 @@
+name: Tracing Smoke Test (optional)
+
+on:
+  push:
+    branches: [ main, 'copilot/**', 'feat/**' ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  tracing-smoke:
+    runs-on: ubuntu-latest
+    name: Tracing Smoke (non-blocking)
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-eval.txt || true
+      - name: Start OTLP Collector (docker)
+        run: |
+          docker-compose -f docker-compose.otel.yml up -d
+      - name: Wait for collector
+        run: |
+          echo "Waiting for Jaeger UI..."
+          for i in {1..15}; do
+            curl -sSf http://localhost:16686 && break || sleep 2
+          done
+      - name: Run tracing smoke script
+        run: |
+          chmod +x scripts/tracing_smoke_test.sh
+          scripts/tracing_smoke_test.sh
+        continue-on-error: true
+      - name: Tear down collector
+        if: always()
+        run: docker-compose -f docker-compose.otel.yml down -v
