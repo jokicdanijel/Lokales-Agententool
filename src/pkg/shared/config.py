@@ -1,6 +1,8 @@
 """
 SCTA Configuration Management
 Loads environment variables with validation and secrets masking.
+
+Extended with common agent configuration utilities.
 """
 
 import logging
@@ -9,7 +11,13 @@ from functools import lru_cache
 from typing import Optional
 
 from pydantic_settings import BaseSettings
-from pkg.observability import init_tracing
+
+try:
+    from pkg.observability import init_tracing
+except ImportError:
+    # Fallback if observability module is not available
+    def init_tracing(*args, **kwargs):
+        return False
 
 
 logger = logging.getLogger(__name__)
@@ -170,3 +178,63 @@ def init_tracing_from_settings(app: Optional[object] = None, service_name: Optio
         enabled=enabled,
         endpoint=endpoint,
     )
+
+
+# ============================================================================
+# Agent-Specific Configuration Utilities
+# ============================================================================
+
+# Port policy enforcement
+ALLOWED_PORT_RANGE = range(12344, 12400)
+FORBIDDEN_PORTS = [8080]
+
+
+def validate_port(port: int, service_name: str = "service") -> int:
+    """
+    Validate that a port conforms to the project's port policy.
+    
+    Args:
+        port: Port number to validate
+        service_name: Name of service (for error messages)
+        
+    Returns:
+        The validated port number
+        
+    Raises:
+        RuntimeError: If port violates policy
+        
+    Example:
+        >>> PORT = validate_port(12356, "opena11")
+    """
+    if port in FORBIDDEN_PORTS:
+        raise RuntimeError(
+            f"❌ Port {port} is forbidden for {service_name}! "
+            f"Forbidden ports: {FORBIDDEN_PORTS}"
+        )
+    
+    if port not in ALLOWED_PORT_RANGE:
+        raise RuntimeError(
+            f"❌ Port {port} is outside allowed range for {service_name}! "
+            f"Allowed: {ALLOWED_PORT_RANGE.start}-{ALLOWED_PORT_RANGE.stop-1}"
+        )
+    
+    return port
+
+
+def get_port_from_env(env_var: str, default: int, service_name: str = "service") -> int:
+    """
+    Get port from environment variable with validation.
+    
+    Args:
+        env_var: Environment variable name (e.g., "OPENA11_PORT")
+        default: Default port if env var not set
+        service_name: Service name for error messages
+        
+    Returns:
+        Validated port number
+        
+    Example:
+        >>> PORT = get_port_from_env("OPENA11_PORT", 12356, "opena11")
+    """
+    port = int(os.getenv(env_var, str(default)))
+    return validate_port(port, service_name)
