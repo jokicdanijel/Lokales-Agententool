@@ -71,6 +71,9 @@ async def lifespan(app: FastAPI):
     logger.info("HTML Management Workflows: 6 endpoints activated")
     logger.info("Meta-Workflow-System: Ready for activation")
     logger.info("🧹 Self-Cleaning-System: Demo-Endpoints activated")
+
+    # Initialize tracing (idempotent; respects otel_enabled settings)
+    init_tracing_from_settings(app, service_name="opena20-dashboard")
     
     # Initialize components (will be defined later)
     global agent_registry, sse_bus

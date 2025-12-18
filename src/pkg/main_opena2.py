@@ -10,6 +10,7 @@ ELION Archivator (opena2)
 """
 
 from fastapi import FastAPI, HTTPException, Query
+from pkg.shared.config import init_tracing_from_settings
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import Optional, List, Any
@@ -22,6 +23,7 @@ import logging
 
 # --- Basis ---
 app = FastAPI(title="ELION Archivator (opena2)", version="1.0")
+init_tracing_from_settings(app, service_name="opena2")
 logger = logging.getLogger("opena2")
 logging.basicConfig(
     level=logging.INFO,

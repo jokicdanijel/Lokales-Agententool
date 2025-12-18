@@ -1,13 +1,23 @@
-# Email Chatbot - 6.opena7_email
-
-## 🎯 Überblick
+# opena7 – E-Mail Client Agent
 
 **Agent:** Email Chatbot  
 **Port:** 12351  
 **Spezialisierung:** email_automation  
 **Status:** ✅ Enterprise-Ready
 
-Email Automation & Responses
+## 1. Rolle im PORTIER 3.0 – Multi-Agent-Stack
+
+opena7 ist der **E-Mail Client Agent** im **PORTIER 3.0 – Multi-Agent-Stack**.
+
+**Kernaufgaben:**
+
+- SMTP/IMAP-Integration für E-Mail-Versand & -Empfang
+- Template-basierte E-Mail-Generierung
+- Anhang-Verarbeitung (PDF, Images, Dokumente)
+- E-Mail-Tracking & Zustellungsbestätigung
+- Auto-Reply & Inbox-Monitoring
+- Integration in Option-2-Flow über `emailp`
+- Safepoint-Archivierung über opena2
 
 ## 🚀 Features
 
@@ -30,6 +40,30 @@ Email Automation & Responses
 - `POST /specialized` - Agent-specific Functions
 - `GET /logs` - Real-time Log Access
 - `GET /config` - Configuration Management
+
+## 4. Konfiguration
+
+### Wichtige ENV-Variablen
+
+- `PORTIER_TOKEN` – Bearer-Token für geschützte Calls
+- `OPENA1_URL` – Coordinator-Endpoint (default: `http://127.0.0.1:12344`)
+- `SMTP_HOST` – SMTP-Server (z.B. `smtp.gmail.com`)
+- `SMTP_PORT` – SMTP-Port (default: 587)
+- `SMTP_USER` – E-Mail-Account für Versand
+- `SMTP_PASSWORD` – SMTP-Passwort (wird redaktiert in Logs)
+- `IMAP_HOST` – IMAP-Server für Empfang (z.B. `imap.gmail.com`)
+- `IMAP_PORT` – IMAP-Port (default: 993)
+
+## 7. Status & Roadmap
+
+- ✅ SMTP/IMAP-Integration funktional
+- ✅ Template-Engine implementiert (Jinja2)
+- ✅ Anhang-Verarbeitung (bis 10MB)
+- ✅ Auto-Reply-Logik
+- ✅ Option-2-Flow-Integration
+- ⏳ Geplant: HTML-E-Mail-Templates (Phase 18)
+- ⏳ Geplant: E-Mail-Kampagnen-Management (Phase 19)
+- ⏳ Geplant: Bounce-Handling & Blocklist-Management
 
 ## 🖥️ Dashboard Access
 

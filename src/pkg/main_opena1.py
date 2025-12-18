@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import Any, Dict, Callable, Awaitable, Optional
 
 from fastapi import FastAPI, HTTPException, Security, Request, Query
+from pkg.shared.config import init_tracing_from_settings
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.responses import Response
 from pydantic import BaseModel, ConfigDict, Field
@@ -128,6 +129,7 @@ async def lifespan(app: FastAPI):
     """ELION-konformer Lifespan Handler für opena2 Archivator."""
     # Startup Logic
     logger.info("🚀 opena2 Archivator startet...")
+    init_tracing_from_settings(app, service_name="opena1")
     _read_env_token()  # Initialisiert Token-System
     _ensure_dirs_for_today()
     logger.info("opena2 gestartet, Archivpfad: %s", ARCHIVP_ROOT)

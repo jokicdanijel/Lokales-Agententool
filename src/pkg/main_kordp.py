@@ -16,6 +16,7 @@ from typing import Any, Dict
 
 import httpx
 from fastapi import FastAPI, HTTPException, Security, Request
+from pkg.shared.config import init_tracing_from_settings
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from security import verify_token, RateLimiter, _read_env_token
@@ -66,6 +67,7 @@ async def validate_port_policy(request: Request, call_next):
 @app.on_event("startup")
 async def on_start():
     _ = _read_env_token()
+    init_tracing_from_settings(app, service_name="kordp")
     logger.info("kordp gestartet. Ziel-Archivator: %s", OPENA2_URL)
 
 # -------------------------------------------------------------------

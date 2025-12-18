@@ -233,6 +233,13 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+# Optional tracing: initialize via shared Settings (respects otel_enabled)
+try:
+    from pkg.shared.config import init_tracing_from_settings
+    init_tracing_from_settings(app, service_name=AGENT_ID)
+except Exception as _e:
+    logger.debug("Tracing not initialized or not available: %s", _e)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

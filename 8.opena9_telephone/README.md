@@ -192,7 +192,7 @@ Portier (12344) → OpenA2 (12345)
     ↓
 kordp (Dispatcher)
     ↓
-opena9 (12351) ← Dieser Agent
+    opena9 (12355) ← Dieser Agent
     ↓
 OpenA2 (12345) → Portier (12344)
     ↓
@@ -209,7 +209,7 @@ Client/UI
 Health-Check des Agents.
 
 ```bash
-curl http://127.0.0.1:12351/health | jq .
+curl http://127.0.0.1:12355/health | jq .
 ```
 
 **Response:**
@@ -217,8 +217,8 @@ curl http://127.0.0.1:12351/health | jq .
 {
   "status": "ok",
   "service": "opena9",
-  "port": 12351,
-  "program_target": "calp",
+  "port": 12355,
+  "program_target": "telephonep",
   "uptime_seconds": 3661.23
 }
 ```
@@ -227,7 +227,7 @@ curl http://127.0.0.1:12351/health | jq .
 Service-spezifische Aktion ausführen.
 
 ```bash
-curl -X POST http://127.0.0.1:12351/invoke \
+curl -X POST http://127.0.0.1:12355/invoke \
   -H "Authorization: Bearer $BEARER_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
