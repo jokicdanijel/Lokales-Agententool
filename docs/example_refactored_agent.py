@@ -19,6 +19,8 @@ After refactoring:
 - Inherited datastore with minimal code
 
 Reduction: ~48% fewer lines, clearer structure
+
+Note: Uses Pydantic V2 ConfigDict style for consistency with opena6 browser agent.
 """
 
 import os
@@ -30,7 +32,7 @@ from typing import Optional, List
 from dataclasses import dataclass, asdict
 
 from fastapi import FastAPI, Depends
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 import uvicorn
 
 # ============================================================================
@@ -121,23 +123,21 @@ class ExampleItemStore(BaseDataStore[ExampleItem]):
 
 class CreateItemRequest(BaseModel):
     """Request to create a new item."""
+    model_config = ConfigDict(extra="forbid")
+    
     name: str = Field(..., min_length=1, max_length=200)
     value: int = Field(..., ge=0)
-    
-    class Config:
-        extra = "forbid"
 
 
 class ItemResponse(BaseModel):
     """Response with item data."""
+    model_config = ConfigDict(extra="forbid")
+    
     id: str
     name: str
     value: int
     created_at: str
     active: bool
-    
-    class Config:
-        extra = "forbid"
 
 
 # ============================================================================

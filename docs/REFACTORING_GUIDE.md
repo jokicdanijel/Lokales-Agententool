@@ -4,6 +4,8 @@
 
 This document describes the refactoring effort to eliminate code duplication across the agent services by extracting common functionality into shared modules.
 
+**Note:** All shared Pydantic models use Pydantic V2 `ConfigDict` style, consistent with the opena6 browser agent, eliminating deprecation warnings.
+
 ## Problem Statement
 
 Analysis of the codebase revealed significant code duplication across 10+ agent files:

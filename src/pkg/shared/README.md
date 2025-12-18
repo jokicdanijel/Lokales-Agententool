@@ -6,6 +6,8 @@ This directory contains common utilities and base classes used across all agent 
 
 The shared modules were created to eliminate code duplication across the 20+ agent services in the ELION system. Instead of each agent implementing its own authentication, persistence, and configuration logic, agents now import from these shared modules.
 
+**Note:** All Pydantic models use Pydantic V2 `ConfigDict` style for consistency with the opena6 browser agent and to avoid deprecation warnings.
+
 ## Modules
 
 ### 📦 `auth.py` - Authentication Utilities

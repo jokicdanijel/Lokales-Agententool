@@ -1,11 +1,13 @@
 """
 Shared Base Models
 Common Pydantic models used across all agents.
+
+Updated to use Pydantic V2 ConfigDict style for consistency with opena6 browser agent.
 """
 
 from datetime import datetime, timezone
 from typing import Any, Dict, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class CommandRequest(BaseModel):
@@ -14,11 +16,10 @@ class CommandRequest(BaseModel):
     
     Used by all agents to handle command-based requests.
     """
+    model_config = ConfigDict(extra="forbid")
+    
     command: str = Field(..., min_length=1, max_length=200, description="Command to execute")
     params: Dict[str, Any] = Field(default_factory=dict, description="Command parameters")
-    
-    class Config:
-        extra = "forbid"  # Strict JSON validation
 
 
 class HealthResponse(BaseModel):
@@ -27,6 +28,8 @@ class HealthResponse(BaseModel):
     
     Provides consistent health check format across the system.
     """
+    model_config = ConfigDict(extra="allow")  # Allow agents to add custom fields
+    
     status: str = Field(..., description="Health status: 'ok', 'degraded', 'unhealthy'")
     service: str = Field(..., description="Service name (e.g., 'opena11')")
     kuerzel: str = Field(..., description="Service abbreviation (e.g., 'unlockp')")
@@ -36,49 +39,43 @@ class HealthResponse(BaseModel):
     
     # Optional additional fields that agents can include
     extra_info: Optional[Dict[str, Any]] = Field(None, description="Additional service-specific info")
-    
-    class Config:
-        extra = "allow"  # Allow agents to add custom fields
 
 
 class ServiceInfo(BaseModel):
     """
     Service information response for root endpoint.
     """
+    model_config = ConfigDict(extra="forbid")
+    
     service: str = Field(..., description="Service name")
     kuerzel: str = Field(..., description="Service abbreviation")
     description: str = Field(..., description="Service description")
     port: int = Field(..., description="Service port")
     version: str = Field(..., description="Service version")
     endpoints: list = Field(default_factory=list, description="Available endpoints")
-    
-    class Config:
-        extra = "forbid"
 
 
 class SuccessResponse(BaseModel):
     """
     Generic success response.
     """
+    model_config = ConfigDict(extra="forbid")
+    
     status: str = Field(default="success", description="Response status")
     message: str = Field(..., description="Success message")
     data: Optional[Dict[str, Any]] = Field(None, description="Response data")
-    
-    class Config:
-        extra = "forbid"
 
 
 class ErrorResponse(BaseModel):
     """
     Generic error response.
     """
+    model_config = ConfigDict(extra="forbid")
+    
     status: str = Field(default="error", description="Response status")
     message: str = Field(..., description="Error message")
     error_code: Optional[str] = Field(None, description="Error code")
     details: Optional[Dict[str, Any]] = Field(None, description="Additional error details")
-    
-    class Config:
-        extra = "forbid"
 
 
 def get_current_timestamp_iso() -> str:
