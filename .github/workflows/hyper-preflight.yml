@@ -22,5 +22,22 @@ jobs:
       - name: Install minimal deps
         run: python -m pip install --upgrade pip
 
+      - name: Prepare .env for preflight
+        env:
+          DASHBOARD_ADMIN_TOKEN: ${{ secrets.DASHBOARD_ADMIN_TOKEN }}
+          OPENAI_API_KEY_OPENA1: ${{ secrets.OPENAI_API_KEY_OPENA1 }}
+          OPENAI_API_KEY_OPENA2: ${{ secrets.OPENAI_API_KEY_OPENA2 }}
+        run: |
+          # Copy example and fill required keys with secrets if set or placeholders otherwise
+          cp mcp_server/.env.example .env
+          : "${DASHBOARD_ADMIN_TOKEN:=PLACEHOLDER_DASHBOARD_ADMIN_TOKEN}"
+          : "${OPENAI_API_KEY_OPENA1:=PLACEHOLDER_OPENA1}"
+          : "${OPENAI_API_KEY_OPENA2:=PLACEHOLDER_OPENA2}"
+          sed -i "s|^DASHBOARD_ADMIN_TOKEN=.*|DASHBOARD_ADMIN_TOKEN=${DASHBOARD_ADMIN_TOKEN}|" .env
+          sed -i "s|^OPENAI_API_KEY_OPENA1=.*|OPENAI_API_KEY_OPENA1=${OPENAI_API_KEY_OPENA1}|" .env
+          sed -i "s|^OPENAI_API_KEY_OPENA2=.*|OPENAI_API_KEY_OPENA2=${OPENAI_API_KEY_OPENA2}|" .env
+          chmod 600 .env
+          echo "Created .env for preflight (DASHBOARD_ADMIN_TOKEN present: $( [ -n \"${DASHBOARD_ADMIN_TOKEN}\" ] && echo yes || echo no ))"
+
       - name: Run preflight checks
         run: python3 scripts/preflight_checks.py
