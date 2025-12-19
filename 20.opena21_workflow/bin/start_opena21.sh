@@ -74,6 +74,7 @@ fi
 if [ -f "$PROJECT_DIR/requirements.txt" ]; then
     log "📦 Dependencies installieren..."
     cd "$PROJECT_DIR"
+    "$PYTHON_CMD" -m pip install --break-system-packages -r requirements.txt --quiet --disable-pip-version-check || \
     "$PYTHON_CMD" -m pip install -r requirements.txt --quiet --disable-pip-version-check
 fi
 

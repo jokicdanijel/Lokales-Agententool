@@ -7,9 +7,9 @@ BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ENV_FILE="${BASE_DIR}/.env"
 LOG_DIR="${BASE_DIR}/../logs"
 
-# .env laden
+# .env laden (multiline-safe mit sed)
 if [[ -f "$ENV_FILE" ]]; then
-    export $(grep "^OPENAI_API_KEY_OPENA2=" "$ENV_FILE" | xargs)
+    export OPENAI_API_KEY_OPENA2="$(sed -n 's/^OPENAI_API_KEY_OPENA2=\(.*\)/\1/p' "$ENV_FILE" | head -1)"
     # Key umbenennen für opena2_app.py
     export OPENAI_API_KEY="$OPENAI_API_KEY_OPENA2"
 else

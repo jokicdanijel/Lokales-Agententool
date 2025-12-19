@@ -24,7 +24,6 @@ echo "=========================================="
 # ========== 1. Verzeichnisse erstellen ==========
 mkdir -p logs data
 
-# ========== 2. .env prüfen ==========
 if [[ ! -f "../.env" ]] && [[ ! -f ".env" ]]; then
     echo "[WARN] .env fehlt, verwende Default-Token"
 fi

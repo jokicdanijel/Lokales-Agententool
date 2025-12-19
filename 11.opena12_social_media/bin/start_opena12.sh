@@ -44,19 +44,6 @@ check_dependencies() {
 
 load_env() {
     # Try project root first
-    if [ -f "$PROJECT_ROOT/.env" ]; then
-        log_info "Loading .env from project root"
-        set -a
-        source "$PROJECT_ROOT/.env"
-        set +a
-    elif [ -f "$AGENT_DIR/.env" ]; then
-        log_info "Loading .env from agent directory"
-        set -a
-        source "$AGENT_DIR/.env"
-        set +a
-    else
-        log_warn ".env file not found"
-    fi
     
     if [ -z "$BEARER_TOKEN" ]; then
         log_error "BEARER_TOKEN not set in .env"

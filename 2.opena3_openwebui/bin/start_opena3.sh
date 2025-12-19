@@ -3,6 +3,7 @@
 # Port: 12347 | PID: logs/opena3.pid
 
 set -euo pipefail
+# Robustes .env-Parsing (safe für Keys mit = Zeichen)
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
@@ -43,20 +44,6 @@ if netstat -tuln 2>/dev/null | grep -q ":$PORT " || ss -tuln 2>/dev/null | grep 
     exit 1
 fi
 
-# .env laden
-if [ -f "../.env" ]; then
-    echo -e "${GREEN}✅ Lade .env aus Projekt-Root${NC}"
-    set -a
-    source "../.env"
-    set +a
-elif [ -f ".env" ]; then
-    echo -e "${GREEN}✅ Lade lokale .env${NC}"
-    set -a
-    source ".env"
-    set +a
-else
-    echo -e "${YELLOW}⚠️  Keine .env gefunden, nutze Defaults${NC}"
-fi
 
 # Validierung
 if [ -z "${BEARER_TOKEN:-}" ]; then

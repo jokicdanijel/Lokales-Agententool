@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+# Robustes .env-Parsing (safe für Keys mit = Zeichen)
 
 # --- feste Pfade ---
 BASE="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier"

@@ -30,13 +30,12 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 from telegram.error import TelegramError
 
-# Import local modules
-try:
-    from schemas import Command71, Response71, Safepoint, ErrorSchema83, TelegramMessage, HealthResponse
-    from config import get_config
-except ImportError:
-    from .schemas import Command71, Response71, Safepoint, ErrorSchema83, TelegramMessage, HealthResponse
-    from .config import get_config
+# Script-style imports: ensure local folder is in sys.path
+sys.path.insert(0, os.path.dirname(__file__))
+
+# Import local modules (absolute from agent folder)
+from schemas import Command71, Response71, Safepoint, ErrorSchema83, TelegramMessage, HealthResponse
+from config import get_config
 
 
 # ──────────────────────────────────────────────────────────────────────────────

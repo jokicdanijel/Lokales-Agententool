@@ -3,6 +3,7 @@
 # Port: 12354
 
 set -euo pipefail
+# Robustes .env-Parsing (safe für Keys mit = Zeichen)
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 AGENT_DIR="$(dirname "$SCRIPT_DIR")"
@@ -46,20 +47,6 @@ fi
 # ============================================================================
 # .ENV LADEN
 # ============================================================================
-
-if [ -f "$PROJECT_ROOT/.env" ]; then
-    echo "✅ Lade .env aus Projekt-Root"
-    set -a
-    source "$PROJECT_ROOT/.env"
-    set +a
-elif [ -f "$AGENT_DIR/.env" ]; then
-    echo "✅ Lade .env aus Agent-Verzeichnis"
-    set -a
-    source "$AGENT_DIR/.env"
-    set +a
-else
-    echo "⚠️  Keine .env gefunden, verwende Defaults"
-fi
 
 # ============================================================================
 # TOKEN-CHECK
