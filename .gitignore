@@ -105,3 +105,6 @@ workspace_evaluation_report.json
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Local venvs
+.venv-otel/
