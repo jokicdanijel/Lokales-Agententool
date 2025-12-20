@@ -1,5 +1,5 @@
 """
-3.opena1_coordinator/main.py – Portier Coordinator Service (opena1)
+1.opena1&2_portier/main.py – Portier Coordinator Service (opena1)
 ============================================================================
 FastAPI service for coordinating Portier agent communication.
 
@@ -9,7 +9,7 @@ Endpoints:
   POST /log/opena1
   
 Usage:
-  cd 3.opena1_coordinator
+  cd 1.opena1&2_portier
   python main.py
   # → Listening on http://127.0.0.1:12344
 """
