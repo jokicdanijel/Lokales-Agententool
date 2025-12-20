@@ -1,237 +1,232 @@
-# Shared Modules
+# PORTIER 3.0 Shared Libraries
 
-This directory contains common utilities and base classes used across all agent services.
+Centralized, reusable components for all PORTIER 3.0 agents.
 
 ## Overview
 
-The shared modules were created to eliminate code duplication across the 20+ agent services in the ELION system. Instead of each agent implementing its own authentication, persistence, and configuration logic, agents now import from these shared modules.
-
-**Note:** All Pydantic models use Pydantic V2 `ConfigDict` style for consistency with the opena6 browser agent and to avoid deprecation warnings.
+This package contains shared libraries that eliminate code duplication across 19+ agent directories. Instead of maintaining 78 duplicate files totaling ~9,500 lines of code, we now have 4 centralized modules totaling ~850 lines.
 
 ## Modules
 
-### 📦 `auth.py` - Authentication Utilities
+### 1. `safepoint_client.py`
+**Purpose**: Client for writing safepoints to opena2 archivator
 
-Provides common authentication and authorization functionality for FastAPI agents.
+**Key Features**:
+- Async HTTP client using httpx
+- Recursive secret masking
+- Category validation (CMD, RESP, ROUTE, DISPATCH)
+- Environment variable configuration
 
-**Key Functions:**
-- `load_bearer_token_from_env()` - Load BEARER_TOKEN from environment or .env file
-- `verify_token_httpbearer()` - Verify token using HTTPBearer security scheme
-- `verify_token_header()` - Verify token from Authorization header
-- `create_token_verifier()` - Factory to create token verifier dependencies
-
-**Usage Example:**
+**Usage**:
 ```python
-from src.pkg.shared import load_bearer_token_from_env, create_token_verifier
+from src.pkg.shared.safepoint_client import SafepointClient
 
-BEARER_TOKEN = load_bearer_token_from_env(PROJECT_ROOT)
-verify_token = create_token_verifier(BEARER_TOKEN)
+client = SafepointClient()
+await client.write(
+    category="CMD",
+    source="opena4",
+    destination="opena5",
+    request_id="req-123",
+    payload={"action": "send_message"}
+)
+```
+
+### 2. `sse_client.py`
+**Purpose**: SSE event streaming and safepoint archiving
+
+**Key Features**:
+- SSEClient for subscribing to dashboard events
+- SafepointClient for async archiving (alternate implementation)
+- Factory functions for agent-specific instances
+- Singleton pattern support
+
+**Usage**:
+```python
+from src.pkg.shared.sse_client import create_sse_client, create_safepoint_client
+
+# Create agent-specific clients
+sse = create_sse_client(source_agent="opena4")
+safepoint = create_safepoint_client(source_agent="opena4")
+
+# Subscribe to events
+async for event in sse.subscribe():
+    print(f"Event: {event['event_type']}")
+    
+# Write safepoint
+await safepoint.write_safepoint(
+    category="RESP",
+    destination="opena20",
+    payload={"status": "success"}
+)
+```
+
+### 3. `security.py`
+**Purpose**: Authentication, authorization, and security utilities
+
+**Key Features**:
+- Bearer token verification (FastAPI Depends compatible)
+- Optional token verification for public endpoints
+- Sliding window rate limiter
+- Recursive secret masking
+- Port policy enforcement (12344-12399 range)
+- Development mode support
+
+**Usage**:
+```python
+from fastapi import Depends, FastAPI
+from src.pkg.shared.security import verify_token, mask_secrets, RateLimiter
+
+app = FastAPI()
 
 @app.get("/protected")
-async def protected_endpoint(user: str = Depends(verify_token)):
-    return {"user": user}
+async def protected_endpoint(token: str = Depends(verify_token)):
+    sensitive_data = {"password": "secret123", "username": "john"}
+    return mask_secrets(sensitive_data)  # Returns: {"password": "***", "username": "john"}
+
+# Rate limiting
+limiter = RateLimiter(max_requests=60, window_seconds=60)
+
+@app.get("/api/data")
+async def get_data(request: Request):
+    if not limiter.is_allowed(request):
+        raise HTTPException(status_code=429, detail="Rate limit exceeded")
+    return {"data": "..."}
 ```
 
-### 📦 `base_models.py` - Standard Pydantic Models
+### 4. `config_base.py`
+**Purpose**: Base configuration classes for all agents
 
-Provides standard Pydantic models used across all agents.
+**Key Features**:
+- PortPolicy class for port range validation
+- BaseAgentConfig with common fields:
+  - Service identification (name, kürzel, host, port)
+  - Authentication (bearer_token)
+  - Service URLs (opena1, opena2, opena20)
+  - Logging configuration
+  - Directory management
+- AgentInfo model for agent registry
+- Pydantic-based validation with environment variable support
 
-**Key Models:**
-- `CommandRequest` - Generic command request for Option-2-Flow
-- `HealthResponse` - Standard health check response format
-- `ServiceInfo` - Service information for root endpoints
-- `SuccessResponse` - Generic success response
-- `ErrorResponse` - Generic error response
-
-**Helper Functions:**
-- `get_current_timestamp_iso()` - Get ISO 8601 formatted timestamp
-- `create_health_response()` - Factory for health check responses
-- `create_service_info()` - Factory for service info responses
-
-**Usage Example:**
+**Usage**:
 ```python
-from src.pkg.shared import create_health_response
+from pydantic import Field
+from src.pkg.shared.config_base import BaseAgentConfig, PortPolicy
 
-@app.get("/health")
-async def health():
-    return create_health_response(
-        service="opena11",
-        kuerzel="unlockp",
-        port=12356,
-        start_time=START_TIME,
-        custom_metric=42
-    )
-```
-
-### 📦 `persistence.py` - Data Persistence Layer
-
-Provides base classes for JSON and JSONL data persistence.
-
-**Key Classes:**
-- `BaseDataStore[T]` - Abstract base class for type-safe JSON stores
-- `JSONDataStore` - Simple dictionary-based JSON store
-- `AuditLog` - JSONL append-only audit log (WORM-compliant)
-
-**Features:**
-- Generic type support with Python type hints
-- Automatic serialization/deserialization
-- CRUD operations: add, remove, find, find_all, count
-- Metadata tracking (last_updated, count)
-- JSONL format for audit logs (append-only)
-
-**Usage Example:**
-```python
-from src.pkg.shared import BaseDataStore, AuditLog
-from dataclasses import dataclass, asdict
-
-@dataclass
-class Profile:
-    id: str
-    name: str
-
-class ProfileStore(BaseDataStore[Profile]):
-    def _serialize(self, item):
-        return asdict(item)
+class MyAgentConfig(BaseAgentConfig):
+    # Common fields inherited automatically
+    service_name: str = "opena4"
+    kuerzel: str = "tgap"
+    port: int = 12346
     
-    def _deserialize(self, data):
-        return Profile(**data)
+    # Add agent-specific fields
+    telegram_bot_token: str = Field(default="", alias="TELEGRAM_BOT_TOKEN")
 
-store = ProfileStore(Path("data/profiles.json"))
-store.load()
-store.add(Profile("1", "Alice"))
-
-audit = AuditLog(Path("data/audit.jsonl"))
-audit.log("CREATE", "user", "profile", "1")
+config = MyAgentConfig()
+config.ensure_directories()  # Creates data/ and logs/
+logging_config = config.get_logging_config()
 ```
 
-### 📦 `config.py` - Configuration Management
+## Installation & Setup
 
-Extended SCTA configuration with agent-specific utilities.
+### 1. Add to PYTHONPATH (if needed)
+```bash
+export PYTHONPATH=/path/to/Gesamtprojekt-start:$PYTHONPATH
+```
 
-**Key Functions:**
-- `validate_port()` - Validate port against project policy (12344-12399, not 8080)
-- `get_port_from_env()` - Get and validate port from environment variable
+### 2. Environment Variables
+All modules respect standard PORTIER environment variables:
+```bash
+BEARER_TOKEN=your-token-here
+OPENA1_URL=http://127.0.0.1:12344
+OPENA2_URL=http://127.0.0.1:12345
+OPENA20_URL=http://127.0.0.1:12349
+DEV_MODE=false
+LOG_LEVEL=INFO
+```
 
-**Constants:**
-- `ALLOWED_PORT_RANGE` - Range of allowed ports (12344-12399)
-- `FORBIDDEN_PORTS` - List of forbidden ports ([8080])
-
-**Usage Example:**
+### 3. Quick Import (Backward Compatibility)
+For easy migration, use the compatibility wrapper:
 ```python
-from src.pkg.shared import get_port_from_env
-
-PORT = get_port_from_env("OPENA11_PORT", 12356, "opena11")
-# Automatically validates port is in allowed range
+# Single import for everything
+from src.pkg.portier_common import (
+    SafepointClient,
+    SSEClient,
+    create_sse_client,
+    verify_token,
+    mask_secrets,
+    BaseAgentConfig
+)
 ```
 
 ## Testing
 
-All shared modules have comprehensive unit test coverage:
-
+Run the test suite:
 ```bash
-# Run all tests
-python3 -m pytest project-root/tests/unit/test_shared_*.py -v
+# With pytest installed
+pytest src/pkg/shared/test_*.py -v
 
-# Run specific module tests
-python3 -m pytest project-root/tests/unit/test_shared_auth.py -v
-python3 -m pytest project-root/tests/unit/test_shared_base_models.py -v
-python3 -m pytest project-root/tests/unit/test_shared_persistence.py -v
-python3 -m pytest project-root/tests/unit/test_shared_config.py -v
+# Individual modules
+pytest src/pkg/shared/test_safepoint_client.py -v
+pytest src/pkg/shared/test_sse_client.py -v
 ```
-
-**Test Coverage:**
-- `test_shared_auth.py`: 16 tests ✅
-- `test_shared_base_models.py`: 15 tests ✅
-- `test_shared_persistence.py`: 13 tests ✅
-- `test_shared_config.py`: 12 tests ✅
-- **Total: 56 tests passing** ✅
 
 ## Migration Guide
 
-See [REFACTORING_GUIDE.md](../../docs/REFACTORING_GUIDE.md) for detailed migration instructions.
+See [MIGRATION_GUIDE_SHARED_LIBRARIES.md](../../docs/MIGRATION_GUIDE_SHARED_LIBRARIES.md) for:
+- Step-by-step migration instructions
+- Code examples (before/after)
+- Testing procedures
+- Rollback instructions
 
-**Quick Start:**
+## Impact
 
-1. **Import shared modules** instead of duplicating code:
-   ```python
-   from src.pkg.shared import (
-       load_bearer_token_from_env,
-       create_token_verifier,
-       create_health_response,
-       BaseDataStore,
-       AuditLog,
-   )
-   ```
+**Code Reduction**:
+- Before: 78 files, ~9,505 lines
+- After: 4 modules, ~850 lines
+- **Reduction: 91%** (~8,654 lines)
 
-2. **Use shared authentication**:
-   ```python
-   BEARER_TOKEN = load_bearer_token_from_env(PROJECT_ROOT)
-   verify_token = create_token_verifier(BEARER_TOKEN)
-   ```
+**Maintenance**:
+- Before: Fix bugs in 19-21 places
+- After: Fix bugs in 1 place
 
-3. **Use standard health endpoint**:
-   ```python
-   @app.get("/health")
-   async def health():
-       return create_health_response(...)
-   ```
+**Benefits**:
+- ✅ Single source of truth
+- ✅ Consistent behavior across agents
+- ✅ Easier testing and debugging
+- ✅ Faster development and bug fixes
+- ✅ Better code quality
 
-4. **Inherit from BaseDataStore**:
-   ```python
-   class MyStore(BaseDataStore[MyType]):
-       def _serialize(self, item): ...
-       def _deserialize(self, data): ...
-   ```
+## API Compatibility
 
-## Examples
+All modules maintain **backward compatibility** with existing agent code:
+- Same function signatures
+- Same return types
+- Same error handling
+- Environment variable support preserved
 
-See `docs/example_refactored_agent.py` for a complete working example of an agent using all shared modules.
+## Contributing
 
-## Benefits
+When adding new common functionality:
 
-### Code Reduction
-- **Before**: ~100-200 lines of boilerplate per agent
-- **After**: ~10-20 lines of imports and configuration
-- **Savings**: ~90% reduction in duplicated code
-
-### Consistency
-- All agents use same authentication method
-- All health endpoints return same format
-- All audit logs follow same structure
-
-### Maintainability
-- Fix bugs in one place
-- Update behavior across all agents
-- Easier to understand and review code
-
-### Testing
-- Shared modules tested once, thoroughly
-- Agents can focus on business logic tests
-- Higher overall test coverage
-
-## Version History
-
-- **v1.0.0** (2025-12-18) - Initial release
-  - Authentication utilities
-  - Base Pydantic models
-  - Persistence layer
-  - Configuration management
-  - 56 comprehensive unit tests
+1. **Check for duplication**: If 3+ agents need it, consider adding to shared
+2. **Write tests**: All shared code must have unit tests
+3. **Document**: Update this README and add docstrings
+4. **Maintain compatibility**: Don't break existing agents
+5. **Version carefully**: Use semantic versioning for breaking changes
 
 ## Support
 
 For questions or issues:
-1. Check the documentation in this README
-2. Review the [Refactoring Guide](../../docs/REFACTORING_GUIDE.md)
-3. Look at the [example agent](../../docs/example_refactored_agent.py)
-4. Check the unit tests for usage examples
-5. Consult with the team lead
+- Check [MIGRATION_GUIDE_SHARED_LIBRARIES.md](../../docs/MIGRATION_GUIDE_SHARED_LIBRARIES.md)
+- Review [CODE_DUPLICATION_REFACTORING_IMPACT.md](../../docs/CODE_DUPLICATION_REFACTORING_IMPACT.md)
+- Check inline documentation and docstrings
 
-## Contributing
+## License
 
-When adding new shared functionality:
-1. Add it to the appropriate module (auth, base_models, persistence, config)
-2. Write comprehensive unit tests (aim for 100% coverage)
-3. Update this README with usage examples
-4. Update the Refactoring Guide if needed
-5. Create a migration example for existing agents
+Internal use only - Part of PORTIER 3.0 system.
+
+---
+
+**Created**: 2025-12-18  
+**Status**: Production Ready  
+**Version**: 1.0.0

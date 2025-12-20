@@ -1,426 +1,322 @@
 #!/usr/bin/env python3
 """
-Workspace Evaluation Framework
-Comprehensive assessment of PORTIER 3.0 workspace health, configuration, and compliance
+ELION Hyper-Dashboard – Workspace Evaluation Framework (v1.1)
+Enterprise-grade assessment of production-readiness across 7 dimensions.
 """
+
 import json
-import socket
+import os
+import re
+import subprocess
 import sys
-from datetime import datetime
 from pathlib import Path
-from typing import Dict
+from datetime import datetime
+from typing import Dict, List, Any, Tuple
 
-# Color codes for output
-class Colors:
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    RED = '\033[91m'
-    BLUE = '\033[94m'
-    RESET = '\033[0m'
-    BOLD = '\033[1m'
+# Configuration
+EVALUATION_VERSION = "1.1"
+REPORT_FILENAME = "workspace_evaluation_report.json"
+PORT_POLICY_MIN, PORT_POLICY_MAX = 12344, 12399
 
+# ============================================================================
+# Core: Evaluation Category
+# ============================================================================
 
-class WorkspaceEvaluator:
-    """Evaluates workspace health across multiple dimensions"""
-    
-    def __init__(self, root_path: Path = Path(".")):
-        self.root = root_path.resolve()
-        self.results = {
-            "timestamp": datetime.now().isoformat(),
-            "evaluations": {},
-            "score": 0,
-            "max_score": 0,
-            "status": "unknown"
-        }
-    
-    def print_header(self, title: str):
-        """Print section header"""
-        print(f"\n{Colors.BOLD}{Colors.BLUE}{'='*70}{Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.BLUE}{title:^70}{Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.BLUE}{'='*70}{Colors.RESET}\n")
-    
-    def print_result(self, name: str, passed: bool, details: str = ""):
-        """Print individual test result"""
-        status = f"{Colors.GREEN}✓ PASS{Colors.RESET}" if passed else f"{Colors.RED}✗ FAIL{Colors.RESET}"
-        print(f"{status} {name}")
-        if details:
-            print(f"     {details}")
-    
-    def evaluate_file_structure(self) -> Dict:
-        """Evaluate critical file and directory structure"""
-        self.print_header("File Structure Evaluation")
-        
-        critical_paths = {
-            "scripts/": "Scripts directory",
-            "tests/": "Test directory",
-            "src/": "Source directory",
-            "docs/": "Documentation directory",
-            "configs/": "Configuration directory",
-            ".github/workflows/": "CI/CD workflows",
-            "pyproject.toml": "Python project config",
-            "requirements.txt": "Python dependencies",
-            ".gitignore": "Git ignore rules"
-        }
-        
-        results = {"passed": 0, "failed": 0, "details": []}
-        
-        for path, description in critical_paths.items():
-            full_path = self.root / path
-            exists = full_path.exists()
-            results["passed" if exists else "failed"] += 1
-            self.print_result(description, exists, str(full_path))
-            results["details"].append({
-                "path": path,
-                "description": description,
-                "exists": exists
-            })
-        
-        self.results["evaluations"]["file_structure"] = results
-        return results
-    
-    def evaluate_service_ports(self) -> Dict:
-        """Evaluate service port availability and conflicts"""
-        self.print_header("Service Port Evaluation")
-        
-        # PORTIER 3.0 service ports
-        service_ports = {
-            "opena1 (Coordinator)": 12344,
-            "opena2 (Archivator)": 12345,
-            "kordp (Gateway)": 12346,
-            "opena3 (OpenWebUI)": 12347,
-            "opena4 (Telegram)": 12348,
-            "opena20 (Dashboard)": 12349,
-            "opena5 (VS Code)": 12351,
-            "opena6 (Browser)": 12352,
-            "opena7 (Email)": 12353,
-            "opena8 (WhatsApp)": 12354,
-        }
-        
-        results = {"passed": 0, "failed": 0, "in_use": [], "available": []}
-        
-        for service, port in service_ports.items():
-            in_use = self.check_port_in_use(port)
-            results["passed" if not in_use else "failed"] += 1
-            self.print_result(
-                f"{service} (:{port})",
-                not in_use,
-                "Port available" if not in_use else "Port in use"
-            )
-            
-            if in_use:
-                results["in_use"].append({"service": service, "port": port})
-            else:
-                results["available"].append({"service": service, "port": port})
-        
-        self.results["evaluations"]["service_ports"] = results
-        return results
-    
-    def check_port_in_use(self, port: int, host: str = "127.0.0.1") -> bool:
-        """Check if a port is in use"""
-        try:
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-                sock.settimeout(1)
-                result = sock.connect_ex((host, port))
-                return result == 0  # 0 means connected (in use)
-        except Exception:
-            return False
-    
-    def evaluate_configuration_files(self) -> Dict:
-        """Evaluate configuration file validity"""
-        self.print_header("Configuration Files Evaluation")
-        
-        results = {"passed": 0, "failed": 0, "details": []}
-        
-        # Check routing matrix
-        routing_matrix = self.root / "configs/routing_matrix.yaml"
-        if routing_matrix.exists():
-            try:
-                import yaml
-                data = yaml.safe_load(routing_matrix.read_text())
-                valid = "program_targets" in data
-                results["passed" if valid else "failed"] += 1
-                self.print_result(
-                    "routing_matrix.yaml",
-                    valid,
-                    "Valid YAML with program_targets" if valid else "Missing program_targets"
-                )
-                results["details"].append({"file": "routing_matrix.yaml", "valid": valid})
-            except Exception as e:
-                results["failed"] += 1
-                self.print_result("routing_matrix.yaml", False, f"Error: {e}")
-                results["details"].append({"file": "routing_matrix.yaml", "valid": False, "error": str(e)})
-        else:
-            results["failed"] += 1
-            self.print_result("routing_matrix.yaml", False, "File not found")
-        
-        # Check pyproject.toml
-        pyproject = self.root / "pyproject.toml"
-        if pyproject.exists():
-            try:
-                import toml
-                data = toml.load(pyproject)
-                valid = "tool" in data
-                results["passed" if valid else "failed"] += 1
-                self.print_result(
-                    "pyproject.toml",
-                    valid,
-                    "Valid TOML configuration" if valid else "Invalid format"
-                )
-                results["details"].append({"file": "pyproject.toml", "valid": valid})
-            except ImportError:
-                # TOML not available, just check if file parses
-                results["passed"] += 1
-                self.print_result("pyproject.toml", True, "File exists")
-                results["details"].append({"file": "pyproject.toml", "valid": True})
-            except Exception as e:
-                results["failed"] += 1
-                self.print_result("pyproject.toml", False, f"Error: {e}")
-                results["details"].append({"file": "pyproject.toml", "valid": False, "error": str(e)})
-        
-        self.results["evaluations"]["configuration_files"] = results
-        return results
-    
-    def evaluate_test_coverage(self) -> Dict:
-        """Evaluate test file presence and structure"""
-        self.print_header("Test Coverage Evaluation")
-        
-        results = {"passed": 0, "failed": 0, "test_files": []}
-        
-        tests_dir = self.root / "tests"
-        if tests_dir.exists():
-            test_files = list(tests_dir.glob("test_*.py"))
-            results["test_files"] = [f.name for f in test_files]
-            results["passed"] = len(test_files)
-            
-            for test_file in test_files:
-                self.print_result(test_file.name, True, f"Found in tests/")
-            
-            if len(test_files) == 0:
-                results["failed"] += 1
-                self.print_result("Test files", False, "No test files found")
-        else:
-            results["failed"] += 1
-            self.print_result("tests/ directory", False, "Directory not found")
-        
-        self.results["evaluations"]["test_coverage"] = results
-        return results
-    
-    def evaluate_security_compliance(self) -> Dict:
-        """Evaluate security compliance"""
-        self.print_header("Security Compliance Evaluation")
-        
-        results = {"passed": 0, "failed": 0, "details": []}
-        
-        # Check .gitignore for sensitive files
-        gitignore = self.root / ".gitignore"
-        if gitignore.exists():
-            content = gitignore.read_text()
-            security_patterns = [".env", "*.key", "*.pem", "*.pub"]
-            
-            for pattern in security_patterns:
-                present = pattern in content
-                results["passed" if present else "failed"] += 1
-                self.print_result(
-                    f"Gitignore pattern: {pattern}",
-                    present,
-                    "Present" if present else "Missing"
-                )
-                results["details"].append({"pattern": pattern, "present": present})
-        else:
-            results["failed"] += 1
-            self.print_result(".gitignore", False, "File not found")
-        
-        # Check for .env file (should not be committed)
-        env_file = self.root / ".env"
-        env_committed = env_file.exists()
-        gitignore_path = self.root / ".gitignore"
-        
-        if env_committed:
-            # Check if it's in .gitignore
-            if gitignore_path.exists() and ".env" in gitignore_path.read_text():
-                results["passed"] += 1
-                self.print_result(".env file", True, "Exists but properly ignored")
-            else:
-                results["failed"] += 1
-                self.print_result(".env file", False, "Exists and NOT in .gitignore")
-        else:
-            results["passed"] += 1
-            self.print_result(".env file", True, "Not present in workspace")
-        
-        self.results["evaluations"]["security_compliance"] = results
-        return results
-    
-    def evaluate_scripts_executability(self) -> Dict:
-        """Evaluate if critical scripts are executable"""
-        self.print_header("Scripts Executability Evaluation")
-        
-        results = {"passed": 0, "failed": 0, "details": []}
-        
-        scripts_dir = self.root / "scripts"
-        if scripts_dir.exists():
-            critical_scripts = [
-                "start_all.sh",
-                "stop_all.sh",
-                "check_health.sh",
-                "verify_stack.sh",
-                "structure_manager.py"
+class EvalCategory:
+    def __init__(self, name: str, desc: str, weight: float = 1.0):
+        self.name = name
+        self.description = desc
+        self.weight = weight
+        self.checks: List[Tuple[str, bool, str]] = []
+        self.score = 0.0
+
+    def add_check(self, name: str, passed: bool, detail: str = ""):
+        self.checks.append((name, passed, detail))
+
+    def calculate_score(self) -> float:
+        if not self.checks:
+            return 100.0
+        self.score = (sum(1 for _, p, _ in self.checks if p) / len(self.checks)) * 100
+        return self.score
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "category": self.name,
+            "description": self.description,
+            "weight": self.weight,
+            "score": round(self.score, 2),
+            "total_checks": len(self.checks),
+            "passed_checks": sum(1 for _, p, _ in self.checks if p),
+            "failed_checks": sum(1 for _, p, _ in self.checks if not p),
+            "checks": [
+                {"name": n, "passed": p, "detail": d}
+                for n, p, d in self.checks
             ]
-            
-            for script_name in critical_scripts:
-                script_path = scripts_dir / script_name
-                if script_path.exists():
-                    is_executable = script_path.stat().st_mode & 0o111 != 0
-                    results["passed" if is_executable else "failed"] += 1
-                    self.print_result(
-                        script_name,
-                        is_executable,
-                        "Executable" if is_executable else "Not executable"
-                    )
-                    results["details"].append({
-                        "script": script_name,
-                        "exists": True,
-                        "executable": is_executable
-                    })
-                else:
-                    results["failed"] += 1
-                    self.print_result(script_name, False, "Not found")
-                    results["details"].append({
-                        "script": script_name,
-                        "exists": False,
-                        "executable": False
-                    })
+        }
+
+
+# ============================================================================
+# Evaluators: Policy, Python, Infrastructure, Config, Quality, Docs, Deploy
+# ============================================================================
+
+def eval_policy(root: str) -> EvalCategory:
+    cat = EvalCategory("Policy & Governance", "Port-Policy, SoT, Secrets", 2.5)
+    
+    ops_sh = os.path.join(root, "bin", "ops.sh")
+    if os.path.exists(ops_sh):
+        with open(ops_sh, 'r') as f:
+            ops_content = f.read()
+        cat.add_check("No 8080", "8080" not in ops_content)
+        cat.add_check("AGENTS mapping exists", "AGENTS=(" in ops_content)
+    else:
+        cat.add_check("ops.sh exists", False)
+    
+    # .env not sourced in scripts
+    bad_scripts = []
+    for script in Path(root).rglob("bin/start_*.sh"):
+        with open(script, 'r') as f:
+            if re.search(r'source.*\.env|export\s*\$\(.*grep.*\.env', f.read()):
+                bad_scripts.append(str(script.relative_to(root)))
+    cat.add_check(".env not sourced in scripts", len(bad_scripts) == 0,
+                  f"Found: {bad_scripts[0]}" if bad_scripts else "")
+    
+    # .env permissions
+    env_file = os.path.join(root, ".env")
+    if os.path.exists(env_file):
+        mode = os.stat(env_file).st_mode
+        cat.add_check(".env not world-readable", not bool(mode & 0o004))
+    else:
+        cat.add_check(".env exists", False)
+    
+    cat.calculate_score()
+    return cat
+
+
+def eval_python(root: str) -> EvalCategory:
+    cat = EvalCategory("Python Environment", "venv, Dependencies", 1.5)
+    
+    venv_exists = os.path.isdir(os.path.join(root, ".venv"))
+    cat.add_check(".venv exists", venv_exists)
+    
+    req_file = os.path.join(root, "requirements.txt")
+    if os.path.exists(req_file):
+        with open(req_file, 'r') as f:
+            req = f.read().lower()
+        cat.add_check("pydantic in requirements", "pydantic" in req)
+        cat.add_check("pydantic-settings in requirements", "pydantic-settings" in req)
+        cat.add_check("fastapi in requirements", "fastapi" in req)
+    else:
+        cat.add_check("requirements.txt exists", False)
+    
+    cat.calculate_score()
+    return cat
+
+
+def eval_infra(root: str) -> EvalCategory:
+    cat = EvalCategory("Infrastructure & Operations", "ops.sh, Logs, Runbook", 1.5)
+    
+    ops_sh = os.path.join(root, "bin", "ops.sh")
+    if os.path.exists(ops_sh):
+        try:
+            result = subprocess.run(["bash", "-n", ops_sh], capture_output=True, timeout=5)
+            cat.add_check("ops.sh syntax valid", result.returncode == 0)
+        except:
+            cat.add_check("ops.sh syntax valid", False)
+        cat.add_check("ops.sh executable", os.access(ops_sh, os.X_OK))
+    else:
+        cat.add_check("ops.sh exists", False)
+    
+    cat.add_check("logs/ exists", os.path.isdir(os.path.join(root, "logs")))
+    
+    runbook = os.path.join(root, "docs", "agent_startanleitung.html")
+    if os.path.exists(runbook):
+        with open(runbook, 'r') as f:
+            html = f.read()
+        cat.add_check("HTML Runbook valid", 
+                      "<!doctype html>" in html.lower() and "</html>" in html.lower())
+    else:
+        cat.add_check("HTML Runbook exists", False)
+    
+    cat.calculate_score()
+    return cat
+
+
+def eval_config(root: str) -> EvalCategory:
+    cat = EvalCategory("Configuration & Secrets", ".env, Keys, Tokens", 2.5)
+    
+    env_file = os.path.join(root, ".env")
+    if os.path.exists(env_file):
+        with open(env_file, 'r') as f:
+            env = f.read()
+        cat.add_check("DASHBOARD_ADMIN_TOKEN set", "DASHBOARD_ADMIN_TOKEN" in env)
+        cat.add_check("OPENAI_API_KEY_OPENA1 set", "OPENAI_API_KEY_OPENA1" in env)
+        cat.add_check("OPENAI_API_KEY_OPENA2 set", "OPENAI_API_KEY_OPENA2" in env)
+        cat.add_check("No placeholders", 
+                      not re.search(r'(YOUR_|CHANGE_ME|FIXME|TODO)', env, re.IGNORECASE))
+    else:
+        cat.add_check(".env exists", False)
+    
+    cat.calculate_score()
+    return cat
+
+
+def eval_quality(root: str) -> EvalCategory:
+    cat = EvalCategory("Code Quality & Standards", "Tests, gitignore, README", 1.0)
+    
+    cat.add_check("tests/ exists", os.path.isdir(os.path.join(root, "tests")))
+    
+    gi_file = os.path.join(root, ".gitignore")
+    if os.path.exists(gi_file):
+        with open(gi_file, 'r') as f:
+            gi = f.read()
+        cat.add_check(".gitignore covers .env, venv, cache",
+                      all(x in gi for x in [".env", ".venv", "__pycache__"]))
+    else:
+        cat.add_check(".gitignore exists", False)
+    
+    cat.add_check("README exists", 
+                  any(os.path.exists(os.path.join(root, f)) for f in ["README.md", "README.rst"]))
+    
+    cat.calculate_score()
+    return cat
+
+
+def eval_docs(root: str) -> EvalCategory:
+    cat = EvalCategory("Documentation & Accessibility", "Runbooks, Guides", 0.8)
+    
+    docs_dir = os.path.join(root, "docs")
+    if os.path.isdir(docs_dir):
+        docs = [f for f in os.listdir(docs_dir) if f.endswith(('.md', '.rst', '.html'))]
+        cat.add_check("Doc files present", len(docs) > 0)
+    else:
+        cat.add_check("docs/ exists", False)
+    
+    runbook = os.path.join(root, "docs", "agent_startanleitung.html")
+    cat.add_check("HTML Runbook present", os.path.exists(runbook))
+    
+    cat.calculate_score()
+    return cat
+
+
+def eval_deploy(root: str) -> EvalCategory:
+    cat = EvalCategory("Deployment Readiness", "Monitoring, Logging, Scaling", 1.2)
+    
+    cat.add_check("logs/ exists", os.path.isdir(os.path.join(root, "logs")))
+    
+    env_ex = os.path.join(root, ".env.example")
+    cat.add_check(".env.example present", os.path.exists(env_ex))
+    
+    compose = os.path.join(root, "docker-compose.prod.yml")
+    cat.add_check("docker-compose.prod.yml present", os.path.exists(compose))
+    
+    cat.calculate_score()
+    return cat
+
+
+# ============================================================================
+# Main: Runner & Reporter
+# ============================================================================
+
+def run_evaluation(root: str) -> Dict[str, Any]:
+    print(f"\n{'='*80}")
+    print(f"ELION Hyper-Dashboard – Workspace Evaluation v{EVALUATION_VERSION}")
+    print(f"Project: {root}")
+    print(f"Timestamp: {datetime.now().isoformat()}")
+    print(f"{'='*80}\n")
+    
+    evaluators = [
+        eval_policy(root),
+        eval_python(root),
+        eval_infra(root),
+        eval_config(root),
+        eval_quality(root),
+        eval_docs(root),
+        eval_deploy(root),
+    ]
+    
+    categories = [e.to_dict() for e in evaluators]
+    total_score = sum(e.score * e.weight for e in evaluators)
+    total_weight = sum(e.weight for e in evaluators)
+    overall_score = total_score / total_weight if total_weight > 0 else 0
+    
+    if overall_score >= 90:
+        readiness, emoji = "PRODUCTION_READY", "✅"
+    elif overall_score >= 75:
+        readiness, emoji = "PRODUCTION_READY_WITH_REVIEW", "⚠️"
+    elif overall_score >= 60:
+        readiness, emoji = "STAGING_READY", "🔶"
+    else:
+        readiness, emoji = "DEVELOPMENT_ONLY", "❌"
+    
+    return {
+        "evaluation_version": EVALUATION_VERSION,
+        "timestamp": datetime.now().isoformat(),
+        "project_root": root,
+        "overall_score": round(overall_score, 2),
+        "readiness_level": readiness,
+        "readiness_emoji": emoji,
+        "categories": categories,
+        "total_checks": sum(len(c["checks"]) for c in categories),
+        "passed_checks": sum(c["passed_checks"] for c in categories),
+        "failed_checks": sum(c["failed_checks"] for c in categories),
+    }
+
+
+def print_report(report: Dict[str, Any]) -> None:
+    emoji = report["readiness_emoji"]
+    readiness = report["readiness_level"]
+    score = report["overall_score"]
+    passed = report["passed_checks"]
+    failed = report["failed_checks"]
+    total = report["total_checks"]
+
+    print(f"\n{'='*80}")
+    print(f"{emoji} READINESS: {readiness}")
+    print(f"{'='*80}")
+    print(f"Score: {score}/100 | Passed: {passed}/{total} | Failed: {failed}\n")
+
+    for cat in report["categories"]:
+        name = cat["category"]
+        score_val = cat["score"]
+        p = cat["passed_checks"]
+        t = cat["total_checks"]
+        
+        if score_val >= 90:
+            st = "✅"
+        elif score_val >= 75:
+            st = "⚠️"
+        elif score_val >= 60:
+            st = "🔶"
         else:
-            results["failed"] += 1
-            self.print_result("scripts/ directory", False, "Not found")
+            st = "❌"
+
+        print(f"{st} {name:<40} {score_val:>5.1f}% ({p}/{t})")
         
-        self.results["evaluations"]["scripts_executability"] = results
-        return results
-    
-    def calculate_score(self):
-        """Calculate overall workspace score"""
-        total_passed = 0
-        total_tests = 0
-        
-        for category, data in self.results["evaluations"].items():
-            if isinstance(data, dict):
-                total_passed += data.get("passed", 0)
-                total_tests += data.get("passed", 0) + data.get("failed", 0)
-        
-        self.results["score"] = total_passed
-        self.results["max_score"] = total_tests
-        
-        if total_tests > 0:
-            percentage = (total_passed / total_tests) * 100
-            if percentage >= 90:
-                self.results["status"] = "excellent"
-            elif percentage >= 75:
-                self.results["status"] = "good"
-            elif percentage >= 60:
-                self.results["status"] = "fair"
-            else:
-                self.results["status"] = "poor"
-        
-        return self.results["score"], self.results["max_score"]
-    
-    def print_summary(self):
-        """Print evaluation summary"""
-        score, max_score = self.calculate_score()
-        percentage = (score / max_score * 100) if max_score > 0 else 0
-        
-        self.print_header("Workspace Evaluation Summary")
-        
-        print(f"Timestamp: {self.results['timestamp']}")
-        print(f"Score: {score}/{max_score} ({percentage:.1f}%)")
-        print(f"Status: {self.results['status'].upper()}")
+        for check in cat["checks"]:
+            if not check["passed"]:
+                detail = f" – {check['detail']}" if check['detail'] else ""
+                print(f"    ❌ {check['name']}{detail}")
         print()
-        
-        # Category breakdown
-        for category, data in self.results["evaluations"].items():
-            if isinstance(data, dict):
-                passed = data.get("passed", 0)
-                failed = data.get("failed", 0)
-                total = passed + failed
-                category_name = category.replace("_", " ").title()
-                status_color = Colors.GREEN if failed == 0 else Colors.YELLOW if passed > failed else Colors.RED
-                print(f"{status_color}{category_name}: {passed}/{total} passed{Colors.RESET}")
-        
-        print()
-        
-        # Overall status with color
-        if self.results["status"] == "excellent":
-            status_msg = f"{Colors.GREEN}✓ EXCELLENT - Workspace is in optimal condition{Colors.RESET}"
-        elif self.results["status"] == "good":
-            status_msg = f"{Colors.YELLOW}⚠ GOOD - Minor issues detected{Colors.RESET}"
-        elif self.results["status"] == "fair":
-            status_msg = f"{Colors.YELLOW}⚠ FAIR - Several issues need attention{Colors.RESET}"
-        else:
-            status_msg = f"{Colors.RED}✗ POOR - Critical issues detected{Colors.RESET}"
-        
-        print(status_msg)
-    
-    def save_report(self, output_file: str = "workspace_evaluation_report.json"):
-        """Save evaluation report to JSON file"""
-        output_path = self.root / output_file
-        with open(output_path, 'w') as f:
-            json.dump(self.results, f, indent=2)
-        print(f"\n{Colors.GREEN}Report saved to: {output_path}{Colors.RESET}")
-    
-    def run_full_evaluation(self, save_report: bool = True):
-        """Run complete workspace evaluation"""
-        print(f"{Colors.BOLD}PORTIER 3.0 Workspace Evaluation Framework{Colors.RESET}")
-        print(f"Root: {self.root}")
-        
-        # Run all evaluations
-        self.evaluate_file_structure()
-        self.evaluate_service_ports()
-        self.evaluate_configuration_files()
-        self.evaluate_test_coverage()
-        self.evaluate_security_compliance()
-        self.evaluate_scripts_executability()
-        
-        # Print summary
-        self.print_summary()
-        
-        # Save report
-        if save_report:
-            self.save_report()
-        
-        # Return exit code based on status
-        if self.results["status"] in ["excellent", "good"]:
-            return 0
-        else:
-            return 1
+
+    print(f"{'='*80}")
+    print(f"Report: {REPORT_FILENAME}\n")
 
 
 def main():
-    """Main entry point"""
-    import argparse
+    root = sys.argv[1].rstrip("/") if len(sys.argv) > 1 else os.getcwd()
     
-    parser = argparse.ArgumentParser(
-        description="PORTIER 3.0 Workspace Evaluation Framework"
-    )
-    parser.add_argument(
-        "--root",
-        default=".",
-        help="Project root directory (default: current directory)"
-    )
-    parser.add_argument(
-        "--no-save",
-        action="store_true",
-        help="Don't save report to file"
-    )
-    parser.add_argument(
-        "--output",
-        default="workspace_evaluation_report.json",
-        help="Output report filename (default: workspace_evaluation_report.json)"
-    )
+    if not os.path.exists(os.path.join(root, "bin", "ops.sh")):
+        print(f"❌ Not a valid ELION project root: {root}")
+        sys.exit(1)
     
-    args = parser.parse_args()
+    report = run_evaluation(root)
+    print_report(report)
     
-    evaluator = WorkspaceEvaluator(Path(args.root))
-    exit_code = evaluator.run_full_evaluation(save_report=not args.no_save)
+    with open(os.path.join(root, REPORT_FILENAME), 'w') as f:
+        json.dump(report, f, indent=2)
     
-    sys.exit(exit_code)
+    print(f"📄 Report saved: {os.path.join(root, REPORT_FILENAME)}\n")
+    sys.exit(0 if report["readiness_level"].startswith("PRODUCTION") else 1)
 
 
 if __name__ == "__main__":

@@ -46,20 +46,6 @@ fi
 # ENV LOADING
 # ──────────────────────────────────────────────────────────────────────────────
 
-if [ -f "$ROOT_DIR/.env" ]; then
-    echo "✅ Lade .env aus Projekt-Root"
-    set -a
-    source "$ROOT_DIR/.env"
-    set +a
-elif [ -f "$PROJECT_DIR/.env" ]; then
-    echo "✅ Lade lokale .env"
-    set -a
-    source "$PROJECT_DIR/.env"
-    set +a
-else
-    echo "⚠️  Keine .env gefunden (verwende Defaults)"
-fi
-
 # BEARER_TOKEN validation
 if [ -z "$BEARER_TOKEN" ]; then
     echo "⚠️  WARNING: BEARER_TOKEN nicht gesetzt"

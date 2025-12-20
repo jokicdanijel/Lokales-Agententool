@@ -49,16 +49,6 @@ fi
 # ENV LADEN
 # ============================================================================
 
-if [ -f "$ROOT_DIR/.env" ]; then
-    echo "✅ Lade .env aus Projekt-Root"
-    export $(grep -v '^#' "$ROOT_DIR/.env" | xargs)
-elif [ -f ".env" ]; then
-    echo "✅ Lade .env aus $PROJECT_DIR"
-    export $(grep -v '^#' .env | xargs)
-else
-    echo "⚠️  Keine .env gefunden, verwende Defaults"
-fi
-
 # ============================================================================
 # BEARER_TOKEN VALIDIERUNG
 # ============================================================================

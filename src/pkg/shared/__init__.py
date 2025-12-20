@@ -1,59 +1,61 @@
 """SCTA Shared Utilities."""
 
-# Re-export commonly used items for convenience
-from .auth import (
-    load_bearer_token_from_env,
-    verify_token_httpbearer,
-    verify_token_header,
-    create_token_verifier,
+# Configuration and base classes
+from .config_base import PortPolicy, BaseAgentConfig, AgentInfo
+
+# Security components
+from .security import (
+    BEARER_TOKEN,
+    DEV_MODE,
+    SECRET_KEYS,
+    mask_secrets,
     security,
+    verify_token,
+    optional_verify_token,
+    RateLimiter,
+    default_limiter,
+    api_limiter,
+    PortPolicyEnforcer
 )
-from .base_models import (
-    CommandRequest,
-    HealthResponse,
-    ServiceInfo,
-    SuccessResponse,
-    ErrorResponse,
-    get_current_timestamp_iso,
-    create_health_response,
-    create_service_info,
-)
-from .persistence import (
-    BaseDataStore,
-    JSONDataStore,
-    AuditLog,
-)
-from .config import (
-    validate_port,
-    get_port_from_env,
-    ALLOWED_PORT_RANGE,
-    FORBIDDEN_PORTS,
+
+# Safepoint client
+from .safepoint_client import SafepointClient
+
+# SSE client
+from .sse_client import (
+    SSEEvent,
+    SSEClient,
+    SafepointClient as SSESafepointClient,  # Note: duplicate of above, kept for backward compat
+    create_sse_client,
+    create_safepoint_client,
+    get_sse_client,
+    get_safepoint_client
 )
 
 __all__ = [
-    # Authentication
-    "load_bearer_token_from_env",
-    "verify_token_httpbearer",
-    "verify_token_header",
-    "create_token_verifier",
+    # Config
+    "PortPolicy",
+    "BaseAgentConfig", 
+    "AgentInfo",
+    # Security
+    "BEARER_TOKEN",
+    "DEV_MODE",
+    "SECRET_KEYS",
+    "mask_secrets",
     "security",
-    # Base Models
-    "CommandRequest",
-    "HealthResponse",
-    "ServiceInfo",
-    "SuccessResponse",
-    "ErrorResponse",
-    "get_current_timestamp_iso",
-    "create_health_response",
-    "create_service_info",
-    # Persistence
-    "BaseDataStore",
-    "JSONDataStore",
-    "AuditLog",
-    # Configuration
-    "validate_port",
-    "get_port_from_env",
-    "ALLOWED_PORT_RANGE",
-    "FORBIDDEN_PORTS",
+    "verify_token",
+    "optional_verify_token",
+    "RateLimiter",
+    "default_limiter",
+    "api_limiter",
+    "PortPolicyEnforcer",
+    # Safepoint
+    "SafepointClient",
+    # SSE
+    "SSEEvent",
+    "SSEClient",
+    "create_sse_client",
+    "create_safepoint_client",
+    "get_sse_client",
+    "get_safepoint_client"
 ]
-

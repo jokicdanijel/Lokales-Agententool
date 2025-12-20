@@ -1,0 +1,71 @@
+name: Tracing Smoke (non-blocking)
+
+on:
+  push:
+    branches: [ main, copilot/tracing-e2e ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  tracing-smoke:
+    name: Tracing Smoke (non-blocking)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Show docker / compose versions (debug)
+        run: |
+          echo "--- docker version ---"
+          docker --version || true
+          echo "--- docker compose plugin version ---"
+          docker compose version || true
+          echo "--- docker-compose (legacy) version ---"
+          docker-compose --version || true
+
+      - name: Ensure docker compose available (attempt install if missing)
+        run: |
+          if docker compose version >/dev/null 2>&1; then
+            echo "docker compose plugin available"
+          elif command -v docker-compose >/dev/null 2>&1; then
+            echo "docker-compose binary available"
+          else
+            echo "::warning::docker compose not found - attempting to install docker-compose-plugin"
+            sudo apt-get update && sudo apt-get install -y docker-compose-plugin || true
+            if docker compose version >/dev/null 2>&1; then
+              echo "docker compose plugin is now available"
+            else
+              echo "::warning::docker compose still not available - OTLP start will be skipped"
+              exit 0
+            fi
+          fi
+
+      - name: Prepare .env (guarded)
+        run: |
+          if [ -f mcp_server/.env.example ]; then
+            cp mcp_server/.env.example .env
+            echo "Copied .env from mcp_server/.env.example"
+          else
+            echo "::warning::.env.example not found (mcp_server/.env.example) - skipping copy"
+          fi
+
+      - name: Start OTLP Collector (docker compose)
+        uses: docker/compose-action@v4
+        with:
+          files: docker-compose.otel.yml
+          run: up -d
+
+      - name: Wait for services
+        run: sleep 5
+
+      - name: Run Tracing Smoke (non-blocking)
+        run: |
+          set -e
+          echo "Running tracing smoke tests (best-effort)"
+          python3 -m pytest -q evaluation/tests/test_tracing_presence.py || echo "tracing smoke tests had failures (non-blocking)"

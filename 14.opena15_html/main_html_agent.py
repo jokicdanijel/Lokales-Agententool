@@ -37,7 +37,7 @@ from jinja2 import Environment, FileSystemLoader, Template, TemplateNotFound, Te
 # CONFIG & CONSTANTS
 # ============================================================================
 
-PORT = int(os.getenv("PORT", 12361))
+PORT = int(os.getenv("PORT", 12368))
 SERVICE_NAME = "opena15"
 KUERZEL = "htmlp"
 VERSION = "1.0"

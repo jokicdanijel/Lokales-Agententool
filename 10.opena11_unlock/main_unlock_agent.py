@@ -36,7 +36,7 @@ import uvicorn
 # CONFIGURATION
 # ============================================================================
 
-PORT = int(os.getenv("OPENA11_PORT", "12356"))
+PORT = int(os.getenv("OPENA11_PORT", "12367"))
 HOST = os.getenv("OPENA11_HOST", "127.0.0.1")
 BEARER_TOKEN = os.getenv("BEARER_TOKEN", "")
 
