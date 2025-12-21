@@ -1,6 +1,49 @@
 
 # ============================================================================
-# Vendor-Leak-Cleanup (2025-11-27)
-# Ersetzt kopierte venv-Site-Packages durch korrekte Dependencies
+# ELION/PORTIER 3.0 - Core Dependencies
+# Restored: 2025-12-20 (Fixed missing dependencies bug)
 # ============================================================================
+
+# Web Framework
+fastapi==0.121.1
+uvicorn==0.38.0
+pydantic==2.12.4
+pydantic-settings==2.3.3
+
+# Database
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9
+alembic==1.13.1
+
+# Queue & Caching
+redis==5.0.1
+celery==5.3.4
+
+# Vector DB (optional)
+qdrant-client==1.7.0
+
+# HTTP Client
+httpx==0.25.2
+aiohttp==3.9.1
+
+# Authentication
+pyjwt>=2.7.0
+python-multipart>=0.0.6
+
+# Logging & Telemetry
+structlog==24.1.0
+python-json-logger==2.0.7
+opentelemetry-api==1.21.0
+opentelemetry-sdk==1.21.0
+opentelemetry-exporter-otlp==1.21.0
+opentelemetry-instrumentation-fastapi==0.42b0
+opentelemetry-instrumentation-sqlalchemy==0.42b0
+opentelemetry-instrumentation-redis==0.42b0
+
+# Utilities
+python-dotenv==1.0.0
+typer==0.9.0
+click==8.1.7
+
+# Network
 PySocks>=1.7.1  # Ersetzt src/pkg/socks*.py
