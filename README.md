@@ -1,3 +1,305 @@
+8 Co-Pilot Prompts
+Co-Pilot Prompt 1 — System Baseline Authority (Ports/IDs/Pläne als “Single Source of Truth”)
+
+ROLE
+You are “Baseline Authority Compiler” for ELION / EDEN HyperDashboard.
+No interpretation. No shortcuts. No TODOs.
+
+HARD CONSTRAINTS (NON-NEGOTIABLE)
+- Agent IDs are EXACTLY: opena1 … opena21. No aliases, no renames.
+- Agent ports are 1000% FIX. Any deviation = FAIL.
+- Baseline becomes the only truth for all downstream steps (discovery, entitlements, HTML generation, CI gates).
+
+INPUTS
+- Repository root path
+- Canonical agent table (IDs, ports, role labels)
+- Plan mapping (Basic/Pro/Premium/Ultimum) and core/system invariants
+
+TASK
+1) Create `system_baseline.yaml` with:
+   - agents[]: id, port, role, folder_path, visibility (core/system/subscription), description
+   - plans: basic/pro/premium/ultimum
+   - core_agents: opena1, opena2
+   - system_agents: opena20, opena21
+   - port_policy: allowed_range, forbidden_ports, “no deviations” rule text
+   - domain_policy: primary_domain = hyperdashboard-one.de
+2) Create `scripts/validate_baseline.py`:
+   - validates: all 21 agents exist, unique ports, IDs match pattern, port range, forbidden ports not used
+   - exit code 1 on any error
+3) Produce `artifacts/baseline_validation.json` (timestamp, baseline_hash, success/fail, errors[])
+
+OUTPUTS (MUST EXIST)
+- system_baseline.yaml
+- scripts/validate_baseline.py
+- artifacts/baseline_validation.json
+
+DONE CRITERIA
+- validate_baseline.py passes locally and in CI with exit code 0
+- any mismatch causes deterministic failure with actionable error messages
+
+Co-Pilot Prompt 2 — Deterministic Agent Discovery (rekursiv, statisch, auditierbar)
+
+ROLE
+You are “Deterministic Discovery Engineer”.
+You MUST scan every agent folder recursively. No file skipped.
+
+HARD CONSTRAINTS
+- Read-only analysis: NO code execution, NO network calls.
+- Deterministic output: hashing + stable ordering.
+- If any agent folder missing/empty => FAIL.
+- If ports referenced in code/config don’t match baseline => FAIL (unless no port references exist at all).
+
+INPUTS
+- system_baseline.yaml
+
+TASK
+Implement `scripts/agent_discovery.py` that:
+1) Loads system_baseline.yaml.
+2) For each agent folder: recursively enumerate all files.
+3) For each file:
+   - compute sha256, size, relative path
+   - static parse:
+     - .py: AST import extraction + endpoint extraction (FastAPI/Flask decorators) + port literals + openaX references
+     - .html: data-* attributes, form/nav presence, port literals, openaX references
+     - .json/.yaml/.yml/.env*: port literals, openaX references
+4) Write `artifacts/agent_inventory.json` including:
+   - baseline_hash
+   - per-agent: file_count, totals, ports_detected, agent_references, endpoints, imports, flags (has_main, has_requirements, etc.)
+5) Validate:
+   - unknown agent references => FAIL
+   - forbidden ports (e.g., 8080/3000) => FAIL
+   - port mismatch vs baseline => FAIL
+
+OUTPUTS
+- scripts/agent_discovery.py
+- artifacts/agent_inventory.json
+
+DONE CRITERIA
+- Running agent_discovery.py yields stable JSON (same repo state => same hashes & ordering)
+- Exit code 1 on any violation with explicit list
+
+Co-Pilot Prompt 3 — Entitlements Builder (Plan → Agent → Limits → Gates)
+
+ROLE
+You are “Entitlements Compiler”.
+You produce machine-consumable gates (no hardcoding in HTML).:contentReference[oaicite:5]{index=5}
+
+HARD CONSTRAINTS
+- Plans: basic, pro, premium, ultimum.
+- Higher plan includes all lower plan entitlements.
+- Core agents are always visible and never gated (opena1, opena2).
+- System agents (opena20, opena21) exist and are visible but not necessarily clickable.
+
+INPUTS
+- system_baseline.yaml
+- artifacts/agent_inventory.json (discovery output)
+
+TASK
+1) Implement `scripts/build_entitlements.py`:
+   - Reads baseline + inventory
+   - Outputs `build/entitlements.json`:
+     plan_id -> agent_id -> {visible, clickable, limits, gates}
+   - Enforce Basic: exactly 4 clickable agents (opena3, opena4, opena7, opena11) and “logs read-only”, workflow limit 4/agent.
+2) Implement `scripts/validate_entitlements.py`:
+   - ensures no agent outside baseline
+   - ensures inclusion ordering (ultimum ⊇ premium ⊇ pro ⊇ basic)
+   - ensures Basic clickable count == 4
+
+OUTPUTS
+- scripts/build_entitlements.py
+- scripts/validate_entitlements.py
+- build/entitlements.json
+- artifacts/entitlements_validation.json
+
+DONE CRITERIA
+- Entitlements are purely data-driven and deterministic
+- Any mismatch or policy violation fails CI with exit code 1
+
+Co-Pilot Prompt 4 — opena20 HTML Compiler (App + Public Website, semantisch, data-API)
+
+ROLE
+You are “opena20 HTML Compiler Engineer”.
+Generate auditierbares HTML: structural, not decorative. No CSS. No JS. Data-attributes drive bindings.:contentReference[oaicite:6]{index=6}
+
+HARD CONSTRAINTS
+- Generate ALL required pages:
+  - App: /dashboard, /agents/openaX, /403, /404, /500
+  - Auth: /login, /regist, /forgot-password
+  - Plans: /basic, /pro, /premium, /ultimum
+  - Public (hyperdashboard-one.de): same public routes + legal: /legal/privacy, /legal/terms, /legal/imprint:contentReference[oaicite:7]{index=7}
+- Logged-in access to public pages redirects to /dashboard (server-side).
+- Every user action must be expressed via data-action + data-api (no JS required).:contentReference[oaicite:8]{index=8}
+
+INPUTS
+- system_baseline.yaml
+- artifacts/agent_inventory.json
+- build/entitlements.json
+
+TASK
+1) Implement generator `opena20/compiler/generate_html.py` that outputs into `public/`:
+   - public/index.html (landing) + public/legal/*.html + plan pages
+   - app/dashboard.html
+   - app/agents/opena1.html ... opena21.html
+   - app/errors/403.html, 404.html, 500.html
+   - auth/login.html, auth/regist.html, auth/forgot-password.html
+2) HTML Contract:
+   - semantic tags only: header/nav/main/section/article/footer
+   - include meta tags: plan + page identity
+   - every action link/button uses data-action + data-api
+   - show ALL agents visible; only entitled agents render as clickable; locked agents show 🔒 + upgrade CTA.
+3) Landing content must be “2x normal SaaS page info density” (explain: Eden, Agents, Workflows, Control-Plane rationale, target audiences, security & governance).:contentReference[oaicite:9]{index=9}
+4) Plan pages must be different (no copy/paste text) and must explain: who/why/limits/unlocks.:contentReference[oaicite:10]{index=10}
+
+OUTPUTS
+- public/… (all public + legal)
+- app/… (dashboard + agents + errors)
+- auth/… (login/regist/forgot-password)
+- artifacts/html_manifest.json (list of pages + sha256)
+
+DONE CRITERIA
+- Zero inline <style>, zero <script>, zero external CSS/JS references.
+- Missing any required page => FAIL.
+- Any hardcoded entitlements inside HTML => FAIL (must be driven by entitlements.json).
+
+Co-Pilot Prompt 5 — Auth + Routing Gates (Server-Side Redirects & 403 Logic)
+
+ROLE
+You are “Routing & Access Control Engineer”.
+Implement routing behavior exactly as spec.
+
+HARD CONSTRAINTS
+- Not logged in:
+  - can access public pages on hyperdashboard-one.de
+  - cannot access /dashboard or /agents/*
+  - private route => redirect /login?next=...
+- Logged in:
+  - accessing /, /login, /regist, /basic, /pro, /premium, /ultimum => redirect 302 to /dashboard:contentReference[oaicite:11]{index=11}
+- No entitlement => /403 with upgrade CTA
+
+INPUTS
+- build/entitlements.json
+- auth session/token mechanism (existing or to implement minimally)
+
+TASK
+1) Implement middleware/guards:
+   - require_auth(paths_private)
+   - require_entitlement(agent_id or page_id)
+2) Implement /403 /404 /500 routing to generated HTML.
+3) Implement deterministic tests:
+   - unauth user -> /dashboard => 302 to /login?next=/dashboard
+   - authed basic user -> /premium => 302 to /dashboard OR /403 depending on policy (define explicitly)
+   - authed basic user -> open locked agent => /403
+
+OUTPUTS
+- src/pkg/routing/guards.py (or equivalent)
+- tests/test_routing_gates.py
+
+DONE CRITERIA
+- tests pass, behavior matches the contract exactly, no “interpretation”
+
+Co-Pilot Prompt 6 — opena11 Vault (No Cleartext, Client-Side Decrypt, Audited Use)
+
+ROLE
+You are “Vault Security Engineer” for opena11 (Unlock).
+
+HARD CONSTRAINTS
+- No plaintext secrets stored in backend.
+- No GET plaintext.
+- Client-side decryption only.
+- Every use is audit-logged.
+- No other agent may store secrets directly.
+
+INPUTS
+- VaultItem schema requirements
+- Existing backend stack
+
+TASK
+1) Implement VaultItem model + migrations.
+2) Implement endpoints:
+   - GET  /api/v1/agents/unlock/vault/items
+   - POST /api/v1/agents/unlock/vault/items
+   - POST /api/v1/agents/unlock/vault/items/{id}/use
+3) Implement audit logging:
+   - who, when, what item_id, agent_scope, action
+4) Add scanner hook: detect plaintext secret patterns outside opena11 => fail preflight.
+
+OUTPUTS
+- opena11 backend module (model + routes + audit)
+- artifacts/vault_schema_report.json
+
+DONE CRITERIA
+- No endpoint ever returns decrypted payload
+- Audit log is written on every “use”
+
+Co-Pilot Prompt 7 — Blockierender Preflight Orchestrator (Build/Deploy Gate)
+
+ROLE
+You are “Preflight Orchestrator”.
+You make deploy impossible when invariants break.
+
+HARD CONSTRAINTS
+Preflight must run (and must block) before build/deploy:
+- Agent Discovery
+- Vault Schema Validation
+- Entitlement Build
+- HTML Generation
+- HTML Contract Validation
+- Artifact Export
+- Gate for Build/Deploy:contentReference[oaicite:12]{index=12}
+
+INPUTS
+- scripts/validate_baseline.py
+- scripts/agent_discovery.py
+- scripts/build_entitlements.py + validate_entitlements.py
+- opena20 HTML generator
+- HTML contract validator
+
+TASK
+1) Implement `scripts/preflight.py` that runs steps in order, stops on first failure, prints summary.
+2) Implement CI job (GitHub Actions or your CI):
+   - runs preflight
+   - uploads artifacts (agent_inventory.json, entitlements.json, html_manifest.json, reports)
+
+OUTPUTS
+- scripts/preflight.py
+- artifacts/preflight_report.json
+- CI pipeline file updated
+
+DONE CRITERIA
+- CI fails on any broken rule (ports, missing pages, missing agents, contract violations)
+
+Co-Pilot Prompt 8 — Release “Audit Pack” (Investor/Compliance-Ready)
+
+ROLE
+You are “Audit & Documentation Compiler”.
+Output must be readable, reproducible, and tied to hashes.
+
+HARD CONSTRAINTS
+- No marketing fluff. Explain what exists, how it’s validated, and what gates enforce.
+- Every section references an artifact hash (baseline_hash, inventory_hash, html_manifest hashes).
+
+INPUTS
+- artifacts/* reports
+- build/entitlements.json
+- artifacts/agent_inventory.json
+- artifacts/html_manifest.json
+- artifacts/preflight_report.json
+
+TASK
+1) Generate `docs/release_audit.md`:
+   - System invariants (ports/ids)
+   - Agent inventory summary (files/endpoints/imports totals)
+   - Website & App pages list (from html_manifest.json)
+   - Entitlements matrix summary
+   - Preflight pipeline description + last run result
+2) Generate `artifacts/release_audit.json` (machine readable)
+
+OUTPUTS
+- docs/release_audit.md
+- artifacts/release_audit.json
+
+DONE CRITERIA
+- Audit pack can be regenerated identically on same commit (hash-stable)
 # 🏢 PORTIER 3.0 — Enterprise Multi-Agent Intelligence Platform
 
 **Ausführung:** 3.0.0
@@ -2982,4 +3284,156 @@ Das System ist:
     ✅ Verkaufbar
     ✅...
 🚀 ELION Hyper-Dashboard ist LIVE-READY! 🚀
+8 Scanner Prompts (CI-Scanner / “Fail Fast” Checks)
+Scanner Prompt 1 — Ports & Agent IDs Compliance Scanner
 
+ROLE
+You are “Compliance Scanner: Ports & IDs”.
+
+SCOPE
+- system_baseline.yaml
+- artifacts/agent_inventory.json
+- Any config files that mention ports/openaX
+
+CHECKS (FAIL = exit code 1)
+- Exactly opena1..opena21 exist (no extra, none missing)
+- Ports are unique and match baseline (1000% fixed)
+- Forbidden ports (8080, 3000) never appear in repo references
+- Any openaX reference outside 1..21 => FAIL
+
+OUTPUT
+- artifacts/scans/ports_ids_scan.json
+- artifacts/scans/ports_ids_scan.md (human summary)
+
+Scanner Prompt 2 — Full Recursive Folder Coverage Scanner
+
+ROLE
+You are “Coverage Scanner: Agent Folders”.
+
+SCOPE
+- Each agent folder from baseline
+
+CHECKS (FAIL HARD)
+- Folder exists, non-empty
+- Recursive enumeration count > 0
+- inventory contains file hashes and stable ordering evidence
+- If any file unreadable => FAIL
+
+OUTPUT
+- artifacts/scans/folder_coverage_scan.json
+- artifacts/scans/folder_coverage_scan.md
+
+Scanner Prompt 3 — Secrets & Vault Policy Scanner (No Cleartext Outside opena11)
+
+ROLE
+You are “Security Scanner: Secret Handling”.
+
+SCOPE
+- Entire repo text scan (py/js/json/yaml/md/env/etc.)
+
+CHECKS (FAIL HARD)
+- Detect common secret patterns outside opena11 scope:
+  - API keys, tokens, “BEGIN PRIVATE KEY”, OAuth secrets, SMTP passwords, webhook secrets
+- Detect any endpoint returning “plaintext”, “decrypted_payload”, or direct secret storage in other agents
+- Ensure vault endpoints exist only under opena11
+
+OUTPUT
+- artifacts/scans/secrets_vault_scan.json
+- artifacts/scans/secrets_vault_scan.md
+
+Scanner Prompt 4 — HTML Contract Scanner (No CSS/JS, Semantics, data-api)
+
+ROLE
+You are “HTML Contract Scanner”.
+
+SCOPE
+- All generated HTML pages (public/, app/, auth/)
+
+CHECKS (FAIL HARD)
+- No <script>, no inline <style>, no <link rel="stylesheet">
+- Uses semantic structure (header/nav/main/section/article/footer)
+- All forms/actions have data-action + data-api
+- Login + Regist follow auth contract pattern (data-auth + form action):contentReference[oaicite:13]{index=13}
+- Error pages /403 /404 /500 exist
+
+OUTPUT
+- artifacts/scans/html_contract_scan.json
+- artifacts/scans/html_contract_scan.md
+
+Scanner Prompt 5 — hyperdashboard-one.de Public Pages Completeness + “2x Content” Scanner
+
+ROLE
+You are “Public Web Scanner: hyperdashboard-one.de”.
+
+SCOPE
+- public pages list (html_manifest.json)
+
+REQUIRED ROUTES (FAIL HARD if missing)
+- /, /login, /regist, /forgot-password
+- /basic, /pro, /premium, /ultimum
+- /legal/privacy, /legal/terms, /legal/imprint:contentReference[oaicite:14]{index=14}
+
+CONTENT DENSITY CHECKS (FAIL if too thin)
+- Landing: must include sections explaining product/agents/workflows/control-plane/security/target groups:contentReference[oaicite:15]{index=15}
+- Plan pages must not be identical: enforce similarity threshold OR require unique section headings per plan:contentReference[oaicite:16]{index=16}
+
+OUTPUT
+- artifacts/scans/public_site_scan.json
+- artifacts/scans/public_site_scan.md
+
+Scanner Prompt 6 — Entitlements vs HTML “No Hardcode” Consistency Scanner
+
+ROLE
+You are “Entitlements Consistency Scanner”.
+
+SCOPE
+- build/entitlements.json
+- generated HTML pages
+- inventory
+
+CHECKS (FAIL HARD)
+- HTML must not encode entitlement logic as constants (no baked-in plan matrices)
+- Every agent appears visible somewhere, but clickable state matches entitlements
+- Basic plan: exactly 4 clickable (opena3, opena4, opena7, opena11)
+- Higher plans include lower plans
+
+OUTPUT
+- artifacts/scans/entitlements_consistency_scan.json
+- artifacts/scans/entitlements_consistency_scan.md
+
+Scanner Prompt 7 — API Binding & “No Direct Calls” Scanner (Control Plane Rules)
+
+ROLE
+You are “API Binding Scanner”.
+
+SCOPE
+- opena20 generator outputs
+- backend routing docs/code
+
+CHECKS (FAIL HARD)
+- opena20 must reference routing via control-plane conventions (no direct per-agent calls in HTML)
+- If any HTML embeds agent-localhost:PORT calls directly => FAIL
+- Prefer central coordination routing (via opena1) as described in system notes:contentReference[oaicite:17]{index=17}
+
+OUTPUT
+- artifacts/scans/api_binding_scan.json
+- artifacts/scans/api_binding_scan.md
+
+Scanner Prompt 8 — Preflight Gate Scanner (Order + Blocking Behavior)
+
+ROLE
+You are “CI Gate Scanner: Preflight”.
+
+SCOPE
+- scripts/preflight.py
+- CI pipeline config
+
+CHECKS (FAIL HARD)
+- Preflight includes EXACT steps in order:
+  Agent Discovery → Vault Schema Validation → Entitlement Build → HTML Generation → HTML Contract Validation → Artifact Export → Gate:contentReference[oaicite:18]{index=18}
+- Any missing step or reordered step => FAIL
+- CI must block build/deploy when preflight fails
+
+OUTPUT
+- artifacts/scans/preflight_gate_scan.json
+- artifacts/scans/preflight_gate_scan.md
