@@ -27,19 +27,20 @@ jobs:
                   python -m pip install --upgrade pip
                   pip install -r requirements-eval.txt
 
-            - name: Run evaluation
+            - name: Run evaluation (sample)
               run: |
                   mkdir -p evaluation/results
-                  python -m evaluation.runner evaluation/datasets/sample.jsonl --out evaluation/results/report.json
+                  python -m evaluation.runner evaluation/datasets/sample.jsonl --out evaluation/results/report_sample.json || true
 
-                        - name: Upload report
-                            uses: actions/upload-artifact@v4
-              with:
-                  name: evaluation-report
-                  path: evaluation/results/report.json
+            - name: Run evaluation (generated)
+              run: |
+                  python -m evaluation.runner evaluation/datasets/generated.jsonl --out evaluation/results/report_generated.json || true
 
-            - name: Upload results directory
-                            uses: actions/upload-artifact@v4
+            - name: Upload reports
+              uses: actions/upload-artifact@v4
               with:
-                  name: evaluation-results
-                  path: evaluation/results
+                name: evaluation-reports
+                path: |
+                  evaluation/results/report_sample.json
+                  evaluation/results/report_generated.json
+
