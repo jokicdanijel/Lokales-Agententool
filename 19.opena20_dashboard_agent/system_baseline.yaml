@@ -1,0 +1,244 @@
+# ============================================================================
+# ELION Hyper-Dashboard – System Baseline (Single Source of Truth)
+# Version: 1.0
+# Last Updated: 2025-12-22
+# ============================================================================
+
+version: "1.0"
+system:
+  name: "ELION Hyper-Dashboard"
+  codename: "PORTIER 3.0"
+  agent_count: 21
+
+# ============================================================================
+# DOMAIN + PORT POLICY (Non-Negotiable)
+# ============================================================================
+port_policy:
+  allowed_range: [12344, 12399]
+  forbidden_ports:
+    - 8080    # Reserved for external OpenWebUI
+    - 3000    # Reserved for Node.js dev servers
+  rule: "Ports sind unveränderlich. Abweichungen führen zu Build-Abbruch."
+  enforcement: "Preflight Check + CI Validation"
+
+domain_policy:
+  primary_domain: "hyperdashboard-one.de"
+
+# ============================================================================
+# AGENTS (Complete Registry)
+# NOTE: IDs MUST be exactly opena1..opena21
+# ============================================================================
+agents:
+  - id: opena1
+    name: "Portier (Koordinator)"
+    port: 12344
+    role: central_coordinator
+    folder: "1.opena1&2_portier/opena1"
+    visibility: core
+    description: "Routing, Service Discovery, Health Aggregation"
+
+  - id: opena2
+    name: "Archivar (Archiv)"
+    port: 12345
+    role: archivator
+    folder: "1.opena1&2_portier/opena2"
+    visibility: core
+    description: "Safepoint Storage, Audit Logs, JSONL Archive"
+
+  - id: opena3
+    name: "OpenWebUI Adapter"
+    port: 12347
+    role: ui_adapter
+    folder: "2.opena3_openwebui"
+    visibility: basic
+    description: "Chat Interface, Model Proxy, SSE Streaming"
+
+  - id: opena4
+    name: "Telegram Agent"
+    port: 12346
+    role: messaging
+    folder: "3.opena4_telegram"
+    visibility: basic
+    description: "Telegram Bot API, Webhook Handler"
+
+  - id: opena5
+    name: "VSCode Integration"
+    port: 12350
+    role: dev_tools
+    folder: "4.opena5_vscode"
+    visibility: ultimum
+    description: "Code Navigation, IntelliSense Proxy"
+
+  - id: opena6
+    name: "Browser Automation"
+    port: 12351
+    role: automation
+    folder: "5.opena6_browser"
+    visibility: premium
+    description: "Playwright/Selenium, Web Scraping"
+
+  - id: opena7
+    name: "Email Agent"
+    port: 12352
+    role: email
+    folder: "6.opena7_email"
+    visibility: basic
+    description: "SMTP/IMAP, Email Classification, Auto-Reply"
+
+  - id: opena8
+    name: "WhatsApp Agent"
+    port: 12353
+    role: messaging
+    folder: "7.opena8_whatsapp"
+    visibility: pro
+    description: "WhatsApp Business API"
+
+  - id: opena9
+    name: "Phone Agent"
+    port: 12354
+    role: telephony
+    folder: "8.opena9_telephone"
+    visibility: premium
+    description: "VoIP, Call Routing, Transcription"
+
+  - id: opena10
+    name: "Call Tracking"
+    port: 12355
+    role: analytics
+    folder: "9.opena10_call_tracking"
+    visibility: ultimum
+    description: "Call Analytics, Lead Attribution"
+
+  - id: opena11
+    name: "Access Control"
+    port: 12356
+    role: security
+    folder: "10.opena11_unlock"
+    visibility: basic
+    description: "JWT Validation, Permission Management"
+
+  - id: opena12
+    name: "Social Media Agent"
+    port: 12357
+    role: marketing
+    folder: "11.opena12_social_media"
+    visibility: pro
+    description: "Twitter/LinkedIn/Instagram APIs"
+
+  - id: opena13
+    name: "Influencer Agent"
+    port: 12358
+    role: marketing
+    folder: "12.opena13_influencer"
+    visibility: ultimum
+    description: "Campaign Management, Influencer Outreach"
+
+  - id: opena14
+    name: "Calendar Agent"
+    port: 12359
+    role: scheduling
+    folder: "13.opena14_calendar"
+    visibility: pro
+    description: "Google Calendar, Meeting Scheduler"
+
+  - id: opena15
+    name: "HTML Generator"
+    port: 12360
+    role: content
+    folder: "14.opena15_html"
+    visibility: premium
+    description: "Dynamic HTML, Template Rendering"
+
+  - id: opena16
+    name: "Shop Agent"
+    port: 12361
+    role: ecommerce
+    folder: "15.opena16_shop"
+    visibility: premium
+    description: "Product Catalog, Cart Management"
+
+  - id: opena17
+    name: "Homepage Creator"
+    port: 12362
+    role: website
+    folder: "16.opena17_homepagecreator"
+    visibility: ultimum
+    description: "Website Builder, Deployment"
+
+  - id: opena18
+    name: "CRM Agent"
+    port: 12363
+    role: crm
+    folder: "17.opena18_CMR"
+    visibility: pro
+    description: "Customer Management, Pipeline Tracking"
+
+  - id: opena19
+    name: "Finance Agent"
+    port: 12364
+    role: finance
+    folder: "18.opena19_Aktien&Crypto"
+    visibility: ultimum
+    description: "Stock/Crypto Tracking, Portfolio Management"
+
+  - id: opena20
+    name: "Dashboard Agent"
+    port: 12349
+    role: monitoring
+    folder: "19.opena20_dashboard_agent"
+    visibility: system
+    description: "Agent Registry, Health Checks, Metrics Export"
+
+  - id: opena21
+    name: "Workflow Agent"
+    port: 12367
+    role: orchestration
+    folder: "20.opena21_workflow"
+    visibility: system
+    description: "Multi-Step Workflows, Agent Chaining"
+
+# ============================================================================
+# PLANS (Feature Tiers)
+# ============================================================================
+plans:
+  basic:
+    name: "Basic Plan"
+    agents: [opena3, opena4, opena7, opena11]
+    description: "Communication essentials"
+
+  pro:
+    name: "Pro Plan"
+    agents: [opena8, opena12, opena14, opena18]
+    description: "Business tools + CRM"
+
+  premium:
+    name: "Premium Plan"
+    agents: [opena6, opena9, opena15, opena16]
+    description: "Automation + E-Commerce"
+
+  ultimum:
+    name: "Ultimum Plan"
+    agents: [opena5, opena10, opena13, opena17, opena19]
+    description: "Enterprise features + Finance"
+
+core_agents: [opena1, opena2]
+system_agents: [opena20, opena21]
+
+# ============================================================================
+# INVARIANTS (Build-Breaking Rules)
+# ============================================================================
+invariants:
+  - rule: "Agent IDs must match pattern: opena[1-21]"
+    enforcement: "Validator Script + CI"
+
+  - rule: "Ports must be in range [12344, 12399]"
+    enforcement: "Preflight Check"
+
+  - rule: "Folders must exist and contain main.py or equivalent"
+    enforcement: "Discovery Script"
+
+  - rule: "No duplicate ports allowed"
+    enforcement: "Port Conflict Detection"
+
+  - rule: "Port 8080 is forbidden for internal services"
+    enforcement: "ops.sh validation"

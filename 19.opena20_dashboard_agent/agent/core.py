@@ -10,7 +10,6 @@ import asyncio
 import logging
 import os
 from dataclasses import dataclass
-from typing import Optional
 
 logger = logging.getLogger("agent.core")
 handler = logging.StreamHandler()
@@ -24,7 +23,7 @@ logger.setLevel(logging.INFO)
 class AgentConfig:
     provider: str | None = None
     model: str | None = None
-    project_endpoint: Optional[str] = None
+    project_endpoint: str | None = None
     dry_run: bool | None = None
 
     def __post_init__(self) -> None:
