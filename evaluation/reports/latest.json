@@ -1,0 +1,93 @@
+{
+  "status": "success",
+  "data": {
+    "timestamp": "2025-12-18 13:48:53.587851",
+    "health_checks": [
+      {
+        "url": "http://127.0.0.1:12344",
+        "ok": true,
+        "status_code": 200,
+        "latency_ms": 3.2472610473632812,
+        "error": null
+      },
+      {
+        "url": "http://127.0.0.1:12349",
+        "ok": true,
+        "status_code": 200,
+        "latency_ms": 2.366781234741211,
+        "error": null
+      }
+    ],
+    "latency_summary": {
+      "count": 2,
+      "mean_ms": 22.516608238220215,
+      "p50_ms": 9.955167770385742,
+      "p95_ms": 9.955167770385742,
+      "max_ms": 35.07804870605469
+    },
+    "cache_metrics": {
+      "http://127.0.0.1:12347": {
+        "detail": "Not Found"
+      },
+      "http://127.0.0.1:12348": {
+        "error": "HTTPConnectionPool(host='127.0.0.1', port=12348): Max retries exceeded with url: /cache/metrics (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x774aeecf2b70>: Failed to establish a new connection: [Errno 111] Connection refused'))"
+      },
+      "http://127.0.0.1:12349": {
+        "detail": "Not Found"
+      },
+      "http://127.0.0.1:12350": {
+        "detail": "Not Found"
+      },
+      "http://127.0.0.1:12351": {
+        "detail": "Not Found"
+      },
+      "http://127.0.0.1:12352": {
+        "detail": "Not Found"
+      },
+      "http://127.0.0.1:12353": {
+        "error": "HTTPConnectionPool(host='127.0.0.1', port=12353): Max retries exceeded with url: /cache/metrics (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x774aeecf2210>: Failed to establish a new connection: [Errno 111] Connection refused'))"
+      },
+      "http://127.0.0.1:12354": {
+        "detail": "Not Found"
+      },
+      "http://127.0.0.1:12355": {
+        "error": "HTTPConnectionPool(host='127.0.0.1', port=12355): Max retries exceeded with url: /cache/metrics (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x774aeecf1f70>: Failed to establish a new connection: [Errno 111] Connection refused'))"
+      },
+      "http://127.0.0.1:12356": {
+        "detail": "Not Found"
+      },
+      "http://127.0.0.1:12357": {
+        "detail": "Not Found"
+      },
+      "http://127.0.0.1:12358": {
+        "detail": "Not Found"
+      },
+      "http://127.0.0.1:12359": {
+        "error": "HTTPConnectionPool(host='127.0.0.1', port=12359): Max retries exceeded with url: /cache/metrics (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x774aeeb44a10>: Failed to establish a new connection: [Errno 111] Connection refused'))"
+      },
+      "http://127.0.0.1:12360": {
+        "detail": "Not Found"
+      },
+      "http://127.0.0.1:12361": {
+        "detail": "Not Found"
+      },
+      "http://127.0.0.1:12362": {
+        "error": "HTTPConnectionPool(host='127.0.0.1', port=12362): Max retries exceeded with url: /cache/metrics (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x774aeecf2ed0>: Failed to establish a new connection: [Errno 111] Connection refused'))"
+      },
+      "http://127.0.0.1:12363": {
+        "detail": "Not Found"
+      },
+      "http://127.0.0.1:12364": {
+        "error": "HTTPConnectionPool(host='127.0.0.1', port=12364): Max retries exceeded with url: /cache/metrics (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x774aeecf3920>: Failed to establish a new connection: [Errno 111] Connection refused'))"
+      },
+      "http://127.0.0.1:12365": {
+        "detail": "Not Found"
+      }
+    },
+    "schema_validation": {
+      "passed": 0,
+      "total": 2,
+      "pass_rate": 0.0
+    }
+  }
+}
