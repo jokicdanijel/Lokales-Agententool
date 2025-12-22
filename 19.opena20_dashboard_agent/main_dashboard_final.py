@@ -13,27 +13,27 @@ Central Dashboard für ELION/Portier System - Alle 4 Blöcke integriert
 PORTIER 3.0 Konform | Option-2-Flow | Port-Policy 12344-12399
 """
 
+import asyncio
+import json
+import logging
 import os
 import sys
 import time
-import json
-import logging
-import asyncio
 from contextlib import asynccontextmanager
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import List, Optional, Dict, Any
+from typing import Any
 
-import httpx
 import aiohttp
-from fastapi import FastAPI, HTTPException, Depends, Security, Request
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi.responses import HTMLResponse, StreamingResponse, PlainTextResponse, FileResponse
+import httpx
+import uvicorn
+from fastapi import Depends, FastAPI, HTTPException, Request, Security
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse, StreamingResponse
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field, ConfigDict
-import uvicorn
+from pydantic import BaseModel, ConfigDict, Field
 
 # =============================================================================
 # BLOCK 1/4 — IMPORTS, CONFIG, AGENT REGISTRY, SAFEPOINT WRITER 3.0
@@ -77,39 +77,39 @@ AGENT_REGISTRY = [
     {"id": "opena16", "name": "Shop Creator Agent", "kuerzel": "shopp", "port": 12361},
     {"id": "opena17", "name": "Homepage Creator Agent", "kuerzel": "homep", "port": 12362},
     {"id": "opena18", "name": "Local Storage Agent", "kuerzel": "storagep", "port": 12363},
-    {"id": "opena19", "name": "Trading Agent", "kuerzel": "tradep", "port": 12364}
+    {"id": "opena19", "name": "Trading Agent", "kuerzel": "tradep", "port": 12364},
 ]
 
 # =============================================================================
 # SAFEPOINT WRITER 3.0 (PORTIER 3.0 KONFORM)
 # =============================================================================
 
+
 class SafepointClient:
     """Safepoint-Client 3.0 – Remote Archivp Writer (für alle Agenten außer opena2)."""
-    
+
     SECRET_KEYS = {"token", "auth", "password", "apikey", "key", "secret", "credentials", "bearer"}
     CATEGORIES = {"CMD", "RESP", "ROUTE", "DISPATCH"}
-    
+
     @staticmethod
     def _mask(obj):
         if isinstance(obj, dict):
             return {
-                k: ("***" if any(s in k.lower() for s in SafepointClient.SECRET_KEYS)
-                    else SafepointClient._mask(v))
+                k: ("***" if any(s in k.lower() for s in SafepointClient.SECRET_KEYS) else SafepointClient._mask(v))
                 for k, v in obj.items()
             }
         if isinstance(obj, list):
             return [SafepointClient._mask(i) for i in obj]
         return obj
-    
+
     @staticmethod
     async def write(category: str, source: str, destination: str, request_id: str, payload: dict):
         if category not in SafepointClient.CATEGORIES:
             raise ValueError(f"Invalid category: {category}")
-        
-        iso = datetime.now(timezone.utc).isoformat()
+
+        iso = datetime.now(UTC).isoformat()
         ts = int(datetime.now().timestamp())
-        
+
         body = {
             "timestamp": iso,
             "sp_timestamp": ts,
@@ -118,9 +118,9 @@ class SafepointClient:
             "category": category,
             "request_id": request_id,
             "payload": SafepointClient._mask(payload),
-            "strict": True
+            "strict": True,
         }
-        
+
         async with httpx.AsyncClient() as client:
             await client.post(
                 f"{OPENA2_URL}/store/{category}",
@@ -129,6 +129,7 @@ class SafepointClient:
                 timeout=15.0,
             )
         return body
+
 
 safepoint_client = SafepointClient()
 
@@ -140,10 +141,7 @@ safepoint_client = SafepointClient()
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
-    handlers=[
-        logging.FileHandler(LOGS_DIR / f"{AGENT_ID}.nohup.log"),
-        logging.StreamHandler(sys.stdout)
-    ]
+    handlers=[logging.FileHandler(LOGS_DIR / f"{AGENT_ID}.nohup.log"), logging.StreamHandler(sys.stdout)],
 )
 logger = logging.getLogger(AGENT_ID)
 
@@ -153,6 +151,7 @@ METRICS_AVAILABLE = False
 
 try:
     from routers.knowledge_router import router as knowledge_router
+
     KNOWLEDGE_AVAILABLE = True
     logger.info("Knowledge router loaded successfully")
 except ImportError as e:
@@ -160,6 +159,7 @@ except ImportError as e:
 
 try:
     from metrics_exporter import MetricsExporter, initialize_exporter
+
     METRICS_AVAILABLE = True
     logger.info("Metrics exporter loaded successfully")
 except ImportError as e:
@@ -168,28 +168,30 @@ except ImportError as e:
 # SECURITY
 security = HTTPBearer()
 
+
 def verify_token(credentials: HTTPAuthorizationCredentials = Security(security)):
     if credentials.credentials != BEARER_TOKEN:
         raise HTTPException(status_code=401, detail="Invalid Bearer token")
     return credentials.credentials
 
+
 # SSE BUS
 class SSEBus:
     """Server-Sent-Events Bus"""
-    
+
     def __init__(self):
-        self.clients: List[asyncio.Queue[Dict[str, Any]]] = []
-    
-    async def subscribe(self) -> asyncio.Queue[Dict[str, Any]]:
+        self.clients: list[asyncio.Queue[dict[str, Any]]] = []
+
+    async def subscribe(self) -> asyncio.Queue[dict[str, Any]]:
         q = asyncio.Queue()
         self.clients.append(q)
         return q
-    
+
     def unsubscribe(self, q):
         if q in self.clients:
             self.clients.remove(q)
-    
-    async def publish(self, event: Dict[str, Any]):
+
+    async def publish(self, event: dict[str, Any]):
         dead = []
         for c in self.clients:
             try:
@@ -199,7 +201,9 @@ class SSEBus:
         for d in dead:
             self.unsubscribe(d)
 
+
 sse_bus = SSEBus()
+
 
 # PYDANTIC MODELS
 class AgentStatus(BaseModel):
@@ -207,26 +211,28 @@ class AgentStatus(BaseModel):
     name: str
     kuerzel: str
     port: int
-    status: str        # ok, error, unreachable
-    uptime_seconds: Optional[float] = None
-    message: Optional[str] = None
-    
+    status: str  # ok, error, unreachable
+    uptime_seconds: float | None = None
+    message: str | None = None
+
     model_config = ConfigDict(extra="forbid")
+
 
 class AllAgentsStatus(BaseModel):
     total: int
     online: int
     offline: int
-    agents: List[AgentStatus]
+    agents: list[AgentStatus]
     timestamp: str
-    
+
     model_config = ConfigDict(extra="forbid")
 
+
 # AGENT HEALTH CHECKING
-async def check_agent_health(agent: Dict[str, Any]) -> AgentStatus:
+async def check_agent_health(agent: dict[str, Any]) -> AgentStatus:
     """Check health of a single agent."""
     url = f"http://127.0.0.1:{agent['port']}/health"
-    
+
     try:
         async with aiohttp.ClientSession() as s:
             async with s.get(url, timeout=aiohttp.ClientTimeout(total=3)) as r:
@@ -239,7 +245,7 @@ async def check_agent_health(agent: Dict[str, Any]) -> AgentStatus:
                         port=agent["port"],
                         status="ok",
                         uptime_seconds=data.get("uptime_seconds"),
-                        message="Online"
+                        message="Online",
                     )
                 else:
                     return AgentStatus(
@@ -248,19 +254,19 @@ async def check_agent_health(agent: Dict[str, Any]) -> AgentStatus:
                         kuerzel=agent["kuerzel"],
                         port=agent["port"],
                         status="error",
-                        message=f"HTTP {r.status}"
+                        message=f"HTTP {r.status}",
                     )
-    
-    except asyncio.TimeoutError:
+
+    except TimeoutError:
         return AgentStatus(
             id=agent["id"],
             name=agent["name"],
             kuerzel=agent["kuerzel"],
             port=agent["port"],
             status="unreachable",
-            message="Timeout"
+            message="Timeout",
         )
-    
+
     except Exception as e:
         return AgentStatus(
             id=agent["id"],
@@ -268,46 +274,45 @@ async def check_agent_health(agent: Dict[str, Any]) -> AgentStatus:
             kuerzel=agent["kuerzel"],
             port=agent["port"],
             status="unreachable",
-            message=str(e)
+            message=str(e),
         )
+
 
 async def check_all_agents() -> AllAgentsStatus:
     """Parallel check for all agents."""
     tasks = [check_agent_health(a) for a in AGENT_REGISTRY]
     results = await asyncio.gather(*tasks)
-    
+
     online = sum(r.status == "ok" for r in results)
     offline = len(results) - online
-    
+
     return AllAgentsStatus(
         total=len(results),
         online=online,
         offline=offline,
         agents=results,
-        timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+        timestamp=datetime.now(UTC).isoformat().replace("+00:00", "Z"),
     )
+
 
 # LIFESPAN MANAGEMENT
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info(f"Starting {AGENT_ID} on port {PORT}")
-    
+
     async def periodic_status():
         while True:
             await asyncio.sleep(30)
             try:
                 status = await check_all_agents()
-                await sse_bus.publish({
-                    "type": "status_update",
-                    "data": status.model_dump()
-                })
+                await sse_bus.publish({"type": "status_update", "data": status.model_dump()})
             except Exception as e:
                 logger.error(f"Periodic status check failed: {e}")
-    
+
     bg_task = asyncio.create_task(periodic_status())
-    
+
     yield
-    
+
     logger.info(f"Shutting down {AGENT_ID}")
     bg_task.cancel()
     try:
@@ -316,6 +321,7 @@ async def lifespan(app: FastAPI):
         pass
     logger.info("Shutdown complete")
 
+
 # FASTAPI APP SETUP
 start_time = time.time()
 
@@ -323,7 +329,7 @@ app = FastAPI(
     title=f"{AGENT_ID} - Dashboard Agent",
     version="1.0",
     description="Central Dashboard für ELION/Portier – Aggregierter Agent-Status, SSE, Web-UI",
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 # CORS
@@ -351,9 +357,7 @@ if KNOWLEDGE_AVAILABLE:
 metrics_exporter = None
 if METRICS_AVAILABLE:
     try:
-        metrics_exporter = initialize_exporter(
-            archive_path=str(BASE_DIR / "archivp_store")
-        )
+        metrics_exporter = initialize_exporter(archive_path=str(BASE_DIR / "archivp_store"))
         for ag in AGENT_REGISTRY:
             metrics_exporter.register_service(ag["id"], ag["port"])
         logger.info("Metrics exporter initialized.")
@@ -363,6 +367,7 @@ if METRICS_AVAILABLE:
 # =============================================================================
 # BLOCK 3/4 — HTML SYSTEMS MANAGEMENT DASHBOARD
 # =============================================================================
+
 
 @app.get("/self_cleaning_dashboard.html", response_class=HTMLResponse)
 async def self_cleaning_dashboard():
@@ -374,6 +379,7 @@ async def self_cleaning_dashboard():
     except Exception as e:
         logger.error(f"Error loading self_cleaning_dashboard.html: {e}")
         raise HTTPException(500, "Interner Fehler beim Laden der Seite")
+
 
 @app.get("/hyper_dashboard_ultimate.html", response_class=HTMLResponse)
 async def hyper_dashboard_ultimate():
@@ -390,45 +396,44 @@ async def hyper_dashboard_ultimate():
         logger.error(f"Error loading hyper_dashboard_ultimate.html: {e}")
         raise HTTPException(500, "Interner Fehler beim Laden des Ultimate Dashboards")
 
+
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
-    return templates.TemplateResponse("dashboard.html", {
-        "request": request,
-        "title": "ELION Dashboard",
-        "agent_count": len(AGENT_REGISTRY)
-    })
+    return templates.TemplateResponse(
+        "index.html", {"request": request, "title": "ELION Dashboard", "agent_count": len(AGENT_REGISTRY)}
+    )
+
 
 @app.get("/agent/{agent_id}", response_class=HTMLResponse)
 async def agent_detail(request: Request, agent_id: str):
     agent = next((a for a in AGENT_REGISTRY if a["id"] == agent_id), None)
     if not agent:
         raise HTTPException(404, f"Agent {agent_id} nicht gefunden")
-    
+
     # Priority 1 – pages created by HTML Creator (opena15)
     opena15_page = DATA_DIR / "opena15_generated" / f"{agent_id}_dashboard.html"
     if opena15_page.exists():
         return HTMLResponse(opena15_page.read_text())
-    
+
     # Priority 2 – stored dashboard pages
     p2 = DATA_DIR / "dashboard_pages" / f"{agent_id}_dashboard.html"
     if p2.exists():
         return HTMLResponse(p2.read_text())
-    
+
     # Fallback – dynamic
-    return templates.TemplateResponse("agent_detail_template.html", {
-        "request": request,
-        "agent_id": agent_id,
-        "agent_name": agent["name"],
-        "kuerzel": agent["kuerzel"],
-        "port": agent["port"],
-        "beschreibung": f"{agent['name']} – Port {agent['port']}",
-        "features": [
-            "Health-Check",
-            "Strict JSON Schemas",
-            "Bearer-Security",
-            "SSE Live Updates"
-        ]
-    })
+    return templates.TemplateResponse(
+        "agent_detail_template.html",
+        {
+            "request": request,
+            "agent_id": agent_id,
+            "agent_name": agent["name"],
+            "kuerzel": agent["kuerzel"],
+            "port": agent["port"],
+            "beschreibung": f"{agent['name']} – Port {agent['port']}",
+            "features": ["Health-Check", "Strict JSON Schemas", "Bearer-Security", "SSE Live Updates"],
+        },
+    )
+
 
 # HEALTH + AGENT API
 @app.get("/health")
@@ -440,23 +445,24 @@ async def health():
         "kuerzel": KUERZEL,
         "port": PORT,
         "uptime_seconds": uptime,
-        "agents_total": len(AGENT_REGISTRY)
+        "agents_total": len(AGENT_REGISTRY),
     }
+
 
 @app.get("/api/agents")
 async def list_agents(token: str = Depends(verify_token)):
     return {"total": len(AGENT_REGISTRY), "agents": AGENT_REGISTRY}
+
 
 @app.get("/api/agents/{agent_id}/status")
 async def get_agent_status(agent_id: str, token: str = Depends(verify_token)):
     a = next((x for x in AGENT_REGISTRY if x["id"] == agent_id), None)
     if not a:
         raise HTTPException(404, "Agent nicht gefunden")
-    
+
     try:
         async with aiohttp.ClientSession() as s:
-            async with s.get(f"http://127.0.0.1:{a['port']}/health",
-                             timeout=aiohttp.ClientTimeout(total=3)) as r:
+            async with s.get(f"http://127.0.0.1:{a['port']}/health", timeout=aiohttp.ClientTimeout(total=3)) as r:
                 if r.status == 200:
                     data = await r.json()
                     return {
@@ -464,93 +470,78 @@ async def get_agent_status(agent_id: str, token: str = Depends(verify_token)):
                         "name": a["name"],
                         "status": "online",
                         "port": a["port"],
-                        "uptime_seconds": data.get("uptime_seconds")
+                        "uptime_seconds": data.get("uptime_seconds"),
                     }
                 return {"id": agent_id, "status": "offline", "message": f"HTTP {r.status}"}
     except Exception as e:
         return {"id": agent_id, "status": "offline", "message": str(e)}
 
+
 @app.get("/api/status/all")
 async def get_all_status(token: str = Depends(verify_token)):
     status = await check_all_agents()
-    await sse_bus.publish({
-        "type": "status_update",
-        "data": status.model_dump()
-    })
+    await sse_bus.publish({"type": "status_update", "data": status.model_dump()})
     return status.model_dump()
+
 
 # SAFETY / COMMAND API
 class CommandRequest(BaseModel):
     action: str
-    params: Dict[str, Any] = Field(default_factory=dict)
-    
+    params: dict[str, Any] = Field(default_factory=dict)
+
     model_config = ConfigDict(extra="forbid")
+
 
 @app.post("/command")
 async def command_endpoint(req: CommandRequest, token: str = Depends(verify_token)):
-    
     if req.action == "get_status":
         res = await check_all_agents()
         return {"success": True, "status": res.model_dump()}
-    
+
     if req.action == "trigger_e2e":
         s = await check_all_agents()
-        return {
-            "success": s.offline == 0,
-            "online": s.online,
-            "offline": s.offline
-        }
-    
+        return {"success": s.offline == 0, "online": s.online, "offline": s.offline}
+
     raise HTTPException(422, f"Unknown action: {req.action}")
+
 
 # HTML WORKFLOW ENGINE
 class HtmlWorkflowRequest(BaseModel):
     workflow_name: str
-    inputs: Dict[str, Any] = Field(default_factory=dict)
+    inputs: dict[str, Any] = Field(default_factory=dict)
     mode: str = "async"
-    
+
     model_config = ConfigDict(extra="forbid")
+
 
 @app.get("/api/html/workflows/available")
 async def get_available_html_workflows(token: str = Depends(verify_token)):
     return {
         "workflows": [
-            {
-                "name": "html_systems_discovery",
-                "title": "System Discovery",
-                "agents": ["opena6", "opena15", "opena18"]
-            },
+            {"name": "html_systems_discovery", "title": "System Discovery", "agents": ["opena6", "opena15", "opena18"]},
             {
                 "name": "html_quality_assessment",
                 "title": "Quality Assessment",
-                "agents": ["opena6", "opena15", "opena17"]
+                "agents": ["opena6", "opena15", "opena17"],
             },
-            {
-                "name": "html_system_optimization",
-                "title": "Optimization",
-                "agents": ["opena15", "opena17", "opena6"]
-            },
+            {"name": "html_system_optimization", "title": "Optimization", "agents": ["opena15", "opena17", "opena6"]},
             {
                 "name": "html_deployment_pipeline",
                 "title": "Deployment Pipeline",
-                "agents": ["opena15", "opena17", "opena18"]
+                "agents": ["opena15", "opena17", "opena18"],
             },
-            {
-                "name": "html_monitoring_maintenance",
-                "title": "Monitoring",
-                "agents": ["opena20", "opena6", "opena15"]
-            },
+            {"name": "html_monitoring_maintenance", "title": "Monitoring", "agents": ["opena20", "opena6", "opena15"]},
             {
                 "name": "html_integration_orchestration",
                 "title": "Integration",
-                "agents": ["opena18", "opena15", "opena20"]
+                "agents": ["opena18", "opena15", "opena20"],
             },
         ]
     }
 
+
 @app.post("/api/html/workflows/execute")
 async def execute_html_workflow(req: HtmlWorkflowRequest, token: str = Depends(verify_token)):
-    
     # Try workflow engine (opena18)
     try:
         async with aiohttp.ClientSession() as s:
@@ -558,21 +549,18 @@ async def execute_html_workflow(req: HtmlWorkflowRequest, token: str = Depends(v
                 "http://127.0.0.1:12364/workflows/execute",
                 json=req.model_dump(),
                 headers={"Authorization": f"Bearer {BEARER_TOKEN}"},
-                timeout=aiohttp.ClientTimeout(total=180)
+                timeout=aiohttp.ClientTimeout(total=180),
             ) as r:
                 if r.status == 200:
                     data = await r.json()
-                    await sse_bus.publish({
-                        "type": "html_workflow_result",
-                        "data": data
-                    })
+                    await sse_bus.publish({"type": "html_workflow_result", "data": data})
                     return data
                 else:
                     raise Exception(f"Engine returned HTTP {r.status}")
-    
+
     except Exception as e:
         logger.info(f"Workflow Engine offline, fallback for {req.workflow_name}: {e}")
-        
+
         # Fallback responses
         fallback = {
             "execution_id": f"fallback_{int(time.time())}",
@@ -580,56 +568,51 @@ async def execute_html_workflow(req: HtmlWorkflowRequest, token: str = Depends(v
             "execution": {
                 "state": "completed",
                 "mode": "fallback",
-                "result": {
-                    "summary": f"Fallback execution for {req.workflow_name}",
-                    "status": "completed"
-                },
-                "timestamp": datetime.now(timezone.utc).isoformat()
-            }
+                "result": {"summary": f"Fallback execution for {req.workflow_name}", "status": "completed"},
+                "timestamp": datetime.now(UTC).isoformat(),
+            },
         }
-        
-        await sse_bus.publish({
-            "type": "html_workflow_result",
-            "data": fallback
-        })
-        
+
+        await sse_bus.publish({"type": "html_workflow_result", "data": fallback})
+
         return fallback
+
 
 # =============================================================================
 # BLOCK 4/4 — SOCIAL MEDIA AUTOMATION ENGINE
 # =============================================================================
 
+
 class SocialMediaWorkflowRequest(BaseModel):
     workflow_name: str
-    platform: Optional[str] = None
-    content_type: Optional[str] = None
-    schedule_time: Optional[str] = None
-    target_audience: Optional[str] = None
-    
+    platform: str | None = None
+    content_type: str | None = None
+    schedule_time: str | None = None
+    target_audience: str | None = None
+
     model_config = ConfigDict(extra="forbid")
 
+
 @app.post("/api/socialmedia/execute")
-async def execute_social_media_workflow(
-    req: SocialMediaWorkflowRequest,
-    token: str = Depends(verify_token)
-):
+async def execute_social_media_workflow(req: SocialMediaWorkflowRequest, token: str = Depends(verify_token)):
     logger.info(f"Executing social media workflow: {req.workflow_name}")
-    
+
     result = {
         "execution_id": f"sm_{int(time.time())}",
         "workflow_name": req.workflow_name,
         "status": "completed",
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "mode": "fallback",
         "details": {
             "platform": req.platform or "multi",
             "content_type": req.content_type or "auto",
             "scheduled_for": req.schedule_time,
-            "target_audience": req.target_audience
-        }
+            "target_audience": req.target_audience,
+        },
     }
-    
+
     return result
+
 
 @app.get("/api/socialmedia/status")
 async def get_social_media_status(token: str = Depends(verify_token)):
@@ -639,17 +622,14 @@ async def get_social_media_status(token: str = Depends(verify_token)):
         "total_posts_today": 24,
         "engagement_rate": "12.8%",
         "impressions": 89000,
-        "timestamp": datetime.now(timezone.utc).isoformat()
+        "timestamp": datetime.now(UTC).isoformat(),
     }
+
 
 @app.post("/api/socialmedia/schedule")
 async def schedule_social_media_content(
-    platform: str,
-    content_type: str,
-    schedule_time: str,
-    token: str = Depends(verify_token)
+    platform: str, content_type: str, schedule_time: str, token: str = Depends(verify_token)
 ):
-    
     result = await execute_social_media_workflow(
         SocialMediaWorkflowRequest(
             workflow_name="social_media_auto_content",
@@ -657,16 +637,17 @@ async def schedule_social_media_content(
             content_type=content_type,
             schedule_time=schedule_time,
         ),
-        token
+        token,
     )
-    
+
     return {
         "schedule_id": f"schedule_{int(time.time())}",
         "platform": platform,
         "scheduled_for": schedule_time,
         "workflow_result": result,
-        "timestamp": datetime.now(timezone.utc).isoformat()
+        "timestamp": datetime.now(UTC).isoformat(),
     }
+
 
 # SSE STREAMING ENDPOINT
 @app.get("/sse/events")
@@ -681,21 +662,14 @@ async def sse_events():
             pass
         finally:
             sse_bus.unsubscribe(queue)
-    
+
     return StreamingResponse(
         event_publisher(),
         media_type="text/event-stream",
-        headers={
-            "Cache-Control": "no-cache",
-            "Connection": "keep-alive"
-        }
+        headers={"Cache-Control": "no-cache", "Connection": "keep-alive"},
     )
+
 
 # MAIN ENTRY POINT
 if __name__ == "__main__":
-    uvicorn.run(
-        app,
-        host="0.0.0.0",
-        port=PORT,
-        log_level="info"
-    )
+    uvicorn.run(app, host="0.0.0.0", port=PORT, log_level="info")
