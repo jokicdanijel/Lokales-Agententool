@@ -34,8 +34,10 @@ WORKDIR /app
 
 # Copy requirements and install dependencies
 COPY requirements.txt .
-RUN python3.13 -m pip install --no-cache-dir --upgrade pip
-RUN python3.13 -m pip install --no-cache-dir -r requirements.txt
+RUN python3.13 -m venv /opt/venv
+    && /opt/venv/bin/pip install --no-cache-dir --upgrade pip
+    && /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
+ENV PATH="/opt/venv/bin:$PATH"
 
 # Copy application files
 COPY main_dashboard_final.py .
