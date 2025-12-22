@@ -11,11 +11,11 @@ else
   exit 2
 fi
 
-echo "Checking dashboard HTML at /dashboard..."
-if curl -sSf "$BASE/dashboard" | grep -q "<html"; then
-  echo "/dashboard OK"
+echo "Checking dashboard HTML at /..."
+if curl -sSf "$BASE/" | grep -q "<html"; then
+  echo "/ OK"
 else
-  echo "/dashboard FAILED" >&2
+  echo "/ FAILED" >&2
   exit 3
 fi
 
