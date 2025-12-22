@@ -1,38 +1,74 @@
 name: opena20 smoke tests
 
 on:
-    push:
-        branches: ["main", "feat/opena20-ci-smoke"]
-    pull_request:
-        branches: ["main"]
+  push:
+    branches: ["main", "feat/opena20-ci-smoke"]
+  pull_request:
+    branches: ["main"]
+
+# Allow the workflow to push and pull container images from GHCR
+permissions:
+  contents: read
+  packages: write
 
 jobs:
-    smoke:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-            - name: Build and run docker compose
-              run: |
-                  docker compose up -d --build
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Wait for /health
-              run: |
-                  for i in {1..30}; do
-                    if curl -sSf http://127.0.0.1:12349/health >/dev/null; then
-                      echo "opena20 /health ready" && break
-                    fi
-                    echo "waiting..."; sleep 2
-                  done
+      - name: Build and push image to GHCR
+        uses: docker/build-push-action@v4
+        with:
+          context: ./19.opena20_dashboard_agent
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/opena20-dashboard:${{ github.sha }}
 
-            - name: Run smoke tests
-              run: |
-                  chmod +x ./tests/smoke_opena20.sh
-                  ./tests/smoke_opena20.sh
+  smoke:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Tear down
-              if: always()
-              run: docker compose down --volumes --remove-orphans
+      - name: Pull image
+        run: |
+          docker pull ghcr.io/${{ github.repository_owner }}/opena20-dashboard:${{ github.sha }}
+
+      - name: Run container
+        run: |
+          docker run -d --rm --name opena20 -p 12349:12349 ghcr.io/${{ github.repository_owner }}/opena20-dashboard:${{ github.sha }}
+
+      - name: Wait for /health
+        run: |
+          for i in {1..30}; do
+            if curl -sSf http://127.0.0.1:12349/health >/dev/null; then
+              echo "opena20 /health ready" && break
+            fi
+            echo "waiting..."; sleep 2
+          done
+
+      - name: Run smoke tests
+        run: |
+          chmod +x ./tests/smoke_opena20.sh
+          ./tests/smoke_opena20.sh
+
+      - name: Stop container
+        if: always()
+        run: |
+          docker stop opena20 || true
+          docker rm --force opena20 || true
