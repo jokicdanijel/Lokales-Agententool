@@ -1,9 +1,10 @@
-from typing import List, Dict, Any
-from .schema import DocumentSchema, SchemaViolation
-from .dedup import content_sha256, DedupIndex
-from .write_queue import WriteQueue
+from typing import Any
+
+from .dedup import DedupIndex, content_sha256
 from .index_integrity import IndexIntegrityManager
 from .metrics import inc_counter
+from .schema import DocumentSchema, SchemaViolation
+from .write_queue import WriteQueue
 
 
 class IngestManager:
@@ -12,15 +13,15 @@ class IngestManager:
         self.wq = write_queue
         self.index_path = index_path
 
-    def _commit_docs(self, docs: List[Dict[str, Any]]) -> int:
+    def _commit_docs(self, docs: list[dict[str, Any]]) -> int:
         # Actual commit runs in single-writer context
         for doc in docs:
             # append to index with checksum
             IndexIntegrityManager.append_line(self.index_path, doc)
-        inc_counter('ingest_committed_docs_total')
+        inc_counter("ingest_committed_docs_total")
         return len(docs)
 
-    def ingest(self, docs: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def ingest(self, docs: list[dict[str, Any]]) -> dict[str, Any]:
         """Validate, dedupe and submit commit job; returns summary."""
         accepted = []
         rejected = []
@@ -30,14 +31,14 @@ class IngestManager:
             try:
                 DocumentSchema.validate(doc)
             except SchemaViolation as e:
-                rejected.append({'doc': doc, 'reason': e.reason})
-                inc_counter('kb_schema_reject_total')
+                rejected.append({"doc": doc, "reason": e.reason})
+                inc_counter("kb_schema_reject_total")
                 continue
 
-            h = content_sha256(doc.get('text', ''))
+            h = content_sha256(doc.get("text", ""))
             if self.dedup.seen(h):
                 skipped.append(doc)
-                inc_counter('kb_dedup_skipped_total')
+                inc_counter("kb_dedup_skipped_total")
                 continue
 
             # mark as seen and accept
@@ -48,8 +49,8 @@ class IngestManager:
             fut = self.wq.submit(self._commit_docs, accepted)
             # block for commit result for now; in real flow could be async
             result = fut.result()
-            inc_counter('kb_ingest_jobs_total')
+            inc_counter("kb_ingest_jobs_total")
         else:
             result = 0
 
-        return {'accepted': len(accepted), 'rejected': len(rejected), 'skipped': len(skipped), 'committed': result}
+        return {"accepted": len(accepted), "rejected": len(rejected), "skipped": len(skipped), "committed": result}

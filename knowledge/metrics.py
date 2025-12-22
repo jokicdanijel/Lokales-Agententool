@@ -1,9 +1,8 @@
 import threading
-from typing import Dict
 
 _lock = threading.RLock()
-_counters: Dict[str, int] = {}
-_gauges: Dict[str, float] = {}
+_counters: dict[str, int] = {}
+_gauges: dict[str, float] = {}
 
 
 def clear():

@@ -22,16 +22,24 @@ import argparse
 import json
 import os
 import re
-import sys
 from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Tuple
 
 BANNED_NAME_MARKERS = {
-    "demo", "simulation", "phantom", "mock", "example", "fixture",
-    "demos", "simulations", "phantoms", "mocks", "examples", "fixtures",
+    "demo",
+    "simulation",
+    "phantom",
+    "mock",
+    "example",
+    "fixture",
+    "demos",
+    "simulations",
+    "phantoms",
+    "mocks",
+    "examples",
+    "fixtures",
 }
 
 CAPABILITY_RULES = {
@@ -61,11 +69,13 @@ TECH_SIGNATURES = {
 
 TEXT_EXTS = {".md", ".txt", ".html", ".htm", ".js", ".ts", ".tsx", ".jsx", ".json", ".yml", ".yaml", ".py"}
 
+
 @dataclass
 class FileInfo:
     path: str
     size: int
     ext: str
+
 
 @dataclass
 class FolderReport:
@@ -74,12 +84,12 @@ class FolderReport:
     file_count: int
     total_bytes: int
     max_depth_seen: int
-    banned_name_hits: List[str]
-    duplicate_name_groups: Dict[str, List[FileInfo]]
-    tech_stack_signals: Dict[str, int]
-    detected_capabilities: Dict[str, float]
-    page_candidates: List[str]
-    shared_component_candidates: List[str]
+    banned_name_hits: list[str]
+    duplicate_name_groups: dict[str, list[FileInfo]]
+    tech_stack_signals: dict[str, int]
+    detected_capabilities: dict[str, float]
+    page_candidates: list[str]
+    shared_component_candidates: list[str]
 
 
 def safe_read_text(p: Path, max_bytes: int = 200_000) -> str:
@@ -103,8 +113,8 @@ def compute_depth(base: Path, p: Path) -> int:
         return 0
 
 
-def score_capabilities(text_blob: str, file_paths_blob: str) -> Dict[str, float]:
-    scores: Dict[str, float] = {k: 0.0 for k in CAPABILITY_RULES.keys()}
+def score_capabilities(text_blob: str, file_paths_blob: str) -> dict[str, float]:
+    scores: dict[str, float] = {k: 0.0 for k in CAPABILITY_RULES.keys()}
     combined = (text_blob + "\n" + file_paths_blob).lower()
     for cap, patterns in CAPABILITY_RULES.items():
         hit = 0
@@ -120,7 +130,7 @@ def score_capabilities(text_blob: str, file_paths_blob: str) -> Dict[str, float]
     return scores
 
 
-def detect_tech_stack(package_json_text: str, all_text: str, file_paths_blob: str) -> Dict[str, int]:
+def detect_tech_stack(package_json_text: str, all_text: str, file_paths_blob: str) -> dict[str, int]:
     signals = Counter()
     blob = (package_json_text + "\n" + all_text + "\n" + file_paths_blob).lower()
     for tech, sigs in TECH_SIGNATURES.items():
@@ -134,9 +144,9 @@ def detect_tech_stack(package_json_text: str, all_text: str, file_paths_blob: st
     return dict(signals)
 
 
-def classify_pages_and_components(base: Path, files: List[Path]) -> Tuple[List[str], List[str]]:
-    page_candidates: List[str] = []
-    components: List[str] = []
+def classify_pages_and_components(base: Path, files: list[Path]) -> tuple[list[str], list[str]]:
+    page_candidates: list[str] = []
+    components: list[str] = []
 
     for p in files:
         rel = str(p.relative_to(base)).replace("\\", "/")
@@ -150,16 +160,22 @@ def classify_pages_and_components(base: Path, files: List[Path]) -> Tuple[List[s
         if any(seg in rel.lower() for seg in ["/pages/", "/app/", "/routes/", "/views/"]):
             if p.suffix.lower() in {".tsx", ".jsx", ".ts", ".js"}:
                 # heuristic: treat as page if name suggests route
-                if name in {"page.tsx", "page.jsx", "index.tsx", "index.jsx", "index.ts", "index.js"} or "route" in name:
+                if (
+                    name in {"page.tsx", "page.jsx", "index.tsx", "index.jsx", "index.ts", "index.js"}
+                    or "route" in name
+                ):
                     page_candidates.append(rel)
 
         # Shared components: components folder, partials, includes
-        if any(seg in rel.lower() for seg in ["/components/", "/shared/", "/shared_components/", "/partials/", "/includes/", "/layouts/"]):
+        if any(
+            seg in rel.lower()
+            for seg in ["/components/", "/shared/", "/shared_components/", "/partials/", "/includes/", "/layouts/"]
+        ):
             if p.suffix.lower() in {".html", ".htm", ".tsx", ".jsx", ".ts", ".js"}:
                 components.append(rel)
 
     # de-dup while preserving order
-    def uniq(xs: List[str]) -> List[str]:
+    def uniq(xs: list[str]) -> list[str]:
         seen = set()
         out = []
         for x in xs:
@@ -173,23 +189,14 @@ def classify_pages_and_components(base: Path, files: List[Path]) -> Tuple[List[s
 
 AGENT_PROMPT_TEMPLATES = {
     "auth": """# Agent: Auth & Session Architect\n\n## Mission\nDesign and maintain the authentication surface area: login, register, reset, MFA/SSO entry points.\n\n## Scope\n- Semantic page scaffolds for auth flows\n- Explicit markers for session handling, CSRF, rate limiting, lockouts\n- RBAC handoff points (post-login routing)\n\n## Output Contract\nFor each auth-related page: zones, happy-path + error branches, semantic HTML skeleton (no CSS/JS), and security comments (AUTH/VALIDATION/RBAC/AUDIT/PII).\n\n## Guardrails\n- Never implement auth; only place logic markers\n- Always highlight PII fields and audit-relevant events\n""",
-
     "dashboard": """# Agent: Dashboard Information Architect\n\n## Mission\nTranslate dashboard sketches into stable information architecture: navigation, widgets, KPIs, and dynamic zones.\n\n## Scope\n- Semantic layout shells (topbar/sidebar/main)\n- Widget grid as semantic sections/articles\n- Data provenance markers (DYNAMIC + source hints)\n\n## Output Contract\nOne page per run, with zones, user flow, and HTML skeleton annotated for dynamic content and permissions.\n""",
-
     "docs": """# Agent: Documentation & Knowledge Base Architect\n\n## Mission\nConvert docs/knowledge areas into navigable, semantic structures: categories, articles, search entry points, changelog.\n\n## Scope\n- Semantic doc layouts (toc, breadcrumbs, content article)\n- Mark search/indexing zones (DYNAMIC)\n- Versioning and access hints (RBAC)\n""",
-
     "settings": """# Agent: Settings & Profile Architect\n\n## Mission\nStructure settings surfaces: profile, org, security, API keys, preferences.\n\n## Scope\n- Forms with explicit VALIDATION markers\n- Sensitive actions tagged (AUDIT/PII/RBAC)\n- Clear grouping: account vs org vs security\n""",
-
     "admin": """# Agent: Admin & Control Plane Architect\n\n## Mission\nDefine admin interfaces: user management, audits, system configuration, moderation.\n\n## Scope\n- RBAC-first page skeletons\n- Audit log surfaces and filters\n- Dangerous actions flagged with explicit warnings\n""",
-
     "rbac": """# Agent: RBAC & Permissions Modeler\n\n## Mission\nExtract and formalize roles, permissions, and page/action visibility constraints.\n\n## Output Contract\n- RBAC matrix (roles x actions)\n- Page-level access assumptions\n- Markers to embed into HTML skeleton comments\n""",
-
     "api": """# Agent: Data Contract & API Surface Mapper\n\n## Mission\nMap dynamic UI zones to data contracts (not implementation).\n\n## Output Contract\n- For each DYNAMIC zone: expected data shape, source (API/DB), caching/latency concerns (comments only)\n- Identify PII and audit-relevant payloads\n""",
-
     "i18n": """# Agent: i18n & Content Localization Planner\n\n## Mission\nPlan structure for localization: string ownership, locale switching surfaces, RTL risks.\n\n## Output Contract\n- List UI zones requiring translation\n- Mark language switcher + locale persistence points\n""",
-
     "billing": """# Agent: Billing & Subscription Surface Architect\n\n## Mission\nStructure billing pages: plans, invoices, payment method, subscription lifecycle.\n\n## Output Contract\n- Semantic skeletons with security markers\n- Explicit audit/PII markers (payments, invoices)\n""",
-
     "notifications": """# Agent: Notifications & Messaging UX Architect\n\n## Mission\nDefine notification surfaces: inbox, toast area, system alerts, preferences.\n\n## Output Contract\n- Semantic placement + DYNAMIC markers\n- Preference flows in settings handoff\n""",
 }
 
@@ -207,10 +214,10 @@ def main() -> int:
     out_dir = Path(args.out).expanduser().resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    files: List[Path] = []
+    files: list[Path] = []
     total_bytes = 0
     max_depth = 0
-    banned_hits: List[str] = []
+    banned_hits: list[str] = []
 
     # Walk
     for root, dirs, fnames in os.walk(base):
@@ -239,9 +246,9 @@ def main() -> int:
             break
 
     # Collect file infos
-    file_infos: List[FileInfo] = []
-    by_name: Dict[str, List[FileInfo]] = defaultdict(list)
-    file_paths_blob_parts: List[str] = []
+    file_infos: list[FileInfo] = []
+    by_name: dict[str, list[FileInfo]] = defaultdict(list)
+    file_paths_blob_parts: list[str] = []
 
     for p in files:
         rel = str(p.relative_to(base)).replace("\\", "/")
@@ -268,7 +275,7 @@ def main() -> int:
     duplicate_groups = {k: v for k, v in by_name.items() if len(v) > 1}
 
     # Build text blob from small/medium text files
-    text_parts: List[str] = []
+    text_parts: list[str] = []
     package_json_text = ""
 
     for p in files:
@@ -302,9 +309,7 @@ def main() -> int:
         total_bytes=total_bytes,
         max_depth_seen=max_depth,
         banned_name_hits=sorted(set(banned_hits)),
-        duplicate_name_groups={
-            k: sorted(v, key=lambda x: (-x.size, x.path)) for k, v in duplicate_groups.items()
-        },
+        duplicate_name_groups={k: sorted(v, key=lambda x: (-x.size, x.path)) for k, v in duplicate_groups.items()},
         tech_stack_signals=tech,
         detected_capabilities=caps,
         page_candidates=pages[:400],

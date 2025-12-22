@@ -1,15 +1,14 @@
-import json
 import hashlib
+import json
 import os
-from typing import Dict, Tuple
 
 
-def canonical_json(obj: Dict) -> str:
-    return json.dumps(obj, sort_keys=True, separators=(',', ':'), ensure_ascii=False)
+def canonical_json(obj: dict) -> str:
+    return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
 
 def sha256_hex(s: str) -> str:
-    return hashlib.sha256(s.encode('utf-8')).hexdigest()
+    return hashlib.sha256(s.encode("utf-8")).hexdigest()
 
 
 class IndexIntegrityManager:
@@ -22,7 +21,7 @@ class IndexIntegrityManager:
     """
 
     @staticmethod
-    def append_line(file_path: str, data: Dict) -> None:
+    def append_line(file_path: str, data: dict) -> None:
         line_json = canonical_json(data)
         checksum = sha256_hex(line_json)
         line = f"{line_json}\t{checksum}\n"
@@ -31,7 +30,7 @@ class IndexIntegrityManager:
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
         # Append and fsync to minimize risk of partial writes
-        with open(file_path, 'a', encoding='utf-8') as f:
+        with open(file_path, "a", encoding="utf-8") as f:
             f.write(line)
             f.flush()
             os.fsync(f.fileno())
@@ -45,17 +44,17 @@ class IndexIntegrityManager:
         if not os.path.exists(file_path):
             return 0
 
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, encoding="utf-8") as f:
             lines = f.readlines()
 
         last_good_index = -1
         for i, raw in enumerate(lines):
             # strip only trailing newline
-            line = raw.rstrip('\n')
-            if '\t' not in line:
+            line = raw.rstrip("\n")
+            if "\t" not in line:
                 # malformed
                 break
-            payload, checksum = line.rsplit('\t', 1)
+            payload, checksum = line.rsplit("\t", 1)
             try:
                 # Validate checksum
                 calc = sha256_hex(payload)
@@ -73,11 +72,11 @@ class IndexIntegrityManager:
 
         # Truncate file to last_good_index+1 lines
         byte_offset = 0
-        for j in range(0, last_good_index + 1):
-            byte_offset += len(lines[j].encode('utf-8'))
+        for j in range(last_good_index + 1):
+            byte_offset += len(lines[j].encode("utf-8"))
 
         # Truncate and fsync
-        with open(file_path, 'r+b') as f:
+        with open(file_path, "r+b") as f:
             f.truncate(byte_offset)
             f.flush()
             os.fsync(f.fileno())
@@ -86,8 +85,9 @@ class IndexIntegrityManager:
         # metrics: record recovery
         try:
             from .metrics import inc_counter
-            inc_counter('kb_index_recovery_total')
-            inc_counter('kb_index_verify_fail_total')
+
+            inc_counter("kb_index_recovery_total")
+            inc_counter("kb_index_verify_fail_total")
         except Exception:
             pass
         return removed

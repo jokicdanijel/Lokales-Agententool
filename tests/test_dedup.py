@@ -1,5 +1,4 @@
-from knowledge.dedup import content_sha256, DedupIndex
-import tempfile
+from knowledge.dedup import DedupIndex, content_sha256
 
 
 def test_content_sha256_normalizes_whitespace():

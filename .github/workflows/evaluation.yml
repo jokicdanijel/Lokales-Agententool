@@ -1,46 +1,69 @@
 name: Evaluation Runner
 
 on:
-    push:
-        branches: [main]
-    pull_request:
-        paths: ["evaluation/**", "requirements-eval.txt", "docs/EVALUATION.md"]
-    schedule:
-        - cron: "0 2 * * *" # daily at 02:00 UTC
+  push:
+    branches: [main]
+  pull_request:
+    paths: ["evaluation/**", "requirements-eval.txt", "docs/EVALUATION.md"]
+  schedule:
+    - cron: "0 2 * * *"
 
 jobs:
-    run-evaluation:
-        runs-on: ubuntu-latest
+  run-evaluation:
+    runs-on: ubuntu-latest
+    env:
+      PYTHON_VERSION: "3.12"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install eval requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-eval.txt
+
+      - name: Run evaluation (sample)
+        run: |
+          mkdir -p evaluation/results
+          python -m evaluation.runner evaluation/datasets/sample.jsonl --out evaluation/results/report_sample.json || true
+
+      - name: Run evaluation (generated)
+        run: |
+          python -m evaluation.runner evaluation/datasets/generated.jsonl --out evaluation/results/report_generated.json || true
+
+      - name: Fail on low pass rate (generated)
         env:
-            PYTHON_VERSION: "3.12"
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
+          EVAL_FAIL_THRESHOLD: ${{ env.EVAL_FAIL_THRESHOLD || '0.6' }}
+        run: |
+          python3 - <<'PY'
+          import json,sys,os
+          p='evaluation/results/report_generated.json'
+          if not os.path.exists(p):
+              print('Report not found; failing job')
+              sys.exit(1)
+          try:
+              r=json.load(open(p))
+          except Exception as e:
+              print('Failed to load report:', e)
+              sys.exit(1)
+          pass_rate=r.get('summary',{}).get('relevance_pass_rate',0)
+          thr=float(os.environ.get('EVAL_FAIL_THRESHOLD','0.6'))
+          print('Pass rate:', pass_rate, 'Threshold:', thr)
+          if pass_rate < thr:
+              print('Failing evaluation: pass_rate < threshold')
+              sys.exit(1)
+          print('Evaluation pass rate OK')
+          PY
 
-            - name: Set up Python
-              uses: actions/setup-python@v4
-              with:
-                  python-version: ${{ env.PYTHON_VERSION }}
-
-            - name: Install eval requirements
-              run: |
-                  python -m pip install --upgrade pip
-                  pip install -r requirements-eval.txt
-
-            - name: Run evaluation (sample)
-              run: |
-                  mkdir -p evaluation/results
-                  python -m evaluation.runner evaluation/datasets/sample.jsonl --out evaluation/results/report_sample.json || true
-
-            - name: Run evaluation (generated)
-              run: |
-                  python -m evaluation.runner evaluation/datasets/generated.jsonl --out evaluation/results/report_generated.json || true
-
-            - name: Upload reports
-              uses: actions/upload-artifact@v4
-              with:
-                name: evaluation-reports
-                path: |
-                  evaluation/results/report_sample.json
-                  evaluation/results/report_generated.json
-
+      - name: Upload reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-reports
+          path: |
+            evaluation/results/report_sample.json
+            evaluation/results/report_generated.json

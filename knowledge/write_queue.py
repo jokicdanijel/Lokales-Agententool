@@ -1,10 +1,11 @@
-import threading
-import queue
-import time
-import os
 import fcntl
+import os
+import queue
+import threading
+import time
+from collections.abc import Callable
 from concurrent.futures import Future
-from typing import Callable, Any, Optional
+from typing import Any
 
 
 class FileLock:
@@ -15,7 +16,7 @@ class FileLock:
 
     def __enter__(self):
         # open file and acquire exclusive lock
-        self._fd = open(self.path, 'a+')
+        self._fd = open(self.path, "a+")
         try:
             fcntl.lockf(self._fd.fileno(), fcntl.LOCK_EX)
         except Exception:
@@ -48,7 +49,7 @@ class WriteQueue:
     - Basic metrics: processed_total, failures_total, queue_depth
     """
 
-    def __init__(self, lock_path: Optional[str] = None):
+    def __init__(self, lock_path: str | None = None):
         self._q = queue.Queue()
         self._lock_path = lock_path
         self._running = False
@@ -67,7 +68,7 @@ class WriteQueue:
             self._thread = threading.Thread(target=self._worker, daemon=True)
             self._thread.start()
 
-    def stop(self, drain: bool = True, timeout: Optional[float] = None):
+    def stop(self, drain: bool = True, timeout: float | None = None):
         with self._lock:
             self._running = False
         if drain:
@@ -103,7 +104,8 @@ class WriteQueue:
                 # metrics
                 try:
                     from .metrics import inc_counter
-                    inc_counter('writequeue_processed_total')
+
+                    inc_counter("writequeue_processed_total")
                 except Exception:
                     pass
                 fut.set_result(res)
@@ -111,7 +113,8 @@ class WriteQueue:
                 self._failures += 1
                 try:
                     from .metrics import inc_counter
-                    inc_counter('writequeue_failures_total')
+
+                    inc_counter("writequeue_failures_total")
                 except Exception:
                     pass
                 fut.set_exception(e)
@@ -120,7 +123,7 @@ class WriteQueue:
 
     def stats(self) -> dict:
         return {
-            'queue_depth': self._q.qsize(),
-            'processed_total': self._processed,
-            'failures_total': self._failures,
+            "queue_depth": self._q.qsize(),
+            "processed_total": self._processed,
+            "failures_total": self._failures,
         }

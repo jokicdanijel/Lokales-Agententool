@@ -1,13 +1,12 @@
 import hashlib
 import os
 import threading
-from typing import Optional
 
 
 def content_sha256(text: str) -> str:
     # normalize whitespace and compute sha256
     norm = " ".join(text.strip().split())
-    return hashlib.sha256(norm.encode('utf-8')).hexdigest()
+    return hashlib.sha256(norm.encode("utf-8")).hexdigest()
 
 
 class DedupIndex:
@@ -18,7 +17,7 @@ class DedupIndex:
     - Thread-safe
     """
 
-    def __init__(self, path: Optional[str] = None):
+    def __init__(self, path: str | None = None):
         self.path = path
         self._set = set()
         self._lock = threading.RLock()
@@ -26,7 +25,7 @@ class DedupIndex:
             self._load_from_file()
 
     def _load_from_file(self):
-        with open(self.path, 'r', encoding='utf-8') as f:
+        with open(self.path, encoding="utf-8") as f:
             for line in f:
                 h = line.strip()
                 if h:
@@ -45,8 +44,8 @@ class DedupIndex:
             if self.path:
                 # append and fsync
                 os.makedirs(os.path.dirname(self.path), exist_ok=True)
-                with open(self.path, 'a', encoding='utf-8') as f:
-                    f.write(content_hash + '\n')
+                with open(self.path, "a", encoding="utf-8") as f:
+                    f.write(content_hash + "\n")
                     f.flush()
                     os.fsync(f.fileno())
             return True

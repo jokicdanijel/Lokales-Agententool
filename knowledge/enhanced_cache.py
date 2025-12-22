@@ -1,27 +1,27 @@
-from dataclasses import dataclass, asdict
-import json
 import hashlib
-from typing import Optional, Dict, Any
+import json
+from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass(frozen=True)
 class EmbeddingSignature:
     model: str
     dims: int
-    version: Optional[str] = None
+    version: str | None = None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {"model": self.model, "dims": self.dims, "version": self.version}
 
 
 @dataclass(frozen=True)
 class RetrievalSignature:
     top_k: int
-    filters: Optional[Dict[str, Any]] = None
-    metric: Optional[str] = None
-    reranker: Optional[str] = None
+    filters: dict[str, Any] | None = None
+    metric: str | None = None
+    reranker: str | None = None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {"top_k": self.top_k, "filters": self.filters or {}, "metric": self.metric, "reranker": self.reranker}
 
 
@@ -55,10 +55,10 @@ class EnhancedQueryCache:
         query: str,
         namespace: str = "kb",
         build_id: str = "unknown",
-        embedding_sig: Optional[EmbeddingSignature] = None,
-        retrieval_sig: Optional[RetrievalSignature] = None,
-        tenant_id: Optional[str] = None,
-        collection: Optional[str] = None,
+        embedding_sig: EmbeddingSignature | None = None,
+        retrieval_sig: RetrievalSignature | None = None,
+        tenant_id: str | None = None,
+        collection: str | None = None,
     ) -> str:
         norm_q = cls.normalize_query(query)
 
