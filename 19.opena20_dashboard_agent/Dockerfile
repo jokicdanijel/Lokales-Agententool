@@ -3,7 +3,7 @@
 
 FROM ubuntu:25.04
 
-LABEL maintainer="xxjokic01@gmail.com
+LABEL maintainer="xxjokic01@gmail.com"
 LABEL version="1.0.0"
 LABEL description="ELION/Portier opena20 Dashboard Agent"
 
