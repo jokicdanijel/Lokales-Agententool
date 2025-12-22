@@ -41,13 +41,7 @@ source "$VENV"
 python3 -c "from src.pkg.security import _read_env_token; _read_env_token()" 2>/dev/null || true
 
 # OpenAI API Key für opena20 exportieren (falls .env existiert)
-if [ -f "$PROJECT_ROOT/.env" ]; then
-    export $(grep -v '^#' "$PROJECT_ROOT/.env" | grep 'OPENAI_API_KEY_OPENA20' | xargs)
-    if [ -n "${OPENAI_API_KEY_OPENA20:-}" ]; then
-        echo "✅ OpenAI API Key (opena20) geladen"
-    else
-        echo "⚠️  WARNING: OPENAI_API_KEY_OPENA20 nicht in .env gefunden"
-    fi
+
 fi
 
 # ─────────────────────────────────────────────────────────────────────────────

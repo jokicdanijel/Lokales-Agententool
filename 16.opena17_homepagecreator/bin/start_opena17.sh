@@ -94,17 +94,12 @@ if [ -f "$PID_FILE" ]; then
 fi
 
 # =======================================
-# 5. .env laden (Bearer Token)
+# 5. Service-Umgebung vorbereiten
 # =======================================
 
-ENV_FILE="$ROOT_DIR/.env"
-if [ -f "$ENV_FILE" ]; then
-    set -a
-    source "$ENV_FILE"
-    set +a
-    echo -e "${GREEN}[INFO]${NC} ✅ .env geladen"
-else
-    echo -e "${YELLOW}[WARN]${NC} .env nicht gefunden - verwende Standard-Token"
+# BEARER_TOKEN sollte von ops.sh durchgereicht werden
+if [ -z "${BEARER_TOKEN:-}" ]; then
+    echo -e "${YELLOW}[WARN]${NC} BEARER_TOKEN nicht gesetzt - verwende Standard"
     export BEARER_TOKEN="c899b90d-faf8-485b-afa4-078357cf5313"
 fi
 

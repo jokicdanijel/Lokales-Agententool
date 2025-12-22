@@ -16,9 +16,6 @@ export DASHBOARD_URL="http://127.0.0.1:12349"
 export PYTHONPATH="$PROJECT_ROOT/src"
 
 # Bearer Token aus .env laden
-if [ -f "$PROJECT_ROOT/.env" ]; then
-    export $(grep -E '^BEARER_TOKEN=' "$PROJECT_ROOT/.env" | xargs)
-fi
 
 # PID-File
 PID_FILE="$PROJECT_ROOT/.runtime/agent_server.pid"

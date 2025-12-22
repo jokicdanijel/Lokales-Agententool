@@ -5,6 +5,7 @@
 # ══════════════════════════════════════════════════════════════════════════════
 
 set -euo pipefail
+# Robustes .env-Parsing (safe für Keys mit = Zeichen)
 
 # Farben
 RED='\033[0;31m'
@@ -52,20 +53,6 @@ if lsof -Pi :$PORT -sTCP:LISTEN -t >/dev/null 2>&1; then
     exit 1
 fi
 
-# .env laden
-if [[ -f "$PROJECT_ROOT/../.env" ]]; then
-    echo -e "${GREEN}✅ Lade .env aus Projekt-Root${NC}"
-    set -a
-    source "$PROJECT_ROOT/../.env"
-    set +a
-elif [[ -f "$PROJECT_ROOT/.env" ]]; then
-    echo -e "${GREEN}✅ Lade .env aus opena4-Verzeichnis${NC}"
-    set -a
-    source "$PROJECT_ROOT/.env"
-    set +a
-else
-    echo -e "${YELLOW}⚠️  Keine .env gefunden (optional)${NC}"
-fi
 
 # BEARER_TOKEN validieren
 if [[ -z "${BEARER_TOKEN:-}" ]]; then

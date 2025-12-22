@@ -13,7 +13,10 @@
         "LOG_LEVEL": "INFO"
       },
       "cwd": "${workspaceFolder}/src",
-      "args": ["--port", "12349"]
+      "args": [
+        "--port",
+        "12349"
+      ]
     },
     {
       "name": "🔗 Agent opena1 (Koordinator)",
@@ -75,6 +78,40 @@
         "PYTHONPATH": "${workspaceFolder}/src"
       },
       "cwd": "${workspaceFolder}/src"
+    },
+    {
+      "type": "pwa-msedge",
+      "name": "Launch Microsoft Edge",
+      "request": "launch",
+      "runtimeArgs": [
+        "--remote-debugging-port=9222"
+      ],
+      "url": "/home/danijel-jd/.vscode/extensions/ms-edgedevtools.vscode-edge-devtools-2.1.10/out/startpage/index.html", // Provide your project's url to finish configuring
+      "presentation": {
+        "hidden": true
+      }
+    },
+    {
+      "type": "pwa-msedge",
+      "name": "Launch Microsoft Edge in headless mode",
+      "request": "launch",
+      "runtimeArgs": [
+        "--headless",
+        "--remote-debugging-port=9222"
+      ],
+      "url": "/home/danijel-jd/.vscode/extensions/ms-edgedevtools.vscode-edge-devtools-2.1.10/out/startpage/index.html", // Provide your project's url to finish configuring
+      "presentation": {
+        "hidden": true
+      }
+    },
+    {
+      "type": "vscode-edge-devtools.debug",
+      "name": "Open Edge DevTools",
+      "request": "attach",
+      "url": "/home/danijel-jd/.vscode/extensions/ms-edgedevtools.vscode-edge-devtools-2.1.10/out/startpage/index.html", // Provide your project's url to finish configuring
+      "presentation": {
+        "hidden": true
+      }
     }
   ],
   "compounds": [
@@ -98,6 +135,20 @@
         "⏰ Agent kordp (Scheduler)"
       ],
       "stopAll": true
+    },
+    {
+      "name": "Launch Edge Headless and attach DevTools",
+      "configurations": [
+        "Launch Microsoft Edge in headless mode",
+        "Open Edge DevTools"
+      ]
+    },
+    {
+      "name": "Launch Edge and attach DevTools",
+      "configurations": [
+        "Launch Microsoft Edge",
+        "Open Edge DevTools"
+      ]
     }
   ]
 }

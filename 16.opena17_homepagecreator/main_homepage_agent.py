@@ -28,7 +28,7 @@ import uvicorn
 
 # ================== CONFIG ==================
 
-PORT = 12366
+PORT = 12362
 SERVICE_NAME = "opena17"
 KUERZEL = "hpcreatep"
 VERSION = "1.0"

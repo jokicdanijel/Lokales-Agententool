@@ -30,21 +30,21 @@ Das System folgt der **Option-2-Flow Architekturprinzip**, bei dem Anfragen stet
 
 ### Kern-Services (PORTIER 3.0 Core)
 
-| Service | Port | Funktion | Status |
+| Service      | Port | Funktion                                  | Status   | 
 |---------|------|----------|--------|
-| **opena1** | 12344 | Koordinator (Anfrage→Entscheidung) | ✅ Laufend |
-| **opena2** | 12345 | Archivator (CMD/RESP Safepoints) | ✅ Laufend |
-| **kordp** | 12346 | Gateway (Tool-Dispatch) | ✅ Laufend |
-| **opena3** | 12347 | OpenWebUI Terminal Agent | ✅ Laufend |
-| **opena20** | 12349 | Dashboard (Live-Monitoring UI) | ✅ Laufend |
-| **Archivierung** | Dateisystem | Safepoint Storage (YYYY/MM/DD) | ✅ Aktiv |
+| **opena1**  | 12344 | Koordinator (Anfrage→Entscheidung)        | ✅ Laufend |
+| **opena2**  | 12345 | Archivator (CMD/RESP Safepoints)          | ✅ Laufend |
+| **opena1**  | 12344 | Gateway (Tool-Dispatch)                   | ✅ Laufend |
+| **opena3**  | 12347 | OpenWebUI Terminal Agent                  | ✅ Laufend |
+| **opena20** | 12349 | Dashboard (Live-Monitoring UI)            | ✅ Laufend |
+| **Archivierung** | Dateisystem | Safepoint Storage (YYYY/MM/DD) | ✅ Aktiv   |
 
 ### Kernmerkmale
 
-- ✅ **Option-2-Flow Architektur** — OpenAI → opena1 → opena2 → kordp → Tools
+- ✅ **Option-2-Flow Architektur** — OpenAI → opena1 → opena2 → kordp (opena1) → Tools
 - ✅ **Append-Only Safepoint System** — Unicode `→` in Dateinamen, unveränderlich
 - ✅ **Live-Dashboard** — Echtzeit-Monitoring, E2E-Test-Trigger
-- ✅ **Port Policy Enforcement** — 12344-12399 (Backend), 8080 verboten
+- ✅ **Port Policy Enforcement** — 12344-12399 (Backend),
 - ✅ **Strenge JSON-Schemas** — Pydantic `extra="forbid"`, OpenAI-kompatibel
 - ✅ **Security-First Design** — Bearer-Token-Auth, Geheime Maskierung
 
@@ -590,6 +590,7 @@ find . -name "*.pyc" -delete
 | Routing-Matrix | configs/routing_matrix.yaml | ✅ |
 | CI/CD-Konfiguration | .github/workflows/ci.yml | ✅ |
 | Load-Test Docs | scripts/load_test*.py | ✅ |
+| **GitHub Copilot MCP Integration** | docs/GITHUB_COPILOT_MCP_INTEGRATION.md | ✅ **NEU** |
 
 ---
 
@@ -1017,9 +1018,9 @@ Das System folgt dem **Option-2-Flow** Architekturprinzip, bei dem jede Anfrage 
 
 | Service | Port | Kürzel | Funktion | Status |
 |---------|------|--------|----------|--------|
-| **opena1** | 12344 | - | Coordinator (Request71→Decision72) | ✅ Running |
-| **opena2** | 12345 | - | Archivator (CMD/RESP Safepoints) | ✅ Running |
-| **kordp** | 12346 | - | Gateway (Tool Dispatch) | ✅ Running |
+| **opena1** | 12344 | kordp | Coordinator (Request71→Decision72) | ✅ Running |
+| **opena2** | 12345 | archivp | Archivator (CMD/RESP Safepoints) | ✅ Running |
+| **opena1** | 12344 | kordp | Gateway (Tool Dispatch) | ✅ Running |
 | **opena3** | 12347 | owuip | OpenWebUI Terminal Agent | ✅ **Online** |
 | **opena4** | 12348 | telep | Telegram Bot | ❌ **Offline** |
 | **opena5** | 12351 | vscop | VS Code Agent | ✅ Online |
@@ -1038,7 +1039,7 @@ Das System folgt dem **Option-2-Flow** Architekturprinzip, bei dem jede Anfrage 
 | **opena18** | 12364 | crmp | CRM / Local Archiv | ✅ Online |
 | **opena19** | 12365 | stockcryptop | Aktien & Crypto | ✅ Online |
 | **opena20** | 12349 | - | Dashboard (Live Monitoring UI) | ✅ Running |
-| **archivp** | Filesystem | - | Safepoint Storage (YYYY/MM/DD) | ✅ Active |
+| **opena2** | archivp | - | Safepoint Storage (YYYY/MM/DD) | ✅ Active |
 
 **Live-Status (28.11.2025 03:30:00):** 🟢 **16 von 17 Agenten online** (nur opena4 Telegram offline)
 

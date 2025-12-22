@@ -36,12 +36,6 @@ if [ -f "$PID_FILE" ]; then
 fi
 
 # Load environment
-if [ -f "${PROJECT_DIR}/.env" ]; then
-    source "${PROJECT_DIR}/.env"
-    echo -e "${GREEN}✓ Environment loaded${NC}"
-elif [ -f "${PROJECT_DIR}/.env.template" ]; then
-    echo -e "${YELLOW}⚠️  Using template environment (copy to .env for production)${NC}"
-fi
 
 # Set defaults
 PORT=${OPENA11_PORT:-12357}

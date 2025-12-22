@@ -2,6 +2,7 @@
 ELION Hyper-Dashboard 2.0 - Hauptmodul
 FastAPI-Backend mit Agent-Registry, Status, SSE und sicherer Authentifizierung.
 Kompatibilität: /api/agent/register (neu) und /api/command/register (legacy-alias).
+Tracing: OpenTelemetry Integration für Multi-Agent Workflow Visualization
 """
 
 import asyncio
@@ -22,6 +23,16 @@ from agent_registry import AgentRegistry
 from sse_bus import SSEBus
 from security import verify_token, RateLimiter, security_log
 from background_poller import on_startup as poller_startup, on_shutdown as poller_shutdown, set_registry
+
+# -------------------------------------------------------------------
+# OpenTelemetry Tracing Setup
+# -------------------------------------------------------------------
+try:
+    from agent_framework.observability import setup_observability
+    _TRACING_AVAILABLE = True
+except ImportError:
+    _TRACING_AVAILABLE = False
+    logging.warning("⚠️  agent-framework Tracing nicht verfügbar (pip install agent-framework)")
 
 # -------------------------------------------------------------------
 # Logging
@@ -101,6 +112,21 @@ app = FastAPI(
     version="1.0",
     lifespan=lifespan
 )
+
+# -------------------------------------------------------------------
+# OpenTelemetry Tracing Initialization
+# -------------------------------------------------------------------
+if _TRACING_AVAILABLE:
+    try:
+        setup_observability(
+            otlp_endpoint="http://localhost:4317",  # gRPC endpoint for OTEL collector
+            enable_sensitive_data=True  # Capture prompts/completions for debugging
+        )
+        logger.info("✅ OpenTelemetry Tracing initialized (http://localhost:4317)")
+    except Exception as e:
+        logger.warning(f"⚠️  Tracing setup failed: {e}")
+else:
+    logger.info("ℹ️  Tracing disabled (agent-framework not installed)")
 
 # CORS (lokal offen — bei Bedarf einschränken)
 # Ermöglicht Anfragen von OpenWebUI (Port 8080) und Dashboard (Port 12349)

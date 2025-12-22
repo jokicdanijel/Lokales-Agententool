@@ -35,7 +35,7 @@ logger = logging.getLogger("opena9")
 # CONFIG
 # ============================================================================
 
-PORT = 12354
+PORT = 12355
 KUERZEL = "telphonep"
 
 # Port-Policy Enforcement
