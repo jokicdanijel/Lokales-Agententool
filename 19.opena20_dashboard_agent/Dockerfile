@@ -1,5 +1,4 @@
-# opena20 Dashboard Agent - Production Docker Image
-# PORTIER 3.0 Konform | Ubuntu 25.04 Base
+# opena20 Dashboard Agent - Production Docker Image \n# PORTIER 3.0 Konform | Ubuntu 25.04 Base
 
 FROM ubuntu:25.04
 
@@ -34,8 +33,8 @@ WORKDIR /app
 
 # Copy requirements and install dependencies
 COPY requirements.txt .
-RUN python3.13 -m venv /opt/venv
-    && /opt/venv/bin/pip install --no-cache-dir --upgrade pip
+RUN python3.13 -m venv /opt/venv \
+    && /opt/venv/bin/pip install --no-cache-dir --upgrade pip \
     && /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
 ENV PATH="/opt/venv/bin:$PATH"
 
