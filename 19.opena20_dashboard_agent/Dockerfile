@@ -10,14 +10,14 @@ LABEL description="ELION/Portier opena20 Dashboard Agent"
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 ENV PORT=12349
-ENV BEARER_TOKEN=c899b90d-faf8-485b-afa4-078357cf5313
+
 ENV OPENA2_URL=http://opena2:12345
 
 # System dependencies
 RUN apt-get update && apt-get install -y \
-    python3.13 \
-    python3.13-dev \
-    python3.13-venv \
+    python3.11 \
+    python3.11-dev \
+    python3.11-venv \
     python3-pip \
     curl \
     jq \
@@ -33,7 +33,7 @@ WORKDIR /app
 
 # Copy requirements and install dependencies
 COPY requirements.txt .
-RUN python3.13 -m venv /opt/venv \
+RUN python3.11 -m venv /opt/venv \
     && /opt/venv/bin/pip install --no-cache-dir --upgrade pip \
     && /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
 ENV PATH="/opt/venv/bin:$PATH"
@@ -61,4 +61,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 EXPOSE ${PORT}
 
 # Run application
-CMD ["python3.13", "main_dashboard_final.py"]
+CMD ["python3.11", "main_dashboard_final.py"]

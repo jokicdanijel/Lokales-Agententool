@@ -9,6 +9,7 @@ services:
       - "12349:12349"
     environment:
       - PORT=12349
+      - BEARER_TOKEN
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:12349/health || exit 1"]
