@@ -1,6 +1,7 @@
-# opena20 Dashboard Agent - Production Docker Image \n# PORTIER 3.0 Konform | Ubuntu 25.04 Base
+# opena20 Dashboard Agent - Production Docker Image
+# PORTIER 3.0 Konform | Python 3.11 Slim Base
 
-FROM ubuntu:25.04
+FROM python:3.11-slim
 
 LABEL maintainer="xxjokic01@gmail.com"
 LABEL version="1.0.0"
@@ -15,14 +16,12 @@ ENV OPENA2_URL=http://opena2:12345
 
 # System dependencies
 RUN apt-get update && apt-get install -y \
-    python3.11 \
-    python3.11-dev \
-    python3.11-venv \
-    python3-pip \
     curl \
     jq \
     nano \
     htop \
+    gcc \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # Create app user
@@ -33,10 +32,8 @@ WORKDIR /app
 
 # Copy requirements and install dependencies
 COPY requirements.txt .
-RUN python3.11 -m venv /opt/venv \
-    && /opt/venv/bin/pip install --no-cache-dir --upgrade pip \
-    && /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
-ENV PATH="/opt/venv/bin:$PATH"
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
 
 # Copy application files
 COPY main_dashboard_final.py .
@@ -61,4 +58,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 EXPOSE ${PORT}
 
 # Run application
-CMD ["python3.11", "main_dashboard_final.py"]
+CMD ["python", "main_dashboard_final.py"]
