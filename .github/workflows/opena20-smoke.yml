@@ -15,9 +15,9 @@ jobs:
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
 
-            - name: Build and run docker-compose
+            - name: Build and run docker compose
               run: |
-                  docker-compose up -d --build
+                  docker compose up -d --build
 
             - name: Wait for /health
               run: |
@@ -35,4 +35,4 @@ jobs:
 
             - name: Tear down
               if: always()
-              run: docker-compose down --volumes --remove-orphans
+              run: docker compose down --volumes --remove-orphans
