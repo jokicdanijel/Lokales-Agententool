@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  opena20-dashboard:
+    build:
+      context: ./19.opena20_dashboard_agent
+    image: opena20-dashboard:local
+    ports:
+      - "12349:12349"
+    environment:
+      - PORT=12349
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:12349/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
