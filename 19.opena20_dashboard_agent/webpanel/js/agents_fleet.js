@@ -30,6 +30,11 @@ function updateStats() {
     const totalPorts = fleetData.services.reduce((sum, service) => sum + service.ports.length, 0);
     document.getElementById('total-ports').textContent = totalPorts;
 
+    // Port conflicts
+    const conflictCount = Object.keys(fleetData.port_conflicts || {}).length;
+    document.getElementById('port-conflicts').textContent = conflictCount;
+    document.getElementById('port-conflicts').style.color = conflictCount > 0 ? '#dc3545' : '#28a745';
+
     // Count running/stopped containers
     const runningCount = fleetData.services.filter(s =>
         s.live_status && s.live_status.status === 'running'
@@ -46,6 +51,34 @@ function updateStats() {
 
     const scanTime = new Date(fleetData.scanned_at);
     document.getElementById('last-scan').textContent = scanTime.toLocaleString('de-DE');
+
+    // Display changes banner
+    if (fleetData.changes) {
+        displayChanges(fleetData.changes);
+    }
+}
+
+// Display changes summary
+function displayChanges(changes) {
+    const banner = document.getElementById('changes-banner');
+    const hasChanges = changes.added.length > 0 || changes.removed.length > 0 || changes.modified.length > 0;
+
+    if (!hasChanges) {
+        banner.classList.add('hidden');
+        return;
+    }
+
+    banner.classList.remove('hidden');
+
+    if (changes.added.length > 0) {
+        document.getElementById('added-services').innerHTML = `<strong>✅ Added:</strong> ${changes.added.length} service(s)`;
+    }
+    if (changes.removed.length > 0) {
+        document.getElementById('removed-services').innerHTML = `<strong>❌ Removed:</strong> ${changes.removed.length} service(s)`;
+    }
+    if (changes.modified.length > 0) {
+        document.getElementById('modified-services').innerHTML = `<strong>🔄 Modified:</strong> ${changes.modified.length} service(s)`;
+    }
 }
 
 // Render service cards
@@ -134,6 +167,14 @@ function createServiceCard(service) {
         if (service.live_status.health && service.live_status.health !== 'none') {
             const healthEmoji = service.live_status.health === 'healthy' ? '✅' : '❌';
             info.appendChild(createInfoRow('Health', `${healthEmoji} ${service.live_status.health}`));
+        }
+        // Resource stats
+        if (service.live_status.resources) {
+            const res = service.live_status.resources;
+            const cpuClass = res.cpu_percent > 80 ? 'resource-high' : res.cpu_percent > 50 ? 'resource-medium' : 'resource-low';
+            const memClass = res.memory_percent > 80 ? 'resource-high' : res.memory_percent > 50 ? 'resource-medium' : 'resource-low';
+            info.appendChild(createInfoRow('CPU', `<span class="${cpuClass}">${res.cpu_percent.toFixed(1)}%</span>`));
+            info.appendChild(createInfoRow('Memory', `<span class="${memClass}">${res.memory_usage_mb.toFixed(0)} MB (${res.memory_percent.toFixed(1)}%)</span>`));
         }
     }
 
