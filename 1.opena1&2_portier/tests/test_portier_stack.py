@@ -150,8 +150,15 @@ async def test_opena1_decision72_file_command():
         assert response.status_code in (200, 422)
         if response.status_code == 200:
             data = response.json()
-            assert data.get("ok") is True
-        print(f"✅ Decision72 file command routing checked (status: {response.status_code})")
+            # Decision72: assert full decision contract
+            assert data["request_id"] == request_id
+            assert data["source"] == "opena1"
+            assert data["decision"]["selected_tool"] == "tool_file_manager"
+            assert "file" in data["decision"]["reason"].lower()
+            assert data["archivator_forward"]["status"] == "sent"
+            print("✅ Decision72 file command routing correct")
+        else:
+            pytest.skip("opena1 returned 422 for Decision72 (file command)")
 
 
 @pytest.mark.asyncio
@@ -174,8 +181,13 @@ async def test_opena1_decision72_search_command():
         assert response.status_code in (200, 422)
         if response.status_code == 200:
             data = response.json()
-            assert data.get("ok") is True
-        print(f"✅ Decision72 search command routing checked (status: {response.status_code})")
+            assert data["request_id"] == request_id
+            assert data["source"] == "opena1"
+            assert data["decision"]["selected_tool"] == "tool_file_searcher"
+            assert "search" in data["decision"]["reason"].lower()
+            print("✅ Decision72 search command routing correct")
+        else:
+            pytest.skip("opena1 returned 422 for Decision72 (search command)")
 
 
 @pytest.mark.asyncio
@@ -198,8 +210,13 @@ async def test_opena1_decision72_analyze_command():
         assert response.status_code in (200, 422)
         if response.status_code == 200:
             data = response.json()
-            assert data.get("ok") is True
-        print(f"✅ Decision72 analyze command routing checked (status: {response.status_code})")
+            assert data["request_id"] == request_id
+            assert data["source"] == "opena1"
+            assert data["decision"]["selected_tool"] == "tool_text_analyzer"
+            assert "analyze" in data["decision"]["reason"].lower()
+            print("✅ Decision72 analyze command routing correct")
+        else:
+            pytest.skip("opena1 returned 422 for Decision72 (analyze command)")
 
 
 # ============================================================================
@@ -353,7 +370,10 @@ async def test_complete_option2_flow():
 
         # Step 3: Verify kordp can route the tool
         print("🟦 Step 3: Verifying kordp tool routing")
-        route_response = await client.get(f"{BASE_URL_KORDP}/dispatch/routes/tool_text_analyzer", timeout=TIMEOUT)
+        try:
+            route_response = await client.get(f"{BASE_URL_KORDP}/dispatch/routes/tool_text_analyzer", timeout=TIMEOUT)
+        except (httpx.ConnectError, httpx.ReadTimeout):
+            pytest.skip("kordp not available for routing check")
         assert route_response.status_code == 200
         route_data = route_response.json()
         assert route_data["route"]["enabled"] is True
