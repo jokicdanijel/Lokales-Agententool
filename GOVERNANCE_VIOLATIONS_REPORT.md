@@ -1,8 +1,8 @@
 # 🚨 **PORTIER 3.0 GOVERNANCE VIOLATIONS REPORT**
 
-**Audit-Datum:** 27. November 2025 17:55 UTC  
-**Auditor:** Repo Governance Auditor (AI-gestützt)  
-**Basis:** `rename_map.csv` (1533 Einträge)  
+**Audit-Datum:** 27. November 2025 17:55 UTC
+**Auditor:** Repo Governance Auditor (AI-gestützt)
+**Basis:** `rename_map.csv` (1533 Einträge)
 **Status:** ❌ **KRITISCHE VERSTÖSSE ERKANNT**
 
 ---
@@ -40,9 +40,9 @@
 19.dashboard_agent/ARCHIV/2025/11/08/SP1762625396_opena4_telegram→opena2_MESSAGE.json → configs/SP1762625396_opena4_telegram→opena2_MESSAGE.json
 19.dashboard_agent/ARCHIV/2025/11/08/SP1762636655_opena18_dashboard→opena2_DASHBOARD_OP.json → configs/SP1762636655_opena18_dashboard→opena2_DASHBOARD_OP.json
 
-# 1.portier_openai/archivp/ → configs/
-1.portier_openai/archivp/2025/11/03/SP1762143131_kordp→opena2_CMD.json → configs/SP1762143131_kordp→opena2_CMD.json
-1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena12_influencer→opena2_INFLUENCER_OP.json → configs/SP1762631953_opena12_influencer→opena2_INFLUENCER_OP.json
+# 1.opena1&2_portier/archivp/ → configs/
+1.opena1&2_portier/archivp/2025/11/03/SP1762143131_kordp→opena2_CMD.json → configs/SP1762143131_kordp→opena2_CMD.json
+1.opena1&2_portier/ARCHIV/2025/11/08/SP1762631953_opena12_influencer→opena2_INFLUENCER_OP.json → configs/SP1762631953_opena12_influencer→opena2_INFLUENCER_OP.json
 ```
 
 **Vollständige Liste:** Siehe Zeilen 295-544 in `rename_map.csv` (84 Einträge)
@@ -71,10 +71,10 @@ mv configs/SP1762419411_kordp→opena2_CMD.json 19.dashboard_agent/ARCHIV/2025/1
 mv configs/SP1762625396_opena4_telegram→opena2_MESSAGE.json 19.dashboard_agent/ARCHIV/2025/11/08/
 # ... (84 Dateien)
 
-# 1.portier_openai/archivp/
-mkdir -p 1.portier_openai/archivp/2025/11/{02,03}
-mkdir -p 1.portier_openai/ARCHIV/2025/11/08
-mv configs/SP1762143131_kordp→opena2_CMD.json 1.portier_openai/archivp/2025/11/03/
+# 1.opena1&2_portier/archivp/
+mkdir -p 1.opena1&2_portier/archivp/2025/11/{02,03}
+mkdir -p 1.opena1&2_portier/ARCHIV/2025/11/08
+mv configs/SP1762143131_kordp→opena2_CMD.json 1.opena1&2_portier/archivp/2025/11/03/
 # ... (weitere Dateien)
 
 # VALIDIERUNG
@@ -102,10 +102,10 @@ find */ARCHIV/ -name "SP*.json" | wc -l  # MUSS 84+ SEIN
 ```csv
 3.opena1_coordinator/venv_local/lib/python3.12/site-packages/typing_extensions.py → src/pkg/typing_extensions.py
 3.opena1_coordinator/venv_local/lib/python3.12/site-packages/py.py → src/pkg/py.py
-1.portier_openai/venv313/lib/python3.12/site-packages/sockshandler.py → src/pkg/sockshandler.py
-1.portier_openai/venv313/lib/python3.12/site-packages/typing_extensions.py → src/pkg/typing_extensions.py (DUPLIKAT)
-1.portier_openai/venv313/lib/python3.12/site-packages/socks.py → src/pkg/socks.py
-1.portier_openai/venv313/lib/python3.12/site-packages/py.py → src/pkg/py.py (DUPLIKAT)
+1.opena1&2_portier/venv313/lib/python3.12/site-packages/sockshandler.py → src/pkg/sockshandler.py
+1.opena1&2_portier/venv313/lib/python3.12/site-packages/typing_extensions.py → src/pkg/typing_extensions.py (DUPLIKAT)
+1.opena1&2_portier/venv313/lib/python3.12/site-packages/socks.py → src/pkg/socks.py
+1.opena1&2_portier/venv313/lib/python3.12/site-packages/py.py → src/pkg/py.py (DUPLIKAT)
 ```
 
 **Vollständige Liste:** Siehe Zeilen 428-529 in `rename_map.csv` (6 unique Dateien)
@@ -209,7 +209,7 @@ mv $CONFLICTS_DIR/AGENT_TEST_RESULTS.md docs/testing/TEST_RESULTS_2025-11-09.md
 cat > $CONFLICTS_DIR/README.md <<'EOF'
 # Konflikt-Quarantäne vom 9. November 2025 03:29:49
 
-**Status:** Legacy-Archive  
+**Status:** Legacy-Archive
 **Grund:** Struktur-Cleanup während Phase 5
 
 Alle noch benötigten Dateien wurden zurück in tests/ / docs/ / scripts/ migriert.
@@ -285,7 +285,7 @@ Bei Fragen oder Problemen:
 
 ---
 
-**Ende des Governance Violations Report.**  
-**Status:** ❌ **BLOCKIERT** - Rollback erforderlich vor Deployment.  
-**Erstellt:** 27. November 2025 17:55 UTC  
+**Ende des Governance Violations Report.**
+**Status:** ❌ **BLOCKIERT** - Rollback erforderlich vor Deployment.
+**Erstellt:** 27. November 2025 17:55 UTC
 **Auditor:** AI Repo Governance Auditor

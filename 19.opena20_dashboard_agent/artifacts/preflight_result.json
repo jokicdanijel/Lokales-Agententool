@@ -1,0 +1,39 @@
+{
+  "timestamp": "2025-12-22T19:56:15.797358Z",
+  "checks": {
+    "baseline": {
+      "rc": 0,
+      "out": "\u2705 Baseline validation passed \u2014 artifacts/baseline_validation.json written\n/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.opena20_dashboard_agent/scripts/validate_baseline.py:121: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).\n  \"timestamp\": datetime.utcnow().isoformat() + \"Z\",\n"
+    },
+    "lint": {
+      "ruff": {
+        "rc": null,
+        "out": "skipped - ruff not installed"
+      },
+      "black": {
+        "rc": null,
+        "out": "skipped - black not installed"
+      },
+      "isort": {
+        "rc": null,
+        "out": "skipped - isort not installed"
+      }
+    },
+    "tests": {
+      "rc": 1,
+      "out": "..                                                                       [100%]\nWARNING: Failed to generate report: No data to report.\n\n\nERROR: Coverage failure: total of 0 is less than fail-under=85\n\n=============================== warnings summary ===============================\n19.opena20_dashboard_agent/evaluation/tests/test_eval_runner.py::test_run_eval_creates_artifacts\n  /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.opena20_dashboard_agent/agent/core.py:63: DeprecationWarning: There is no current event loop\n    return asyncio.get_event_loop().run_until_complete(AgentCore(config).run(prompt))\n\n19.opena20_dashboard_agent/evaluation/tests/test_eval_runner.py::test_run_eval_creates_artifacts\n  /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.opena20_dashboard_agent/evaluation/run_eval.py:70: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).\n    'timestamp': datetime.utcnow().isoformat() + 'Z',\n\n19.opena20_dashboard_agent/evaluation/tests/test_eval_runner.py::test_run_eval_creates_artifacts\n  /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.opena20_dashboard_agent/evaluation/run_eval.py:82: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).\n    ts = datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n================================ tests coverage ================================\n_______________ coverage: platform linux, python 3.12.3-final-0 ________________\n\nFAIL Required test coverage of 85% not reached. Total coverage: 0.00%\n2 passed, 3 warnings in 9.45s\n/home/danijel-jd/.local/lib/python3.12/site-packages/coverage/inorout.py:521: CoverageWarning: Module src was never imported. (module-not-imported); see https://coverage.readthedocs.io/en/7.12.0/messages.html#warning-module-not-imported\n  self.warn(f\"Module {pkg} was never imported.\", slug=\"module-not-imported\")\n/home/danijel-jd/.local/lib/python3.12/site-packages/coverage/control.py:950: CoverageWarning: No data was collected. (no-data-collected); see https://coverage.readthedocs.io/en/7.12.0/messages.html#warning-no-data-collected\n  self._warn(\"No data was collected.\", slug=\"no-data-collected\")\n/home/danijel-jd/.local/lib/python3.12/site-packages/pytest_cov/plugin.py:363: CovReportWarning: Failed to generate report: No data to report.\n\n  warnings.warn(CovReportWarning(message), stacklevel=1)\n"
+    },
+    "smoke_agent": {
+      "rc": 1,
+      "out": "exception: No module named 'agent'"
+    }
+  },
+  "success": false,
+  "handoff": {
+    "created": true,
+    "result": {
+      "rc": 0,
+      "out": "https://github.com/jokicdanijel/Gesamtprojekt-start/issues/68\n"
+    }
+  }
+}

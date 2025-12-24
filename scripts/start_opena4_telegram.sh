@@ -5,7 +5,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VENV="${ROOT}/../1.portier_openai/venv313"
+VENV="${ROOT}/../1.opena1&2_portier/venv313"
 PYTHON="${VENV}/bin/python3"
 LOGS="${ROOT}/../logs"
 

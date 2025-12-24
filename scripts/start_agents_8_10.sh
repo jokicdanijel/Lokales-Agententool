@@ -5,7 +5,7 @@ set -euo pipefail
 # Telephone, Call-Tracking, Unlock
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VENV="$ROOT/1.portier_openai/venv313"
+VENV="$ROOT/1.opena1&2_portier/venv313"
 
 if [ ! -d "$VENV" ]; then
     echo "❌ venv313 not found at $VENV"
@@ -56,12 +56,12 @@ DASHBOARD="http://127.0.0.1:12349"
 
 for agent_id in "opena8_telephone" "opena9_call_tracking" "opena10_unlock"; do
     port=$((12356 + $(echo "$agent_id" | grep -o "[0-9]*" | tail -1 | sed 's/^0*//')))
-    
+
     curl -s -X POST "$DASHBOARD/api/agent/register" \
         -H "Authorization: Bearer $TOKEN" \
         -H "Content-Type: application/json" \
         -d "{\"agent_id\": \"$agent_id\", \"endpoint\": \"http://127.0.0.1:$port\"}" | jq .
-    
+
     echo "✅ Registered: $agent_id"
 done
 

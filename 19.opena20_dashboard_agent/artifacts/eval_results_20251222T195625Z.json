@@ -1,0 +1,29 @@
+{
+  "summary": {
+    "timestamp": "2025-12-22T19:56:25.675827Z",
+    "dataset": "/tmp/pytest-of-danijel-jd/pytest-5/test_run_eval_creates_artifact0/sample.jsonl",
+    "total": 2,
+    "avg_latency_ms": 1.0805730000811309,
+    "avg_score": 0.0
+  },
+  "results": [
+    {
+      "id": "t1",
+      "agent": "opena20",
+      "input": "Hallo",
+      "expected": "Hallo",
+      "response": "[DRY-RUN] Received 5 chars \u2014 response: OK",
+      "latency_ms": 1.81761900012134,
+      "score": 0.0
+    },
+    {
+      "id": "t2",
+      "agent": "opena20",
+      "input": "Was ist 2+2?",
+      "expected": "4",
+      "response": "[DRY-RUN] Received 12 chars \u2014 response: OK",
+      "latency_ms": 0.34352700004092185,
+      "score": 0.0
+    }
+  ]
+}

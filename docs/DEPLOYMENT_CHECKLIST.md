@@ -1,7 +1,7 @@
 # DEPLOYMENT CHECKLIST: ELION HYPER-DASHBOARD (Phase 5)
 
-**Status:** ✅ READY FOR PRODUCTION  
-**Date:** 9. November 2025  
+**Status:** ✅ READY FOR PRODUCTION
+**Date:** 9. November 2025
 **Version:** Phase 5 Complete (19/19 Agents)
 
 ---
@@ -70,7 +70,7 @@ cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 ls -la 19.dashboard_agent/main_opena{16,17,18,19}*.py
 
 # 1.3 Check venv
-ls -d 1.portier_openai/venv313/bin/activate
+ls -d 1.opena1&2_portier/venv313/bin/activate
 
 # 1.4 Verify token file will be auto-generated
 touch 19.dashboard_agent/.env || echo "Token auto-generated"
@@ -79,7 +79,7 @@ touch 19.dashboard_agent/.env || echo "Token auto-generated"
 ### Step 2: Activate Virtual Environment
 ```bash
 # 2.1 Source Python venv
-source 1.portier_openai/venv313/bin/activate
+source 1.opena1&2_portier/venv313/bin/activate
 
 # 2.2 Verify activation
 python3 --version  # Should show Python 3.12+
@@ -426,7 +426,7 @@ curl -N http://127.0.0.1:12366/data/stream \
 
 ## 📞 SUPPORT CONTACTS
 
-**Technical Issues:** 
+**Technical Issues:**
 - Check logs: `tail -f logs/opena*.nohup.log`
 - Test endpoint: `curl http://127.0.0.1:12XXX/health`
 - Full status: `bin/ops.sh status`
@@ -470,6 +470,6 @@ bin/ops.sh stop
 
 **Deployment Status: ✅ APPROVED FOR PRODUCTION**
 
-**Deployed by:** GitHub Copilot  
-**Date:** 9. November 2025  
+**Deployed by:** GitHub Copilot
+**Date:** 9. November 2025
 **Version:** Phase 5 Complete (19/19 Agents)

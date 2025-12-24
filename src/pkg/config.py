@@ -14,7 +14,7 @@ PORT_RANGE = range(12344, 12400)  # Erlaubte Ports
 FORBIDDEN_PORTS = [8080]  # Verbotene Ports
 
 # Pfad-Konfiguration
-ARCHIVE_PATH = PROJECT_ROOT / "1.portier_openai" / "archivp"
+ARCHIVE_PATH = PROJECT_ROOT / "1.opena1&2_portier" / "archivp"
 TEMPLATES_PATH = BASE_DIR / "templates"
 
 # Sicherheit
@@ -38,66 +38,47 @@ HEALTH_CHECK_TIMEOUT = 5  # Sekunden
 SSE_RETRY_TIMEOUT = 3000  # Millisekunden
 MAX_EVENTS_BUFFER = 1000
 
+
 # OpenWebUI-Konfiguration
 class OpenWebUIConfig:
     """Konfiguration für OpenWebUI-Integration"""
+
     url: str = os.getenv("OPENWEBUI_URL", "http://127.0.0.1:8080")
     agent_port: int = int(os.getenv("OPENWEBUI_AGENT_PORT", "12347"))
     adapter_port: int = int(os.getenv("OPENWEBUI_ADAPTER_PORT", "12350"))
     timeout: int = int(os.getenv("OPENWEBUI_TIMEOUT", "30"))
-    
+
     @classmethod
     def to_dict(cls):
-        return {
-            "url": cls.url,
-            "agent_port": cls.agent_port,
-            "adapter_port": cls.adapter_port,
-            "timeout": cls.timeout
-        }
+        return {"url": cls.url, "agent_port": cls.agent_port, "adapter_port": cls.adapter_port, "timeout": cls.timeout}
+
 
 # Agenten-Konfiguration
 AGENTS = {
     "opena1": {
         "role": "Koordinator",
-        "base_path": PROJECT_ROOT / "1.portier_openai" / "opena1",
-        "endpoints": {
-            "log": "/log/opena1"
-        }
+        "base_path": PROJECT_ROOT / "1.opena1&2_portier" / "opena1",
+        "endpoints": {"log": "/log/opena1"},
     },
     "opena2": {
         "role": "Archivator",
-        "base_path": PROJECT_ROOT / "1.portier_openai" / "opena2",
-        "endpoints": {
-            "finalize": "/finalize/opena2",
-            "store": "/store/archivp"
-        }
+        "base_path": PROJECT_ROOT / "1.opena1&2_portier" / "opena2",
+        "endpoints": {"finalize": "/finalize/opena2", "store": "/store/archivp"},
     },
     "opena3": {
         "role": "OpenWebUI Agent",
         "port": OpenWebUIConfig.agent_port,
-        "endpoints": {
-            "health": "/health",
-            "command": "/command"
-        }
+        "endpoints": {"health": "/health", "command": "/command"},
     },
     "opena19": {
         "role": "Dashboard Backend",
         "base_path": PROJECT_ROOT / "19.dashboard_agent",
-        "endpoints": {
-            "status": "/api/status",
-            "command": "/api/command",
-            "events": "/api/events/live"
-        }
-    }
+        "endpoints": {"status": "/api/status", "command": "/api/command", "events": "/api/events/live"},
+    },
 }
 
 # Frontend-Konfiguration
-UI_TEMPLATES = {
-    "base": "base.html",
-    "dashboard": "dashboard.html",
-    "agent": "agent.html",
-    "error": "error.html"
-}
+UI_TEMPLATES = {"base": "base.html", "dashboard": "dashboard.html", "agent": "agent.html", "error": "error.html"}
 
 # Strict Mode Validation
 assert all(12344 <= port <= 12399 for port in PORT_RANGE), "Ungültiger Port-Bereich"

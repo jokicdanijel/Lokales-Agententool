@@ -1,7 +1,7 @@
 # 🎯 ELION Hyper-Dashboard – Executive Summary
 
-**Project Status:** ✅ **COMPLETE & PRODUCTION-READY**  
-**Completion Date:** 2025-11-06  
+**Project Status:** ✅ **COMPLETE & PRODUCTION-READY**
+**Completion Date:** 2025-11-06
 **Total Effort:** 41 Tasks | 60+ Files | ~5500 Lines (Code + Docs)
 
 ---
@@ -114,7 +114,7 @@ bin/ops.sh stop
 ### 1. **Root-Level Wrapper Pattern**
 Call `bin/ops.sh` from **any directory** in the project. Works from:
 - Project root (`Gesamtprojekt/`)
-- Subdirectories (`19.dashboard_agent/`, `1.portier_openai/`, etc.)
+- Subdirectories (`19.dashboard_agent/`, `1.opena1&2_portier/`, etc.)
 - No path configuration needed
 
 ### 2. **OpenWebUI Chat Integration**
@@ -269,8 +269,8 @@ See `docs/OPENWEBUI_TODO.md` for 30+ backlog items:
 
 ## 👥 Team & Support
 
-**Created by:** Danijel (ELION Team)  
-**Maintained by:** Development Team + AI Copilot  
+**Created by:** Danijel (ELION Team)
+**Maintained by:** Development Team + AI Copilot
 **Last Updated:** 2025-11-06
 
 For questions, refer to:

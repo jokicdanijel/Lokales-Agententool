@@ -1,0 +1,1689 @@
+{
+  "latency": [
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1200,
+      "target_ms": 2000,
+      "agent_name": "opena4_telegram",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 50,
+      "target_ms": 2000,
+      "agent_name": "opena4_telegram",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1850,
+      "target_ms": 2000,
+      "agent_name": "opena5_email",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 45,
+      "target_ms": 2000,
+      "agent_name": "opena5_email",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 950,
+      "target_ms": 2000,
+      "agent_name": "opena7_code",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 60,
+      "target_ms": 2000,
+      "agent_name": "opena7_code",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1200,
+      "target_ms": 2000,
+      "agent_name": "opena7_code",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 0.9833333333333333,
+      "latency_ms": 2100,
+      "target_ms": 2000,
+      "agent_name": "opena8_blog",
+      "meets_target": false,
+      "details": {
+        "percentile_category": "OVER_TARGET",
+        "variance_pct": 5.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1500,
+      "target_ms": 2000,
+      "agent_name": "opena6_social",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 55,
+      "target_ms": 2000,
+      "agent_name": "opena6_social",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1800,
+      "target_ms": 2000,
+      "agent_name": "opena9_review",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 58,
+      "target_ms": 2000,
+      "agent_name": "opena9_review",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1600,
+      "target_ms": 2000,
+      "agent_name": "opena10_document",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1750,
+      "target_ms": 2000,
+      "agent_name": "opena11_db",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 52,
+      "target_ms": 2000,
+      "agent_name": "opena11_db",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 48,
+      "target_ms": 2000,
+      "agent_name": "opena4_telegram",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 51,
+      "target_ms": 2000,
+      "agent_name": "opena5_email",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 62,
+      "target_ms": 2000,
+      "agent_name": "opena7_code",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1900,
+      "target_ms": 2000,
+      "agent_name": "opena12_devops",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 61,
+      "target_ms": 2000,
+      "agent_name": "opena12_devops",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 0.9916666666666667,
+      "latency_ms": 2050,
+      "target_ms": 2000,
+      "agent_name": "opena13_analytics",
+      "meets_target": false,
+      "details": {
+        "percentile_category": "OVER_TARGET",
+        "variance_pct": 2.5
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1100,
+      "target_ms": 2000,
+      "agent_name": "opena14_monitor",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 53,
+      "target_ms": 2000,
+      "agent_name": "opena14_monitor",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1950,
+      "target_ms": 2000,
+      "agent_name": "opena15_ml",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 59,
+      "target_ms": 2000,
+      "agent_name": "opena15_ml",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1400,
+      "target_ms": 2000,
+      "agent_name": "opena16_api",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 56,
+      "target_ms": 2000,
+      "agent_name": "opena16_api",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1850,
+      "target_ms": 2000,
+      "agent_name": "opena17_security",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1300,
+      "target_ms": 2000,
+      "agent_name": "opena18_perf",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 57,
+      "target_ms": 2000,
+      "agent_name": "opena18_perf",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1650,
+      "target_ms": 2000,
+      "agent_name": "opena19_testing",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 54,
+      "target_ms": 2000,
+      "agent_name": "opena19_testing",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1700,
+      "target_ms": 2000,
+      "agent_name": "opena21_workflow",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 59,
+      "target_ms": 2000,
+      "agent_name": "opena21_workflow",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 49,
+      "target_ms": 2000,
+      "agent_name": "opena4_telegram",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 50,
+      "target_ms": 2000,
+      "agent_name": "opena5_email",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1100,
+      "target_ms": 2000,
+      "agent_name": "opena7_code",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1950,
+      "target_ms": 2000,
+      "agent_name": "opena12_devops",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 0.9833333333333333,
+      "latency_ms": 2100,
+      "target_ms": 2000,
+      "agent_name": "opena12_devops",
+      "meets_target": false,
+      "details": {
+        "percentile_category": "OVER_TARGET",
+        "variance_pct": 5.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 1500,
+      "target_ms": 2000,
+      "agent_name": "opena13_analytics",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    },
+    {
+      "latency_score": 1.0,
+      "latency_ms": 56,
+      "target_ms": 2000,
+      "agent_name": "opena13_analytics",
+      "meets_target": true,
+      "details": {
+        "percentile_category": "P95",
+        "variance_pct": 0.0
+      }
+    }
+  ],
+  "cache_hit": [
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "telegram",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "telegram"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "telegram",
+      "cache_hit_count": 1,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 1,
+        "collection_type": "telegram"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "email",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "email"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "email",
+      "cache_hit_count": 1,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 1,
+        "collection_type": "email"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "code",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "code"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "code",
+      "cache_hit_count": 1,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 1,
+        "collection_type": "code"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "code",
+      "cache_hit_count": 1,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 1,
+        "collection_type": "code"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "blog",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "blog"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "social",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "social"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "social",
+      "cache_hit_count": 1,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 1,
+        "collection_type": "social"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "code_review",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "code_review"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "code_review",
+      "cache_hit_count": 1,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 1,
+        "collection_type": "code_review"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "documents",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "documents"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "database",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "database"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "database",
+      "cache_hit_count": 1,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 1,
+        "collection_type": "database"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "telegram",
+      "cache_hit_count": 2,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 2,
+        "collection_type": "telegram"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "email",
+      "cache_hit_count": 2,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 2,
+        "collection_type": "email"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "code",
+      "cache_hit_count": 2,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 2,
+        "collection_type": "code"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "devops",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "devops"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "devops",
+      "cache_hit_count": 1,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 1,
+        "collection_type": "devops"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "analytics",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "analytics"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "monitoring",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "monitoring"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "monitoring",
+      "cache_hit_count": 1,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 1,
+        "collection_type": "monitoring"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "ml",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "ml"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "ml",
+      "cache_hit_count": 1,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 1,
+        "collection_type": "ml"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "api",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "api"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "api",
+      "cache_hit_count": 1,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 1,
+        "collection_type": "api"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "security",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "security"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "performance",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "performance"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "performance",
+      "cache_hit_count": 1,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 1,
+        "collection_type": "performance"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "testing",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "testing"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "testing",
+      "cache_hit_count": 1,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 1,
+        "collection_type": "testing"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "workflow",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "workflow"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "workflow",
+      "cache_hit_count": 1,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 1,
+        "collection_type": "workflow"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "telegram",
+      "cache_hit_count": 3,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 3,
+        "collection_type": "telegram"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "email",
+      "cache_hit_count": 3,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 3,
+        "collection_type": "email"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "code",
+      "cache_hit_count": 2,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 2,
+        "collection_type": "code"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "devops",
+      "cache_hit_count": 1,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 1,
+        "collection_type": "devops"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "devops",
+      "cache_hit_count": 1,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 1,
+        "collection_type": "devops"
+      }
+    },
+    {
+      "cache_hit_score": 0.0,
+      "is_cached": false,
+      "collection": "analytics",
+      "cache_hit_count": 0,
+      "meets_target": false,
+      "details": {
+        "cache_status": "MISS",
+        "accumulated_hits": 0,
+        "collection_type": "analytics"
+      }
+    },
+    {
+      "cache_hit_score": 1.0,
+      "is_cached": true,
+      "collection": "analytics",
+      "cache_hit_count": 1,
+      "meets_target": true,
+      "details": {
+        "cache_status": "HIT",
+        "accumulated_hits": 1,
+        "collection_type": "analytics"
+      }
+    }
+  ],
+  "schema_validation": [
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena4_telegram",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena4_telegram",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena5_email",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena5_email",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena7_code",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena7_code",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena7_code",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena8_blog",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena6_social",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena6_social",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena9_review",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena9_review",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena10_document",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena11_db",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena11_db",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena4_telegram",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena5_email",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena7_code",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena12_devops",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena12_devops",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena13_analytics",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena14_monitor",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena14_monitor",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena15_ml",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena15_ml",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena16_api",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena16_api",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena17_security",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena18_perf",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena18_perf",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena19_testing",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena19_testing",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena21_workflow",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena21_workflow",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena4_telegram",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena5_email",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena7_code",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena12_devops",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena12_devops",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena13_analytics",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    },
+    {
+      "validation_score": 1.0,
+      "is_valid": true,
+      "validation_error_count": 0,
+      "agent_name": "opena13_analytics",
+      "meets_target": true,
+      "details": {
+        "schema_errors": [],
+        "validation_errors": [],
+        "required_fields_present": [
+          "id",
+          "text",
+          "doc_type",
+          "created_at"
+        ],
+        "required_fields_missing": []
+      }
+    }
+  ]
+}

@@ -8,8 +8,8 @@ PROJROOT="$(cd "$ROOT/.." && pwd)"
 cd "$ROOT"
 
 # Activate venv
-if [ -f "$PROJROOT/1.portier_openai/venv313/bin/activate" ]; then
-    source "$PROJROOT/1.portier_openai/venv313/bin/activate"
+if [ -f "$PROJROOT/1.opena1&2_portier/venv313/bin/activate" ]; then
+    source "$PROJROOT/1.opena1&2_portier/venv313/bin/activate"
 fi
 
 TOKEN=$(cat "$PROJROOT/.env" 2>/dev/null | grep DASHBOARD_ADMIN_TOKEN | cut -d= -f2 || echo "MEIN_SUPER_TOKEN_123")
@@ -66,7 +66,7 @@ for agent in opena5_browser opena6_email opena7_whatsapp; do
             port=12355
             ;;
     esac
-    
+
     curl -s -X POST http://127.0.0.1:12349/api/agent/register \
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer $TOKEN" \

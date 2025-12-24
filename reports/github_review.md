@@ -1,6 +1,6 @@
 # GitHub Repository Review – SCTA Monorepo
-**Date:** 2025-11-09  
-**Scope:** Security, Licensing, Dependencies, CI/CD, Secrets Management  
+**Date:** 2025-11-09
+**Scope:** Security, Licensing, Dependencies, CI/CD, Secrets Management
 **Status:** 🔴 **CRITICAL FINDINGS** – 3 High-Risk Issues Identified
 
 ---
@@ -23,14 +23,14 @@ The repository contains **multiple production-blocking security issues** that mu
 
 ### 1. 🔴 CRITICAL: Exposed Secrets in Git History
 
-**Severity:** CRITICAL  
+**Severity:** CRITICAL
 **Impact:** Token/credential compromise across all services
 
 #### Evidence
 ```bash
 $ git ls-files | grep "\.env"
 .env
-1.portier_openai/.env
+1.opena1&2_portier/.env
 
 $ cat .env
 DASHBOARD_ADMIN_TOKEN=MEIN_SUPER_TOKEN_123
@@ -41,7 +41,7 @@ TELEGRAM_ALLOWED_USERS=123456789,987654321
 
 **Files Affected:**
 - `.env` (root level) – Dashboard admin token, Telegram bot token, webhook secret
-- `1.portier_openai/.env` – Production coordinator token
+- `1.opena1&2_portier/.env` – Production coordinator token
 - `19.dashboard_agent/.env.full` – Full secrets bundle
 
 **Remediation Required:**
@@ -62,7 +62,7 @@ TELEGRAM_ALLOWED_USERS=123456789,987654321
 
 ### 2. 🟡 WARNING: Missing Project-Level LICENSE
 
-**Severity:** MEDIUM  
+**Severity:** MEDIUM
 **Impact:** Legal uncertainty; OSS licensing compliance risk
 
 #### Evidence
@@ -73,7 +73,7 @@ $ find . -maxdepth 1 -name "LICENSE*" -o -name "LICENSE.md"
 
 **Current State:**
 - No `LICENSE` or `LICENSE.md` at project root
-- 19+ service folders (`1.portier_openai/`, `4.opena4_telegram/`, etc.) without explicit license declarations
+- 19+ service folders (`1.opena1&2_portier/`, `4.opena4_telegram/`, etc.) without explicit license declarations
 - GitHub repo likely defaults to "proprietary" (no explicit license)
 
 **Recommendation:**
@@ -113,7 +113,7 @@ SOFTWARE.
 
 ### 3. 🟡 WARNING: Uncentralized Dependency Management
 
-**Severity:** MEDIUM  
+**Severity:** MEDIUM
 **Impact:** Inconsistent versioning; supply-chain vulnerability
 
 #### Evidence
@@ -173,7 +173,7 @@ mypy = "1.7.1"
 
 ### 4. 🟡 WARNING: .gitignore Incomplete
 
-**Severity:** MEDIUM  
+**Severity:** MEDIUM
 **Impact:** Sensitive files and build artifacts accidentally committed
 
 #### Evidence
@@ -335,9 +335,9 @@ c5221f9 feat: implement schritt 2 - tool registry and dispatcher
 
 ## Summary
 
-**High-Risk Findings:** 3 (Secrets, .gitignore, Dependencies)  
-**Medium-Risk Findings:** 1 (Licensing)  
-**Blockers for Deployment:** 2 (Secrets + .gitignore)  
+**High-Risk Findings:** 3 (Secrets, .gitignore, Dependencies)
+**Medium-Risk Findings:** 1 (Licensing)
+**Blockers for Deployment:** 2 (Secrets + .gitignore)
 
 **Recommendation:** DO NOT MERGE SCTA until Phase 1 remediation is complete.
 
@@ -352,6 +352,6 @@ c5221f9 feat: implement schritt 2 - tool registry and dispatcher
 
 ---
 
-**Report Generated:** 2025-11-09  
-**Reviewed By:** GitHub Copilot / SCTA Review Agent  
+**Report Generated:** 2025-11-09
+**Reviewed By:** GitHub Copilot / SCTA Review Agent
 **Approval Status:** 🟡 **CONDITIONAL** – pending Phase 1 remediation

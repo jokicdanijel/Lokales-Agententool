@@ -1,0 +1,91 @@
+{
+  "timestamp": "2025-12-23T00:00:00Z",
+  "baseline_hash": "",
+  "success": true,
+  "errors": []
+}{
+  "version": "1.0.0",
+  "validated_at": "2025-12-23T02:00:45.466146",
+  "entitlements_file": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/build/entitlements.json",
+  "status": "passed",
+  "summary": {
+    "total_validations": 9,
+    "passed": 9,
+    "failed": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "validations": [
+    {
+      "name": "Structure",
+      "passed": true,
+      "message": "All 4 required plans present"
+    },
+    {
+      "name": "Basic constraint",
+      "passed": true,
+      "message": "Exactly 4 clickable: opena11, opena3, opena4, opena7"
+    },
+    {
+      "name": "Inclusion: pro \u2287 basic",
+      "passed": true,
+      "message": "All included (+4 additional)"
+    },
+    {
+      "name": "Inclusion: premium \u2287 pro",
+      "passed": true,
+      "message": "All included (+4 additional)"
+    },
+    {
+      "name": "Inclusion: ultimum \u2287 premium",
+      "passed": true,
+      "message": "All included (+5 additional)"
+    },
+    {
+      "name": "Core agents",
+      "passed": true,
+      "message": "2 core agents: visible, not clickable in all plans"
+    },
+    {
+      "name": "System agents",
+      "passed": true,
+      "message": "2 system agents: never clickable"
+    },
+    {
+      "name": "Baseline coverage",
+      "passed": true,
+      "message": "All 21 agents from baseline"
+    },
+    {
+      "name": "Limits monotonicity",
+      "passed": true,
+      "message": "Workflows: basic:4 \u2192 pro:10 \u2192 premium:25 \u2192 ultimum:-1"
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "plans_validated": [
+    "basic",
+    "pro",
+    "premium",
+    "ultimum"
+  ],
+  "constraints": {
+    "basic_clickable_count": 4,
+    "basic_required_agents": [
+      "opena3",
+      "opena4",
+      "opena7",
+      "opena11"
+    ],
+    "core_agents": [
+      "opena1",
+      "opena2"
+    ],
+    "system_agents": [
+      "opena20",
+      "opena21"
+    ],
+    "inclusion_order": "ultimum \u2287 premium \u2287 pro \u2287 basic"
+  }
+}

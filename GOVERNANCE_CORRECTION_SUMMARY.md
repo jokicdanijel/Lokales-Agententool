@@ -1,7 +1,7 @@
 # ✅ **GOVERNANCE CORRECTION COMPLETE (SAFE MODE)**
 
-**Datum:** 27. November 2025 18:31 UTC  
-**Status:** ✅ **BEREIT FÜR REVIEW & EXECUTION**  
+**Datum:** 27. November 2025 18:31 UTC
+**Status:** ✅ **BEREIT FÜR REVIEW & EXECUTION**
 **Modus:** 🔒 **3-Phasen-Strategie mit Safety-First**
 
 ---
@@ -47,8 +47,8 @@ grep -E "ARCHIV.*,configs/SP.*\.json" "$RENAME_MAP" | while IFS=',' read -r src 
 done
 ```
 
-✅ **Keine gefühlten Pfade mehr**  
-✅ **Temporalstruktur 1:1 aus CSV**  
+✅ **Keine gefühlten Pfade mehr**
+✅ **Temporalstruktur 1:1 aus CSV**
 ✅ **Overwrite-Protection via mv -n**
 
 ---
@@ -64,8 +64,8 @@ if [[ -f "$src_full" ]]; then
 fi
 ```
 
-✅ **Keine blinden Overwrites**  
-✅ **Konflikte werden geloggt**  
+✅ **Keine blinden Overwrites**
+✅ **Konflikte werden geloggt**
 ✅ **Manuelle Review möglich**
 
 ---
@@ -79,8 +79,8 @@ grep -R "src\.pkg\.\(typing_extensions\|socks\|py\)" "$PROJECT_ROOT" | grep -v "
 # Wenn > 0 → WARNUNG + STOP
 ```
 
-✅ **Breaking Changes erkannt**  
-✅ **User wird gewarnt**  
+✅ **Breaking Changes erkannt**
+✅ **User wird gewarnt**
 ✅ **Keine Silent Failures**
 
 ---
@@ -100,8 +100,8 @@ git status --porcelain
 git branch --show-current
 ```
 
-✅ **Keine Ausführung ohne Git**  
-✅ **Warnung bei Uncommitted Changes**  
+✅ **Keine Ausführung ohne Git**
+✅ **Warnung bei Uncommitted Changes**
 ✅ **Feature-Branch empfohlen**
 
 ---
@@ -122,8 +122,8 @@ DRY_RUN="${DRY_RUN:-true}"  # Default: SAFE MODE
 DRY_RUN=false ./GOVERNANCE_FIX_ARCHIV.sh
 ```
 
-✅ **Keine Accidents**  
-✅ **User muss explizit bestätigen**  
+✅ **Keine Accidents**
+✅ **User muss explizit bestätigen**
 ✅ **Logs zeigen [DRY-RUN] klar an**
 
 ---
@@ -238,7 +238,7 @@ ls src/pkg/{typing_extensions,socks,py}.py 2>/dev/null  # → Fehler
 pytest 19.dashboard_agent/tests/ --collect-only | grep "test session"  # → 10+ Tests
 
 # Architecture Integrity
-grep -R "ARCHIV\|archivp" 1.portier_openai/config/ 19.dashboard_agent/config/
+grep -R "ARCHIV\|archivp" 1.opena1&2_portier/config/ 19.dashboard_agent/config/
 # Sollte auf archivp/ARCHIV/ zeigen, NICHT configs/
 
 bin/verify_stack.sh  # Alle Agents healthy
@@ -346,7 +346,7 @@ Bei Fragen oder Problemen:
 
 ---
 
-**Ende des Correction Summary.**  
-**Status:** ✅ **SICHER FÜR EXECUTION (MIT CHECKLIST)**  
-**Erstellt:** 27. November 2025 18:31 UTC  
+**Ende des Correction Summary.**
+**Status:** ✅ **SICHER FÜR EXECUTION (MIT CHECKLIST)**
+**Erstellt:** 27. November 2025 18:31 UTC
 **Review-Status:** ✅ **APPROVED (basierend auf User-Feedback)**

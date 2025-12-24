@@ -447,26 +447,26 @@ steps:
     name: "7.1 Validation"
     status: "✅ complete"
     files:
-      - "1.portier_openai/schemas.py"
-      - "1.portier_openai/koordinator.py"
-      - "1.portier_openai/main_production.py"
+      - "1.opena1&2_portier/schemas.py"
+      - "1.opena1&2_portier/koordinator.py"
+      - "1.opena1&2_portier/main_production.py"
     commit: "151c11c"
 
   schritt_2:
     name: "Tool-Registry & Dispatcher"
     status: "✅ complete"
     files:
-      - "1.portier_openai/tool_registry.py"
-      - "1.portier_openai/tool_dispatcher.py"
-      - "1.portier_openai/registry_schemas.py"
+      - "1.opena1&2_portier/tool_registry.py"
+      - "1.opena1&2_portier/tool_dispatcher.py"
+      - "1.opena1&2_portier/registry_schemas.py"
     commit: "c5221f9"
 
   schritt_3:
     name: "Safepoint Dedupe & Integrity"
     status: "✅ complete"
     files:
-      - "1.portier_openai/dedupe_engine.py"
-      - "1.portier_openai/safepoint_manager.py"
+      - "1.opena1&2_portier/dedupe_engine.py"
+      - "1.opena1&2_portier/safepoint_manager.py"
     commit: "348cf3f"
 
   schritt_4:

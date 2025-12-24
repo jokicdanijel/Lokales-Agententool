@@ -1,6 +1,6 @@
 # SCTA Phase 1: Secrets & Security Hardening – COMPLETION REPORT
 
-**Date:** 2025-11-09  
+**Date:** 2025-11-09
 **Status:** ✅ COMPLETE (automated fixes applied; manual steps required)
 
 ---
@@ -34,7 +34,7 @@
 **Command to Execute:**
 ```bash
 # Remove from git index (keep files on disk)
-git rm --cached .env 1.portier_openai/.env 19.dashboard_agent/.env.full
+git rm --cached .env 1.opena1&2_portier/.env 19.dashboard_agent/.env.full
 
 # Commit the removal
 git add .gitignore LICENSE

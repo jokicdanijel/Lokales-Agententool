@@ -2,9 +2,9 @@
 set -euo pipefail
 
 BASE="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt"
-VENV="$BASE/1.portier_openai/venv313"
+VENV="$BASE/1.opena1&2_portier/venv313"
 
-mkdir -p "$BASE/1.portier_openai"
+mkdir -p "$BASE/1.opena1&2_portier"
 
 # Systemabhängige Voraussetzungen
 if ! command -v python3 >/dev/null 2>&1; then

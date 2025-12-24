@@ -1,0 +1,10 @@
+services:
+  reverse-proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile.proxy
+    container_name: opena4-reverse-proxy
+    ports:
+      - "12349:12349"
+    network_mode: host
+    restart: unless-stopped

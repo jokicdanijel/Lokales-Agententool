@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenWebUI Agent V2 – PORTIER 3.0 Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 32px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header .subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .card-icon {
+            font-size: 28px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Farbschema für verschiedene Karten */
+        .auth-card .card-header { border-bottom-color: #10b981; }
+        .auth-card .card-icon { color: #10b981; }
+
+        .health-card .card-header { border-bottom-color: #ef4444; }
+        .health-card .card-icon { color: #ef4444; }
+
+        .chat-card .card-header { border-bottom-color: #3b82f6; }
+        .chat-card .card-icon { color: #3b82f6; }
+
+        .cmd-card .card-header { border-bottom-color: #f59e0b; }
+        .cmd-card .card-icon { color: #f59e0b; }
+
+        .status-card .card-header { border-bottom-color: #8b5cf6; }
+        .status-card .card-icon { color: #8b5cf6; }
+
+        .test-card .card-header { border-bottom-color: #ec4899; }
+        .test-card .card-icon { color: #ec4899; }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-auth { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
+        .btn-health { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; }
+        .btn-chat { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; }
+        .btn-cmd { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; }
+        .btn-status { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color: white; }
+        .btn-test { background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); color: white; }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-online {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-offline {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-online .status-dot { background: #10b981; }
+        .status-offline .status-dot { background: #ef4444; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .output-box {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #334155;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .output-box.show {
+            display: block;
+        }
+
+        .workflow-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .workflow-title {
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .workflow-steps {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .workflow-step {
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .workflow-step:hover {
+            transform: scale(1.1);
+        }
+
+        .workflow-step-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .step-1 { background: linear-gradient(135deg, #10b981, #059669); }
+        .step-2 { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .step-3 { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .step-4 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .step-5 { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .step-6 { background: linear-gradient(135deg, #ec4899, #db2777); }
+
+        .workflow-step-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .arrow {
+            font-size: 24px;
+            color: #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 OpenWebUI Agent V2 – PORTIER 3.0 Panel</h1>
+            <p class="subtitle">Unified Control Dashboard – Alle Funktionen in einem Workflow</p>
+        </div>
+
+        <div class="workflow-container">
+            <h2 class="workflow-title">🔄 Integrierter Workflow</h2>
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <div class="workflow-step-icon step-1">🔐</div>
+                    <div class="workflow-step-label">Auth</div>
+                </div>
+                <div class="arrow">→</div>
+                <div class="workflow-step">
+                    <div class="workflow-step-icon step-2">🩺</div>
+                    <div class="workflow-step-label">Health</div>
+                </div>
+                <div class="arrow">→</div>
+                <div class="workflow-step">
+                    <div class="workflow-step-icon step-3">💬</div>
+                    <div class="workflow-step-label">Chat</div>
+                </div>
+                <div class="arrow">→</div>
+                <div class="workflow-step">
+                    <div class="workflow-step-icon step-4">🛠️</div>
+                    <div class="workflow-step-label">CMD</div>
+                </div>
+                <div class="arrow">→</div>
+                <div class="workflow-step">
+                    <div class="workflow-step-icon step-5">🚦</div>
+                    <div class="workflow-step-label">Status</div>
+                </div>
+                <div class="arrow">→</div>
+                <div class="workflow-step">
+                    <div class="workflow-step-icon step-6">🧪</div>
+                    <div class="workflow-step-label">Test</div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="main-grid">
+            <!-- Authentication Card -->
+            <div class="card auth-card">
+                <div class="card-header">
+                    <span class="card-icon">🔐</span>
+                    <span class="card-title">Authentication</span>
+                </div>
+                <div class="input-group">
+                    <label>Username</label>
+                    <input type="text" id="auth-username" placeholder="Benutzername eingeben">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="auth-password" placeholder="Passwort eingeben">
+                </div>
+                <button class="btn btn-auth" onclick="authenticate()">Login</button>
+                <div class="output-box" id="auth-output"></div>
+            </div>
+
+            <!-- Health Check Card -->
+            <div class="card health-card">
+                <div class="card-header">
+                    <span class="card-icon">🩺</span>
+                    <span class="card-title">Health Check</span>
+                </div>
+                <p style="margin-bottom: 15px; color: #666;">System-Gesundheit überprüfen</p>
+                <button class="btn btn-health" onclick="healthCheck()">Ausführen</button>
+                <div class="output-box" id="health-output"></div>
+            </div>
+
+            <!-- Native Chat Card -->
+            <div class="card chat-card">
+                <div class="card-header">
+                    <span class="card-icon">💬</span>
+                    <span class="card-title">Native Chat</span>
+                </div>
+                <div class="input-group">
+                    <label>Nachricht</label>
+                    <textarea id="chat-message" placeholder="Nachricht eingeben..."></textarea>
+                </div>
+                <button class="btn btn-chat" onclick="sendChat()">Senden</button>
+                <div class="output-box" id="chat-output"></div>
+            </div>
+
+            <!-- CMD Dispatch Card -->
+            <div class="card cmd-card">
+                <div class="card-header">
+                    <span class="card-icon">🛠️</span>
+                    <span class="card-title">CMD Dispatch</span>
+                </div>
+                <div class="input-group">
+                    <label>Befehl</label>
+                    <input type="text" id="cmd-input" placeholder="Befehl eingeben...">
+                </div>
+                <button class="btn btn-cmd" onclick="dispatchCmd()">Senden</button>
+                <div class="output-box" id="cmd-output"></div>
+            </div>
+
+            <!-- Dispatch Ready Status Card -->
+            <div class="card status-card">
+                <div class="card-header">
+                    <span class="card-icon">🚦</span>
+                    <span class="card-title">Dispatch Ready</span>
+                </div>
+                <p style="margin-bottom: 15px; color: #666;">Aktueller Status:</p>
+                <div id="status-indicator" class="status-indicator status-offline">
+                    <span class="status-dot"></span>
+                    <span>Offline</span>
+                </div>
+                <button class="btn btn-status" onclick="checkStatus()" style="margin-top: 15px;">Status prüfen</button>
+                <div class="output-box" id="status-output"></div>
+            </div>
+
+            <!-- Self-Test Card -->
+            <div class="card test-card">
+                <div class="card-header">
+                    <span class="card-icon">🧪</span>
+                    <span class="card-title">Self-Test</span>
+                </div>
+                <p style="margin-bottom: 15px; color: #666;">Kompletten Systemtest durchführen</p>
+                <button class="btn btn-test" onclick="runSelfTest()">Start Test</button>
+                <div class="output-box" id="test-output"></div>
+            </div>
+
+            <!-- Telegram Bot Control Card -->
+            <div class="card" style="grid-column: 1 / -1;">
+                <div class="card-header" style="border-bottom-color: #06b6d4;">
+                    <span class="card-icon" style="color: #06b6d4;">📱</span>
+                    <span class="card-title">Telegram Bot Control</span>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                    <button class="btn" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;" onclick="startTelegramBot()">▶ Start Bot</button>
+                    <button class="btn" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white;" onclick="stopTelegramBot()">⏹ Stop Bot</button>
+                    <button class="btn" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;" onclick="restartTelegramBot()">🔄 Restart Bot</button>
+                    <button class="btn" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white;" onclick="showTelegramDetails()">📊 Details</button>
+                    <button class="btn" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color: white;" onclick="switchToTelegramAPI()">🔗 API öffnen</button>
+                </div>
+                <div class="output-box" id="bot-control-output"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Konfiguration
+        const API_BASE = 'http://localhost:12348';
+        const TELEGRAM_BOT_PORT = 12348;
+
+        // Telegram Bot Status Live-Update
+        let statusInterval = null;
+
+        // Page Load - Auto Status Check
+        window.addEventListener('load', () => {
+            checkTelegramBotStatus();
+            statusInterval = setInterval(checkTelegramBotStatus, 5000); // Alle 5 Sekunden
+        });
+
+        // Telegram Bot Status prüfen
+        async function checkTelegramBotStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/api/status`);
+                const data = await response.json();
+
+                const indicator = document.getElementById('status-indicator');
+                const botStatus = data.services?.telegram_bot || 'offline';
+
+                if (botStatus === 'online') {
+                    indicator.className = 'status-indicator status-online';
+                    indicator.innerHTML = '<span class="status-dot"></span><span>🟢 Telegram Bot Online</span>';
+                } else {
+                    indicator.className = 'status-indicator status-offline';
+                    indicator.innerHTML = '<span class="status-dot"></span><span>🔴 Telegram Bot Offline</span>';
+                }
+
+                // Uptime und Details aktualisieren
+                if (data.system) {
+                    document.getElementById('system-cpu').textContent = `CPU: ${data.system.cpu_percent}%`;
+                    document.getElementById('system-mem').textContent = `RAM: ${data.system.memory_percent}%`;
+                    document.getElementById('system-disk').textContent = `Disk: ${data.system.disk_percent}%`;
+                }
+            } catch (error) {
+                console.error('Status check failed:', error);
+                const indicator = document.getElementById('status-indicator');
+                indicator.className = 'status-indicator status-offline';
+                indicator.innerHTML = '<span class="status-dot"></span><span>⚠️ API nicht erreichbar</span>';
+            }
+        }
+
+        // Authentication
+        async function authenticate() {
+            const username = document.getElementById('auth-username').value;
+            const password = document.getElementById('auth-password').value;
+            const output = document.getElementById('auth-output');
+
+            output.classList.add('show');
+            output.innerHTML = `🔄 Authentifizierung läuft...<br>User: ${username}<br>`;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username, password})
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    output.innerHTML = `✅ Erfolgreich eingeloggt!<br>Token: ${data.token}<br>User: ${data.user}`;
+                    localStorage.setItem('auth_token', data.token);
+                } else {
+                    output.innerHTML = `❌ Login fehlgeschlagen`;
+                }
+            } catch (error) {
+                output.innerHTML = `❌ Fehler: ${error.message}`;
+            }
+        }
+
+        // Health Check - LIVE vom Backend
+        async function healthCheck() {
+            const output = document.getElementById('health-output');
+            output.classList.add('show');
+            output.innerHTML = '🔄 Health Check läuft...<br>';
+
+            try {
+                const response = await fetch(`${API_BASE}/api/health`);
+                const data = await response.json();
+
+                if (data.status === 'healthy') {
+                    output.innerHTML = `✅ System Healthy<br>
+                        CPU: ${data.system.cpu_percent}%<br>
+                        RAM: ${data.system.memory_percent}% (${data.system.memory_available_gb} GB frei)<br>
+                        Disk: ${data.system.disk_percent}% (${data.system.disk_free_gb} GB frei)<br>
+                        Uptime: ${data.system.uptime_hours}h<br>
+                        Backend: ${data.services.backend}<br>
+                        Workflows: ${data.services.workflows}`;
+                } else {
+                    output.innerHTML = `⚠️ ${data.error || 'Unknown error'}`;
+                }
+            } catch (error) {
+                output.innerHTML = `❌ API nicht erreichbar: ${error.message}`;
+            }
+        }
+
+        // Native Chat - LIVE an Backend
+        async function sendChat() {
+            const message = document.getElementById('chat-message').value;
+            const output = document.getElementById('chat-output');
+
+            if (!message) {
+                output.classList.add('show');
+                output.innerHTML = '⚠️ Bitte Nachricht eingeben';
+                return;
+            }
+
+            output.classList.add('show');
+            output.innerHTML = `📤 Sende: "${message}"<br>`;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/chat/send`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({message, user_id: 'dashboard'})
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    output.innerHTML = `✅ Gesendet<br>Message ID: ${data.message_id}<br>Response: ${data.response}`;
+                    document.getElementById('chat-message').value = '';
+                } else {
+                    output.innerHTML = `❌ Fehler beim Senden`;
+                }
+            } catch (error) {
+                output.innerHTML = `❌ Fehler: ${error.message}`;
+            }
+        }
+
+        // CMD Dispatch - LIVE Befehlsausführung
+        async function dispatchCmd() {
+            const cmd = document.getElementById('cmd-input').value;
+            const output = document.getElementById('cmd-output');
+
+            if (!cmd) {
+                output.classList.add('show');
+                output.innerHTML = '⚠️ Bitte Befehl eingeben';
+                return;
+            }
+
+            output.classList.add('show');
+            output.innerHTML = `🛠️ Executing: ${cmd}<br>`;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/cmd/execute`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({command: cmd, workflow_id: 1})
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    output.innerHTML = `✅ Erfolgreich ausgeführt<br>
+                        <strong>STDOUT:</strong><br>${data.stdout || '(leer)'}<br>
+                        <strong>STDERR:</strong><br>${data.stderr || '(leer)'}<br>
+                        <strong>Return Code:</strong> ${data.returncode}`;
+                    document.getElementById('cmd-input').value = '';
+                } else {
+                    output.innerHTML = `❌ ${data.error}<br>Erlaubte Befehle: ${data.allowed_commands?.join(', ')}`;
+                }
+            } catch (error) {
+                output.innerHTML = `❌ Fehler: ${error.message}`;
+            }
+        }
+
+        // Status Check Button
+        async function checkStatus() {
+            const output = document.getElementById('status-output');
+
+            output.classList.add('show');
+            output.innerHTML = '🔄 Status wird geprüft...<br>';
+
+            try {
+                const response = await fetch(`${API_BASE}/api/status`);
+                const data = await response.json();
+
+                if (data.success) {
+                    output.innerHTML = `✅ Status geladen<br>
+                        <strong>System:</strong><br>
+                        CPU: ${data.system.cpu_percent}%<br>
+                        RAM: ${data.system.memory_percent}%<br>
+                        Disk: ${data.system.disk_percent}%<br>
+                        <br><strong>Services:</strong><br>
+                        Telegram Bot: ${data.services.telegram_bot}<br>
+                        Backend: ${data.services.backend}<br>
+                        <br><strong>Workflows:</strong><br>
+                        Telegram: ${data.workflows.telegram}<br>
+                        Terminal: ${data.workflows.terminal}<br>
+                        Total: ${data.workflows.total}`;
+
+                    checkTelegramBotStatus(); // Update indicator
+                } else {
+                    output.innerHTML = `❌ ${data.error}`;
+                }
+            } catch (error) {
+                output.innerHTML = `❌ API nicht erreichbar: ${error.message}`;
+            }
+        }
+
+        // Self-Test - Kompletter Systemtest
+        async function runSelfTest() {
+            const output = document.getElementById('test-output');
+            output.classList.add('show');
+            output.innerHTML = '🧪 Self-Test gestartet...<br>';
+
+            try {
+                const response = await fetch(`${API_BASE}/api/selftest`);
+                const data = await response.json();
+
+                if (data.success) {
+                    let html = `<strong>📊 Test Ergebnisse:</strong><br>`;
+                    html += `Passed: ${data.summary.passed}/${data.summary.total} (${data.summary.success_rate})<br><br>`;
+
+                    data.tests.forEach(test => {
+                        const icon = test.status === 'passed' ? '✅' : test.status === 'warning' ? '⚠️' : '❌';
+                        html += `${icon} ${test.name}: ${test.value || test.error || test.status}<br>`;
+                    });
+
+                    output.innerHTML = html;
+                } else {
+                    output.innerHTML = `❌ Test fehlgeschlagen`;
+                }
+            } catch (error) {
+                output.innerHTML = `❌ API nicht erreichbar: ${error.message}`;
+            }
+        }
+
+        // Telegram Bot Control - START
+        async function startTelegramBot() {
+            const output = document.getElementById('bot-control-output');
+            output.classList.add('show');
+            output.innerHTML = '🔄 Starte Telegram Bot...<br>';
+
+            try {
+                const response = await fetch(`${API_BASE}/api/bot/start`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    output.innerHTML = `✅ Bot gestartet<br>${data.output}`;
+                    setTimeout(checkTelegramBotStatus, 2000); // Status nach 2 Sek aktualisieren
+                } else {
+                    output.innerHTML = `❌ ${data.error}`;
+                }
+            } catch (error) {
+                output.innerHTML = `❌ Fehler: ${error.message}`;
+            }
+        }
+
+        // Telegram Bot Control - STOP
+        async function stopTelegramBot() {
+            const output = document.getElementById('bot-control-output');
+            output.classList.add('show');
+            output.innerHTML = '🔄 Stoppe Telegram Bot...<br>';
+
+            try {
+                const response = await fetch(`${API_BASE}/api/bot/stop`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    output.innerHTML = `✅ Bot gestoppt<br>${data.output}`;
+                    setTimeout(checkTelegramBotStatus, 2000);
+                } else {
+                    output.innerHTML = `❌ ${data.error}`;
+                }
+            } catch (error) {
+                output.innerHTML = `❌ Fehler: ${error.message}`;
+            }
+        }
+
+        // Telegram Bot Control - RESTART
+        async function restartTelegramBot() {
+            const output = document.getElementById('bot-control-output');
+            output.classList.add('show');
+            output.innerHTML = '🔄 Starte Telegram Bot neu...<br>';
+
+            try {
+                const response = await fetch(`${API_BASE}/api/bot/restart`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    output.innerHTML = `✅ Bot neugestartet<br>${data.output}`;
+                    setTimeout(checkTelegramBotStatus, 3000);
+                } else {
+                    output.innerHTML = `❌ ${data.error}`;
+                }
+            } catch (error) {
+                output.innerHTML = `❌ Fehler: ${error.message}`;
+            }
+        }
+
+        // Telegram Bot Details anzeigen
+        async function showTelegramDetails() {
+            const output = document.getElementById('bot-control-output');
+            output.classList.add('show');
+            output.innerHTML = '🔄 Lade Details...<br>';
+
+            try {
+                const response = await fetch(`${API_BASE}/api/status`);
+                const data = await response.json();
+
+                output.innerHTML = `<strong>📱 Telegram Bot Details</strong><br>
+                    Port: ${TELEGRAM_BOT_PORT}<br>
+                    Status: ${data.services.telegram_bot}<br>
+                    Backend: ${data.services.backend}<br>
+                    <br><strong>System:</strong><br>
+                    CPU: ${data.system.cpu_percent}%<br>
+                    RAM: ${data.system.memory_percent}%<br>
+                    <br><strong>🔗 Links:</strong><br>
+                    <a href="${API_BASE}/docs" target="_blank">API Docs</a> |
+                    <a href="${API_BASE}/api/workflows" target="_blank">Workflows</a>`;
+            } catch (error) {
+                output.innerHTML = `❌ Fehler: ${error.message}`;
+            }
+        }
+
+        // Zur Telegram API wechseln
+        function switchToTelegramAPI() {
+            window.open(`${API_BASE}/docs`, '_blank');
+        }
+
+        // System Info anzeigen
+        const systemInfo = document.createElement('div');
+        systemInfo.id = 'system-info';
+        systemInfo.style.cssText = 'position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,0.8);color:#fff;padding:15px;border-radius:10px;font-size:12px;';
+        systemInfo.innerHTML = `
+            <div id="system-cpu">CPU: --</div>
+            <div id="system-mem">RAM: --</div>
+            <div id="system-disk">Disk: --</div>
+            <div style="margin-top:10px">
+                <button onclick="switchToTelegramAPI()" style="padding:5px 10px;background:#667eea;color:#fff;border:none;border-radius:5px;cursor:pointer;">
+                    🔗 Zur Telegram API
+                </button>
+            </div>
+        `;
+        document.body.appendChild(systemInfo);
+    </script>
+</body>
+</html>

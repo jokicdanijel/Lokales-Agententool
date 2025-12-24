@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Click Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #1a1a1a; color: #fff; }
+        .test-btn { padding: 15px 30px; margin: 10px; background: #0088cc; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        .test-btn:hover { background: #006699; }
+        .result { margin: 20px 0; padding: 15px; background: #2a2a2a; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔌 Capability Click Test</h1>
+    <p>Teste ob die Sektionen anwählbar sind:</p>
+
+    <button class="test-btn" onclick="testClick('messaging')">📤 Outgoing Sender (Messaging)</button>
+    <button class="test-btn" onclick="testClick('contacts')">👥 Contact Manager</button>
+    <button class="test-btn" onclick="testClick('media')">🖼️ Media Handler</button>
+    <button class="test-btn" onclick="testClick('ai-reply')">🤖 AI Reply</button>
+    <button class="test-btn" onclick="testClick('webhook')">🔗 Webhook</button>
+
+    <div class="result" id="result">Ergebnisse werden hier angezeigt...</div>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        function testClick(section) {
+            const result = document.getElementById('result');
+            result.innerHTML = `<p>🔄 Teste ${section}...</p>`;
+
+            setTimeout(() => {
+                if (window.app && typeof window.app.showSection === 'function') {
+                    try {
+                        window.app.showSection(section);
+                        result.innerHTML = `<p style="color: #4caf50;">✅ ${section} wurde aufgerufen! window.app.showSection() funktioniert!</p>`;
+                    } catch (e) {
+                        result.innerHTML = `<p style="color: #f44336;">❌ Fehler: ${e.message}</p>`;
+                    }
+                } else {
+                    result.innerHTML = `<p style="color: #ff9800;">⚠️ window.app oder showSection nicht verfügbar</p>`;
+                }
+            }, 500);
+        }
+
+        // Check if app is available
+        setTimeout(() => {
+            const status = document.createElement('div');
+            status.style.cssText = 'margin-top: 20px; padding: 10px; background: #333; border-radius: 5px;';
+
+            if (window.app) {
+                status.innerHTML = `
+                    <p style="color: #4caf50;">✅ window.app ist verfügbar</p>
+                    <p>Typ: ${typeof window.app}</p>
+                    <p>showSection: ${typeof window.app.showSection}</p>
+                `;
+            } else {
+                status.innerHTML = `<p style="color: #f44336;">❌ window.app nicht verfügbar</p>`;
+            }
+
+            document.body.appendChild(status);
+        }, 1000);
+    </script>
+</body>
+</html>

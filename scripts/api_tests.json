@@ -1,0 +1,23 @@
+{
+  "tests": [
+    {
+      "name": "GET /health",
+      "method": "GET",
+      "path": "/health",
+      "allowed_statuses": [200, 204]
+    },
+    {
+      "name": "GET /status",
+      "method": "GET",
+      "path": "/status",
+      "allowed_statuses": [200]
+    },
+    {
+      "name": "POST /api/ai/generate",
+      "method": "POST",
+      "path": "/api/ai/generate",
+      "json": { "prompt": "ping" },
+      "allowed_statuses": [200, 201, 202, 400, 401, 422]
+    }
+  ]
+}

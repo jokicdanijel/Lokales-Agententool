@@ -28,7 +28,7 @@ Basis-Verzeichnis: `/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/
 
 ```
 /
-├── 1.portier_openai/         # OpenAI Portier System
+├── 1.opena1&2_portier/         # OpenAI Portier System
 │   ├── docs/                 # Dokumentation
 │   ├── scripts/              # Startskripte
 │   ├── archivp/              # Safepoints & Audit
@@ -52,11 +52,11 @@ Basis-Verzeichnis: `/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/
 ### 3. Initiale Einrichtung
 ```bash
 # Verzeichnisstruktur erstellen
-mkdir -p /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/{docs,scripts,archivp,.runtime}
+mkdir -p /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/{docs,scripts,archivp,.runtime}
 
 # Virtual Environment einrichten
-python3 -m venv /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313
-source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/activate
+python3 -m venv /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313
+source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/activate
 
 # Pakete installieren
 python -m pip install --upgrade pip
@@ -91,10 +91,10 @@ chmod +x scripts/start_mcp_server.sh
 
 1. **.env Datei erstellen:**
 ```bash
-cat > /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/.env << EOL
+cat > /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/.env << EOL
 OPENAI_API_KEY=
 PORTIER_ENV=production
-PORTIER_BASE_DIR=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+PORTIER_BASE_DIR=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier
 PORTIER_ALLOWED_PORTS=12344,12345,12346,12347,12348,12349,12350
 PORTIER_FORBIDDEN_PORTS=8080
 MCP_SERVER_PORT=12350
@@ -107,7 +107,7 @@ EOL
 
 2. **Archiv/Safepoints initialisieren:**
 ```bash
-base="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp"
+base="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/archivp"
 mkdir -p "$base/$(date +%Y/%m/%d)"
 touch "$base/index.jsonl"
 ```
@@ -151,7 +151,7 @@ pick_port() {
 PORT="$(pick_port)"
 echo -n "$PORT" > "$RUNTIME/port"
 
-source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/activate
+source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/activate
 nohup uvicorn main:app --host 127.0.0.1 --port "$PORT" >> "$LOGDIR/service.out" 2>> "$LOGDIR/service.err" &
 for i in $(seq 1 15); do curl -sf "http://127.0.0.1:$PORT/health" && exit 0; sleep 1; done
 echo "Healthcheck fehlgeschlagen ($PORT)" >&2; exit 1
@@ -166,13 +166,13 @@ ss -ltn sport ge 12344 sport le 12399
 
 2. **Erste Inbetriebnahme:**
 ```bash
-source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/activate
-bash 1.portier_openai/scripts/run_production.sh
+source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/activate
+bash 1.opena1&2_portier/scripts/run_production.sh
 ```
 
 3. **Health-Check aller Komponenten:**
 ```bash
-for d in 1.portier_openai 16.homepage_creator; do
+for d in 1.opena1&2_portier 16.homepage_creator; do
   PORT=$(cat "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/$d/.runtime/port" 2>/dev/null || true)
   [ -n "$PORT" ] && curl -sf "http://127.0.0.1:$PORT/health" | jq .
 done
@@ -192,7 +192,7 @@ done
   "src": "opena1",
   "dst": "opena2",
   "kind": "CMD",
-  "path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp/2025/10/22/SP1732222222_opena1→opena2_CMD.json",
+  "path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/archivp/2025/10/22/SP1732222222_opena1→opena2_CMD.json",
   "strict": true
 }
 ```
@@ -276,6 +276,6 @@ cat .runtime/mcp.pid | xargs ps
 
 ---
 
-**Stand:** 22. Oktober 2025  
-**FastMCP Version:** 2.12.5  
-**MCP SDK Version:** 1.16.0  
+**Stand:** 22. Oktober 2025
+**FastMCP Version:** 2.12.5
+**MCP SDK Version:** 1.16.0

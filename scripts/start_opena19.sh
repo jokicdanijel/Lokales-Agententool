@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 BASE="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent"
-VENV="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/activate"
+VENV="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/activate"
 PORT=12349
 
 cd "$BASE"
@@ -15,4 +15,3 @@ _ = _read_env_token()
 PY
 
 exec uvicorn main_dashboard:app --host 127.0.0.1 --port "$PORT" --no-access-log
-

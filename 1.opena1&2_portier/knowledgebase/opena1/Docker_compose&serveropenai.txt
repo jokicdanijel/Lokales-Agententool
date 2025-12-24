@@ -1,7 +1,7 @@
 /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/start.shWeiter zum Inhalt
 Chatverlauf
 Du:
-1.portier_openai.tar.gz
+1.opena1&2_portier.tar.gz
 Datei
 2.openwebui.tar.gz
 Datei
@@ -314,9 +314,9 @@ Nov 02 00:25:49 danijeljd-ESPRIMO-P920 systemd[1]: Started ssh.service - OpenBS>
   ESC-^F <c1> <c2>  *  Find close bracket <c2>.
   ESC-^B <c1> <c2>  *  Find open bracket <c1>.
         ---------------------------------------------------
-        Each "find close bracket" command goes forward to the close bracket 
+        Each "find close bracket" command goes forward to the close bracket
           matching the (N-th) open bracket in the top line.
-        Each "find open bracket" command goes backward to the open bracket 
+        Each "find open bracket" command goes backward to the open bracket
           matching the (N-th) close bracket in the bottom line.
 
   m<letter>            Mark the current top line with <letter>.
@@ -583,9 +583,9 @@ Nov 02 00:25:49 danijeljd-ESPRIMO-P920 systemd[1]: Started ssh.service - OpenBS>
   ESC-^F <c1> <c2>  *  Find close bracket <c2>.
   ESC-^B <c1> <c2>  *  Find open bracket <c1>.
         ---------------------------------------------------
-        Each "find close bracket" command goes forward to the close bracket 
+        Each "find close bracket" command goes forward to the close bracket
           matching the (N-th) open bracket in the top line.
-        Each "find open bracket" command goes backward to the open bracket 
+        Each "find open bracket" command goes backward to the open bracket
           matching the (N-th) close bracket in the bottom line.
 
   m<letter>            Mark the current top line with <letter>.
@@ -636,9 +636,9 @@ Nov 02 00:25:49 danijeljd-ESPRIMO-P920 systemd[1]: Started ssh.service - OpenBS>
   ESC-^F <c1> <c2>  *  Find close bracket <c2>.
   ESC-^B <c1> <c2>  *  Find open bracket <c1>.
         ---------------------------------------------------
-        Each "find close bracket" command goes forward to the close bracket 
+        Each "find close bracket" command goes forward to the close bracket
           matching the (N-th) open bracket in the top line.
-        Each "find open bracket" command goes backward to the open bracket 
+        Each "find open bracket" command goes backward to the open bracket
           matching the (N-th) close bracket in the bottom line.
 
   m<letter>            Mark the current top line with <letter>.
@@ -807,7 +807,7 @@ Nov 02 00:25:49 danijeljd-ESPRIMO-P920 systemd[1]: Started ssh.service - OpenBS>
 
                           LINE EDITING
 
-        These keys can be used to edit text being entered 
+        These keys can be used to edit text being entered
         on the "command line" at the bottom of the screen.
 
  RightArrow ..................... ESC-l ... Move cursor right one character.
@@ -906,7 +906,7 @@ systemctl --no-pager status ssh
 
 # Pager für diese Shell komplett aus
 export SYSTEMD_PAGER=
-[sudo] Passwort für danijel-jd:       
+[sudo] Passwort für danijel-jd:
 Invalid unit name "ssh#" escaped as "ssh\x23" (maybe you should use systemd-escape?).
 Failed to restart ssh\x23.service: Unit ssh\x23.service not found.
 Failed to restart Einmalig.service: Unit Einmalig.service not found.
@@ -931,7 +931,7 @@ Nov 02 00:25:49 danijeljd-ESPRIMO-P920 sshd[330530]: Server listening on 0.0…2
 Nov 02 00:25:49 danijeljd-ESPRIMO-P920 sshd[330530]: Server listening on :: …22.
 Nov 02 00:25:49 danijeljd-ESPRIMO-P920 systemd[1]: Started ssh.service - Ope…er.
 Hint: Some lines were ellipsized, use -l to show in full.
-danijel-jd@danijeljd-ESPRIMO-P920:~$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~$
 -rwxr-xrwx 1 danijel-jd sudo   58 Okt 22 10:55 stop.sh
 Der Befehl 'docker' wurde nicht gefunden, kann aber installiert werden mit:
 sudo apt install docker.io      # version 28.2.2-0ubuntu1~24.04.1, or
@@ -945,7 +945,7 @@ danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2
 ./stop.sh
 ./README.md
 ./start.sh
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$
 ChatGPT:
 
 Alles klar – zwei Punkte sehe ich sofort:
@@ -1031,13 +1031,13 @@ sudo systemctl enable --now docker
 sudo usermod -aG docker "$USER"
 newgrp docker
 OK:1 http://mirror.easyname.at/ubuntu-archive noble InRelease
-OK:2 http://mirror.easyname.at/ubuntu-archive noble-updates InRelease          
-OK:3 http://mirror.easyname.at/ubuntu-archive noble-backports InRelease        
-OK:4 http://security.ubuntu.com/ubuntu noble-security InRelease                
-Ign:5 https://mirror.alwyzon.net/linuxmint zara InRelease                      
-OK:6 https://mirror.alwyzon.net/linuxmint zara Release                         
-OK:7 http://ddebs.ubuntu.com noble InRelease                                   
-OK:8 http://ddebs.ubuntu.com noble-updates InRelease                           
+OK:2 http://mirror.easyname.at/ubuntu-archive noble-updates InRelease
+OK:3 http://mirror.easyname.at/ubuntu-archive noble-backports InRelease
+OK:4 http://security.ubuntu.com/ubuntu noble-security InRelease
+Ign:5 https://mirror.alwyzon.net/linuxmint zara InRelease
+OK:6 https://mirror.alwyzon.net/linuxmint zara Release
+OK:7 http://ddebs.ubuntu.com noble InRelease
+OK:8 http://ddebs.ubuntu.com noble-updates InRelease
 Ign:9 http://packages.linuxmint.com zara InRelease
 OK:11 http://packages.linuxmint.com zara Release
 Paketlisten werden gelesen… Fertig
@@ -1051,7 +1051,7 @@ E: Paket docker-compose-plugin kann nicht gefunden werden.
 Failed to enable unit: Unit file docker.service does not exist.
 usermod: Gruppe »docker« existiert nicht.
 newgrp: Gruppe »docker« existiert nicht.
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$
 ChatGPT:
 
 Verstanden: Dein System ist Linux Mint “Zara” (Ubuntu 24.04 / noble-Basis). Die Ubuntu-Pakete docker.io/docker-compose-plugin sind bei dir nicht (mehr) passend verfügbar – deshalb die Fehler. Wir richten Docker aus dem offiziellen Docker-Repo ein, damit auch Compose v2 sauber da ist.
@@ -1212,7 +1212,7 @@ Server:
   Using metacopy: false
   Native Overlay Diff: true
   userxattr: false
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$
 ChatGPT:
 
 Top. Docker & Compose sind sauber drauf. Jetzt starten wir dein bestehendes OpenWebUI exakt mit deiner docker-compose.yml.
@@ -1291,16 +1291,16 @@ sudo chmod a+r /etc/apt/keyrings/docker.asc
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu noble stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt update
 OK:1 http://mirror.easyname.at/ubuntu-archive noble InRelease
-OK:2 http://mirror.easyname.at/ubuntu-archive noble-updates InRelease          
-OK:3 http://mirror.easyname.at/ubuntu-archive noble-backports InRelease        
-Holen:4 https://download.docker.com/linux/ubuntu noble InRelease [48,5 kB]     
-OK:5 http://security.ubuntu.com/ubuntu noble-security InRelease                
-Ign:6 https://mirror.alwyzon.net/linuxmint zara InRelease                      
-OK:7 https://mirror.alwyzon.net/linuxmint zara Release                         
-OK:8 http://ddebs.ubuntu.com noble InRelease                                   
-OK:9 http://ddebs.ubuntu.com noble-updates InRelease                           
+OK:2 http://mirror.easyname.at/ubuntu-archive noble-updates InRelease
+OK:3 http://mirror.easyname.at/ubuntu-archive noble-backports InRelease
+Holen:4 https://download.docker.com/linux/ubuntu noble InRelease [48,5 kB]
+OK:5 http://security.ubuntu.com/ubuntu noble-security InRelease
+Ign:6 https://mirror.alwyzon.net/linuxmint zara InRelease
+OK:7 https://mirror.alwyzon.net/linuxmint zara Release
+OK:8 http://ddebs.ubuntu.com noble InRelease
+OK:9 http://ddebs.ubuntu.com noble-updates InRelease
 Holen:10 https://download.docker.com/linux/ubuntu noble/stable amd64 Packages [33,5 kB]
-Ign:11 http://packages.linuxmint.com zara InRelease         
+Ign:11 http://packages.linuxmint.com zara InRelease
 OK:13 http://packages.linuxmint.com zara Release
 Es wurden 82,0 kB in 1 s geholt (95,4 kB/s).
 Paketlisten werden gelesen… Fertig
@@ -1330,7 +1330,7 @@ Holen:6 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-ce am
 Holen:7 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-buildx-plugin amd64 0.29.1-1~ubuntu.24.04~noble [15,9 MB]
 Holen:8 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-ce-rootless-extras amd64 5:28.5.1-1~ubuntu.24.04~noble [6.481 kB]
 Holen:9 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-compose-plugin amd64 2.40.3-1~ubuntu.24.04~noble [14,3 MB]
-Es wurden 105 MB in 3 s geholt (36,6 MB/s).    
+Es wurden 105 MB in 3 s geholt (36,6 MB/s).
 Vormals nicht ausgewähltes Paket containerd.io wird gewählt.
 (Lese Datenbank ... 507334 Dateien und Verzeichnisse sind derzeit installiert.)
 Vorbereitung zum Entpacken von .../0-containerd.io_1.7.28-1~ubuntu.24.04~noble_a
@@ -1429,28 +1429,28 @@ danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ docker compose up -d
 docker ps --filter "name=openwebui"
 docker logs --tail=120 openwebui
-WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion
 [+] Running 16/16
- ✔ open-webui Pulled                                                      73.4s 
-   ✔ 5c32499ab806 Pull complete                                            2.6s 
-   ✔ 923f706c7da6 Pull complete                                            2.7s 
-   ✔ 3305e2b7fc7c Pull complete                                            3.7s 
-   ✔ 13973b95de7b Pull complete                                            3.7s 
-   ✔ b124c04c3dda Pull complete                                            3.7s 
-   ✔ 4f4fb700ef54 Pull complete                                            3.7s 
-   ✔ 93f7d71a43ad Pull complete                                            3.7s 
-   ✔ 77127ed2bb0c Pull complete                                            3.7s 
-   ✔ 5cc688decb4c Pull complete                                           30.0s 
-   ✔ 11ba7592cf55 Pull complete                                           30.0s 
-   ✔ 94bdc704e2ab Pull complete                                           70.2s 
-   ✔ 3105e7a030e6 Pull complete                                           71.9s 
-   ✔ 71e9b7206fa8 Pull complete                                           71.9s 
-   ✔ 4b74cd7f42f2 Pull complete                                           71.9s 
-   ✔ c41c20ad99da Pull complete                                           72.3s 
+ ✔ open-webui Pulled                                                      73.4s
+   ✔ 5c32499ab806 Pull complete                                            2.6s
+   ✔ 923f706c7da6 Pull complete                                            2.7s
+   ✔ 3305e2b7fc7c Pull complete                                            3.7s
+   ✔ 13973b95de7b Pull complete                                            3.7s
+   ✔ b124c04c3dda Pull complete                                            3.7s
+   ✔ 4f4fb700ef54 Pull complete                                            3.7s
+   ✔ 93f7d71a43ad Pull complete                                            3.7s
+   ✔ 77127ed2bb0c Pull complete                                            3.7s
+   ✔ 5cc688decb4c Pull complete                                           30.0s
+   ✔ 11ba7592cf55 Pull complete                                           30.0s
+   ✔ 94bdc704e2ab Pull complete                                           70.2s
+   ✔ 3105e7a030e6 Pull complete                                           71.9s
+   ✔ 71e9b7206fa8 Pull complete                                           71.9s
+   ✔ 4b74cd7f42f2 Pull complete                                           71.9s
+   ✔ c41c20ad99da Pull complete                                           72.3s
 [+] Running 3/3
- ✔ Network 2openwebui_default        Creat...                              0.1s 
- ✔ Volume 2openwebui_openwebui_data  Created                               0.0s 
- ✔ Container open-webui              Started                               5.3s 
+ ✔ Network 2openwebui_default        Creat...                              0.1s
+ ✔ Volume 2openwebui_openwebui_data  Created                               0.0s
+ ✔ Container open-webui              Started                               5.3s
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 Error response from daemon: No such container: openwebui
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ docker inspect openwebui --format='{{json .Mounts}}' | jq '.'
@@ -1467,15 +1467,15 @@ Error response from daemon: No such container: openwebui
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ ss -lntp | grep ':8080'
 # Verursacher stoppen ODER (temporär) in docker-compose.yml auf 127.0.0.1:8081:8080 ändern
 docker compose up -d
-WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion
 [+] Running 1/1
- ✔ Container open-webui  Running                                           0.0s 
+ ✔ Container open-webui  Running                                           0.0s
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ docker compose up -d || true
 docker compose logs --tail=200
-WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion
 [+] Running 1/1
- ✔ Container open-webui  Running                                           0.0s 
-WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion 
+ ✔ Container open-webui  Running                                           0.0s
+WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion
 open-webui  | Loading WEBUI_SECRET_KEY from file, not provided as an environment variable.
 open-webui  | Generating WEBUI_SECRET_KEY
 open-webui  | Loading WEBUI_SECRET_KEY from .webui_secret_key
@@ -1502,10 +1502,10 @@ open-webui  | INFO  [alembic.runtime.migration] Running upgrade d31026856c01 -> 
 open-webui  | INFO  [alembic.runtime.migration] Running upgrade 018012973d35 -> 3af16a1c9fb6, update user table
 open-webui  | INFO  [alembic.runtime.migration] Running upgrade 3af16a1c9fb6 -> 38d63c18f30f, Add oauth_session table
 open-webui  | INFO  [alembic.runtime.migration] Running upgrade 38d63c18f30f -> a5c220713937, Add reply_to_id column to message
-open-webui  | WARNI [open_webui.env] 
-open-webui  | 
+open-webui  | WARNI [open_webui.env]
+open-webui  |
 open-webui  | WARNING: CORS_ALLOW_ORIGIN IS SET TO '*' - NOT RECOMMENDED FOR PRODUCTION DEPLOYMENTS.
-open-webui  | 
+open-webui  |
 open-webui  | INFO  [open_webui.env] VECTOR_DB: chroma
 open-webui  | INFO  [open_webui.env] Embedding model set: sentence-transformers/all-MiniLM-L6-v2
 open-webui  | WARNI [langchain_community.utils.user_agent] USER_AGENT environment variable not set, consider setting it to identify your requests.
@@ -1521,19 +1521,19 @@ open-webui  | Indexes: [{'name': 'tag_id', 'column_names': ['id'], 'unique': 1, 
 open-webui  | Creating new primary key with 'id' and 'user_id'.
 open-webui  | Dropping unique constraint: uq_id_user_id
 open-webui  | Dropping unique index: tag_id
-open-webui  | 
+open-webui  |
 open-webui  |  ██████╗ ██████╗ ███████╗███╗   ██╗    ██╗    ██╗███████╗██████╗ ██╗   ██╗██╗
 open-webui  | ██╔═══██╗██╔══██╗██╔════╝████╗  ██║    ██║    ██║██╔════╝██╔══██╗██║   ██║██║
 open-webui  | ██║   ██║██████╔╝█████╗  ██╔██╗ ██║    ██║ █╗ ██║█████╗  ██████╔╝██║   ██║██║
 open-webui  | ██║   ██║██╔═══╝ ██╔══╝  ██║╚██╗██║    ██║███╗██║██╔══╝  ██╔══██╗██║   ██║██║
 open-webui  | ╚██████╔╝██║     ███████╗██║ ╚████║    ╚███╔███╔╝███████╗██████╔╝╚██████╔╝██║
 open-webui  |  ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═══╝     ╚══╝╚══╝ ╚══════╝╚═════╝  ╚═════╝ ╚═╝
-open-webui  | 
-open-webui  | 
+open-webui  |
+open-webui  |
 open-webui  | v0.6.34 - building the best AI user interface.
-open-webui  | 
+open-webui  |
 open-webui  | https://github.com/open-webui/open-webui
-open-webui  | 
+open-webui  |
 Fetching 30 files: 100%|██████████| 30/30 [00:21<00:00,  1.37it/s]
 open-webui  | INFO:     Started server process [1]
 open-webui  | INFO:     Waiting for application startup.
@@ -1628,7 +1628,7 @@ INFO  [alembic.runtime.migration] Running upgrade d31026856c01 -> 018012973d35, 
 INFO  [alembic.runtime.migration] Running upgrade 018012973d35 -> 3af16a1c9fb6, update user table
 INFO  [alembic.runtime.migration] Running upgrade 3af16a1c9fb6 -> 38d63c18f30f, Add oauth_session table
 INFO  [alembic.runtime.migration] Running upgrade 38d63c18f30f -> a5c220713937, Add reply_to_id column to message
-WARNI [open_webui.env] 
+WARNI [open_webui.env]
 
 WARNING: CORS_ALLOW_ORIGIN IS SET TO '*' - NOT RECOMMENDED FOR PRODUCTION DEPLOYMENTS.
 
@@ -1670,14 +1670,14 @@ Loading WEBUI_SECRET_KEY from file, not provided as an environment variable.
 Loading WEBUI_SECRET_KEY from .webui_secret_key
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ docker compose down
 docker compose up -d
-WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion
 [+] Running 2/2
- ✔ Container open-webui        Removed                                     3.7s 
- ✔ Network 2openwebui_default  Removed                                     0.1s 
-WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion 
+ ✔ Container open-webui        Removed                                     3.7s
+ ✔ Network 2openwebui_default  Removed                                     0.1s
+WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion
 [+] Running 2/2
- ✔ Network 2openwebui_default  Created                                     0.0s 
- ✔ Container open-webui        Started                                     0.2s 
+ ✔ Network 2openwebui_default  Created                                     0.0s
+ ✔ Container open-webui        Started                                     0.2s
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ # Agents/Keys sichtbar? Wenn nicht, stimmt der Datenpfad nicht.
 docker inspect open-webui --format='{{range .Mounts}}{{.Source}} -> {{.Destination}}{{println}}{{end}}'
 
@@ -1693,7 +1693,7 @@ drwxr-xr-x 2 1000 1000   4096 Nov  2 00:13 uploads
 drwxr-xr-x 2 1000 1000   4096 Nov  2 00:16 vector_db
 -rw-r--r-- 1 1000 1000 270336 Nov  2 00:13 webui.db
 root
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$
 ChatGPT:
 
 Dein OpenWebUI läuft – aber mit neuem Named-Volume:
@@ -1791,28 +1791,28 @@ sudo ip addr add 192.168.10.2/24 dev enp0s25
 sudo apt install openssh-server -y
 sudo systemctl enable --now ssh
 sudo systemctl status ssh
-[sudo] Passwort für danijel-jd: 
+[sudo] Passwort für danijel-jd:
 
 Das hat nicht funktioniert, bitte nochmal probieren.
-[sudo] Passwort für danijel-jd: 
+[sudo] Passwort für danijel-jd:
 
 Das hat nicht funktioniert, bitte nochmal probieren.
-[sudo] Passwort für danijel-jd: 
+[sudo] Passwort für danijel-jd:
 
 sudo: 3 Fehlversuche bei der Passwort-Eingabe
-[sudo] Passwort für danijel-jd: 
+[sudo] Passwort für danijel-jd:
 Das hat nicht funktioniert, bitte nochmal probieren.
-[sudo] Passwort für danijel-jd: 
+[sudo] Passwort für danijel-jd:
 Das hat nicht funktioniert, bitte nochmal probieren.
-[sudo] Passwort für danijel-jd: 
+[sudo] Passwort für danijel-jd:
 sudo: 3 Fehlversuche bei der Passwort-Eingabe
-[sudo] Passwort für danijel-jd: 
+[sudo] Passwort für danijel-jd:
 Das hat nicht funktioniert, bitte nochmal probieren.
-[sudo] Passwort für danijel-jd: 
+[sudo] Passwort für danijel-jd:
 Das hat nicht funktioniert, bitte nochmal probieren.
-[sudo] Passwort für danijel-jd: 
+[sudo] Passwort für danijel-jd:
 sudo: 3 Fehlversuche bei der Passwort-Eingabe
-[sudo] Passwort für danijel-jd:       
+[sudo] Passwort für danijel-jd:
 Paketlisten werden gelesen… Fertig
 Abhängigkeitsbaum wird aufgebaut… Fertig
 Statusinformationen werden eingelesen… Fertig
@@ -1978,7 +1978,7 @@ Minimaltests für Datei-API (falls vorhanden)
 # Datei lesen
 curl -s -X POST http://127.0.0.1:12345/file/read \
   -H 'Content-Type: application/json' \
-  -d '{"path":"1.portier_openai/archivp/index.jsonl"}' | jq .
+  -d '{"path":"1.opena1&2_portier/archivp/index.jsonl"}' | jq .
 
 # Datei schreiben (Testdatei unter BASE_DIR/tmp.txt)
 curl -s -X POST http://127.0.0.1:12345/file/write \
@@ -2019,10 +2019,10 @@ find "$HOST_DATA" -maxdepth 3 -type f | head
 
 2) Wenn der Pfad aus Portier / FS-Bridge (uvicorn auf 127.0.0.1:12345) kommt
 
-Die FS-Bridge arbeitet unter einem BASE_DIR (bei dir der Gesamtprojekt-Ordner). Pfade mit Safepoints liegen z. B. unter 1.portier_openai/archivp/.... Prüfe zuerst den Root und die Health:
+Die FS-Bridge arbeitet unter einem BASE_DIR (bei dir der Gesamtprojekt-Ordner). Pfade mit Safepoints liegen z. B. unter 1.opena1&2_portier/archivp/.... Prüfe zuerst den Root und die Health:
 
 curl -s http://127.0.0.1:12345/health | jq .
-curl -s 'http://127.0.0.1:12345/files?path=1.portier_openai/archivp&recursive=true' | jq '.items[0:20]'
+curl -s 'http://127.0.0.1:12345/files?path=1.opena1&2_portier/archivp&recursive=true' | jq '.items[0:20]'
 
     So siehst du, wo die FS-Bridge tatsächlich schreibt. Danach kannst du exakt denselben relativen Pfad am Host unter deinem BASE_DIR öffnen.
 
@@ -2034,7 +2034,7 @@ Unsere Safepoints heißen z. B. SP<ts>_opena1→opena2_CMD.json. Die Pfeiltaste 
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 
 # Safepoints auflisten, ohne den Pfeil tippen zu müssen:
-find 1.portier_openai/archivp -type f -name 'SP*json' | head -n 20
+find 1.opena1&2_portier/archivp -type f -name 'SP*json' | head -n 20
 
 4) Kurzdiagnose aus deinem Screenshot
 
@@ -2052,16 +2052,16 @@ Was jetzt konkret tun?
 
 Du:
 danijel-jd@danijeljd-ESPRIMO-P920:~$ curl -s http://127.0.0.1:12345/health | jq .
-curl -s 'http://127.0.0.1:12345/files?path=1.portier_openai/archivp&recursive=true' | jq '.items[0:20]'
+curl -s 'http://127.0.0.1:12345/files?path=1.opena1&2_portier/archivp&recursive=true' | jq '.items[0:20]'
 Der Befehl 'jq' wurde nicht gefunden, kann aber installiert werden mit:
 sudo apt install jq
 Der Befehl 'jq' wurde nicht gefunden, kann aber installiert werden mit:
 sudo apt install jq
-danijel-jd@danijeljd-ESPRIMO-P920:~$ curl -s 'http://127.0.0.1:12345/files?path=1.portier_openai/archivp&recursive=true' | jq '.items[0:20]'
+danijel-jd@danijeljd-ESPRIMO-P920:~$ curl -s 'http://127.0.0.1:12345/files?path=1.opena1&2_portier/archivp&recursive=true' | jq '.items[0:20]'
 Der Befehl 'jq' wurde nicht gefunden, kann aber installiert werden mit:
 sudo apt install jq
 danijel-jd@danijeljd-ESPRIMO-P920:~$ curl -s http://127.0.0.1:12345/health
-{"service":"opena1","status":"ok","ts":"2025-11-02T17:46:06Z"}danijel-jd@danijelld-ESPRIMO-P920:~$ curl -s http://127.0.0.1:12345/health | hea 
+{"service":"opena1","status":"ok","ts":"2025-11-02T17:46:06Z"}danijel-jd@danijelld-ESPRIMO-P920:~$ curl -s http://127.0.0.1:12345/health | hea
 Der Befehl 'heal' wurde nicht gefunden, meinten Sie:
   Befehl 'deal' aus dem deb deal (3.1.9-13)
   Befehl 'zeal' aus dem deb zeal (1:0.7.0-3)
@@ -2094,7 +2094,7 @@ Der Befehl 'talk' wurde nicht gefunden, kann aber installiert werden mit:
 sudo apt install inetutils-talk  # version 2:2.4-3ubuntu1, or
 sudo apt install talk            # version 0.17-18
 danijel-jd@danijeljd-ESPRIMO-P920:~$ sudo apt talk
-[sudo] Passwort für danijel-jd:       
+[sudo] Passwort für danijel-jd:
 
 This is the Linux Mint "apt" command.
 
@@ -2145,7 +2145,7 @@ Commands:
   update           - Download lists of new/upgradable packages
   upgrade          - Perform a safe upgrade
   version          - Show the installed version of a package
-    
+
 danijel-jd@danijeljd-ESPRIMO-P920:~$ sudo apt install talk
 Paketlisten werden gelesen… Fertig
 Abhängigkeitsbaum wird aufgebaut… Fertig
@@ -2171,8 +2171,8 @@ danijel-jd@danijeljd-ESPRIMO-P920:~$ # Im Projekt-Stamm ausführen:
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 
 # Safepoints auflisten, ohne den Pfeil tippen zu müssen:
-find 1.portier_openai/archivp -type f -name 'SP*json' | head -n 20
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ 
+find 1.opena1&2_portier/archivp -type f -name 'SP*json' | head -n 20
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$
 ChatGPT:
 
 Gesehen:
@@ -2216,7 +2216,7 @@ find . -type f -name 'SP*.json' | head -n 30
 curl -s http://127.0.0.1:12346/health | python3 -m json.tool
 
 # Archiv-Listing aus der Bridge (zeigt dir den *realen* relativen Pfad unter BASE_DIR)
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' \
   | python3 -m json.tool | head -n 40
 
 4) OpenWebUI-Pfade (zur Erinnerung)
@@ -2245,7 +2245,7 @@ danijel-jd@danijeljd-ESPRIMO-P920:~$ # Im Projekt-Stamm ausführen:
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 
 # Safepoints auflisten, ohne den Pfeil tippen zu müssen:
-find 1.portier_openai/archivp -type f -name 'SP*json' | head -n 20
+find 1.opena1&2_portier/archivp -type f -name 'SP*json' | head -n 20
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ # OpenAPI/Docs der Instanz prüfen
 curl -s http://127.0.0.1:12345/openapi.json | head -n 30
 curl -i http://127.0.0.1:12345/docs | head -n 15
@@ -2310,7 +2310,7 @@ find . -type d -name archivp
 
 # Alle Safepoint-Dateien (SP*.json) – egal wo
 find . -type f -name 'SP*.json' | head -n 30
-./1.portier_openai/archivp
+./1.opena1&2_portier/archivp
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 
 # Ordner "archivp" finden
@@ -2318,18 +2318,18 @@ find . -type d -name archivp
 
 # Alle Safepoint-Dateien (SP*.json) – egal wo
 find . -type f -name 'SP*.json' | head -n 30
-./1.portier_openai/archivp
+./1.opena1&2_portier/archivp
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ # Health (ohne jq schön formatiert)
 curl -s http://127.0.0.1:12346/health | python3 -m json.tool
 
 # Archiv-Listing aus der Bridge (zeigt dir den *realen* relativen Pfad unter BASE_DIR)
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' \
   | python3 -m json.tool | head -n 40
 Expecting value: line 1 column 1 (char 0)
 Expecting value: line 1 column 1 (char 0)
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ ls -la /var/lib/docker/volumes/2openwebui_openwebui_data/_data
 ls: Zugriff auf '/var/lib/docker/volumes/2openwebui_openwebui_data/_data' nicht möglich: Keine Berechtigung
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$  
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$
 ChatGPT:
 
 Danke, das reicht zum Einordnen.
@@ -2357,8 +2357,8 @@ sudo ls -la /var/lib/docker/volumes/2openwebui_openwebui_data/_data
 B) Safepoints auf der Platte checken
 
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
-ls -la 1.portier_openai/archivp
-find 1.portier_openai/archivp -maxdepth 3 -type f -name 'SP*.json' | head -n 20
+ls -la 1.opena1&2_portier/archivp
+find 1.opena1&2_portier/archivp -maxdepth 3 -type f -name 'SP*.json' | head -n 20
 
     Wenn dort nichts liegt, hat bisher keine Bridge nach archivp geschrieben – also Pfad „nicht gefunden“ ist korrekt.
 
@@ -2370,7 +2370,7 @@ Du hast zwei Wege – nimm den, der bei dir vorhanden ist.
 
 # Beispiel: modulare Bridge starten (falls vorhanden)
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
-./1.portier_openai/venv313/bin/python3 -m uvicorn portier_fs_bridge:app \
+./1.opena1&2_portier/venv313/bin/python3 -m uvicorn portier_fs_bridge:app \
   --host 127.0.0.1 --port 12346
 
 2) Falls du keine ausführbare Bridge-Datei hast: Minimal-Bridge ad hoc starten
@@ -2434,7 +2434,7 @@ Ohne jq formatiert mit Python:
 curl -s http://127.0.0.1:12346/health | python3 -m json.tool | head
 
 # Archiv auflisten (zeigt realen Hostpfad relativ zu BASE)
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' \
   | python3 -m json.tool | head -n 40
 
     Siehst du hier Einträge, dann existieren die Dateien unter
@@ -2453,16 +2453,16 @@ Merker
 Wenn du die Ausgabe von D) schickst, mappe ich dir den exakten „Blocker“-Pfad 1:1 auf den Host-Pfad.
 Du:
 danijel-jd@danijeljd-ESPRIMO-P920:~$ curl -s http://127.0.0.1:12345/health | jq .
-curl -s 'http://127.0.0.1:12345/files?path=1.portier_openai/archivp&recursive=true' | jq '.items[0:20]'
+curl -s 'http://127.0.0.1:12345/files?path=1.opena1&2_portier/archivp&recursive=true' | jq '.items[0:20]'
 Der Befehl 'jq' wurde nicht gefunden, kann aber installiert werden mit:
 sudo apt install jq
 Der Befehl 'jq' wurde nicht gefunden, kann aber installiert werden mit:
 sudo apt install jq
-danijel-jd@danijeljd-ESPRIMO-P920:~$ curl -s 'http://127.0.0.1:12345/files?path=1.portier_openai/archivp&recursive=true' | jq '.items[0:20]'
+danijel-jd@danijeljd-ESPRIMO-P920:~$ curl -s 'http://127.0.0.1:12345/files?path=1.opena1&2_portier/archivp&recursive=true' | jq '.items[0:20]'
 Der Befehl 'jq' wurde nicht gefunden, kann aber installiert werden mit:
 sudo apt install jq
 danijel-jd@danijeljd-ESPRIMO-P920:~$ curl -s http://127.0.0.1:12345/health
-{"service":"opena1","status":"ok","ts":"2025-11-02T17:46:06Z"}danijel-jd@danijelld-ESPRIMO-P920:~$ curl -s http://127.0.0.1:12345/health | hea 
+{"service":"opena1","status":"ok","ts":"2025-11-02T17:46:06Z"}danijel-jd@danijelld-ESPRIMO-P920:~$ curl -s http://127.0.0.1:12345/health | hea
 Der Befehl 'heal' wurde nicht gefunden, meinten Sie:
   Befehl 'deal' aus dem deb deal (3.1.9-13)
   Befehl 'zeal' aus dem deb zeal (1:0.7.0-3)
@@ -2495,7 +2495,7 @@ Der Befehl 'talk' wurde nicht gefunden, kann aber installiert werden mit:
 sudo apt install inetutils-talk  # version 2:2.4-3ubuntu1, or
 sudo apt install talk            # version 0.17-18
 danijel-jd@danijeljd-ESPRIMO-P920:~$ sudo apt talk
-[sudo] Passwort für danijel-jd:       
+[sudo] Passwort für danijel-jd:
 
 This is the Linux Mint "apt" command.
 
@@ -2546,7 +2546,7 @@ Commands:
   update           - Download lists of new/upgradable packages
   upgrade          - Perform a safe upgrade
   version          - Show the installed version of a package
-    
+
 danijel-jd@danijeljd-ESPRIMO-P920:~$ sudo apt install talk
 Paketlisten werden gelesen… Fertig
 Abhängigkeitsbaum wird aufgebaut… Fertig
@@ -2572,7 +2572,7 @@ danijel-jd@danijeljd-ESPRIMO-P920:~$ # Im Projekt-Stamm ausführen:
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 
 # Safepoints auflisten, ohne den Pfeil tippen zu müssen:
-find 1.portier_openai/archivp -type f -name 'SP*json' | head -n 20
+find 1.opena1&2_portier/archivp -type f -name 'SP*json' | head -n 20
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ # OpenAPI/Docs der Instanz prüfen
 curl -s http://127.0.0.1:12345/openapi.json | head -n 30
 curl -i http://127.0.0.1:12345/docs | head -n 15
@@ -2637,7 +2637,7 @@ find . -type d -name archivp
 
 # Alle Safepoint-Dateien (SP*.json) – egal wo
 find . -type f -name 'SP*.json' | head -n 30
-./1.portier_openai/archivp
+./1.opena1&2_portier/archivp
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 
 # Ordner "archivp" finden
@@ -2645,12 +2645,12 @@ find . -type d -name archivp
 
 # Alle Safepoint-Dateien (SP*.json) – egal wo
 find . -type f -name 'SP*.json' | head -n 30
-./1.portier_openai/archivp
+./1.opena1&2_portier/archivp
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ # Health (ohne jq schön formatiert)
 curl -s http://127.0.0.1:12346/health | python3 -m json.tool
 
 # Archiv-Listing aus der Bridge (zeigt dir den *realen* relativen Pfad unter BASE_DIR)
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' \
   | python3 -m json.tool | head -n 40
 Expecting value: line 1 column 1 (char 0)
 Expecting value: line 1 column 1 (char 0)
@@ -2697,8 +2697,8 @@ drwxr-xr-x 2 root       root         4096 Nov  2 01:21 uploads
 drwxr-xr-x 2 root       root         4096 Nov  2 04:44 vector_db
 -rw-r--r-- 1 root       root       270336 Nov  2 01:21 webui.db
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
-ls -la 1.portier_openai/archivp
-find 1.portier_openai/archivp -maxdepth 3 -type f -name 'SP*.json' | head -n 20
+ls -la 1.opena1&2_portier/archivp
+find 1.opena1&2_portier/archivp -maxdepth 3 -type f -name 'SP*.json' | head -n 20
 insgesamt 276
 drwxr-xrwx  3 danijel-jd sudo         4096 Nov  1 19:10  .
 drwxr-xrwx 38 danijel-jd sudo         4096 Nov  2 01:59  ..
@@ -2707,9 +2707,9 @@ drwxr-xrwx  3 danijel-jd sudo         4096 Okt 22 01:48  2025
 -rw-rw-r--  1 danijel-jd sudo         3416 Okt 24 01:59 'Unbenanntes Dokument'
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ # Beispiel: modulare Bridge starten (falls vorhanden)
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
-./1.portier_openai/venv313/bin/python3 -m uvicorn portier_fs_bridge:app \
+./1.opena1&2_portier/venv313/bin/python3 -m uvicorn portier_fs_bridge:app \
   --host 127.0.0.1 --port 12346
-bash: ./1.portier_openai/venv313/bin/python3: Datei oder Verzeichnis nicht gefunden
+bash: ./1.opena1&2_portier/venv313/bin/python3: Datei oder Verzeichnis nicht gefunden
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ python3 - <<'PY'
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
@@ -2722,7 +2722,7 @@ app = FastAPI(title="Portier FS Bridge (ad hoc)")
 
 def safe_join(rel):
     p=(BASE/rel.lstrip("/")).resolve()
-    if not str(p).startswith(str(BASE)): raise HTTPException(400,"outside BASE") 
+    if not str(p).startswith(str(BASE)): raise HTTPException(400,"outside BASE")
     return p
 
 @app.get("/health")
@@ -2753,7 +2753,7 @@ def read_file(body: dict):
 
 @app.post("/file/write")
 def write_file(body: dict):
-    p=safe_join(body.get("path","")); p.parent.mkdir(parents=True,exist_ok=True) 
+    p=safe_join(body.get("path","")); p.parent.mkdir(parents=True,exist_ok=True)
     content=body.get("content","")
 PYicorn.run(app, host="127.0.0.1", port=12346),"size":len(content)}
 Traceback (most recent call last):
@@ -2763,11 +2763,11 @@ danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ 
 curl -s http://127.0.0.1:12346/health | python3 -m json.tool | head
 
 # Archiv auflisten (zeigt realen Hostpfad relativ zu BASE)
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' \
   | python3 -m json.tool | head -n 40
 Expecting value: line 1 column 1 (char 0)
 Expecting value: line 1 column 1 (char 0)
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$  
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$
 ChatGPT:
 
 Alles eindeutig:
@@ -2782,8 +2782,8 @@ Wir setzen jetzt die FS-Bridge sauber auf Port 12346 auf – minimal, policy-kon
 1) venv anlegen (Name muss venv313 sein)
 
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
-python3 -m venv 1.portier_openai/venv313
-source 1.portier_openai/venv313/bin/activate
+python3 -m venv 1.opena1&2_portier/venv313
+source 1.opena1&2_portier/venv313/bin/activate
 python -V
 pip install --upgrade pip
 pip install fastapi==0.115.5 "uvicorn[standard]" pydantic==2.*
@@ -2804,7 +2804,7 @@ FORBIDDEN_PORTS = [8080]
 # ---- Safepoint Writer (archivp) ----
 def write_safepoint(src: str, dst: str, kind: str, body: dict) -> None:
     today = datetime.now()
-    adir = BASE_DIR / "1.portier_openai" / "archivp" / f"{today:%Y/%m/%d}"
+    adir = BASE_DIR / "1.opena1&2_portier" / "archivp" / f"{today:%Y/%m/%d}"
     adir.mkdir(parents=True, exist_ok=True)
     name = f"SP{int(today.timestamp())}_{src}→{dst}_{kind}.json"
     (adir / name).write_text(json.dumps(body, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -2869,7 +2869,7 @@ PY
 uvicorn portier_fs_bridge:app --host 127.0.0.1 --port 12346
 
     Neues Terminal? Dann vorher wieder:
-    source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/activate
+    source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/activate
 
 4) Tests (ohne jq)
 
@@ -2877,7 +2877,7 @@ uvicorn portier_fs_bridge:app --host 127.0.0.1 --port 12346
 curl -s http://127.0.0.1:12346/health | python3 -m json.tool | head -n 20
 
 # Archiv auflisten
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' \
   | python3 -m json.tool | head -n 40
 
 # Beispiel lesen/schreiben
@@ -2900,8 +2900,8 @@ sudo ls -la /var/lib/docker/volumes/2openwebui_openwebui_data/_data
 Wenn die Bridge läuft, sag Bescheid, welche exakte Pfadangabe dir das UI zeigt – ich mappe sie dir sofort auf den Host-Pfad oder liste sie live über /files.
 Du:
 danijel-jd@danijeljd-ESPRIMO-P920:~$ cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
-python3 -m venv 1.portier_openai/venv313
-source 1.portier_openai/venv313/bin/activate
+python3 -m venv 1.opena1&2_portier/venv313
+source 1.opena1&2_portier/venv313/bin/activate
 python -V
 pip install --upgrade pip
 pip install fastapi==0.115.5 "uvicorn[standard]" pydantic==2.*
@@ -2914,9 +2914,9 @@ package using the following command.
 You may need to use sudo with that command.  After installing the python3-venv
 package, recreate your virtual environment.
 
-Failing command: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/python3
+Failing command: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/python3
 
-bash: 1.portier_openai/venv313/bin/activate: Datei oder Verzeichnis nicht gefunden
+bash: 1.opena1&2_portier/venv313/bin/activate: Datei oder Verzeichnis nicht gefunden
 Der Befehl 'python' wurde nicht gefunden, meinten Sie:
   Befehl 'python3' aus dem deb python3
   Befehl 'python' aus dem deb python-is-python3
@@ -2924,7 +2924,7 @@ Der Befehl 'pip' wurde nicht gefunden, kann aber installiert werden mit:
 sudo apt install python3-pip
 Der Befehl 'pip' wurde nicht gefunden, kann aber installiert werden mit:
 sudo apt install python3-pip
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$  
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$
 ChatGPT:
 
 Kein Drama – dir fehlen die Python-Pakete für venv/pip. Wir setzen die venv313 sauber auf und starten die Bridge.
@@ -2937,8 +2937,8 @@ python3 -V
 B) venv venv313 anlegen und aktivieren
 
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
-python3 -m venv 1.portier_openai/venv313
-source 1.portier_openai/venv313/bin/activate
+python3 -m venv 1.opena1&2_portier/venv313
+source 1.opena1&2_portier/venv313/bin/activate
 python -V
 python -m pip install --upgrade pip
 python -m pip install fastapi==0.115.5 "uvicorn[standard]" "pydantic==2.*"
@@ -2957,7 +2957,7 @@ FORBIDDEN_PORTS = [8080]
 
 def write_safepoint(src: str, dst: str, kind: str, body: dict) -> None:
     today = datetime.now()
-    adir = BASE_DIR / "1.portier_openai" / "archivp" / f"{today:%Y/%m/%d}"
+    adir = BASE_DIR / "1.opena1&2_portier" / "archivp" / f"{today:%Y/%m/%d}"
     adir.mkdir(parents=True, exist_ok=True)
     name = f"SP{int(today.timestamp())}_{src}→{dst}_{kind}.json"
     (adir / name).write_text(json.dumps(body, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -3020,11 +3020,11 @@ PY
 D) Bridge auf 12346 starten und prüfen
 
 uvicorn portier_fs_bridge:app --host 127.0.0.1 --port 12346
-# (in neuem Terminal vor Benutzung erst wieder: source 1.portier_openai/venv313/bin/activate)
+# (in neuem Terminal vor Benutzung erst wieder: source 1.opena1&2_portier/venv313/bin/activate)
 
 # Tests (anderes Terminal):
 curl -s http://127.0.0.1:12346/health | python3 -m json.tool | head
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' \
   | python3 -m json.tool | head -n 40
 
 Sobald /files antwortet, kannst du jeden „Blocker“-Pfad aus dem UI dagegen halten – und siehst exakt, wo er auf dem Host liegt (relativ zu Gesamtprojekt).
@@ -3067,7 +3067,7 @@ FORBIDDEN_PORTS = [8080]
 
 def write_safepoint(src: str, dst: str, kind: str, body: dict) -> None:
     today = datetime.now()
-    adir = BASE_DIR / "1.portier_openai" / "archivp" / f"{today:%Y/%m/%d}"
+    adir = BASE_DIR / "1.opena1&2_portier" / "archivp" / f"{today:%Y/%m/%d}"
     adir.mkdir(parents=True, exist_ok=True)
     name = f"SP{int(today.timestamp())}_{src}→{dst}_{kind}.json"
     (adir / name).write_text(json.dumps(body, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -3078,11 +3078,11 @@ def _safe_join(rel: str) -> Path:
         raise HTTPException(400, "Path outside BASE_DIR")
 PY  return {"path":path,"written":True,"size":len(content),"strict":True}e":len(
 (venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ uvicorn portier_fs_bridge:app --host 127.0.0.1 --port 12346
-# (in neuem Terminal vor Benutzung erst wieder: source 1.portier_openai/venv313/bin/activate)
+# (in neuem Terminal vor Benutzung erst wieder: source 1.opena1&2_portier/venv313/bin/activate)
 
 # Tests (anderes Terminal):
 curl -s http://127.0.0.1:12346/health | python3 -m json.tool | head
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' \
   | python3 -m json.tool | head -n 40
 INFO:     Started server process [56045]
 INFO:     Waiting for application startup.
@@ -3112,7 +3112,7 @@ FORBIDDEN_PORTS = [8080]
 
 def write_safepoint(src: str, dst: str, kind: str, body: dict) -> None:
     today = datetime.now()
-    adir = BASE_DIR / "1.portier_openai" / "archivp" / f"{today:%Y/%m/%d}"
+    adir = BASE_DIR / "1.opena1&2_portier" / "archivp" / f"{today:%Y/%m/%d}"
     adir.mkdir(parents=True, exist_ok=True)
     name = f"SP{int(today.timestamp())}_{src}→{dst}_{kind}.json"
     (adir / name).write_text(json.dumps(body, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -3123,11 +3123,11 @@ def _safe_join(rel: str) -> Path:
         raise HTTPException(400, "Path outside BASE_DIR")
 PY  return {"path":path,"written":True,"size":len(content),"strict":True}e":len(
 (venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ uvicorn portier_fs_bridge:app --host 127.0.0.1 --port 12346
-# (in neuem Terminal vor Benutzung erst wieder: source 1.portier_openai/venv313/bin/activate)
+# (in neuem Terminal vor Benutzung erst wieder: source 1.opena1&2_portier/venv313/bin/activate)
 
 # Tests (anderes Terminal):
 curl -s http://127.0.0.1:12346/health | python3 -m json.tool | head
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' \
   | python3 -m json.tool | head -n 40
 INFO:     Started server process [56045]
 INFO:     Waiting for application startup.
@@ -3154,7 +3154,7 @@ FORBIDDEN_PORTS = [8080]
 # ---- Safepoint Writer (archivp) ----
 def write_safepoint(src: str, dst: str, kind: str, body: dict) -> None:
     today = datetime.now()
-    adir = BASE_DIR / "1.portier_openai" / "archivp" / f"{today:%Y/%m/%d}"
+    adir = BASE_DIR / "1.opena1&2_portier" / "archivp" / f"{today:%Y/%m/%d}"
     adir.mkdir(parents=True, exist_ok=True)
     name = f"SP{int(today.timestamp())}_{src}→{dst}_{kind}.json"
     (adir / name).write_text(json.dumps(body, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -3240,7 +3240,7 @@ def write_file(body: dict):
 Start & Tests
 
 # venv aktivieren (falls noch nicht)
-source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/activate
+source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/activate
 
 # Bridge auf 12346 starten
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
@@ -3252,7 +3252,7 @@ Neues Terminal für die Tests:
 curl -s http://127.0.0.1:12346/health | python3 -m json.tool | head
 
 # Archiv auflisten (zeigt dir reale Host-Pfade relativ zu BASE_DIR)
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' \
   | python3 -m json.tool | head -n 40
 
 # Schreib-/Lesetest
@@ -3269,7 +3269,7 @@ Du:
 INFO:     Application startup complete.
 ERROR:    [Errno 98] error while attempting to bind on address ('127.0.0.1', 12346): address already in use
 INFO:     Waiting for application shutdown.
-(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ 
+(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$
 ChatGPT:
 
 Port 12346 ist bereits belegt. Fix in drei sauberen Schritten:
@@ -3291,7 +3291,7 @@ sudo fuser -k -n tcp 12346
 3) Bridge starten (ggf. auf Ausweichport 12347)
 
 # venv aktiv
-source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/activate
+source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/activate
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 
 # Versuch 1: wieder 12346
@@ -3304,7 +3304,7 @@ Schnelltests (ohne jq)
     Falls du auf 12347 ausweichen musst, ersetze unten 12346 durch 12347.
 
 curl -s http://127.0.0.1:12346/health | python3 -m json.tool | head
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' \
   | python3 -m json.tool | head -n 40
 
 Wenn das steht, kannst du jeden im UI gezeigten „Blocker“-Pfad 1:1 gegen /files prüfen und siehst den realen Host-Pfad unter …/Gesamtprojekt/.
@@ -3330,7 +3330,7 @@ ss -lntp | grep ':12346' || echo "12346 ist frei"
 2) Bridge „zuhause“ neu starten (venv313)
 
 # venv aktivieren
-source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/activate
+source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/activate
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 
 # foreground (zum Test)
@@ -3338,13 +3338,13 @@ uvicorn portier_fs_bridge:app --host 127.0.0.1 --port 12346
 
     Wenn du sie im Hintergrund laufen lassen willst:
 
-mkdir -p 1.portier_openai/run 1.portier_openai/logs
+mkdir -p 1.opena1&2_portier/run 1.opena1&2_portier/logs
 nohup uvicorn portier_fs_bridge:app --host 127.0.0.1 --port 12346 \
-  > 1.portier_openai/logs/fs_bridge.log 2>&1 &
-echo $! > 1.portier_openai/run/fs_bridge.pid
+  > 1.opena1&2_portier/logs/fs_bridge.log 2>&1 &
+echo $! > 1.opena1&2_portier/run/fs_bridge.pid
 
 # später sauber stoppen:
-kill "$(cat 1.portier_openai/run/fs_bridge.pid)" 2>/dev/null || true
+kill "$(cat 1.opena1&2_portier/run/fs_bridge.pid)" 2>/dev/null || true
 
 3) Kurztests
 
@@ -3352,7 +3352,7 @@ kill "$(cat 1.portier_openai/run/fs_bridge.pid)" 2>/dev/null || true
 curl -s http://127.0.0.1:12346/health | python3 -m json.tool | head
 
 # Archiv listen (zeigt dir die realen Host-Pfade relativ zu Gesamtprojekt)
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' \
   | python3 -m json.tool | head -n 40
 
 Falls 12346 weiterhin zickt, nimm 12347 (Policy-konform):
@@ -3360,33 +3360,33 @@ Falls 12346 weiterhin zickt, nimm 12347 (Policy-konform):
 uvicorn portier_fs_bridge:app --host 127.0.0.1 --port 12347
 
 Du:
-	
+
 base	"/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt"
 count	8
-items	
-0	
-path	"1.portier_openai/archivp/1nov20251909stat.txt"
+items
+0
+path	"1.opena1&2_portier/archivp/1nov20251909stat.txt"
 type	"file"
-1	
-path	"1.portier_openai/archivp/Unbenanntes Dokument"
+1
+path	"1.opena1&2_portier/archivp/Unbenanntes Dokument"
 type	"file"
-2	
-path	"1.portier_openai/archivp/2025"
+2
+path	"1.opena1&2_portier/archivp/2025"
 type	"dir"
-3	
-path	"1.portier_openai/archivp/2025/10"
+3
+path	"1.opena1&2_portier/archivp/2025/10"
 type	"dir"
-4	
-path	"1.portier_openai/archivp/2025/11"
+4
+path	"1.opena1&2_portier/archivp/2025/11"
 type	"dir"
-5	
-path	"1.portier_openai/archivp/2025/10/22"
+5
+path	"1.opena1&2_portier/archivp/2025/10/22"
 type	"dir"
-6	
-path	"1.portier_openai/archivp/2025/11/02"
+6
+path	"1.opena1&2_portier/archivp/2025/11/02"
 type	"dir"
-7	
-path	"1.portier_openai/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json"
+7
+path	"1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json"
 type	"file"
 strict	trueIch habe nicht gesehen, dass das gezickt hat, ehrlich gesagt, aber anscheinend passt das ja zu sich. Also das ist gut gemacht, kann ich sagen.
 ChatGPT:
@@ -3396,13 +3396,13 @@ Sauber – die FS-Bridge läuft und listet korrekt unter deinem BASE:
     BASE: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 
     Gefundener Safepoint (Beispiel):
-    1.portier_openai/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json
+    1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json
 
 Host-Pfad (direkt am Dateisystem)
 
 Absoluter Pfad zu genau dieser Datei:
 
-/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json
 
 Schnellzugriff: lesen – wahlweise per Shell oder API
 
@@ -3411,16 +3411,16 @@ Shell (Unicode-Pfeil beachten):
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 
 # 1) Direkt lesen
-cat '1.portier_openai/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json'
+cat '1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json'
 
 # 2) Falls der Editor/Terminal beim Pfeil motzt: mit Wildcards
-cat 1.portier_openai/archivp/2025/11/02/SP*_opena1*CMD.json
+cat 1.opena1&2_portier/archivp/2025/11/02/SP*_opena1*CMD.json
 
 Über die Bridge (schön reproduzierbar):
 
 curl -s -X POST http://127.0.0.1:12346/file/read \
   -H 'Content-Type: application/json' \
-  -d '{"path":"1.portier_openai/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json"}' \
+  -d '{"path":"1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json"}' \
 | python3 -m json.tool | head -n 60
 
 Wenn das UI wieder einen „Blocker“-Pfad zeigt
@@ -3438,7 +3438,7 @@ Wenn das UI wieder einen „Blocker“-Pfad zeigt
 Optional: Index / letzte Safepoints im Blick
 
 # Alle heutigen Safepoints listen
-find 1.portier_openai/archivp/$(date +%Y)/$(date +%m)/$(date +%d) -type f -name 'SP*.json' -printf '%TY-%Tm-%Td %TH:%TM  %p\n' | sort
+find 1.opena1&2_portier/archivp/$(date +%Y)/$(date +%m)/$(date +%d) -type f -name 'SP*.json' -printf '%TY-%Tm-%Td %TH:%TM  %p\n' | sort
 
 Wenn du mir den exakten „Blocker“-Pfad aus dem UI rüberschickst, prüfe ich ihn dir sofort über /file/read und gebe dir den zugehörigen absoluten Host-Pfad zurück.
 Du:
@@ -3452,7 +3452,7 @@ data:
 insgesamt 8
 drwxrwxr-x 2 danijel-jd danijel-jd 4096 Nov  2 01:22 .
 drwxr-xrwx 3 danijel-jd sudo       4096 Nov  2 01:22 ..
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ export OWUI_DIR=~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui
 cd "$OWUI_DIR"
 
@@ -3465,7 +3465,7 @@ drwxrwxr-x 2 danijel-jd danijel-jd 4096 Nov  2 01:22 .
 drwxr-xrwx 3 danijel-jd sudo       4096 Nov  2 01:22 ..
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ # Gemeinsames Docker-Netz (falls schon vorhanden, kein Fehler)
 docker network create portier_net 2>/dev/null || true
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$
 
 So, ich muss weg. Merkt ihr den Standpunkt, wo wir stehen geblieben sind? Wenn das nicht passt, werde ich das dann morgen mir anschauen weiter. Beziehungsweise später, wenn ich komme, falls es nicht zu spät ist.
 ChatGPT:
@@ -3483,7 +3483,7 @@ Status jetzt
 
     Portier opena1 (Koordinator): aktiv auf 127.0.0.1:12345 (/docs erreichbar).
 
-    FS-Bridge: läuft auf 127.0.0.1:12346 (BASE: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt), Safepoints unter 1.portier_openai/archivp/....
+    FS-Bridge: läuft auf 127.0.0.1:12346 (BASE: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt), Safepoints unter 1.opena1&2_portier/archivp/....
 
     Ports-Policy: ok (OpenWebUI nur 8080; Portier 12344–12349 genutzt).
 
@@ -3495,7 +3495,7 @@ docker compose -f ~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docke
 
 # FS-Bridge (falls im Vordergrund läuft: STRG+C)
 # Falls im Hintergrund gestartet wurde (mit nohup/pidfile), dann:
-kill "$(cat ~/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/run/fs_bridge.pid 2>/dev/null)" 2>/dev/null || true
+kill "$(cat ~/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/run/fs_bridge.pid 2>/dev/null)" 2>/dev/null || true
 
 Dienste starten
 
@@ -3506,7 +3506,7 @@ docker compose up -d
 
 # FS-Bridge (venv313)
 cd ~/Dokumente/Workspace/Projekte/Gesamtprojekt
-source 1.portier_openai/venv313/bin/activate
+source 1.opena1&2_portier/venv313/bin/activate
 uvicorn portier_fs_bridge:app --host 127.0.0.1 --port 12346
 # Health: curl -s http://127.0.0.1:12346/health | python3 -m json.tool | head
 
@@ -3563,7 +3563,7 @@ Vormals nicht ausgewähltes Paket libslirp0:amd64 wird gewählt.
 Vorbereitung zum Entpacken von .../22-libslirp0_4.7.0-1ubuntu3_amd64.deb ...
 Entpacken von libslirp0:amd64 (4.7.0-1ubuntu3) ...
 Vormals nicht ausgewähltes Paket passt wird gewählt.
-Vorbereitung zum Entpacken von .../23-passt_0.0~git20240220.1e6f92b-1_amd64.deb 
+Vorbereitung zum Entpacken von .../23-passt_0.0~git20240220.1e6f92b-1_amd64.deb
 ...
 Entpacken von passt (0.0~git20240220.1e6f92b-1) ...
 Vormals nicht ausgewähltes Paket podman wird gewählt.
@@ -3574,7 +3574,7 @@ Vorbereitung zum Entpacken von .../25-podman-docker_4.9.3+ds1-1ubuntu0.2_amd64.d
 eb ...
 Entpacken von podman-docker (4.9.3+ds1-1ubuntu0.2) ...
 Vormals nicht ausgewähltes Paket python3-json-pointer wird gewählt.
-Vorbereitung zum Entpacken von .../26-python3-json-pointer_2.0-0ubuntu1_all.deb 
+Vorbereitung zum Entpacken von .../26-python3-json-pointer_2.0-0ubuntu1_all.deb
 ...
 Entpacken von python3-json-pointer (2.0-0ubuntu1) ...
 Vormals nicht ausgewähltes Paket slirp4netns wird gewählt.
@@ -3609,7 +3609,7 @@ Created symlink /etc/systemd/system/timers.target.wants/podman-auto-update.timer
  → /usr/lib/systemd/system/podman-auto-update.timer.
 Created symlink /etc/systemd/system/default.target.wants/podman-clean-transient.
 service → /usr/lib/systemd/system/podman-clean-transient.service.
-Created symlink /etc/systemd/system/default.target.wants/podman-restart.service 
+Created symlink /etc/systemd/system/default.target.wants/podman-restart.service
 → /usr/lib/systemd/system/podman-restart.service.
 Created symlink /etc/systemd/system/default.target.wants/podman.service → /usr/l
 ib/systemd/system/podman.service.
@@ -3628,7 +3628,7 @@ Trigger für libc-bin (2.39-0ubuntu8.6) werden verarbeitet ...
 {
     "detail": "File not found"
 }
-(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ 
+(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$
 ChatGPT:
 
 Alles gut – der Fehler kommt nur daher, dass du den Platzhalter "<Pfad-aus-UI>" wörtlich geschickt hast. Du musst den echten Pfadstring einsetzen.
@@ -3637,7 +3637,7 @@ So klappt’s sofort
 
 Beispiel aus deiner Bridge-Liste:
 
-1.portier_openai/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json
+1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json
 
 2) UTF-8 im JSON richtig escapen (der Pfeil „→“ ist Unicode)
 
@@ -3645,20 +3645,20 @@ Variante A – mit \u2192:
 
 curl -s -X POST http://127.0.0.1:12346/file/read \
   -H 'Content-Type: application/json' \
-  -d '{"path":"1.portier_openai/archivp/2025/11/02/SP1762120019_opena1\u2192opena2_CMD.json"}' \
+  -d '{"path":"1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1\u2192opena2_CMD.json"}' \
 | python3 -m json.tool | head
 
 Variante B – mit echtem Zeichen (Terminal ist UTF-8):
 
 curl -s -X POST http://127.0.0.1:12346/file/read \
   -H 'Content-Type: application/json' \
-  -d $'{"path":"1.portier_openai/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json"}' \
+  -d $'{"path":"1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json"}' \
 | python3 -m json.tool | head
 
 3) Alternativ: mit Wildcard am Host prüfen
 
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
-ls -la 1.portier_openai/archivp/2025/11/02/SP*_opena1*CMD.json
+ls -la 1.opena1&2_portier/archivp/2025/11/02/SP*_opena1*CMD.json
 
 Typische Stolpersteine (schnell behoben)
 
@@ -3677,7 +3677,7 @@ Typische Stolpersteine (schnell behoben)
 Bonus: Pfad erst aus Bridge ermitteln und dann lesen
 
 # exakt auflisten und den korrekten Namen abgreifen
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp/2025/11/02&recursive=false' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp/2025/11/02&recursive=false' \
 | python3 - <<'PY'
 import sys, json
 j=json.load(sys.stdin)
@@ -3716,10 +3716,10 @@ Stand
 
         BASE: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 
-        Safepoints erscheinen unter 1.portier_openai/archivp/YYYY/MM/DD/…
+        Safepoints erscheinen unter 1.opena1&2_portier/archivp/YYYY/MM/DD/…
 
         Beispiel geprüft:
-        1.portier_openai/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json
+        1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json
 
     Netz/SSH: SSH läuft; lokale Policy-Ports eingehalten (12344–12349, 8080 nur für OpenWebUI).
 
@@ -3758,7 +3758,7 @@ Beispiel: Safepoint lesen (Unicode-Pfeil sicher mit \u2192 escapen):
 
 curl -s -X POST http://127.0.0.1:12346/file/read \
   -H 'Content-Type: application/json' \
-  -d '{"path":"1.portier_openai/archivp/2025/11/02/SP1762120019_opena1\u2192opena2_CMD.json"}' \
+  -d '{"path":"1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1\u2192opena2_CMD.json"}' \
 | python3 -m json.tool | head
 
 Allgemein: jeden Pfad aus dem UI 1:1 in "path" einsetzen; die Bridge arbeitet relativ zu Gesamtprojekt/.
@@ -3770,14 +3770,14 @@ docker compose up -d
 docker compose down
 
 # FS-Bridge (venv aktivieren & starten)
-source ~/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/activate
+source ~/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/activate
 cd ~/Dokumente/Workspace/Projekte/Gesamtprojekt
 uvicorn portier_fs_bridge:app --host 127.0.0.1 --port 12346
 
 Wenn du zurück bist und mir den Pfad deiner alten OpenWebUI-Daten gibst, liefere ich dir die genauen zwei Befehle zum Einspielen (Weg A oder B).
 Du:
-(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ 1.portier_openai/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json
-bash: 1.portier_openai/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json: Keine Berechtigungror.easyname.at/ubuntu-archive noble/main amd64 python3-json-pointer all 2.0-0ubuntu1 [8.320 B]
+(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ 1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json
+bash: 1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json: Keine Berechtigungror.easyname.at/ubuntu-archive noble/main amd64 python3-json-pointer all 2.0-0ubuntu1 [8.320 B]
 Holen:28 http://mirror.easyname.at/ubuntu-archive noble/universe amd64 slirp4netns amd64 1.2.1-1build2 [34,9 kB]
 Es wurden 32,6 MB in 2 s geholt (17,1 MB/s).
 (Lese Datenbank ... 505927 Dateien und Verzeichnisse sind derzeit installiert.)
@@ -3867,7 +3867,7 @@ Vormals nicht ausgewähltes Paket libslirp0:amd64 wird gewählt.
 Vorbereitung zum Entpacken von .../22-libslirp0_4.7.0-1ubuntu3_amd64.deb ...
 Entpacken von libslirp0:amd64 (4.7.0-1ubuntu3) ...
 Vormals nicht ausgewähltes Paket passt wird gewählt.
-Vorbereitung zum Entpacken von .../23-passt_0.0~git20240220.1e6f92b-1_amd64.deb 
+Vorbereitung zum Entpacken von .../23-passt_0.0~git20240220.1e6f92b-1_amd64.deb
 ...
 Entpacken von passt (0.0~git20240220.1e6f92b-1) ...
 Vormals nicht ausgewähltes Paket podman wird gewählt.
@@ -3878,7 +3878,7 @@ Vorbereitung zum Entpacken von .../25-podman-docker_4.9.3+ds1-1ubuntu0.2_amd64.d
 eb ...
 Entpacken von podman-docker (4.9.3+ds1-1ubuntu0.2) ...
 Vormals nicht ausgewähltes Paket python3-json-pointer wird gewählt.
-Vorbereitung zum Entpacken von .../26-python3-json-pointer_2.0-0ubuntu1_all.deb 
+Vorbereitung zum Entpacken von .../26-python3-json-pointer_2.0-0ubuntu1_all.deb
 ...
 Entpacken von python3-json-pointer (2.0-0ubuntu1) ...
 Vormals nicht ausgewähltes Paket slirp4netns wird gewählt.
@@ -3913,7 +3913,7 @@ Created symlink /etc/systemd/system/timers.target.wants/podman-auto-update.timer
  → /usr/lib/systemd/system/podman-auto-update.timer.
 Created symlink /etc/systemd/system/default.target.wants/podman-clean-transient.
 service → /usr/lib/systemd/system/podman-clean-transient.service.
-Created symlink /etc/systemd/system/default.target.wants/podman-restart.service 
+Created symlink /etc/systemd/system/default.target.wants/podman-restart.service
 → /usr/lib/systemd/system/podman-restart.service.
 Created symlink /etc/systemd/system/default.target.wants/podman.service → /usr/l
 ib/systemd/system/podman.service.
@@ -3932,9 +3932,9 @@ Trigger für libc-bin (2.39-0ubuntu8.6) werden verarbeitet ...
 {
     "detail": "File not found"
 }
-(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ 1.portier_openai/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json
-bash: 1.portier_openai/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json: Keine Berechtigung
-(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ 
+(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ 1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json
+bash: 1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json: Keine Berechtigung
+(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$
 ChatGPT:
 
 Alles ok – hier sind zwei konkrete Fixes für die beiden Meldungen:
@@ -3946,14 +3946,14 @@ Variante A (Pfeil als \u2192 escapen):
 
 curl -s -X POST http://127.0.0.1:12346/file/read \
   -H 'Content-Type: application/json' \
-  -d '{"path":"1.portier_openai/archivp/2025/11/02/SP1762120019_opena1\u2192opena2_CMD.json"}' \
+  -d '{"path":"1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1\u2192opena2_CMD.json"}' \
 | python3 -m json.tool | head
 
 Variante B (echtes Zeichen, mit $'...'):
 
 curl -s -X POST http://127.0.0.1:12346/file/read \
   -H 'Content-Type: application/json' \
-  -d $'{"path":"1.portier_openai/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json"}' \
+  -d $'{"path":"1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json"}' \
 | python3 -m json.tool | head
 
 2) „Keine Berechtigung“ in der Shell
@@ -3963,17 +3963,17 @@ Du hast die Datei ausgeführt (Shell denkt, das ist ein Programm). Du musst sie 
 Einfach mit Wildcard (um den Pfeil nicht tippen zu müssen):
 
 cd ~/Dokumente/Workspace/Projekte/Gesamtprojekt
-cat 1.portier_openai/archivp/2025/11/02/SP*_opena1*CMD.json | head -n 50
+cat 1.opena1&2_portier/archivp/2025/11/02/SP*_opena1*CMD.json | head -n 50
 
 Oder exakt mit Quotes:
 
-cat '1.portier_openai/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json' | head -n 50
+cat '1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json' | head -n 50
 
 3) Falls der Name unsicher ist: erst auflisten, dann lesen
 
-ls -la 1.portier_openai/archivp/2025/11/02
+ls -la 1.opena1&2_portier/archivp/2025/11/02
 # oder robust:
-find 1.portier_openai/archivp/2025/11/02 -maxdepth 1 -type f -name 'SP*CMD.json' -print
+find 1.opena1&2_portier/archivp/2025/11/02 -maxdepth 1 -type f -name 'SP*CMD.json' -print
 
 Den ausgegebenen Pfad 1:1 in das curl -d '{"path":"…"}' einsetzen (ggf. den Pfeil als \u2192).
 Hinweis (Docker vs. Podman)
@@ -4306,15 +4306,15 @@ Du:
 Bitte die ganzen Codes wieder neu generieren, VENV mit einbauen. Die Datei hat sich gestoßen leider.
 ChatGPT:
 
-/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/setup_venv313.sh
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/setup_venv313.sh
 
 #!/usr/bin/env bash
 set -euo pipefail
 
 BASE="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt"
-VENV="$BASE/1.portier_openai/venv313"
+VENV="$BASE/1.opena1&2_portier/venv313"
 
-mkdir -p "$BASE/1.portier_openai"
+mkdir -p "$BASE/1.opena1&2_portier"
 
 # Systemabhängige Voraussetzungen
 if ! command -v python3 >/dev/null 2>&1; then
@@ -4352,7 +4352,7 @@ FORBIDDEN_PORTS = [8080]
 # ---- Safepoint Writer (archivp) ----
 def write_safepoint(src: str, dst: str, kind: str, body: dict) -> None:
     today = datetime.now()
-    adir = BASE_DIR / "1.portier_openai" / "archivp" / f"{today:%Y/%m/%d}"
+    adir = BASE_DIR / "1.opena1&2_portier" / "archivp" / f"{today:%Y/%m/%d}"
     adir.mkdir(parents=True, exist_ok=True)
     name = f"SP{int(today.timestamp())}_{src}→{dst}_{kind}.json"
     (adir / name).write_text(json.dumps(body, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -4414,13 +4414,13 @@ def write_file(body: dict):
     write_safepoint("kordp", "opena2", "CMD", {"op": "WRITE", "path": path, "size": len(content), "strict": True})
     return {"path": path, "written": True, "size": len(content), "strict": True}
 
-/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/run_fs_bridge.sh
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/run_fs_bridge.sh
 
 #!/usr/bin/env bash
 set -euo pipefail
 
 BASE="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt"
-VENV="$BASE/1.portier_openai/venv313"
+VENV="$BASE/1.opena1&2_portier/venv313"
 
 source "$VENV/bin/activate"
 cd "$BASE"
@@ -4487,7 +4487,7 @@ echo
 docker logs --tail=200 open-webui || true
 
 Du:
-danijel-jd@danijeljd-ESPRIMO-P920:~$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~$
 # Start/OpenWebUI
 docker compose up -d
 Der Befehl 'docker' wurde nicht gefunden, kann aber installiert werden mit:
@@ -4561,7 +4561,7 @@ sudo usermod -aG docker "$USER"
 
 # 5) Gruppenzugehörigkeit sofort aktivieren (neue Shell-Gruppe)
 set -e docker <<'SH'
-[sudo] Passwort für danijel-jd:       
+[sudo] Passwort für danijel-jd:
 Paketlisten werden gelesen… Fertig
 Abhängigkeitsbaum wird aufgebaut… Fertig
 Statusinformationen werden eingelesen… Fertig
@@ -4578,18 +4578,18 @@ Die folgenden Pakete wurden automatisch installiert und werden nicht mehr benöt
 Verwenden Sie »sudo apt autoremove«, um sie zu entfernen.
 0 aktualisiert, 0 neu installiert, 0 zu entfernen und 2 nicht aktualisiert.
 Holen:1 https://download.docker.com/linux/ubuntu noble InRelease [48,5 kB]
-OK:2 http://mirror.easyname.at/ubuntu-archive noble InRelease                  
-OK:3 http://mirror.easyname.at/ubuntu-archive noble-updates InRelease          
-OK:4 http://mirror.easyname.at/ubuntu-archive noble-backports InRelease        
-OK:5 http://security.ubuntu.com/ubuntu noble-security InRelease                
-Ign:6 http://dl.google.com/linux/chrome-remote-desktop/deb stable InRelease    
-Ign:7 https://mirror.alwyzon.net/linuxmint zara InRelease                      
-OK:8 https://mirror.alwyzon.net/linuxmint zara Release                         
-OK:9 http://dl.google.com/linux/chrome-remote-desktop/deb stable Release       
-OK:10 https://dl.google.com/linux/chrome/deb stable InRelease                  
+OK:2 http://mirror.easyname.at/ubuntu-archive noble InRelease
+OK:3 http://mirror.easyname.at/ubuntu-archive noble-updates InRelease
+OK:4 http://mirror.easyname.at/ubuntu-archive noble-backports InRelease
+OK:5 http://security.ubuntu.com/ubuntu noble-security InRelease
+Ign:6 http://dl.google.com/linux/chrome-remote-desktop/deb stable InRelease
+Ign:7 https://mirror.alwyzon.net/linuxmint zara InRelease
+OK:8 https://mirror.alwyzon.net/linuxmint zara Release
+OK:9 http://dl.google.com/linux/chrome-remote-desktop/deb stable Release
+OK:10 https://dl.google.com/linux/chrome/deb stable InRelease
 Holen:11 https://download.docker.com/linux/ubuntu noble/stable amd64 Packages [33,5 kB]
-Ign:12 https://releases.warp.dev/linux/deb stable InRelease                    
-OK:13 http://ddebs.ubuntu.com noble InRelease     
+Ign:12 https://releases.warp.dev/linux/deb stable InRelease
+OK:13 http://ddebs.ubuntu.com noble InRelease
 OK:14 https://releases.warp.dev/linux/deb stable Release
 OK:15 http://ddebs.ubuntu.com noble-updates InRelease
 Es wurden 82,0 kB in 1 s geholt (79,4 kB/s).
@@ -4626,7 +4626,7 @@ Holen:3 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-ce am
 Holen:4 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-buildx-plugin amd64 0.29.1-1~ubuntu.24.04~noble [15,9 MB]
 Holen:5 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-ce-rootless-extras amd64 5:28.5.1-1~ubuntu.24.04~noble [6.481 kB]
 Holen:6 https://download.docker.com/linux/ubuntu noble/stable amd64 docker-compose-plugin amd64 2.40.3-1~ubuntu.24.04~noble [14,3 MB]
-Es wurden 105 MB in 3 s geholt (36,5 MB/s).     
+Es wurden 105 MB in 3 s geholt (36,5 MB/s).
 (Lese Datenbank ... 506550 Dateien und Verzeichnisse sind derzeit installiert.)
 Entfernen von containerd (1.7.28-0ubuntu1~24.04.1) ...
 dpkg: runc: Abhängigkeitsprobleme, wird aber wie gefordert dennoch entfernt:
@@ -4867,7 +4867,7 @@ Nov 03 05:37:26 danijeljd-ESPRIMO-P920 dockerd[140557]: time="2025-11-03T05:37:2
 Nov 03 05:37:26 danijeljd-ESPRIMO-P920 dockerd[140557]: time="2025-11-03T05:37:26.892312967+01:00" level=info msg="Daemon has completed initialization"
 Nov 03 05:37:26 danijeljd-ESPRIMO-P920 systemd[1]: Started docker.service - Docker Application Container Engine.
 Nov 03 05:37:26 danijeljd-ESPRIMO-P920 dockerd[140557]: time="2025-11-03T05:37:26.893868872+01:00" level=info msg="API listen on /run/docker.sock"
-danijel-jd@danijeljd-ESPRIMO-P920:~$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~$
 ChatGPT:
 
 Top: Docker läuft jetzt stabil. Der Log zeigt bereits einen laufenden Port-Proxy auf Host-Port 3000 → Container 8080 – d.h. es dürfte schon eine OpenWebUI-Instanz mit Port 3000 aktiv sein.
@@ -4994,17 +4994,17 @@ curl -sI http://127.0.0.1:8080 | head -n 5
 
 Damit ist WEMF aktiv und schützt strikt gemäß deiner Policy. Wenn eine Zeile rot wird oder unerwartete Ausgabe erscheint, poste sie – ich gebe sofort den passenden Fix.
 Du:
-venv 
+venv
 ChatGPT:
 
-/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313_init.sh
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313_init.sh
 
 #!/usr/bin/env bash
 set -euo pipefail
 
 # --- Settings (bindend) ---
 PY_VER="${PY_VER:-3.13}"
-VENV_DIR="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313"
+VENV_DIR="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313"
 
 echo "[VENV] Bootstrap für Python ${PY_VER} → ${VENV_DIR}"
 
@@ -5059,11 +5059,11 @@ Los geht’s – VENV aktivieren und Bridge starten (Port-Policy-konform):
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 
 # 1) VENV initialisieren (nur beim ersten Mal nötig)
-chmod +x 1.portier_openai/venv313_init.sh
-PY_VER=3.13 ./1.portier_openai/venv313_init.sh
+chmod +x 1.opena1&2_portier/venv313_init.sh
+PY_VER=3.13 ./1.opena1&2_portier/venv313_init.sh
 
 # 2) VENV aktivieren
-source 1.portier_openai/venv313/bin/activate
+source 1.opena1&2_portier/venv313/bin/activate
 python -V
 pip -V
 
@@ -5079,7 +5079,7 @@ uvicorn portier_fs_bridge:app --host 127.0.0.1 --port 12346
 In einem zweiten Terminal kannst du sofort die Health prüfen:
 
 curl -s http://127.0.0.1:12346/health | python3 -m json.tool
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' | python3 -m json.tool | head
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' | python3 -m json.tool | head
 
 Wenn die Bridge läuft, OpenWebUI (Compose v3) separat starten (eigene Shell, VENV ist dafür egal):
 
@@ -5100,10 +5100,10 @@ uvicorn portier_fs_bridge:app --host 127.0.0.1 --port 12346
  142910Der Befehl 'uvicorn' wurde nicht gefunden, kann aber installiert werden mit:
 sudo apt install uvicorn
 danijel-jd@danijeljd-ESPRIMO-P920:~$ curl -s http://127.0.0.1:12346/health | python3 -m json.tool
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' | python3 -m json.tool | head
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' | python3 -m json.tool | head
 Expecting value: line 1 column 1 (char 0)
 Expecting value: line 1 column 1 (char 0)
-danijel-jd@danijeljd-ESPRIMO-P920:~$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~$
 ChatGPT:
 
 Alles klar — uvicorn fehlt in deiner aktiven Shell, d. h. das venv ist nicht aktiv (oder die Pakete sind dort nicht installiert). Bitte genau so:
@@ -5114,10 +5114,10 @@ cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 1) VENV aktivieren (oder einmalig erstellen)
 
 # Falls das venv noch nicht existiert, einmalig anlegen:
-test -x 1.portier_openai/venv313/bin/python || PY_VER=3.13 ./1.portier_openai/venv313_init.sh
+test -x 1.opena1&2_portier/venv313/bin/python || PY_VER=3.13 ./1.opena1&2_portier/venv313_init.sh
 
 # Aktivieren
-source 1.portier_openai/venv313/bin/activate
+source 1.opena1&2_portier/venv313/bin/activate
 
 # Kontrolle
 python -V
@@ -5136,13 +5136,13 @@ pip install "fastapi==0.115.5" "uvicorn[standard]==0.38.0" "pydantic==2.*"
 fuser -k 12346/tcp 2>/dev/null || true
 
 # Start OHNE sich auf das 'source' zu verlassen: direkt über den venv-Binary-Pfad
-/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/uvicorn \
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/uvicorn \
   portier_fs_bridge:app --host 127.0.0.1 --port 12346
 
 4) In zweiter Shell testen
 
 curl -s http://127.0.0.1:12346/health | python3 -m json.tool
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' \
   | python3 -m json.tool | head
 
 Falls portier_fs_bridge.py beschädigt ist
@@ -5169,7 +5169,7 @@ def _safe_join(rel: str) -> Path:
 
 def _sp(kind: str, payload: dict):
     now = datetime.now()
-    adir = BASE_DIR / "1.portier_openai" / "archivp" / f"{now:%Y/%m/%d}"
+    adir = BASE_DIR / "1.opena1&2_portier" / "archivp" / f"{now:%Y/%m/%d}"
     adir.mkdir(parents=True, exist_ok=True)
     name = f"SP{int(now.timestamp())}_opena1→opena2_{kind}.json"
     (adir / name).write_text(json.dumps({**payload, "strict": True}, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -5224,13 +5224,13 @@ uvicorn portier_fs_bridge:app --host 127.0.0.1 --port 12346
  142910Der Befehl 'uvicorn' wurde nicht gefunden, kann aber installiert werden mit:
 sudo apt install uvicorn
 danijel-jd@danijeljd-ESPRIMO-P920:~$ curl -s http://127.0.0.1:12346/health | python3 -m json.tool
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' | python3 -m json.tool | head
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' | python3 -m json.tool | head
 Expecting value: line 1 column 1 (char 0)
 Expecting value: line 1 column 1 (char 0)
-danijel-jd@danijeljd-ESPRIMO-P920:~$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~$
 ChatGPT:
 Du:
-# Falls 12346 belegt ist, freimachen (ignoriert Fehler, wenn nix läuft) fuser -k 12346/tcp 2>/dev/null || true  # Start OHNE sich auf das 'source' zu verlassen: direkt über den venv-Binary-Pfad /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/uvicorn \   portier_fs_bridge:app --host 127.0.0.1 --port 12346Tut schon nichts zu rütteln, es tut sich schon einiges und es ist anscheinend ein Zeichen, dass es nicht gut ist. Das heißt, du hast schon Fehler gemacht, genug Fehler gemacht. Bitte, pass auf was du machst! nijel-jd@danijeljd-ESPRIMO-P920:~$ # 3) Port 12346 ggf. freiräumen
+# Falls 12346 belegt ist, freimachen (ignoriert Fehler, wenn nix läuft) fuser -k 12346/tcp 2>/dev/null || true  # Start OHNE sich auf das 'source' zu verlassen: direkt über den venv-Binary-Pfad /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/uvicorn \   portier_fs_bridge:app --host 127.0.0.1 --port 12346Tut schon nichts zu rütteln, es tut sich schon einiges und es ist anscheinend ein Zeichen, dass es nicht gut ist. Das heißt, du hast schon Fehler gemacht, genug Fehler gemacht. Bitte, pass auf was du machst! nijel-jd@danijeljd-ESPRIMO-P920:~$ # 3) Port 12346 ggf. freiräumen
 fuser -k 12346/tcp 2>/dev/null || true
 
 # 4) Portier FS Bridge starten (im VENV)
@@ -5247,7 +5247,7 @@ uvicorn portier_fs_bridge:app --host 127.0.0.1 --port 12346
  142910Der Befehl 'uvicorn' wurde nicht gefunden, kann aber installiert werden mit:
 sudo apt install uvicorn
 danijel-jd@danijeljd-ESPRIMO-P920:~$ curl -s http://127.0.0.1:12346/health | python3 -m json.tool
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' | python3 -m json.tool | head
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' | python3 -m json.tool | head
 Expecting value: line 1 column 1 (char 0)
 Expecting value: line 1 column 1 (char 0)
 danijel-jd@danijeljd-ESPRIMO-P920:~$ pip install --upgrade pip wheel setuptools
@@ -5258,16 +5258,16 @@ error: externally-managed-environment
 ╰─> To install Python packages system-wide, try apt install
     python3-xyz, where xyz is the package you are trying to
     install.
-    
+
     If you wish to install a non-Debian-packaged Python package,
     create a virtual environment using python3 -m venv path/to/venv.
     Then use path/to/venv/bin/python and path/to/venv/bin/pip. Make
     sure you have python3-full installed.
-    
+
     If you wish to install a non-Debian packaged Python application,
     it may be easiest to use pipx install xyz, which will manage a
     virtual environment for you. Make sure you have pipx installed.
-    
+
     See /usr/share/doc/python3.12/README.venv for more information.
 
 note: If you believe this is a mistake, please contact your Python installation or OS distribution provider. You can override this, at the risk of breaking your Python installation or OS, by passing --break-system-packages.
@@ -5278,16 +5278,16 @@ error: externally-managed-environment
 ╰─> To install Python packages system-wide, try apt install
     python3-xyz, where xyz is the package you are trying to
     install.
-    
+
     If you wish to install a non-Debian-packaged Python package,
     create a virtual environment using python3 -m venv path/to/venv.
     Then use path/to/venv/bin/python and path/to/venv/bin/pip. Make
     sure you have python3-full installed.
-    
+
     If you wish to install a non-Debian packaged Python application,
     it may be easiest to use pipx install xyz, which will manage a
     virtual environment for you. Make sure you have pipx installed.
-    
+
     See /usr/share/doc/python3.12/README.venv for more information.
 
 note: If you believe this is a mistake, please contact your Python installation or OS distribution provider. You can override this, at the risk of breaking your Python installation or OS, by passing --break-system-packages.
@@ -5296,15 +5296,15 @@ danijel-jd@danijeljd-ESPRIMO-P920:~$ # Falls 12346 belegt ist, freimachen (ignor
 fuser -k 12346/tcp 2>/dev/null || true
 
 # Start OHNE sich auf das 'source' zu verlassen: direkt über den venv-Binary-Pfad
-/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/uvicorn \
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/uvicorn \
   portier_fs_bridge:app --host 127.0.0.1 --port 12346
 ERROR:    Error loading ASGI app. Could not import module "portier_fs_bridge".
 danijel-jd@danijeljd-ESPRIMO-P920:~$ curl -s http://127.0.0.1:12346/health | python3 -m json.tool
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' \
   | python3 -m json.tool | head
 Expecting value: line 1 column 1 (char 0)
 Expecting value: line 1 column 1 (char 0)
-danijel-jd@danijeljd-ESPRIMO-P920:~$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~$
 ChatGPT:
 
 Verstanden. Aktuell sind drei Probleme sichtbar:
@@ -5324,10 +5324,10 @@ cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 sudo apt install -y python3-venv
 
 # 2) venv anlegen (Name gemäß Vorgabe "venv313"; Python-Version darf 3.12 sein)
-python3 -m venv 1.portier_openai/venv313
+python3 -m venv 1.opena1&2_portier/venv313
 
 # 3) venv aktivieren
-source 1.portier_openai/venv313/bin/activate
+source 1.opena1&2_portier/venv313/bin/activate
 
 # 4) Uvicorn/FastAPI im venv installieren (NICHT systemweit, KEIN sudo)
 pip install --upgrade pip wheel setuptools
@@ -5355,7 +5355,7 @@ def _safe_join(rel: str) -> Path:
 
 def _sp(kind: str, payload: dict):
     now = datetime.now()
-    adir = BASE_DIR / "1.portier_openai" / "archivp" / f"{now:%Y/%m/%d}"
+    adir = BASE_DIR / "1.opena1&2_portier" / "archivp" / f"{now:%Y/%m/%d}"
     adir.mkdir(parents=True, exist_ok=True)
     name = f"SP{int(now.timestamp())}_opena1→opena2_{kind}.json"
     (adir / name).write_text(json.dumps({**payload, "strict": True}, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -5414,19 +5414,19 @@ uvicorn portier_fs_bridge:app --host 127.0.0.1 --port 12346
 Tests (neues Terminal oder neues tmux-Fenster):
 
 curl -s http://127.0.0.1:12346/health | python3 -m json.tool
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' \
   | python3 -m json.tool | head -n 40
 
     Wenn du nicht im Projektstamm bist, starte so (ohne Verzeichniswechsel):
 
-/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/uvicorn \
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/uvicorn \
   --app-dir /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt \
   portier_fs_bridge:app --host 127.0.0.1 --port 12346
 
 Damit sind uvicorn im venv, die Bridge-Datei korrekt, und der Import-Fehler behoben.
 Du:
 anijel-jd@danijeljd-ESPRIMO-P920:~$ curl -s http://127.0.0.1:12346/health | python3 -m json.tool
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' \
   | python3 -m json.tool | head -n 40
 {
     "service": "portier_fs_bridge",
@@ -5452,42 +5452,42 @@ curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=tr
     "count": 13,
     "items": [
         {
-            "path": "1.portier_openai/archivp/1nov20251909stat.txt",
+            "path": "1.opena1&2_portier/archivp/1nov20251909stat.txt",
             "type": "file"
         },
         {
-            "path": "1.portier_openai/archivp/Unbenanntes Dokument",
+            "path": "1.opena1&2_portier/archivp/Unbenanntes Dokument",
             "type": "file"
         },
         {
-            "path": "1.portier_openai/archivp/2025",
+            "path": "1.opena1&2_portier/archivp/2025",
             "type": "dir"
         },
         {
-            "path": "1.portier_openai/archivp/2025/10",
+            "path": "1.opena1&2_portier/archivp/2025/10",
             "type": "dir"
         },
         {
-            "path": "1.portier_openai/archivp/2025/11",
+            "path": "1.opena1&2_portier/archivp/2025/11",
             "type": "dir"
         },
         {
-            "path": "1.portier_openai/archivp/2025/10/22",
+            "path": "1.opena1&2_portier/archivp/2025/10/22",
             "type": "dir"
         },
         {
-            "path": "1.portier_openai/archivp/2025/11/03",
+            "path": "1.opena1&2_portier/archivp/2025/11/03",
             "type": "dir"
         },
         {
-            "path": "1.portier_openai/archivp/2025/11/02",
+            "path": "1.opena1&2_portier/archivp/2025/11/02",
             "type": "dir"
         },
         {
-            "path": "1.portier_openai/archivp/2025/11/03/SP1762143131_kordp\u2192opena2_CMD.json",
+            "path": "1.opena1&2_portier/archivp/2025/11/03/SP1762143131_kordp\u2192opena2_CMD.json",
             "type": "file"
         },
-danijel-jd@danijeljd-ESPRIMO-P920:~$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~$
 ChatGPT:
 
 Yes! Die Bridge läuft sauber ✅
@@ -5566,7 +5566,7 @@ Du:
 Das ist jetzt meine allerletzte Chance, das Ganze zu starten. Ich sehe, dass das so umständlich ist, wie niemals zuvor bei einer Sache zu starten gewesen ist. Es ist folgendes Problem. Es ist das Problem, dass du dich nicht wie nach Protokoll eigentlich bei GitHub informierst, wie es richtig gehört und wie es geöffnet werden soll. Und dadurch verlieren wir jede Menge Zeit. Ich möchte, dass du merkst, dass du nicht ein Angebot hast, sondern du hast das in dem Befehl, jede Ausgabe, die du mir rausgibst, vorher bei GitHub zu prüfen. Hast du mich verstanden?
 
 danijel-jd@danijeljd-ESPRIMO-P920:~$ curl -s http://127.0.0.1:12346/health | python3 -m json.tool
-curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=true' \
+curl -s 'http://127.0.0.1:12346/files?path=1.opena1&2_portier/archivp&recursive=true' \
   | python3 -m json.tool | head -n 40
 {
     "service": "portier_fs_bridge",
@@ -5592,62 +5592,62 @@ curl -s 'http://127.0.0.1:12346/files?path=1.portier_openai/archivp&recursive=tr
     "count": 13,
     "items": [
         {
-            "path": "1.portier_openai/archivp/1nov20251909stat.txt",
+            "path": "1.opena1&2_portier/archivp/1nov20251909stat.txt",
             "type": "file"
         },
         {
-            "path": "1.portier_openai/archivp/Unbenanntes Dokument",
+            "path": "1.opena1&2_portier/archivp/Unbenanntes Dokument",
             "type": "file"
         },
         {
-            "path": "1.portier_openai/archivp/2025",
+            "path": "1.opena1&2_portier/archivp/2025",
             "type": "dir"
         },
         {
-            "path": "1.portier_openai/archivp/2025/10",
+            "path": "1.opena1&2_portier/archivp/2025/10",
             "type": "dir"
         },
         {
-            "path": "1.portier_openai/archivp/2025/11",
+            "path": "1.opena1&2_portier/archivp/2025/11",
             "type": "dir"
         },
         {
-            "path": "1.portier_openai/archivp/2025/10/22",
+            "path": "1.opena1&2_portier/archivp/2025/10/22",
             "type": "dir"
         },
         {
-            "path": "1.portier_openai/archivp/2025/11/03",
+            "path": "1.opena1&2_portier/archivp/2025/11/03",
             "type": "dir"
         },
         {
-            "path": "1.portier_openai/archivp/2025/11/02",
+            "path": "1.opena1&2_portier/archivp/2025/11/02",
             "type": "dir"
         },
         {
-            "path": "1.portier_openai/archivp/2025/11/03/SP1762143131_kordp\u2192opena2_CMD.json",
+            "path": "1.opena1&2_portier/archivp/2025/11/03/SP1762143131_kordp\u2192opena2_CMD.json",
             "type": "file"
         },
-danijel-jd@danijeljd-ESPRIMO-P920:~$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~$
 cd ~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ docker compose pull
 docker compose up -d
-WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion
 unable to get image 'ghcr.io/open-webui/open-webui:main': permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.51/images/ghcr.io/open-webui/open-webui:main/json": dial unix /var/run/docker.sock: connect: permission denied
-WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion
 unable to get image 'ghcr.io/open-webui/open-webui:main': permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.51/images/ghcr.io/open-webui/open-webui:main/json": dial unix /var/run/docker.sock: connect: permission denied
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ docker ps --filter "name=open-webui"
 docker logs --tail=80 open-webui
 permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.51/containers/json?filters=%7B%22name%22%3A%7B%22open-webui%22%3Atrue%7D%7D": dial unix /var/run/docker.sock: connect: permission denied
 permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.51/containers/open-webui/json": dial unix /var/run/docker.sock: connect: permission denied
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ ss -lntp | grep ':3000' || echo "3000 ist frei"
-LISTEN 0      4096         0.0.0.0:3000       0.0.0.0:*                                        
-LISTEN 0      4096            [::]:3000          [::]:*                                        
+LISTEN 0      4096         0.0.0.0:3000       0.0.0.0:*
+LISTEN 0      4096            [::]:3000          [::]:*
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ docker compose down && docker compose up -d
-WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui/docker-compose.yml: the attribute version is obsolete, it will be ignored, please remove it to avoid potential confusion
 permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.51/containers/json?all=1&filters=%7B%22label%22%3A%7B%22com.docker.compose.config-hash%22%3Atrue%2C%22com.docker.compose.oneoff%3DFalse%22%3Atrue%2C%22com.docker.compose.project%3D2openwebui%22%3Atrue%7D%7D": dial unix /var/run/docker.sock: connect: permission denied
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ docker logs -f open-webui
 permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.51/containers/open-webui/json": dial unix /var/run/docker.sock: connect: permission denied
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$
 ChatGPT:
 
 Danke fürs genaue Protokoll – ich seh’ die zwei echten Blocker bei dir:
@@ -5795,8 +5795,8 @@ id -nG | grep -q '\bdocker\b' && echo "docker-Gruppe aktiv ✅" || echo "docker-
 
 # funktioniert der Daemon-Zugriff?
 docker info --format '{{.ServerVersion}}'
-[sudo] Passwort für danijel-jd:       
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ 
+[sudo] Passwort für danijel-jd:
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$
 
 
 
@@ -6151,7 +6151,7 @@ Zuerst die Preflight-Fragen (kurz & präzise) – bitte beantworten oder „Ja�
 
     Projektpfad (Host): Gefunden: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui – verwenden?
 
-    Datenordner (Host) für eigene Dateien (Bind-Mount): Welche Map möchtest du einbinden? (z. B. /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp oder ein anderer Pfad)
+    Datenordner (Host) für eigene Dateien (Bind-Mount): Welche Map möchtest du einbinden? (z. B. /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/archivp oder ein anderer Pfad)
 
     Gewünschter Host-Port: 3000 ist auf deinem System oft belegt/benutzt. Vorschlag: 3100 (nächstfreier Standard) – ok?
 
@@ -6436,7 +6436,7 @@ danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2
 # /var/lib/docker/volumes/2openwebui_openwebui_data/_data -> /app/backend/data
 
 permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.51/containers/open-webui/json": dial unix /var/run/docker.sock: connect: permission denied
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$
 
 
 
@@ -6576,7 +6576,7 @@ unable to get image 'ghcr.io/open-webui/open-webui:main': permission denied whil
 unable to get image 'ghcr.io/open-webui/open-webui:main': permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.51/images/ghcr.io/open-webui/open-webui:main/json": dial unix /var/run/docker.sock: connect: permission denied
 permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.51/containers/json?filters=%7B%22name%22%3A%7B%22open-webui%22%3Atrue%7D%7D": dial unix /var/run/docker.sock: connect: permission denied
 permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.51/containers/open-webui/json": dial unix /var/run/docker.sock: connect: permission denied
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$
 ChatGPT:
 
 Alles klar — der Daemon läuft, du bist in der docker-Gruppe und der Socket gehört root:docker mit 0660. Trotzdem kommt “permission denied”. Das passiert häufig, wenn die aktuelle Shell nicht mit der neuen Gruppen-ID läuft (z. B. nach newgrp in einem anderen Tab) oder wenn noch der falsche docker-Wrapper verwendet wird.
@@ -6716,13 +6716,13 @@ sg docker -c 'docker logs --tail=80 open-webui'
 CONTAINER ID   IMAGE                                COMMAND           CREATED             STATUS                       PORTS                                         NAMES
 91b5187df046   ghcr.io/open-webui/open-webui:main   "bash start.sh"   About an hour ago   Up About an hour (healthy)   0.0.0.0:3000->8080/tcp, [::]:3000->8080/tcp   open-webui
 [+] Running 2/2
- ✔ Container open-webui        Removed                                                                           2.5s 
- ✔ Network 2openwebui_default  Removed                                                                           0.1s 
+ ✔ Container open-webui        Removed                                                                           2.5s
+ ✔ Network 2openwebui_default  Removed                                                                           0.1s
 [+] Pulling 1/1
- ✔ open-webui Pulled                                                                                             0.6s 
+ ✔ open-webui Pulled                                                                                             0.6s
 [+] Running 2/2
- ✔ Network 2openwebui_default  Created                                                                           0.0s 
- ✔ Container open-webui        Started                                                                           0.2s 
+ ✔ Network 2openwebui_default  Created                                                                           0.0s
+ ✔ Container open-webui        Started                                                                           0.2s
 CONTAINER ID   IMAGE                                COMMAND           CREATED                  STATUS                                     PORTS                                         NAMES
 e8e79edd5814   ghcr.io/open-webui/open-webui:main   "bash start.sh"   Less than a second ago   Up Less than a second (health: starting)   0.0.0.0:3100->8080/tcp, [::]:3100->8080/tcp   open-webui
 Loading WEBUI_SECRET_KEY from file, not provided as an environment variable.
@@ -6731,7 +6731,7 @@ danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2
 ls -l /var/run/docker.sock
 danijel-jd adm cdrom sudo dip plugdev users lpadmin sambashare ollama
 srw-rw---- 1 root docker 0 Nov  3 05:37 /var/run/docker.sock
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$
 ChatGPT:
 
 Yes! Jetzt sind wir dort, wo’s greifen sollte:
@@ -6887,13 +6887,13 @@ sg docker -c 'docker logs --tail=80 open-webui'
 CONTAINER ID   IMAGE                                COMMAND           CREATED             STATUS                       PORTS                                         NAMES
 91b5187df046   ghcr.io/open-webui/open-webui:main   "bash start.sh"   About an hour ago   Up About an hour (healthy)   0.0.0.0:3000->8080/tcp, [::]:3000->8080/tcp   open-webui
 [+] Running 2/2
- ✔ Container open-webui        Removed                                                                           2.5s 
- ✔ Network 2openwebui_default  Removed                                                                           0.1s 
+ ✔ Container open-webui        Removed                                                                           2.5s
+ ✔ Network 2openwebui_default  Removed                                                                           0.1s
 [+] Pulling 1/1
- ✔ open-webui Pulled                                                                                             0.6s 
+ ✔ open-webui Pulled                                                                                             0.6s
 [+] Running 2/2
- ✔ Network 2openwebui_default  Created                                                                           0.0s 
- ✔ Container open-webui        Started                                                                           0.2s 
+ ✔ Network 2openwebui_default  Created                                                                           0.0s
+ ✔ Container open-webui        Started                                                                           0.2s
 CONTAINER ID   IMAGE                                COMMAND           CREATED                  STATUS                                     PORTS                                         NAMES
 e8e79edd5814   ghcr.io/open-webui/open-webui:main   "bash start.sh"   Less than a second ago   Up Less than a second (health: starting)   0.0.0.0:3100->8080/tcp, [::]:3100->8080/tcp   open-webui
 Loading WEBUI_SECRET_KEY from file, not provided as an environment variable.
@@ -6919,7 +6919,7 @@ danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ http://localhost:3100
                                                                                             ss -lntp | grep ':3000' || (sed -i 's/"3100:8080"/"3000:8080"/' docker-compose.yml && docker compose up -d)
 [+] Running 1/1
- ✔ Container open-webui  Started                                                                                           2.3s 
+ ✔ Container open-webui  Started                                                                                           2.3s
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ # Status
 docker ps --filter "name=open-webui"
 docker logs --tail=80 open-webui
@@ -6937,7 +6937,7 @@ Loading WEBUI_SECRET_KEY from .webui_secret_key
 INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
 INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
 INFO  [open_webui.env] 'ENABLE_SIGNUP' loaded from the latest database entry
-WARNI [open_webui.env] 
+WARNI [open_webui.env]
 
 WARNING: CORS_ALLOW_ORIGIN IS SET TO '*' - NOT RECOMMENDED FOR PRODUCTION DEPLOYMENTS.
 
@@ -6964,10 +6964,10 @@ INFO:     Waiting for application startup.
 2025-11-03 07:33:25.379 | INFO     | open_webui.main:lifespan:561 - Installing external dependencies of functions and tools...
 2025-11-03 07:33:25.390 | INFO     | open_webui.utils.plugin:install_frontmatter_requirements:283 - No requirements found in frontmatter.
 [+] Restarting 1/1
- ✔ Container open-webui  Started                                                                                           2.4s 
+ ✔ Container open-webui  Started                                                                                           2.4s
 [+] Running 2/2
- ✔ Container open-webui        Removed                                                                                    10.4s 
- ✔ Network 2openwebui_default  Removed                                                                                     0.1s 
+ ✔ Container open-webui        Removed                                                                                    10.4s
+ ✔ Network 2openwebui_default  Removed                                                                                     0.1s
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ id -nG
 ls -l /var/run/docker.sock
 danijel-jd adm cdrom sudo dip plugdev users lpadmin sambashare ollama
@@ -6989,7 +6989,7 @@ danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ http://localhost:3100
                                                                                             ss -lntp | grep ':3000' || (sed -i 's/"3100:8080"/"3000:8080"/' docker-compose.yml && docker compose up -d)
 [+] Running 1/1
- ✔ Container open-webui  Started                                                                                           2.3s 
+ ✔ Container open-webui  Started                                                                                           2.3s
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ # Status
 docker ps --filter "name=open-webui"
 docker logs --tail=80 open-webui
@@ -7007,7 +7007,7 @@ Loading WEBUI_SECRET_KEY from .webui_secret_key
 INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
 INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
 INFO  [open_webui.env] 'ENABLE_SIGNUP' loaded from the latest database entry
-WARNI [open_webui.env] 
+WARNI [open_webui.env]
 
 WARNING: CORS_ALLOW_ORIGIN IS SET TO '*' - NOT RECOMMENDED FOR PRODUCTION DEPLOYMENTS.
 
@@ -7034,11 +7034,11 @@ INFO:     Waiting for application startup.
 2025-11-03 07:33:25.379 | INFO     | open_webui.main:lifespan:561 - Installing external dependencies of functions and tools...
 2025-11-03 07:33:25.390 | INFO     | open_webui.utils.plugin:install_frontmatter_requirements:283 - No requirements found in frontmatter.
 [+] Restarting 1/1
- ✔ Container open-webui  Started                                                                                           2.4s 
+ ✔ Container open-webui  Started                                                                                           2.4s
 [+] Running 2/2
- ✔ Container open-webui        Removed                                                                                    10.4s 
- ✔ Network 2openwebui_default  Removed                                                                                     0.1s 
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ docker ps --filter "name=open-webui" 
+ ✔ Container open-webui        Removed                                                                                    10.4s
+ ✔ Network 2openwebui_default  Removed                                                                                     0.1s
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/2.openwebui$ docker ps --filter "name=open-webui"
 docker inspect open-webui --format '{{(index .NetworkSettings.Ports "8080/tcp")}}'
 # Erwartet z.B.: [{0.0.0.0 3100} {[::] 3100}]
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
@@ -7095,7 +7095,7 @@ Commands:
   restart     Restart service containers
   rm          Removes stopped service containers
   run         Run a one-off command on a service
-  scale       Scale services 
+  scale       Scale services
   start       Start services
   stats       Display a live stream of container(s) resource usage statistics
   stop        Stop services
@@ -7128,4 +7128,3 @@ Da die Port-Policy 3000 verbietet, obwohl es in der vorherigen Compose-Datei ver
 Nachgedacht für 12s
 
 Fertig
-

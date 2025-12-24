@@ -81,7 +81,7 @@ python3 tools/scan_project.py \
 [Statistik: .py, .json, .md, etc.]
 
 ## Files by Top-Level Folder
-[Statistik: 1.portier_openai, 19.dashboard_agent, etc.]
+[Statistik: 1.opena1&2_portier, 19.dashboard_agent, etc.]
 ```
 
 **Größe**: max. ~500 KB (für große Repos). Perfekt für PR-Reviews, GitHub Discussions, ChatGPT-Analysen.
@@ -143,7 +143,7 @@ src/data.bin,98765,2025-11-08T10:00:00Z,.bin,2,False,,False,True,
     ...
   },
   "by_top_level": {
-    "1.portier_openai": 3525,
+    "1.opena1&2_portier": 3525,
     "19.dashboard_agent": 22,
     ...
   },

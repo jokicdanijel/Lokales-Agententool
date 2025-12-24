@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OPENA12 Social Media Agent - Multi-Platform Management Dashboard">
+    <meta name="author" content="ELION PORTIER PAS-6.0">
+    <title>📱 OPENA12 Social Media - PORTIER PAS-6.0 Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Quick Theme Toggle Styles */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--card-bg, #fff);
+            border: 2px solid var(--primary-color, #0088cc);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 24px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .loading-overlay.active {
+            display: flex;
+        }
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top-color: #0088cc;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--card-bg, #fff);
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalSlideIn 0.3s ease;
+        }
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal-close {
+            cursor: pointer;
+            font-size: 28px;
+            color: #666;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        .modal-close:hover {
+            color: #f44336;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(0, 136, 204, 0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10000;
+            display: none;
+        }
+        .progress-container.active {
+            display: block;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #0088cc, #00c6ff);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Enhanced Toast */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast {
+            background: #fff;
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            animation: toastSlideIn 0.3s ease;
+            border-left: 4px solid #0088cc;
+        }
+        @keyframes toastSlideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        .toast.success { border-left-color: #4caf50; }
+        .toast.error { border-left-color: #f44336; }
+        .toast.warning { border-left-color: #ff9800; }
+        .toast.info { border-left-color: #2196f3; }
+
+        /* Badge Enhancements */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .badge.success { background: #4caf50; color: white; }
+        .badge.error { background: #f44336; color: white; }
+        .badge.warning { background: #ff9800; color: white; }
+        .badge.info { background: #2196f3; color: white; }
+
+        /* Stat Cards Animation */
+        .stat-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        /* Platform Card Improvements */
+        .platform-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .platform-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        .platform-card:hover::before {
+            left: 100%;
+        }
+        .platform-card.connected {
+            border: 2px solid #4caf50;
+        }
+        .platform-card.connected .platform-status {
+            color: #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" title="Theme wechseln">
+        <span id="theme-icon">🌙</span>
+    </button>
+
+    <!-- Progress Bar -->
+    <div class="progress-container" id="progressContainer">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="logo-section">
+                <span class="logo-icon">📱</span>
+                <h1>Social Media Agent 6.0</h1>
+                <span class="version-badge">v6.0.0 PAS-6.0</span>
+            </div>
+            <div class="status-section">
+                <span id="connection-status" class="status-indicator status-loading">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Verbinde...</span>
+                </span>
+                <span id="uptime" class="uptime-display">--:--:--</span>
+            </div>
+        </header>
+
+        <main class="main-grid">
+            <!-- Platform Cards Section -->
+            <section class="platform-cards">
+                <div class="card platform-card stat-card" data-platform="linkedin" id="linkedinCard">
+                    <div class="card-icon">💼</div>
+                    <div class="card-content">
+                        <h3>LinkedIn</h3>
+                        <span id="linkedin-posts" class="metric-value">0</span>
+                        <small>Posts heute</small>
+                    </div>
+                    <span class="platform-status" id="status-linkedin">●</span>
+                </div>
+                <div class="card platform-card stat-card" data-platform="x" id="xCard">
+                    <div class="card-icon">𝕏</div>
+                    <div class="card-content">
+                        <h3>X (Twitter)</h3>
+                        <span id="x-posts" class="metric-value">0</span>
+                        <small>Posts heute</small>
+                    </div>
+                    <span class="platform-status" id="status-x">●</span>
+                </div>
+                <div class="card platform-card stat-card" data-platform="facebook" id="facebookCard">
+                    <div class="card-icon">📘</div>
+                    <div class="card-content">
+                        <h3>Facebook</h3>
+                        <span id="facebook-posts" class="metric-value">0</span>
+                        <small>Posts heute</small>
+                    </div>
+                    <span class="platform-status" id="status-facebook">●</span>
+                </div>
+                <div class="card platform-card stat-card" data-platform="instagram" id="instagramCard">
+                    <div class="card-icon">📸</div>
+                    <div class="card-content">
+                        <h3>Instagram</h3>
+                        <span id="instagram-posts" class="metric-value">0</span>
+                        <small>Posts heute</small>
+                    </div>
+                    <span class="platform-status" id="status-instagram">●</span>
+                </div>
+            </section>
+
+            <!-- Left Panel -->
+            <section class="left-panel">
+                <!-- Authentication Card -->
+                <div class="card">
+                    <h2>🔐 Authentication</h2>
+                    <div class="form-group">
+                        <input type="password" id="token" placeholder="Bearer Token..." autocomplete="off">
+                        <button onclick="saveToken()" class="btn btn-sm btn-primary">💾 Speichern</button>
+                    </div>
+                    <small id="token-status" style="display: block; margin-top: 8px; color: #666;"></small>
+                </div>
+
+                <!-- Post Now Card -->
+                <div class="card">
+                    <h2>🚀 Post Now</h2>
+                    <form id="postForm">
+                        <div class="form-group">
+                            <label>Plattformen wählen</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="linkedinCheck" name="platform" value="linkedin" checked>
+                                    <span>💼 LinkedIn</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="xCheck" name="platform" value="x">
+                                    <span>𝕏 X</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="facebookCheck" name="platform" value="facebook">
+                                    <span>📘 Facebook</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="instagramCheck" name="platform" value="instagram">
+                                    <span>📸 Instagram</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="postContent">Nachricht</label>
+                            <textarea id="postContent" rows="5" placeholder="Ihr Social Media Post..." maxlength="3000"></textarea>
+                            <span class="char-counter">
+                                <span id="charCount">0</span>/<span id="charLimit">280</span>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label for="hashtags">Hashtags (optional)</label>
+                            <input type="text" id="hashtags" placeholder="#Marketing #Business #Success">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">📤 Jetzt Posten</button>
+                            <button type="button" id="aiGenBtn" class="btn btn-secondary">🤖 AI Generieren</button>
+                            <button type="reset" class="btn btn-outline">🗑️ Zurücksetzen</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- AI Generator Card -->
+                <div class="card">
+                    <h2>🤖 AI Text Generator</h2>
+                    <div class="form-group">
+                        <label for="aiTopic">Thema / Stichwort</label>
+                        <input type="text" id="aiTopic" placeholder="z.B. Produktivität, Marketing, Innovation...">
+                    </div>
+                    <div class="form-group">
+                        <label for="ai-style">Stil</label>
+                        <select id="ai-style" class="form-control">
+                            <option value="professional">🎩 Professionell</option>
+                            <option value="casual">😊 Casual & Locker</option>
+                            <option value="engaging">🔥 Engaging & Motivierend</option>
+                            <option value="technical">🔧 Technisch & Detailliert</option>
+                            <option value="creative">🎨 Kreativ & Einzigartig</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ai-length">Länge</label>
+                        <select id="ai-length" class="form-control">
+                            <option value="short">Kurz (50-100 Zeichen)</option>
+                            <option value="medium" selected>Mittel (100-200 Zeichen)</option>
+                            <option value="long">Lang (200-280 Zeichen)</option>
+                        </select>
+                    </div>
+                    <button onclick="dashboard.generateAIText()" class="btn btn-accent btn-block">✨ Text Generieren</button>
+                </div>
+            </section>
+
+            <!-- Right Panel -->
+            <section class="right-panel">
+                <!-- Scheduler Card -->
+                <div class="card">
+                    <h2>🗓️ Post Scheduler</h2>
+                    <form id="schedule-form">
+                        <div class="form-group">
+                            <label for="scheduleText">Geplanter Post</label>
+                            <textarea id="scheduleText" rows="3" placeholder="Text für geplanten Post..."></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="scheduleDate">Datum</label>
+                                <input type="date" id="scheduleDate" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="scheduleTime">Zeit</label>
+                                <input type="time" id="scheduleTime" value="09:00" class="form-control">
+                            </div>
+                        </div>
+                        <button type="button" id="scheduleBtn" class="btn btn-primary btn-block">📅 Planen</button>
+                    </form>
+                </div>
+
+                <!-- Queue Card -->
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h2 style="margin: 0;">📋 Post Queue</h2>
+                        <span class="badge info" id="queueCount">0</span>
+                    </div>
+                    <div class="queue-list" style="max-height: 300px; overflow-y: auto;">
+                        <table id="queueTable" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Zeit</th>
+                                    <th>Plattform</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4" class="empty-state">Keine geplanten Posts</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Status Card -->
+                <div class="card">
+                    <h2>📈 System Status</h2>
+                    <div class="status-grid">
+                        <div class="status-item">
+                            <span class="status-label">Agent Status</span>
+                            <span id="agentStatus" class="badge info">Lädt...</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Port</span>
+                            <span class="badge">12357</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">API Version</span>
+                            <span class="badge">v6.0.0</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 20px;">
+                        <h3 style="font-size: 14px; margin-bottom: 10px;">📊 Aktivitäten</h3>
+                        <div id="activity-log" class="activity-log" style="max-height: 200px; overflow-y: auto;">
+                            <p class="empty-state">Keine Aktivitäten</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bottom Panel - Metrics -->
+            <section class="bottom-panel">
+                <div class="card metrics-card">
+                    <h2>📊 Performance Metriken</h2>
+                    <div class="metrics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;">
+                        <div class="metric-item stat-card">
+                            <span class="metric-label">Gesamt Posts</span>
+                            <span id="totalPosts" class="metric-value">0</span>
+                        </div>
+                        <div class="metric-item stat-card">
+                            <span class="metric-label">Geplant</span>
+                            <span id="scheduledCount" class="metric-value">0</span>
+                        </div>
+                        <div class="metric-item stat-card">
+                            <span class="metric-label">AI Generierungen</span>
+                            <span id="aiGenerations" class="metric-value">0</span>
+                        </div>
+                        <div class="metric-item stat-card">
+                            <span class="metric-label">Erfolgsrate</span>
+                            <span id="success-rate" class="metric-value">0%</span>
+                        </div>
+                        <div class="metric-item stat-card">
+                            <span class="metric-label">Engagement</span>
+                            <span id="engagementRate" class="metric-value">0%</span>
+                        </div>
+                        <div class="metric-item stat-card">
+                            <span class="metric-label">API Response</span>
+                            <span id="api-response" class="metric-value">0ms</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="dashboard-footer">
+            <span>🚀 ELION PORTIER PAS-6.0 | opena12_social_media</span>
+            <span>Port: 12357</span>
+            <span id="last-update">Letztes Update: --:--:--</span>
+        </footer>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Bestätigung</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <p id="modalMessage"></p>
+            <div class="form-actions">
+                <button class="btn btn-primary" onclick="confirmAction()">Bestätigen</button>
+                <button class="btn btn-outline" onclick="closeModal()">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inline Scripts -->
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            document.getElementById('theme-icon').textContent = newTheme === 'light' ? '🌙' : '☀️';
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.getElementById('theme-icon').textContent = savedTheme === 'light' ? '🌙' : '☀️';
+
+        // Token Management
+        function saveToken() {
+            const token = document.getElementById('token').value;
+            if (token) {
+                localStorage.setItem('opena12_auth_token', token);
+                document.getElementById('token-status').textContent = '✅ Token gespeichert!';
+                document.getElementById('token-status').style.color = '#4caf50';
+                setTimeout(() => {
+                    document.getElementById('token-status').textContent = '';
+                }, 3000);
+            } else {
+                document.getElementById('token-status').textContent = '❌ Bitte Token eingeben';
+                document.getElementById('token-status').style.color = '#f44336';
+            }
+        }
+
+        // Load saved token indicator
+        if (localStorage.getItem('opena12_auth_token')) {
+            document.getElementById('token-status').textContent = '✅ Token vorhanden';
+            document.getElementById('token-status').style.color = '#4caf50';
+        }
+
+        // Modal Functions
+        let modalCallback = null;
+        function showModal(title, message, callback) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('confirmModal').classList.add('active');
+            modalCallback = callback;
+        }
+        function closeModal() {
+            document.getElementById('confirmModal').classList.remove('active');
+            modalCallback = null;
+        }
+        function confirmAction() {
+            if (modalCallback) modalCallback();
+            closeModal();
+        }
+
+        // Loading Overlay
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+
+        // Progress Bar
+        function showProgress(percent) {
+            document.getElementById('progressContainer').classList.add('active');
+            document.getElementById('progressBar').style.width = percent + '%';
+        }
+        function hideProgress() {
+            document.getElementById('progressContainer').classList.remove('active');
+            document.getElementById('progressBar').style.width = '0%';
+        }
+
+        // Set current date as min for scheduler
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('scheduleDate').setAttribute('min', today);
+        document.getElementById('scheduleDate').value = today;
+    </script>
+
+    <!-- Main App Scripts -->
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

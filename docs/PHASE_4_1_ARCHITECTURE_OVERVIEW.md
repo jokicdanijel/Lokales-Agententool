@@ -2,8 +2,8 @@
 
 # Phase 4.1 Architecture Diagram & File Structure
 
-**Purpose:** Visual reference for team + system architecture overview  
-**Format:** ASCII + Text Descriptions  
+**Purpose:** Visual reference for team + system architecture overview
+**Format:** ASCII + Text Descriptions
 **Target:** All stakeholders, developers, QA, DevOps
 
 ---
@@ -142,7 +142,7 @@ Gesamtprojekt/
 │       ├── 📄 agent.html
 │       └── 📄 base.html
 │
-├── 1.portier_openai/
+├── 1.opena1&2_portier/
 │   ├── 📁 venv313/ (Python environment – Phase 1)
 │   ├── 📄 setup_venv313.sh
 │   └── 📁 archivp/ (Data storage)
@@ -431,7 +431,7 @@ TOTAL: 5 tasks → Target: 80%+ complete by Fri night
 [ ] Task 01 ✅ (already done)
 [ ] Task 02 implemented
 [ ] Task 03 implemented
-[ ] Task 04 implemented  
+[ ] Task 04 implemented
 [ ] Task 05 implemented
 [ ] All tests pass (>80% coverage)
 [ ] All lint checks pass (score ≥9.0)

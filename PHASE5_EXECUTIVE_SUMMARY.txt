@@ -305,7 +305,7 @@ Total Files Created/Updated: 16
 ================================================================================
 
 IMMEDIATE (Deploy Now):
-  1. source 1.portier_openai/venv313/bin/activate
+  1. source 1.opena1&2_portier/venv313/bin/activate
   2. cd 19.dashboard_agent && ./bin/start_all.sh
   3. ./bin/ops.sh agents:register
   4. pytest tests/test_phase5.py -v

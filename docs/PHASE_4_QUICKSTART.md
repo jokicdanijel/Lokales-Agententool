@@ -4,8 +4,8 @@
 
 **Copilot Bridge + VS Code Integration – Week 1 Kickoff Guide**
 
-**Datum:** 2025-11-06  
-**Target Start:** 2025-11-07  
+**Datum:** 2025-11-06
+**Target Start:** 2025-11-07
 **Target Week 1 Completion:** 2025-11-14
 
 ---
@@ -79,7 +79,7 @@
 # 1. Add endpoint to main_dashboard.py: GET /api/bridge/status
 # 2. Create response: { queue_length, pending, completed, last_sync }
 # 3. Update ui_index.html with queue monitor widget
-# 4. Test: 
+# 4. Test:
 #    - bin/ops.sh start
 #    - curl -H "Authorization: Bearer $(cat .env)" http://127.0.0.1:12349/api/bridge/status
 #    - Open UI, see queue widget
@@ -169,7 +169,7 @@ def three_way_merge(base, local, remote):
 git pull origin feature/phase-4-bridge
 
 # 2. Activate venv
-source 1.portier_openai/venv313/bin/activate
+source 1.opena1&2_portier/venv313/bin/activate
 
 # 3. Run tests
 cd 19.dashboard_agent
@@ -232,15 +232,15 @@ async def auth_middleware(request, call_next):
     """Validate Bearer token on all endpoints except /health"""
     if request.url.path == "/health":
         return await call_next(request)
-    
+
     auth_header = request.headers.get("Authorization", "")
     if not auth_header.startswith("Bearer "):
         return JSONResponse({"detail": "Unauthorized"}, 401)
-    
+
     token = auth_header[7:]
     if not verify_token(token):
         return JSONResponse({"detail": "Forbidden"}, 403)
-    
+
     return await call_next(request)
 ```
 
@@ -381,14 +381,14 @@ def three_way_merge(base: str, local: str, remote: str) -> tuple:
     # Step 1: Compute diffs (base→local, base→remote)
     local_changes = diff(base, local)
     remote_changes = diff(base, remote)
-    
+
     # Step 2: Identify conflicts
     conflicts = find_conflicts(local_changes, remote_changes)
-    
+
     # Step 3: Merge (simple append if no conflicts)
     if not conflicts:
         return merge_simple(base, local, remote), []
-    
+
     # Step 4: Mark conflicts
     merged = mark_conflicts(base, local, remote, conflicts)
     return merged, conflicts

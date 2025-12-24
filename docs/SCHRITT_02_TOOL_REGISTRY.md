@@ -420,14 +420,14 @@ from tool_dispatcher import ToolDispatcher
 async def main():
     dispatcher = ToolDispatcher(archive_path=Path("./archivp"))
     dispatcher.set_auth_token("your-token-here")
-    
+
     success, response = await dispatcher.dispatch(
         tool_id="browse",
         params={"url": "https://example.com"},
         source_agent="dashboard",
         request_id="req-12345"
     )
-    
+
     if success:
         print(f"✅ Tool executed: {response['result']}")
         print(f"📝 Safepoints: {response['cmd_safepoint']}, {response['resp_safepoint']}")
@@ -597,7 +597,7 @@ Every dispatch creates permanent, append-only audit trail:
 
 ```bash
 # Create venv
-cd 1.portier_openai
+cd 1.opena1&2_portier
 python3 -m venv venv313
 source venv313/bin/activate
 pip install -r requirements.txt
@@ -656,6 +656,6 @@ async def dispatch_tool(req: DispatchRequest):
 
 ---
 
-**Status:** Ready for implementation  
-**Priority:** High (enables Schritt 3 & 5)  
+**Status:** Ready for implementation
+**Priority:** High (enables Schritt 3 & 5)
 **Estimated Lines:** 560 (registry) + 370 (dispatcher) + 250 (schemas) = ~1180 LOC

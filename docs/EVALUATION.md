@@ -24,6 +24,12 @@ python3 -m evaluation.runner evaluation/datasets/sample.jsonl --out evaluation/r
 cat evaluation/results/report.json | jq .summary
 ```
 
+> Tipp: Es gibt nun zusätzlich ein automatisch erzeugtes Set mit 20 Szenarien unter `evaluation/datasets/generated.jsonl`. Du kannst beide Datasets nacheinander ausführen:
+>
+> ```bash
+> python3 -m evaluation.runner evaluation/datasets/generated.jsonl --out evaluation/results/report_generated.json
+> ```
+
 3. Beispiel: OpenWebUI Arena Evaluation
 
 ```bash

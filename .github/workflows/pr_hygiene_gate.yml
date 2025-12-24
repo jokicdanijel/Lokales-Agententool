@@ -1,0 +1,41 @@
+name: PR Hygiene Gate
+
+on:
+    workflow_dispatch:
+    schedule:
+        - cron: "0 3 * * *" # daily 03:00 UTC
+
+jobs:
+    scan:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Install gh CLI
+              run: |
+                  sudo apt-get update && sudo apt-get install -y gh jq || true
+
+            - name: Run PR Hygiene Gate (fast)
+              run: |
+                  python3 scripts/pr_hygiene_gate.py --repos jokicdanijel/Gesamtprojekt-start --out-json artifacts/scans/pr_hygiene_gate.json --out-md artifacts/scans/pr_hygiene_gate.md || exit_code=$?; echo "exit_code=$exit_code" > /tmp/pgate_exit || true
+
+            - name: Upload reports
+              uses: actions/upload-artifact@v4
+              with:
+                  name: pr-hygiene-reports
+                  path: |
+                      artifacts/scans/pr_hygiene_gate.json
+                      artifacts/scans/pr_hygiene_gate.md
+
+            - name: Fail if blocked
+              if: ${{ success() }}
+              run: |
+                  exit_code_file=/tmp/pgate_exit
+                  if [ -f "$exit_code_file" ]; then
+                    rc=$(cat $exit_code_file | sed -n 's/exit_code=//p') || rc=0
+                    if [ "$rc" -eq "1" ]; then
+                      echo "PR Hygiene Gate blocked; failing job"
+                      exit 1
+                    fi
+                  fi

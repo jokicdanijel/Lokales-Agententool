@@ -13,8 +13,8 @@ echo "==========================================================================
 # Step 1: Activate venv
 echo ""
 echo "📍 Step 1: Aktiviere Python 3.12 venv..."
-if [ -d "1.portier_openai/venv313" ]; then
-  source 1.portier_openai/venv313/bin/activate
+if [ -d "1.opena1&2_portier/venv313" ]; then
+  source 1.opena1&2_portier/venv313/bin/activate
   echo "✅ venv313 aktiviert"
 else
   echo "❌ venv313 nicht gefunden!"

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Connection Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #1a1a1a; color: #fff; }
+        .test { margin: 10px 0; padding: 10px; background: #2a2a2a; border-radius: 5px; }
+        .ok { color: #4caf50; }
+        .error { color: #f44336; }
+    </style>
+</head>
+<body>
+    <h1>🔌 API Connection Test</h1>
+    <div id="results"></div>
+
+    <script>
+        const API_BASE = 'http://localhost:12348';
+        const results = document.getElementById('results');
+
+        async function testEndpoint(name, endpoint) {
+            const div = document.createElement('div');
+            div.className = 'test';
+            results.appendChild(div);
+
+            try {
+                const response = await fetch(`${API_BASE}${endpoint}`);
+                const data = await response.json();
+                div.innerHTML = `<span class="ok">✅ ${name}</span><br><pre>${JSON.stringify(data, null, 2).substring(0, 200)}...</pre>`;
+            } catch (e) {
+                div.innerHTML = `<span class="error">❌ ${name}: ${e.message}</span>`;
+            }
+        }
+
+        async function runTests() {
+            results.innerHTML = '<p>Teste Verbindungen...</p>';
+
+            await testEndpoint('Health Check', '/health');
+            await testEndpoint('System Status', '/api/status');
+            await testEndpoint('Workflows', '/api/workflows');
+            await testEndpoint('Analytics', '/api/analytics/overview');
+            await testEndpoint('Templates', '/api/templates/list');
+            await testEndpoint('Message History', '/api/message/history');
+            await testEndpoint('Webhook Status', '/api/webhook/status');
+            await testEndpoint('Bot Details', '/api/bot/details');
+
+            results.innerHTML += '<p class="ok">✅ Alle Tests abgeschlossen!</p>';
+        }
+
+        runTests();
+    </script>
+</body>
+</html>

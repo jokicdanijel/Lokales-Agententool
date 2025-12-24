@@ -13,7 +13,7 @@ LOG_DIR="$ROOT/logs"
 mkdir -p "$LOG_DIR"
 
 # Source venv
-VENV="$ROOT/1.portier_openai/venv313"
+VENV="$ROOT/1.opena1&2_portier/venv313"
 if [ ! -d "$VENV" ]; then
     echo "❌ venv313 not found at $VENV"
     exit 1
@@ -43,25 +43,25 @@ declare -A AGENTS=(
 # Start each agent
 for agent in "${!AGENTS[@]}"; do
     IFS='|' read -r script port <<< "${AGENTS[$agent]}"
-    
+
     if [ ! -f "$script" ]; then
         echo "❌ Script not found: $script"
         continue
     fi
-    
+
     log_file="$LOG_DIR/${agent}.nohup.log"
-    
+
     # Check if already running
     if lsof -Pi ":${port}" -sTCP:LISTEN -t >/dev/null 2>&1; then
         echo "⚠️  $agent already running on port $port"
         continue
     fi
-    
+
     echo "Starting $agent on port $port..."
     nohup python "$script" > "$log_file" 2>&1 &
-    
+
     sleep 1
-    
+
     # Verify
     if lsof -Pi ":${port}" -sTCP:LISTEN -t >/dev/null 2>&1; then
         echo "✅ $agent started (PID: $(lsof -Pi ":${port}" -sTCP:LISTEN -t | head -1))"

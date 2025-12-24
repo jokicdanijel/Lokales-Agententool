@@ -1,7 +1,7 @@
 # ELION Portier Production Hardening – Phase P0 Summary
 
-**Session Date:** 9. November 2025  
-**Status:** ✅ **PHASE P0 COMPLETE**  
+**Session Date:** 9. November 2025
+**Status:** ✅ **PHASE P0 COMPLETE**
 **Git Commit:** `835e2f6`
 
 ---
@@ -22,8 +22,8 @@
 ---
 
 ### ✅ P0.2 – Python 3.13 + venv313 Vereinheitlichung
-- ✅ Created: `1.portier_openai/venv312` (Python 3.12.3)
-- ✅ Symlink: `.venv → 1.portier_openai/venv312`
+- ✅ Created: `1.opena1&2_portier/venv312` (Python 3.12.3)
+- ✅ Symlink: `.venv → 1.opena1&2_portier/venv312`
 - ✅ Generated: `requirements.lock` (snapshot baseline: setuptools, wheel)
 - ✅ venv Verification: `.venv/bin/python --version` → **3.12.3**
 
@@ -96,9 +96,9 @@ Status: ✅ POLICY PASS
 
 ### venv Setup
 ```
-venv Location: 1.portier_openai/venv312
+venv Location: 1.opena1&2_portier/venv312
 Python Version: 3.12.3
-Symlink: .venv → 1.portier_openai/venv312
+Symlink: .venv → 1.opena1&2_portier/venv312
 Requirements Lock: requirements.lock (baseline)
 Status: ✅ VERIFIED
 ```
@@ -133,7 +133,7 @@ Status: ✅ FAST
 | `Makefile` | Added: `include make/portier.mk` |
 | `.gitignore` | Added: Patterns for special characters & archives |
 | `docs/HINWEIS.md` | Created from root **Hinweis:** |
-| `.venv` | Symlink → `1.portier_openai/venv312` |
+| `.venv` | Symlink → `1.opena1&2_portier/venv312` |
 
 ---
 
@@ -204,11 +204,11 @@ aiohttp>=3.9.0 (optional, for async HTTP)
 
 ## Compliance & Governance
 
-✅ **Port-Policy:** All services comply with 12344–12399 range  
-✅ **Health-Checks:** Standardized /health endpoint on all services  
-✅ **Safepoints:** Deterministic naming & indexing for audit trails  
-✅ **Root-Hardening:** No special characters in root filenames  
-✅ **Version Control:** Reproducible venv (venv312, requirements.lock)  
+✅ **Port-Policy:** All services comply with 12344–12399 range
+✅ **Health-Checks:** Standardized /health endpoint on all services
+✅ **Safepoints:** Deterministic naming & indexing for audit trails
+✅ **Root-Hardening:** No special characters in root filenames
+✅ **Version Control:** Reproducible venv (venv312, requirements.lock)
 
 ---
 
@@ -232,6 +232,6 @@ All blockierende Änderungen implemented and verified. Ready for Phase P1 (One-S
 
 ---
 
-**Signed by:** GitHub Copilot  
-**Date:** 2025-11-09 04:50 UTC  
+**Signed by:** GitHub Copilot
+**Date:** 2025-11-09 04:50 UTC
 **Commit:** 835e2f6

@@ -65,11 +65,11 @@ backup_file() {
 move_file() {
     local src="$1"
     local dst="$2"
-    
+
     # Sicherstellen, dass Zielverzeichnis existiert
     local dst_dir
     dst_dir=$(dirname "$dst")
-    
+
     if [[ "$DRY_RUN" == "false" ]]; then
         mkdir -p "$dst_dir"
         if [[ -f "$src" ]]; then
@@ -91,18 +91,18 @@ rollback_archiv_violations() {
     log "═══════════════════════════════════════════════════════════════"
     log "SECTION 1: ARCHIV → configs/ ROLLBACK (KRITISCH)"
     log "═══════════════════════════════════════════════════════════════"
-    
+
     local count=0
-    
+
     # 19.dashboard_agent/ARCHIV/ → configs/ (26 Dateien)
     log "Rollback: 19.dashboard_agent/ARCHIV/ (26 Dateien)..."
-    
+
     # 2025/11/06
     mkdir -p "$PROJECT_ROOT/19.dashboard_agent/ARCHIV/2025/11/06"
     move_file "$CONFIGS_DIR/SP1762419411_kordp→opena2_CMD.json" "$PROJECT_ROOT/19.dashboard_agent/ARCHIV/2025/11/06/SP1762419411_kordp→opena2_CMD.json"
     move_file "$CONFIGS_DIR/SP1762419397_kordp→opena2_CMD.json" "$PROJECT_ROOT/19.dashboard_agent/ARCHIV/2025/11/06/SP1762419397_kordp→opena2_CMD.json"
     count=$((count + 2))
-    
+
     # 2025/11/08
     mkdir -p "$PROJECT_ROOT/19.dashboard_agent/ARCHIV/2025/11/08"
     move_file "$CONFIGS_DIR/SP1762625396_opena4_telegram→opena2_MESSAGE.json" "$PROJECT_ROOT/19.dashboard_agent/ARCHIV/2025/11/08/SP1762625396_opena4_telegram→opena2_MESSAGE.json"
@@ -130,38 +130,38 @@ rollback_archiv_violations() {
     move_file "$CONFIGS_DIR/SP1762630918_opena9_call_tracking→opena2_ANALYTICS_OP.json" "$PROJECT_ROOT/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630918_opena9_call_tracking→opena2_ANALYTICS_OP.json"
     move_file "$CONFIGS_DIR/SP1762630755_opena8_telephone→opena2_CALL_OP.json" "$PROJECT_ROOT/19.dashboard_agent/ARCHIV/2025/11/08/SP1762630755_opena8_telephone→opena2_CALL_OP.json"
     count=$((count + 24))
-    
-    # 1.portier_openai/ARCHIV/ → configs/ (10 Dateien)
-    log "Rollback: 1.portier_openai/ARCHIV/ (10 Dateien)..."
-    
-    mkdir -p "$PROJECT_ROOT/1.portier_openai/ARCHIV/2025/11/08"
-    move_file "$CONFIGS_DIR/SP1762631529_opena9_call_tracking→opena2_ANALYTICS_OP.json" "$PROJECT_ROOT/1.portier_openai/ARCHIV/2025/11/08/SP1762631529_opena9_call_tracking→opena2_ANALYTICS_OP.json"
-    move_file "$CONFIGS_DIR/SP1762631953_opena12_influencer→opena2_INFLUENCER_OP.json" "$PROJECT_ROOT/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena12_influencer→opena2_INFLUENCER_OP.json"
-    move_file "$CONFIGS_DIR/SP1762631953_opena13_calendar→opena2_CALENDAR_OP.json" "$PROJECT_ROOT/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena13_calendar→opena2_CALENDAR_OP.json"
-    move_file "$CONFIGS_DIR/SP1762631525_opena8_telephone→opena2_CALL_OP.json" "$PROJECT_ROOT/1.portier_openai/ARCHIV/2025/11/08/SP1762631525_opena8_telephone→opena2_CALL_OP.json"
-    move_file "$CONFIGS_DIR/SP1762631953_opena14_html_generator→opena2_HTML_OP.json" "$PROJECT_ROOT/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena14_html_generator→opena2_HTML_OP.json"
-    move_file "$CONFIGS_DIR/SP1762631532_opena10_unlock→opena2_SECURITY_OP.json" "$PROJECT_ROOT/1.portier_openai/ARCHIV/2025/11/08/SP1762631532_opena10_unlock→opena2_SECURITY_OP.json"
-    move_file "$CONFIGS_DIR/SP1762632454_opena11_social_media→opena2_SOCIAL_OP.json" "$PROJECT_ROOT/1.portier_openai/ARCHIV/2025/11/08/SP1762632454_opena11_social_media→opena2_SOCIAL_OP.json"
-    move_file "$CONFIGS_DIR/SP1762631953_opena15_shop→opena2_SHOP_OP.json" "$PROJECT_ROOT/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena15_shop→opena2_SHOP_OP.json"
-    move_file "$CONFIGS_DIR/SP1762631953_opena11_social_media→opena2_SOCIAL_OP.json" "$PROJECT_ROOT/1.portier_openai/ARCHIV/2025/11/08/SP1762631953_opena11_social_media→opena2_SOCIAL_OP.json"
-    move_file "$CONFIGS_DIR/SP1762631526_opena8_telephone→opena2_CALL_OP.json" "$PROJECT_ROOT/1.portier_openai/ARCHIV/2025/11/08/SP1762631526_opena8_telephone→opena2_CALL_OP.json"
+
+    # 1.opena1&2_portier/ARCHIV/ → configs/ (10 Dateien)
+    log "Rollback: 1.opena1&2_portier/ARCHIV/ (10 Dateien)..."
+
+    mkdir -p "$PROJECT_ROOT/1.opena1&2_portier/ARCHIV/2025/11/08"
+    move_file "$CONFIGS_DIR/SP1762631529_opena9_call_tracking→opena2_ANALYTICS_OP.json" "$PROJECT_ROOT/1.opena1&2_portier/ARCHIV/2025/11/08/SP1762631529_opena9_call_tracking→opena2_ANALYTICS_OP.json"
+    move_file "$CONFIGS_DIR/SP1762631953_opena12_influencer→opena2_INFLUENCER_OP.json" "$PROJECT_ROOT/1.opena1&2_portier/ARCHIV/2025/11/08/SP1762631953_opena12_influencer→opena2_INFLUENCER_OP.json"
+    move_file "$CONFIGS_DIR/SP1762631953_opena13_calendar→opena2_CALENDAR_OP.json" "$PROJECT_ROOT/1.opena1&2_portier/ARCHIV/2025/11/08/SP1762631953_opena13_calendar→opena2_CALENDAR_OP.json"
+    move_file "$CONFIGS_DIR/SP1762631525_opena8_telephone→opena2_CALL_OP.json" "$PROJECT_ROOT/1.opena1&2_portier/ARCHIV/2025/11/08/SP1762631525_opena8_telephone→opena2_CALL_OP.json"
+    move_file "$CONFIGS_DIR/SP1762631953_opena14_html_generator→opena2_HTML_OP.json" "$PROJECT_ROOT/1.opena1&2_portier/ARCHIV/2025/11/08/SP1762631953_opena14_html_generator→opena2_HTML_OP.json"
+    move_file "$CONFIGS_DIR/SP1762631532_opena10_unlock→opena2_SECURITY_OP.json" "$PROJECT_ROOT/1.opena1&2_portier/ARCHIV/2025/11/08/SP1762631532_opena10_unlock→opena2_SECURITY_OP.json"
+    move_file "$CONFIGS_DIR/SP1762632454_opena11_social_media→opena2_SOCIAL_OP.json" "$PROJECT_ROOT/1.opena1&2_portier/ARCHIV/2025/11/08/SP1762632454_opena11_social_media→opena2_SOCIAL_OP.json"
+    move_file "$CONFIGS_DIR/SP1762631953_opena15_shop→opena2_SHOP_OP.json" "$PROJECT_ROOT/1.opena1&2_portier/ARCHIV/2025/11/08/SP1762631953_opena15_shop→opena2_SHOP_OP.json"
+    move_file "$CONFIGS_DIR/SP1762631953_opena11_social_media→opena2_SOCIAL_OP.json" "$PROJECT_ROOT/1.opena1&2_portier/ARCHIV/2025/11/08/SP1762631953_opena11_social_media→opena2_SOCIAL_OP.json"
+    move_file "$CONFIGS_DIR/SP1762631526_opena8_telephone→opena2_CALL_OP.json" "$PROJECT_ROOT/1.opena1&2_portier/ARCHIV/2025/11/08/SP1762631526_opena8_telephone→opena2_CALL_OP.json"
     count=$((count + 10))
-    
-    # 1.portier_openai/archivp/ → configs/ (6 Dateien)
-    log "Rollback: 1.portier_openai/archivp/ (6 Dateien)..."
-    
-    mkdir -p "$PROJECT_ROOT/1.portier_openai/archivp/2025/11/03"
-    move_file "$CONFIGS_DIR/SP1762143131_kordp→opena2_CMD.json" "$PROJECT_ROOT/1.portier_openai/archivp/2025/11/03/SP1762143131_kordp→opena2_CMD.json"
-    move_file "$CONFIGS_DIR/SP1762143089_kordp→opena2_CMD.json" "$PROJECT_ROOT/1.portier_openai/archivp/2025/11/03/SP1762143089_kordp→opena2_CMD.json"
-    move_file "$CONFIGS_DIR/SP1762145568_opena1→opena2_CMD.json" "$PROJECT_ROOT/1.portier_openai/archivp/2025/11/03/SP1762145568_opena1→opena2_CMD.json"
+
+    # 1.opena1&2_portier/archivp/ → configs/ (6 Dateien)
+    log "Rollback: 1.opena1&2_portier/archivp/ (6 Dateien)..."
+
+    mkdir -p "$PROJECT_ROOT/1.opena1&2_portier/archivp/2025/11/03"
+    move_file "$CONFIGS_DIR/SP1762143131_kordp→opena2_CMD.json" "$PROJECT_ROOT/1.opena1&2_portier/archivp/2025/11/03/SP1762143131_kordp→opena2_CMD.json"
+    move_file "$CONFIGS_DIR/SP1762143089_kordp→opena2_CMD.json" "$PROJECT_ROOT/1.opena1&2_portier/archivp/2025/11/03/SP1762143089_kordp→opena2_CMD.json"
+    move_file "$CONFIGS_DIR/SP1762145568_opena1→opena2_CMD.json" "$PROJECT_ROOT/1.opena1&2_portier/archivp/2025/11/03/SP1762145568_opena1→opena2_CMD.json"
     count=$((count + 3))
-    
-    mkdir -p "$PROJECT_ROOT/1.portier_openai/archivp/2025/11/02"
-    move_file "$CONFIGS_DIR/SP1762120025_opena1→opena2_CMD.json" "$PROJECT_ROOT/1.portier_openai/archivp/2025/11/02/SP1762120025_opena1→opena2_CMD.json"
-    move_file "$CONFIGS_DIR/SP1762120019_opena1→opena2_CMD.json" "$PROJECT_ROOT/1.portier_openai/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json"
-    move_file "$CONFIGS_DIR/SP1762120040_opena1→opena2_CMD.json" "$PROJECT_ROOT/1.portier_openai/archivp/2025/11/02/SP1762120040_opena1→opena2_CMD.json"
+
+    mkdir -p "$PROJECT_ROOT/1.opena1&2_portier/archivp/2025/11/02"
+    move_file "$CONFIGS_DIR/SP1762120025_opena1→opena2_CMD.json" "$PROJECT_ROOT/1.opena1&2_portier/archivp/2025/11/02/SP1762120025_opena1→opena2_CMD.json"
+    move_file "$CONFIGS_DIR/SP1762120019_opena1→opena2_CMD.json" "$PROJECT_ROOT/1.opena1&2_portier/archivp/2025/11/02/SP1762120019_opena1→opena2_CMD.json"
+    move_file "$CONFIGS_DIR/SP1762120040_opena1→opena2_CMD.json" "$PROJECT_ROOT/1.opena1&2_portier/archivp/2025/11/02/SP1762120040_opena1→opena2_CMD.json"
     count=$((count + 3))
-    
+
     success "ARCHIV-Rollback abgeschlossen: $count Dateien verschoben"
 }
 
@@ -172,9 +172,9 @@ cleanup_venv_leaks() {
     log "═══════════════════════════════════════════════════════════════"
     log "SECTION 2: venv → src/pkg CLEANUP (HIGH)"
     log "═══════════════════════════════════════════════════════════════"
-    
+
     local count=0
-    
+
     # typing_extensions.py (Python 3.13 builtin)
     if [[ -f "$SRC_PKG_DIR/typing_extensions.py" ]]; then
         backup_file "$SRC_PKG_DIR/typing_extensions.py"
@@ -186,7 +186,7 @@ cleanup_venv_leaks() {
         fi
         count=$((count + 1))
     fi
-    
+
     # py.py (pytest dependency)
     if [[ -f "$SRC_PKG_DIR/py.py" ]]; then
         backup_file "$SRC_PKG_DIR/py.py"
@@ -198,7 +198,7 @@ cleanup_venv_leaks() {
         fi
         count=$((count + 1))
     fi
-    
+
     # socks.py + sockshandler.py (PySocks package)
     if [[ -f "$SRC_PKG_DIR/socks.py" ]]; then
         backup_file "$SRC_PKG_DIR/socks.py"
@@ -210,7 +210,7 @@ cleanup_venv_leaks() {
         fi
         count=$((count + 1))
     fi
-    
+
     if [[ -f "$SRC_PKG_DIR/sockshandler.py" ]]; then
         backup_file "$SRC_PKG_DIR/sockshandler.py"
         if [[ "$DRY_RUN" == "false" ]]; then
@@ -221,7 +221,7 @@ cleanup_venv_leaks() {
         fi
         count=$((count + 1))
     fi
-    
+
     # requirements.txt aktualisieren
     if [[ "$DRY_RUN" == "false" ]]; then
         cat >> "$PROJECT_ROOT/requirements.txt" <<'EOF'
@@ -238,7 +238,7 @@ EOF
     else
         log "[DRY-RUN] Würde requirements.txt aktualisieren"
     fi
-    
+
     success "venv-Cleanup abgeschlossen: $count Dateien entfernt"
 }
 
@@ -249,17 +249,17 @@ rescue_quarantined_tests() {
     log "═══════════════════════════════════════════════════════════════"
     log "SECTION 3: tests → _conflicts/ RESCUE (HIGH)"
     log "═══════════════════════════════════════════════════════════════"
-    
+
     local count=0
-    
+
     # Sicherstellen, dass Zielverzeichnisse existieren
     mkdir -p "$TESTS_DIR"
     mkdir -p "$SCRIPTS_DIR"
     mkdir -p "$DOCS_DIR/testing"
-    
+
     # KRITISCHE Tests zurückholen
     log "Rescue: Kritische Tests..."
-    
+
     move_file "$CONFLICTS_DIR/test_archivator.py" "$TESTS_DIR/test_archivator.py"
     move_file "$CONFLICTS_DIR/test_openwebui_agent.py" "$TESTS_DIR/test_openwebui_agent.py"
     move_file "$CONFLICTS_DIR/test_opena4_telegram.sh" "$TESTS_DIR/test_opena4_telegram.sh"
@@ -271,30 +271,30 @@ rescue_quarantined_tests() {
     move_file "$CONFLICTS_DIR/test_opena4_vscode.py" "$TESTS_DIR/test_opena4_vscode.py"
     move_file "$CONFLICTS_DIR/test_bridge_api.py" "$TESTS_DIR/test_bridge_api.py"
     count=$((count + 10))
-    
+
     # Scripts zurückholen
     log "Rescue: Scripts..."
     move_file "$CONFLICTS_DIR/verify_phase2.sh" "$SCRIPTS_DIR/verify_phase2.sh"
     move_file "$CONFLICTS_DIR/e2e_integration.sh" "$SCRIPTS_DIR/e2e_integration.sh"
     count=$((count + 2))
-    
+
     # Doku übernehmen
     log "Rescue: Dokumentation..."
     move_file "$CONFLICTS_DIR/TESTS_TELEMETRIE_ROLLOUT.md" "$DOCS_DIR/testing/TESTS_TELEMETRIE_ROLLOUT_2025-11-09.md"
     count=$((count + 1))
-    
+
     # README in _conflicts/ erstellen
     if [[ "$DRY_RUN" == "false" ]]; then
         cat > "$CONFLICTS_DIR/README.md" <<'EOF'
 # Konflikt-Quarantäne vom 9. November 2025 03:29:49
 
-**Status:** Legacy-Archive  
-**Grund:** Struktur-Cleanup während Phase 5  
+**Status:** Legacy-Archive
+**Grund:** Struktur-Cleanup während Phase 5
 **Datum:** 9. November 2025 03:29:49 UTC
 
 ## Zweck
 
-Dieser Ordner diente als temporäre Quarantäne für Dateien, die während der 
+Dieser Ordner diente als temporäre Quarantäne für Dateien, die während der
 automatisierten Struktur-Bereinigung von `rename_map.csv` verschoben wurden.
 
 ## Wiederherstellung
@@ -315,16 +315,16 @@ Dateien, die hier verbleiben, sind:
 
 ## Archivierung
 
-Dieser Ordner kann nach **1. Dezember 2025** vollständig archiviert oder 
+Dieser Ordner kann nach **1. Dezember 2025** vollständig archiviert oder
 gelöscht werden, sofern keine weiteren Abhängigkeiten bestehen.
 
 ---
-**Erstellt durch:** `GOVERNANCE_ROLLBACK_SCRIPT.sh`  
+**Erstellt durch:** `GOVERNANCE_ROLLBACK_SCRIPT.sh`
 **Datum:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
 EOF
         success "README in _conflicts/ erstellt"
     fi
-    
+
     success "Test-Rescue abgeschlossen: $count Dateien wiederhergestellt"
 }
 
@@ -335,9 +335,9 @@ validate_compliance() {
     log "═══════════════════════════════════════════════════════════════"
     log "SECTION 4: COMPLIANCE-VALIDIERUNG"
     log "═══════════════════════════════════════════════════════════════"
-    
+
     local all_passed=true
-    
+
     # Check 1: Keine Safepoints in configs/
     log "Check 1: Keine SP*.json in configs/..."
     local sp_count
@@ -348,7 +348,7 @@ validate_compliance() {
         error "✗ FEHLER: $sp_count Safepoint-Dateien verbleiben in configs/"
         all_passed=false
     fi
-    
+
     # Check 2: Safepoints zurück in ARCHIV/
     log "Check 2: Safepoints in ARCHIV/ vorhanden..."
     local archiv_count
@@ -359,21 +359,21 @@ validate_compliance() {
         error "✗ FEHLER: Nur $archiv_count Safepoints gefunden (erwartet: ≥42)"
         all_passed=false
     fi
-    
+
     # Check 3: Keine venv-Leaks in src/pkg/
     log "Check 3: Keine venv-Leaks in src/pkg/..."
     local venv_leaks=0
     [[ -f "$SRC_PKG_DIR/typing_extensions.py" ]] && venv_leaks=$((venv_leaks + 1))
     [[ -f "$SRC_PKG_DIR/socks.py" ]] && venv_leaks=$((venv_leaks + 1))
     [[ -f "$SRC_PKG_DIR/py.py" ]] && venv_leaks=$((venv_leaks + 1))
-    
+
     if [[ $venv_leaks -eq 0 ]]; then
         success "✓ Keine venv-Leaks in src/pkg/"
     else
         error "✗ FEHLER: $venv_leaks venv-Leak-Dateien gefunden"
         all_passed=false
     fi
-    
+
     # Check 4: Tests zurück in tests/
     log "Check 4: Kritische Tests in tests/..."
     local critical_tests=(
@@ -388,14 +388,14 @@ validate_compliance() {
             missing_tests=$((missing_tests + 1))
         fi
     done
-    
+
     if [[ $missing_tests -eq 0 ]]; then
         success "✓ Alle kritischen Tests vorhanden (${#critical_tests[@]} Dateien)"
     else
         error "✗ FEHLER: $missing_tests Tests fehlen"
         all_passed=false
     fi
-    
+
     # Gesamtergebnis
     log "═══════════════════════════════════════════════════════════════"
     if [[ "$all_passed" == "true" ]]; then
@@ -403,7 +403,7 @@ validate_compliance() {
         log ""
         log "Nächste Schritte:"
         log "  1. CI/CD-Pipeline testen: pytest tests/"
-        log "  2. opena2 Config prüfen: grep ARCHIV 1.portier_openai/config/*.json"
+        log "  2. opena2 Config prüfen: grep ARCHIV 1.opena1&2_portier/config/*.json"
         log "  3. Dependencies installieren: pip install -r requirements.txt"
         return 0
     else
@@ -425,30 +425,30 @@ main() {
     log "Projekt-Root: $PROJECT_ROOT"
     log "DRY-RUN: $DRY_RUN"
     log "═══════════════════════════════════════════════════════════════"
-    
+
     # Backup .env (falls vorhanden)
     if [[ -f "$PROJECT_ROOT/.env" ]]; then
         backup_file "$PROJECT_ROOT/.env"
     fi
-    
+
     # Section 1: ARCHIV-Rollback
     rollback_archiv_violations
-    
+
     # Section 2: venv-Cleanup
     cleanup_venv_leaks
-    
+
     # Section 3: Test-Rescue
     rescue_quarantined_tests
-    
+
     # Section 4: Validierung
     validate_compliance
     local validation_result=$?
-    
+
     log "═══════════════════════════════════════════════════════════════"
     log "Ende: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
     log "Log-Datei: $LOG_FILE"
     log "═══════════════════════════════════════════════════════════════"
-    
+
     exit $validation_result
 }
 

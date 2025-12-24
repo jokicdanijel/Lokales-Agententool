@@ -12,17 +12,17 @@ Priorität:
 
 Verwendung:
   from src.paths_config import BASE_ROOT, VENV_PATH, PORT_RANGE, FORBIDDEN_PORTS
-  
+
   archive_dir = BASE_ROOT / "1.opena1&2_portier" / "archivp_store"
 """
 
 import os
 from pathlib import Path
-from typing import Set
 
 # ════════════════════════════════════════════════════════════════════════════
 # PRIMARY: Environment-based Configuration (Server-Transfer Safe)
 # ════════════════════════════════════════════════════════════════════════════
+
 
 def _get_base_root() -> Path:
     """
@@ -35,10 +35,10 @@ def _get_base_root() -> Path:
     # 1. Explicit ENV
     if base_env := os.getenv("BASE_ROOT"):
         return Path(base_env).resolve()
-    
+
     if portier_env := os.getenv("PORTIER_ROOT"):
         return Path(portier_env).resolve()
-    
+
     # 2. Automatisch: Finde repo root
     # __file__ = .../Gesamtprojekt/src/paths_config.py
     # → ../ = .../Gesamtprojekt/src/
@@ -47,27 +47,29 @@ def _get_base_root() -> Path:
     repo_root = current_file.parent.parent  # src/../ = repo root
     if (repo_root / "configs" / "agent_dirs.yaml").exists():
         return repo_root
-    
+
     # 3. Hardcoded Default (für alle anderen Fälle)
     default = Path("/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt")
     return default.resolve() if default.exists() else repo_root
 
+
 def _get_venv_path() -> Path:
     """
-    Ermittelt VENV_PATH — POLICY-BINDING (immer 1.portier_openai/venv313):
+    Ermittelt VENV_PATH — POLICY-BINDING (immer 1.opena1&2_portier/venv313):
     1. $VENV_PATH (explizit, überschreibt Policy)
-    2. Hardcoded Policy-Pfad: BASE_ROOT/1.portier_openai/venv313 (DEFAULT)
-    
+    2. Hardcoded Policy-Pfad: BASE_ROOT/1.opena1&2_portier/venv313 (DEFAULT)
+
     Diese Venv ist zentral für ALLE 20 Services. Keine Alternativen!
     """
     # Nur explizite ENV-Override erlaubt
     if venv_env := os.getenv("VENV_PATH"):
         return Path(venv_env).resolve()
-    
-    # Policy-Binding: Immer 1.portier_openai/venv313
+
+    # Policy-Binding: Immer 1.opena1&2_portier/venv313
     base = _get_base_root()
-    policy_venv = base / "1.portier_openai" / "venv313"
+    policy_venv = base / "1.opena1&2_portier" / "venv313"
     return policy_venv.resolve()
+
 
 # ════════════════════════════════════════════════════════════════════════════
 # CONSTANTS (Derived from ENV or hardcoded)
@@ -81,7 +83,7 @@ Enthält alle 20 OpenA-Services.
 
 VENV_PATH: Path = _get_venv_path()
 """
-Python venv Pfad: BASE_ROOT/1.portier_openai/venv313
+Python venv Pfad: BASE_ROOT/1.opena1&2_portier/venv313
 Alle Services nutzen diesen Python interpreter.
 """
 
@@ -94,7 +96,7 @@ Zulässige Port-Range: 12344–12399 (56 Ports für 20 Services)
 Binding: 127.0.0.1 (Localhost only)
 """
 
-FORBIDDEN_PORTS: Set[int] = {8080}
+FORBIDDEN_PORTS: set[int] = {8080}
 """
 Verbotene Ports (reserviert für externe Services wie OpenWebUI)
 """
@@ -125,6 +127,7 @@ LOGS_DIR: Path = BASE_ROOT / "logs"
 # VALIDATION
 # ════════════════════════════════════════════════════════════════════════════
 
+
 def validate_paths() -> bool:
     """
     Validiert alle kritischen Pfade.
@@ -137,15 +140,16 @@ def validate_paths() -> bool:
         "CONFIGS_DIR exists": CONFIGS_DIR.exists(),
         "PORT_RANGE valid": PORT_RANGE[0] < PORT_RANGE[1],
     }
-    
+
     all_ok = all(checks.values())
     if not all_ok:
         print("[WARNING] Path validation failed:")
         for check, result in checks.items():
             status = "✅" if result else "❌"
             print(f"  {status} {check}")
-    
+
     return all_ok
+
 
 # ════════════════════════════════════════════════════════════════════════════
 # DEBUG INFO

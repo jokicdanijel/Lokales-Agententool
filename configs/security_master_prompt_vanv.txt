@@ -4,8 +4,8 @@
 # 0) SYSTEMKERN (UNVERÄNDERLICH)
 ###############################################################################
 BASE_ROOT = /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
-VENV_PATH = /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313
-PYTHON_BIN = /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/python3
+VENV_PATH = /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313
+PYTHON_BIN = /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/python3
 PORT_RANGE = 12344–12399
 FORBIDDEN_PORTS = [8080]
 

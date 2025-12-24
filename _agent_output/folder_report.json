@@ -1,0 +1,24 @@
+{
+  "scanned_path": "/pfad/zum/projekt",
+  "generated_at": "2025-12-22T12:52:20.076375Z",
+  "file_count": 0,
+  "total_bytes": 0,
+  "max_depth_seen": 0,
+  "banned_name_hits": [],
+  "duplicate_name_groups": {},
+  "tech_stack_signals": {},
+  "detected_capabilities": {
+    "auth": 0.0,
+    "dashboard": 0.0,
+    "docs": 0.0,
+    "settings": 0.0,
+    "admin": 0.0,
+    "rbac": 0.0,
+    "api": 0.0,
+    "i18n": 0.0,
+    "billing": 0.0,
+    "notifications": 0.0
+  },
+  "page_candidates": [],
+  "shared_component_candidates": []
+}

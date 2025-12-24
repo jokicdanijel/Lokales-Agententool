@@ -1,7 +1,7 @@
 # Portier Koordinator & Archivator - Pipeline Execution Report
 
-**Datum**: 2025-11-09 03:32 UTC  
-**Status**: ✅ **FULLY EXECUTED & VERIFIED**  
+**Datum**: 2025-11-09 03:32 UTC
+**Status**: ✅ **FULLY EXECUTED & VERIFIED**
 **Pipeline**: Dry-Run → Apply → Verify → Release → Archive
 
 ---
@@ -99,10 +99,10 @@ test_archivator.py → src/tests/test_archivator.py
 ### 3. Secret Scan
 ```
 ❌ Secrets found!
-Locations: 1.portier_openai/logs/*.log (token=MEIN_SUP)
+Locations: 1.opena1&2_portier/logs/*.log (token=MEIN_SUP)
 5.kordp_scheduler/config/agent.conf (require_token=true)
 ```
-→ **Assessment**: 
+→ **Assessment**:
 - `MEIN_SUP` = Testtoken in Logs (non-actionable)
 - `require_token=true` = Configuration (nicht Secret)
 - **Action**: Sollten in `.gitignore` excluded oder `.secretignore` definiert werden
@@ -315,7 +315,6 @@ gh run list  # (if authenticated)
 
 ---
 
-**Generated**: 2025-11-09 03:32 UTC  
-**Executed by**: Koordinator & Archivator  
+**Generated**: 2025-11-09 03:32 UTC
+**Executed by**: Koordinator & Archivator
 **Next Review**: After next `make apply` cycle
-

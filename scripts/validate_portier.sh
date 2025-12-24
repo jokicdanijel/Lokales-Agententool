@@ -48,7 +48,7 @@ echo "[OK] Agenten-Dateien vorhanden."
 
 # 4) Safepoint-Pfeil (best effort – statische Prüfung)
 echo "[Policy] Prüfe Unicode-Pfeil in Archivator-/Safepoint-Helfern …"
-if grep -qr '→' "$ROOT/1.portier_openai" 2>/dev/null; then
+if grep -qr '→' "$ROOT/1.opena1&2_portier" 2>/dev/null; then
   echo "[OK] Unicode-Pfeil '→' referenziert."
 else
   echo "[WARN] Kein Unicode-Pfeil '→' gefunden. Prüfe, ob Safepoint-Namensfunktion korrekt eingebaut ist."

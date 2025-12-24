@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📱 OPENA12 Social Media - PORTIER PAS-6.0 Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="logo-section">
+                <span class="logo-icon">📱</span>
+                <h1>Social Media Agent 6.0</h1>
+                <span class="version-badge">v6.0.0 PAS-6.0</span>
+            </div>
+            <div class="status-section">
+                <span id="connection-status" class="status-indicator status-loading">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Verbinde...</span>
+                </span>
+                <span id="uptime" class="uptime-display">--:--:--</span>
+            </div>
+        </header>
+
+        <main class="main-grid">
+            <section class="platform-cards">
+                <div class="card platform-card" data-platform="linkedin">
+                    <div class="card-icon">💼</div>
+                    <div class="card-content"><h3>LinkedIn</h3><span id="linkedin-posts" class="metric-value">0</span></div>
+                    <span class="platform-status" id="status-linkedin">●</span>
+                </div>
+                <div class="card platform-card" data-platform="x">
+                    <div class="card-icon">𝕏</div>
+                    <div class="card-content"><h3>X (Twitter)</h3><span id="x-posts" class="metric-value">0</span></div>
+                    <span class="platform-status" id="status-x">●</span>
+                </div>
+                <div class="card platform-card" data-platform="facebook">
+                    <div class="card-icon">📘</div>
+                    <div class="card-content"><h3>Facebook</h3><span id="facebook-posts" class="metric-value">0</span></div>
+                    <span class="platform-status" id="status-facebook">●</span>
+                </div>
+                <div class="card platform-card" data-platform="instagram">
+                    <div class="card-icon">📸</div>
+                    <div class="card-content"><h3>Instagram</h3><span id="instagram-posts" class="metric-value">0</span></div>
+                    <span class="platform-status" id="status-instagram">●</span>
+                </div>
+            </section>
+
+            <section class="left-panel">
+                <div class="card">
+                    <h2>🔐 Authentication</h2>
+                    <div class="form-group">
+                        <input type="password" id="token" placeholder="Bearer Token...">
+                        <button onclick="saveToken()" class="btn btn-sm">Speichern</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>🚀 Post Now</h2>
+                    <form id="post-form">
+                        <div class="form-group">
+                            <label>Plattformen</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="platform" value="linkedin" checked> LinkedIn</label>
+                                <label><input type="checkbox" name="platform" value="x"> X</label>
+                                <label><input type="checkbox" name="platform" value="facebook"> Facebook</label>
+                                <label><input type="checkbox" name="platform" value="instagram"> Instagram</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="post-text">Nachricht</label>
+                            <textarea id="post-text" rows="4" placeholder="Ihr Social Media Post..."></textarea>
+                            <span class="char-counter"><span id="char-count">0</span>/280</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="hashtags">Hashtags</label>
+                            <input type="text" id="hashtags" placeholder="#Marketing #Business">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">�� Posten</button>
+                            <button type="button" onclick="generateAI()" class="btn btn-secondary">🤖 AI</button>
+                        </div>
+                    </form>
+                    <pre id="post-output" class="output hidden"></pre>
+                </div>
+
+                <div class="card">
+                    <h2>🤖 AI Generator</h2>
+                    <div class="form-group">
+                        <input type="text" id="ai-topic" placeholder="Thema eingeben...">
+                    </div>
+                    <select id="ai-style" class="form-group">
+                        <option value="professional">Professionell</option>
+                        <option value="casual">Casual</option>
+                        <option value="engaging">Engaging</option>
+                    </select>
+                    <button onclick="generateAIText()" class="btn btn-accent">✨ Generieren</button>
+                    <pre id="ai-output" class="output hidden"></pre>
+                </div>
+            </section>
+
+            <section class="right-panel">
+                <div class="card">
+                    <h2>🗓️ Scheduler</h2>
+                    <form id="schedule-form">
+                        <div class="form-group">
+                            <textarea id="schedule-text" rows="2" placeholder="Geplanter Post..."></textarea>
+                        </div>
+                        <div class="form-row">
+                            <input type="date" id="schedule-date">
+                            <input type="time" id="schedule-time" value="09:00">
+                        </div>
+                        <button type="submit" class="btn btn-primary">📅 Planen</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h2>📋 Queue (<span id="queue-count">0</span>)</h2>
+                    <div id="queue-list" class="queue-list"><p class="empty-state">Keine geplanten Posts</p></div>
+                </div>
+
+                <div class="card">
+                    <h2>📜 Aktivitäten</h2>
+                    <div id="activity-log" class="activity-log"><p class="empty-state">Keine Aktivitäten</p></div>
+                </div>
+            </section>
+
+            <section class="bottom-panel">
+                <div class="card metrics-card">
+                    <h2>📊 Metriken</h2>
+                    <div class="metrics-grid">
+                        <div class="metric-item"><span class="metric-label">Posts</span><span id="total-posts" class="metric-value">0</span></div>
+                        <div class="metric-item"><span class="metric-label">Geplant</span><span id="scheduled-posts" class="metric-value">0</span></div>
+                        <div class="metric-item"><span class="metric-label">AI</span><span id="ai-generations" class="metric-value">0</span></div>
+                        <div class="metric-item"><span class="metric-label">Erfolg</span><span id="success-rate" class="metric-value">0%</span></div>
+                        <div class="metric-item"><span class="metric-label">Posts/h</span><span id="posts-per-hour" class="metric-value">0</span></div>
+                        <div class="metric-item"><span class="metric-label">API</span><span id="api-response" class="metric-value">0ms</span></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="dashboard-footer">
+            <span>ELION PORTIER PAS-6.0 | opena12_social_media</span>
+            <span>Port: 12358</span>
+            <span id="last-update">--:--:--</span>
+        </footer>
+    </div>
+    <div id="toast-container" class="toast-container"></div>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

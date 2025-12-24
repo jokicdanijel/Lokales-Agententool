@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELION Entitlements Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .plan-selector {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .plan-selector label {
+            font-weight: bold;
+            margin-right: 15px;
+            color: #333;
+        }
+
+        .plan-selector select {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            background: white;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            opacity: 0.9;
+        }
+
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .agent-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+
+        .agent-card.clickable {
+            border-color: #28a745;
+            background: #f0fff4;
+        }
+
+        .agent-card.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background: #f8f8f8;
+        }
+
+        .agent-card.disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .agent-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .agent-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .agent-id {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .badge.upgrade {
+            background: #ff9800;
+            color: white;
+        }
+
+        .badge.core {
+            background: #2196F3;
+            color: white;
+        }
+
+        .badge.system {
+            background: #9c27b0;
+            color: white;
+        }
+
+        .badge.readonly {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .limits {
+            font-size: 11px;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 ELION Entitlements Demo</h1>
+        <p class="subtitle">Maschinenlesbare Gate-Kontrolle ohne HTML-Hardcoding</p>
+
+        <div id="error-container"></div>
+
+        <div class="plan-selector">
+            <label for="plan-select">Plan auswählen:</label>
+            <select id="plan-select" onchange="updateDashboard()">
+                <option value="basic">Basic Plan</option>
+                <option value="pro">Pro Plan</option>
+                <option value="premium">Premium Plan</option>
+                <option value="ultimum">Ultimum Plan</option>
+            </select>
+        </div>
+
+        <div class="stats" id="stats-container">
+            <div class="stat-card">
+                <h3 id="stat-total">-</h3>
+                <p>Total Agents</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="stat-clickable">-</h3>
+                <p>Klickbar</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="stat-gated">-</h3>
+                <p>Upgrade erforderlich</p>
+            </div>
+        </div>
+
+        <div id="agent-grid-container">
+            <div class="loading">Lädt Entitlements...</div>
+        </div>
+    </div>
+
+    <script>
+        // Entitlements Client einbinden
+        class EntitlementsClient {
+            constructor(data) {
+                this.data = data;
+                this.loaded = true;
+            }
+
+            isVisible(planId, agentId) {
+                const agent = this._getAgent(planId, agentId);
+                return agent ? agent.visible : false;
+            }
+
+            canClick(planId, agentId) {
+                const agent = this._getAgent(planId, agentId);
+                return agent ? agent.clickable : false;
+            }
+
+            getLimits(planId, agentId) {
+                const agent = this._getAgent(planId, agentId);
+                return agent ? agent.limits : {};
+            }
+
+            getGates(planId, agentId) {
+                const agent = this._getAgent(planId, agentId);
+                return agent ? agent.gates : [];
+            }
+
+            getReason(planId, agentId) {
+                const agent = this._getAgent(planId, agentId);
+                return agent ? agent.reason : 'unknown';
+            }
+
+            _getAgent(planId, agentId) {
+                if (!this.data.plans[planId]) return null;
+                return this.data.plans[planId].agents[agentId];
+            }
+        }
+
+        let entitlements = null;
+
+        // Agent-Namen Mapping
+        const AGENT_NAMES = {
+            opena1: 'Portier', opena2: 'Archivar', opena3: 'OpenWebUI',
+            opena4: 'Telegram', opena5: 'VSCode', opena6: 'Browser',
+            opena7: 'Email', opena8: 'WhatsApp', opena9: 'Phone',
+            opena10: 'Call Tracking', opena11: 'Access Control', opena12: 'Social Media',
+            opena13: 'Influencer', opena14: 'Calendar', opena15: 'HTML Generator',
+            opena16: 'Shop', opena17: 'Homepage Creator', opena18: 'CRM',
+            opena19: 'Finance', opena20: 'Dashboard', opena21: 'Workflow'
+        };
+
+        const AGENT_ICONS = {
+            opena1: '🚪', opena2: '📦', opena3: '💬', opena4: '✈️',
+            opena5: '💻', opena6: '🌐', opena7: '📧', opena8: '📱',
+            opena9: '☎️', opena10: '📊', opena11: '🔐', opena12: '📱',
+            opena13: '🌟', opena14: '📅', opena15: '🌐', opena16: '🛒',
+            opena17: '🏠', opena18: '👥', opena19: '💰', opena20: '📈',
+            opena21: '⚙️'
+        };
+
+        async function loadEntitlements() {
+            try {
+                const response = await fetch('/build/entitlements.json');
+                if (!response.ok) throw new Error('Failed to load entitlements');
+
+                const data = await response.json();
+                entitlements = new EntitlementsClient(data);
+
+                updateDashboard();
+            } catch (error) {
+                showError('Fehler beim Laden der Entitlements: ' + error.message);
+            }
+        }
+
+        function updateDashboard() {
+            if (!entitlements) return;
+
+            const planId = document.getElementById('plan-select').value;
+            const plan = entitlements.data.plans[planId];
+
+            // Update stats
+            const allAgents = Object.keys(plan.agents);
+            const clickable = allAgents.filter(id => entitlements.canClick(planId, id));
+            const gated = allAgents.filter(id =>
+                entitlements.getGates(planId, id).includes('requires_upgrade')
+            );
+
+            document.getElementById('stat-total').textContent = allAgents.length;
+            document.getElementById('stat-clickable').textContent = clickable.length;
+            document.getElementById('stat-gated').textContent = gated.length;
+
+            // Render agent grid
+            renderAgentGrid(planId, allAgents);
+        }
+
+        function renderAgentGrid(planId, agentIds) {
+            const container = document.getElementById('agent-grid-container');
+            const grid = document.createElement('div');
+            grid.className = 'agent-grid';
+
+            agentIds.forEach(agentId => {
+                const visible = entitlements.isVisible(planId, agentId);
+                if (!visible) return;
+
+                const clickable = entitlements.canClick(planId, agentId);
+                const gates = entitlements.getGates(planId, agentId);
+                const limits = entitlements.getLimits(planId, agentId);
+                const reason = entitlements.getReason(planId, agentId);
+
+                const card = document.createElement('div');
+                card.className = 'agent-card';
+                if (clickable) card.classList.add('clickable');
+                if (!clickable) card.classList.add('disabled');
+
+                let badges = '';
+                if (reason === 'core_agent') {
+                    badges += '<span class="badge core">CORE</span>';
+                } else if (reason === 'system_agent') {
+                    badges += '<span class="badge system">SYSTEM</span>';
+                } else if (gates.includes('requires_upgrade')) {
+                    badges += '<span class="badge upgrade">⬆ UPGRADE</span>';
+                }
+
+                if (limits.logs_access === 'read_only') {
+                    badges += '<span class="badge readonly">📖 Read-only</span>';
+                }
+
+                let limitsText = '';
+                if (limits.workflow_limit && limits.workflow_limit > 0) {
+                    limitsText = `<div class="limits">Max ${limits.workflow_limit} Workflows</div>`;
+                }
+
+                card.innerHTML = `
+                    <div class="agent-icon">${AGENT_ICONS[agentId] || '🤖'}</div>
+                    <div class="agent-name">${AGENT_NAMES[agentId] || agentId}</div>
+                    <div class="agent-id">${agentId}</div>
+                    ${badges}
+                    ${limitsText}
+                `;
+
+                if (clickable) {
+                    card.onclick = () => alert(`✓ Agent ${agentId} würde geöffnet`);
+                } else {
+                    card.onclick = () => alert(`✗ Upgrade erforderlich für ${agentId}`);
+                }
+
+                grid.appendChild(card);
+            });
+
+            container.innerHTML = '';
+            container.appendChild(grid);
+        }
+
+        function showError(message) {
+            const container = document.getElementById('error-container');
+            container.innerHTML = `<div class="error">${message}</div>`;
+        }
+
+        // Init
+        loadEntitlements();
+    </script>
+</body>
+</html>

@@ -2,8 +2,8 @@
 
 # Phase 4.1 – Pre-Launch Deployment Checklist
 
-**Status:** Final Validation Before Nov 7 Kickoff  
-**Date:** 2025-11-06  
+**Status:** Final Validation Before Nov 7 Kickoff
+**Date:** 2025-11-06
 **Owner:** DevOps + QA Lead
 
 ---
@@ -47,7 +47,7 @@ python3 --version
 # Required: 3.12 or higher
 
 # Virtual environment
-source 1.portier_openai/venv313/bin/activate
+source 1.opena1&2_portier/venv313/bin/activate
 pip freeze | grep fastapi
 # Should show: fastapi, uvicorn
 
@@ -322,11 +322,11 @@ If any check fails, document here:
 
 ```
 FAILED CHECK: [number]
-DESCRIPTION: 
-ROOT CAUSE: 
-REMEDIATION: 
-OWNER: 
-DUE DATE: 
+DESCRIPTION:
+ROOT CAUSE:
+REMEDIATION:
+OWNER:
+DUE DATE:
 ```
 
 ---

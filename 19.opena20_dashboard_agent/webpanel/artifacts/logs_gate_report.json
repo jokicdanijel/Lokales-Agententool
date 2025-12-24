@@ -1,0 +1,23 @@
+{
+  "gate": "logs_gate",
+  "ok": true,
+  "started_utc": "2025-12-24T08:03:32Z",
+  "finished_utc": "2025-12-24T08:03:32Z",
+  "duration_ms": 0,
+  "errors": [],
+  "violations": [],
+  "warnings": [
+    {
+      "level": "warning",
+      "gate": "logs_gate",
+      "rule": "no_logs_found",
+      "message": "No logs provided/found. Logs gate cannot validate runtime errors.",
+      "file": null,
+      "evidence": null
+    }
+  ],
+  "info": [],
+  "stats": {
+    "log_files": []
+  }
+}

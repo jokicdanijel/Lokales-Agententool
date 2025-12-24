@@ -1915,7 +1915,7 @@ rschau der geplanten Löschungen:
   (Diese Dateien werden nur nach individueller Bestätigung gelöscht, wenn das Skript mit --really ausgeführt wird.)
 - Verzeichnis 'logs' ist bereits leer.
 - Verzeichnis 'fullstack_app/logs' ist bereits leer.
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai$ ~#!/bin/bash
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier$ ~#!/bin/bash
 
 # Dieses Skript bereinigt das Projektverzeichnis ('Portier-Ordner'), indem es ungenutzte und temporäre Dateien/Verzeichnisse entfernt.
 # Funktionsübersicht:
@@ -3865,6 +3865,4 @@ Vorschau der geplanten Löschungen:
 - Verzeichnis 'logs' ist bereits leer.
 - Verzeichnis 'fullstack_app/logs' ist bereits leer.
 (Vorschau beendet. Zum tatsächlichen Löschen Skript mit '--really' ausführen.)
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai$ 
-
-
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier$

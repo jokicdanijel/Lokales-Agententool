@@ -1,7 +1,7 @@
 # Agent Verzeichnis-Struktur - PLAN
 
 ## 1. ZIEL
-Erstelle **19 vollständige, isolierte Agent-Verzeichnisse** (wie 1.portier_openai/, 2.openwebui/) unter Projektwurzel mit:
+Erstelle **19 vollständige, isolierte Agent-Verzeichnisse** (wie 1.opena1&2_portier/, 2.openwebui/) unter Projektwurzel mit:
 - Nummern-Präfix (3-21)
 - Konsistente Struktur
 - Vollständige Dateien (nicht leer)
@@ -119,11 +119,11 @@ ARCHIVATOR_URL=http://127.0.0.1:12345
 
 ## 5. WAS NICHT TUN
 
-❌ Keine Dateien aus 19.dashboard_agent kopieren  
-❌ Keine doppelten Agenten  
-❌ Keine leeren main.py  
-❌ Keine verwaisten Tests  
-❌ Keine Konflikte mit bestehendem Setup  
+❌ Keine Dateien aus 19.dashboard_agent kopieren
+❌ Keine doppelten Agenten
+❌ Keine leeren main.py
+❌ Keine verwaisten Tests
+❌ Keine Konflikte mit bestehendem Setup
 
 ---
 
@@ -140,13 +140,13 @@ ARCHIVATOR_URL=http://127.0.0.1:12345
 
 ## 7. ERFOLGS-KRITERIEN
 
-✅ 19 Verzeichnisse (3-21)  
-✅ Jedes mit 8 Unterverzeichnisse/Dateien  
-✅ Jedes main.py funktioniert  
-✅ Jedes README vollständig  
-✅ Alle in Git committbar  
+✅ 19 Verzeichnisse (3-21)
+✅ Jedes mit 8 Unterverzeichnisse/Dateien
+✅ Jedes main.py funktioniert
+✅ Jedes README vollständig
+✅ Alle in Git committbar
 
 ---
 
-**Status:** PLAN ABGESCHLOSSEN  
+**Status:** PLAN ABGESCHLOSSEN
 **Nächster Schritt:** Genehmigung + Ausführung

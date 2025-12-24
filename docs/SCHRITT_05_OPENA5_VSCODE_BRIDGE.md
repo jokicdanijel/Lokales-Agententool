@@ -1,8 +1,8 @@
 # Schritt 5 – opena5 · VS Code Bridge
 
-**Erstellt am:** 2025-11-09 UTC  
-**Verantwortlich:** *(Team/Person eintragen)*  
-**Version:** 1.0  
+**Erstellt am:** 2025-11-09 UTC
+**Verantwortlich:** *(Team/Person eintragen)*
+**Version:** 1.0
 **Regeln:** Append-only · Dedupe (SHA-256/IDs) · keine Doppelblobs · Auditierbarkeit durchgängig
 
 ---
@@ -312,7 +312,7 @@ Host: 127.0.0.1:12348
 
 ### Phase 1: Core Struktur
 
-- [ ] `1.portier_openai/vscode_integration.py` – VS Code Bridge API
+- [ ] `1.opena1&2_portier/vscode_integration.py` – VS Code Bridge API
 - [ ] Pydantic Schemas für EDIT_TASK, EDIT_APPLY, EDIT_RESP
 - [ ] Task-Queue (in-Memory oder Redis-backed)
 - [ ] Safepoint-Generator (CMD/RESP Persistierung)
@@ -448,5 +448,5 @@ Host: 127.0.0.1:12348
 
 ---
 
-**Status:** 🔧 In Spezifikation · Ready für Implementierung  
+**Status:** 🔧 In Spezifikation · Ready für Implementierung
 **Nächste Phase:** Implementierung opena5 Core mit Pydantic Schemas & API-Endpoints

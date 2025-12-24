@@ -1,0 +1,261 @@
+{
+  "timestamp": "2025-12-23T04:54:18.713353Z",
+  "passed": false,
+  "total_agents": 21,
+  "agents_passed": 0,
+  "agents_failed": 21,
+  "results": [
+    {
+      "agent_id": "opena1",
+      "folder": "1.opena1&2_portier/opena1",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena2",
+      "folder": "1.opena1&2_portier/opena2",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena3",
+      "folder": "2.opena3_openwebui",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena4",
+      "folder": "3.opena4_telegram",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena5",
+      "folder": "4.opena5_vscode",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena6",
+      "folder": "5.opena6_browser",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena7",
+      "folder": "6.opena7_email",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena8",
+      "folder": "7.opena8_whatsapp",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena9",
+      "folder": "8.opena9_telephone",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena10",
+      "folder": "9.opena10_call_tracking",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena11",
+      "folder": "10.opena11_unlock",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena12",
+      "folder": "11.opena12_social_media",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 1,
+      "files_with_hashes": 1,
+      "violations": [
+        "File count mismatch: inventory=1, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena13",
+      "folder": "12.opena13_influencer",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena14",
+      "folder": "13.opena14_calendar",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena15",
+      "folder": "14.opena15_html",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena16",
+      "folder": "15.opena16_shop",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena17",
+      "folder": "16.opena17_homepagecreator",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena18",
+      "folder": "17.opena18_CMR",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena19",
+      "folder": "18.opena19_Aktien&Crypto",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 1,
+      "files_with_hashes": 1,
+      "violations": [
+        "File count mismatch: inventory=1, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena20",
+      "folder": "19.opena20_dashboard_agent",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    },
+    {
+      "agent_id": "opena21",
+      "folder": "20.opena21_workflow",
+      "exists": true,
+      "is_empty": false,
+      "file_count": 120,
+      "files_with_hashes": 120,
+      "violations": [
+        "File count mismatch: inventory=120, actual=121"
+      ],
+      "passed": false
+    }
+  ]
+}

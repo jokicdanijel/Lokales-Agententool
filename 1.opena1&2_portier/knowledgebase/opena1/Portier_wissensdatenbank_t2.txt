@@ -1,6 +1,6 @@
 ﻿Master-Schritte (einmalig, verbindlich)
 1) Projekt & Rechte festziehen
-ROOT="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai"
+ROOT="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier"
 cd "$ROOT"
 
 # Besitztümer und Basisrechte schließen
@@ -19,13 +19,13 @@ python -V
 
 pip install --upgrade pip
 pip install "fastapi>=0.111" "pydantic>=2" "uvicorn[standard]>=0.30" jq==1.6 --no-deps 2>/dev/null || true
-Hinweis: jqist OS-Tool. Wenn es fehlt: sudo apt-get update && sudo apt-get install -y jq(einmalig). 
+Hinweis: jqist OS-Tool. Wenn es fehlt: sudo apt-get update && sudo apt-get install -y jq(einmalig).
 Gate: python -V zeigt feste Version; uvicorn --versionLäuft.
 3) Konfiguration hartsetzen (env + Ports + Policy)
     • Erlaubte Ports: 12344–12349 (optionaler Connector 12355). 8080 ist verboten.
     • env.sh finalisieren (nur Variablen, keine Seiteneffekte):
 cat > "$ROOT/env.sh" <<'SH'
-export PORTIER_ROOT="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai"
+export PORTIER_ROOT="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier"
 export PORTIER_ALLOWED_PORTS="12344-12349"
 export PORTIER_CONNECTOR_PORT="12355"
 export PORTIER_ENV="production"
@@ -103,9 +103,9 @@ Wants=network-online.target
 
 [Service]
 User=danijel-jd
-Environment=PORTIER_ROOT=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
-WorkingDirectory=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
-ExecStart=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/.venv/bin/python main_production.py --port 12345
+Environment=PORTIER_ROOT=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier
+WorkingDirectory=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier
+ExecStart=/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/.venv/bin/python main_production.py --port 12345
 Restart=on-failure
 
 [Install]
@@ -203,7 +203,7 @@ Kurz: Das ist die fertige Schiene. Von hier aus ist es nur noch Hebel runter/hoc
 Du sagtest:
 Eine perfekte Eingabeaufforderung für die Herstellung des Systems herstellen.
 ChatGPT sagte:
-Hier ist der perfekte, vollständige Prompt , um dein Portier/ELION-System in einem Entwicklungsumfeld von null auf richtig, sicher und endgültig herzustellen – inklusive Struktur, Konventionen, Sicherheitsvorgaben, Pfaden und neuen Produktionsparametern. 
+Hier ist der perfekte, vollständige Prompt , um dein Portier/ELION-System in einem Entwicklungsumfeld von null auf richtig, sicher und endgültig herzustellen – inklusive Struktur, Konventionen, Sicherheitsvorgaben, Pfaden und neuen Produktionsparametern.
 Er ist so konzipiert, dass ein intelligenter Code-Assistent (z. B. Copilot oder eine automatisierte Setup-Engine) ihn als Gesamtauftrag versteht und das System exakt im Zielzustand erstellt, ohne Zwischenvarianten.
 
 🧭 Portier/ELION System – Masterprompt (Finaler Herstellungsauftrag)
@@ -215,7 +215,7 @@ OS: Ubuntu 25.04
 Python-Version: 3.13.x
 Virtuelle Umgebung: .venv
 Projektstamm:
-  /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+  /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier
 Ports erlaubt: 12344–12349
 Sonderport: 12355 (Connector)
 8080 ist streng verboten.
@@ -230,7 +230,7 @@ Pfadkonventionen:
 
 🧩 2. Systemaufbau (Dateien und Module)
 Erstelle folgende Ordnerstruktur:
-1.portier_openai/
+1.opena1&2_portier/
 │
 ├── env.sh
 ├── preflight.sh
@@ -252,12 +252,12 @@ Erstelle folgende Ordnerstruktur:
 
 🧠 3. Logikbeschreibung
 Systemrollen:
-    • open a1 (Koordinator) : 
-nimmt valide 7.1-Requests entgegen, prüft strict:true, leitet Archiv- und Response-Vorgänge ein. 
+    • open a1 (Koordinator) :
+nimmt valide 7.1-Requests entgegen, prüft strict:true, leitet Archiv- und Response-Vorgänge ein.
 Route:/log/opena1
-    • open a2 (Archivator) : 
+    • open a2 (Archivator) :
 verwaltete Safepoints ( SP###_src→dst_(CMD|RESP).json), prüft strict:true, finalisierte Archivierung.
-    • Preflight : 
+    • Preflight :
 führt drei Systemprüfungen aus – Archivprüfung, GitHub-Validierung, MAC_DIR-Systemcheck.
 
 📦 4. Funktionaler Codeumfang (produktionsfertig)
@@ -306,8 +306,8 @@ Preflight (preflight.sh)
         ◦ Repository existiert, letztes Commit vorhanden, kein uncommitteter Zustand.
     3. MAC_DIR_SYSTEM.json:
         ◦ Wird über generate_macdir.pyneu erzeugt und durch jq .systemvalidiert.
-Ergebnis: 
-PREFLIGHT OK→ Start erlaubt 
+Ergebnis:
+PREFLIGHT OK→ Start erlaubt
 Fehler → Start gesperrt.
 MAC_DIR_SYSTEM.json
     • Struktur:
@@ -321,7 +321,7 @@ MAC_DIR_SYSTEM.json
     • Wird durch generate_macdir.pyautomatisch neu erstellt.
 
 🚦 6. Startprozedur (Produktion)
-cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier
 source .venv/bin/activate
 
 # 1) Preflight (Pflicht)
@@ -353,14 +353,14 @@ curl -s -X POST http://127.0.0.1:12345/log/opena1 \
     • Mit gültigem Request → JSON-Antwort mit "ack":{"status":"accepted"}.
 
 🧾 8. Qualitätsgarantien
-✅ Pydantic v2 Modelle 
-✅ Keine Platzhalter, keine TODOs 
-✅ ISO-Zeitformat (UTC, Z) 
-✅ extra='forbid'erzwungen 
-✅ 8080 nie verwendet 
-✅ Reproduzierbare Preflight-Validierung 
-✅ Saubere MAC-Registry 
-✅ Vollständige Safepoint-Kontrolle 
+✅ Pydantic v2 Modelle
+✅ Keine Platzhalter, keine TODOs
+✅ ISO-Zeitformat (UTC, Z)
+✅ extra='forbid'erzwungen
+✅ 8080 nie verwendet
+✅ Reproduzierbare Preflight-Validierung
+✅ Saubere MAC-Registry
+✅ Vollständige Safepoint-Kontrolle
 ✅ Git-integrierter Zustand
 
 🧩 9. Zielergebnis
@@ -373,7 +373,7 @@ Nach Ausführung des Prompts ist das System:
 
 🏁 Abschlussbefehl (Final Build)
 Nach erfolgreichem Aufbau:
-cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier
 ./preflight.sh && echo "✅ Portier/ELION bereit für Produktion."
 
 Willst du, dass ich diesen Prompt noch in eine maschinell ausführbare Version (z. B. für Copilot oder CI-Pipeline) umwandle – also mit eingebauten Pfadvariablen, setup.sh-Logik und Schritt-Validierungen?
@@ -383,7 +383,7 @@ Führe jetzt den Portier/ELION Preflight aus — die drei finalen Prüfmodule:
     2. GitHub-Validierung – Repository muss sauber sein ( git statusleer, letzter Commit vorhanden).
     3. MAC_DIR_SYSTEM.json – neu generieren und durch jq .systemvalidieren.
 ➡️ Befehl:
-cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier
 ./preflight.sh
 🚀 Zeit für den täglichen Systemcheck:
 Führe jetzt den Portier/ELION Preflight aus – die drei Pflichtmodule:
@@ -391,7 +391,7 @@ Führe jetzt den Portier/ELION Preflight aus – die drei Pflichtmodule:
     2. GitHub-Validierung – Repository muss sauber & commited sein.
     3. MAC_DIR_SYSTEM.json – neu generieren und prüfen.
 ➡️ Befehl:
-cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier
 ./preflight.sh
 🔧 Erinnerung:
 Führe jetzt den Portier/ELION Preflight aus — mit den drei Kernprüfungen:
@@ -399,7 +399,7 @@ Führe jetzt den Portier/ELION Preflight aus — mit den drei Kernprüfungen:
     2. GitHub-Validierung
     3. MAC_DIR_SYSTEM.json aktualisieren
 ➡️ Befehl:
-cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier
 ./preflight.sh
 ⚙️ Automatisierungshinweis:
 Führe jetzt den Portier/ELION Preflight aus — Bestehend aus:
@@ -407,7 +407,7 @@ Führe jetzt den Portier/ELION Preflight aus — Bestehend aus:
     2. GitHub-Validierung
     3. MAC_DIR_SYSTEM.json aktualisieren
 ➡️ Befehl:
-cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier
 ./preflight.sh
 ein „CWD“-Pfad enthält fälschlicherweise ganze Environment-Zeilen (HYPERDASHBOARD_ROOT=…, PYTHONPATH= … usw.). Dadurch wird der Pfad zu einem absurden, nicht existierenden String.
 
@@ -638,28 +638,28 @@ Wenn du möchtest, passe ich das YAML noch an dein Copilot-/VS-Code-Setup (z. B.
 ￼
 ￼
 Du sagtest:
-/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai dateipfad
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier dateipfad
 ￼
 ￼
 ￼
 ChatGPT sagte:
 ￼
 Nachgedacht für 5s
-Alles klar — ich nehme /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai als dein Projekt-Root. Also stellst du's sauber um und startest den Preflight, ohne irgendwas zu beschädigen.
+Alles klar — ich nehme /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier als dein Projekt-Root. Also stellst du's sauber um und startest den Preflight, ohne irgendwas zu beschädigen.
 
 Schnell-Setup (einmalig)
 bash
 ￼
 Code kopieren
 # 0) Prüfen, ob der Pfad existiert
-ls -ld "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai"
+ls -ld "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier"
 
 # 1) Umgebungsvariable für diese Session setzen
-export PROJECT_ROOT="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai"
+export PROJECT_ROOT="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier"
 
 # 2) Optional: env.sh im Projekt anlegen (damit Tools den Pfad immer finden)
 cat > "$PROJECT_ROOT/env.sh" <<'EOF'
-export PROJECT_ROOT="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai"
+export PROJECT_ROOT="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier"
 export PYTHONPATH="$PROJECT_ROOT/dashboard/api"
 export DASHBOARD_API_PORT="5001"
 export DASHBOARD_FRONTEND_PORT="5000"
@@ -717,7 +717,7 @@ CWD/„Startverzeichnis“ in Tasks/Run-Config auf genau diesen Pfad setzen:
 schnell
 ￼
 Code kopieren
-/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier
 Keine Environment-Zeilen in die CWD-Zeile packen. Env in env.shoder in Task-Env.
 
 Noch zwei Sicherungen
@@ -1308,5 +1308,3 @@ Grün, wenn: Koordinator aktiv, Health meldet OK, Timer enabled, Snapshot da & H
 Was du damit hast
     • Koordinator: Startet/überwacht deine lokale Jarvis-Pipeline (Wakeword+Vosk), loggt sauber.
     • Archivator: Baut versionierte, verifizierbare Snapshots (.tar.zst + sha256 + Manifest), optional gespiegelt.
-
-

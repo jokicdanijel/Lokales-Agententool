@@ -1,0 +1,20 @@
+{"id":"001","agent":"opena1","input":"Orchestriere Email+Telegram","expected":"contains: 2 calls successful"}
+{"id":"002","agent":"opena7","input":"Prüfe Email-Postfach","expected":"contains: inbox_size"}
+{"id":"003","agent":"opena20","input":"Dashboard Status","expected":"health: healthy"}
+{"id":"004","agent":"opena4","input":"Sende Telegram Nachricht an Nutzer X","expected":"contains: message sent"}
+{"id":"005","agent":"opena5","input":"Öffne VSCode Projekt und berichte Fehler","expected":"contains: opened workspace"}
+{"id":"006","agent":"opena6","input":"Starte Browser und lade https://example.org","expected":"status_code: 200"}
+{"id":"007","agent":"opena11","input":"Finde alle offenen Tickets","expected":"contains: tickets_count"}
+{"id":"008","agent":"opena12","input":"Suche Influencer für Thema Y","expected":"contains: influencer_list"}
+{"id":"009","agent":"opena14","input":"Erstelle HTML Landingpage mit Hero","expected":"contains: index.html"}
+{"id":"010","agent":"opena15","input":"Erzeuge Produktseite mit Preisen","expected":"contains: price"}
+{"id":"011","agent":"opena16","input":"Aktualisiere Shop-Produktdaten","expected":"contains: updated"}
+{"id":"012","agent":"opena17","input":"Generiere Homepage-Kopie","expected":"contains: homepage"}
+{"id":"013","agent":"opena18","input":"Füge Kontaktformular hinzu","expected":"contains: form"}
+{"id":"014","agent":"opena19","input":"Hole aktuelle Aktienkurse AAPL","expected":"contains: AAPL"}
+{"id":"015","agent":"opena21","input":"Starte Workflow X mit Param Y","expected":"contains: workflow_started"}
+{"id":"016","agent":"opena3","input":"Rendere UI Vorschau Bild","expected":"contains: preview.png"}
+{"id":"017","agent":"opena8","input":"Sende WhatsApp Nachricht an Nummer Z","expected":"contains: delivered"}
+{"id":"018","agent":"opena9","input":"Initialisiere Telefonanruf Test","expected":"contains: call_started"}
+{"id":"019","agent":"opena13","input":"Plane Social Media Post für Montag","expected":"contains: scheduled"}
+{"id":"020","agent":"opena2","input":"Portier: authentifiziere Nutzer","expected":"contains: token"}

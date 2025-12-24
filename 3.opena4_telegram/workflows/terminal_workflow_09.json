@@ -23,7 +23,7 @@
         "method": "POST",
         "jsonParameters": true,
         "options": {},
-        "bodyParametersJson": "{\n  \"path\": \"1.portier_openai/archivp/index.jsonl\"\n}"
+        "bodyParametersJson": "{\n  \"path\": \"1.opena1&2_portier/archivp/index.jsonl\"\n}"
       },
       "id": "Read Index",
       "name": "Read Index",
