@@ -1,0 +1,252 @@
+{
+  "metadata": {
+    "version": "2025-12-24",
+    "description": "Kanonische Agent-Inventur: OPENA1-OPENA21 mit Ports & Standorten",
+    "root": "Gesamtprojekt/",
+    "last_updated": "2025-12-24",
+    "status": "VERIFIED"
+  },
+  "agents": [
+    {
+      "id": 1,
+      "name": "opena1",
+      "port": 12344,
+      "folder": "1.opena1&2_portier/opena1",
+      "fullpath": "Gesamtprojekt/1.opena1&2_portier/opena1",
+      "type": "portier",
+      "description": "PORTIER 3.0 - Port Manager & Load Balancer"
+    },
+    {
+      "id": 2,
+      "name": "opena2",
+      "port": 12345,
+      "folder": "1.opena1&2_portier/opena2",
+      "fullpath": "Gesamtprojekt/1.opena1&2_portier/opena2",
+      "type": "portier",
+      "description": "PORTIER 3.0 - Backup Manager"
+    },
+    {
+      "id": 3,
+      "name": "opena3",
+      "port": 12347,
+      "folder": "2.opena3_openwebui",
+      "fullpath": "Gesamtprojekt/2.opena3_openwebui",
+      "type": "ui",
+      "description": "OpenWebUI - Web Interface"
+    },
+    {
+      "id": 4,
+      "name": "opena4",
+      "port": 12346,
+      "folder": "3.opena4_telegram",
+      "fullpath": "Gesamtprojekt/3.opena4_telegram",
+      "type": "connector",
+      "description": "Telegram Bot Integration"
+    },
+    {
+      "id": 5,
+      "name": "opena5",
+      "port": 12350,
+      "folder": "4.opena5_vscode",
+      "fullpath": "Gesamtprojekt/4.opena5_vscode",
+      "type": "connector",
+      "description": "VS Code Integration"
+    },
+    {
+      "id": 6,
+      "name": "opena6",
+      "port": 12351,
+      "folder": "5.opena6_browser",
+      "fullpath": "Gesamtprojekt/5.opena6_browser",
+      "type": "connector",
+      "description": "Browser Automation"
+    },
+    {
+      "id": 7,
+      "name": "opena7",
+      "port": 12352,
+      "folder": "6.opena7_email",
+      "fullpath": "Gesamtprojekt/6.opena7_email",
+      "type": "connector",
+      "description": "Email Integration"
+    },
+    {
+      "id": 8,
+      "name": "opena8",
+      "port": 12353,
+      "folder": "7.opena8_whatsapp",
+      "fullpath": "Gesamtprojekt/7.opena8_whatsapp",
+      "type": "connector",
+      "description": "WhatsApp Integration"
+    },
+    {
+      "id": 9,
+      "name": "opena9",
+      "port": 12354,
+      "folder": "8.opena9_telephone",
+      "fullpath": "Gesamtprojekt/8.opena9_telephone",
+      "type": "connector",
+      "description": "Telephone/VoIP Integration"
+    },
+    {
+      "id": 10,
+      "name": "opena10",
+      "port": 12355,
+      "folder": "9.opena10_call_tracking",
+      "fullpath": "Gesamtprojekt/9.opena10_call_tracking",
+      "type": "analytics",
+      "description": "Call Tracking & Analytics"
+    },
+    {
+      "id": 11,
+      "name": "opena11",
+      "port": 12356,
+      "folder": "10.opena11_unlock",
+      "fullpath": "Gesamtprojekt/10.opena11_unlock",
+      "type": "security",
+      "description": "Vault & Secrets Management (CRITICAL)"
+    },
+    {
+      "id": 12,
+      "name": "opena12",
+      "port": 12357,
+      "folder": "11.opena12_social_media",
+      "fullpath": "Gesamtprojekt/11.opena12_social_media",
+      "type": "connector",
+      "description": "Social Media Integration"
+    },
+    {
+      "id": 13,
+      "name": "opena13",
+      "port": 12358,
+      "folder": "12.opena13_influencer",
+      "fullpath": "Gesamtprojekt/12.opena13_influencer",
+      "type": "analytics",
+      "description": "Influencer Analytics & Management"
+    },
+    {
+      "id": 14,
+      "name": "opena14",
+      "port": 12359,
+      "folder": "13.opena14_calendar",
+      "fullpath": "Gesamtprojekt/13.opena14_calendar",
+      "type": "connector",
+      "description": "Calendar Integration"
+    },
+    {
+      "id": 15,
+      "name": "opena15",
+      "port": 12360,
+      "folder": "14.opena15_html",
+      "fullpath": "Gesamtprojekt/14.opena15_html",
+      "type": "generator",
+      "description": "HTML Generation & Rendering"
+    },
+    {
+      "id": 16,
+      "name": "opena16",
+      "port": 12361,
+      "folder": "15.opena16_shop",
+      "fullpath": "Gesamtprojekt/15.opena16_shop",
+      "type": "ecommerce",
+      "description": "E-Commerce Shop Integration"
+    },
+    {
+      "id": 17,
+      "name": "opena17",
+      "port": 12362,
+      "folder": "16.opena17_homepagecreator",
+      "fullpath": "Gesamtprojekt/16.opena17_homepagecreator",
+      "type": "generator",
+      "description": "Website Builder"
+    },
+    {
+      "id": 18,
+      "name": "opena18",
+      "port": 12363,
+      "folder": "17.opena18_CMR",
+      "fullpath": "Gesamtprojekt/17.opena18_CMR",
+      "type": "crm",
+      "description": "CRM System"
+    },
+    {
+      "id": 19,
+      "name": "opena19",
+      "port": 12364,
+      "folder": "18.opena19_Aktien&Crypto",
+      "fullpath": "Gesamtprojekt/18.opena19_Aktien&Crypto",
+      "type": "finance",
+      "description": "Stock & Crypto Trading"
+    },
+    {
+      "id": 20,
+      "name": "opena20",
+      "port": 12349,
+      "folder": "19.opena20_dashboard_agent",
+      "fullpath": "Gesamtprojekt/19.opena20_dashboard_agent",
+      "type": "dashboard",
+      "description": "Central Dashboard & Orchestration"
+    },
+    {
+      "id": 21,
+      "name": "opena21",
+      "port": 12367,
+      "folder": "20.opena21_workflow",
+      "fullpath": "Gesamtprojekt/20.opena21_workflow",
+      "type": "workflow",
+      "description": "Workflow Engine & Automation"
+    }
+  ],
+  "port_mapping": {
+    "12344": "opena1",
+    "12345": "opena2",
+    "12346": "opena4",
+    "12347": "opena3",
+    "12349": "opena20",
+    "12350": "opena5",
+    "12351": "opena6",
+    "12352": "opena7",
+    "12353": "opena8",
+    "12354": "opena9",
+    "12355": "opena10",
+    "12356": "opena11",
+    "12357": "opena12",
+    "12358": "opena13",
+    "12359": "opena14",
+    "12360": "opena15",
+    "12361": "opena16",
+    "12362": "opena17",
+    "12363": "opena18",
+    "12364": "opena19",
+    "12367": "opena21"
+  },
+  "type_groups": {
+    "portier": ["opena1", "opena2"],
+    "ui": ["opena3"],
+    "connectors": ["opena4", "opena5", "opena6", "opena7", "opena8", "opena9", "opena12", "opena14"],
+    "analytics": ["opena10", "opena13"],
+    "security": ["opena11"],
+    "generators": ["opena15", "opena17"],
+    "ecommerce": ["opena16"],
+    "crm": ["opena18"],
+    "finance": ["opena19"],
+    "dashboard": ["opena20"],
+    "workflow": ["opena21"]
+  },
+  "validation": {
+    "total_agents": 21,
+    "port_range": "12344-12367",
+    "notes": [
+      "Port 12349 (opena20) ist HAUPTZUGANG - zentrale Dashboard",
+      "Port 12356 (opena11) ist VAULT - kritische Sicherheit",
+      "Ports sequenziell in Gruppen angeordnet für PORTIER 3.0",
+      "opena3 (OpenWebUI) nutzt Port 12347 (nicht sequenziell wegen Admin-Zugriff)"
+    ]
+  },
+  "sync_notes": {
+    "last_sync": "2025-12-24",
+    "status": "CANONICAL",
+    "source": "Baseline Übersicht",
+    "usage": "Nutze dieses Mapping für alle Validierungen & Deployments"
+  }
+}

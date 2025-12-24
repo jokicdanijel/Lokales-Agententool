@@ -448,3 +448,5 @@
 {"sp_id": "SP1765948291632", "timestamp": "2025-12-17T05:11:31.632887Z", "src": "opena3", "dst": "dashboard", "type": "RESP", "path": "archivp_store/2025/12/17/SP1765948291632_opena3→dashboard_RESP.json"}
 {"sp_id": "SP1765948291637", "timestamp": "2025-12-17T05:11:31.638002Z", "src": "dashboard", "dst": "opena3", "type": "CMD", "path": "archivp_store/2025/12/17/SP1765948291637_dashboard→opena3_CMD.json"}
 {"sp_id": "SP1765948295569", "timestamp": "2025-12-17T05:11:35.569277Z", "src": "opena3", "dst": "dashboard", "type": "RESP", "path": "archivp_store/2025/12/17/SP1765948295569_opena3→dashboard_RESP.json"}
+{"sp": "SP1766589752_opena5→kordp_CMD.json", "src": "opena5", "dst": "kordp", "kind": "CMD", "ts": "2025-12-24T16:22:32.174610Z", "request_id": "test_cmd_001"}
+{"sp": "SP1766589752_kordp→opena5_RESP.json", "src": "kordp", "dst": "opena5", "kind": "RESP", "ts": "2025-12-24T16:22:32.176024Z", "request_id": "test_cmd_001"}
