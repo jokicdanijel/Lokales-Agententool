@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Fleet - opena20 Dashboard</title>
+    <link rel="stylesheet" href="css/agents_fleet.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Agent Fleet Observatory</h1>
+            <p class="subtitle">Real-time Docker-Compose Service Inventory</p>
+        </header>
+
+        <div class="stats-bar">
+            <div class="stat-card">
+                <span class="stat-label">Total Services</span>
+                <span class="stat-value" id="total-services">-</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Compose Files</span>
+                <span class="stat-value" id="total-compose-files">-</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Exposed Ports</span>
+                <span class="stat-value" id="total-ports">-</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Last Scan</span>
+                <span class="stat-value" id="last-scan">-</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <input type="text" id="search-input" placeholder="🔍 Search services, images, ports..." />
+            <select id="filter-restart">
+                <option value="">All Restart Policies</option>
+                <option value="unless-stopped">unless-stopped</option>
+                <option value="always">always</option>
+                <option value="on-failure">on-failure</option>
+                <option value="no">no</option>
+            </select>
+            <button id="refresh-btn">🔄 Refresh Scan</button>
+        </div>
+
+        <div id="fleet-grid" class="fleet-grid">
+            <!-- Services will be dynamically inserted here -->
+        </div>
+
+        <div id="error-message" class="error-message hidden">
+            ⚠️ Failed to load agent fleet data. Please ensure the scanner has run.
+        </div>
+    </div>
+
+    <script src="js/agents_fleet.js"></script>
+</body>
+</html>

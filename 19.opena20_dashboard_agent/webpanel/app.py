@@ -9,10 +9,16 @@ from pathlib import Path
 import psutil
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI(title="Telegram Bot Dashboard", version="1.0")
 
 BASE_DIR = Path(__file__).parent
+
+# Mount artifacts directory for static file serving
+ARTIFACTS_DIR = BASE_DIR / "artifacts"
+if ARTIFACTS_DIR.exists():
+    app.mount("/artifacts", StaticFiles(directory=str(ARTIFACTS_DIR)), name="artifacts")
 
 
 # Status endpoint
@@ -49,7 +55,7 @@ async def get_status():
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 # Logs endpoint
@@ -68,7 +74,7 @@ async def get_logs(lines: int = 50):
 
         return {"logs": [line.strip() for line in last_lines], "total_lines": len(all_lines)}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 # Bot-Kontrolle
@@ -90,7 +96,7 @@ async def control_bot(action: str):
 
         return {"action": action, "success": result.returncode == 0, "output": result.stdout, "error": result.stderr}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 # Root - Dashboard HTML
