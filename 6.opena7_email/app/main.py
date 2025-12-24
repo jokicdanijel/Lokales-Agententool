@@ -409,21 +409,6 @@ async def status():
 # ============================================================================
 
 
-@app.get("/")
-async def root():
-    """Root endpoint"""
-    return {
-        "service": "opena7 — Mail Agent",
-        "version": "1.0.0",
-        "endpoints": {
-            "health": "/health",
-            "run": "POST /run (fetch, fetch_and_reply, send)",
-            "metrics": "/metrics",
-            "status": "/api/status",
-        },
-    }
-
-
 @app.get("/docs")
 async def openapi_docs():
     """OpenAPI documentation"""
@@ -437,19 +422,13 @@ async def openapi_docs():
 
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request: Request, exc: HTTPException):
-    """Custom HTTP exception handler"""
-    logger.error(f"HTTP {exc.status_code}: {exc.detail}")
-    return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail, "path": str(request.url)})
+    """Handle HTTP exceptions"""
+    return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
 
 
-# ============================================================================
-# HTML/STATIC ROUTES (must come before API root)
-# ============================================================================
-
-
-@app.get("/index.html", response_class=FileResponse)
-async def get_index():
-    """Serve index.html"""
+@app.get("/", response_class=FileResponse)
+async def root():
+    """Root endpoint - serve index.html"""
     return FileResponse("html/index.html", media_type="text/html")
 
 
