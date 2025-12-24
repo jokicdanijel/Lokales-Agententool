@@ -2,16 +2,19 @@
 
 ## 🚀 Launch in 3 Steps
 
-### Step 1: Scan Services
+### Step 1: Scan Services (with all features)
 ```bash
 cd /path/to/Gesamtprojekt
 python3 scripts/agent_scanner_compose.py --auto-discover
+
+# With resource monitoring (slower)
+python3 scripts/agent_scanner_compose.py --auto-discover --resource-stats
 ```
 
 ### Step 2: Start Backend
 ```bash
 cd 19.opena20_dashboard_agent/webpanel
-python3 app.py
+uvicorn app:app --host 0.0.0.0 --port 8000
 ```
 
 ### Step 3: Open UI
@@ -21,11 +24,15 @@ http://localhost:8000/agents_fleet.html
 
 ## 📊 What You'll See
 
-- **Total Services**: All Docker services across compose files
+- **🟢 Live Status**: Real-time running/stopped/exited container states
+- **📊 Change Summary**: Added/removed/modified services since last scan
+- **⚠️ Port Conflicts**: Duplicate port assignments (33 detected!)
+- **💻 Resource Metrics**: CPU/Memory usage with color-coding (if --resource-stats enabled)
+- **Total Services**: All Docker services across compose files (185 discovered)
 - **Port Mappings**: Host:Container port assignments
 - **Network Topology**: Service network memberships
-- **Restart Policies**: Auto-restart configuration
-- **Health Checks**: Configured health check commands
+- **Health Checks**: Container health status
+- **Historical Snapshots**: Last 10 scans archived automatically
 
 ## 🔍 Search & Filter
 
@@ -39,6 +46,21 @@ http://localhost:8000/agents_fleet.html
 ```bash
 python3 scripts/agent_scanner_compose.py \
   --compose-files docker-compose.yml docker-compose.prod.yml
+```
+
+### Disable Specific Features
+```bash
+# Without live Docker status
+python3 scripts/agent_scanner_compose.py --auto-discover --no-live-status
+
+# Without change tracking
+python3 scripts/agent_scanner_compose.py --auto-discover --no-track-changes
+```
+
+### Include Resource Metrics
+```bash
+# Add CPU/Memory stats (slower, only for running containers)
+python3 scripts/agent_scanner_compose.py --auto-discover --resource-stats
 ```
 
 ### Custom Output Directory
@@ -58,13 +80,15 @@ python3 scripts/agent_scanner_compose.py \
 
 - **JSON**: `19.opena20_dashboard_agent/artifacts/agent_fleet/agent_inventory.json`
 - **Markdown**: `19.opena20_dashboard_agent/artifacts/agent_fleet/agent_fleet_report.md`
+- **History**: `19.opena20_dashboard_agent/artifacts/agent_fleet/history/` (last 10 snapshots)
 
 ## 🔐 Security Note
 
 - Scanner sanitizes secrets (passwords, tokens, API keys)
-- Read-only operations only
-- No Docker daemon access required
+- Docker SDK optional (graceful degradation without it)
+- Read-only operations only (except for optional service controls)
+- Change tracking maintains audit trail
 
 ---
 
-**Questions?** See [README.md](README.md) for full documentation.
+**Questions?** See [README.md](19.opena20_dashboard_agent/artifacts/agent_fleet/README.md) for full documentation.

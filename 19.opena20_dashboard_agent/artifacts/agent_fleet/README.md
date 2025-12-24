@@ -9,6 +9,9 @@ The Agent Fleet Observatory provides comprehensive visibility into all Docker-Co
 ## Key Features
 
 ✅ **Live Docker Status** - Real-time container status (running/stopped/exited) via Docker daemon
+✅ **Historical Tracking** - Change detection with automated snapshots (added/removed/modified services)
+✅ **Port Conflict Detection** - Identifies duplicate host port assignments across services
+✅ **Resource Metrics** - CPU and Memory usage monitoring for running containers
 ✅ **Auto-Discovery** - Automatically finds all docker-compose files in repository
 ✅ **Port Mapping** - Visualizes all exposed ports and mappings
 ✅ **Health Monitoring** - Displays container health check status
@@ -34,18 +37,31 @@ Python-based Docker-Compose parser with **live Docker daemon integration** that 
 
 **Usage:**
 ```bash
-# Auto-discover all compose files with live status (default)
+# Standard scan with all features (recommended)
 python3 scripts/agent_scanner_compose.py --auto-discover
 
-# Disable live status
-python3 scripts/agent_scanner_compose.py --auto-discover --no-live-status
+# Include CPU/Memory stats (slower, only for running containers)
+python3 scripts/agent_scanner_compose.py --auto-discover --resource-stats
 
-# Scan specific files
+# Disable specific features
+python3 scripts/agent_scanner_compose.py --auto-discover --no-live-status
+python3 scripts/agent_scanner_compose.py --auto-discover --no-track-changes
+
+# Scan specific files only
 python3 scripts/agent_scanner_compose.py --compose-files docker-compose.yml docker-compose.prod.yml
 
 # Custom output directory
 python3 scripts/agent_scanner_compose.py --auto-discover --output-dir /custom/path
 ```
+
+**CLI Flags:**
+- `--auto-discover`: Recursively find all docker-compose files
+- `--live-status` / `--no-live-status`: Docker container status (default: enabled)
+- `--track-changes` / `--no-track-changes`: Historical change tracking (default: enabled)
+- `--detect-conflicts`: Port conflict detection (default: enabled)
+- `--resource-stats`: Include CPU/Memory metrics (default: disabled, slower)
+- `--compose-files`: Specify exact compose file paths
+- `--output-dir`: Custom output directory
 
 **Requirements:**
 - Python 3.12+
@@ -54,9 +70,12 @@ python3 scripts/agent_scanner_compose.py --auto-discover --output-dir /custom/pa
 
 ### 2. **Web UI** (`agents_fleet.html`)
 Modern, responsive dashboard featuring:
-- **Real-time Statistics**: Total services, compose files, exposed ports, last scan time
+- **Real-time Statistics**: Total services, running/stopped counts, port conflicts, last scan
+- **🆕 Change Summary Banner**: Visual indicators for added/removed/modified services
 - **🆕 Live Status Badges**: 🟢 Running, 🔴 Stopped, ⚪ Not Found indicators
-- **🆕 Container Details**: Shows container IDs and health status
+- **🆕 Container Details**: Container IDs and health status display
+- **🆕 Resource Metrics**: Color-coded CPU/Memory usage (🟢 <50%, 🟡 50-80%, 🔴 >80%)
+- **🆕 Port Conflict Alert**: Highlights services with duplicate port assignments
 - **Interactive Search**: Filter by service name, image, port, or compose file
 - **Policy Filtering**: Filter by restart policy (always, unless-stopped, on-failure, no)
 - **Service Cards**: Detailed view of each service including ports, networks, dependencies
@@ -74,8 +93,17 @@ Complete machine-readable inventory in JSON format:
 ```json
 {
   "scanned_at": "2025-12-24T10:04:31Z",
-  "total_services": 27,
+  "total_services": 185,
   "compose_files_scanned": ["..."],
+  "changes": {
+    "added": [],
+    "removed": [],
+    "modified": [],
+    "unchanged": ["service1", "service2", "..."]
+  },
+  "port_conflicts": {
+    "9090": ["prometheus", "prometheus", "..."]
+  },
   "services": [
     {
       "service_name": "opena20-dashboard",
@@ -137,27 +165,35 @@ Future enhancements:
 - [ ] Real-time Docker daemon integration (live status)
 - [ ] Historical tracking (service changes over time)
 - [ ] Port conflict detection
-- [ ] Resource usage metrics (CPU/Memory)
-- [ ] Health check testing
-- [ ] One-click service start/stop controls
-- [ ] Export to CSV/Excel
+- [x] **Live Docker Status Integration** - Real-time container status ✅
+- [x] **Historical Change Tracking** - Detect service changes over time ✅
+- [x] **Port Conflict Detection** - Identify duplicate port assignments ✅
+- [x] **Resource Usage Metrics** - CPU/Memory monitoring ✅
+- [ ] **One-Click Service Controls** - Start/stop/restart buttons (In Progress 🚧)
+- [ ] **Health Check Testing** - Execute container health checks
+- [ ] **Export Functionality** - CSV/Excel export
+- [ ] **Alert System** - Notifications for critical changes
+- [ ] **Multi-Environment Support** - Dev/Staging/Prod separation
 
 ## Architecture
 
 ```
 Repository Root
 ├── scripts/
-│   └── agent_scanner_compose.py     # Scanner
+│   └── agent_scanner_compose.py     # Scanner (read-only, Docker SDK)
 ├── 19.opena20_dashboard_agent/
 │   ├── artifacts/
 │   │   └── agent_fleet/              # Output directory
-│   │       ├── agent_inventory.json  # JSON output
-│   │       └── agent_fleet_report.md # Markdown report
+│   │       ├── agent_inventory.json  # JSON output (with changes/conflicts)
+│   │       ├── agent_fleet_report.md # Markdown report (with summaries)
+│   │       └── history/              # Historical snapshots (max 10)
+│   │           ├── inventory_20251224_102843.json
+│   │           └── ...
 │   └── webpanel/
 │       ├── agents_fleet.html         # UI entry point
-│       ├── css/agents_fleet.css      # Styling
-│       ├── js/agents_fleet.js        # Frontend logic
-│       └── app.py                    # FastAPI backend (artifacts mount)
+│       ├── css/agents_fleet.css      # Styling (with resource colors)
+│       ├── js/agents_fleet.js        # Frontend logic (changes display)
+│       └── app.py                    # FastAPI backend
 ```
 
 ## Troubleshooting
@@ -188,5 +224,9 @@ When adding features:
 ---
 
 **Last Updated**: 2025-12-24
-**Version**: 1.0.0
+**Version**: 2.0.0
 **Status**: Production Ready ✅
+**Features Completed**: 4/9
+**Repository**: jokicdanijel/Gesamtprojekt-start
+**Services Tracked**: 185 services across 47 compose files
+**Port Conflicts Detected**: 33 conflicts identified
