@@ -16,3 +16,19 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+
+  opena5:
+    build:
+      context: ./4.opena5_vscode
+    image: opena5-vscode:local
+    ports:
+      - "12350:12350"
+    environment:
+      - PORT=12350
+      - BEARER_TOKEN
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:12350/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

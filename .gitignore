@@ -108,3 +108,42 @@ __pycache__/
 
 # Local venvs
 .venv-otel/
+
+# ============================================================================
+# CI/CD ARTIFACTS (Generated - don't commit)
+# ============================================================================
+
+artifacts/preflight_report.json
+artifacts/baseline_validation.json
+artifacts/agent_inventory.json
+artifacts/entitlements_validation.json
+artifacts/release_audit.json
+artifacts/*_gate_report.json
+artifacts/*_gate_report.md
+artifacts/scans/
+artifacts/eval_results_*.json
+
+# ============================================================================
+# LOGS & TEMPORARY CHECKPOINTS
+# ============================================================================
+
+logs/
+*.log
+*.nohup
+.git/merge_checkpoint
+
+# ============================================================================
+# GIT MERGE / ROLLBACK STATE (temporary)
+# ============================================================================
+
+MERGE_HEAD
+MERGE_MSG
+MERGE_STATE
+
+# ============================================================================
+# DEPLOYMENT & SECRETS
+# ============================================================================
+
+bin/merge_finalize.sh.backup
+.deployment/
+.rollback/
