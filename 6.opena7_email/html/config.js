@@ -2,7 +2,7 @@
 
 const CONFIG = {
     // API Configuration
-    BASE_URL: 'http://127.0.0.1:12352',
+    BASE_URL: 'http://localhost:12352',
     API_VERSION: '6.0.0',
 
     // Authentication

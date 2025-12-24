@@ -10,7 +10,7 @@ from pathlib import Path
 
 import uvicorn
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 
 from .config import config
 from .mail_client import MailClient, get_mail_client
@@ -26,6 +26,7 @@ log_dir.mkdir(parents=True, exist_ok=True)
 
 # FastAPI app
 app = FastAPI(title="opena7 — Mail Agent", version="1.0.0", description="Automated email communication and processing")
+
 
 # Global state
 mail_client: MailClient | None = None
@@ -439,6 +440,40 @@ async def http_exception_handler(request: Request, exc: HTTPException):
     """Custom HTTP exception handler"""
     logger.error(f"HTTP {exc.status_code}: {exc.detail}")
     return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail, "path": str(request.url)})
+
+
+# ============================================================================
+# HTML/STATIC ROUTES (must come before API root)
+# ============================================================================
+
+
+@app.get("/index.html", response_class=FileResponse)
+async def get_index():
+    """Serve index.html"""
+    return FileResponse("html/index.html", media_type="text/html")
+
+
+@app.get("/dashboard.html", response_class=FileResponse)
+async def get_dashboard():
+    """Serve dashboard.html"""
+    return FileResponse("html/dashboard.html", media_type="text/html")
+
+
+@app.get("/css/{path}", response_class=FileResponse)
+async def get_css(path: str):
+    """Serve CSS files"""
+    return FileResponse(f"html/{path}")
+
+
+@app.get("/js/{path}", response_class=FileResponse)
+async def get_js(path: str):
+    """Serve JS files"""
+    return FileResponse(f"html/{path}")
+
+
+# ============================================================================
+# HTML/STATIC ROUTES (must come before API root)
+# ============================================================================
 
 
 @app.exception_handler(Exception)
