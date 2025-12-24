@@ -1,52 +1,4 @@
 #!/usr/bin/env python3
-import json
-from pathlib import Path
-import datetime
-
-BASE = Path.cwd()
-BASELINE = BASE / 'system_baseline.yaml'
-INV = BASE / 'artifacts' / 'agent_inventory.json'
-BUILD = BASE / 'build'
-BUILD.mkdir(parents=True, exist_ok=True)
-
-def main():
-    # Minimal placeholder entitlements generation based on baseline
-    try:
-        with open(BASELINE, 'r', encoding='utf-8') as f:
-            baseline = f.read()
-    except Exception:
-        baseline = ''
-    # Parse agent ids from baseline (very naive)
-    agent_ids = []
-    for line in baseline.splitlines():
-        if line.strip().startswith('- id:'):
-            agent_ids.append(line.split(':',1)[1].strip())
-
-    ent = {
-        'plans': {
-            'basic': {'limits': '4 clickable agents'},
-            'pro': {'limits': '8 clickable agents'},
-            'premium': {'limits': '12 clickable agents'},
-            'ultimum': {'limits': '17 clickable agents'}
-        },
-        'agents': {}
-    }
-    for aid in agent_ids:
-        ent['agents'][aid] = {
-            'visible': True,
-            'clickable': True if aid in {'opena3','opena4','opena7','opena11'} else False,
-            'limits': None,
-            'gates': {}
-        }
-    # write
-    out = ent
-    BUILD_ENT = BUILD / 'entitlements.json'
-    with open(BUILD_ENT, 'w', encoding='utf-8') as f:
-        json.dump(out, f, indent=2)
-    print(json.dumps(out, indent=2))
-
-if __name__ == '__main__':
-    main()#!/usr/bin/env python3
 """
 ELION Hyper-Dashboard - Entitlements Builder
 Generates machine-readable plan entitlements from baseline + inventory
@@ -67,53 +19,53 @@ RULES:
 """
 
 import json
-import yaml
-import hashlib
-from pathlib import Path
-from typing import Dict, List, Any, Set
-from datetime import datetime
 import sys
+from datetime import datetime
+from pathlib import Path
+from typing import Any, ClassVar
+
+import yaml
 
 
 class EntitlementsBuilder:
     """Builds plan entitlements from baseline and inventory"""
 
     # HARD-CODED CONSTRAINTS (as per requirements)
-    CORE_AGENTS = ['opena1', 'opena2']  # Always visible, never gated
-    SYSTEM_AGENTS = ['opena20', 'opena21']  # Visible but not clickable
+    CORE_AGENTS: ClassVar[list[str]] = ["opena1", "opena2"]  # Always visible, never gated
+    SYSTEM_AGENTS: ClassVar[list[str]] = ["opena20", "opena21"]  # Visible but not clickable
 
     # Plan hierarchy (lower → higher)
-    PLAN_HIERARCHY = ['basic', 'pro', 'premium', 'ultimum']
+    PLAN_HIERARCHY: ClassVar[list[str]] = ["basic", "pro", "premium", "ultimum"]
 
     # Basic plan MUST have exactly these 4 clickable agents
-    BASIC_CLICKABLE = ['opena3', 'opena4', 'opena7', 'opena11']
+    BASIC_CLICKABLE: ClassVar[list[str]] = ["opena3", "opena4", "opena7", "opena11"]
 
     # Default limits per plan
-    DEFAULT_LIMITS = {
-        'basic': {
-            'workflows_per_agent': 4,
-            'logs_access': 'read-only',
-            'max_concurrent_tasks': 2,
-            'api_calls_per_day': 1000
+    DEFAULT_LIMITS: ClassVar[dict[str, dict[str, Any]]] = {
+        "basic": {
+            "workflows_per_agent": 4,
+            "logs_access": "read-only",
+            "max_concurrent_tasks": 2,
+            "api_calls_per_day": 1000,
         },
-        'pro': {
-            'workflows_per_agent': 10,
-            'logs_access': 'read-write',
-            'max_concurrent_tasks': 5,
-            'api_calls_per_day': 5000
+        "pro": {
+            "workflows_per_agent": 10,
+            "logs_access": "read-write",
+            "max_concurrent_tasks": 5,
+            "api_calls_per_day": 5000,
         },
-        'premium': {
-            'workflows_per_agent': 25,
-            'logs_access': 'read-write',
-            'max_concurrent_tasks': 10,
-            'api_calls_per_day': 20000
+        "premium": {
+            "workflows_per_agent": 25,
+            "logs_access": "read-write",
+            "max_concurrent_tasks": 10,
+            "api_calls_per_day": 20000,
         },
-        'ultimum': {
-            'workflows_per_agent': -1,  # unlimited
-            'logs_access': 'full',
-            'max_concurrent_tasks': -1,  # unlimited
-            'api_calls_per_day': -1  # unlimited
-        }
+        "ultimum": {
+            "workflows_per_agent": -1,  # unlimited
+            "logs_access": "full",
+            "max_concurrent_tasks": -1,  # unlimited
+            "api_calls_per_day": -1,  # unlimited
+        },
     }
 
     def __init__(self, project_root: Path):
@@ -132,7 +84,7 @@ class EntitlementsBuilder:
 
         # Load baseline
         if self.baseline_path.exists():
-            with open(self.baseline_path, 'r') as f:
+            with open(self.baseline_path) as f:
                 self.baseline = yaml.safe_load(f)
             print(f"  ✅ Loaded baseline: {self.baseline_path}")
         else:
@@ -143,7 +95,7 @@ class EntitlementsBuilder:
 
         # Load inventory
         if self.inventory_path.exists():
-            with open(self.inventory_path, 'r') as f:
+            with open(self.inventory_path) as f:
                 self.inventory = json.load(f)
             print(f"  ✅ Loaded inventory: {self.inventory_path}")
         else:
@@ -151,104 +103,135 @@ class EntitlementsBuilder:
             print("  📝 Creating minimal inventory from baseline...")
             self.inventory = self._create_minimal_inventory()
 
-    def _create_default_baseline(self) -> Dict:
+    def _create_default_baseline(self) -> dict:
         """Create default baseline structure"""
         return {
-            'version': '1.0.0',
-            'generated_at': datetime.now().isoformat(),
-            'agents': {
-                f'opena{i}': {
-                    'id': f'opena{i}',
-                    'name': f'Agent {i}',
-                    'port': 12343 + i,
-                    'role': 'service',
-                    'visibility': 'public' if i not in [20, 21] else 'system'
+            "version": "1.0.0",
+            "generated_at": datetime.now().isoformat(),
+            "agents": {
+                f"opena{i}": {
+                    "id": f"opena{i}",
+                    "name": f"Agent {i}",
+                    "port": 12343 + i,
+                    "role": "service",
+                    "visibility": "public" if i not in [20, 21] else "system",
                 }
                 for i in range(1, 22)
             },
-            'plans': {
-                'basic': {
-                    'name': 'Basic Plan',
-                    'description': 'Communication essentials',
-                    'agents': self.BASIC_CLICKABLE
+            "plans": {
+                "basic": {
+                    "name": "Basic Plan",
+                    "description": "Communication essentials",
+                    "agents": self.BASIC_CLICKABLE,
                 },
-                'pro': {
-                    'name': 'Pro Plan',
-                    'description': 'Business tools + CRM',
-                    'agents': ['opena3', 'opena4', 'opena7', 'opena8', 'opena11', 'opena12', 'opena14', 'opena18']
+                "pro": {
+                    "name": "Pro Plan",
+                    "description": "Business tools + CRM",
+                    "agents": ["opena3", "opena4", "opena7", "opena8", "opena11", "opena12", "opena14", "opena18"],
                 },
-                'premium': {
-                    'name': 'Premium Plan',
-                    'description': 'Automation + E-Commerce',
-                    'agents': ['opena3', 'opena4', 'opena6', 'opena7', 'opena8', 'opena9', 'opena11', 'opena12', 'opena14', 'opena15', 'opena16', 'opena18']
+                "premium": {
+                    "name": "Premium Plan",
+                    "description": "Automation + E-Commerce",
+                    "agents": [
+                        "opena3",
+                        "opena4",
+                        "opena6",
+                        "opena7",
+                        "opena8",
+                        "opena9",
+                        "opena11",
+                        "opena12",
+                        "opena14",
+                        "opena15",
+                        "opena16",
+                        "opena18",
+                    ],
                 },
-                'ultimum': {
-                    'name': 'Ultimum Plan',
-                    'description': 'Enterprise features + Finance',
-                    'agents': ['opena3', 'opena4', 'opena5', 'opena6', 'opena7', 'opena8', 'opena9', 'opena10', 'opena11', 'opena12', 'opena13', 'opena14', 'opena15', 'opena16', 'opena17', 'opena18', 'opena19']
-                }
-            }
+                "ultimum": {
+                    "name": "Ultimum Plan",
+                    "description": "Enterprise features + Finance",
+                    "agents": [
+                        "opena3",
+                        "opena4",
+                        "opena5",
+                        "opena6",
+                        "opena7",
+                        "opena8",
+                        "opena9",
+                        "opena10",
+                        "opena11",
+                        "opena12",
+                        "opena13",
+                        "opena14",
+                        "opena15",
+                        "opena16",
+                        "opena17",
+                        "opena18",
+                        "opena19",
+                    ],
+                },
+            },
         }
 
     def _save_baseline(self):
         """Save default baseline"""
         self.baseline_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(self.baseline_path, 'w') as f:
+        with open(self.baseline_path, "w") as f:
             yaml.dump(self.baseline, f, default_flow_style=False, sort_keys=False)
         print(f"  ✅ Created baseline: {self.baseline_path}")
 
-    def _create_minimal_inventory(self) -> Dict:
+    def _create_minimal_inventory(self) -> dict:
         """Create minimal inventory from baseline"""
         agents = {}
-        for agent_id, agent_data in self.baseline.get('agents', {}).items():
+        for agent_id, agent_data in self.baseline.get("agents", {}).items():
             agents[agent_id] = {
-                'name': agent_data.get('name', agent_id),
-                'port': agent_data.get('port', 0),
-                'role': agent_data.get('role', 'service'),
-                'visibility': agent_data.get('visibility', 'public'),
-                'description': agent_data.get('description', ''),
-                'has_main': False,
-                'all_endpoints': []
+                "name": agent_data.get("name", agent_id),
+                "port": agent_data.get("port", 0),
+                "role": agent_data.get("role", "service"),
+                "visibility": agent_data.get("visibility", "public"),
+                "description": agent_data.get("description", ""),
+                "has_main": False,
+                "all_endpoints": [],
             }
 
         return {
-            'version': '1.0.0',
-            'generated_at': datetime.now().isoformat(),
-            'baseline_hash': 'minimal',
-            'agent_count': len(agents),
-            'agents': agents
+            "version": "1.0.0",
+            "generated_at": datetime.now().isoformat(),
+            "baseline_hash": "minimal",
+            "agent_count": len(agents),
+            "agents": agents,
         }
 
     def build(self):
         """Build entitlements for all plans"""
         print("\n🏗️  Building entitlements...")
 
-        all_agent_ids = set(self.inventory.get('agents', {}).keys())
+        all_agent_ids = set(self.inventory.get("agents", {}).keys())
         print(f"  📊 Total agents: {len(all_agent_ids)}")
 
         # Build entitlements for each plan
-            for plan in sorted(self.PLAN_HIERARCHY):
+        for plan in sorted(self.PLAN_HIERARCHY):
             print(f"\n  🔐 Building plan: {plan.upper()}")
             self.entitlements[plan] = self._build_plan_entitlements(plan, all_agent_ids)
 
         # Add metadata
-        self.entitlements['_metadata'] = {
-            'version': '1.0.0',
-            'generated_at': datetime.now().isoformat(),
-            'baseline_hash': self.inventory.get('baseline_hash', 'unknown'),
-            'total_agents': len(all_agent_ids),
-            'plans': self.PLAN_HIERARCHY,
-            'rules': {
-                'core_agents': self.CORE_AGENTS,
-                'system_agents': self.SYSTEM_AGENTS,
-                'basic_clickable': self.BASIC_CLICKABLE,
-                'inclusion_order': 'ultimum ⊇ premium ⊇ pro ⊇ basic'
-            }
+        self.entitlements["_metadata"] = {
+            "version": "1.0.0",
+            "generated_at": datetime.now().isoformat(),
+            "baseline_hash": self.inventory.get("baseline_hash", "unknown"),
+            "total_agents": len(all_agent_ids),
+            "plans": self.PLAN_HIERARCHY,
+            "rules": {
+                "core_agents": self.CORE_AGENTS,
+                "system_agents": self.SYSTEM_AGENTS,
+                "basic_clickable": self.BASIC_CLICKABLE,
+                "inclusion_order": "ultimum ⊇ premium ⊇ pro ⊇ basic",
+            },
         }
 
         print(f"\n  ✅ Built entitlements for {len(self.PLAN_HIERARCHY)} plans")
 
-    def _build_plan_entitlements(self, plan: str, all_agent_ids: Set[str]) -> Dict:
+    def _build_plan_entitlements(self, plan: str, all_agent_ids: set[str]) -> dict:
         """Build entitlements for a specific plan"""
 
         # Get clickable agents for this plan
@@ -258,41 +241,38 @@ class EntitlementsBuilder:
         limits = self.DEFAULT_LIMITS.get(plan, {})
 
         plan_data = {
-            'name': self.baseline.get('plans', {}).get(plan, {}).get('name', plan.title()),
-            'description': self.baseline.get('plans', {}).get(plan, {}).get('description', ''),
-            'limits': limits,
-            'agents': {}
+            "name": self.baseline.get("plans", {}).get(plan, {}).get("name", plan.title()),
+            "description": self.baseline.get("plans", {}).get(plan, {}).get("description", ""),
+            "limits": limits,
+            "agents": {},
         }
 
         # Build agent-specific entitlements
         for agent_id in sorted(all_agent_ids):
-            agent_entitlements = self._build_agent_entitlements(
-                agent_id,
-                plan,
-                clickable_agents
-            )
-            plan_data['agents'][agent_id] = agent_entitlements
+            agent_entitlements = self._build_agent_entitlements(agent_id, plan, clickable_agents)
+            plan_data["agents"][agent_id] = agent_entitlements
 
         # Count clickable agents (excluding core and system)
         clickable_count = sum(
-            1 for agent_id, data in plan_data['agents'].items()
-            if data['clickable'] and agent_id not in self.CORE_AGENTS + self.SYSTEM_AGENTS
+            1
+            for agent_id, data in plan_data["agents"].items()
+            if data["clickable"] and agent_id not in self.CORE_AGENTS + self.SYSTEM_AGENTS
         )
 
-        plan_data['clickable_count'] = clickable_count
+        plan_data["clickable_count"] = clickable_count
         print(f"    📊 {clickable_count} clickable agents (excluding core/system)")
 
         return plan_data
 
-    def _get_clickable_agents_for_plan(self, plan: str) -> Set[str]:
+    def _get_clickable_agents_for_plan(self, plan: str) -> set[str]:
         """Get clickable agents for a plan (with inclusion)"""
 
         clickable = set()
 
         # Add agents for this plan and all lower plans (inclusion)
         plan_index = self.PLAN_HIERARCHY.index(plan)
-        for lower_plan in self.PLAN_HIERARCHY[:plan_index + 1]:
-            plan_agents = self.baseline.get('plans', {}).get(lower_plan, {}).get('agents', [])
+        for lower_plan in self.PLAN_HIERARCHY[: plan_index + 1]:
+            plan_agents = self.baseline.get("plans", {}).get(lower_plan, {}).get("agents", [])
             clickable.update(plan_agents)
 
         # Core agents are NEVER clickable (always visible but locked)
@@ -303,11 +283,11 @@ class EntitlementsBuilder:
 
         return clickable
 
-    def _build_agent_entitlements(self, agent_id: str, plan: str, clickable_agents: Set[str]) -> Dict:
+    def _build_agent_entitlements(self, agent_id: str, plan: str, clickable_agents: set[str]) -> dict:
         """Build entitlements for a specific agent in a plan"""
 
-        agent_data = self.inventory.get('agents', {}).get(agent_id, {})
-        visibility = agent_data.get('visibility', 'public')
+        agent_data = self.inventory.get("agents", {}).get(agent_id, {})
+        visibility = agent_data.get("visibility", "public")
 
         # Core agents: always visible, never clickable
         if agent_id in self.CORE_AGENTS:
@@ -322,7 +302,7 @@ class EntitlementsBuilder:
             gate_reason = "System agent - monitoring/orchestration only"
 
         # System visibility agents: never visible
-        elif visibility == 'system':
+        elif visibility == "system":
             visible = False
             clickable = False
             gate_reason = "System-internal agent"
@@ -334,22 +314,19 @@ class EntitlementsBuilder:
             gate_reason = None if clickable else f"Not available in {plan} plan"
 
         entitlements = {
-            'visible': visible,
-            'clickable': clickable,
-            'gates': {
-                'plan_required': plan if clickable else self._get_required_plan(agent_id),
-                'reason': gate_reason
-            },
-            'limits': {}
+            "visible": visible,
+            "clickable": clickable,
+            "gates": {"plan_required": plan if clickable else self._get_required_plan(agent_id), "reason": gate_reason},
+            "limits": {},
         }
 
         # Add plan-specific limits if clickable
         if clickable:
             plan_limits = self.DEFAULT_LIMITS.get(plan, {})
-            entitlements['limits'] = {
-                'workflows': plan_limits.get('workflows_per_agent', 0),
-                'logs_access': plan_limits.get('logs_access', 'none'),
-                'max_concurrent_tasks': plan_limits.get('max_concurrent_tasks', 0)
+            entitlements["limits"] = {
+                "workflows": plan_limits.get("workflows_per_agent", 0),
+                "logs_access": plan_limits.get("logs_access", "none"),
+                "max_concurrent_tasks": plan_limits.get("max_concurrent_tasks", 0),
             }
 
         return entitlements
@@ -357,10 +334,10 @@ class EntitlementsBuilder:
     def _get_required_plan(self, agent_id: str) -> str:
         """Get the minimum plan required for an agent"""
         for plan in self.PLAN_HIERARCHY:
-            plan_agents = self.baseline.get('plans', {}).get(plan, {}).get('agents', [])
+            plan_agents = self.baseline.get("plans", {}).get(plan, {}).get("agents", [])
             if agent_id in plan_agents:
                 return plan
-        return 'ultimum'  # Default to highest plan
+        return "ultimum"  # Default to highest plan
 
     def save(self):
         """Save entitlements to file"""
@@ -368,7 +345,7 @@ class EntitlementsBuilder:
 
         self.output_path.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(self.output_path, 'w') as f:
+        with open(self.output_path, "w") as f:
             json.dump(self.entitlements, f, indent=2, sort_keys=False)
 
         file_size = self.output_path.stat().st_size
@@ -378,16 +355,17 @@ class EntitlementsBuilder:
         """Verify that Basic plan has EXACTLY 4 clickable agents"""
         print("\n🔍 Verifying Basic plan constraint...")
 
-        basic_plan = self.entitlements.get('basic', {})
-        clickable_count = basic_plan.get('clickable_count', 0)
+        basic_plan = self.entitlements.get("basic", {})
+        clickable_count = basic_plan.get("clickable_count", 0)
 
         if clickable_count == 4:
-            print(f"  ✅ Basic plan has exactly 4 clickable agents")
+            print("  ✅ Basic plan has exactly 4 clickable agents")
 
             # List them
             clickable = [
-                agent_id for agent_id, data in basic_plan.get('agents', {}).items()
-                if data['clickable'] and agent_id not in self.CORE_AGENTS + self.SYSTEM_AGENTS
+                agent_id
+                for agent_id, data in basic_plan.get("agents", {}).items()
+                if data["clickable"] and agent_id not in self.CORE_AGENTS + self.SYSTEM_AGENTS
             ]
             print(f"  📋 Clickable: {', '.join(sorted(clickable))}")
 
@@ -420,6 +398,7 @@ class EntitlementsBuilder:
         except Exception as e:
             print(f"\n❌ ERROR: {e}")
             import traceback
+
             traceback.print_exc()
             return False
 
