@@ -169,3 +169,21 @@ bin/merge_finalize.sh.backup
 *.swp
 *.swo
 *~
+
+# ============================================================================
+# BUILD ARTIFACTS & DIST (NEW - 2025-12-24)
+# ============================================================================
+
+# Distribution & build artifacts
+dist/
+build/
+*.egg-info/
+__pycache__/
+*.pyc
+*.pyo
+*.o
+
+# Prevent nested dist/ directories from rsync errors
+*/dist/dist/*
+*/dist/*/dist/*
+*/dist/*/dist/*/dist/*
