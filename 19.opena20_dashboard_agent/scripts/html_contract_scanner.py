@@ -27,7 +27,7 @@ from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime
 from html.parser import HTMLParser
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 # ============================================================================
 # HTML PARSER
@@ -153,8 +153,8 @@ class HTMLScanResult:
 class HTMLContractScanner:
     """Scans HTML files for contract compliance"""
 
-    REQUIRED_ERROR_PAGES = ["403.html", "404.html", "500.html"]
-    AUTH_PAGES = ["login.html", "register.html", "forgot-password.html"]
+    REQUIRED_ERROR_PAGES: ClassVar[list[str]] = ["403.html", "404.html", "500.html"]
+    AUTH_PAGES: ClassVar[list[str]] = ["login.html", "register.html", "forgot-password.html"]
 
     def __init__(self, html_dir: Path):
         self.html_dir = html_dir

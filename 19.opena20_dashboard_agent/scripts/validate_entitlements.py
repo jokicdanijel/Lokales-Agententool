@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ELION Hyper-Dashboard – Entitlements Validator
+ELION Hyper-Dashboard - Entitlements Validator
 ===============================================
 Validates entitlements.json for policy compliance and consistency.
 
@@ -19,6 +19,7 @@ EXIT CODES:
 import json
 import sys
 from pathlib import Path
+from typing import ClassVar
 
 import yaml
 
@@ -26,10 +27,10 @@ import yaml
 class EntitlementsValidator:
     """Validates entitlement rules and policies."""
 
-    PLAN_HIERARCHY = ["basic", "pro", "premium", "ultimum"]
-    CORE_AGENTS = ["opena1", "opena2"]
-    SYSTEM_AGENTS = ["opena20", "opena21"]
-    BASIC_CLICKABLE_COUNT = 4
+    PLAN_HIERARCHY: ClassVar[list[str]] = ["basic", "pro", "premium", "ultimum"]
+    CORE_AGENTS: ClassVar[list[str]] = ["opena1", "opena2"]
+    SYSTEM_AGENTS: ClassVar[list[str]] = ["opena20", "opena21"]
+    BASIC_CLICKABLE_COUNT: ClassVar[int] = 4
 
     def __init__(self, baseline_path: str, entitlements_path: str):
         self.baseline_path = Path(baseline_path)

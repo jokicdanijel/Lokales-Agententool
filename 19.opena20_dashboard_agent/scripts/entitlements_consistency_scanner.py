@@ -25,6 +25,7 @@ import sys
 from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import ClassVar
 
 # ============================================================================
 # VIOLATION PATTERNS
@@ -90,9 +91,9 @@ class ScanResult:
 class EntitlementsConsistencyScanner:
     """Scanner for entitlements consistency"""
 
-    SCAN_FOLDERS = ["webpanel"]
-    SCAN_EXTENSIONS = {".html", ".js", ".ts"}
-    EXCLUDED_PATTERNS = {
+    SCAN_FOLDERS: ClassVar[list[str]] = ["webpanel"]
+    SCAN_EXTENSIONS: ClassVar[set[str]] = {".html", ".js", ".ts"}
+    EXCLUDED_PATTERNS: ClassVar[set[str]] = {
         "node_modules/",
         ".venv/",
         "__pycache__/",

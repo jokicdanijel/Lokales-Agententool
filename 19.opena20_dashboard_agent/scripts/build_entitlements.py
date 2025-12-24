@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ELION Hyper-Dashboard – Entitlements Builder
+ELION Hyper-Dashboard - Entitlements Builder
 ==============================================
 Generates machine-consumable entitlement gates from system baseline + agent inventory.
 
@@ -19,7 +19,7 @@ import json
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 import yaml
 
@@ -28,16 +28,16 @@ class EntitlementsBuilder:
     """Compiles entitlements from baseline and inventory."""
 
     # Plan hierarchy (lower plans included in higher)
-    PLAN_HIERARCHY = ["basic", "pro", "premium", "ultimum"]
+    PLAN_HIERARCHY: ClassVar[list[str]] = ["basic", "pro", "premium", "ultimum"]
 
     # Core agents: always visible and clickable
-    CORE_AGENTS = ["opena1", "opena2"]
+    CORE_AGENTS: ClassVar[list[str]] = ["opena1", "opena2"]
 
     # System agents: visible but not necessarily clickable
-    SYSTEM_AGENTS = ["opena20", "opena21"]
+    SYSTEM_AGENTS: ClassVar[list[str]] = ["opena20", "opena21"]
 
     # Basic plan specific clickable agents
-    BASIC_CLICKABLE = ["opena3", "opena4", "opena7", "opena11"]
+    BASIC_CLICKABLE: ClassVar[list[str]] = ["opena3", "opena4", "opena7", "opena11"]
 
     def __init__(self, baseline_path: str, inventory_path: str):
         self.baseline_path = Path(baseline_path)

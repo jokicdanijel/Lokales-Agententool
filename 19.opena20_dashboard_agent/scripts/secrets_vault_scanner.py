@@ -34,6 +34,7 @@ import sys
 from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import ClassVar
 
 # ============================================================================
 # SECRET PATTERNS
@@ -115,8 +116,8 @@ class ScanResult:
 class SecretsVaultScanner:
     """Scanner for secrets and vault policy compliance"""
 
-    VAULT_FOLDER = "10.opena11_unlock"
-    EXCLUDED_PATTERNS = {
+    VAULT_FOLDER: ClassVar[str] = "10.opena11_unlock"
+    EXCLUDED_PATTERNS: ClassVar[set[str]] = {
         ".venv/",
         "node_modules/",
         "__pycache__/",
@@ -126,7 +127,7 @@ class SecretsVaultScanner:
         "build/",
         "dist/",
     }
-    SCAN_EXTENSIONS = {".py", ".js", ".ts", ".json", ".yaml", ".yml", ".env", ".txt", ".md"}
+    SCAN_EXTENSIONS: ClassVar[set[str]] = {".py", ".js", ".ts", ".json", ".yaml", ".yml", ".env", ".txt", ".md"}
 
     def __init__(self, project_root: Path):
         self.root = project_root

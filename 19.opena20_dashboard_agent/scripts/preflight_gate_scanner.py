@@ -307,7 +307,7 @@ class PreflightGateScanner:
                 md_lines.append("")
 
                 for v in violations:
-                    severity_icon = {"critical": "🔴", "error": "⚠️", "warning": "ℹ️"}
+                    severity_icon = {"critical": "🔴", "error": "⚠️", "warning": "i"}
                     icon = severity_icon.get(v.severity, "•")
                     md_lines.append(f"- {icon} {v.violation}")
                     if v.context:
