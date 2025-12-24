@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📧 opena7 — Email Agent</title>
+    <link rel="stylesheet" href="./static/app.css">
+    <script defer src="./static/app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">📧</div>
+            <h1>opena7 — Email Agent</h1>
+            <p class="subtitle">AI-powered email automation | Port 12352</p>
+        </header>
+
+        <!-- Connection Panel -->
+        <section class="panel">
+            <h2>🔌 Connection</h2>
+            <div class="form-group">
+                <label>Bearer Token (optional):</label>
+                <input id="token_input" type="password" placeholder="Paste token or leave empty">
+                <button id="btn_connect">Connect & Check Health</button>
+            </div>
+            <div id="connection_status" class="status">Disconnected</div>
+        </section>
+
+        <!-- Health & Status -->
+        <section class="panel">
+            <h2>📊 System Status</h2>
+            <div class="button-group">
+                <button id="btn_health">Get Health</button>
+                <button id="btn_status">Get Status</button>
+                <button id="btn_logs">Get Logs (last 50)</button>
+            </div>
+            <div class="output">
+                <h4>Health Output:</h4>
+                <pre id="out_health">{"status": "waiting for action..."}</pre>
+            </div>
+            <div class="output">
+                <h4>Status Output:</h4>
+                <pre id="out_status">{"status": "waiting for action..."}</pre>
+            </div>
+            <div class="output">
+                <h4>Logs:</h4>
+                <pre id="out_logs" style="max-height: 150px; overflow-y: auto;">Logs will appear here...</pre>
+            </div>
+        </section>
+
+        <!-- Mail Commands -->
+        <section class="panel">
+            <h2>📬 Email Commands</h2>
+            <div class="form-group">
+                <label>Command JSON:</label>
+                <textarea id="cmd_json" rows="5" placeholder='{"action": "fetch", "limit": 10}'>{"action": "fetch", "limit": 10}</textarea>
+                <button id="btn_execute">Execute Command</button>
+            </div>
+            <div class="output">
+                <h4>Command Output:</h4>
+                <pre id="out_cmd">{}</pre>
+            </div>
+        </section>
+
+        <!-- AI Actions -->
+        <section class="panel">
+            <h2>🤖 AI Actions</h2>
+            <div class="form-group">
+                <label>AI Action JSON:</label>
+                <textarea id="ai_json" rows="5" placeholder='{"action": "generate_reply", "text": "Hello..."}'>{"action": "generate_reply", "text": "Hello, how are you?"}</textarea>
+                <button id="btn_ai_execute">Execute AI Action</button>
+            </div>
+            <div class="output">
+                <h4>AI Output:</h4>
+                <pre id="out_ai">{}</pre>
+            </div>
+        </section>
+
+        <!-- Workflows -->
+        <section class="panel">
+            <h2>⚙️ Workflows</h2>
+            <div class="form-group">
+                <label>Workflow JSON:</label>
+                <textarea id="workflow_json" rows="5" placeholder='{"workflow_id": "process_inbox", "params": {}}'> {"workflow_id": "process_inbox", "params": {}}</textarea>
+                <button id="btn_workflow_run">Run Workflow</button>
+            </div>
+            <div class="output">
+                <h4>Workflow Output:</h4>
+                <pre id="out_workflow">{}</pre>
+            </div>
+        </section>
+
+        <!-- Agent Info -->
+        <section class="panel">
+            <h2>ℹ️ Agent Info</h2>
+            <button id="btn_info">Get Agent Info (Dashboard Integration)</button>
+            <div class="output">
+                <h4>Agent Info:</h4>
+                <pre id="out_info">{}</pre>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>opena7 v6.0.0 | FastAPI + Uvicorn | IMAP/SMTP Integration</p>
+        </footer>
+    </div>
+</body>
+</html>

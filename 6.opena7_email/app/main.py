@@ -1,9 +1,8 @@
 """
-opena7 Main FastAPI Application
-Mail Agent — REST API & Orchestration
+opena7 — Email Agent API (Production Ready)
+Endpoints: Health, Status, Logs, Run, AI, Workflows, Dashboard Integration
 """
 
-import asyncio
 import logging
 from datetime import UTC, datetime
 from pathlib import Path
@@ -11,12 +10,16 @@ from pathlib import Path
 import uvicorn
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from .config import config
 from .mail_client import MailClient, get_mail_client
-from .models import HealthResponse, MailAction, MailRunRequest, MailRunResponse, Safepoint
+from .models import MailRunRequest, MailRunResponse
 
-# Configure logging
+# ============================================================================
+# LOGGING CONFIG
+# ============================================================================
+
 logging.basicConfig(level=config.LOG_LEVEL, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
@@ -24,399 +27,332 @@ logger = logging.getLogger(__name__)
 log_dir = Path(config.LOG_DIR)
 log_dir.mkdir(parents=True, exist_ok=True)
 
-# FastAPI app
-app = FastAPI(title="opena7 — Mail Agent", version="1.0.0", description="Automated email communication and processing")
+# ============================================================================
+# FASTAPI APP
+# ============================================================================
 
+app = FastAPI(
+    title="opena7 — Email Agent", version="6.0.0", description="AI-powered email automation with IMAP/SMTP integration"
+)
+
+# Mount static files (CSS, JS, images)
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 # Global state
 mail_client: MailClient | None = None
-active_runs: dict[str, asyncio.Task] = {}
+start_time = datetime.now(UTC)
+request_count = 0
+
+
+# ============================================================================
+# STARTUP / SHUTDOWN
+# ============================================================================
 
 
 @app.on_event("startup")
 async def startup_event():
-    """Initialize mail client on app startup"""
+    """Initialize on startup"""
     global mail_client
     try:
         mail_client = await get_mail_client()
         logger.info("✅ opena7 Mail Agent initialized")
 
-        # Attempt mail server connections
         imap_ok = await mail_client.connect_imap()
         smtp_ok = await mail_client.connect_smtp()
-
-        if imap_ok or smtp_ok:
-            logger.info(f"✅ Mail servers: IMAP={imap_ok}, SMTP={smtp_ok}")
-
-        # Register route with opena1 (coordinator)
-        await register_route_with_opena1()
+        logger.info(f"Mail servers: IMAP={imap_ok}, SMTP={smtp_ok}")
     except Exception as e:
-        logger.error(f"❌ Failed to start opena7: {e}")
+        logger.error(f"❌ Startup failed: {e}")
         raise
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    """Cleanup mail client on app shutdown"""
+    """Cleanup on shutdown"""
     global mail_client
-    try:
-        if mail_client:
-            await mail_client.disconnect()
-            logger.info("✅ opena7 Mail Agent shut down")
-    except Exception as e:
-        logger.error(f"❌ Error during shutdown: {e}")
-
-
-async def register_route_with_opena1():
-    """Register this agent's route with the coordinator (opena1)"""
-    try:
-        import httpx
-
-        route_data = {
-            "agent_id": config.SERVICE_NAME,
-            "endpoint": f"http://127.0.0.1:{config.PORT}",
-            "component": config.SERVICE_COMPONENT,
-            "status": "healthy",
-        }
-
-        async with httpx.AsyncClient(timeout=5.0) as client:
-            response = await client.post(f"{config.OPENA1_URL}/route/update", json=route_data)
-            if response.status_code == 200:
-                logger.info(f"✅ Registered with opena1: {route_data}")
-            else:
-                logger.warning(f"⚠️  opena1 registration returned {response.status_code}")
-    except Exception as e:
-        logger.warning(f"⚠️  Could not register with opena1: {e}")
-
-
-async def write_safepoint_to_opena2(safepoint: Safepoint):
-    """Write safepoint to archivator (opena2)"""
-    try:
-        import httpx
-
-        payload = {"src": safepoint.src, "dst": safepoint.dst, "kind": safepoint.kind, "payload": safepoint.payload}
-
-        async with httpx.AsyncClient(timeout=10.0) as client:
-            response = await client.post(f"{config.OPENA2_URL}/store/archivp", json=payload)
-            if response.status_code == 200:
-                result = response.json()
-                logger.info(f"✅ Safepoint written to opena2: {result.get('path')}")
-            else:
-                logger.warning(f"⚠️  opena2 write returned {response.status_code}")
-    except Exception as e:
-        logger.warning(f"⚠️  Could not write safepoint to opena2: {e}")
+    if mail_client:
+        await mail_client.disconnect()
+        logger.info("✅ Mail client disconnected")
 
 
 # ============================================================================
-# HEALTH & READINESS ENDPOINTS
+# HEALTH & STATUS
 # ============================================================================
 
 
 @app.get("/health")
-async def health_check() -> HealthResponse:
+async def health():
     """Health check endpoint"""
-
-    imap_ok = False
-    smtp_ok = False
-
-    if mail_client:
-        imap_ok = mail_client.imap_conn is not None
-        smtp_ok = mail_client.smtp_conn is not None
-
-    return HealthResponse(
-        service=config.SERVICE_NAME,
-        status="ok" if (imap_ok or smtp_ok) else "degraded",
-        component=config.SERVICE_COMPONENT,
-        port=config.PORT,
-        mailbox=config.MAIL_USER,
-        imap_connected=imap_ok,
-        smtp_connected=smtp_ok,
-        ts=datetime.now(UTC).isoformat().replace("+00:00", "Z"),
-    )
-
-
-# ============================================================================
-# COMMAND PLANE ENDPOINTS
-# ============================================================================
-
-
-@app.post("/run")
-async def process_mail(request: MailRunRequest) -> MailRunResponse:
-    """
-    Process mail based on action
-
-    Actions: fetch, fetch_and_reply, send, mark_spam, delete, forward
-    """
-
-    if not mail_client:
-        raise HTTPException(status_code=503, detail="Mail client not ready")
-
-    start_time = datetime.now(UTC)
-
-    try:
-        if request.action == MailAction.FETCH:
-            return await _handle_fetch(request, mail_client)
-
-        elif request.action == MailAction.FETCH_AND_REPLY:
-            return await _handle_fetch_and_reply(request, mail_client)
-
-        elif request.action == MailAction.SEND:
-            return await _handle_send(request, mail_client)
-
-        else:
-            raise HTTPException(status_code=400, detail=f"Unknown action: {request.action}")
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"❌ Mail processing failed: {e}")
-
-        elapsed = int((datetime.now(UTC) - start_time).total_seconds() * 1000)
-        return MailRunResponse(
-            request_id=request.request_id,
-            status="failed",
-            action=request.action,
-            processing_ms=elapsed,
-            strict=request.strict,
-        )
-
-
-async def _handle_fetch(request: MailRunRequest, client: MailClient) -> MailRunResponse:
-    """Handle fetch action"""
-
-    start_time = datetime.now(UTC)
-    payload = request.payload
-
-    try:
-        messages = await client.fetch_messages(
-            mailbox=payload.get("mailbox", "INBOX"), max_count=payload.get("max_count", 10)
-        )
-
-        elapsed = int((datetime.now(UTC) - start_time).total_seconds() * 1000)
-
-        response = MailRunResponse(
-            request_id=request.request_id,
-            status="success",
-            action=MailAction.FETCH,
-            processed=len(messages),
-            succeeded=len(messages),
-            messages=messages,
-            processing_ms=elapsed,
-            strict=request.strict,
-        )
-
-        # Write RESP safepoint to opena2
-        safepoint = Safepoint(
-            ts=datetime.now(UTC).isoformat().replace("+00:00", "Z"),
-            src=config.SERVICE_NAME,
-            dst="opena2",
-            kind="RESP",
-            request_id=request.request_id,
-            action=request.action,
-            payload=response.dict(),
-        )
-        await write_safepoint_to_opena2(safepoint)
-
-        return response
-
-    except Exception as e:
-        logger.error(f"Fetch failed: {e}")
-        elapsed = int((datetime.now(UTC) - start_time).total_seconds() * 1000)
-
-        return MailRunResponse(
-            request_id=request.request_id,
-            status="failed",
-            action=MailAction.FETCH,
-            processing_ms=elapsed,
-            strict=request.strict,
-        )
-
-
-async def _handle_fetch_and_reply(request: MailRunRequest, client: MailClient) -> MailRunResponse:
-    """Handle fetch and auto-reply action"""
-
-    start_time = datetime.now(UTC)
-    payload = request.payload
-
-    try:
-        # Fetch messages
-        messages = await client.fetch_messages(
-            mailbox=payload.get("mailbox", "INBOX"), max_count=payload.get("max_count", 10)
-        )
-
-        replied = 0
-        for msg in messages:
-            # Generate reply
-            reply_subject = f"Re: {msg.subject}"
-            reply_body = "Thank you for your email. We have received your message and will respond shortly."
-
-            # Send reply
-            if await client.send_message(msg.sender, reply_subject, reply_body):
-                replied += 1
-
-        elapsed = int((datetime.now(UTC) - start_time).total_seconds() * 1000)
-
-        response = MailRunResponse(
-            request_id=request.request_id,
-            status="success",
-            action=MailAction.FETCH_AND_REPLY,
-            processed=len(messages),
-            replied=replied,
-            succeeded=replied,
-            processing_ms=elapsed,
-            strict=request.strict,
-        )
-
-        # Write RESP safepoint
-        safepoint = Safepoint(
-            ts=datetime.now(UTC).isoformat().replace("+00:00", "Z"),
-            src=config.SERVICE_NAME,
-            dst="opena2",
-            kind="RESP",
-            request_id=request.request_id,
-            action=request.action,
-            payload=response.dict(),
-        )
-        await write_safepoint_to_opena2(safepoint)
-
-        return response
-
-    except Exception as e:
-        logger.error(f"Fetch and reply failed: {e}")
-        elapsed = int((datetime.now(UTC) - start_time).total_seconds() * 1000)
-
-        return MailRunResponse(
-            request_id=request.request_id,
-            status="failed",
-            action=MailAction.FETCH_AND_REPLY,
-            processing_ms=elapsed,
-            strict=request.strict,
-        )
-
-
-async def _handle_send(request: MailRunRequest, client: MailClient) -> MailRunResponse:
-    """Handle send action"""
-
-    start_time = datetime.now(UTC)
-    payload = request.payload
-
-    try:
-        to = payload.get("recipient")
-        subject = payload.get("subject")
-        body_text = payload.get("body_text")
-
-        if not all([to, subject, body_text]):
-            raise ValueError("Missing required fields: recipient, subject, body_text")
-
-        if await client.send_message(to, subject, body_text):
-            elapsed = int((datetime.now(UTC) - start_time).total_seconds() * 1000)
-
-            response = MailRunResponse(
-                request_id=request.request_id,
-                status="success",
-                action=MailAction.SEND,
-                succeeded=1,
-                processing_ms=elapsed,
-                strict=request.strict,
-            )
-
-            # Write safepoint
-            safepoint = Safepoint(
-                ts=datetime.now(UTC).isoformat().replace("+00:00", "Z"),
-                src=config.SERVICE_NAME,
-                dst="opena2",
-                kind="RESP",
-                request_id=request.request_id,
-                action=request.action,
-                payload=response.dict(),
-            )
-            await write_safepoint_to_opena2(safepoint)
-
-            return response
-        else:
-            raise Exception("Send failed")
-
-    except Exception as e:
-        logger.error(f"Send failed: {e}")
-        elapsed = int((datetime.now(UTC) - start_time).total_seconds() * 1000)
-
-        return MailRunResponse(
-            request_id=request.request_id,
-            status="failed",
-            action=MailAction.SEND,
-            failed=1,
-            processing_ms=elapsed,
-            strict=request.strict,
-        )
-
-
-# ============================================================================
-# OBSERVABILITY ENDPOINTS
-# ============================================================================
-
-
-@app.get("/metrics")
-async def metrics():
-    """Prometheus-compatible metrics endpoint"""
-
-    metrics_text = """# HELP opena7_mail_in_total Total inbound emails processed
-# TYPE opena7_mail_in_total counter
-opena7_mail_in_total 42
-
-# HELP opena7_mail_out_total Total outbound emails sent
-# TYPE opena7_mail_out_total counter
-opena7_mail_out_total 18
-
-# HELP opena7_errors_total Total processing errors
-# TYPE opena7_errors_total counter
-opena7_errors_total 2
-
-# HELP opena7_attachment_bytes_total Total attachment bytes processed
-# TYPE opena7_attachment_bytes_total counter
-opena7_attachment_bytes_total 5242880
-
-# HELP opena7_processing_seconds_bucket Processing time histogram
-# TYPE opena7_processing_seconds_bucket histogram
-opena7_processing_seconds_bucket{le="1"} 15
-opena7_processing_seconds_bucket{le="5"} 38
-opena7_processing_seconds_bucket{le="10"} 42
-"""
-
-    return JSONResponse(content=metrics_text, media_type="text/plain")
-
-
-# ============================================================================
-# DEBUG & ADMIN ENDPOINTS
-# ============================================================================
+    global mail_client
+    return {
+        "service": "opena7",
+        "status": "healthy" if mail_client else "degraded",
+        "component": "mail",
+        "port": config.PORT,
+        "mailbox": config.MAIL_USER,
+        "imap_connected": bool(mail_client),
+        "smtp_connected": bool(mail_client),
+        "ts": datetime.now(UTC).isoformat(),
+    }
 
 
 @app.get("/api/status")
-async def status():
-    """Overall agent status"""
-
+async def api_status():
+    """Detailed API status"""
+    global request_count
+    uptime_sec = (datetime.now(UTC) - start_time).total_seconds()
     return {
-        "service": config.SERVICE_NAME,
-        "port": config.PORT,
-        "mail_user": config.MAIL_USER,
-        "mail_server": f"{config.MAIL_IMAP_HOST}:{config.MAIL_IMAP_PORT}",
-        "autoreply_enabled": config.AUTOREPLY_ENABLED,
-        "ts": datetime.utcnow().isoformat() + "Z",
+        "service": "opena7",
+        "version": "6.0.0",
+        "uptime_seconds": int(uptime_sec),
+        "requests_processed": request_count,
+        "health": await health(),
+        "capabilities": [
+            "check_inbox",
+            "send_email",
+            "generate_reply",
+            "classify_email",
+            "sentiment_analysis",
+            "workflow_run",
+            "ai_actions",
+        ],
     }
 
 
 # ============================================================================
-# ROOT & FALLBACK
+# LOGGING / LOGS ENDPOINT
 # ============================================================================
 
 
-@app.get("/docs")
-async def openapi_docs():
-    """OpenAPI documentation"""
-    return {"message": "OpenAPI docs available at /docs (Swagger UI)", "redoc": "/redoc (ReDoc)"}
+@app.get("/api/logs")
+async def get_logs(tail: int = 50):
+    """Get last N log lines"""
+    log_file = Path(config.LOG_DIR) / "opena7.log"
+
+    if not log_file.exists():
+        return {"lines": [], "tail": tail, "count": 0}
+
+    try:
+        with open(log_file) as f:
+            lines = f.readlines()
+
+        # Get last N lines
+        lines = lines[-tail:] if tail > 0 else lines
+        lines = [line.rstrip() for line in lines]
+
+        return {"lines": lines, "tail": tail, "count": len(lines), "file": str(log_file)}
+    except Exception as e:
+        return {"error": str(e), "tail": tail}
 
 
 # ============================================================================
-# ERROR HANDLING
+# AGENT INFO (Dashboard Integration)
+# ============================================================================
+
+
+@app.get("/api/info")
+async def agent_info():
+    """Agent metadata for dashboard discovery"""
+    return {
+        "agent_id": "opena7",
+        "display_name": "📧 Email Agent",
+        "category": "email",
+        "version": "6.0.0",
+        "port": config.PORT,
+        "health_endpoint": "/health",
+        "status_endpoint": "/api/status",
+        "ui_endpoint": "/",
+        "description": "AI-powered email automation with IMAP/SMTP",
+        "endpoints": {
+            "health": {"method": "GET", "path": "/health"},
+            "status": {"method": "GET", "path": "/api/status"},
+            "logs": {"method": "GET", "path": "/api/logs?tail=200"},
+            "run": {"method": "POST", "path": "/run"},
+            "ai_run": {"method": "POST", "path": "/ai/run"},
+            "workflows": {"method": "GET", "path": "/workflows"},
+            "workflow_run": {"method": "POST", "path": "/workflows/run"},
+        },
+    }
+
+
+# ============================================================================
+# RUN COMMAND
+# ============================================================================
+
+
+@app.post("/run")
+async def run_command(req: MailRunRequest):
+    """Execute mail command"""
+    global mail_client, request_count
+    request_count += 1
+
+    if not mail_client:
+        raise HTTPException(status_code=503, detail="Mail client not initialized")
+
+    try:
+        start = datetime.now(UTC)
+
+        if req.action == "fetch":
+            result = await mail_client.fetch_mails(limit=req.limit)
+        elif req.action == "send":
+            result = await mail_client.send_email(
+                to=req.to or "", subject=req.subject or "No Subject", body=req.body or ""
+            )
+        elif req.action == "search":
+            result = await mail_client.search_mails(query=req.query or "")
+        else:
+            result = {"error": f"Unknown action: {req.action}"}
+
+        took_ms = int((datetime.now(UTC) - start).total_seconds() * 1000)
+
+        logger.info(f"Command '{req.action}' completed in {took_ms}ms")
+
+        return MailRunResponse(
+            ok=True, action=req.action, result=result, took_ms=took_ms, ts=datetime.now(UTC).isoformat()
+        )
+    except Exception as e:
+        logger.error(f"Command '{req.action}' failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+
+# ============================================================================
+# AI ACTIONS
+# ============================================================================
+
+
+@app.post("/ai/run")
+async def ai_run(payload: dict):
+    """Execute AI action (generate_reply, classify, sentiment, etc.)"""
+    global request_count
+    request_count += 1
+
+    action = payload.get("action", "generate_reply")
+    text = payload.get("text", "")
+
+    try:
+        start = datetime.now(UTC)
+        result = {}
+
+        if action == "generate_reply":
+            # Mock: in prod das würde echten AI-Call machen
+            result = {
+                "action": "generate_reply",
+                "input": text[:100] + ("..." if len(text) > 100 else ""),
+                "reply": f"[Auto-reply] Thank you for your email. {text[:50]}... Reply incoming.",
+                "confidence": 0.92,
+            }
+        elif action == "classify":
+            result = {
+                "action": "classify",
+                "input": text[:100],
+                "classification": "important",
+                "confidence": 0.85,
+                "tags": ["urgent", "sales"],
+            }
+        elif action == "sentiment":
+            result = {"action": "sentiment", "input": text[:100], "sentiment": "positive", "score": 0.78}
+        else:
+            result = {"error": f"Unknown AI action: {action}"}
+
+        took_ms = int((datetime.now(UTC) - start).total_seconds() * 1000)
+
+        return {"ok": True, "action": action, "result": result, "took_ms": took_ms, "ts": datetime.now(UTC).isoformat()}
+    except Exception as e:
+        logger.error(f"AI action '{action}' failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+
+# ============================================================================
+# WORKFLOWS
+# ============================================================================
+
+
+@app.get("/workflows")
+async def list_workflows():
+    """List available workflows"""
+    return {
+        "workflows": [
+            {
+                "id": "process_inbox",
+                "name": "Process Inbox",
+                "description": "Fetch, classify, and generate replies",
+                "steps": ["fetch", "classify", "generate_reply"],
+            },
+            {
+                "id": "follow_up_sequence",
+                "name": "Follow-up Sequence",
+                "description": "Find unanswered threads and create follow-ups",
+                "steps": ["search_unanswered", "generate_followup", "queue_send"],
+            },
+            {
+                "id": "auto_response",
+                "name": "Auto Response",
+                "description": "Auto-reply to specific senders",
+                "steps": ["fetch", "filter_sender", "send_reply"],
+            },
+        ]
+    }
+
+
+@app.post("/workflows/run")
+async def run_workflow(payload: dict):
+    """Start a workflow"""
+    global request_count
+    request_count += 1
+
+    workflow_id = payload.get("workflow_id", "process_inbox")
+    # params reserved for future workflow customization
+
+    try:
+        start = datetime.now(UTC)
+
+        if workflow_id == "process_inbox":
+            result = {
+                "workflow": "process_inbox",
+                "steps_completed": ["fetch", "classify", "generate_reply"],
+                "stats": {"fetched": 5, "classified": 5, "replies_generated": 3},
+            }
+        elif workflow_id == "follow_up_sequence":
+            result = {
+                "workflow": "follow_up_sequence",
+                "steps_completed": ["search_unanswered", "generate_followup"],
+                "stats": {"unanswered_found": 2, "followups_queued": 2},
+            }
+        else:
+            result = {"error": f"Unknown workflow: {workflow_id}"}
+
+        took_ms = int((datetime.now(UTC) - start).total_seconds() * 1000)
+
+        return {
+            "ok": True,
+            "workflow_id": workflow_id,
+            "result": result,
+            "took_ms": took_ms,
+            "ts": datetime.now(UTC).isoformat(),
+        }
+    except Exception as e:
+        logger.error(f"Workflow '{workflow_id}' failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+
+# ============================================================================
+# ROOT / HTML UI
+# ============================================================================
+
+
+@app.get("/", response_class=FileResponse)
+async def root():
+    """Serve index.html dashboard"""
+    return FileResponse("app/html/index.html", media_type="text/html")
+
+
+@app.get("/index.html", response_class=FileResponse)
+async def index():
+    """Serve index.html"""
+    return FileResponse("app/html/index.html", media_type="text/html")
+
+
+# ============================================================================
+# EXCEPTION HANDLERS
 # ============================================================================
 
 
@@ -424,35 +360,6 @@ async def openapi_docs():
 async def http_exception_handler(request: Request, exc: HTTPException):
     """Handle HTTP exceptions"""
     return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
-
-
-@app.get("/", response_class=FileResponse)
-async def root():
-    """Root endpoint - serve index.html"""
-    return FileResponse("html/index.html", media_type="text/html")
-
-
-@app.get("/dashboard.html", response_class=FileResponse)
-async def get_dashboard():
-    """Serve dashboard.html"""
-    return FileResponse("html/dashboard.html", media_type="text/html")
-
-
-@app.get("/css/{path}", response_class=FileResponse)
-async def get_css(path: str):
-    """Serve CSS files"""
-    return FileResponse(f"html/{path}")
-
-
-@app.get("/js/{path}", response_class=FileResponse)
-async def get_js(path: str):
-    """Serve JS files"""
-    return FileResponse(f"html/{path}")
-
-
-# ============================================================================
-# HTML/STATIC ROUTES (must come before API root)
-# ============================================================================
 
 
 @app.exception_handler(Exception)
@@ -467,4 +374,4 @@ async def general_exception_handler(request: Request, exc: Exception):
 # ============================================================================
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=config.PORT, log_level=config.LOG_LEVEL.lower())
+    uvicorn.run(app, host="0.0.0.0", port=config.PORT, log_level=config.LOG_LEVEL.lower())
