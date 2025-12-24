@@ -147,3 +147,25 @@ MERGE_STATE
 bin/merge_finalize.sh.backup
 .deployment/
 .rollback/
+
+# ============================================================================
+# ENVIRONMENT & SECRETS (NEW - 2025-12-24)
+# ============================================================================
+
+# Environment files with real secrets
+.env
+.env.bak*
+.env.backup*
+.env.original*
+.env.corrupted*
+
+# Save files that might contain secrets
+.env.save
+*.save
+*.bak
+*.orig
+
+# IDE backups
+*.swp
+*.swo
+*~

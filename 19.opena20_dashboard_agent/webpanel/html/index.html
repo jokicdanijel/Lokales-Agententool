@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>opena20 Dashboard — Agent Fleet Observatory</title>
+    <link rel="stylesheet" href="/html/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Agent Fleet Observatory</h1>
+            <p class="subtitle">Real-time Monitoring & Management</p>
+        </header>
+
+        <!-- Statistics Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <span class="stat-label">Services</span>
+                <span class="stat-value" id="total-services">—</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Docker Compose Files</span>
+                <span class="stat-value" id="total-compose-files">—</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Ports Exposed</span>
+                <span class="stat-value" id="total-ports">—</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Port Conflicts</span>
+                <span class="stat-value" id="port-conflicts">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Last Scan</span>
+                <span class="stat-value" id="last-scan" style="font-size: 0.9rem;">—</span>
+            </div>
+        </div>
+
+        <!-- Changes Banner -->
+        <div class="changes-banner" id="changes-banner" style="display: none;">
+            <div class="change-item" id="added-services"></div>
+            <div class="change-item" id="removed-services"></div>
+            <div class="change-item" id="modified-services"></div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <input
+                type="text"
+                id="search-input"
+                placeholder="🔍 Search services, images, ports..."
+            >
+            <select id="filter-restart">
+                <option value="">All Restart Policies</option>
+                <option value="always">always</option>
+                <option value="unless-stopped">unless-stopped</option>
+                <option value="on-failure">on-failure</option>
+                <option value="no">no</option>
+            </select>
+            <button id="refresh-btn">🔄 Refresh</button>
+        </div>
+
+        <!-- Fleet Grid -->
+        <div class="fleet-grid" id="fleet-grid"></div>
+
+        <!-- Error Message -->
+        <div id="error-message" class="error-message" style="display: none;">
+            ❌ Failed to load fleet data. Check console for details.
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/html/config.js"></script>
+    <script src="/html/agents_fleet.js"></script>
+</body>
+</html>

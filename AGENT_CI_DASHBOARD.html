@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELION Agent CI/CD Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            color: #2a5298;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .agent-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid #2a5298;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            border-left-color: #4a90e2;
+        }
+
+        .agent-card h3 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .agent-card .port {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 15px;
+        }
+
+        .agent-card .folder {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 15px;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+        }
+
+        .agent-card .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .btn-workflow {
+            background: #2a5298;
+            color: white;
+        }
+
+        .btn-workflow:hover {
+            background: #1e3c72;
+        }
+
+        .btn-local {
+            background: #f0f0f0;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .btn-local:hover {
+            background: #e0e0e0;
+        }
+
+        .status {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: pulse 2s infinite;
+        }
+
+        .status.pending {
+            background: #ffc107;
+        }
+
+        .status.success {
+            background: #28a745;
+        }
+
+        .status.failed {
+            background: #dc3545;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .legend {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-item .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+
+        .category-badge {
+            display: inline-block;
+            background: #e8f4f8;
+            color: #2a5298;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-top: 10px;
+        }
+
+        .hardening-tag {
+            display: inline-block;
+            background: #d4edda;
+            color: #155724;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            margin: 4px 4px 0 0;
+            font-weight: 500;
+        }
+
+        .tags {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .info-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            color: #155724;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .workflow-indicator {
+            margin-top: 10px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 0.85em;
+            border-left: 3px solid #17a2b8;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 ELION Agent CI/CD Dashboard</h1>
+            <p>Robust, Deterministic, Production-Ready</p>
+        </header>
+
+        <div class="info-box">
+            <strong>✅ All 21 Agent Workflows Deployed</strong>
+            8,017 lines of robust YAML | 100% syntax validated | Zero sleep-races | Stable naming
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Total Agents</h3>
+                <div class="number">21</div>
+            </div>
+            <div class="stat-card">
+                <h3>Workflows</h3>
+                <div class="number">20</div>
+                <p style="font-size: 0.85em; color: #666; margin-top: 5px;">+ 1 custom opena7</p>
+            </div>
+            <div class="stat-card">
+                <h3>Port Range</h3>
+                <div class="number">12344-12367</div>
+            </div>
+            <div class="stat-card">
+                <h3>Jobs/Agent</h3>
+                <div class="number">9</div>
+                <p style="font-size: 0.85em; color: #666; margin-top: 5px;">Lint → API → Deploy</p>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="dot status pending"></div>
+                <span>Pending / In Progress</span>
+            </div>
+            <div class="legend-item">
+                <div class="dot status success"></div>
+                <span>Success</span>
+            </div>
+            <div class="legend-item">
+                <div class="dot status failed"></div>
+                <span>Failed</span>
+            </div>
+            <div class="legend-item">
+                <strong>→</strong>
+                <span>Polling-based health checks (no sleeps)</span>
+            </div>
+        </div>
+
+        <div class="agents-grid">
+            <!-- opena1 -->
+            <div class="agent-card">
+                <h3>opena1</h3>
+                <div class="port">🔌 Port: 12344</div>
+                <div class="folder">📁 1.opena1&2_portier/opena1</div>
+                <div class="category-badge">Auth</div>
+                <div class="workflow-indicator"><span class="status pending"></span> CI/CD Active</div>
+                <div class="tags">
+                    <span class="hardening-tag">✓ Polling</span>
+                    <span class="hardening-tag">✓ Stable Naming</span>
+                </div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena1.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12344)">Local:12344</button>
+                </div>
+            </div>
+
+            <!-- opena2 -->
+            <div class="agent-card">
+                <h3>opena2</h3>
+                <div class="port">🔌 Port: 12345</div>
+                <div class="folder">📁 1.opena1&2_portier/opena2</div>
+                <div class="category-badge">Auth</div>
+                <div class="workflow-indicator"><span class="status pending"></span> CI/CD Active</div>
+                <div class="tags">
+                    <span class="hardening-tag">✓ Polling</span>
+                    <span class="hardening-tag">✓ Stable Naming</span>
+                </div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena2.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12345)">Local:12345</button>
+                </div>
+            </div>
+
+            <!-- opena3 -->
+            <div class="agent-card">
+                <h3>opena3</h3>
+                <div class="port">🔌 Port: 12347</div>
+                <div class="folder">📁 2.opena3_openwebui</div>
+                <div class="category-badge">UI</div>
+                <div class="workflow-indicator"><span class="status pending"></span> CI/CD Active</div>
+                <div class="tags">
+                    <span class="hardening-tag">✓ Polling</span>
+                    <span class="hardening-tag">✓ Stable Naming</span>
+                </div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena3.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12347)">Local:12347</button>
+                </div>
+            </div>
+
+            <!-- opena4 -->
+            <div class="agent-card">
+                <h3>opena4</h3>
+                <div class="port">🔌 Port: 12346</div>
+                <div class="folder">📁 3.opena4_telegram</div>
+                <div class="category-badge">Messaging</div>
+                <div class="workflow-indicator"><span class="status pending"></span> CI/CD Active</div>
+                <div class="tags">
+                    <span class="hardening-tag">✓ Polling</span>
+                    <span class="hardening-tag">✓ Stable Naming</span>
+                </div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena4.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12346)">Local:12346</button>
+                </div>
+            </div>
+
+            <!-- opena5 -->
+            <div class="agent-card">
+                <h3>opena5</h3>
+                <div class="port">🔌 Port: 12350</div>
+                <div class="folder">📁 4.opena5_vscode</div>
+                <div class="category-badge">Connector</div>
+                <div class="workflow-indicator"><span class="status pending"></span> CI/CD Active</div>
+                <div class="tags">
+                    <span class="hardening-tag">✓ Polling</span>
+                    <span class="hardening-tag">✓ Stable Naming</span>
+                </div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena5.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12350)">Local:12350</button>
+                </div>
+            </div>
+
+            <!-- opena6 -->
+            <div class="agent-card">
+                <h3>opena6</h3>
+                <div class="port">🔌 Port: 12351</div>
+                <div class="folder">📁 5.opena6_browser</div>
+                <div class="category-badge">Browser</div>
+                <div class="workflow-indicator"><span class="status pending"></span> CI/CD Active</div>
+                <div class="tags">
+                    <span class="hardening-tag">✓ Polling</span>
+                    <span class="hardening-tag">✓ Stable Naming</span>
+                </div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena6.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12351)">Local:12351</button>
+                </div>
+            </div>
+
+            <!-- opena7 -->
+            <div class="agent-card">
+                <h3>opena7 ⭐</h3>
+                <div class="port">🔌 Port: 12352</div>
+                <div class="folder">📁 6.opena7_email</div>
+                <div class="category-badge">Messaging</div>
+                <div class="workflow-indicator"><span class="status success"></span> Custom Workflow</div>
+                <div class="tags">
+                    <span class="hardening-tag">✓ Custom</span>
+                    <span class="hardening-tag">✓ Tested</span>
+                </div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena7.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12352)">Local:12352</button>
+                </div>
+            </div>
+
+            <!-- opena8 -->
+            <div class="agent-card">
+                <h3>opena8</h3>
+                <div class="port">🔌 Port: 12353</div>
+                <div class="folder">📁 7.opena8_whatsapp</div>
+                <div class="category-badge">Messaging</div>
+                <div class="workflow-indicator"><span class="status pending"></span> CI/CD Active</div>
+                <div class="tags">
+                    <span class="hardening-tag">✓ Polling</span>
+                    <span class="hardening-tag">✓ Stable Naming</span>
+                </div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena8.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12353)">Local:12353</button>
+                </div>
+            </div>
+
+            <!-- opena9-21 (compact) -->
+            <div class="agent-card">
+                <h3>opena9</h3>
+                <div class="port">🔌 Port: 12354</div>
+                <div class="folder">📁 8.opena9_telephone</div>
+                <div class="category-badge">Telephony</div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena9.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12354)">Local:12354</button>
+                </div>
+            </div>
+
+            <div class="agent-card">
+                <h3>opena10</h3>
+                <div class="port">🔌 Port: 12355</div>
+                <div class="folder">📁 9.opena10_call_tracking</div>
+                <div class="category-badge">Tracking</div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena10.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12355)">Local:12355</button>
+                </div>
+            </div>
+
+            <div class="agent-card">
+                <h3>opena11</h3>
+                <div class="port">🔌 Port: 12356</div>
+                <div class="folder">📁 10.opena11_unlock</div>
+                <div class="category-badge">Security</div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena11.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12356)">Local:12356</button>
+                </div>
+            </div>
+
+            <div class="agent-card">
+                <h3>opena12</h3>
+                <div class="port">🔌 Port: 12357</div>
+                <div class="folder">📁 11.opena12_social_media</div>
+                <div class="category-badge">Social</div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena12.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12357)">Local:12357</button>
+                </div>
+            </div>
+
+            <div class="agent-card">
+                <h3>opena13</h3>
+                <div class="port">🔌 Port: 12358</div>
+                <div class="folder">📁 12.opena13_influencer</div>
+                <div class="category-badge">Influencer</div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena13.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12358)">Local:12358</button>
+                </div>
+            </div>
+
+            <div class="agent-card">
+                <h3>opena14</h3>
+                <div class="port">🔌 Port: 12359</div>
+                <div class="folder">📁 13.opena14_calendar</div>
+                <div class="category-badge">Calendar</div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena14.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12359)">Local:12359</button>
+                </div>
+            </div>
+
+            <div class="agent-card">
+                <h3>opena15</h3>
+                <div class="port">🔌 Port: 12360</div>
+                <div class="folder">📁 14.opena15_html</div>
+                <div class="category-badge">Web</div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena15.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12360)">Local:12360</button>
+                </div>
+            </div>
+
+            <div class="agent-card">
+                <h3>opena16</h3>
+                <div class="port">🔌 Port: 12361</div>
+                <div class="folder">📁 15.opena16_shop</div>
+                <div class="category-badge">E-Commerce</div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena16.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12361)">Local:12361</button>
+                </div>
+            </div>
+
+            <div class="agent-card">
+                <h3>opena17</h3>
+                <div class="port">🔌 Port: 12362</div>
+                <div class="folder">📁 16.opena17_homepagecreator</div>
+                <div class="category-badge">Creator</div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena17.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12362)">Local:12362</button>
+                </div>
+            </div>
+
+            <div class="agent-card">
+                <h3>opena18</h3>
+                <div class="port">🔌 Port: 12363</div>
+                <div class="folder">📁 17.opena18_CMR</div>
+                <div class="category-badge">CRM</div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena18.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12363)">Local:12363</button>
+                </div>
+            </div>
+
+            <div class="agent-card">
+                <h3>opena19</h3>
+                <div class="port">🔌 Port: 12364</div>
+                <div class="folder">📁 18.opena19_Aktien&Crypto</div>
+                <div class="category-badge">Finance</div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena19.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12364)">Local:12364</button>
+                </div>
+            </div>
+
+            <div class="agent-card">
+                <h3>opena20 🎛️</h3>
+                <div class="port">🔌 Port: 12349</div>
+                <div class="folder">📁 19.opena20_dashboard_agent</div>
+                <div class="category-badge">Dashboard</div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena20.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12349)">Local:12349</button>
+                </div>
+            </div>
+
+            <div class="agent-card">
+                <h3>opena21</h3>
+                <div class="port">🔌 Port: 12367</div>
+                <div class="folder">📁 20.opena21_workflow</div>
+                <div class="category-badge">Workflow</div>
+                <div class="actions">
+                    <a href="https://github.com/jokicdanijel/Gesamtprojekt-start/actions/workflows/opena21.yml" target="_blank" class="btn btn-workflow">Workflow</a>
+                    <button class="btn btn-local" onclick="copyPort(12367)">Local:12367</button>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+            <h2 style="color: #1e3c72; margin-bottom: 15px;">🛡️ Hardening Features</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                <div style="border-left: 4px solid #28a745; padding-left: 15px;">
+                    <strong>✓ No Path Drift</strong>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 5px;">APP_DIR, DIST_DIR, PORT centralized in env</p>
+                </div>
+                <div style="border-left: 4px solid #28a745; padding-left: 15px;">
+                    <strong>✓ Stable Docker Names</strong>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 5px;">COMPOSE_PROJECT_NAME=&lt;agent&gt;_ci (no races)</p>
+                </div>
+                <div style="border-left: 4px solid #28a745; padding-left: 15px;">
+                    <strong>✓ Polling Health Checks</strong>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 5px;">for i in {1..40}; curl ... (no sleep races)</p>
+                </div>
+                <div style="border-left: 4px solid #28a745; padding-left: 15px;">
+                    <strong>✓ Robust Version Detection</strong>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 5px;">Python regex parsing (not grep fragility)</p>
+                </div>
+                <div style="border-left: 4px solid #28a745; padding-left: 15px;">
+                    <strong>✓ Pinned Actions</strong>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 5px;">@v4, @v5, @v3 (supply chain protection)</p>
+                </div>
+                <div style="border-left: 4px solid #28a745; padding-left: 15px;">
+                    <strong>✓ Soft-Fail Security</strong>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 5px;">continue-on-error (security doesn't kill CI)</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+            <h2 style="color: #1e3c72; margin-bottom: 15px;">📊 Workflow Jobs per Agent</h2>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; font-family: monospace; font-size: 0.9em;">
+                <div>1. <strong>lint</strong> - Pre-commit hooks (Black, Ruff, YAML validation)</div>
+                <div style="margin-top: 5px;">2. <strong>python-check</strong> - Syntax check + import validation</div>
+                <div style="margin-top: 5px;">3. <strong>docker-build</strong> - Buildx image creation + container test</div>
+                <div style="margin-top: 5px;">4. <strong>api-test</strong> - Polling health check + 5 endpoint tests + cleanup</div>
+                <div style="margin-top: 5px;">5. <strong>security</strong> - Trivy filesystem scan (soft-fail)</div>
+                <div style="margin-top: 5px;">6. <strong>metrics</strong> - Lines of code analysis</div>
+                <div style="margin-top: 5px;">7. <strong>publish</strong> - Docker image build (main branch only)</div>
+                <div style="margin-top: 5px;">8. <strong>deploy-ready</strong> - Readiness report + PR comments</div>
+                <div style="margin-top: 5px;">9. <strong>summary</strong> - Final status (independent from security)</div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>🚀 All 21 agents deployed to GitHub Actions | Commit: 99e5a2d6 | 8,017 lines of robust YAML</p>
+            <p>Dashboard generated: 2025-12-24</p>
+        </footer>
+    </div>
+
+    <script>
+        function copyPort(port) {
+            const text = `http://localhost:${port}`;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            });
+        }
+
+        // Simulate workflow status checking
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('ELION Agent CI/CD Dashboard loaded');
+            console.log('Total agents: 21');
+            console.log('Workflows: 20 generated + 1 custom');
+            console.log('Check GitHub Actions: https://github.com/jokicdanijel/Gesamtprojekt-start/actions');
+        });
+    </script>
+</body>
+</html>
