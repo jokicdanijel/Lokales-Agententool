@@ -31,11 +31,11 @@ RUN chown -R appuser:appuser /app
 USER appuser
 
 # Expose port
-EXPOSE 12350
+EXPOSE 12352
 
 # Health check
 HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:12350/health || exit 1
+    CMD curl -f http://localhost:12352/health || exit 1
 
 # Start application
-CMD ["python3", "-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "12350"]
+CMD ["python3", "-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "12352"]

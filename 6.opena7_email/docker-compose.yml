@@ -7,9 +7,9 @@ services:
       dockerfile: Dockerfile
     container_name: opena7-mail
     ports:
-      - "127.0.0.1:12350:12350"
+      - "127.0.0.1:12352:12352"
     environment:
-      - OPENA7_PORT=12350
+      - OPENA7_PORT=12352
       - OPENA1_URL=http://opena1:12344
       - OPENA2_URL=http://opena2:12345
       - MAIL_IMAP_HOST=${MAIL_IMAP_HOST:-imap.provider.at}
@@ -28,7 +28,7 @@ services:
       - opena1
       - opena2
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:12350/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:12352/health"]
       interval: 10s
       timeout: 3s
       retries: 3
