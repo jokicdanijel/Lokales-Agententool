@@ -34,6 +34,9 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
+# tracing
+from scripts.tracing import init_tracing  # init tracing for scripts
+
 # -----------------------------
 # Models
 # -----------------------------
@@ -105,8 +108,7 @@ def run_cmd(cmd: list[str], cwd: Path, timeout: int = 60) -> tuple[int, str, str
     p = subprocess.run(
         cmd,
         cwd=str(cwd),
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
         timeout=timeout,
         text=True,
         encoding="utf-8",
@@ -410,7 +412,7 @@ def parse_index_refs(index_html: Path) -> dict[str, list[str]]:
 def dom_binding_check(js_text: str, html_text: str) -> list[str]:
     missing: list[str] = []
     ids = set(re.findall(r'getElementById\(\s*["\']([^"\']+)["\']\s*\)', js_text))
-    selectors = set([b for a, b in re.findall(r'querySelector(All)?\(\s*["\']([^"\']+)["\']\s*\)', js_text)])
+    selectors = {b for a, b in re.findall(r'querySelector(All)?\(\s*["\']([^"\']+)["\']\s*\)', js_text)}
     for i in sorted(ids):
         if re.search(rf'id\s*=\s*["\']{re.escape(i)}["\']', html_text, re.IGNORECASE) is None:
             missing.append(f"id:{i}")
@@ -666,7 +668,7 @@ def frontend_gate(
     rep.stats["assets"] = assets
 
     def to_url_path(refpath: str) -> str:
-        if refpath.startswith("http://") or refpath.startswith("https://"):
+        if refpath.startswith(("http://", "https://")):
             return refpath
         if refpath.startswith("/"):
             return refpath
@@ -889,9 +891,9 @@ def api_gate(
     else:
         endpoints = discover_endpoints(root)
         rep.stats["endpoints_discovered_count"] = len(endpoints)
-        rep.stats["endpoints_sample"] = sorted(list(endpoints))[:25]
+        rep.stats["endpoints_sample"] = sorted(endpoints)[:25]
         tests = {"tests": []}
-        # minimal safe defaults (won’t brick if endpoint name differs → warns on 404, but blocks if nothing returns 2xx)
+        # minimal safe defaults (won't brick if endpoint name differs -> warns on 404, but blocks if nothing returns 2xx)
         for hp in ["/health", "/status", "/api/status/all"]:
             tests["tests"].append(
                 {"name": f"GET {hp}", "method": "GET", "path": hp, "allowed_statuses": [200, 204, 401, 403, 404]}
@@ -1227,10 +1229,12 @@ def finalize(out_dir: Path, root: Path, cfg: dict, gates: dict[str, GateReport])
 
 
 if __name__ == "__main__":
+    # initialize tracing (no-op if opentelemetry packages are missing)
+    init_tracing("preflight_webpanel")
     try:
         raise SystemExit(main())
     except SystemExit:
         raise
     except Exception as e:
         print(f"[FATAL] {e}", file=sys.stderr)
-        raise SystemExit(2)
+        raise SystemExit(2) from e

@@ -23,6 +23,10 @@ from typing import Any, ClassVar
 
 import yaml
 
+# tracing
+# tracing
+from scripts.tracing import init_tracing  # init tracing for scripts
+
 
 class EntitlementsBuilder:
     """Compiles entitlements from baseline and inventory."""
@@ -226,6 +230,9 @@ def main():
     print(f"Inventory: {inventory_path}")
     print(f"Output:    {output_path}")
     print("=" * 60 + "\n")
+
+    # initialize tracing for this script (no-op if opentelemetry packages missing)
+    init_tracing("build_entitlements")
 
     # Build entitlements
     builder = EntitlementsBuilder(baseline_path=str(baseline_path), inventory_path=str(inventory_path))
