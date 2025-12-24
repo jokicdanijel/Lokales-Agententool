@@ -22,6 +22,15 @@ except ImportError:
     print("Error: PyYAML not installed. Run: pip install pyyaml", file=sys.stderr)
     sys.exit(1)
 
+try:
+    import docker
+
+    DOCKER_AVAILABLE = True
+except ImportError:
+    DOCKER_AVAILABLE = False
+    logger_temp = logging.getLogger(__name__)
+    logger_temp.warning("Docker SDK not installed. Live status will be unavailable. Install: pip install docker")
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -119,6 +128,52 @@ def extract_health_check(service_config: dict[str, Any]) -> dict[str, Any] | Non
     }
 
 
+def get_docker_live_status() -> dict[str, dict[str, Any]]:
+    """Get live status of Docker containers."""
+    if not DOCKER_AVAILABLE:
+        return {}
+
+    try:
+        client = docker.from_env()
+        containers = client.containers.list(all=True)
+
+        status_map = {}
+        for container in containers:
+            status_map[container.name] = {
+                "status": container.status,
+                "id": container.short_id,
+                "created": container.attrs.get("Created", ""),
+                "started_at": container.attrs.get("State", {}).get("StartedAt", ""),
+                "health": container.attrs.get("State", {}).get("Health", {}).get("Status", "none"),
+            }
+
+        logger.info(f"Retrieved live status for {len(status_map)} containers")
+        return status_map
+    except Exception as e:
+        logger.warning(f"Could not connect to Docker daemon: {e}")
+        return {}
+
+
+def enrich_with_live_status(
+    agents: list[dict[str, Any]], live_status: dict[str, dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Enrich agent data with live Docker status."""
+    for agent in agents:
+        container_name = agent.get("container_name", "")
+        if container_name in live_status:
+            agent["live_status"] = live_status[container_name]
+        else:
+            agent["live_status"] = {
+                "status": "not_found",
+                "id": None,
+                "created": None,
+                "started_at": None,
+                "health": "none",
+            }
+
+    return agents
+
+
 def scan_compose_file(compose_path: Path, project_name: str | None = None) -> list[dict[str, Any]]:
     """Scan a docker-compose file and extract all agent services."""
     logger.info(f"Scanning compose file: {compose_path}")
@@ -159,13 +214,18 @@ def scan_compose_file(compose_path: Path, project_name: str | None = None) -> li
     return agents
 
 
-def scan_multiple_compose_files(compose_paths: list[Path]) -> list[dict[str, Any]]:
+def scan_multiple_compose_files(compose_paths: list[Path], include_live_status: bool = True) -> list[dict[str, Any]]:
     """Scan multiple docker-compose files."""
     all_agents = []
 
     for compose_path in compose_paths:
         agents = scan_compose_file(compose_path)
         all_agents.extend(agents)
+
+    # Enrich with live Docker status
+    if include_live_status:
+        live_status = get_docker_live_status()
+        all_agents = enrich_with_live_status(all_agents, live_status)
 
     return all_agents
 
@@ -180,6 +240,18 @@ def generate_markdown_report(agents: list[dict[str, Any]], output_path: Path):
 
         for agent in agents:
             f.write(f"## {agent['service_name']}\n\n")
+
+            # Live status badge
+            if "live_status" in agent:
+                live = agent["live_status"]
+                status_emoji = (
+                    "🟢" if live["status"] == "running" else "🔴" if live["status"] in ["exited", "stopped"] else "⚪"
+                )
+                f.write(f"**Status:** {status_emoji} {live['status'].upper()}")
+                if live["id"]:
+                    f.write(f" (ID: `{live['id']}`)")
+                f.write("\n\n")
+
             f.write(f"- **Image:** `{agent['image']}`\n")
             f.write(f"- **Container:** `{agent['container_name']}`\n")
             f.write(f"- **Compose File:** `{agent['compose_file']}`\n")
@@ -223,6 +295,18 @@ def main():
         action="store_true",
         help="Auto-discover all docker-compose.yml files in repository",
     )
+    parser.add_argument(
+        "--live-status",
+        action="store_true",
+        default=True,
+        help="Include live Docker container status (default: True)",
+    )
+    parser.add_argument(
+        "--no-live-status",
+        dest="live_status",
+        action="store_false",
+        help="Disable live Docker status integration",
+    )
 
     args = parser.parse_args()
 
@@ -247,7 +331,7 @@ def main():
         compose_paths = [Path(p) for p in args.compose_files]
 
     # Scan all compose files
-    all_agents = scan_multiple_compose_files(compose_paths)
+    all_agents = scan_multiple_compose_files(compose_paths, include_live_status=args.live_status)
 
     # Generate outputs
     inventory_json = args.output_dir / "agent_inventory.json"

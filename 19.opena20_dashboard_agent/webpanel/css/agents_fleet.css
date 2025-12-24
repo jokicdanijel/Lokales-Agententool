@@ -167,6 +167,11 @@ header h1 {
 }
 
 .status-stopped {
+    background: var(--danger-color);
+    color: white;
+}
+
+.status-unknown {
     background: var(--text-secondary);
     color: white;
 }

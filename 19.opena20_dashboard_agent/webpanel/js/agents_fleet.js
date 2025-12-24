@@ -30,6 +30,20 @@ function updateStats() {
     const totalPorts = fleetData.services.reduce((sum, service) => sum + service.ports.length, 0);
     document.getElementById('total-ports').textContent = totalPorts;
 
+    // Count running/stopped containers
+    const runningCount = fleetData.services.filter(s =>
+        s.live_status && s.live_status.status === 'running'
+    ).length;
+    const stoppedCount = fleetData.services.filter(s =>
+        s.live_status && (s.live_status.status === 'exited' || s.live_status.status === 'stopped')
+    ).length;
+
+    // Add status count to display
+    const statusText = runningCount > 0 || stoppedCount > 0
+        ? ` (🟢 ${runningCount} running, 🔴 ${stoppedCount} stopped)`
+        : '';
+    document.getElementById('total-services').textContent = fleetData.total_services + statusText;
+
     const scanTime = new Date(fleetData.scanned_at);
     document.getElementById('last-scan').textContent = scanTime.toLocaleString('de-DE');
 }
@@ -79,8 +93,28 @@ function createServiceCard(service) {
     name.textContent = service.service_name;
 
     const status = document.createElement('div');
-    status.className = `service-status ${service.restart !== 'no' ? 'status-running' : 'status-stopped'}`;
-    status.textContent = service.restart !== 'no' ? 'AUTO' : 'MANUAL';
+
+    // Use live status if available, otherwise fall back to restart policy
+    if (service.live_status) {
+        const liveStatus = service.live_status.status.toLowerCase();
+        if (liveStatus === 'running') {
+            status.className = 'service-status status-running';
+            status.textContent = '🟢 RUNNING';
+        } else if (liveStatus === 'exited' || liveStatus === 'stopped') {
+            status.className = 'service-status status-stopped';
+            status.textContent = '🔴 ' + service.live_status.status.toUpperCase();
+        } else if (liveStatus === 'not_found') {
+            status.className = 'service-status status-unknown';
+            status.textContent = '⚪ NOT FOUND';
+        } else {
+            status.className = 'service-status status-unknown';
+            status.textContent = '⚠️ ' + service.live_status.status.toUpperCase();
+        }
+    } else {
+        // Fallback to restart policy indication
+        status.className = `service-status ${service.restart !== 'no' ? 'status-running' : 'status-stopped'}`;
+        status.textContent = service.restart !== 'no' ? 'AUTO' : 'MANUAL';
+    }
 
     header.appendChild(name);
     header.appendChild(status);
@@ -93,6 +127,15 @@ function createServiceCard(service) {
 
     // Container name
     info.appendChild(createInfoRow('Container', `<code>${service.container_name}</code>`));
+
+    // Live status details (if available)
+    if (service.live_status && service.live_status.id) {
+        info.appendChild(createInfoRow('Container ID', `<code>${service.live_status.id}</code>`));
+        if (service.live_status.health && service.live_status.health !== 'none') {
+            const healthEmoji = service.live_status.health === 'healthy' ? '✅' : '❌';
+            info.appendChild(createInfoRow('Health', `${healthEmoji} ${service.live_status.health}`));
+        }
+    }
 
     // Ports
     if (service.ports.length > 0) {

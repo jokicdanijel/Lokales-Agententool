@@ -1,15 +1,25 @@
 # Agent Fleet Observatory
 
-Real-time Docker-Compose Service Inventory for opena20 Dashboard.
+Real-time Docker-Compose Service Inventory with Live Container Status for opena20 Dashboard.
 
 ## Overview
 
-The Agent Fleet Observatory provides comprehensive visibility into all Docker-Compose services across the repository. It automatically discovers, catalogs, and presents service information in an intuitive web interface.
+The Agent Fleet Observatory provides comprehensive visibility into all Docker-Compose services across the repository with **live Docker daemon integration**. It automatically discovers, catalogs, and presents service information with real-time container status in an intuitive web interface.
+
+## Key Features
+
+✅ **Live Docker Status** - Real-time container status (running/stopped/exited) via Docker daemon
+✅ **Auto-Discovery** - Automatically finds all docker-compose files in repository
+✅ **Port Mapping** - Visualizes all exposed ports and mappings
+✅ **Health Monitoring** - Displays container health check status
+✅ **Network Topology** - Shows network configurations and dependencies
+✅ **Search & Filter** - Interactive filtering by name, image, port, restart policy
+✅ **Dark Theme UI** - Modern, responsive dashboard interface
 
 ## Components
 
 ### 1. **Scanner** (`scripts/agent_scanner_compose.py`)
-Python-based Docker-Compose parser that extracts:
+Python-based Docker-Compose parser with **live Docker daemon integration** that extracts:
 - Service names and container names
 - Docker images and tags
 - Port mappings (host:container)
@@ -18,11 +28,17 @@ Python-based Docker-Compose parser that extracts:
 - Health check configurations
 - Environment variables (sanitized)
 - Dependencies (depends_on)
+- **🆕 Live container status** (running/stopped/exited)
+- **🆕 Container IDs** and health status
+- **🆕 Container start timestamps**
 
 **Usage:**
 ```bash
-# Auto-discover all compose files
+# Auto-discover all compose files with live status (default)
 python3 scripts/agent_scanner_compose.py --auto-discover
+
+# Disable live status
+python3 scripts/agent_scanner_compose.py --auto-discover --no-live-status
 
 # Scan specific files
 python3 scripts/agent_scanner_compose.py --compose-files docker-compose.yml docker-compose.prod.yml
@@ -31,9 +47,16 @@ python3 scripts/agent_scanner_compose.py --compose-files docker-compose.yml dock
 python3 scripts/agent_scanner_compose.py --auto-discover --output-dir /custom/path
 ```
 
+**Requirements:**
+- Python 3.12+
+- `pyyaml` for compose parsing
+- `docker` Python SDK for live status (optional, gracefully degrades)
+
 ### 2. **Web UI** (`agents_fleet.html`)
 Modern, responsive dashboard featuring:
 - **Real-time Statistics**: Total services, compose files, exposed ports, last scan time
+- **🆕 Live Status Badges**: 🟢 Running, 🔴 Stopped, ⚪ Not Found indicators
+- **🆕 Container Details**: Shows container IDs and health status
 - **Interactive Search**: Filter by service name, image, port, or compose file
 - **Policy Filtering**: Filter by restart policy (always, unless-stopped, on-failure, no)
 - **Service Cards**: Detailed view of each service including ports, networks, dependencies
