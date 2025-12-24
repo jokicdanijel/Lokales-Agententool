@@ -1,0 +1,40 @@
+{
+  "pages": [
+    {
+      "path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/public/index.html",
+      "sha256": "c949021c55c7c353d021c146f89b6cb9e7264110ae9a9ba1f3a3d0ad8ad33ee0"
+    },
+    {
+      "path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/public/pro.html",
+      "sha256": "08a51eca5db74e9a3e418c8fef238bc1de9c7d8b92b9fb4e0a57ace8c9988da8"
+    },
+    {
+      "path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/public/ultimum.html",
+      "sha256": "05450eecc9523cb435fb81181be7767000887495b3811f54d3345332af4d1084"
+    },
+    {
+      "path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/public/index.html",
+      "sha256": "c949021c55c7c353d021c146f89b6cb9e7264110ae9a9ba1f3a3d0ad8ad33ee0"
+    },
+    {
+      "path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/public/basic.html",
+      "sha256": "e8424fe88331b427396c3afb6564d1256ee2c2017454529c64c76a388704610e"
+    },
+    {
+      "path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/public/premium.html",
+      "sha256": "1d0275e2b108a497ea42f5e5a21397a9cd991f321b7dd43983678a27e9bf5764"
+    },
+    {
+      "path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/public/legal/privacy.html",
+      "sha256": "247ea27ba347129af0b1e3637f1cb3ffffa7f28c251349b053ffeb3476e3c314"
+    },
+    {
+      "path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/public/legal/terms.html",
+      "sha256": "bb57815949d203838da8ed69b0263c3ef786a27a0b923a4ccf26d83279204016"
+    },
+    {
+      "path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/public/legal/imprint.html",
+      "sha256": "017870fe237209da1363066ae25fe8e2d2bf9614370818729dc7d92d13487f35"
+    }
+  ]
+}

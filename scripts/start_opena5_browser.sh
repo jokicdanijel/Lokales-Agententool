@@ -7,8 +7,8 @@ PROJROOT="$(cd "$ROOT/.." && pwd)"
 cd "$ROOT"
 
 # Activate venv
-if [ -f "$PROJROOT/1.portier_openai/venv313/bin/activate" ]; then
-    source "$PROJROOT/1.portier_openai/venv313/bin/activate"
+if [ -f "$PROJROOT/1.opena1&2_portier/venv313/bin/activate" ]; then
+    source "$PROJROOT/1.opena1&2_portier/venv313/bin/activate"
 fi
 
 # Load token

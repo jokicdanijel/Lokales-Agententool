@@ -1,0 +1,119 @@
+{
+  "ok": false,
+  "timestamp_utc": "2025-12-24T07:54:51Z",
+  "root": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.opena20_dashboard_agent/webpanel/js",
+  "config": {
+    "root": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.opena20_dashboard_agent/webpanel/js",
+    "out_dir": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.opena20_dashboard_agent/webpanel/js/artifacts",
+    "port": 12348,
+    "static_mount": "/html",
+    "static_dir": "html",
+    "require_backend": true,
+    "run_html_contract": false,
+    "html_spec": null,
+    "api_tests_json": "scripts/api_tests.json",
+    "scan_git_history": true,
+    "log_paths": [],
+    "log_lookback_lines": 500,
+    "auth_token_present": false
+  },
+  "summary": {
+    "gates_run": [
+      "security_gate",
+      "consistency_gate",
+      "frontend_gate"
+    ],
+    "blocking_failed": [
+      "frontend_gate"
+    ],
+    "violations_total": 1,
+    "warnings_total": 2,
+    "errors_total": 0
+  },
+  "gates": {
+    "security_gate": {
+      "gate": "security_gate",
+      "ok": true,
+      "started_utc": "2025-12-24T07:54:51Z",
+      "finished_utc": "2025-12-24T07:54:51Z",
+      "duration_ms": 6,
+      "errors": [],
+      "violations": [],
+      "warnings": [
+        {
+          "level": "warning",
+          "gate": "security_gate",
+          "rule": "git_history_scan_skipped",
+          "message": "scan_git_history enabled but .git or git executable not found.",
+          "file": null,
+          "evidence": null
+        }
+      ],
+      "info": [],
+      "stats": {
+        "patterns": [
+          "bearer\\s+[A-Za-z0-9\\-\\._=]+",
+          "authorization\\s*:\\s*bearer\\s+[A-Za-z0-9\\-\\._=]+",
+          "BEGIN\\s+PRIVATE\\s+KEY",
+          "\\bsk-[A-Za-z0-9]{20,}\\b",
+          "\\bghp_[A-Za-z0-9]{20,}\\b",
+          "\\bgithub_pat_[A-Za-z0-9_]{20,}\\b",
+          "\\bAIza[0-9A-Za-z\\-_]{20,}\\b",
+          "\\bAKIA[0-9A-Z]{16}\\b",
+          "\\beyJ[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}\\b"
+        ],
+        "scan_git_history": true,
+        "files_scanned": 2,
+        "hits_count": 0
+      }
+    },
+    "consistency_gate": {
+      "gate": "consistency_gate",
+      "ok": true,
+      "started_utc": "2025-12-24T07:54:51Z",
+      "finished_utc": "2025-12-24T07:54:51Z",
+      "duration_ms": 0,
+      "errors": [],
+      "violations": [],
+      "warnings": [
+        {
+          "level": "warning",
+          "gate": "consistency_gate",
+          "rule": "config_js_missing",
+          "message": "No config.js found in html.",
+          "file": null,
+          "evidence": null
+        }
+      ],
+      "info": [],
+      "stats": {
+        "discovery": {
+          "backend_port": 12348,
+          "static_mount": "/html",
+          "static_dir": "html"
+        }
+      }
+    },
+    "frontend_gate": {
+      "gate": "frontend_gate",
+      "ok": false,
+      "started_utc": "2025-12-24T07:54:51Z",
+      "finished_utc": "2025-12-24T07:54:51Z",
+      "duration_ms": 0,
+      "errors": [],
+      "violations": [
+        {
+          "level": "violation",
+          "gate": "frontend_gate",
+          "rule": "index_missing",
+          "message": "index.html not found in static dir: html",
+          "file": null,
+          "evidence": null
+        }
+      ],
+      "warnings": [],
+      "info": [],
+      "stats": {}
+    }
+  }
+}

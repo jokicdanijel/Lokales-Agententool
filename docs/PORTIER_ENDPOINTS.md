@@ -116,8 +116,8 @@ curl -X POST http://127.0.0.1:12344/log/opena1 \
 ### 4. Check Archive
 
 ```bash
-ls -la 1.portier_openai/archivp/SP*.json | head -5
-head index.jsonl 1.portier_openai/archivp/
+ls -la 1.opena1&2_portier/archivp/SP*.json | head -5
+head index.jsonl 1.opena1&2_portier/archivp/
 ```
 
 ## Implementation Pattern
@@ -175,8 +175,8 @@ make health
 
 Every service operation creates an immutable safepoint file. The complete audit trail is available in:
 
-- **Location:** `1.portier_openai/archivp/SP<timestamp>_<src>→<dst>_<KIND>.json`
-- **Index:** `1.portier_openai/archivp/index.jsonl`
+- **Location:** `1.opena1&2_portier/archivp/SP<timestamp>_<src>→<dst>_<KIND>.json`
+- **Index:** `1.opena1&2_portier/archivp/index.jsonl`
 - **Query:** `cat index.jsonl | jq 'select(.kind=="CMD")'` to filter by type
 
 ## Port Policy Enforcement
@@ -193,6 +193,6 @@ All services validate port compliance:
 
 ---
 
-**Last Updated:** 2025-11-09  
-**Version:** 1.0  
+**Last Updated:** 2025-11-09
+**Version:** 1.0
 **Compliance:** ✅ Port-Policy, ✅ Safepoints, ✅ Health-Checks

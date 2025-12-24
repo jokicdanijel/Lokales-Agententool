@@ -19,11 +19,11 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-VENV_DIR="${ROOT_DIR}/1.portier_openai/venv312"
+VENV_DIR="${ROOT_DIR}/1.opena1&2_portier/venv312"
 VENV_SYMLINK="${ROOT_DIR}/.venv"
 PYTHON_BIN="${VENV_SYMLINK}/bin/python"
 LOGS_DIR="${ROOT_DIR}/logs"
-ARCHIV_DIR="${ROOT_DIR}/1.portier_openai/archivp"
+ARCHIV_DIR="${ROOT_DIR}/1.opena1&2_portier/archivp"
 ARCHIV_INDEX="${ARCHIV_DIR}/index.jsonl"
 
 # Core services
@@ -63,33 +63,33 @@ log_error() {
 
 create_venv() {
 	log_info "Creating venv at $VENV_DIR..."
-	
+
 	if [ -d "$VENV_DIR" ]; then
 		log_ok "venv already exists"
 		return 0
 	fi
-	
+
 	python3 -m venv "$VENV_DIR" 2>/dev/null || {
 		log_error "Failed to create venv"
 		return 1
 	}
-	
+
 	log_ok "venv created"
 }
 
 create_venv_symlink() {
 	log_info "Creating venv symlink..."
-	
+
 	if [ -L "$VENV_SYMLINK" ] && [ -d "$VENV_SYMLINK" ]; then
 		log_ok ".venv symlink already exists"
 		return 0
 	fi
-	
+
 	if [ -d "$VENV_SYMLINK" ]; then
 		log_info "Removing non-symlink .venv directory..."
 		rm -rf "$VENV_SYMLINK"
 	fi
-	
+
 	ln -s "$VENV_DIR" "$VENV_SYMLINK"
 	log_ok ".venv symlink created → $VENV_DIR"
 }
@@ -106,12 +106,12 @@ write_safepoint() {
 	local src="$3"
 	local dst="$4"
 	local payload="$5"
-	
+
 	local timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 	local sp_num=$(date +%s)
 	local sp_file="SP${sp_num}_${src}→${dst}_${kind}.json"
 	local sp_path="${ARCHIV_DIR}/${sp_file}"
-	
+
 	# Create JSON safepoint
 	cat > "$sp_path" <<EOF
 {
@@ -122,12 +122,12 @@ write_safepoint() {
 	"payload": $payload
 }
 EOF
-	
+
 	# Append to index
 	cat >> "$ARCHIV_INDEX" <<EOF
 {"path": "$sp_file", "ts": "$timestamp", "src": "$src", "dst": "$dst", "kind": "$kind"}
 EOF
-	
+
 	log_ok "Safepoint written: $sp_file"
 }
 
@@ -136,20 +136,20 @@ wait_for_service() {
 	local service="$2"
 	local max_attempts=30
 	local attempt=0
-	
+
 	log_info "Waiting for $service (port $port) to be ready..."
-	
+
 	while [ $attempt -lt $max_attempts ]; do
 		if curl -s "http://127.0.0.1:$port/health" >/dev/null 2>&1; then
 			log_ok "$service is ready"
 			return 0
 		fi
-		
+
 		attempt=$((attempt + 1))
 		echo -n "."
 		sleep 1
 	done
-	
+
 	log_error "$service failed to respond after ${max_attempts}s"
 	return 1
 }
@@ -161,22 +161,22 @@ wait_for_service() {
 main() {
 	echo "🚀 [BOOTSTRAP] Starting core Portier services..."
 	echo ""
-	
+
 	# Setup directories
 	mkdir -p "$LOGS_DIR" "$ARCHIV_DIR"
-	
+
 	# Initialize venv
 	create_venv
 	create_venv_symlink
 	upgrade_pip
-	
+
 	log_ok "Bootstrap environment ready"
 	echo ""
-	
+
 	# Start services in sequence
 	log_info "Startup Sequence: opena1 → kordp → archivp → opena2"
 	echo ""
-	
+
 	# Service 1: opena1
 	log_info "[1/4] Starting opena1 (Coordinator)..."
 	write_safepoint "bootstrap" "CMD" "bootstrap" "opena1" '{"action": "start"}'
@@ -185,24 +185,24 @@ main() {
 	#   nohup "$PYTHON_BIN" main.py > "$LOGS_DIR/opena1.log" 2>&1 &
 	log_ok "opena1 startup issued"
 	sleep 2
-	
+
 	# Service 2: kordp
 	log_info "[2/4] Starting kordp (Scheduler)..."
 	write_safepoint "bootstrap" "CMD" "bootstrap" "kordp" '{"action": "start"}'
 	log_ok "kordp startup issued"
 	sleep 2
-	
+
 	# Service 3: archivp
 	log_info "[3/4] Starting archivp (Archivator)..."
 	write_safepoint "bootstrap" "CMD" "bootstrap" "archivp" '{"action": "start"}'
 	log_ok "archivp startup issued"
 	sleep 2
-	
+
 	# Service 4: opena2
 	log_info "[4/4] Starting opena2 (Storage)..."
 	write_safepoint "bootstrap" "CMD" "bootstrap" "opena2" '{"action": "start"}'
 	log_ok "opena2 startup issued"
-	
+
 	echo ""
 	log_ok "[BOOTSTRAP] Core services initialized"
 	echo ""

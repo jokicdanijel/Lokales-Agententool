@@ -6,7 +6,7 @@ PROJ="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_a
 cd "$PROJ"
 
 # venv laden (deine bestehende venv313)
-source ../1.portier_openai/venv313/bin/activate
+source ../1.opena1&2_portier/venv313/bin/activate
 
 mkdir -p logs .runtime ARCHIV
 
@@ -25,4 +25,3 @@ echo "Starte opena2 auf 127.0.0.1:12345 ..."
 nohup python3 main_opena2.py > logs/opena2.nohup.log 2>&1 &
 echo $! > .runtime/opena2.pid
 echo "opena2 PID: $(cat .runtime/opena2.pid)"
-

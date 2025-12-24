@@ -24,7 +24,7 @@ pick_port() {
 }
 
 # Prüfe und aktiviere Virtual Environment
-VENV_PATH="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313"
+VENV_PATH="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313"
 if [ ! -f "$VENV_PATH/bin/activate" ]; then
     echo "Fehler: Virtual Environment nicht gefunden in $VENV_PATH" >&2
     exit 1

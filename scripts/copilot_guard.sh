@@ -9,8 +9,8 @@ ROOT="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt"
 CFG="${ROOT}/configs/agent_dirs.yaml"
 GUARD="${ROOT}/src/tools/copilot_guard.py"
 # Fallback: Versuche venv313 in verschiedenen Pfaden
-if [ -x "${ROOT}/1.portier_openai/venv313/bin/python3" ]; then
-    PY="${ROOT}/1.portier_openai/venv313/bin/python3"
+if [ -x "${ROOT}/1.opena1&2_portier/venv313/bin/python3" ]; then
+    PY="${ROOT}/1.opena1&2_portier/venv313/bin/python3"
 elif [ -x "${ROOT}/1.openai1&2_.portier/venv313/bin/python3" ]; then
     PY="${ROOT}/1.openai1&2_.portier/venv313/bin/python3"
 elif [ -x "${ROOT}/.venv/bin/python3" ]; then

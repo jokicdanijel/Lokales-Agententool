@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # bin/start_opena3.sh
-# 
+#
 # Startet den OpenWebUI Agent (opena3) auf Port 12347 im Hintergrund
 # ==============================================================================
 
@@ -10,7 +10,7 @@ set -euo pipefail
 # Pfade
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$(dirname "${SCRIPT_DIR}")" && pwd)"
-VENV_PATH="${PROJECT_ROOT}/../1.portier_openai/venv313/bin/activate"
+VENV_PATH="${PROJECT_ROOT}/../1.opena1&2_portier/venv313/bin/activate"
 LOGS_DIR="${PROJECT_ROOT}/logs"
 RUNTIME_DIR="${PROJECT_ROOT}/.runtime"
 PID_FILE="${RUNTIME_DIR}/opena3.pid"

@@ -1,9 +1,9 @@
 # 📦 Repository Scanner – Deployment Summary
 
-**Status**: ✅ **READY FOR PRODUCTION**  
-**Datum**: 9. November 2025  
-**Dateien**: 3 (zero-dependency)  
-**Performance**: 5249 Dateien in 1.8 Sekunden  
+**Status**: ✅ **READY FOR PRODUCTION**
+**Datum**: 9. November 2025
+**Dateien**: 3 (zero-dependency)
+**Performance**: 5249 Dateien in 1.8 Sekunden
 **Python**: ≥3.10 (cross-platform)
 
 ---
@@ -210,12 +210,12 @@ python3 tools/scan_project.py --root . --out project_map --max-tree-depth 6
 - **Top Python-Dateien**: 3632 (davon viele in venv + 3.opena1_coordinator)
 - **Top JSON-Dateien**: 177
 - **Top Markdown-Dateien**: 103
-- **Größtes Verzeichnis**: `1.portier_openai` (3525 Dateien, ~350 MB davon venv)
+- **Größtes Verzeichnis**: `1.opena1&2_portier` (3525 Dateien, ~350 MB davon venv)
 
 ### Top-Level Folder-Verteilung
 
 ```
-1.portier_openai          3525 files (venv heavy)
+1.opena1&2_portier          3525 files (venv heavy)
 3.opena1_coordinator      1218 files (venv heavy)
 19.dashboard_agent          22 files
 configs                      51 files
@@ -257,7 +257,7 @@ agents                       95 files
    # GitHub Actions
    - name: Scan project structure
      run: make scan
-   
+
    - name: Upload project map
      uses: actions/upload-artifact@v3
      with:
@@ -361,6 +361,6 @@ make scan
 
 ---
 
-**Erstellt**: 9. November 2025  
-**Autor**: GitHub Copilot + Danijel J.  
+**Erstellt**: 9. November 2025
+**Autor**: GitHub Copilot + Danijel J.
 **Lizenz**: Public Domain (nutze frei)

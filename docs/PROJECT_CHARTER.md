@@ -1,10 +1,10 @@
 # PROJECT CHARTER – Hyper Dashboard / Portier OpenAI
 
-**Projektname:** Hyper Dashboard / Portier OpenAI  
-**Projektwurzel:** `/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt`  
-**Erstellt am:** 2025-11-09 UTC  
-**Verantwortlich:** *(Team/Person eintragen)*  
-**Version:** 1.0  
+**Projektname:** Hyper Dashboard / Portier OpenAI
+**Projektwurzel:** `/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt`
+**Erstellt am:** 2025-11-09 UTC
+**Verantwortlich:** *(Team/Person eintragen)*
+**Version:** 1.0
 
 **Regeln:** Append-only · Dedupe (SHA-256/IDs) · keine Doppelblobs · Auditierbarkeit durchgängig
 
@@ -30,19 +30,19 @@ Ein durchgängig **auditierbares Agenten-System** mit mehreren Modulen aufbauen 
 
 ### Was das Projekt **umfasst:**
 
-✅ Einrichtung der **Projektstruktur** (Datei/Verzeichnislayout) unter der Projektwurzel  
-✅ Definition und Dokumentation aller **Agenten-Routen** und ihrer Verantwortlichkeiten  
-✅ Implementierung der **Governance-Regeln** für Ports, Logging, Secrets, Dedupe  
-✅ Aufbau der **Persistenz- und Archiv-Mechanismen:** Safepoints, Blobs, Indexe  
-✅ Einrichtung von **CI/Pre-Commit/QC:** Linting, Schema-Prüfung, Port-Check  
-✅ Dokumentation: **Schritt-Weise Spezifikationen** für jeden Agent (z.B. Schritt 4 für opena4, Schritt 5 für opena5)  
+✅ Einrichtung der **Projektstruktur** (Datei/Verzeichnislayout) unter der Projektwurzel
+✅ Definition und Dokumentation aller **Agenten-Routen** und ihrer Verantwortlichkeiten
+✅ Implementierung der **Governance-Regeln** für Ports, Logging, Secrets, Dedupe
+✅ Aufbau der **Persistenz- und Archiv-Mechanismen:** Safepoints, Blobs, Indexe
+✅ Einrichtung von **CI/Pre-Commit/QC:** Linting, Schema-Prüfung, Port-Check
+✅ Dokumentation: **Schritt-Weise Spezifikationen** für jeden Agent (z.B. Schritt 4 für opena4, Schritt 5 für opena5)
 ✅ **7 Schritte Architektur-Roadmap:** Von Projektinitialisierung bis Monitoring/Release
 
 ### Was **NICHT** im Scope enthalten ist:
 
-❌ Vollständige Implementierung der Logik aller Agenten oder Funktionen (z.B. spezialisierte Business-Agenten außerhalb der Infrastruktur)  
-❌ Umfangreiche UI/UX-Designs oder externe Dienstintegrationen, die nicht Teil der Kerninfrastruktur sind  
-❌ Migration bestehender Systeme – Fokus liegt auf **Neubau**  
+❌ Vollständige Implementierung der Logik aller Agenten oder Funktionen (z.B. spezialisierte Business-Agenten außerhalb der Infrastruktur)
+❌ Umfangreiche UI/UX-Designs oder externe Dienstintegrationen, die nicht Teil der Kerninfrastruktur sind
+❌ Migration bestehender Systeme – Fokus liegt auf **Neubau**
 ❌ Skalierung auf Multi-Cloud oder Kubernetes (stand-alone VM-Fokus)
 
 ---
@@ -119,10 +119,10 @@ Ein durchgängig **auditierbares Agenten-System** mit mehreren Modulen aufbauen 
 
 ### Annahmen
 
-✅ Der Host hat öffentlich erreichbaren Domain/Nginx für Webhook (falls Webhook-Modus gewählt)  
-✅ Entwickler haben Zugriff auf Projektwurzeln-Verzeichnis und nötige Rechte (Lesen/Schreiben)  
-✅ Aggregierte Module (opena2, opena3, opena4, opena5, opena20) werden einzeln entwickelt aber im selben Governance-Rahmen  
-✅ Python 3.13+ mit venv313 verfügbar; Pydantic v2 kompatibel  
+✅ Der Host hat öffentlich erreichbaren Domain/Nginx für Webhook (falls Webhook-Modus gewählt)
+✅ Entwickler haben Zugriff auf Projektwurzeln-Verzeichnis und nötige Rechte (Lesen/Schreiben)
+✅ Aggregierte Module (opena2, opena3, opena4, opena5, opena20) werden einzeln entwickelt aber im selben Governance-Rahmen
+✅ Python 3.13+ mit venv313 verfügbar; Pydantic v2 kompatibel
 
 ### Risiken & Mitigationen
 
@@ -195,7 +195,7 @@ Ein durchgängig **auditierbares Agenten-System** mit mehreren Modulen aufbauen 
 │   │
 │   └── OPERATIONS.md                  # Operator Guide
 │
-├── 1.portier_openai/                  # Core opena1 Module
+├── 1.opena1&2_portier/                  # Core opena1 Module
 │   ├── schemas.py                     # Pydantic Models
 │   ├── koordinator.py                 # REST Endpoints
 │   ├── main_production.py             # Entry Point
@@ -267,8 +267,8 @@ Ein durchgängig **auditierbares Agenten-System** mit mehreren Modulen aufbauen 
 
 ---
 
-**Projekt-ID:** `HYPER-DASHBOARD-001`  
-**Version History:**  
+**Projekt-ID:** `HYPER-DASHBOARD-001`
+**Version History:**
 - v1.0 – 2025-11-09 UTC – Initial Charter
 
 **Referenzen:**

@@ -1,8 +1,8 @@
 # Agent-Mapping-Architektur – Vollständige 20-Agent-Topologie
 
-**Status:** Finalisiert für Schritt 2 + 3 Integration  
-**Version:** 1.0.0  
-**Datum:** 2025-11-10  
+**Status:** Finalisiert für Schritt 2 + 3 Integration
+**Version:** 1.0.0
+**Datum:** 2025-11-10
 **Scope:** opena1 bis opena20 (Kordinator → Dashboard)
 
 ---
@@ -198,10 +198,10 @@ def validate_port(port: int):
     if port in FORBIDDEN_PORTS:
         logger.error(f"❌ Port {port} forbidden by policy")
         sys.exit(1)
-    
+
     if not (ALLOWED_PORT_RANGE[0] <= port <= ALLOWED_PORT_RANGE[1]):
         logger.warning(f"⚠️  Port {port} outside recommended range")
-    
+
     return True
 ```
 
@@ -236,12 +236,12 @@ async def dispatch(tool_name: str, payload: dict) -> dict:
         kind="REQUEST",
         payload=payload
     )
-    
+
     response = await forward_to_agent(
         f"http://127.0.0.1:{agent.port}{agent.endpoint}",
         payload
     )
-    
+
     await manager.write_safepoint(safepoint)
     return response
 ```
@@ -253,7 +253,7 @@ async def dispatch(tool_name: str, payload: dict) -> dict:
 ### 8.1 Verzeichnisstruktur
 
 ```
-1.portier_openai/          (opena1 - Koordinator)
+1.opena1&2_portier/          (opena1 - Koordinator)
    ├── main_production.py
    ├── koordinator.py
    ├── tool_registry.py    ← Alle 20 Agenten registriert
@@ -331,13 +331,13 @@ curl http://127.0.0.1:12345/archiv/last?n=5
 
 ## 11. Abhängigkeiten & Integration
 
-**Schritt 1:** ✅ 7.1 Validation (koordinator.py)  
-**Schritt 2:** ✅ Tool-Registry & Dispatcher  
-**Schritt 3:** ✅ Safepoint Dedupe & Integrity  
-**Schritt 4:** 🟡 Vollständige Agent-Integration (20 Services)  
-**Schritt 5:** 🔴 VS Code Bridge Implementation  
+**Schritt 1:** ✅ 7.1 Validation (koordinator.py)
+**Schritt 2:** ✅ Tool-Registry & Dispatcher
+**Schritt 3:** ✅ Safepoint Dedupe & Integrity
+**Schritt 4:** 🟡 Vollständige Agent-Integration (20 Services)
+**Schritt 5:** 🔴 VS Code Bridge Implementation
 
 ---
 
-**Dokumentation:** Danijel – ELION Gesamtprojekt  
+**Dokumentation:** Danijel – ELION Gesamtprojekt
 **Letztes Update:** 2025-11-10T12:30:00Z

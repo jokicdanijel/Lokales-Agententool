@@ -1,7 +1,7 @@
 # SCHRITT_03_SAFEPOINT_DEDUPE – Deduplication & Integrity Engine
 
-**Date:** 2025-11-10  
-**Status:** ✅ COMPLETE  
+**Date:** 2025-11-10
+**Status:** ✅ COMPLETE
 **Author:** Danijel (AI Copilot)
 
 ---
@@ -161,11 +161,11 @@ def verify_integrity() -> Dict:
     for i, head in enumerate(self.heads):
         if head["sequence"] != i:
             errors.append(f"Sequence mismatch at {i}")
-    
+
     for i, cp in enumerate(self.integrity):
         if i > 0 and self.integrity[i-1]["current_head"] != cp["previous_head"]:
             errors.append(f"Broken chain link at checkpoint {i}")
-    
+
     return {"is_valid": len(errors) == 0, "errors": errors}
 ```
 
@@ -407,13 +407,13 @@ def test_checkpoint_chain_link():
 def test_write_safepoint_full_lifecycle():
     sp = {"src": "opena1", "dst": "opena2", "msg": "test"}
     result = manager.write_safepoint("sp1.json", sp, "opena1")
-    
+
     assert result["success"] == True
     assert result["is_duplicate"] == False
-    
+
     # Verify HEADS was updated
     assert len(engine.heads) > 0
-    
+
     # Read back
     read_sp = manager.read_safepoint("sp1.json")
     assert read_sp == sp
@@ -438,17 +438,17 @@ manager = SafepointManager(Path("archivp"))
 async def invoke(req: dict):
     # Execute task
     result = {...}
-    
+
     # Write safepoint with dedupe
     sp_result = manager.write_safepoint(
         f"2025/11/10/SP{int(time.time())}_opena1->opena2_CMD.json",
         result,
         "opena1"
     )
-    
+
     if sp_result["is_duplicate"]:
         logger.info(f"Duplicate detected (saved space)")
-    
+
     return result
 ```
 
@@ -558,7 +558,7 @@ tool_dispatcher.py
 
 Commit this documentation + dedupe_engine.py as:
 ```bash
-git add 1.portier_openai/dedupe_engine.py docs/SCHRITT_03_SAFEPOINT_DEDUPE.md
+git add 1.opena1&2_portier/dedupe_engine.py docs/SCHRITT_03_SAFEPOINT_DEDUPE.md
 git commit -m "feat: implement schritt 3 - safepoint dedupe & integrity engine"
 git push origin main
 ```

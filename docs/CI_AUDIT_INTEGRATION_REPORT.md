@@ -13,8 +13,8 @@
 
 2. [BLOCKER] venv313 nicht definiert
    - **Kontext**: Projekt-Policy fordert venv313 (neue Python 3.13 Umgebung)
-   - **Problem**: Cache-Key referenzierte nur ~/.cache/pip, nicht 1.portier_openai/venv313
-   - **Fix**: Cache-Path erweitert um `1.portier_openai/venv313`, Key auf `requirements.txt` gehashed
+   - **Problem**: Cache-Key referenzierte nur ~/.cache/pip, nicht 1.opena1&2_portier/venv313
+   - **Fix**: Cache-Path erweitert um `1.opena1&2_portier/venv313`, Key auf `requirements.txt` gehashed
 
 3. [BLOCKER] Policy-Validator fehlte
    - **Kontext**: CI-Job hatte keine Prüfung auf Port-Policy, Tools-Registry, Muss-Dateien
@@ -73,8 +73,8 @@
 
 ## PRODUCED YAML – PRODUCTION-READY
 
-**Ort**: `.github/workflows/portier-ci.yml`  
-**Relevant Job**: `integration`  
+**Ort**: `.github/workflows/portier-ci.yml`
+**Relevant Job**: `integration`
 **Status**: ✅ Audited, Policy-Compliant, Deployable
 
 ```yaml
@@ -105,8 +105,8 @@ jobs:
         with:
           path: |
             ~/.cache/pip
-            1.portier_openai/venv313
-          key: venv-${{ runner.os }}-${{ hashFiles('1.portier_openai/requirements.txt') }}
+            1.opena1&2_portier/venv313
+          key: venv-${{ runner.os }}-${{ hashFiles('1.opena1&2_portier/requirements.txt') }}
           restore-keys: |
             venv-${{ runner.os }}-
 
@@ -119,8 +119,8 @@ jobs:
         run: |
           echo "🔍 Verifying critical files…"
           test -f .github/workflows/portier-ci.yml || { echo "❌ CI Workflow missing"; exit 1; }
-          test -f 1.portier_openai/skripte/validate_portier.sh || { echo "❌ Policy validator missing"; exit 1; }
-          test -f 1.portier_openai/config/tools_registry.json || { echo "❌ Tools registry missing"; exit 1; }
+          test -f 1.opena1&2_portier/skripte/validate_portier.sh || { echo "❌ Policy validator missing"; exit 1; }
+          test -f 1.opena1&2_portier/config/tools_registry.json || { echo "❌ Tools registry missing"; exit 1; }
           for agent_dir in 4.telegram_agent 5.vscode_agent 6.mail_agent 7.whatsapp_agent; do
             test -f "$agent_dir/main_agent.py" || { echo "❌ $agent_dir/main_agent.py missing"; exit 1; }
           done
@@ -150,46 +150,46 @@ jobs:
 
       - name: Ensure policy validator is executable
         run: |
-          chmod +x 1.portier_openai/skripte/validate_portier.sh
+          chmod +x 1.opena1&2_portier/skripte/validate_portier.sh
           echo "✅ Policy validator executable set."
 
       - name: Run policy validator
         run: |
           echo "🔍 Running comprehensive policy validator…"
-          bash 1.portier_openai/skripte/validate_portier.sh
+          bash 1.opena1&2_portier/skripte/validate_portier.sh
 
       - name: Generate deployment summary
         if: success()
         run: |
           cat > /tmp/deploy_summary.md <<'DEPLOY_SUMMARY'
           ## 🚀 Deployment Summary
-          
+
           **Commit**: $(git rev-parse --short HEAD)
           **Branch**: $(git rev-parse --abbrev-ref HEAD)
           **Timestamp**: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
           **Runner**: ${{ runner.os }}
-          
+
           ### Agents Deployed
           - Port 12347: telegram_agent ✅
           - Port 12348: vscode_agent ✅
           - Port 12349: mail_agent ✅
           - Port 12350: whatsapp_agent ✅
-          
+
           ### Services Online
           - Dashboard: :12349
           - Archivator: :12345
           - Coordinator: :12344
-          
+
           ### Policy Compliance
           - Port-Policy (12344–12399): ✅ PASS
           - Forbidden Port 8080: ✅ PASS
           - venv313 Baseline: ✅ PASS
           - Tools Registry: ✅ PASS
           - Policy Validator: ✅ PASS
-          
+
           **Status**: Ready for Production 🎯
           DEPLOY_SUMMARY
-          
+
           cat /tmp/deploy_summary.md
 
       - name: Upload deployment summary artifact
@@ -212,12 +212,12 @@ jobs:
 
 2. **Cache-Strategie erweitert (venv313 + pip)**
    - **Warum**: venv313 ist nicht automatisch installiert, muss cached werden
-   - **Wie**: `path:` erweitert um `1.portier_openai/venv313`; Key auf `hashFiles('requirements.txt')`
+   - **Wie**: `path:` erweitert um `1.opena1&2_portier/venv313`; Key auf `hashFiles('requirements.txt')`
    - **Impact**: ~2 Min Speedup auf Wiederhol-Runs
 
 3. **Policy-Validator Step hinzugefügt**
    - **Warum**: Ursprüngliche YAML hatte keine zentrale Policy-Prüfung
-   - **Wie**: Neuer Step mit `bash 1.portier_openai/skripte/validate_portier.sh`
+   - **Wie**: Neuer Step mit `bash 1.opena1&2_portier/skripte/validate_portier.sh`
    - **Impact**: Fail-fast bei Port/Datei/Registry-Verstößen
 
 4. **Port-8080-Prüfung verfeinert (False-Positives weg)**
@@ -276,15 +276,15 @@ Exit code: 1
 ### Fehlerfall 2: tools_registry.json hat Schlüssel "archivp" nicht
 **Simulation**:
 ```bash
-jq 'del(.archivp)' 1.portier_openai/config/tools_registry.json > /tmp/reg.json
-mv /tmp/reg.json 1.portier_openai/config/tools_registry.json
+jq 'del(.archivp)' 1.opena1&2_portier/config/tools_registry.json > /tmp/reg.json
+mv /tmp/reg.json 1.opena1&2_portier/config/tools_registry.json
 ```
 **Erwarteter Fehler**: Policy-Validator Step schlägt ab
 ```
 ❌ tools_registry.json: Schlüssel 'archivp' fehlt
 Exit code: 1
 ```
-**Diagnose**: `cat 1.portier_openai/config/tools_registry.json | jq keys`
+**Diagnose**: `cat 1.opena1&2_portier/config/tools_registry.json | jq keys`
 
 ### Fehlerfall 3: Port 8080 in echtem Code (nicht Docker/venv)
 **Simulation**:
@@ -301,15 +301,15 @@ Exit code: 1
 ### Fehlerfall 4: validate_portier.sh nicht ausführbar
 **Simulation**:
 ```bash
-chmod -x 1.portier_openai/skripte/validate_portier.sh
+chmod -x 1.opena1&2_portier/skripte/validate_portier.sh
 ```
 **Erwarteter Fehler**: Step "Ensure policy validator is executable" setzt Permissions, lädt aber bei Netzwerkproblemen fehl.
-**Diagnose**: `ls -la 1.portier_openai/skripte/validate_portier.sh`
+**Diagnose**: `ls -la 1.opena1&2_portier/skripte/validate_portier.sh`
 
 ### Fehlerfall 5: requirements.txt nicht vorhanden (Cache-Miss)
 **Simulation**:
 ```bash
-rm 1.portier_openai/requirements.txt
+rm 1.opena1&2_portier/requirements.txt
 git commit -m "test: missing requirements"
 ```
 **Erwarteter Fehler**: hashFiles() findet Datei nicht, Cache-Key wird leer.
@@ -320,7 +320,7 @@ git commit -m "test: missing requirements"
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 
 # 1. Validiere Dateien
-bash 1.portier_openai/skripte/validate_portier.sh
+bash 1.opena1&2_portier/skripte/validate_portier.sh
 echo "✅ Policy validator erfolgreich"
 
 # 2. Teste Port-Zuordnungen
@@ -358,4 +358,3 @@ git push origin --force-with-lease  # Force push (oder einfach neuer Commit)
 # Logs sollten identisch sein, Cache sollte getroffen werden
 ```
 ✅ Wenn beide Läufe mit Deploy-Summary erfolgreich enden → **Idempotent**
-

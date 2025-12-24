@@ -24,8 +24,8 @@ Vollständige Spezifikation für:
 | opena19 | Dashboard-Backend | Status-Aggregation, Routing, Events/SSE, Befehle, Safepoint-Query | /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ |
 | opena16 | Frontend-Assembler | Gesamtlayout Dashboard-UI, Startseite, Navigationsrahmen | /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.homepage_creator/ |
 | opena14 | HTML-Komponenten | Agenten-Unterseiten-Widgets (Kacheln, Tabellen, Logs-Viewer) | /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/14.html_creator/ |
-| opena1 | Koordinator | Policy-Gate, Routing, DB/Audit-Schreiben, Befehlsannahme /log/opena1 | /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ |
-| opena2 | Archivator | Safepoints speichern/auflisten /finalize/opena2, /store/archivp | /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/ |
+| opena1 | Koordinator | Policy-Gate, Routing, DB/Audit-Schreiben, Befehlsannahme /log/opena1 | /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/ |
+| opena2 | Archivator | Safepoints speichern/auflisten /finalize/opena2, /store/archivp | /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/ |
 
 ### Port-Policy
 - ✅ Erlaubt: 12344–12399
@@ -217,7 +217,7 @@ Authorization: Bearer <DASHBOARD_ADMIN_TOKEN>
 
 ### Pfadstruktur
 ```
-/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp/
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/archivp/
 └── YYYY/
     └── MM/
         └── DD/

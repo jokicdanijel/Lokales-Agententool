@@ -1,8 +1,8 @@
 # 🎛️ Dashboard Integration Module – opena19 KB
 
-**Erstellt:** Nov 8, 2025 18:55 UTC  
-**Version:** 1.0 (with Nov 8 Python Fixes)  
-**Status:** 🟡 READY FOR NOV 9 STARTUP  
+**Erstellt:** Nov 8, 2025 18:55 UTC
+**Version:** 1.0 (with Nov 8 Python Fixes)
+**Status:** 🟡 READY FOR NOV 9 STARTUP
 **Python Fixes Applied:** 3/3 ✅
 
 ---
@@ -184,7 +184,7 @@ bash bin/start_opena4_telegram.sh
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent
 
 # Activate venv
-source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/activate
+source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/activate
 
 # Start in nohup
 nohup python3 main_dashboard.py > logs/opena19.nohup.log 2>&1 &
@@ -198,7 +198,7 @@ nohup python3 main_dashboard.py > logs/opena19.nohup.log 2>&1 &
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent
 
 # Activate venv
-source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313/bin/activate
+source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/activate
 
 # Start in foreground
 python3 main_dashboard.py
@@ -764,9 +764,9 @@ bash bin/start_opena19.sh  # or manual nohup
 
 ---
 
-**Status:** 🟡 READY FOR TESTING  
-**Test Date:** Nov 9, 2025 08:00 UTC (planned)  
-**Python Fixes:** 3/3 APPLIED ✅  
+**Status:** 🟡 READY FOR TESTING
+**Test Date:** Nov 9, 2025 08:00 UTC (planned)
+**Python Fixes:** 3/3 APPLIED ✅
 **Version:** 1.0 (with Nov 8 fixes)
 
 ---

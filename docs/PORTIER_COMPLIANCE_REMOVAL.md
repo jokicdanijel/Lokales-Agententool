@@ -1,7 +1,7 @@
 # Portier Compliance – History Cleanup & Port-Policy Standardization
 
-**Datum:** 2025-11-09 UTC  
-**Status:** ✅ Complete  
+**Datum:** 2025-11-09 UTC
+**Status:** ✅ Complete
 **Scope:** Large file removal, .gitignore enforcement, Health-endpoint standardization
 
 ---
@@ -147,10 +147,10 @@ config = PortierServiceConfig(
 
 ### Standardisierung – Key Points
 
-✅ **Konsistent:** Alle Services nutzen `PortierServiceConfig`  
-✅ **Auditierbar:** Health-Endpoints zeigen `"window": [12344, 12399]`  
-✅ **Wartbar:** Port-Range zentral konfiguriert  
-✅ **Policy-konform:** Verbotene Ports (`[8080]`) explizit dokumentiert  
+✅ **Konsistent:** Alle Services nutzen `PortierServiceConfig`
+✅ **Auditierbar:** Health-Endpoints zeigen `"window": [12344, 12399]`
+✅ **Wartbar:** Port-Range zentral konfiguriert
+✅ **Policy-konform:** Verbotene Ports (`[8080]`) explizit dokumentiert
 
 ---
 
@@ -253,7 +253,7 @@ Alle neuen Services sollten folgendes implementieren:
 **Related Issues:**
 - P0 Compliance Audit: `docs/CI_AUDIT_INTEGRATION_REPORT.md`
 - Port-Policy Framework: `docs/PORTIER_COMPLIANCE_REMOVAL.md`
-- Tools Registry: `1.portier_openai/config/tools_registry.json`
+- Tools Registry: `1.opena1&2_portier/config/tools_registry.json`
 
 **Related Commits:**
 - `99604b1` – CI Audit & Agents
@@ -266,7 +266,6 @@ Alle neuen Services sollten folgendes implementieren:
 
 ---
 
-**Status:** ✅ COMPLETE – All large files removed, History cleaned, Port-Policy standardized  
-**Last Updated:** 2025-11-09 UTC  
+**Status:** ✅ COMPLETE – All large files removed, History cleaned, Port-Policy standardized
+**Last Updated:** 2025-11-09 UTC
 **Maintainer:** Senior Auditor & Fixer
-

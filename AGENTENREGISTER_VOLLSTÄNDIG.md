@@ -71,7 +71,7 @@ REGEL: Alle Bewegungen archivieren über opena2!
 |---|---|
 | **Funktion** | Zentrale Steuerinstanz; Validierung, Delegation, Safepoint-Triggering |
 | **Aufgaben** | • Empfängt OpenAI-Befehle<br>• Parsed Intent & Parameter<br>• Bestimmt Ziel-Agent<br>• Ruft opena2.store_safepoint() auf<br>• Dispatcht über kordp<br>• Sammelt Response |
-| **Standort** | `/home/danijel-jd/.../1.portier_openai/opena1/` |
+| **Standort** | `/home/danijel-jd/.../1.opena1&2_portier/opena1/` |
 | **Port(e)** | `12344` (HTTP/REST) |
 | **Endpunkte** | • `GET /health` → `{"status": "online", "uptime": "..."}` |
 | | • `POST /command` → akzeptiert OpenAI-JSON, parsed & dispatcht |
@@ -107,7 +107,7 @@ POST /command
 |---|---|
 | **Funktion** | Persistence Layer; schreibt alle CMD/RESP, verwaltet Index, koordiniert kordp |
 | **Aufgaben** | • Empfängt Safepoints von opena1 (CMD)<br>• Schreibt in archivp/YYYY/MM/DD/<br>• Pflegt Index-DB (SQLite/JSON)<br>• Speichert RESP nach Ausführung<br>• Koordiniert kordp für Dispatch<br>• Bietet Archiv-Query-API |
-| **Standort** | `/home/danijel-jd/.../1.portier_openai/opena2/` |
+| **Standort** | `/home/danijel-jd/.../1.opena1&2_portier/opena2/` |
 | **Port(e)** | `12345` (HTTP/REST) |
 | **Endpunkte** | • `GET /health` → Health-Status |
 | | • `POST /store/archivp` → speichert CMD/RESP<br>  ```{ "type": "cmd|resp", "source": "opena1", "target": "opena15", "payload": {...}, "timestamp": "..." }``` |
@@ -139,7 +139,7 @@ archivp/
 |---|---|
 | **Funktion** | Transport-Layer; zustandslos, skalierbar, führt Dispatch aus |
 | **Aufgaben** | • Empfängt Dispatch-Order von opena2<br>• Schickt HTTP-Request an Ziel-Agent<br>• Wartet auf Antwort<br>• Sendet Antwort zurück an opena2<br>• Loggt Transfers |
-| **Standort** | `/home/danijel-jd/.../1.portier_openai/kordp/` |
+| **Standort** | `/home/danijel-jd/.../1.opena1&2_portier/kordp/` |
 | **Port(e)** | `12346` (HTTP/REST) |
 | **Endpunkte** | • `GET /health` → Health-Status |
 | | • `POST /dispatch/kordp` → akzeptiert Dispatch-Order |
@@ -697,7 +697,7 @@ POST /dispatch/kordp
 ```
 /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/
 │
-├─ 1.portier_openai/                    ← Kern-System
+├─ 1.opena1&2_portier/                    ← Kern-System
 │   ├─ opena1/                          (Koordinator, 12344)
 │   │   ├─ main.py
 │   │   ├─ config.json
@@ -831,15 +831,15 @@ POST /dispatch/kordp
 ### Phase 1: Core-System starten
 ```bash
 # Terminal 1: opena1 (Koordinator)
-cd /home/danijel-jd/.../1.portier_openai/opena1
+cd /home/danijel-jd/.../1.opena1&2_portier/opena1
 python3 main.py
 
 # Terminal 2: opena2 (Archiv-Agent)
-cd /home/danijel-jd/.../1.portier_openai/opena2
+cd /home/danijel-jd/.../1.opena1&2_portier/opena2
 python3 main.py
 
 # Terminal 3: kordp (Transport)
-cd /home/danijel-jd/.../1.portier_openai/kordp
+cd /home/danijel-jd/.../1.opena1&2_portier/kordp
 python3 main.py
 ```
 
@@ -900,7 +900,7 @@ curl http://127.0.0.1:12363/health/all | jq .
 ### Logs prüfen
 ```bash
 # opena1 Logs
-tail -f /home/danijel-jd/.../1.portier_openai/opena1/logs/opena1.log
+tail -f /home/danijel-jd/.../1.opena1&2_portier/opena1/logs/opena1.log
 
 # opena2 Archiv-Index
 curl http://127.0.0.1:12345/finalize/opena2

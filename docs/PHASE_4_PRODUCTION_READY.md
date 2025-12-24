@@ -1,8 +1,8 @@
 # 🚀 Phase 4 - Production Ready Checklist
 
-**Status**: ✅ PRODUCTION READY  
-**Commit**: 3ab9bea (Port validation hardened)  
-**Date**: 2025-11-09  
+**Status**: ✅ PRODUCTION READY
+**Commit**: 3ab9bea (Port validation hardened)
+**Date**: 2025-11-09
 **Reviewer**: GitHub Copilot + User Code Review
 
 ---
@@ -144,10 +144,10 @@ CLI (20 files):
 CI/CD (3 files):
   ✅ .github/workflows/portier-ci.yml (with integration job)
   ✅ .pre-commit-config.yaml
-  ✅ 1.portier_openai/skripte/validate_portier.sh
+  ✅ 1.opena1&2_portier/skripte/validate_portier.sh
 
 Config (2 files):
-  ✅ 1.portier_openai/config/tools_registry.json
+  ✅ 1.opena1&2_portier/config/tools_registry.json
   ✅ config/services.env
 
 Documentation (2 files):
@@ -241,7 +241,7 @@ Documentation (2 files):
 
 ```bash
 # Verify all gates locally
-bash 1.portier_openai/skripte/validate_portier.sh
+bash 1.opena1&2_portier/skripte/validate_portier.sh
 
 # Check project structure
 ls -la 4.telegram_agent/main_agent.py
@@ -311,6 +311,6 @@ All objectives completed:
 
 ---
 
-**Generated**: 2025-11-09  
-**Validator**: GitHub Copilot + User Review  
+**Generated**: 2025-11-09
+**Validator**: GitHub Copilot + User Review
 **Approval**: ✅ Ready for Production

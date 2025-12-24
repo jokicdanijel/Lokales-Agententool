@@ -17,9 +17,9 @@ require python3
 info "Starte opena3 (OpenWebUI Agent) auf Port $OPENWEBUI_AGENT_PORT..."
 
 # Aktiviere venv falls vorhanden
-if [[ -f "$PROJECT_ROOT/1.portier_openai/venv313/bin/activate" ]]; then
+if [[ -f "$PROJECT_ROOT/1.opena1&2_portier/venv313/bin/activate" ]]; then
   # shellcheck disable=SC1091
-  source "$PROJECT_ROOT/1.portier_openai/venv313/bin/activate"
+  source "$PROJECT_ROOT/1.opena1&2_portier/venv313/bin/activate"
 fi
 
 cd "$PROJECT_ROOT/19.dashboard_agent"

@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ScanPython – Installer + Scanner + Starter (final, mit ENV-Varianten)
 
 OS: Linux (Mint/Ubuntu) · Python 3.12+ (empfohlen 3.13)
-Projektpfad (Default): /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai
+Projektpfad (Default): /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier
 Venv: venv313 (Default, via $PORTIER_VENV überschreibbar)
 Port-Policy: 12344–12399 erlaubt; 8080 ausschließlich OpenWebUI (Loopback)
 
@@ -26,10 +25,11 @@ import re
 import shlex
 import subprocess
 import sys
-from dataclasses import dataclass, asdict
-from datetime import datetime, timezone
+from dataclasses import asdict, dataclass
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
+
 
 # ===== einfache .env-Unterstützung (ohne externe Pakete) =====
 def _load_dotenv_simple(dotenv_path: Path) -> None:
@@ -44,8 +44,9 @@ def _load_dotenv_simple(dotenv_path: Path) -> None:
         v = v.strip().strip('"').strip("'")
         os.environ.setdefault(k, v)  # vorhandene ENV nicht überschreiben
 
+
 # ===== Defaults einlesen (inkl. .env) =====
-_DEFAULT_ROOT = Path("/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai").resolve()
+_DEFAULT_ROOT = Path("/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier").resolve()
 _load_dotenv_simple(_DEFAULT_ROOT / ".env")  # vorab versuchen
 
 # ENV lesen
@@ -87,9 +88,9 @@ INDEX_JSONL = ARCHIV_ROOT / "index.jsonl"
 
 OPENAI_ENDPOINTS = {
     "opena1": {"label": "Koordinator", "route": "/log/opena1"},
-    "opena2": {"label": "Archivator",  "route": "/finalize/opena2"},
-    "kordp":  {"label": "Kordinatport","route": "/dispatch/kordp"},
-    "archivp":{"label": "Archivport",  "route": "/store/archivp"},
+    "opena2": {"label": "Archivator", "route": "/finalize/opena2"},
+    "kordp": {"label": "Kordinatport", "route": "/dispatch/kordp"},
+    "archivp": {"label": "Archivport", "route": "/store/archivp"},
 }
 
 REQUIRED_PKGS = [
@@ -101,12 +102,14 @@ REQUIRED_PKGS = [
 SAFEPOINT_SRC = "opena1"
 SAFEPOINT_DST = "opena2"
 
+
 # ===== Utils =====
-def iso_z(dt: Optional[datetime] = None) -> str:
-    dt = dt or datetime.now(timezone.utc)
+def iso_z(dt: datetime | None = None) -> str:
+    dt = dt or datetime.now(UTC)
     return dt.replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
-def run_cmd(cmd: str, timeout: int = 45) -> Tuple[int, str, str]:
+
+def run_cmd(cmd: str, timeout: int = 45) -> tuple[int, str, str]:
     proc = subprocess.run(
         shlex.split(cmd),
         stdout=subprocess.PIPE,
@@ -117,8 +120,10 @@ def run_cmd(cmd: str, timeout: int = 45) -> Tuple[int, str, str]:
     )
     return proc.returncode, proc.stdout.strip(), proc.stderr.strip()
 
+
 def ensure_dir(p: Path) -> None:
     p.mkdir(parents=True, exist_ok=True)
+
 
 def check_port_allowed(port: int) -> None:
     if not (ALLOWED_LOW <= port <= ALLOWED_HIGH):
@@ -126,16 +131,19 @@ def check_port_allowed(port: int) -> None:
     if port == RESERVED_OPENWEBUI:
         raise SystemExit("Port 8080 ist ausschließlich für OpenWebUI reserviert (Loopback).")
 
+
 def venv_ready() -> bool:
     return PY_BIN.exists() and PIP_BIN.exists()
 
-def pip_install(pkgs: List[str]) -> None:
+
+def pip_install(pkgs: list[str]) -> None:
     args = " ".join(shlex.quote(p) for p in pkgs)
     rc, out, err = run_cmd(f"{shlex.quote(str(PIP_BIN))} install --upgrade {args}")
     if rc != 0:
         print(out)
         print(err, file=sys.stderr)
         raise SystemExit("Paketinstallation fehlgeschlagen.")
+
 
 def create_env_files() -> None:
     # env.sh
@@ -161,6 +169,7 @@ export PORTIER_VENV="{ENV_VENV}"
         )
         DOTENV.write_text(dotenv_content, encoding="utf-8")
 
+
 def generate_mac() -> None:
     data = {
         "strict": True,
@@ -179,7 +188,7 @@ def generate_mac() -> None:
                 "archivp": str(ARCHIV_ROOT),
                 "opena1": str(PROJECT_ROOT / "opena1"),
                 "opena2": str(PROJECT_ROOT / "opena2"),
-                "kordp":  str(PROJECT_ROOT / "kordp"),
+                "kordp": str(PROJECT_ROOT / "kordp"),
                 "connector": str(PROJECT_ROOT / "connector"),
                 "docs": str(PROJECT_ROOT / "docs"),
             },
@@ -206,9 +215,10 @@ def generate_mac() -> None:
     }
     MAC_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
-def list_listening_ports() -> List[int]:
+
+def list_listening_ports() -> list[int]:
     rc, out, _ = run_cmd("ss -ltn")
-    ports: List[int] = []
+    ports: list[int] = []
     if rc == 0 and out:
         for line in out.splitlines():
             m = re.search(r":(\d+)\s", line)
@@ -221,8 +231,9 @@ def list_listening_ports() -> List[int]:
                     pass
     return sorted(ports)
 
-def safepoint_write(kind: str, payload: Dict[str, Any]) -> Path:
-    now = datetime.now(timezone.utc)
+
+def safepoint_write(kind: str, payload: dict[str, Any]) -> Path:
+    now = datetime.now(UTC)
     day_dir = ARCHIV_ROOT / f"{now:%Y/%m/%d}"
     ensure_dir(day_dir)
     spn = int(now.timestamp())
@@ -234,11 +245,22 @@ def safepoint_write(kind: str, payload: Dict[str, Any]) -> Path:
     fp.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     ensure_dir(INDEX_JSONL.parent)
     with INDEX_JSONL.open("a", encoding="utf-8") as f:
-        f.write(json.dumps({
-            "sp": name, "ts": iso_z(now), "src": SAFEPOINT_SRC, "dst": SAFEPOINT_DST,
-            "kind": kind, "path": str(fp)
-        }, ensure_ascii=False) + "\n")
+        f.write(
+            json.dumps(
+                {
+                    "sp": name,
+                    "ts": iso_z(now),
+                    "src": SAFEPOINT_SRC,
+                    "dst": SAFEPOINT_DST,
+                    "kind": kind,
+                    "path": str(fp),
+                },
+                ensure_ascii=False,
+            )
+            + "\n"
+        )
     return fp
+
 
 # ===== Scan (read-only) =====
 @dataclass
@@ -248,6 +270,7 @@ class PortCheck:
     is_reserved_8080: bool
     listening: bool
 
+
 @dataclass
 class ScanReport:
     strict: bool
@@ -255,10 +278,11 @@ class ScanReport:
     project_root: str
     venv_exists: bool
     python_exe: str
-    ports_summary: Dict[str, Any]
-    port_details: List[PortCheck]
+    ports_summary: dict[str, Any]
+    port_details: list[PortCheck]
     mac_dir_system_exists: bool
     mac_dir_system_valid: bool
+
 
 def perform_scan() -> ScanReport:
     listening = list_listening_ports()
@@ -268,7 +292,8 @@ def perform_scan() -> ScanReport:
             in_allowed_pool=(ALLOWED_LOW <= p <= ALLOWED_HIGH),
             is_reserved_8080=(p == RESERVED_OPENWEBUI),
             listening=True,
-        ) for p in listening
+        )
+        for p in listening
     ]
     ports_summary = {
         "listening_count": len(listening),
@@ -299,21 +324,27 @@ def perform_scan() -> ScanReport:
     )
     return rep
 
+
 def print_scan(rep: ScanReport) -> None:
     print("== ScanPython – Kurzbericht ==")
     print(f"Zeit:         {rep.ts}")
     print(f"Projektpfad:  {rep.project_root}")
     print(f"venv:         {'OK' if rep.venv_exists else 'FEHLT'} ({VENV_DIR.name})")
     print(f"Python:       {rep.python_exe}")
-    print(f"Ports:        listening={rep.ports_summary['listening_count']}  "
-          f"in_pool={rep.ports_summary['in_pool']}  "
-          f"out_of_policy={rep.ports_summary['out_of_policy']}  "
-          f"8080_in_use={rep.ports_summary['openwebui_8080_in_use']}")
-    print(f"MAC_DIR_SYSTEM.json: {'OK' if rep.mac_dir_system_valid else ('FEHLT' if not rep.mac_dir_system_exists else 'UNGÜLTIG')}")
+    print(
+        f"Ports:        listening={rep.ports_summary['listening_count']}  "
+        f"in_pool={rep.ports_summary['in_pool']}  "
+        f"out_of_policy={rep.ports_summary['out_of_policy']}  "
+        f"8080_in_use={rep.ports_summary['openwebui_8080_in_use']}"
+    )
+    print(
+        f"MAC_DIR_SYSTEM.json: {'OK' if rep.mac_dir_system_valid else ('FEHLT' if not rep.mac_dir_system_exists else 'UNGÜLTIG')}"
+    )
     print("\n-- JSON --")
     out = asdict(rep)
     out["port_details"] = [asdict(p) for p in rep.port_details]
     print(json.dumps(out, ensure_ascii=False, indent=2))
+
 
 # ===== Installer =====
 def do_install() -> None:
@@ -341,27 +372,28 @@ def do_install() -> None:
     print(f"- .env: {DOTENV if DOTENV.exists() else '(nicht erzeugt)'}")
     print(f"- MAC_DIR_SYSTEM.json: {MAC_PATH}")
 
+
 # ===== Integrierter opena1-Server (FastAPI) + Landingpage =====
 def serve_opena1(port: int, host: str = "127.0.0.1") -> None:
     check_port_allowed(port)
 
     try:
+        import uvicorn
         from fastapi import FastAPI, HTTPException, Request
         from fastapi.responses import HTMLResponse
-        from pydantic import BaseModel, UUID4, Field, ConfigDict, ValidationError
-        import uvicorn
+        from pydantic import UUID4, BaseModel, ConfigDict, Field, ValidationError
     except Exception:
         if not venv_ready():
             raise SystemExit("Pakete fehlen und venv ist nicht bereit. Führe zuerst 'install' aus.")
         pip_install(REQUIRED_PKGS)
+        import uvicorn
         from fastapi import FastAPI, HTTPException, Request
         from fastapi.responses import HTMLResponse
-        from pydantic import BaseModel, UUID4, Field, ConfigDict, ValidationError
-        import uvicorn
+        from pydantic import UUID4, BaseModel, ConfigDict, Field, ValidationError
 
     class Routing(BaseModel):
-        resolved_path: Optional[str] = None
-        notes: Optional[str] = None
+        resolved_path: str | None = None
+        notes: str | None = None
         model_config = ConfigDict(extra="forbid")
 
     class Project(BaseModel):
@@ -373,14 +405,16 @@ def serve_opena1(port: int, host: str = "127.0.0.1") -> None:
         request_id: UUID4
         timestamp: datetime
         command: str = Field(min_length=1)
-        target_preference: Optional[str] = None
-        payload: Dict[str, Any] = Field(default_factory=dict)
+        target_preference: str | None = None
+        payload: dict[str, Any] = Field(default_factory=dict)
         routing: Routing = Field(default_factory=Routing)
         project: Project
         strict: bool = True
         model_config = ConfigDict(extra="forbid")
 
-    def error_83(code: str, message: str, request_id: Optional[str] = None, details: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    def error_83(
+        code: str, message: str, request_id: str | None = None, details: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
         return {
             "request_id": request_id or "unknown",
             "timestamp": iso_z(),
@@ -433,11 +467,11 @@ hr{{border:none;border-top:1px solid #eee;margin:1rem 0}}
 </body></html>"""
 
     @app.get("/health")
-    def health() -> Dict[str, Any]:
+    def health() -> dict[str, Any]:
         return {"service": "opena1", "status": "ok", "ts": iso_z()}
 
     @app.post("/log/opena1")
-    async def log_opena1(request: Request) -> Dict[str, Any]:
+    async def log_opena1(request: Request) -> dict[str, Any]:
         """
         Erwartet JSON-Body gemäß Request71.
         """
@@ -450,12 +484,19 @@ hr{{border:none;border-top:1px solid #eee;margin:1rem 0}}
         try:
             parsed = Request71(**body)
             if parsed.strict is not True:
-                raise HTTPException(status_code=400, detail=error_83("STRICT_REQUIRED", "Feld 'strict' muss True sein.", rid))
+                raise HTTPException(
+                    status_code=400, detail=error_83("STRICT_REQUIRED", "Feld 'strict' muss True sein.", rid)
+                )
         except ValidationError as ve:
-            raise HTTPException(status_code=400, detail=error_83("SCHEMA_VIOLATION", "Payload verletzt das 7.1-Schema.", rid, {"errors": ve.errors()}))
+            raise HTTPException(
+                status_code=400,
+                detail=error_83("SCHEMA_VIOLATION", "Payload verletzt das 7.1-Schema.", rid, {"errors": ve.errors()}),
+            )
 
         # Safepoints
-        safepoint_write("CMD", {"source": "opena1", "target": "opena2", "action": "LOG", "payload": {"command": parsed.command}})
+        safepoint_write(
+            "CMD", {"source": "opena1", "target": "opena2", "action": "LOG", "payload": {"command": parsed.command}}
+        )
         safepoint_write("RESP", {"source": "opena2", "result": "ACCEPTED", "notes": "opena1 ack"})
 
         return {
@@ -468,9 +509,10 @@ hr{{border:none;border-top:1px solid #eee;margin:1rem 0}}
 
     uvicorn.run(app, host=host, port=port, reload=False)
 
+
 # ===== Preflight =====
 def preflight() -> None:
-    today = datetime.now(timezone.utc)
+    today = datetime.now(UTC)
     day_dir = ARCHIV_ROOT / f"{today:%Y/%m/%d}"
     if not day_dir.is_dir():
         raise SystemExit(f"[Archiv] Tagesordner fehlt: {day_dir}")
@@ -509,6 +551,7 @@ def preflight() -> None:
 
     print("PREFLIGHT OK")
 
+
 # ===== CLI =====
 def main() -> None:
     os.chdir(PROJECT_ROOT)
@@ -525,7 +568,9 @@ def main() -> None:
     p_scan.add_argument("--write-safepoint", action="store_true", help="CMD/RESP-Safepoints schreiben")
 
     p_serve = sub.add_parser("serve", help="Integrierten opena1-Koordinator starten")
-    p_serve.add_argument("--port", type=int, default=12345, help=f"Listen-Port ({ALLOWED_LOW}-{ALLOWED_HIGH}, 8080 verboten)")
+    p_serve.add_argument(
+        "--port", type=int, default=12345, help=f"Listen-Port ({ALLOWED_LOW}-{ALLOWED_HIGH}, 8080 verboten)"
+    )
     p_serve.add_argument("--host", default="127.0.0.1")
 
     sub.add_parser("preflight", help="Archiv-/Git-/MAC-Prüfung (hart)")
@@ -536,10 +581,13 @@ def main() -> None:
     if args.cmd == "install":
         do_install()
     elif args.cmd == "generate-mac":
-        ensure_dir(PROJECT_ROOT); ensure_dir(ARCHIV_ROOT); generate_mac()
+        ensure_dir(PROJECT_ROOT)
+        ensure_dir(ARCHIV_ROOT)
+        generate_mac()
         print(f"[OK] {MAC_PATH} aktualisiert.")
     elif args.cmd == "scan":
-        rep = perform_scan(); print_scan(rep)
+        rep = perform_scan()
+        print_scan(rep)
         if getattr(args, "write_safepoint", False):
             safepoint_write("CMD", {"source": SAFEPOINT_SRC, "target": SAFEPOINT_DST, "action": "SCAN"})
             safepoint_write("RESP", {"source": SAFEPOINT_DST, "result": "SCAN_RECORDED"})
@@ -550,8 +598,9 @@ def main() -> None:
     elif args.cmd == "help":
         parser.print_help()
     else:
-        parser.print_help(); raise SystemExit(2)
+        parser.print_help()
+        raise SystemExit(2)
+
 
 if __name__ == "__main__":
     main()
-

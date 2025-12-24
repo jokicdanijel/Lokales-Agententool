@@ -1,8 +1,8 @@
 # DEV/PROD-Switch: Implementation Blueprint
 
-**Zweck:** Klare Umsetzung der DEV/PROD-Separation in den bestehenden Code  
-**Status:** Implementation Template (für Phase 4, Week 2)  
-**Gültig ab:** 2025-11-06  
+**Zweck:** Klare Umsetzung der DEV/PROD-Separation in den bestehenden Code
+**Status:** Implementation Template (für Phase 4, Week 2)
+**Gültig ab:** 2025-11-06
 **Maintainer:** DevOps, Security Team
 
 ---
@@ -81,18 +81,18 @@ ENV_CONFIGS = {
 
 class EnvironmentManager:
     """Singleton für Environment-Verwaltung"""
-    
+
     _instance = None
-    
+
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
         return cls._instance
-    
+
     def __init__(self):
         if hasattr(self, "_initialized"):
             return
-        
+
         # Detect environment from env var or default to DEV
         env_str = os.getenv("ELION_ENV", "development").lower()
         try:
@@ -100,12 +100,12 @@ class EnvironmentManager:
         except ValueError:
             logger.warning(f"Unknown ELION_ENV: {env_str}, defaulting to development")
             self.env = Environment.DEVELOPMENT
-        
+
         self.config = ENV_CONFIGS[self.env]
         self._initialized = True
-        
+
         self._log_startup()
-    
+
     def _log_startup(self):
         """Startup-Log mit Sicherheits-Status"""
         logger.info(f"=== ELION Startup (ENV: {self.env.value}) ===")
@@ -113,19 +113,19 @@ class EnvironmentManager:
         logger.info(f"Admin Bypass: {'✅ ENABLED' if self.config.enable_admin_bypass else '❌ DISABLED'}")
         logger.info(f"Token Storage: {self.config.token_storage}")
         logger.info(f"UI Auth Required: {self.config.require_ui_auth}")
-    
+
     def is_dev(self) -> bool:
         return self.env == Environment.DEVELOPMENT
-    
+
     def is_prod(self) -> bool:
         return self.env == Environment.PRODUCTION
-    
+
     def is_staging(self) -> bool:
         return self.env == Environment.STAGING
-    
+
     def get_config(self) -> SecurityConfig:
         return self.config
-    
+
     def get_token_secret(self, key: str) -> str:
         """Hole Token basierend auf Token-Storage-Modus"""
         if self.config.token_storage == "plaintext":
@@ -139,7 +139,7 @@ class EnvironmentManager:
             return self._load_from_vault(key)
         else:
             raise ValueError(f"Unknown token_storage: {self.config.token_storage}")
-    
+
     def _load_from_aws_secrets(self, key: str) -> str:
         """Hole Secret aus AWS Secrets Manager (PROD)"""
         try:
@@ -154,7 +154,7 @@ class EnvironmentManager:
         except Exception as e:
             logger.error(f"Failed to load from AWS Secrets: {e}")
             raise RuntimeError("Cannot access secrets in PROD")
-    
+
     def _load_from_vault(self, key: str) -> str:
         """Hole Secret aus HashiCorp Vault (STAGING)"""
         try:
@@ -195,7 +195,7 @@ logger = logging.getLogger(__name__)
 
 class AuditLogger:
     """Audit-Trail für alle Security-Events"""
-    
+
     @staticmethod
     def log_event(event: str, detail: str, severity: str = "info", **kwargs):
         """Logge Security-Event mit Kontext"""
@@ -207,24 +207,24 @@ class AuditLogger:
             "environment": env_manager.env.value,
             **kwargs
         }
-        
+
         # Log zu stderr (für nohup)
         logger.warning(json.dumps(log_entry))
-        
+
         # Optional: Schreibe zu Audit-DB (TODO in Phase 4)
 
 
 async def validate_token(token: str, request: Request) -> Dict:
     """
     Token-Validierung mit DEV/PROD-Logik
-    
+
     DEV: Erlaubt Bypasses
     PROD: Nur echte Tokens
     """
-    
+
     config = env_manager.get_config()
     source_ip = request.client.host if request.client else "unknown"
-    
+
     # Check 1: Admin-Bypass (nur DEV/STAGING)
     if config.enable_admin_bypass:
         admin_token = env_manager.get_token_secret("ADMIN_TOKEN")
@@ -236,7 +236,7 @@ async def validate_token(token: str, request: Request) -> Dict:
                 source_ip=source_ip
             )
             return {"role": "admin", "source": "admin_bypass"}
-    
+
     # Check 2: Owner-Override (nur DEV/STAGING mit spezieller Flag)
     if config.enable_owner_override and request.headers.get("X-Owner-Override") == "true":
         AuditLogger.log_event(
@@ -246,7 +246,7 @@ async def validate_token(token: str, request: Request) -> Dict:
             source_ip=source_ip
         )
         return {"role": "owner", "source": "owner_override"}
-    
+
     # Check 3: Normale Token-Validierung
     try:
         return await validate_jwt_token(token)
@@ -270,13 +270,13 @@ async def validate_jwt_token(token: str) -> Dict:
 async def execute_emergency_reset(request: Request) -> Dict:
     """
     Emergency-Reset mit Audit-Log
-    
+
     DEV: Schnelle Ausführung
     PROD: Requires Audit + Notification
     """
-    
+
     config = env_manager.get_config()
-    
+
     if not config.enable_emergency_command:
         AuditLogger.log_event(
             event="emergency_command_blocked",
@@ -285,7 +285,7 @@ async def execute_emergency_reset(request: Request) -> Dict:
             source_ip=request.client.host
         )
         raise HTTPException(status_code=403, detail="Emergency command not allowed in this environment")
-    
+
     # Log + Execute
     AuditLogger.log_event(
         event="emergency_reset_initiated",
@@ -293,11 +293,11 @@ async def execute_emergency_reset(request: Request) -> Dict:
         severity="critical",
         source_ip=request.client.host
     )
-    
+
     if env_manager.is_prod():
         # PROD: Notify team before reset
         await notify_team("Emergency reset initiated")
-    
+
     # Execute reset
     import subprocess
     try:
@@ -337,15 +337,15 @@ app = FastAPI()
 async def emergency_reset(request: Request, token: str = Depends(validate_token)):
     """
     Emergency-Reset Endpoint
-    
+
     - DEV: Erlaubt, schnelle Ausführung
     - PROD: Erlaubt, aber mit Audit + Notification
     """
-    
+
     # Security-Check
     if token.get("role") != "admin":
         raise HTTPException(status_code=403, detail="Admin access required")
-    
+
     # Execute
     return await execute_emergency_reset(request)
 
@@ -356,7 +356,7 @@ async def debug_status(request: Request):
     Debug-Endpoint (nur DEV/STAGING)
     - Zeigt Konfiguration, Tokens, interne State
     """
-    
+
     if not env_manager.is_dev():
         AuditLogger.log_event(
             event="debug_endpoint_blocked",
@@ -365,7 +365,7 @@ async def debug_status(request: Request):
             source_ip=request.client.host
         )
         raise HTTPException(status_code=403, detail="Not available in this environment")
-    
+
     config = env_manager.get_config()
     return {
         "environment": env_manager.env.value,
@@ -549,7 +549,7 @@ if [ -f .env.development ]; then
 fi
 
 # Start venv
-source 1.portier_openai/venv313/bin/activate
+source 1.opena1&2_portier/venv313/bin/activate
 
 # Start services
 cd 19.dashboard_agent

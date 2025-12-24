@@ -41,10 +41,10 @@ DIR_SCRIPTS := $(DIR_ROOT)/scripts
 DIR_SRC := $(DIR_ROOT)/src
 DIR_CONFIGS := $(DIR_ROOT)/configs
 DIR_LOGS := $(DIR_ROOT)/logs
-DIR_ARCHIV := $(DIR_ROOT)/1.portier_openai/archivp
+DIR_ARCHIV := $(DIR_ROOT)/1.opena1&2_portier/archivp
 
 # Configuration
-VENV_DIR := $(DIR_ROOT)/1.portier_openai/venv312
+VENV_DIR := $(DIR_ROOT)/1.opena1&2_portier/venv312
 PYTHON_BIN := $(VENV_DIR)/bin/python
 PYTHON_VERSION := 3.12
 
@@ -131,11 +131,11 @@ ports:
 bootstrap:
 	@echo "🔧 [BOOTSTRAP] Initializing Portier stack..."
 	@echo ""
-	
+
 	@echo "📁 Creating directories..."
 	@mkdir -p $(DIR_LOGS) $(DIR_ARCHIV) $(DIR_SCRIPTS)
 	@echo "   ✅ Directories created"
-	
+
 	@echo ""
 	@echo "🐍 Setting up venv (Python $(PYTHON_VERSION))..."
 	@if [ ! -d "$(VENV_DIR)" ]; then \
@@ -146,7 +146,7 @@ bootstrap:
 	else \
 		echo "   ✅ venv already exists at $(VENV_DIR)"; \
 	fi
-	
+
 	@echo ""
 	@echo "🔗 Creating .venv symlink..."
 	@if [ ! -L .venv ]; then \
@@ -155,16 +155,16 @@ bootstrap:
 	else \
 		echo "   ✅ Symlink already exists"; \
 	fi
-	
+
 	@echo ""
 	@echo "📦 Installing base dependencies..."
 	@$(PYTHON_BIN) -m pip install --upgrade pip setuptools wheel >/dev/null 2>&1
 	@echo "   ✅ pip, setuptools, wheel upgraded"
-	
+
 	@echo ""
 	@echo "🛡️ Running policy check..."
 	@$(MAKE) -s policy
-	
+
 	@echo ""
 	@echo "✅ [BOOTSTRAP] Complete"
 
@@ -226,14 +226,14 @@ health:
 generate-original: bootstrap
 	@echo "🚀 [GENERATE-ORIGINAL] One-shot orchestration..."
 	@echo ""
-	
+
 	@echo "⏱️ Startup sequence:"
 	@echo "   1. Starting opena1 ($(PORT_OPENA1))..."
 	@echo "   2. Starting kordp ($(PORT_KORDP))..."
 	@echo "   3. Starting archivp ($(PORT_ARCHIVP))..."
 	@echo "   4. Starting opena2 ($(PORT_OPENA2))..."
 	@echo ""
-	
+
 	@if [ -x "$(DIR_SCRIPTS)/bootstrap_core.sh" ]; then \
 		bash $(DIR_SCRIPTS)/bootstrap_core.sh 2>&1 | sed 's/^/   /'; \
 	else \
@@ -241,7 +241,7 @@ generate-original: bootstrap
 		echo "   Make sure to run: chmod +x $(DIR_SCRIPTS)/bootstrap_core.sh"; \
 		exit 1; \
 	fi
-	
+
 	@echo ""
 	@echo "✅ [GENERATE-ORIGINAL] Services initialized"
 

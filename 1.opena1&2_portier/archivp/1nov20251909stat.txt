@@ -2,7 +2,7 @@
  Sie:
   Befehl 'find' aus dem deb findutils (4.9.0-5)
 Versuche: sudo apt install <deb name>
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai$ find
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier$ find
 .
 ./opena20
 ./opena19
@@ -3531,6 +3531,4 @@ danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/1
 ./fullstack_app
 ./fullstack_app/logs
 ./fullstack_app/.runtime
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai$ 
-
-
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier$

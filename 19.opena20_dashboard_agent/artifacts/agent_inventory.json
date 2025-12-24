@@ -5,7 +5,7 @@
         "opena1"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "1.opena1&2_portier/opena1/.mypy_cache/.gitignore",
@@ -603,6 +603,11 @@
           "size": 190
         },
         {
+          "relpath": "1.opena1&2_portier/opena1/__pycache__/main.cpython-312.pyc",
+          "sha256": "7f4a6c961208817a73adbaef2c908cc98f4209ce04575cc8ad8df748e4bd0c6d",
+          "size": 271
+        },
+        {
           "relpath": "1.opena1&2_portier/opena1/main.py",
           "sha256": "a006f4e746ccec3124c25388ea5cba45f6d0e6afaf1d8a74168efe433a5b4baa",
           "size": 94
@@ -626,7 +631,7 @@
         "opena2"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "1.opena1&2_portier/opena2/.mypy_cache/.gitignore",
@@ -1224,6 +1229,11 @@
           "size": 190
         },
         {
+          "relpath": "1.opena1&2_portier/opena2/__pycache__/main.cpython-312.pyc",
+          "sha256": "8bdba7e935cde172b8eb6b1e3e571adcfb87b5985c94bce35c5ca852008902a1",
+          "size": 271
+        },
+        {
           "relpath": "1.opena1&2_portier/opena2/main.py",
           "sha256": "b4e015ff25068cbc5fd17b81fd352c839280ec2deae4b18a1509009a21f965db",
           "size": 94
@@ -1246,7 +1256,7 @@
         "opena3"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "2.opena3_openwebui/.mypy_cache/.gitignore",
@@ -1844,6 +1854,11 @@
           "size": 190
         },
         {
+          "relpath": "2.opena3_openwebui/__pycache__/main.cpython-312.pyc",
+          "sha256": "b6df0489d8b9307f822ccd46f7062f9262ec00ca1f3196fbb82757744362fc58",
+          "size": 264
+        },
+        {
           "relpath": "2.opena3_openwebui/main.py",
           "sha256": "bd2d8611f96a135b71b65ccfb04b20af9664b5af8881e882af416e5b3ad97cb0",
           "size": 94
@@ -1866,7 +1881,7 @@
         "opena4"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "3.opena4_telegram/.mypy_cache/.gitignore",
@@ -2464,6 +2479,11 @@
           "size": 190
         },
         {
+          "relpath": "3.opena4_telegram/__pycache__/main.cpython-312.pyc",
+          "sha256": "b70b87b573f69678beffe8b69709e0ca45fd5f8428e007458542fc3b6befc036",
+          "size": 263
+        },
+        {
           "relpath": "3.opena4_telegram/main.py",
           "sha256": "d6d2f041273b830be31c4232bbdd057bd2199e60208f76b0410299216a23d6fa",
           "size": 94
@@ -2486,7 +2506,7 @@
         "opena5"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "4.opena5_vscode/.mypy_cache/.gitignore",
@@ -3084,6 +3104,11 @@
           "size": 190
         },
         {
+          "relpath": "4.opena5_vscode/__pycache__/main.cpython-312.pyc",
+          "sha256": "fb39893a62a122c6d6aacf3c3b4c78fbc96f04eafac8b52edf230f7a3899c14f",
+          "size": 261
+        },
+        {
           "relpath": "4.opena5_vscode/main.py",
           "sha256": "a248286652c74aecc0f37fbc90b3c03023c8bd58e9f7f0308a90280f69947aec",
           "size": 94
@@ -3106,7 +3131,7 @@
         "opena6"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "5.opena6_browser/.mypy_cache/.gitignore",
@@ -3704,6 +3729,11 @@
           "size": 190
         },
         {
+          "relpath": "5.opena6_browser/__pycache__/main.cpython-312.pyc",
+          "sha256": "04c6759695bea7ebffb4cd1a9120ce1f4005ec6827a6216c3359d7f82d92e651",
+          "size": 262
+        },
+        {
           "relpath": "5.opena6_browser/main.py",
           "sha256": "de602b5770d59a6debdbb6d7595457cc7aecb3ade5c12c8ce5787f36bf448d26",
           "size": 94
@@ -3726,7 +3756,7 @@
         "opena7"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "6.opena7_email/.mypy_cache/.gitignore",
@@ -4324,6 +4354,11 @@
           "size": 190
         },
         {
+          "relpath": "6.opena7_email/__pycache__/main.cpython-312.pyc",
+          "sha256": "30ee0197278ab07c7ff6d396dee24d42b05ff683a371f4747c8c36dca616cfef",
+          "size": 260
+        },
+        {
           "relpath": "6.opena7_email/main.py",
           "sha256": "5d422c5613a6e8a29f25f29ebdf1833a8b28477f1878ffefdd6d7a2ba9901f22",
           "size": 94
@@ -4346,7 +4381,7 @@
         "opena8"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "7.opena8_whatsapp/.mypy_cache/.gitignore",
@@ -4944,6 +4979,11 @@
           "size": 190
         },
         {
+          "relpath": "7.opena8_whatsapp/__pycache__/main.cpython-312.pyc",
+          "sha256": "5a12f0f1c37e2f4a896b9951a012ab977dd790fa6bdfc1ff49a0750d8fb9dffe",
+          "size": 263
+        },
+        {
           "relpath": "7.opena8_whatsapp/main.py",
           "sha256": "b475538c063ec68fb56d4626e9e4264fb96fe1a68112e49f93f909f27f06039b",
           "size": 94
@@ -4966,7 +5006,7 @@
         "opena9"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "8.opena9_telephone/.mypy_cache/.gitignore",
@@ -5564,6 +5604,11 @@
           "size": 190
         },
         {
+          "relpath": "8.opena9_telephone/__pycache__/main.cpython-312.pyc",
+          "sha256": "86993eab9609ceb9a4fae7bf796c585f82b8dfc7f2d11e9872b71277bb75f5f4",
+          "size": 264
+        },
+        {
           "relpath": "8.opena9_telephone/main.py",
           "sha256": "7f9072d4a8c6796327ffa1ceab4ec85dfc2ec2980b449457ce3f24c51de137d2",
           "size": 94
@@ -5586,7 +5631,7 @@
         "opena10"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "9.opena10_call_tracking/.mypy_cache/.gitignore",
@@ -6184,6 +6229,11 @@
           "size": 190
         },
         {
+          "relpath": "9.opena10_call_tracking/__pycache__/main.cpython-312.pyc",
+          "sha256": "24c303b6623536b974001a9b01beff6a136ad50b1a4a36f976233cff19929a51",
+          "size": 271
+        },
+        {
           "relpath": "9.opena10_call_tracking/main.py",
           "sha256": "d7134c007d2fb1a48a212f11da984c0e9875c8e1671d0d47ba813530551442d6",
           "size": 96
@@ -6206,7 +6256,7 @@
         "opena11"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "10.opena11_unlock/.mypy_cache/.gitignore",
@@ -6804,6 +6854,11 @@
           "size": 190
         },
         {
+          "relpath": "10.opena11_unlock/__pycache__/main.cpython-312.pyc",
+          "sha256": "aa2fade01e869d9fe555f061d70150ea14bf65812ac0718f85293e3164783577",
+          "size": 265
+        },
+        {
           "relpath": "10.opena11_unlock/main.py",
           "sha256": "70eb5f658081ee497bd8835d9978649ad19ae3f1b48761215d5f9e94a04580c1",
           "size": 96
@@ -6826,12 +6881,612 @@
         "opena12"
       ],
       "endpoints": [],
-      "file_count": 1,
+      "file_count": 121,
       "files": [
         {
+          "relpath": "11.opena12_social_media/.mypy_cache/.gitignore",
+          "sha256": "6a69da670d11530d37f0f0cfdc7bed30b78ea6434e24f7a73208b982e29d322c",
+          "size": 34
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/@plugins_snapshot.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "size": 2
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_ast.data.json",
+          "sha256": "6070fda0756871b291fa73a40ae2eb4e718d9dfbd3310c6099c2f8872f657eae",
+          "size": 11989
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_ast.meta.json",
+          "sha256": "b7f44ab7d3db8af82a7f5708c27c271a2b47c0b0d3774f8a40e5f8a10caaf7e8",
+          "size": 1655
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_codecs.data.json",
+          "sha256": "fe10329b03866d2de25dfac2da2025349dfde9d2adc3f34d8814f045343f9507",
+          "size": 61360
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_codecs.meta.json",
+          "sha256": "72fb2e69a627642f24d4bd719eb18dc45c97a100e1d76e4fbc218a975653b92c",
+          "size": 1745
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_collections_abc.data.json",
+          "sha256": "7afd6d1947496df169b74314e47940b6b8a6883dc40ae3b15cea737d7e940a23",
+          "size": 33826
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_collections_abc.meta.json",
+          "sha256": "b548e5f1796fef8fe6eb070a5e334b32b058f5f93c203c891d529ec4c2f9eec4",
+          "size": 1678
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_frozen_importlib.data.json",
+          "sha256": "5435b748e0586b408ff3a692be011724a83d6a537b827eb93cffad0d126079fc",
+          "size": 37438
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_frozen_importlib.meta.json",
+          "sha256": "2292073a4fe6dacfdd1e1041e484ea8d6f8627c31cf387442903ce6ed2f0a789",
+          "size": 1791
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_frozen_importlib_external.data.json",
+          "sha256": "12fa20d62bbd760021f9c52431335002edc0e6205ff194d9f0294862a70d25f2",
+          "size": 62800
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_frozen_importlib_external.meta.json",
+          "sha256": "12bd346142a8481198764e6ab8cc5a8016c5de6888ea072bc4fb8512c8e5c33a",
+          "size": 1979
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_io.data.json",
+          "sha256": "ea0706dd652f1be37a6b843c58176f9dd397cc397da149d9786af9c36ba91aa1",
+          "size": 115610
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_io.meta.json",
+          "sha256": "d2e74801d243b5b8e62cd349f485b10c6d25dd7133b9091371af6516e198e3bb",
+          "size": 1756
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_sitebuiltins.data.json",
+          "sha256": "1b1ec895741cc5ae9220a26d9e54e650094113b2da8f2397769eb5b38eb2d6f6",
+          "size": 8728
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_sitebuiltins.meta.json",
+          "sha256": "fe52c4af348161366f09e389a866e42fb0294d94e48296b71ddf99c800e042e4",
+          "size": 1678
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_typeshed/__init__.data.json",
+          "sha256": "9b988b9bc5b3bf313f5fb3439a8fccaade22e0cba9527b4c60feedb10ca5d81a",
+          "size": 126777
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_typeshed/__init__.meta.json",
+          "sha256": "664a575290201f2849ea0a79b8e7490e2291ba54ace4cc51be8b8069943a7eb9",
+          "size": 1770
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_typeshed/importlib.data.json",
+          "sha256": "74648b53c29e6aa62423af28a2656a5d46fc87199285c0d1dabd231cb8dfc048",
+          "size": 7770
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/_typeshed/importlib.meta.json",
+          "sha256": "535bb9f0fc9a0441e66d5a2610f8e4a09512d95f1d7c74f0f2c802f02ae648c9",
+          "size": 1704
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/abc.data.json",
+          "sha256": "e36d6fa4f13188bdbedcff2400fd5a27b86f470024d4fd55450f349846b74f3a",
+          "size": 30077
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/abc.meta.json",
+          "sha256": "21f301dda7f33bea7c27a57b44ac59f413cdc431efd4a91e539db8d0a77c851e",
+          "size": 1688
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/ast.data.json",
+          "sha256": "7fa0225aa231e614bc5259eecdc754032b32faedb17de04c46dda8c1d234a8dc",
+          "size": 533087
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/ast.meta.json",
+          "sha256": "cf0dc88bea2b91297fb0598b68931974860fcb42f61af6f0e0b6371c57bb1b6c",
+          "size": 1747
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/builtins.data.json",
+          "sha256": "9d9f513ccf55fb7455683f5340b4fd114ea3bc8925f0f46c648b30b21cd0812c",
+          "size": 1897217
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/builtins.meta.json",
+          "sha256": "00fac6e00934e7acd9ff7eabbbf2c0ec67f1744b7823b4fac47e281e51a57e6a",
+          "size": 1795
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/codecs.data.json",
+          "sha256": "d3ad29e6085ed9b943a8feac3890a8a66cd354c171e934a6d2d9c3b484afcbc1",
+          "size": 139581
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/codecs.meta.json",
+          "sha256": "09931b653f25a26f08deffd193c0951a0527eeb8ef482e0485d00c1161be364d",
+          "size": 1732
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/collections/__init__.data.json",
+          "sha256": "5cd344a6cf2c1154398c1b9b3bf93fe260edb42b4f9253695e53fc77039809b4",
+          "size": 848015
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/collections/__init__.meta.json",
+          "sha256": "d7b13b2d8880b528f72f507d7eec0035246deb83c97c1cd2d602a2a9acf0dc9e",
+          "size": 1748
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/collections/abc.data.json",
+          "sha256": "d8a41a5e26c4b4b4f67f6a3a435d554a70efb8998fe6f17c917bae2e8e12173c",
+          "size": 4076
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/collections/abc.meta.json",
+          "sha256": "524dbc97241170541aff7627f6e4cf87ed21802b8d7a46878d965dbf892727f2",
+          "size": 1659
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/contextlib.data.json",
+          "sha256": "820a2f2f1a527c5b5a696144660dba08bcdee63d1ab46f6406a235f9508d5b01",
+          "size": 153655
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/contextlib.meta.json",
+          "sha256": "73b4c4df76474de083438e773739ce42fdacdeb1d499b4b961e511f44ee9c4fb",
+          "size": 1721
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/dataclasses.data.json",
+          "sha256": "e98ccb825b2432ec3177ab4f1ba27aff03f63dc82f99362a5f9728ca94ba22f2",
+          "size": 90151
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/dataclasses.meta.json",
+          "sha256": "80a4c3094814cdf9092822f4d392308e9222a34c74a554f21db433989f88c424",
+          "size": 1727
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/email/__init__.data.json",
+          "sha256": "71fb9963fb4a82bacf33be401009ee73c24a671b0c45aaf74900b16b89dbab87",
+          "size": 10334
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/email/__init__.meta.json",
+          "sha256": "c718bd7df91fc3812b639ce9d054c85ce320506f6f268b96f4ad6e69b5ab99b0",
+          "size": 1749
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/email/_policybase.data.json",
+          "sha256": "302c9a4c9900b934591cf7d71d5b8cc44ff529272e8981623a72981f5ef67697",
+          "size": 48831
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/email/_policybase.meta.json",
+          "sha256": "98725ab8277467c4e4c1960e5e41937e1761fd7fdf28a51fd20d6ed02e6e8341",
+          "size": 1735
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/email/charset.data.json",
+          "sha256": "f09f83f948aafe33f05e35d72371473da3776024a74c8c6bfd1d0391f11adb41",
+          "size": 18121
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/email/charset.meta.json",
+          "sha256": "f26ed923c2bee4894b2865b60560c324113d7b50dd981f94c4c5bfab9e78ebcf",
+          "size": 1688
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/email/contentmanager.data.json",
+          "sha256": "c8ccbff8f731eef5736f39ba595d0e2e4deb16d73998ac36f34c01583b4d0359",
+          "size": 8017
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/email/contentmanager.meta.json",
+          "sha256": "42e576e63c6af3712c45b064b436ae720716d323177c4de5646c587b1d4d29e8",
+          "size": 1701
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/email/errors.data.json",
+          "sha256": "26d4d23afdd6574b2bb4bbbf729ad2aca7128764ad46198c8e989f5d6928e654",
+          "size": 26775
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/email/errors.meta.json",
+          "sha256": "51718c35640d14d6e8078984c0e422bab947d4014c7bbdaa10d96d185b212e15",
+          "size": 1673
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/email/header.data.json",
+          "sha256": "61ee738f5aa0b6c8c9cce2b29abf010cb79ec0abc4a81719281fe5c5d572b679",
+          "size": 10639
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/email/header.meta.json",
+          "sha256": "b0d980e36859231341f97152bdd373b96b47c58724c04e250e1813d7d810e6bd",
+          "size": 1686
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/email/message.data.json",
+          "sha256": "9351f3e12e85bc6dda3b1bb1d388e6a4bb0bb74579a1474da8313ef8b7489249",
+          "size": 205494
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/email/message.meta.json",
+          "sha256": "a47da56564e9c031fac37954dcefc239d8d172ecace0e61f12d60d348fbe9ee5",
+          "size": 1830
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/email/policy.data.json",
+          "sha256": "9006dbd07a6941ef17493f4c38345220987f0299cadd7919c9b86ecbaa09bfc8",
+          "size": 32792
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/email/policy.meta.json",
+          "sha256": "257468deba26ac3ef23cb06909ccfb40ba1e74b822fa2e954502739e47587297",
+          "size": 1761
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/enum.data.json",
+          "sha256": "8bf8582f14b88923b9a138a6d17ecbf25e692b61d45c54f434a7d06cdc6651b5",
+          "size": 136780
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/enum.meta.json",
+          "sha256": "ab99554ff5d8674cf3b3ac0168016a57a0634d216222ec72a3bed2d794644110",
+          "size": 1702
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/genericpath.data.json",
+          "sha256": "2826e41759d7fed04182d00f5ff5f3717faffca65c29cb8e30413b412ae37e2f",
+          "size": 34239
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/genericpath.meta.json",
+          "sha256": "3c3c4f9afd71cad396083647a44cd613ee4cca8df869201a32ce1079b28752ab",
+          "size": 1712
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/__init__.data.json",
+          "sha256": "faeec3c1d980e4ddb4009db5da7b1371e1350eedf0d560231b83f4b6d5a8bce9",
+          "size": 4754
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/__init__.meta.json",
+          "sha256": "482d27acf0403c587069aac59776946088b66284cb94a00ca2caeffa9f1a226c",
+          "size": 1721
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/_abc.data.json",
+          "sha256": "e02ffd1bba665f746b34367839cff545f5b27d92af691dd8180bce26e32d0e85",
+          "size": 5008
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/_abc.meta.json",
+          "sha256": "0a19ae6b6f86d41052ad482d8244c16bd78dae2ff6268cf5c2bd6cc3c914241d",
+          "size": 1701
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/_bootstrap.data.json",
+          "sha256": "fd1f4783106409691bd1a205448c5ce17055e299d48f51c833bcd0dde2b3dd22",
+          "size": 2347
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/_bootstrap.meta.json",
+          "sha256": "de08977d06a7740e1c151fb76c45e2b4f53c364ab54b8ba85661fde49d001951",
+          "size": 1646
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/_bootstrap_external.data.json",
+          "sha256": "27daad7687b0ec9d9db4f5500870da199cf5b5194e9c02809caa4758944a0872",
+          "size": 4428
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/_bootstrap_external.meta.json",
+          "sha256": "f1c35b5fd53aadc76d7d52aa69a1251b3f53a8bf72748d0318ca05b88232b9c3",
+          "size": 1698
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/abc.data.json",
+          "sha256": "ea0ec9c32bfc5a77fe6eb27df39a85025ba712004643dd0a39b5eb1d5bdc3826",
+          "size": 57764
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/abc.meta.json",
+          "sha256": "e589d60e6326fa1be36049bee8e18d67e8c5daa824b7188577c20593463d27ff",
+          "size": 1908
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/machinery.data.json",
+          "sha256": "37f48688f2d24379e34b5a4d33f7e9717478d42826cd2eac4ca25b929798ad4a",
+          "size": 4203
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/machinery.meta.json",
+          "sha256": "8aa47771be1e60f05954065b9afab09aa59d7453f1654fc880012cc73dd12f2d",
+          "size": 1736
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/metadata/__init__.data.json",
+          "sha256": "5b8ef478ed2140a791ab7c688cf6779c4fc10840053f2831a40b3362d16b5763",
+          "size": 81096
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/metadata/__init__.meta.json",
+          "sha256": "605584f5a832caaf11b6effdbb6b30607986ec45d7f345072a8a1dd1c42bf24f",
+          "size": 1869
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/metadata/_meta.data.json",
+          "sha256": "476c109c2effc29f8fd717b58b10062afa9c452d6804830c053eb4eed312f797",
+          "size": 31322
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/metadata/_meta.meta.json",
+          "sha256": "e0de3f210162915a7e793b4fff36747c32ed0cc8bd2872a288bb1a51a300ea51",
+          "size": 1750
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/readers.data.json",
+          "sha256": "db3871e06ff14d754986fd016096bd43ac58b0383f6921a9dad09a7be9ee9bc5",
+          "size": 22875
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/readers.meta.json",
+          "sha256": "3d1778fe48ac9da32a6fe0c1c6e80a9531deacd1e207ad48bd2c34aaabf1b749",
+          "size": 1910
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/resources/__init__.data.json",
+          "sha256": "0c5132c5ba9ee01326d89ad96a4b4288b45df09274959a64a939fd724b540e01",
+          "size": 10132
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/resources/__init__.meta.json",
+          "sha256": "f70f7959db5c2da2c416cdff98206f971b6a931a691e9797c3a46aee40f43733",
+          "size": 1861
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/resources/_common.data.json",
+          "sha256": "0406f7999a1d45d21aadbecfc81c388ae3eda54a8d3971835647edd4b44d3c20",
+          "size": 13202
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/resources/_common.meta.json",
+          "sha256": "419f1b437601b7bc890d9e6569f1ff98291a2bc5e12ef9c414a9d267a21f762f",
+          "size": 1811
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/resources/abc.data.json",
+          "sha256": "51dacedb119ece675488fdc47c6367f4a2ad9d8fdd6121febbef4dd2aa34a327",
+          "size": 2482
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/importlib/resources/abc.meta.json",
+          "sha256": "96a8bcfb9183bc4eb6e3e9fcfcae6d6aad4562dbae3b00053686a67ed50d437a",
+          "size": 1701
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/io.data.json",
+          "sha256": "a30ea197264b829db294a6c0986bb6c3285259f6b89773814f352cff14e0b7c7",
+          "size": 8815
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/io.meta.json",
+          "sha256": "6a4cfb9f3e6937b2be4f6b6fc3ac050ae737e76fb818127be8d66a37fa4baada",
+          "size": 1663
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/main.data.json",
+          "sha256": "b21316c70ab0c4266ecf1e14f661067dbd6159512ca68e97c7a37e7262003de0",
+          "size": 2060
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/main.meta.json",
+          "sha256": "c375d13c5089b0fdbab9965915b575afcf4986f9894689f13bd37ef11e5002a4",
+          "size": 1619
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/os/__init__.data.json",
+          "sha256": "86a2826a6dc165375981e3ddb5ee94bb18e3b096ef355d9433dbea7081426eb7",
+          "size": 436997
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/os/__init__.meta.json",
+          "sha256": "b5d81d0316cba2cd2ff4ea04c2583c9af9ec41eb085dea35236b81bc7873cb04",
+          "size": 1808
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/os/path.data.json",
+          "sha256": "aa22e236e8d2f9140f108b92ac0dbe50a2862437a44a9fe4f5501b8a3a4e679d",
+          "size": 5335
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/os/path.meta.json",
+          "sha256": "53cac4a5c4cee3bd654061b18a2941cbb6ded3b9d046cd84057507fa68fd70bf",
+          "size": 1648
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/pathlib.data.json",
+          "sha256": "793a2442f47e56b62beb82eaafdf060a6d860d193a119ac83d1c4a8a423d7118",
+          "size": 113373
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/pathlib.meta.json",
+          "sha256": "05c541251994614a85b02c4912720977ba717d7795985c8c516f153eddee8aa6",
+          "size": 1765
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/posixpath.data.json",
+          "sha256": "8e79dff097d03f23780cf26a5493a94ab3dfa377baf2e8687aa4e767b5e00e8c",
+          "size": 147195
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/posixpath.meta.json",
+          "sha256": "60a8a014211650964c9ce5254e4539fd353e0aae8fac764a41720178a7265abb",
+          "size": 1728
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/re.data.json",
+          "sha256": "4a662534afb530e9c75d1c59cf3589841ea12c21f53c590eab7689b91ca4fd81",
+          "size": 263806
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/re.meta.json",
+          "sha256": "30d237437c93a458cea06a6ee5b7c2ccf14522d62baafeb10b4c48b9ea0104ff",
+          "size": 1774
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/resource.data.json",
+          "sha256": "f3943f58fc8b132590a7007f86eee38c4f6c42447886add67bc1b89c8b8f50b2",
+          "size": 46452
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/resource.meta.json",
+          "sha256": "b288b1a078e7b0bc60ec46aaef944aad99a11aa00387b678b1b8b50bb33f8f9e",
+          "size": 1663
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/sre_compile.data.json",
+          "sha256": "1a00c2526ec001c13c12605469b90f34db4641b96a086c08e14c1c8ced56fdfd",
+          "size": 14838
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/sre_compile.meta.json",
+          "sha256": "3dd97bb3add15770b9933274a2453c1dd9946714b2207c48ee5fc53da274c3ad",
+          "size": 1673
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/sre_constants.data.json",
+          "sha256": "0b2be93355aaa2d690b27436d712845b4709355459f2dd482314926f6ea069e7",
+          "size": 26803
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/sre_constants.meta.json",
+          "sha256": "d031beba59ecf207d79757437a06e595d3112a0c056dbe871f6d7b3560c7c7a8",
+          "size": 1707
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/sre_parse.data.json",
+          "sha256": "b2d2ef8bcc80a658a69563d945a59afd52e32f5d24c98340620cdfca6124d5b2",
+          "size": 54593
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/sre_parse.meta.json",
+          "sha256": "6f22abf4033cbe6efa2878e093850258d83ee61581d50ef166e8a5e11ae5289c",
+          "size": 1741
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/subprocess.data.json",
+          "sha256": "f24cca0377f4eb0b4a7baa27ee7ef5ffb3920601c3d0a3cf94bcc5b96dd147f5",
+          "size": 251745
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/subprocess.meta.json",
+          "sha256": "4cd6764b9a173712940d78f4514fb140ac8a812b6ac104e248d3cb01af8836b6",
+          "size": 1747
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/sys/__init__.data.json",
+          "sha256": "4ae74ea94ccad918245d58d537a63978bebcbbd6199b73fe62b0e341c2877db1",
+          "size": 166484
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/sys/__init__.meta.json",
+          "sha256": "d0203aae174eebc7abadd3d4453816392fac80c3c755255393cf80f70171ce87",
+          "size": 1768
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/sys/_monitoring.data.json",
+          "sha256": "71d18b62610cde4a5074250573072bfc9eda2bd63c8e1f51cc6af1e0f5349d65",
+          "size": 15197
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/sys/_monitoring.meta.json",
+          "sha256": "bed40bc8c15436036298dbd422150232290a2a9e89d5840dac67b9522c3ac140",
+          "size": 1672
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/types.data.json",
+          "sha256": "2e200080a73e75631bcb72f0c327c3bfb19d407de839e09a9db2ea8abd2afc99",
+          "size": 369048
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/types.meta.json",
+          "sha256": "d2f8466ad8e8df13b5d28f1a59c1b68307052cb5c9a1b6e2105e3c4b7dd8d098",
+          "size": 1748
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/typing.data.json",
+          "sha256": "0a7f0af631a63f5d7905cc2aa6612edec296ea026c5c7f55e2b0f3262467a049",
+          "size": 609335
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/typing.meta.json",
+          "sha256": "1878eb52901646efc55d6ad19d5aabe7f339fb9d53e06c1f73a23ce312cd826a",
+          "size": 1742
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/typing_extensions.data.json",
+          "sha256": "18a24907a877164b61d58ff0e595aa452d4851a86e34d6844c26456d4f12efc7",
+          "size": 114501
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/typing_extensions.meta.json",
+          "sha256": "7feb20fcbea92dc5e4877764333defcdcc4b2ad2b3841fb0ae2c5b16c075a10a",
+          "size": 1746
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/zipfile/__init__.data.json",
+          "sha256": "08d38a5580111f2dabd1c933da1a02777c2f3782a72776cdb0f868e0649e1979",
+          "size": 85654
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/zipfile/__init__.meta.json",
+          "sha256": "2595c2ebd0351bba0a5429bde25612ce8980a4a3e1d8d637ed2db33c38db3c08",
+          "size": 1791
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/zipfile/_path/__init__.data.json",
+          "sha256": "803eae60c8af9460f90933fc9eb109141a6a6fdba5cc7d84604cac05be2e32bd",
+          "size": 47617
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/3.12/zipfile/_path/__init__.meta.json",
+          "sha256": "bb00cc95b069dfa126aa45aa98406ea0cfa9cb3941a4eb877daaa4aa6c1b89ae",
+          "size": 1771
+        },
+        {
+          "relpath": "11.opena12_social_media/.mypy_cache/CACHEDIR.TAG",
+          "sha256": "f1c13afc555358c9033b0f1f30aaa177fe88bda40f4b8a24598400d547876adc",
+          "size": 190
+        },
+        {
+          "relpath": "11.opena12_social_media/__pycache__/main.cpython-312.pyc",
+          "sha256": "8d30e171afd3ff71213775578ee8b1a7caa81cba4d27c6cf3cec0c711903aa3d",
+          "size": 484
+        },
+        {
           "relpath": "11.opena12_social_media/main.py",
-          "sha256": "2f07e870c2227777e3e2fde5cf1db9e550c259b05b1283a5cdfd40ffd9c85569",
-          "size": 192
+          "sha256": "fe82b163740f1d9397989fbfce995ceee789d7ae80f9d11a176955dc4ed2fc78",
+          "size": 211
         }
       ],
       "flags": {
@@ -6851,7 +7506,7 @@
         "opena13"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "12.opena13_influencer/.mypy_cache/.gitignore",
@@ -7449,6 +8104,11 @@
           "size": 190
         },
         {
+          "relpath": "12.opena13_influencer/__pycache__/main.cpython-312.pyc",
+          "sha256": "46359091d9720f0768a32e49fbff548f21c872021ee91b1a458fd1c890f509ca",
+          "size": 269
+        },
+        {
           "relpath": "12.opena13_influencer/main.py",
           "sha256": "70c3ea512be63d14773738c73ddec2c5ce8554ac2bc056cba5a03fdb7db594b9",
           "size": 96
@@ -7471,7 +8131,7 @@
         "opena14"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "13.opena14_calendar/.mypy_cache/.gitignore",
@@ -8069,6 +8729,11 @@
           "size": 190
         },
         {
+          "relpath": "13.opena14_calendar/__pycache__/main.cpython-312.pyc",
+          "sha256": "4e1120e0680d58704ee12ee392cc6b1ce1ce82798daa285e3c5fb3ca8ca56366",
+          "size": 267
+        },
+        {
           "relpath": "13.opena14_calendar/main.py",
           "sha256": "ff93e104d41edbc6e03777a10b93a0c285def8cecc63c6c3a9dbb25dee5ffbe0",
           "size": 96
@@ -8091,7 +8756,7 @@
         "opena15"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "14.opena15_html/.mypy_cache/.gitignore",
@@ -8689,6 +9354,11 @@
           "size": 190
         },
         {
+          "relpath": "14.opena15_html/__pycache__/main.cpython-312.pyc",
+          "sha256": "6f7b802f93c09bb9a626724dac754ed85d9d0f20721d4dc038e51b4c9f7c9988",
+          "size": 263
+        },
+        {
           "relpath": "14.opena15_html/main.py",
           "sha256": "c74d4ca7515cf3839cc5c8e74d02f20f870bc49aef6422bab8eb6f68a547e37a",
           "size": 96
@@ -8711,7 +9381,7 @@
         "opena16"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "15.opena16_shop/.mypy_cache/.gitignore",
@@ -9309,6 +9979,11 @@
           "size": 190
         },
         {
+          "relpath": "15.opena16_shop/__pycache__/main.cpython-312.pyc",
+          "sha256": "53332f78eafaefb90976340cf990c381a39f242fb0c55aa1b7a044e537fc6df1",
+          "size": 263
+        },
+        {
           "relpath": "15.opena16_shop/main.py",
           "sha256": "afcdb86df8060c89fc80d4bcc33f08bb93161abc456e37f65863400a6569c9f1",
           "size": 96
@@ -9331,7 +10006,7 @@
         "opena17"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "16.opena17_homepagecreator/.mypy_cache/.gitignore",
@@ -9929,6 +10604,11 @@
           "size": 190
         },
         {
+          "relpath": "16.opena17_homepagecreator/__pycache__/main.cpython-312.pyc",
+          "sha256": "ddfe553f82b39508db70f930419b0beb5273fce158809e92395da33711798cda",
+          "size": 274
+        },
+        {
           "relpath": "16.opena17_homepagecreator/main.py",
           "sha256": "ab4a224280086f404aa08e0eaf5feef93495b1ec09f0486e8d30e80ebec4cba9",
           "size": 96
@@ -9951,7 +10631,7 @@
         "opena18"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "17.opena18_CMR/.mypy_cache/.gitignore",
@@ -10549,6 +11229,11 @@
           "size": 190
         },
         {
+          "relpath": "17.opena18_CMR/__pycache__/main.cpython-312.pyc",
+          "sha256": "233f4a732290f6c3f1b8fc2e7bec7c285fdae3733f9f14ee2918057bb76dd0a4",
+          "size": 262
+        },
+        {
           "relpath": "17.opena18_CMR/main.py",
           "sha256": "2e29092d92a03bbe26dd1e0d00d52f5f01f0c01a5a72040fa3e90936e8b4cfaa",
           "size": 96
@@ -10571,12 +11256,612 @@
         "opena19"
       ],
       "endpoints": [],
-      "file_count": 1,
+      "file_count": 121,
       "files": [
         {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/.gitignore",
+          "sha256": "6a69da670d11530d37f0f0cfdc7bed30b78ea6434e24f7a73208b982e29d322c",
+          "size": 34
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/@plugins_snapshot.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "size": 2
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_ast.data.json",
+          "sha256": "6070fda0756871b291fa73a40ae2eb4e718d9dfbd3310c6099c2f8872f657eae",
+          "size": 11989
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_ast.meta.json",
+          "sha256": "a0c9739d9fc1a9d540f997291af0df9c890877bb4fd9cf61f0cef3c79b01d4c4",
+          "size": 1655
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_codecs.data.json",
+          "sha256": "fe10329b03866d2de25dfac2da2025349dfde9d2adc3f34d8814f045343f9507",
+          "size": 61360
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_codecs.meta.json",
+          "sha256": "16bb3d781c59aa4a3a424c77202a82e74148cc2d2d163cfe6f1ca3349fdbb400",
+          "size": 1745
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_collections_abc.data.json",
+          "sha256": "7afd6d1947496df169b74314e47940b6b8a6883dc40ae3b15cea737d7e940a23",
+          "size": 33826
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_collections_abc.meta.json",
+          "sha256": "41a9cd3ab257b5531c11eaff000aa4bceee1f4bc3a5ad1cd2ebcb20160da1b08",
+          "size": 1678
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_frozen_importlib.data.json",
+          "sha256": "5435b748e0586b408ff3a692be011724a83d6a537b827eb93cffad0d126079fc",
+          "size": 37438
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_frozen_importlib.meta.json",
+          "sha256": "34d825e6dca14bfea2a431cf60614b769960ce4203c3118dd0c916f2ca77f017",
+          "size": 1791
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_frozen_importlib_external.data.json",
+          "sha256": "12fa20d62bbd760021f9c52431335002edc0e6205ff194d9f0294862a70d25f2",
+          "size": 62800
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_frozen_importlib_external.meta.json",
+          "sha256": "2a751d02b9130f5b698a5cb0ba1f5a0a840db1c06882978751fd5eddcb30e92c",
+          "size": 1979
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_io.data.json",
+          "sha256": "ea0706dd652f1be37a6b843c58176f9dd397cc397da149d9786af9c36ba91aa1",
+          "size": 115610
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_io.meta.json",
+          "sha256": "972230389d578e77a65830ab7e70e9f52e787601584091e09ff1c7018c542b17",
+          "size": 1756
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_sitebuiltins.data.json",
+          "sha256": "1b1ec895741cc5ae9220a26d9e54e650094113b2da8f2397769eb5b38eb2d6f6",
+          "size": 8728
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_sitebuiltins.meta.json",
+          "sha256": "e616786e3be7bf588070fb5686ea62f59e99714bac62a1b20de7ceb85455efa1",
+          "size": 1678
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_typeshed/__init__.data.json",
+          "sha256": "9b988b9bc5b3bf313f5fb3439a8fccaade22e0cba9527b4c60feedb10ca5d81a",
+          "size": 126777
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_typeshed/__init__.meta.json",
+          "sha256": "3d45e07a6720094b640565ca102604cf90590b81428385f3f2777c98f85b0cf6",
+          "size": 1770
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_typeshed/importlib.data.json",
+          "sha256": "74648b53c29e6aa62423af28a2656a5d46fc87199285c0d1dabd231cb8dfc048",
+          "size": 7770
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/_typeshed/importlib.meta.json",
+          "sha256": "a4e70c15bea7ad616651d36e30fa98b5839173d68d0fcf5dd93cb09425ba0877",
+          "size": 1704
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/abc.data.json",
+          "sha256": "e36d6fa4f13188bdbedcff2400fd5a27b86f470024d4fd55450f349846b74f3a",
+          "size": 30077
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/abc.meta.json",
+          "sha256": "b1e61e80f5a23eb9eaf29a58cfd091aaf19e9bd691360a87ca08a8f3b8b00568",
+          "size": 1688
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/ast.data.json",
+          "sha256": "7fa0225aa231e614bc5259eecdc754032b32faedb17de04c46dda8c1d234a8dc",
+          "size": 533087
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/ast.meta.json",
+          "sha256": "002f68a3dd0fc25c06341c8180440b54713b5e22225fa19656677e30e363b109",
+          "size": 1747
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/builtins.data.json",
+          "sha256": "9d9f513ccf55fb7455683f5340b4fd114ea3bc8925f0f46c648b30b21cd0812c",
+          "size": 1897217
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/builtins.meta.json",
+          "sha256": "924728f288d2c3b39d9d6c84b9cc4a16cfa1742e7fab07d8d09207dc5b92555a",
+          "size": 1795
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/codecs.data.json",
+          "sha256": "d3ad29e6085ed9b943a8feac3890a8a66cd354c171e934a6d2d9c3b484afcbc1",
+          "size": 139581
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/codecs.meta.json",
+          "sha256": "580dae70b088baf85c328e009d58b9bc632bb981bc05fb6ce0871ec2b7809080",
+          "size": 1732
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/collections/__init__.data.json",
+          "sha256": "5cd344a6cf2c1154398c1b9b3bf93fe260edb42b4f9253695e53fc77039809b4",
+          "size": 848015
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/collections/__init__.meta.json",
+          "sha256": "fbcd934d313c1efa7869a798f70a37bb98eaeead4c417b988697d14d8d129bd1",
+          "size": 1748
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/collections/abc.data.json",
+          "sha256": "d8a41a5e26c4b4b4f67f6a3a435d554a70efb8998fe6f17c917bae2e8e12173c",
+          "size": 4076
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/collections/abc.meta.json",
+          "sha256": "6aeaf0b0fcacd0efd18d540dafe3f6009a6aca29a3cef987835e2c0c2a8a04d1",
+          "size": 1659
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/contextlib.data.json",
+          "sha256": "820a2f2f1a527c5b5a696144660dba08bcdee63d1ab46f6406a235f9508d5b01",
+          "size": 153655
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/contextlib.meta.json",
+          "sha256": "574320ea55435a7a3f0aba545cf912f40054236530ccbe943a9af8688465f25b",
+          "size": 1721
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/dataclasses.data.json",
+          "sha256": "e98ccb825b2432ec3177ab4f1ba27aff03f63dc82f99362a5f9728ca94ba22f2",
+          "size": 90151
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/dataclasses.meta.json",
+          "sha256": "7b448d70f3e2abad71c5e7269a435dc50d16106e30f34015d024d6129ef36dd2",
+          "size": 1727
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/email/__init__.data.json",
+          "sha256": "71fb9963fb4a82bacf33be401009ee73c24a671b0c45aaf74900b16b89dbab87",
+          "size": 10334
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/email/__init__.meta.json",
+          "sha256": "04091751333f3da5252c88f691014861fce6f415d31f61bd1ae0ccc204bfabb0",
+          "size": 1749
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/email/_policybase.data.json",
+          "sha256": "302c9a4c9900b934591cf7d71d5b8cc44ff529272e8981623a72981f5ef67697",
+          "size": 48831
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/email/_policybase.meta.json",
+          "sha256": "0672928dc03ef8d831492530ace9c98c28b476ba03433c575f602ef5d7a3b628",
+          "size": 1735
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/email/charset.data.json",
+          "sha256": "f09f83f948aafe33f05e35d72371473da3776024a74c8c6bfd1d0391f11adb41",
+          "size": 18121
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/email/charset.meta.json",
+          "sha256": "bd5bb53ff93fb91035808e993284c20b886109e7343f48645d0b9924eb8b94b7",
+          "size": 1688
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/email/contentmanager.data.json",
+          "sha256": "c8ccbff8f731eef5736f39ba595d0e2e4deb16d73998ac36f34c01583b4d0359",
+          "size": 8017
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/email/contentmanager.meta.json",
+          "sha256": "73dc868c5201e6f7915e96542479cd14c104828f01427f429af014e4a08c4900",
+          "size": 1701
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/email/errors.data.json",
+          "sha256": "26d4d23afdd6574b2bb4bbbf729ad2aca7128764ad46198c8e989f5d6928e654",
+          "size": 26775
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/email/errors.meta.json",
+          "sha256": "3fd70151f4e941dc09ae999b90bfc1f63e73460024a4719d7a2f30c2c2dae58d",
+          "size": 1673
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/email/header.data.json",
+          "sha256": "61ee738f5aa0b6c8c9cce2b29abf010cb79ec0abc4a81719281fe5c5d572b679",
+          "size": 10639
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/email/header.meta.json",
+          "sha256": "a6b15b08998167aaf5c9d83498876971b3c8be12f83b81d91051337db4efb108",
+          "size": 1686
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/email/message.data.json",
+          "sha256": "9351f3e12e85bc6dda3b1bb1d388e6a4bb0bb74579a1474da8313ef8b7489249",
+          "size": 205494
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/email/message.meta.json",
+          "sha256": "9b3a810ebee51cdc50d1c7a21fc44ac20300de101412001e70f7eccb77324158",
+          "size": 1830
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/email/policy.data.json",
+          "sha256": "9006dbd07a6941ef17493f4c38345220987f0299cadd7919c9b86ecbaa09bfc8",
+          "size": 32792
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/email/policy.meta.json",
+          "sha256": "9fc3128e7bd8ff34379e06a0c352fc2f89ffac082793fb350068190a83689fba",
+          "size": 1761
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/enum.data.json",
+          "sha256": "8bf8582f14b88923b9a138a6d17ecbf25e692b61d45c54f434a7d06cdc6651b5",
+          "size": 136780
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/enum.meta.json",
+          "sha256": "f39fb64899e1374123357377ea4a52a895c5fa9197baa27c5b4c64334af2998b",
+          "size": 1702
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/genericpath.data.json",
+          "sha256": "2826e41759d7fed04182d00f5ff5f3717faffca65c29cb8e30413b412ae37e2f",
+          "size": 34239
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/genericpath.meta.json",
+          "sha256": "5fe92930340ac925be37c11056d419fa68ff8de0316f89a57ec3c8547400c596",
+          "size": 1712
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/__init__.data.json",
+          "sha256": "faeec3c1d980e4ddb4009db5da7b1371e1350eedf0d560231b83f4b6d5a8bce9",
+          "size": 4754
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/__init__.meta.json",
+          "sha256": "6deec4b74e266bf227a5b1c0c201f2b8738162eb3e3b601dfa968fd72f50d0fa",
+          "size": 1721
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/_abc.data.json",
+          "sha256": "e02ffd1bba665f746b34367839cff545f5b27d92af691dd8180bce26e32d0e85",
+          "size": 5008
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/_abc.meta.json",
+          "sha256": "17d3e9d146aec7174e43904c203803dcd2af95de59792b95096536aae6a176c5",
+          "size": 1701
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/_bootstrap.data.json",
+          "sha256": "fd1f4783106409691bd1a205448c5ce17055e299d48f51c833bcd0dde2b3dd22",
+          "size": 2347
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/_bootstrap.meta.json",
+          "sha256": "3201a7e91bf06976fbb67a94f269e2d7e44615c117429f823ba01403022db14d",
+          "size": 1646
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/_bootstrap_external.data.json",
+          "sha256": "27daad7687b0ec9d9db4f5500870da199cf5b5194e9c02809caa4758944a0872",
+          "size": 4428
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/_bootstrap_external.meta.json",
+          "sha256": "8f9d18ad7fc41f905a8a1060f0d2844c703a632aff82090ed687e1576a580098",
+          "size": 1698
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/abc.data.json",
+          "sha256": "ea0ec9c32bfc5a77fe6eb27df39a85025ba712004643dd0a39b5eb1d5bdc3826",
+          "size": 57764
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/abc.meta.json",
+          "sha256": "d898c2b1fcd4c0a55bfba710fb76bbaed6832325228c38f9b38996101bd74cb0",
+          "size": 1908
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/machinery.data.json",
+          "sha256": "37f48688f2d24379e34b5a4d33f7e9717478d42826cd2eac4ca25b929798ad4a",
+          "size": 4203
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/machinery.meta.json",
+          "sha256": "b8ef94f03bfa1b5454ecdb801b5d01786371fca9034f293790b591bf3182f41d",
+          "size": 1736
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/metadata/__init__.data.json",
+          "sha256": "5b8ef478ed2140a791ab7c688cf6779c4fc10840053f2831a40b3362d16b5763",
+          "size": 81096
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/metadata/__init__.meta.json",
+          "sha256": "531d6e35a3e51660a481220204202d88f8d6a2b218411840b981a3633e2ff88d",
+          "size": 1869
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/metadata/_meta.data.json",
+          "sha256": "476c109c2effc29f8fd717b58b10062afa9c452d6804830c053eb4eed312f797",
+          "size": 31322
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/metadata/_meta.meta.json",
+          "sha256": "407792cec6b78f4886dc9cb103841461021b1b66519d66615e251e1338c6c228",
+          "size": 1750
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/readers.data.json",
+          "sha256": "db3871e06ff14d754986fd016096bd43ac58b0383f6921a9dad09a7be9ee9bc5",
+          "size": 22875
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/readers.meta.json",
+          "sha256": "68c10f5288b6c38183c6e9635140e946a73eac89810b941aec74b8bbd2d142bd",
+          "size": 1910
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/resources/__init__.data.json",
+          "sha256": "0c5132c5ba9ee01326d89ad96a4b4288b45df09274959a64a939fd724b540e01",
+          "size": 10132
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/resources/__init__.meta.json",
+          "sha256": "1d776237e206869f051ba21fb09f0075a1bca9ca36bad27de9bec42d90e90f88",
+          "size": 1861
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/resources/_common.data.json",
+          "sha256": "0406f7999a1d45d21aadbecfc81c388ae3eda54a8d3971835647edd4b44d3c20",
+          "size": 13202
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/resources/_common.meta.json",
+          "sha256": "1ab963748f9f6a6fa7468c645f7390c28361835405edcd64b1594d35b77ab304",
+          "size": 1811
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/resources/abc.data.json",
+          "sha256": "51dacedb119ece675488fdc47c6367f4a2ad9d8fdd6121febbef4dd2aa34a327",
+          "size": 2482
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/importlib/resources/abc.meta.json",
+          "sha256": "6e90a43fe0ca83a447ccf51e71780eafea693b52407493ce57c11a79ddf0fd0a",
+          "size": 1701
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/io.data.json",
+          "sha256": "a30ea197264b829db294a6c0986bb6c3285259f6b89773814f352cff14e0b7c7",
+          "size": 8815
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/io.meta.json",
+          "sha256": "8629ff008ceef4ac704b42391301c0d0bf5915947599d3520951b7f5ae2d48fc",
+          "size": 1663
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/main.data.json",
+          "sha256": "c731c6dfbe966d3d9c95a7529607e18a9c5a33b25377abd1fc1f2375945a317a",
+          "size": 2061
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/main.meta.json",
+          "sha256": "60756770592954afd23a52ad5768a309d2c7343c19382910ba10d4cc97a767b0",
+          "size": 1620
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/os/__init__.data.json",
+          "sha256": "86a2826a6dc165375981e3ddb5ee94bb18e3b096ef355d9433dbea7081426eb7",
+          "size": 436997
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/os/__init__.meta.json",
+          "sha256": "0dc710e0a197565bf2aae7e3cfc935c61305873fc535132dd667014967e97abf",
+          "size": 1808
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/os/path.data.json",
+          "sha256": "aa22e236e8d2f9140f108b92ac0dbe50a2862437a44a9fe4f5501b8a3a4e679d",
+          "size": 5335
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/os/path.meta.json",
+          "sha256": "8709b1693ae6b12eb80ea9ce7b6bfbfdc779a66f1d40f8a5fbcf6b8a328baf6d",
+          "size": 1648
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/pathlib.data.json",
+          "sha256": "793a2442f47e56b62beb82eaafdf060a6d860d193a119ac83d1c4a8a423d7118",
+          "size": 113373
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/pathlib.meta.json",
+          "sha256": "c124d7dd291c6c94cc8c0bf594c3ea8518d79a5821dc1b594d64ae6ce7fe6106",
+          "size": 1765
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/posixpath.data.json",
+          "sha256": "8e79dff097d03f23780cf26a5493a94ab3dfa377baf2e8687aa4e767b5e00e8c",
+          "size": 147195
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/posixpath.meta.json",
+          "sha256": "fff1a6d2f51d45ba409fd943561411bb6cdc1f3a799faa0159905ad91c9e7e64",
+          "size": 1728
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/re.data.json",
+          "sha256": "4a662534afb530e9c75d1c59cf3589841ea12c21f53c590eab7689b91ca4fd81",
+          "size": 263806
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/re.meta.json",
+          "sha256": "ce96a2600c1a51bcc6838f916d087482d646212c5f1b55ba5b5178b5411077d1",
+          "size": 1774
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/resource.data.json",
+          "sha256": "f3943f58fc8b132590a7007f86eee38c4f6c42447886add67bc1b89c8b8f50b2",
+          "size": 46452
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/resource.meta.json",
+          "sha256": "d3649da10114fd606fd51757e5bd278345e08c92d90b8e13fefbfd3150328163",
+          "size": 1663
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/sre_compile.data.json",
+          "sha256": "1a00c2526ec001c13c12605469b90f34db4641b96a086c08e14c1c8ced56fdfd",
+          "size": 14838
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/sre_compile.meta.json",
+          "sha256": "178907267f9a3398236e4ff2d9edd9d01f0e671063f3e4b384e265095ba078bf",
+          "size": 1673
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/sre_constants.data.json",
+          "sha256": "0b2be93355aaa2d690b27436d712845b4709355459f2dd482314926f6ea069e7",
+          "size": 26803
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/sre_constants.meta.json",
+          "sha256": "d1a410777db9660dbf07b0a16fc66572914fe4e51458f1eb27fd4f3c38a358a8",
+          "size": 1707
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/sre_parse.data.json",
+          "sha256": "b2d2ef8bcc80a658a69563d945a59afd52e32f5d24c98340620cdfca6124d5b2",
+          "size": 54593
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/sre_parse.meta.json",
+          "sha256": "8d602507e7ac80a5183d682895204c57016ee5e544c3262bbd18e14a311136fd",
+          "size": 1741
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/subprocess.data.json",
+          "sha256": "f24cca0377f4eb0b4a7baa27ee7ef5ffb3920601c3d0a3cf94bcc5b96dd147f5",
+          "size": 251745
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/subprocess.meta.json",
+          "sha256": "c95c0968dae405cc81aac5530fbbe9962e57f4346b800737ddb84fc01c152203",
+          "size": 1747
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/sys/__init__.data.json",
+          "sha256": "4ae74ea94ccad918245d58d537a63978bebcbbd6199b73fe62b0e341c2877db1",
+          "size": 166484
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/sys/__init__.meta.json",
+          "sha256": "63e66ec8b5f55cb050ce2616106910eb4bd1644ef02e933b84736656a38370ca",
+          "size": 1768
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/sys/_monitoring.data.json",
+          "sha256": "71d18b62610cde4a5074250573072bfc9eda2bd63c8e1f51cc6af1e0f5349d65",
+          "size": 15197
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/sys/_monitoring.meta.json",
+          "sha256": "71997200805a115968a46dfe1d091f1515b445baa4fcc986d6158581d2aa699c",
+          "size": 1672
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/types.data.json",
+          "sha256": "2e200080a73e75631bcb72f0c327c3bfb19d407de839e09a9db2ea8abd2afc99",
+          "size": 369048
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/types.meta.json",
+          "sha256": "f6c3f73df33d94836b1384526a876e37c37ab35a929a2e2e8d4e0e704f10aee2",
+          "size": 1748
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/typing.data.json",
+          "sha256": "0a7f0af631a63f5d7905cc2aa6612edec296ea026c5c7f55e2b0f3262467a049",
+          "size": 609335
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/typing.meta.json",
+          "sha256": "ed6ebe911fa22539c16c3f718e21370aae95d8e6827ea95cbbdf7122176fc346",
+          "size": 1742
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/typing_extensions.data.json",
+          "sha256": "18a24907a877164b61d58ff0e595aa452d4851a86e34d6844c26456d4f12efc7",
+          "size": 114501
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/typing_extensions.meta.json",
+          "sha256": "a925d95094c135248d4c3d569a84a480d4a40cc65853f7af373448dfe7f38958",
+          "size": 1746
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/zipfile/__init__.data.json",
+          "sha256": "08d38a5580111f2dabd1c933da1a02777c2f3782a72776cdb0f868e0649e1979",
+          "size": 85654
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/zipfile/__init__.meta.json",
+          "sha256": "cff8a5b01b7f8a98d1bc893756f5b58ae307d0ecedfc7f3bf1e25beb4f34e9a1",
+          "size": 1791
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/zipfile/_path/__init__.data.json",
+          "sha256": "803eae60c8af9460f90933fc9eb109141a6a6fdba5cc7d84604cac05be2e32bd",
+          "size": 47617
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/3.12/zipfile/_path/__init__.meta.json",
+          "sha256": "c3b2c053989a87b0110761e599d579f54565ea2976968d557a1150e8bfd3eefd",
+          "size": 1771
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/.mypy_cache/CACHEDIR.TAG",
+          "sha256": "f1c13afc555358c9033b0f1f30aaa177fe88bda40f4b8a24598400d547876adc",
+          "size": 190
+        },
+        {
+          "relpath": "18.opena19_Aktien&Crypto/__pycache__/main.cpython-312.pyc",
+          "sha256": "2382fc6a6441d5b32ff2ed4588c00eb3ecb78bb3f1e88a4fa718176a859e18dc",
+          "size": 485
+        },
+        {
           "relpath": "18.opena19_Aktien&Crypto/main.py",
-          "sha256": "123bd70cfb9c6400d29bf9c8306eb20757d0dcf142a233537f2e146b32fcfca4",
-          "size": 192
+          "sha256": "ce9b8edbeca3fe87e3a6ad52818268d7f7a34cb60a1adc35ae6c1b5fdf43a121",
+          "size": 210
         }
       ],
       "flags": {
@@ -10596,7 +11881,7 @@
         "opena20"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "19.opena20_dashboard_agent/.mypy_cache/.gitignore",
@@ -11194,6 +12479,11 @@
           "size": 190
         },
         {
+          "relpath": "19.opena20_dashboard_agent/__pycache__/main.cpython-312.pyc",
+          "sha256": "8f661ed2f794710f8e147cb9187e0217cfcec5234abc5bfc165c323f6837f347",
+          "size": 274
+        },
+        {
           "relpath": "19.opena20_dashboard_agent/main.py",
           "sha256": "c2d38c07d541e62dec1e21746ca9a1529ca0cbd2dcbf8a2121af56c4c217df2f",
           "size": 96
@@ -11216,7 +12506,7 @@
         "opena21"
       ],
       "endpoints": [],
-      "file_count": 120,
+      "file_count": 121,
       "files": [
         {
           "relpath": "20.opena21_workflow/.mypy_cache/.gitignore",
@@ -11814,6 +13104,11 @@
           "size": 190
         },
         {
+          "relpath": "20.opena21_workflow/__pycache__/main.cpython-312.pyc",
+          "sha256": "f1d57832b555b1112086a0469e07f56552eb3f2a5ea7b112f41f1c278946e274",
+          "size": 267
+        },
+        {
           "relpath": "20.opena21_workflow/main.py",
           "sha256": "997a3469f73800fbffb0e4c01bf87ef8f5fc7f6fce6690cbb42c9c84c2ac0d59",
           "size": 96
@@ -11834,5 +13129,5 @@
   ],
   "baseline_hash": "d443827d32fcb9caf452d8ad17c95df31404ae1f3afb59cf37c182f411f735e7",
   "errors": [],
-  "timestamp": "2025-12-22T19:56:17.134525Z"
+  "timestamp": "2025-12-24T05:07:07.303155Z"
 }

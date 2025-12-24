@@ -1,0 +1,50 @@
+name: preflight
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies (optional)
+        run: |
+          python -m pip install --upgrade pip
+          pip install --no-cache-dir -r requirements.txt || true
+
+      - name: Run preflight script
+        run: |
+          chmod +x scripts/preflight_webpanel.py scripts/preflight_webpanel.sh || true
+          python3 scripts/preflight_webpanel.py --root 19.opena20_dashboard_agent/webpanel --out-dir 19.opena20_dashboard_agent/webpanel/artifacts --port 12348 --static-dir 19.opena20_dashboard_agent/webpanel --static-mount / --require-backend --api-tests-json scripts/api_tests.json || true
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: preflight-artifacts
+          path: 19.opena20_dashboard_agent/webpanel/artifacts/**
+
+      - name: Fail if blocking violations
+        run: |
+          python3 - << 'PY'
+import json,sys
+try:
+  with open('19.opena20_dashboard_agent/webpanel/artifacts/start_proof_report.json') as f:
+    j=json.load(f)
+    if not j.get('ok',False):
+      print('Preflight found blocking violations:', j.get('summary',{}))
+      sys.exit(1)
+    else:
+      print('Preflight OK')
+except Exception as e:
+  print('No start_proof_report.json found or error:', e)
+  sys.exit(1)
+PY

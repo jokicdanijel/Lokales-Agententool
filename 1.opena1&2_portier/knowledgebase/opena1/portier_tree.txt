@@ -1,6 +1,6 @@
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai$ tree
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier$ tree
 .
-├── 1.portier_openai.tar.xz
+├── 1.opena1&2_portier.tar.xz
 ├── archivp
 │   ├── 1nov20251909stat.txt
 │   ├── 2025
@@ -5913,5 +5913,4 @@ danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/1
 └── venv313_init.sh
 
 744 directories, 5168 files
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai$ 
-
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier$

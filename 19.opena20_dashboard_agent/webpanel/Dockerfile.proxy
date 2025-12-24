@@ -1,0 +1,15 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Installiere Dependencies
+RUN pip install --no-cache-dir fastapi uvicorn httpx
+
+# Kopiere Proxy-Script
+COPY reverse_proxy.py .
+
+# Exponiere Port
+EXPOSE 12349
+
+# Starte Proxy
+CMD ["python3", "reverse_proxy.py"]

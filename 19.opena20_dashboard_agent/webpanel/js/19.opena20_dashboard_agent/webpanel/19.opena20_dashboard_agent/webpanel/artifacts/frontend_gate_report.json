@@ -1,0 +1,21 @@
+{
+  "gate": "frontend_gate",
+  "ok": false,
+  "started_utc": "2025-12-24T07:57:16Z",
+  "finished_utc": "2025-12-24T07:57:16Z",
+  "duration_ms": 0,
+  "errors": [],
+  "violations": [
+    {
+      "level": "violation",
+      "gate": "frontend_gate",
+      "rule": "index_missing",
+      "message": "index.html not found in static dir: .",
+      "file": null,
+      "evidence": null
+    }
+  ],
+  "warnings": [],
+  "info": [],
+  "stats": {}
+}

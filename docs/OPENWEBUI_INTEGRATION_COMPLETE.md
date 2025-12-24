@@ -1,15 +1,15 @@
 # OpenWebUI Integration – Abschließende Übersicht
 
-**Datum:** 9. November 2025  
-**Status:** ✅ **Phase 1 – Basis-Integration KOMPLETT**  
+**Datum:** 9. November 2025
+**Status:** ✅ **Phase 1 – Basis-Integration KOMPLETT**
 **Nächster Schritt:** Deployment & Testing (Phase 2-3)
 
 ---
 
 ## Executive Summary
 
-Die OpenWebUI-Integration für das ELION Hyper-Dashboard ist vollständig implementiert. 
-Das System bietet sichere API-Endpunkte, Fehlerbehandlung, Token-Authentifizierung und 
+Die OpenWebUI-Integration für das ELION Hyper-Dashboard ist vollständig implementiert.
+Das System bietet sichere API-Endpunkte, Fehlerbehandlung, Token-Authentifizierung und
 umfassende Dokumentation sowie Testskripte.
 
 ---
@@ -155,11 +155,11 @@ umfassende Dokumentation sowie Testskripte.
 
 ## 🔐 Security
 
-✅ **Bearer Token Auth** – Alle Endpunkte require `Authorization: Bearer <token>` Header  
-✅ **Token aus .env** – Automatisch generiert via `bin/env_bootstrap.sh`  
-✅ **Rate Limiting** – 60 req/min pro Token  
-✅ **CORS** – Ports 8080 & 12349 explizit erlaubt  
-✅ **Error Masking** – Keine sensitiven Infos in 50x Responses  
+✅ **Bearer Token Auth** – Alle Endpunkte require `Authorization: Bearer <token>` Header
+✅ **Token aus .env** – Automatisch generiert via `bin/env_bootstrap.sh`
+✅ **Rate Limiting** – 60 req/min pro Token
+✅ **CORS** – Ports 8080 & 12349 explizit erlaubt
+✅ **Error Masking** – Keine sensitiven Infos in 50x Responses
 ✅ **HTTPS Ready** – Production: Reverse Proxy mit SSL empfohlen
 
 ---
@@ -198,7 +198,7 @@ curl -H "Authorization: Bearer $TOKEN" \
 
 ```bash
 # 1. Venv aktivieren
-source ../1.portier_openai/venv313/bin/activate
+source ../1.opena1&2_portier/venv313/bin/activate
 
 # 2. Dependencies installieren
 pip install -r requirements.txt
@@ -376,6 +376,6 @@ Alle 20 Aufgaben sind abgeschlossen. System ist bereit für Deployment.
 
 ---
 
-Erstellt: 2025-11-09  
-Letzte Änderung: 2025-11-09  
+Erstellt: 2025-11-09
+Letzte Änderung: 2025-11-09
 Owner: ELION Development Team

@@ -11,13 +11,13 @@
       "mode": "production"
     },
     "paths": {
-      "root": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai",
-      "archivp": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/archivp",
-      "opena1": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/opena1",
-      "opena2": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/opena2",
-      "kordp": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/kordp",
-      "connector": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/connector",
-      "docs": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/docs"
+      "root": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier",
+      "archivp": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/archivp",
+      "opena1": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/opena1",
+      "opena2": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/opena2",
+      "kordp": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/kordp",
+      "connector": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/connector",
+      "docs": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/docs"
     },
     "endpoints": {
       "opena1": {

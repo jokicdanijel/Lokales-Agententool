@@ -1,7 +1,7 @@
 """
 Safepoint-Manager (lesen/suchen)
 - Arbeitet direkt auf dem archivp-Baum:
-  /home/danijel-jd/.../Gesamtprojekt/1.portier_openai/archivp/YYYY/MM/DD/SP...json
+  /home/danijel-jd/.../Gesamtprojekt/1.opena1&2_portier/archivp/YYYY/MM/DD/SP...json
 - Bietet query() für einfache Filter und get_content() für Dateiinhalt.
 """
 
@@ -9,18 +9,17 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, Dict, List, Optional
-
+from typing import Any
 
 BASE_ROOT = Path("/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt").resolve()
-ARCHIVP_ROOT = (BASE_ROOT / "1.portier_openai" / "archivp").resolve()
+ARCHIVP_ROOT = (BASE_ROOT / "1.opena1&2_portier" / "archivp").resolve()
 
 
 class SafepointManager:
-    def __init__(self, root: Optional[Path] = None) -> None:
+    def __init__(self, root: Path | None = None) -> None:
         self.root = (root or ARCHIVP_ROOT).resolve()
 
-    async def query(self, q: Dict[str, Any]) -> List[Dict[str, Any]]:
+    async def query(self, q: dict[str, Any]) -> list[dict[str, Any]]:
         """
         q: { "date":"2025-11-05", "kind":"CMD|RESP|ERR", "src":"...", "dst":"..." }
         Es wird nur nach Dateinamen (SP.._src→dst_kind.json) und Datumspfad gefiltert.
@@ -39,7 +38,7 @@ class SafepointManager:
                 # ungültiges Datum -> leer zurück
                 return []
 
-        out: List[Dict[str, Any]] = []
+        out: list[dict[str, Any]] = []
         if not root.exists():
             return out
 
@@ -52,14 +51,10 @@ class SafepointManager:
                 continue
             if dst and f"→{dst}_" not in name:
                 continue
-            out.append({
-                "path": str(p.relative_to(self.root)),
-                "abs": str(p),
-                "name": name
-            })
+            out.append({"path": str(p.relative_to(self.root)), "abs": str(p), "name": name})
         return sorted(out, key=lambda x: x["name"])
 
-    async def get_content(self, rel_path: str) -> Dict[str, Any]:
+    async def get_content(self, rel_path: str) -> dict[str, Any]:
         p = (self.root / rel_path.lstrip("/")).resolve()
         if not str(p).startswith(str(self.root)):
             raise FileNotFoundError("Pfad außerhalb von archivp")
@@ -72,4 +67,3 @@ class SafepointManager:
         except Exception:
             obj = {"raw": raw}
         return {"path": str(p), "content": obj}
-

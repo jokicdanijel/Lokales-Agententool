@@ -15,9 +15,9 @@ GESPART: 299 MB | -4 Dateien
 | Datei | Größe | Begründung |
 |-------|-------|-----------|
 | `GitHubDesktop-linux-amd64-3.4.13-linux1.deb` | **125 MB** | Installer (nicht für Git) |
-| `Projekte-Gesamtprojekt1.portier_openai-main.zip` | **87 MB** | Backup-ZIP (redundant) |
+| `Projekte-Gesamtprojekt1.opena1&2_portier-main.zip` | **87 MB** | Backup-ZIP (redundant) |
 | `portier_openai_backup.tar.gz` | **63 MB** | Backup-Archive (in backups/ oder ~) |
-| `1.portier_openai/1.portier_openai.tar.xz` | **25 MB** | Lokales Archive (redundant) |
+| `1.opena1&2_portier/1.opena1&2_portier.tar.xz` | **25 MB** | Lokales Archive (redundant) |
 | **TOTAL** | **299 MB** | ✅ Entfernt |
 
 ---
@@ -90,7 +90,7 @@ Falls Repo noch kleiner sein soll, können optionale Cache-Verzeichnisse ausgesc
 
 ```bash
 # .mypy_cache entfernen (regeneriert sich automatisch)
-rm -rf 1.portier_openai/.mypy_cache
+rm -rf 1.opena1&2_portier/.mypy_cache
 rm -rf 3.opena1_coordinator/.mypy_cache
 
 # Zu .gitignore hinzufügen:
@@ -98,12 +98,12 @@ echo ".mypy_cache/" >> .gitignore
 ```
 
 ### Option 2: venv als separates Backup
-Falls .venv auch zu groß wird (aktuell in 1.portier_openai/venv313):
+Falls .venv auch zu groß wird (aktuell in 1.opena1&2_portier/venv313):
 
 ```bash
 # venv in home-Verzeichnis verschieben
-mv 1.portier_openai/venv313 ~/portier_venv_backup
-ln -s ~/portier_venv_backup 1.portier_openai/venv313  # Symlink
+mv 1.opena1&2_portier/venv313 ~/portier_venv_backup
+ln -s ~/portier_venv_backup 1.opena1&2_portier/venv313  # Symlink
 
 # Zu .gitignore:
 echo "venv313/" >> .gitignore
@@ -113,17 +113,17 @@ echo "venv313/" >> .gitignore
 
 ## 📋 Zusammenfassung
 
-✅ **299 MB große Archive gelöscht**  
-✅ **.gitignore aktualisiert** (Duplikate verhindert)  
-✅ **Repo-Größe: 383 MB → 84 MB** (78% Reduktion)  
-✅ **Scan-Performance stabil** (~2s)  
-✅ **Git Commit erfolgreich** (c0971da)  
-✅ **Keine legitimen Dateien gelöscht**  
+✅ **299 MB große Archive gelöscht**
+✅ **.gitignore aktualisiert** (Duplikate verhindert)
+✅ **Repo-Größe: 383 MB → 84 MB** (78% Reduktion)
+✅ **Scan-Performance stabil** (~2s)
+✅ **Git Commit erfolgreich** (c0971da)
+✅ **Keine legitimen Dateien gelöscht**
 
 **Status: CLEANUP COMPLETE ✅**
 
 ---
 
-**Erstellt**: 9. November 2025 02:58 UTC  
-**Scan-Tool**: Repository Scanner (zero-dependency)  
+**Erstellt**: 9. November 2025 02:58 UTC
+**Scan-Tool**: Repository Scanner (zero-dependency)
 **Autor**: GitHub Copilot + Danijel J.

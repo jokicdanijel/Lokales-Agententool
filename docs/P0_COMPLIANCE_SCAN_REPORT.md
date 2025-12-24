@@ -1,9 +1,9 @@
 # 📊 P0 COMPLIANCE SCAN REPORT
 
-**Generated:** 2025-11-09  
-**Repository:** jokicdanijel/Gesamtprojekt-start  
-**Branch:** main  
-**Scan Type:** Full Infrastructure Governance Verification  
+**Generated:** 2025-11-09
+**Repository:** jokicdanijel/Gesamtprojekt-start
+**Branch:** main
+**Scan Type:** Full Infrastructure Governance Verification
 
 ---
 
@@ -49,7 +49,7 @@ Commits (This Session): 5 commits (835e2f6 → 81ef28e)
 
 **Environment Verification:**
 ```
-✅ venv312 directory:        EXISTS (1.portier_openai/venv312)
+✅ venv312 directory:        EXISTS (1.opena1&2_portier/venv312)
 ✅ Python version:           3.12.3
 ✅ .venv symlink:            EXISTS → venv312
 ✅ requirements.lock:        EXISTS (2 lines)
@@ -80,7 +80,7 @@ Commits (This Session): 5 commits (835e2f6 → 81ef28e)
 
 **Safepoint Infrastructure:**
 - Format: `SP<unix_ms>_src→dst_KIND.json` (Deterministic)
-- Index: `1.portier_openai/archivp/index.jsonl` ✅ EXISTS (0 entries, ready)
+- Index: `1.opena1&2_portier/archivp/index.jsonl` ✅ EXISTS (0 entries, ready)
 - Base Class: `PortierServiceBase` (Pydantic-validated)
 
 **Summary:**
@@ -371,9 +371,8 @@ All P0 Production Hardening requirements have been successfully implemented and 
 
 ---
 
-**Scan Duration:** 5 min  
-**Repository:** jokicdanijel/Gesamtprojekt-start  
-**Branch:** main  
-**Generated:** 2025-11-09  
+**Scan Duration:** 5 min
+**Repository:** jokicdanijel/Gesamtprojekt-start
+**Branch:** main
+**Generated:** 2025-11-09
 **Next Phase:** P1 (Orchestration & Automation)
-

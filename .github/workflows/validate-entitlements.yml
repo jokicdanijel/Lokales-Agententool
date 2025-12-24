@@ -1,0 +1,105 @@
+name: Validate Entitlements
+
+on:
+    push:
+        branches: [main, develop, ci/**]
+        paths:
+            - "system_baseline.yaml"
+            - "artifacts/agent_inventory.json"
+            - "scripts/build_entitlements.py"
+            - "scripts/validate_entitlements.py"
+            - ".github/workflows/validate-entitlements.yml"
+    pull_request:
+        branches: [main]
+        paths:
+            - "system_baseline.yaml"
+            - "artifacts/agent_inventory.json"
+            - "scripts/build_entitlements.py"
+            - "scripts/validate_entitlements.py"
+
+jobs:
+    validate:
+        name: Validate Entitlements
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: "3.11"
+
+            - name: Install dependencies
+              run: |
+                  pip install pyyaml
+
+            - name: Build entitlements
+              run: |
+                  python3 scripts/build_entitlements.py
+
+            - name: Validate entitlements
+              run: |
+                  python3 scripts/validate_entitlements.py
+
+            - name: Check validation results
+              run: |
+                  if [ $(jq -r '.summary.failed' artifacts/entitlements_validation.json) -gt 0 ]; then
+                    echo "❌ Entitlements validation failed"
+                    jq '.errors' artifacts/entitlements_validation.json
+                    exit 1
+                  fi
+
+                  echo "✅ All entitlements validations passed"
+                  jq '.summary' artifacts/entitlements_validation.json
+
+            - name: Upload entitlements artifacts
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: entitlements
+                  path: |
+                      build/entitlements.json
+                      artifacts/entitlements_validation.json
+                  retention-days: 30
+
+            - name: Comment PR with results
+              if: github.event_name == 'pull_request'
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const fs = require('fs');
+                      const validation = JSON.parse(fs.readFileSync('artifacts/entitlements_validation.json', 'utf8'));
+
+                      const body = `## 🔐 Entitlements Validation Results
+
+                      **Status:** ${validation.status === 'passed' ? '✅ PASSED' : '❌ FAILED'}
+
+                      ### Summary
+                      - **Total Validations:** ${validation.summary.total_validations}
+                      - **Passed:** ${validation.summary.passed}
+                      - **Failed:** ${validation.summary.failed}
+                      - **Errors:** ${validation.summary.errors}
+                      - **Warnings:** ${validation.summary.warnings}
+
+                      ### Validations
+                      ${validation.validations.map(v => `- ${v.passed ? '✅' : '❌'} **${v.name}**: ${v.message}`).join('\n')}
+
+                      ${validation.errors.length > 0 ? `### Errors\n${validation.errors.map(e => `- ❌ ${e}`).join('\n')}` : ''}
+                      ${validation.warnings.length > 0 ? `### Warnings\n${validation.warnings.map(w => `- ⚠️ ${w}`).join('\n')}` : ''}
+
+                      ### Constraints
+                      - **Basic Clickable Count:** ${validation.constraints.basic_clickable_count}
+                      - **Basic Required Agents:** ${validation.constraints.basic_required_agents.join(', ')}
+                      - **Core Agents:** ${validation.constraints.core_agents.join(', ')}
+                      - **System Agents:** ${validation.constraints.system_agents.join(', ')}
+                      - **Inclusion Order:** ${validation.constraints.inclusion_order}
+                      `;
+
+                      github.rest.issues.createComment({
+                        issue_number: context.issue.number,
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        body: body
+                      });

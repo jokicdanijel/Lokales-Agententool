@@ -23,7 +23,7 @@ jobs:
           pip install -r requirements-eval.txt || true
       - name: Start OTLP Collector (docker)
         run: |
-          docker-compose -f docker-compose.otel.yml up -d
+          docker compose -f docker compose.otel.yml up -d
       - name: Wait for collector
         run: |
           echo "Waiting for Jaeger UI..."
@@ -37,4 +37,4 @@ jobs:
         continue-on-error: true
       - name: Tear down collector
         if: always()
-        run: docker-compose -f docker-compose.otel.yml down -v
+        run: docker compose -f docker compose.otel.yml down -v

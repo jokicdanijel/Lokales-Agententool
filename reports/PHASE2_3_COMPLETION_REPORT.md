@@ -1,6 +1,6 @@
 # SCTA Phase 2-3 Completion Report
 
-**Date:** 2025-11-09  
+**Date:** 2025-11-09
 **Status:** ✅ ALL PHASES COMPLETE (Secrets Remediation + Architecture Setup)
 
 ---
@@ -45,7 +45,7 @@
 4. ✅ Pre-commit hook logic documented
 
 **Pending Manual Actions (Required Before Deployment):**
-- [ ] Execute: `git rm --cached .env 1.portier_openai/.env 19.dashboard_agent/.env.full`
+- [ ] Execute: `git rm --cached .env 1.opena1&2_portier/.env 19.dashboard_agent/.env.full`
 - [ ] Install BFG Repo Cleaner: `brew install bfg`
 - [ ] Clean history: `bfg --delete-files '*.env' --no-blob-protection`
 - [ ] Rotate exposed tokens (Telegram, GitHub)
@@ -91,7 +91,7 @@
     - Database & Redis connection URLs
     - Secrets masking
     - Logging configuration
-  
+
   - `src/pkg/shared/schemas.py` (180+ lines)
     - Pydantic v2 strict validation
     - Task models (Create, Response, List)
@@ -100,7 +100,7 @@
     - Agent status models
     - Error response model
     - Pagination parameters
-  
+
   - `src/pkg/shared/exceptions.py` (110+ lines)
     - Custom exception hierarchy
     - 10+ exception types (ConfigError, DatabaseError, AuthError, etc.)

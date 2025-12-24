@@ -1,8 +1,8 @@
 # PHASE-0 DOCUMENTATION COMPLETION – Session Summary
 
-**Date:** 2025-11-09 UTC  
-**Duration:** ~2 hours (Port-Policy Analysis → Schritt 1 Implementation → Schritt 5 Spec)  
-**Commits:** 151c11c (Schritt 1) → 18db861 (Charter + Schritt 5)  
+**Date:** 2025-11-09 UTC
+**Duration:** ~2 hours (Port-Policy Analysis → Schritt 1 Implementation → Schritt 5 Spec)
+**Commits:** 151c11c (Schritt 1) → 18db861 (Charter + Schritt 5)
 **Status:** ✅ Complete
 
 ---
@@ -26,9 +26,9 @@
 ### Codebase Changes (Commit 151c11c)
 
 ```diff
-1.portier_openai/schemas.py          +74 lines (NEW)
-1.portier_openai/koordinator.py      +113 lines (NEW)
-1.portier_openai/main_production.py  +75 lines (NEW)
+1.opena1&2_portier/schemas.py          +74 lines (NEW)
+1.opena1&2_portier/koordinator.py      +113 lines (NEW)
+1.opena1&2_portier/main_production.py  +75 lines (NEW)
 ────────────────────────────────────────────────
 Total: +262 lines of production code
 ```
@@ -157,9 +157,9 @@ ae25bf8 – feat: add health_check.sh verification script + port-policy verifica
 
 ### GitHub Status
 
-✅ **HEAD:** 18db861 (synchronized with origin/main)  
-✅ **Last Push:** 2025-11-09 16:23 UTC  
-✅ **Repo:** https://github.com/jokicdanijel/Gesamtprojekt-start  
+✅ **HEAD:** 18db861 (synchronized with origin/main)
+✅ **Last Push:** 2025-11-09 16:23 UTC
+✅ **Repo:** https://github.com/jokicdanijel/Gesamtprojekt-start
 ✅ **Branch:** main (protected, requires review)
 
 ---
@@ -223,29 +223,29 @@ All infrastructure documentation and governance frameworks established:
 
 ### Issue 1: Relative Import Path (Resolved ✅)
 
-**Problem:** `from .schemas import Request71` failed with "attempted relative import"  
-**Root Cause:** Module executed as `__main__` (not part of package)  
-**Solution:** Added try-except fallback in `koordinator.py`  
+**Problem:** `from .schemas import Request71` failed with "attempted relative import"
+**Root Cause:** Module executed as `__main__` (not part of package)
+**Solution:** Added try-except fallback in `koordinator.py`
 **Status:** ✅ Both import paths work
 
 ### Issue 2: venv313 Dependency Conflicts (Resolved ✅)
 
-**Problem:** `ModuleNotFoundError: typing_extensions`  
-**Root Cause:** Incompatible package versions from previous install  
-**Solution:** Rebuilt venv from scratch with compatible versions  
+**Problem:** `ModuleNotFoundError: typing_extensions`
+**Root Cause:** Incompatible package versions from previous install
+**Solution:** Rebuilt venv from scratch with compatible versions
 **Status:** ✅ All dependencies installed (pydantic-2.12.4, fastapi-0.121.1, uvicorn-0.38.0)
 
 ### Decision 1: Port Assignment for opena5
 
-**Option A:** Use 12348 (same as opena2 Archivator, different host)  
-**Option B:** Use 12347 (unique port)  
-**Chosen:** Option A (12348) – allows co-location if needed  
+**Option A:** Use 12348 (same as opena2 Archivator, different host)
+**Option B:** Use 12347 (unique port)
+**Chosen:** Option A (12348) – allows co-location if needed
 **Rationale:** Aligns with Safepoint workflow (opena5 → opena2)
 
 ### Decision 2: Safepoint Naming Convention
 
-**Format Chosen:** `SP<unix_ts>_src→dst_EVENT.json`  
-**Alternative Rejected:** `src-dst-EVENT-ts.json` (less readable, harder to sort)  
+**Format Chosen:** `SP<unix_ts>_src→dst_EVENT.json`
+**Alternative Rejected:** `src-dst-EVENT-ts.json` (less readable, harder to sort)
 **Benefit:** Chronological ordering, src→dst clarity, backward-compatible file sorting
 
 ---
@@ -304,8 +304,8 @@ All infrastructure documentation and governance frameworks established:
 
 ```bash
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
-source 1.portier_openai/venv313/bin/activate
-cd 1.portier_openai
+source 1.opena1&2_portier/venv313/bin/activate
+cd 1.opena1&2_portier
 timeout 30 python main_production.py --port 12346
 ```
 
@@ -356,9 +356,9 @@ git branch -a                       # All branches
 ## Session Artifacts
 
 **Created Files:**
-- `1.portier_openai/schemas.py` – Pydantic v2 schemas
-- `1.portier_openai/koordinator.py` – FastAPI router
-- `1.portier_openai/main_production.py` – Application entry point
+- `1.opena1&2_portier/schemas.py` – Pydantic v2 schemas
+- `1.opena1&2_portier/koordinator.py` – FastAPI router
+- `1.opena1&2_portier/main_production.py` – Application entry point
 - `docs/PROJECT_CHARTER.md` – Governance framework
 - `docs/SCHRITT_05_OPENA5_VSCODE_BRIDGE.md` – VS Code Bridge spec
 
@@ -375,5 +375,5 @@ git branch -a                       # All branches
 
 ---
 
-**End of Session Summary – Phase-0 Documentation Completion**  
+**End of Session Summary – Phase-0 Documentation Completion**
 **Next: Begin Phase-P1 (Implementation) with Schritt 2**

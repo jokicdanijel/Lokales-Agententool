@@ -1,0 +1,17 @@
+{
+  "timestamp": "2025-12-23T05:06:28.239029Z",
+  "passed": true,
+  "violations": [],
+  "scanner_files_found": [
+    "ports_ids_compliance_scanner.py",
+    "folder_coverage_scanner.py",
+    "secrets_vault_scanner.py",
+    "html_contract_scanner.py",
+    "public_website_scanner.py",
+    "entitlements_consistency_scanner.py",
+    "api_binding_scanner.py",
+    "preflight_gate_scanner.py"
+  ],
+  "preflight_script_found": true,
+  "ci_config_found": true
+}

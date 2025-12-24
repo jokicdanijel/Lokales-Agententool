@@ -1,0 +1,1393 @@
+{
+  "timestamp": "2025-12-23T05:04:25.449006Z",
+  "passed": false,
+  "findings": {
+    "baseline_ids": [
+      "opena1",
+      "opena10",
+      "opena11",
+      "opena12",
+      "opena13",
+      "opena14",
+      "opena15",
+      "opena16",
+      "opena17",
+      "opena18",
+      "opena19",
+      "opena2",
+      "opena20",
+      "opena21",
+      "opena3",
+      "opena4",
+      "opena5",
+      "opena6",
+      "opena7",
+      "opena8",
+      "opena9"
+    ],
+    "baseline_id_mismatch": {
+      "missing": [],
+      "extra": []
+    },
+    "duplicate_ports_in_baseline": {},
+    "baseline_errors": [],
+    "opena_outside_range": {
+      "opena99": [
+        {
+          "path": "docs/ENTITLEMENTS.md",
+          "line": 183,
+          "snippet": "1. Agent 'opena99' in plan 'basic' not found in baseline"
+        }
+      ]
+    },
+    "forbidden_host_ports_compose": [],
+    "forbidden_port_literals_runtime": {
+      "3000": [
+        {
+          "path": ".env.backup_20251221_061518",
+          "line": 27,
+          "snippet": "OPENWEBUI_URL=http://127.0.0.1:3000"
+        },
+        {
+          "path": ".env.backup_20251221_061518",
+          "line": 106,
+          "snippet": "OPENWEBUI_URL=http://127.0.0.1:3000"
+        },
+        {
+          "path": ".env.backup_20251221_061518",
+          "line": 179,
+          "snippet": "SCTA_API_PORT=3000"
+        },
+        {
+          "path": ".env.backup_20251221_061518",
+          "line": 272,
+          "snippet": "OPENWEBUI_URL=http://127.0.0.1:3000"
+        },
+        {
+          "path": ".env.backup_20251221_061518",
+          "line": 315,
+          "snippet": "OPENWEBUI_PORT=3000"
+        },
+        {
+          "path": "main_dashboard_agent.py",
+          "line": 1370,
+          "snippet": "\"url\": \"http://127.0.0.1:3000\","
+        },
+        {
+          "path": ".env",
+          "line": 180,
+          "snippet": "OPENWEBUI_PORT=3000"
+        },
+        {
+          "path": ".env",
+          "line": 181,
+          "snippet": "OPENWEBUI_URL=http://127.0.0.1:3000"
+        },
+        {
+          "path": ".env",
+          "line": 206,
+          "snippet": "SCTA_API_PORT=3000"
+        },
+        {
+          "path": ".env.original_corrupt",
+          "line": 27,
+          "snippet": "OPENWEBUI_URL=http://127.0.0.1:3000"
+        },
+        {
+          "path": ".env.original_corrupt",
+          "line": 106,
+          "snippet": "OPENWEBUI_URL=http://127.0.0.1:3000"
+        },
+        {
+          "path": ".env.original_corrupt",
+          "line": 179,
+          "snippet": "SCTA_API_PORT=3000"
+        },
+        {
+          "path": ".env.original_corrupt",
+          "line": 272,
+          "snippet": "OPENWEBUI_URL=http://127.0.0.1:3000"
+        },
+        {
+          "path": ".env.original_corrupt",
+          "line": 315,
+          "snippet": "OPENWEBUI_PORT=3000"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/aiohttp/http_websocket.py",
+          "line": 327,
+          "snippet": "if close_code < 3000 and close_code not in ALLOWED_CLOSE_CODES:"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/aiohttp/cookiejar.py",
+          "line": 69,
+          "snippet": "MAX_TIME = calendar.timegm((3000, 12, 31, 23, 59, 59, -1, -1, -1))"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pydantic/types.py",
+          "line": 2046,
+          "snippet": "print(MyModel(size='3000 KiB').size)"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/websockets/frames.py",
+          "line": 372,
+          "snippet": "if 3000 <= self.code < 4000:"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/websockets/frames.py",
+          "line": 425,
+          "snippet": "if not (self.code in EXTERNAL_CLOSE_CODES or 3000 <= self.code < 5000):"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/passlib/tests/test_context_deprecated.py",
+          "line": 636,
+          "snippet": "sha256_crypt__max_rounds = 3000,"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/passlib/tests/test_context_deprecated.py",
+          "line": 638,
+          "snippet": "sha256_crypt__default_rounds = 3000,"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/passlib/tests/test_context_deprecated.py",
+          "line": 656,
+          "snippet": "self.assertFalse(cc.hash_needs_update('$5$rounds=3000$fS9iazEwTKi7QPW4$VasgBC8FqlOvD7x2HhABaMXCTh9jwHclPA9j5YQdns.'))"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/passlib/tests/test_context.py",
+          "line": 168,
+          "snippet": "sha256_crypt__max_rounds = 3000,"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/passlib/tests/test_context.py",
+          "line": 170,
+          "snippet": "sha256_crypt__default_rounds = 3000,"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/passlib/tests/test_context.py",
+          "line": 1001,
+          "snippet": "self.assertTrue(hash.startswith(\"$5$rounds=3000$\"))"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/passlib/tests/test_context.py",
+          "line": 1160,
+          "snippet": "self.assertFalse(cc.needs_update('$5$rounds=3000$fS9iazEwTKi7QPW4$VasgBC8FqlOvD7x2HhABaMXCTh9jwHclPA9j5YQdns.'))"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/passlib/tests/test_context.py",
+          "line": 1365,
+          "snippet": "sha256_crypt__max_rounds=3000,"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/passlib/tests/test_context.py",
+          "line": 1378,
+          "snippet": "self.assertEqual(custom_handler.max_desired_rounds, 3000)"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/passlib/tests/test_context.py",
+          "line": 1424,
+          "snippet": "cc.genconfig(rounds=3000, salt=\"nacl\"), '$5$rounds=3000$nacl$' + STUB)"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/passlib/tests/test_context.py",
+          "line": 1424,
+          "snippet": "cc.genconfig(rounds=3000, salt=\"nacl\"), '$5$rounds=3000$nacl$' + STUB)"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/passlib/tests/test_context.py",
+          "line": 1443,
+          "snippet": "c2 = cc.copy(sha256_crypt__default_rounds=None, sha256_crypt__max_rounds=3000)"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/passlib/tests/test_context.py",
+          "line": 1444,
+          "snippet": "self.assertEqual(c2.genconfig(salt=\"nacl\"), '$5$rounds=3000$nacl$' + STUB)"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/passlib/tests/test_context.py",
+          "line": 1451,
+          "snippet": "cc.copy(sha256_crypt__default_rounds=3000)"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/passlib/tests/test_ext_django.py",
+          "line": 1034,
+          "snippet": "superuser__sha256_crypt__default_rounds = 3000,"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/passlib/tests/test_ext_django.py",
+          "line": 1048,
+          "snippet": "self.assertEqual(run(is_superuser=True), 3000)"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/passlib/tests/test_ext_django.py",
+          "line": 1058,
+          "snippet": "self.assertEqual(run(first_name='superuser'), 3000)"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/numpy/f2py/symbolic.py",
+          "line": 62,
+          "snippet": "REF = 3000"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/numpy/_core/tests/test_arrayprint.py",
+          "line": 892,
+          "snippet": "\"array([0.0000, 0.1000, 0.2000, 0.3000, 0.3999, 0.5000], dtype=float16)\")"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/numpy/_core/tests/test_ufunc.py",
+          "line": 2193,
+          "snippet": "indx = np.random.randint(1000, size=3000, dtype=np.intp)"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/numpy/_core/tests/test_ufunc.py",
+          "line": 2194,
+          "snippet": "vals = np.arange(3000, dtype=typecode)"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/numpy/_core/tests/test_datetime.py",
+          "line": 1789,
+          "snippet": "assert_raises(ValueError, np.array, ['1980-02-03 01:01:00-3000'],"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/numpy/polynomial/tests/test_printing.py",
+          "line": 229,
+          "snippet": "(75, ('0.0 + 10.0 x + 200.0 x**2 + 3000.0 x**3 + 40000.0 x**4 + '"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/numpy/polynomial/tests/test_printing.py",
+          "line": 232,
+          "snippet": "(45, ('0.0 + 10.0 x + 200.0 x**2 + 3000.0 x**3 +\\n40000.0 x**4 + '"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/numpy/polynomial/tests/test_printing.py",
+          "line": 235,
+          "snippet": "(132, ('0.0 + 10.0 x + 200.0 x**2 + 3000.0 x**3 + 40000.0 x**4 + '"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/numpy/polynomial/tests/test_printing.py",
+          "line": 241,
+          "snippet": "[0, 10, 200, 3000, 40000, 500000, 600000, 70000, 8000, 900]"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/core/indexing.py",
+          "line": 206,
+          "snippet": "...           {'a': 1000, 'b': 2000, 'c': 3000, 'd': 4000}]"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/core/indexing.py",
+          "line": 212,
+          "snippet": "2  1000  2000  3000  4000"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/core/indexing.py",
+          "line": 246,
+          "snippet": "2  1000  2000  3000  4000"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/core/indexing.py",
+          "line": 253,
+          "snippet": "2  1000  2000  3000  4000"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/core/indexing.py",
+          "line": 262,
+          "snippet": "2  1000  2000  3000  4000"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/core/indexing.py",
+          "line": 286,
+          "snippet": "2  1000  2000  3000"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/core/indexing.py",
+          "line": 294,
+          "snippet": "2  1000  3000"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/core/indexing.py",
+          "line": 302,
+          "snippet": "2  1000  3000"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/core/series.py",
+          "line": 377,
+          "snippet": "__pandas_priority__ = 3000"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/test_algos.py",
+          "line": 1296,
+          "snippet": "datetime(3000, 1, 1),"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/test_algos.py",
+          "line": 1300,
+          "snippet": "datetime(3000, 1, 1),"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/test_algos.py",
+          "line": 1301,
+          "snippet": "datetime(3000, 1, 1),"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/test_algos.py",
+          "line": 1308,
+          "snippet": "[datetime(3000, 1, 1), datetime(5000, 1, 1), datetime(6000, 1, 1)],"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/indexing/test_iloc.py",
+          "line": 343,
+          "snippet": "{\"A\": 1000, \"B\": 2000, \"C\": 3000},"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/indexing/test_iloc.py",
+          "line": 353,
+          "snippet": "expected = DataFrame([{\"B\": 2, \"C\": 3}, {\"B\": 2000, \"C\": 3000}], index=[0, 2])"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/indexing/test_iloc.py",
+          "line": 362,
+          "snippet": "{\"A\": 1000, \"B\": 2000, \"C\": 3000},"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/indexing/test_iloc.py",
+          "line": 371,
+          "snippet": "[{\"A\": 1, \"B\": 2, \"C\": 3}, {\"A\": 1000, \"B\": 2000, \"C\": 3000}], index=[0, 2]"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/indexing/test_iloc.py",
+          "line": 389,
+          "snippet": "{\"A\": 1000, \"B\": 2000, \"C\": 3000},"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/indexing/test_iloc.py",
+          "line": 402,
+          "snippet": "[{\"A\": 1, \"C\": 3}, {\"A\": 100, \"C\": 300}, {\"A\": 1000, \"C\": 3000}]"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/indexing/test_iloc.py",
+          "line": 844,
+          "snippet": "df = DataFrame({\"A\": [0.1] * 3000, \"B\": [1] * 3000})"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/indexing/test_iloc.py",
+          "line": 844,
+          "snippet": "df = DataFrame({\"A\": [0.1] * 3000, \"B\": [1] * 3000})"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/tools/test_to_datetime.py",
+          "line": 1472,
+          "snippet": "@pytest.mark.parametrize(\"value\", [\"3000/12/11 00:00:00\"])"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/tools/test_to_numeric.py",
+          "line": 538,
+          "snippet": "[10000.0, 20000, 3000, 40000.36, 50000, 50000.00],"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/tools/test_to_numeric.py",
+          "line": 540,
+          "snippet": "[10000.0, 20000, 3000, 40000.36, 50000, 50000.00], dtype=np.float64"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/frame/test_stack_unstack.py",
+          "line": 2155,
+          "snippet": "\"E\": np.random.default_rng(6).integers(3000, size=NUM_ROWS),"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/util/test_hashing.py",
+          "line": 240,
+          "snippet": "Series([1000, 2000, 3000, 4000]),"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/series/test_constructors.py",
+          "line": 1022,
+          "snippet": "result = Series([datetime(3000, 1, 1)])"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/series/test_constructors.py",
+          "line": 1023,
+          "snippet": "assert result[0] == datetime(3000, 1, 1, 0, 0)"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/io/test_stata.py",
+          "line": 1700,
+          "snippet": "[[\"a\" * 3000, \"A\", \"apple\"], [\"b\" * 1000, \"B\", \"banana\"]],"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/indexes/datetimes/test_constructors.py",
+          "line": 553,
+          "snippet": "datetime(3000, 1, 1),"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/indexes/datetimes/test_constructors.py",
+          "line": 562,
+          "snippet": "msg = \"^Out of bounds nanosecond timestamp: 3000-01-01 00:00:00, at position 0$\""
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/indexes/numeric/test_numeric.py",
+          "line": 357,
+          "snippet": "val = int(arr[0]) + 3000"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/indexes/numeric/test_numeric.py",
+          "line": 536,
+          "snippet": "expected = Index([1000, 2000, 3000], dtype=np.int64)"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/reshape/merge/test_join.py",
+          "line": 538,
+          "snippet": "df3 = DataFrame({\"a\": [1, 1, 1], \"b\": [1, 1, 2], \"e\": [1000, 2000, 3000]})"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/io/parser/usecols/test_usecols_basic.py",
+          "line": 47,
+          "snippet": "1000,2000,3000"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/io/parser/usecols/test_usecols_basic.py",
+          "line": 153,
+          "snippet": "1000, 2000, 3000"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/io/parser/usecols/test_usecols_basic.py",
+          "line": 291,
+          "snippet": "DataFrame(data=[[2000, 3000], [5000, 6000]], columns=[\"0\", \"1\"]),"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/io/parser/usecols/test_usecols_basic.py",
+          "line": 298,
+          "snippet": "1000,2000,3000"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/arrays/integer/test_repr.py",
+          "line": 57,
+          "snippet": "\"Length: 3000, dtype: Int64\""
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/arrays/floating/test_repr.py",
+          "line": 38,
+          "snippet": "Length: 3000, dtype: Float64\"\"\""
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/plotting/frame/test_frame.py",
+          "line": 2419,
+          "snippet": "\"s2\": [900, 1400, 2000, 3000],"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/psutil/tests/__init__.py",
+          "line": 437,
+          "snippet": "time.sleep(3000)"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/psutil/tests/test_process.py",
+          "line": 786,
+          "snippet": "\"import time; [time.sleep(0.01) for x in range(3000)];\""
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/nltk/tokenize/util.py",
+          "line": 110,
+          "snippet": "# CJK Symbols and Punctuation (3000–303F)"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/nltk/tbl/demo.py",
+          "line": 137,
+          "snippet": "postag(num_sents=3000, min_acc=0.96, min_score=10)"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/nltk/app/chartparser_app.py",
+          "line": 2460,
+          "snippet": "self._root.after(3000, self._animate_strategy)"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/sqlalchemy/testing/suite/test_types.py",
+          "line": 1322,
+          "snippet": "@testing.combinations(100, 1999, 3000, 4000, 5000, 9000, argnames=\"length\")"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/sqlalchemy/dialects/postgresql/base.py",
+          "line": 3977,
+          "snippet": "batch = batches[0:3000]"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/sqlalchemy/dialects/postgresql/base.py",
+          "line": 3978,
+          "snippet": "batches[0:3000] = []"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/sqlalchemy/dialects/postgresql/base.py",
+          "line": 4398,
+          "snippet": "batch = batches[0:3000]"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/sqlalchemy/dialects/postgresql/base.py",
+          "line": 4399,
+          "snippet": "batches[0:3000] = []"
+        }
+      ],
+      "8080": [
+        {
+          "path": "openwebui_integration_12347.py",
+          "line": 10,
+          "snippet": "- Port 8080: OpenWebUI UI (external, UI-only)"
+        },
+        {
+          "path": "openwebui_integration_12347.py",
+          "line": 32,
+          "snippet": "OPENWEBUI_UI_PORT = 8080           # OpenWebUI UI (external)"
+        },
+        {
+          "path": "openwebui_integration_12347.py",
+          "line": 398,
+          "snippet": "\"fallback\": \"Use direct OpenWebUI UI at port 8080\""
+        },
+        {
+          "path": "config.py",
+          "line": 35,
+          "snippet": "origins = [\"http://127.0.0.1:8080\"]  # OpenWebUI Frontend"
+        },
+        {
+          "path": "main_dashboard_agent.py",
+          "line": 1306,
+          "snippet": "\"url\": \"http://127.0.0.1:8080\","
+        },
+        {
+          "path": "security.py",
+          "line": 236,
+          "snippet": "return port in cls.ALLOWED_RANGE or port == 8080"
+        },
+        {
+          "path": "openwebui_integration_12346.py",
+          "line": 31,
+          "snippet": "OPENWEBUI_UI_PORT = 8080           # OpenWebUI UI (external, UI-only)"
+        },
+        {
+          "path": "openwebui_integration_12346.py",
+          "line": 276,
+          "snippet": "\"note\": \"Port 8080 ist nur für UI erlaubt, Backend-Calls über opena3\""
+        },
+        {
+          "path": "webpanel/README.md",
+          "line": 178,
+          "snippet": "- **OpenWebUI (8080)** - UI-only (extern)"
+        },
+        {
+          "path": "bin/start_openwebui_integration_12347.sh",
+          "line": 145,
+          "snippet": "echo \"  8080:  OpenWebUI UI (external)\""
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/yarl/_url.py",
+          "line": 771,
+          "snippet": "- `http://example.com:8080` -> `example.com`"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/yarl/_url.py",
+          "line": 798,
+          "snippet": "- `http://example.com:8080` -> `example.com:8080`"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/yarl/_url.py",
+          "line": 798,
+          "snippet": "- `http://example.com:8080` -> `example.com:8080`"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/aiohttp/web_runner.py",
+          "line": 103,
+          "snippet": "port = 8443 if self._ssl_context else 8080"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/aiohttp/web.py",
+          "line": 577,
+          "snippet": "default=\"8080\","
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/urllib3/exceptions.py",
+          "line": 310,
+          "snippet": "# localhost:8080 -> scheme=localhost, remove if we fix this."
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/httpcore/_models.py",
+          "line": 209,
+          "snippet": "at `http://localhost:8080`..."
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/httpcore/_models.py",
+          "line": 217,
+          "snippet": "port=8080,"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/rich/logging.py",
+          "line": 248,
+          "snippet": "log.info(\"Listening on http://127.0.0.1:8080\")"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pip/_vendor/urllib3/exceptions.py",
+          "line": 293,
+          "snippet": "# localhost:8080 -> scheme=localhost, remove if we fix this."
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pip/_vendor/rich/logging.py",
+          "line": 256,
+          "snippet": "log.info(\"Listening on http://127.0.0.1:8080\")"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/window/test_expanding.py",
+          "line": 518,
+          "snippet": "# GH 8080"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/pandas/tests/window/test_apply.py",
+          "line": 85,
+          "snippet": "# gh-8080"
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/httpcore/_async/http_proxy.py",
+          "line": 82,
+          "snippet": "For example `\"http://127.0.0.1:8080/\"`."
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/httpcore/_async/socks_proxy.py",
+          "line": 128,
+          "snippet": "For example `\"http://127.0.0.1:8080/\"`."
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/httpcore/_sync/http_proxy.py",
+          "line": 82,
+          "snippet": "For example `\"http://127.0.0.1:8080/\"`."
+        },
+        {
+          "path": ".venv/lib/python3.12/site-packages/httpcore/_sync/socks_proxy.py",
+          "line": 128,
+          "snippet": "For example `\"http://127.0.0.1:8080/\"`."
+        }
+      ]
+    },
+    "id_port_mismatches_linelocal": [
+      {
+        "file": "main_dashboard_v3.py",
+        "line": 60,
+        "id": "opena4",
+        "found_port": 12348,
+        "expected_port": 12346,
+        "snippet": "{\"id\": \"opena4\",  \"name\": \"Telegram Agent\",      \"kuerzel\": \"telep\",       \"port\": 12348, \"icon\": \"📱\"},"
+      },
+      {
+        "file": "config.py",
+        "line": 117,
+        "id": "opena4",
+        "found_port": 12348,
+        "expected_port": 12346,
+        "snippet": "AgentInfo(id=\"opena4\",  name=\"Telegram Agent\",          kuerzel=\"telep\",       port=12348),"
+      },
+      {
+        "file": "main_dashboard_final.py",
+        "line": 65,
+        "id": "opena4",
+        "found_port": 12348,
+        "expected_port": 12346,
+        "snippet": "{\"id\": \"opena4\", \"name\": \"Telegram Agent\", \"kuerzel\": \"telep\", \"port\": 12348},"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 200,
+        "id": "opena4",
+        "found_port": 12348,
+        "expected_port": 12346,
+        "snippet": "{\"id\": \"opena4\", \"name\": \"Telegram Agent\", \"kuerzel\": \"telep\", \"port\": 12348},"
+      },
+      {
+        "file": "hyper_dashboard_fusion.py",
+        "line": 84,
+        "id": "opena4",
+        "found_port": 12348,
+        "expected_port": 12346,
+        "snippet": "{\"id\": \"opena4\", \"name\": \"Telegram\", \"port\": 12348, \"url\": \"http://127.0.0.1:12348\"},"
+      },
+      {
+        "file": "main_dashboard.py",
+        "line": 185,
+        "id": "opena4",
+        "found_port": 12348,
+        "expected_port": 12346,
+        "snippet": "{\"id\": \"opena4\",  \"name\": \"Telegram Agent\",            \"kuerzel\": \"telep\",      \"port\": 12348},"
+      },
+      {
+        "file": "main_dashboard_v3.py",
+        "line": 61,
+        "id": "opena5",
+        "found_port": 12351,
+        "expected_port": 12350,
+        "snippet": "{\"id\": \"opena5\",  \"name\": \"VS Code Agent\",       \"kuerzel\": \"vscop\",       \"port\": 12351, \"icon\": \"💻\"},"
+      },
+      {
+        "file": "config.py",
+        "line": 118,
+        "id": "opena5",
+        "found_port": 12351,
+        "expected_port": 12350,
+        "snippet": "AgentInfo(id=\"opena5\",  name=\"VS Code Agent\",           kuerzel=\"vscop\",       port=12351),"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 201,
+        "id": "opena5",
+        "found_port": 12351,
+        "expected_port": 12350,
+        "snippet": "{\"id\": \"opena5\", \"name\": \"VS Code Agent\", \"kuerzel\": \"vscop\", \"port\": 12351},"
+      },
+      {
+        "file": "hyper_dashboard_fusion.py",
+        "line": 85,
+        "id": "opena5",
+        "found_port": 12349,
+        "expected_port": 12350,
+        "snippet": "{\"id\": \"opena5\", \"name\": \"VSCode\", \"port\": 12349, \"url\": \"http://127.0.0.1:12349\"},"
+      },
+      {
+        "file": "main_dashboard.py",
+        "line": 186,
+        "id": "opena5",
+        "found_port": 12351,
+        "expected_port": 12350,
+        "snippet": "{\"id\": \"opena5\",  \"name\": \"VS Code Agent\",             \"kuerzel\": \"vscop\",      \"port\": 12351},"
+      },
+      {
+        "file": "docs/SCANNERS.md",
+        "line": 146,
+        "id": "opena5",
+        "found_port": 12348,
+        "expected_port": 12350,
+        "snippet": "- `agent://opena5:12348`"
+      },
+      {
+        "file": "scripts/api_binding_scanner.py",
+        "line": 21,
+        "id": "opena5",
+        "found_port": 12348,
+        "expected_port": 12350,
+        "snippet": "- agent://opena5:12348"
+      },
+      {
+        "file": "main_dashboard_v3.py",
+        "line": 62,
+        "id": "opena6",
+        "found_port": 12352,
+        "expected_port": 12351,
+        "snippet": "{\"id\": \"opena6\",  \"name\": \"Browser Agent\",       \"kuerzel\": \"browsep\",     \"port\": 12352, \"icon\": \"🌐\"},"
+      },
+      {
+        "file": "config.py",
+        "line": 119,
+        "id": "opena6",
+        "found_port": 12352,
+        "expected_port": 12351,
+        "snippet": "AgentInfo(id=\"opena6\",  name=\"Browser Agent\",           kuerzel=\"browsep\",     port=12352),"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 202,
+        "id": "opena6",
+        "found_port": 12352,
+        "expected_port": 12351,
+        "snippet": "{\"id\": \"opena6\", \"name\": \"Browser Agent\", \"kuerzel\": \"browsep\", \"port\": 12352},"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 1949,
+        "id": "opena6",
+        "found_port": 12352,
+        "expected_port": 12351,
+        "snippet": "{\"id\": \"opena6\", \"port\": 12352, \"type\": \"Browser Agent\", \"status\": \"online\"},"
+      },
+      {
+        "file": "hyper_dashboard_fusion.py",
+        "line": 86,
+        "id": "opena6",
+        "found_port": 12350,
+        "expected_port": 12351,
+        "snippet": "{\"id\": \"opena6\", \"name\": \"Browser\", \"port\": 12350, \"url\": \"http://127.0.0.1:12350\"},"
+      },
+      {
+        "file": "main_dashboard.py",
+        "line": 187,
+        "id": "opena6",
+        "found_port": 12352,
+        "expected_port": 12351,
+        "snippet": "{\"id\": \"opena6\",  \"name\": \"Browser Agent\",             \"kuerzel\": \"browsep\",    \"port\": 12352},"
+      },
+      {
+        "file": "main_dashboard_v3.py",
+        "line": 63,
+        "id": "opena7",
+        "found_port": 12353,
+        "expected_port": 12352,
+        "snippet": "{\"id\": \"opena7\",  \"name\": \"Email Agent\",         \"kuerzel\": \"emailp\",      \"port\": 12353, \"icon\": \"📧\"},"
+      },
+      {
+        "file": "config.py",
+        "line": 120,
+        "id": "opena7",
+        "found_port": 12353,
+        "expected_port": 12352,
+        "snippet": "AgentInfo(id=\"opena7\",  name=\"Email Agent\",             kuerzel=\"emailp\",      port=12353),"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 203,
+        "id": "opena7",
+        "found_port": 12353,
+        "expected_port": 12352,
+        "snippet": "{\"id\": \"opena7\", \"name\": \"Email Agent\", \"kuerzel\": \"emailp\", \"port\": 12353},"
+      },
+      {
+        "file": "hyper_dashboard_fusion.py",
+        "line": 87,
+        "id": "opena7",
+        "found_port": 12351,
+        "expected_port": 12352,
+        "snippet": "{\"id\": \"opena7\", \"name\": \"Email\", \"port\": 12351, \"url\": \"http://127.0.0.1:12351\"},"
+      },
+      {
+        "file": "main_dashboard.py",
+        "line": 188,
+        "id": "opena7",
+        "found_port": 12353,
+        "expected_port": 12352,
+        "snippet": "{\"id\": \"opena7\",  \"name\": \"Email Agent\",               \"kuerzel\": \"emailp\",     \"port\": 12353},"
+      },
+      {
+        "file": "main_dashboard_v3.py",
+        "line": 64,
+        "id": "opena8",
+        "found_port": 12354,
+        "expected_port": 12353,
+        "snippet": "{\"id\": \"opena8\",  \"name\": \"WhatsApp Agent\",      \"kuerzel\": \"whatsappp\",   \"port\": 12354, \"icon\": \"💬\"},"
+      },
+      {
+        "file": "config.py",
+        "line": 121,
+        "id": "opena8",
+        "found_port": 12354,
+        "expected_port": 12353,
+        "snippet": "AgentInfo(id=\"opena8\",  name=\"WhatsApp Agent\",          kuerzel=\"whatsappp\",   port=12354),"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 204,
+        "id": "opena8",
+        "found_port": 12354,
+        "expected_port": 12353,
+        "snippet": "{\"id\": \"opena8\", \"name\": \"WhatsApp Agent\", \"kuerzel\": \"whatsappp\", \"port\": 12354},"
+      },
+      {
+        "file": "hyper_dashboard_fusion.py",
+        "line": 88,
+        "id": "opena8",
+        "found_port": 12352,
+        "expected_port": 12353,
+        "snippet": "{\"id\": \"opena8\", \"name\": \"WhatsApp\", \"port\": 12352, \"url\": \"http://127.0.0.1:12352\"},"
+      },
+      {
+        "file": "main_dashboard.py",
+        "line": 189,
+        "id": "opena8",
+        "found_port": 12354,
+        "expected_port": 12353,
+        "snippet": "{\"id\": \"opena8\",  \"name\": \"WhatsApp Agent\",            \"kuerzel\": \"whatsappp\",  \"port\": 12354},"
+      },
+      {
+        "file": "main_dashboard_v3.py",
+        "line": 65,
+        "id": "opena9",
+        "found_port": 12355,
+        "expected_port": 12354,
+        "snippet": "{\"id\": \"opena9\",  \"name\": \"Telefonie Agent\",     \"kuerzel\": \"telephonep\",  \"port\": 12355, \"icon\": \"📞\"},"
+      },
+      {
+        "file": "config.py",
+        "line": 122,
+        "id": "opena9",
+        "found_port": 12355,
+        "expected_port": 12354,
+        "snippet": "AgentInfo(id=\"opena9\",  name=\"Telefonie Agent\",         kuerzel=\"telephonep\",  port=12355),"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 205,
+        "id": "opena9",
+        "found_port": 12355,
+        "expected_port": 12354,
+        "snippet": "{\"id\": \"opena9\", \"name\": \"Telefonie Agent\", \"kuerzel\": \"telphonep\", \"port\": 12355},"
+      },
+      {
+        "file": "hyper_dashboard_fusion.py",
+        "line": 89,
+        "id": "opena9",
+        "found_port": 12353,
+        "expected_port": 12354,
+        "snippet": "{\"id\": \"opena9\", \"name\": \"Phone Response\", \"port\": 12353, \"url\": \"http://127.0.0.1:12353\"},"
+      },
+      {
+        "file": "main_dashboard.py",
+        "line": 190,
+        "id": "opena9",
+        "found_port": 12355,
+        "expected_port": 12354,
+        "snippet": "{\"id\": \"opena9\",  \"name\": \"Telefonie Agent\",           \"kuerzel\": \"telphonep\",  \"port\": 12355},"
+      },
+      {
+        "file": "main_dashboard_v3.py",
+        "line": 66,
+        "id": "opena10",
+        "found_port": 12356,
+        "expected_port": 12355,
+        "snippet": "{\"id\": \"opena10\", \"name\": \"Call Tracking\",       \"kuerzel\": \"calltrackp\",  \"port\": 12356, \"icon\": \"📊\"},"
+      },
+      {
+        "file": "config.py",
+        "line": 123,
+        "id": "opena10",
+        "found_port": 12356,
+        "expected_port": 12355,
+        "snippet": "AgentInfo(id=\"opena10\", name=\"Call Tracking Agent\",     kuerzel=\"calltrackp\",  port=12356),"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 206,
+        "id": "opena10",
+        "found_port": 12356,
+        "expected_port": 12355,
+        "snippet": "{\"id\": \"opena10\", \"name\": \"Call Tracking Agent\", \"kuerzel\": \"calltrackp\", \"port\": 12356},"
+      },
+      {
+        "file": "hyper_dashboard_fusion.py",
+        "line": 90,
+        "id": "opena10",
+        "found_port": 12354,
+        "expected_port": 12355,
+        "snippet": "{\"id\": \"opena10\", \"name\": \"Phone Caller\", \"port\": 12354, \"url\": \"http://127.0.0.1:12354\"},"
+      },
+      {
+        "file": "main_dashboard.py",
+        "line": 191,
+        "id": "opena10",
+        "found_port": 12356,
+        "expected_port": 12355,
+        "snippet": "{\"id\": \"opena10\", \"name\": \"Call Tracking Agent\",       \"kuerzel\": \"calltrackp\", \"port\": 12356},"
+      },
+      {
+        "file": "main_dashboard_v3.py",
+        "line": 67,
+        "id": "opena11",
+        "found_port": 12357,
+        "expected_port": 12356,
+        "snippet": "{\"id\": \"opena11\", \"name\": \"Unlock Agent\",        \"kuerzel\": \"unlockp\",     \"port\": 12357, \"icon\": \"🔓\"},"
+      },
+      {
+        "file": "config.py",
+        "line": 124,
+        "id": "opena11",
+        "found_port": 12357,
+        "expected_port": 12356,
+        "snippet": "AgentInfo(id=\"opena11\", name=\"Unlock Agent\",            kuerzel=\"unlockp\",     port=12357),"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 207,
+        "id": "opena11",
+        "found_port": 12357,
+        "expected_port": 12356,
+        "snippet": "{\"id\": \"opena11\", \"name\": \"Unlock Agent\", \"kuerzel\": \"unlockp\", \"port\": 12357},"
+      },
+      {
+        "file": "hyper_dashboard_fusion.py",
+        "line": 91,
+        "id": "opena11",
+        "found_port": 12355,
+        "expected_port": 12356,
+        "snippet": "{\"id\": \"opena11\", \"name\": \"Decoder\", \"port\": 12355, \"url\": \"http://127.0.0.1:12355\"},"
+      },
+      {
+        "file": "main_dashboard.py",
+        "line": 192,
+        "id": "opena11",
+        "found_port": 12357,
+        "expected_port": 12356,
+        "snippet": "{\"id\": \"opena11\", \"name\": \"Unlock Agent\",              \"kuerzel\": \"unlockp\",    \"port\": 12357},"
+      },
+      {
+        "file": "main_dashboard_v3.py",
+        "line": 68,
+        "id": "opena12",
+        "found_port": 12358,
+        "expected_port": 12357,
+        "snippet": "{\"id\": \"opena12\", \"name\": \"Social Media Agent\",  \"kuerzel\": \"smp\",         \"port\": 12358, \"icon\": \"📣\"},"
+      },
+      {
+        "file": "config.py",
+        "line": 125,
+        "id": "opena12",
+        "found_port": 12358,
+        "expected_port": 12357,
+        "snippet": "AgentInfo(id=\"opena12\", name=\"Social Media Agent\",      kuerzel=\"smp\",         port=12358),"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 208,
+        "id": "opena12",
+        "found_port": 12358,
+        "expected_port": 12357,
+        "snippet": "{\"id\": \"opena12\", \"name\": \"Social Media Agent\", \"kuerzel\": \"smp\", \"port\": 12358},"
+      },
+      {
+        "file": "hyper_dashboard_fusion.py",
+        "line": 92,
+        "id": "opena12",
+        "found_port": 12356,
+        "expected_port": 12357,
+        "snippet": "{\"id\": \"opena12\", \"name\": \"Social Automation\", \"port\": 12356, \"url\": \"http://127.0.0.1:12356\"},"
+      },
+      {
+        "file": "main_dashboard.py",
+        "line": 193,
+        "id": "opena12",
+        "found_port": 12358,
+        "expected_port": 12357,
+        "snippet": "{\"id\": \"opena12\", \"name\": \"Social Media Agent\",        \"kuerzel\": \"smp\",        \"port\": 12358},"
+      },
+      {
+        "file": "main_dashboard_v3.py",
+        "line": 69,
+        "id": "opena13",
+        "found_port": 12359,
+        "expected_port": 12358,
+        "snippet": "{\"id\": \"opena13\", \"name\": \"Influencer Agent\",    \"kuerzel\": \"influp\",      \"port\": 12359, \"icon\": \"⭐\"},"
+      },
+      {
+        "file": "config.py",
+        "line": 126,
+        "id": "opena13",
+        "found_port": 12359,
+        "expected_port": 12358,
+        "snippet": "AgentInfo(id=\"opena13\", name=\"Influencer Agent\",        kuerzel=\"influp\",      port=12359),"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 209,
+        "id": "opena13",
+        "found_port": 12359,
+        "expected_port": 12358,
+        "snippet": "{\"id\": \"opena13\", \"name\": \"Influencer Agent\", \"kuerzel\": \"influp\", \"port\": 12359},"
+      },
+      {
+        "file": "hyper_dashboard_fusion.py",
+        "line": 93,
+        "id": "opena13",
+        "found_port": 12357,
+        "expected_port": 12358,
+        "snippet": "{\"id\": \"opena13\", \"name\": \"Social Influencer\", \"port\": 12357, \"url\": \"http://127.0.0.1:12357\"},"
+      },
+      {
+        "file": "main_dashboard.py",
+        "line": 194,
+        "id": "opena13",
+        "found_port": 12359,
+        "expected_port": 12358,
+        "snippet": "{\"id\": \"opena13\", \"name\": \"Influencer Agent\",          \"kuerzel\": \"influp\",     \"port\": 12359},"
+      },
+      {
+        "file": "main_dashboard_v3.py",
+        "line": 70,
+        "id": "opena14",
+        "found_port": 12360,
+        "expected_port": 12359,
+        "snippet": "{\"id\": \"opena14\", \"name\": \"Calendar Agent\",      \"kuerzel\": \"calp\",        \"port\": 12360, \"icon\": \"📅\"},"
+      },
+      {
+        "file": "config.py",
+        "line": 127,
+        "id": "opena14",
+        "found_port": 12360,
+        "expected_port": 12359,
+        "snippet": "AgentInfo(id=\"opena14\", name=\"Calendar Agent\",          kuerzel=\"calp\",        port=12360),"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 210,
+        "id": "opena14",
+        "found_port": 12360,
+        "expected_port": 12359,
+        "snippet": "{\"id\": \"opena14\", \"name\": \"Calendar Agent\", \"kuerzel\": \"calp\", \"port\": 12360},"
+      },
+      {
+        "file": "hyper_dashboard_fusion.py",
+        "line": 94,
+        "id": "opena14",
+        "found_port": 12358,
+        "expected_port": 12359,
+        "snippet": "{\"id\": \"opena14\", \"name\": \"Calendar\", \"port\": 12358, \"url\": \"http://127.0.0.1:12358\"},"
+      },
+      {
+        "file": "main_dashboard.py",
+        "line": 195,
+        "id": "opena14",
+        "found_port": 12360,
+        "expected_port": 12359,
+        "snippet": "{\"id\": \"opena14\", \"name\": \"Calendar Agent\",            \"kuerzel\": \"calp\",       \"port\": 12360},"
+      },
+      {
+        "file": "main_dashboard_v3.py",
+        "line": 71,
+        "id": "opena15",
+        "found_port": 12361,
+        "expected_port": 12360,
+        "snippet": "{\"id\": \"opena15\", \"name\": \"HTML Creator\",        \"kuerzel\": \"htmlp\",       \"port\": 12361, \"icon\": \"🎨\"},"
+      },
+      {
+        "file": "config.py",
+        "line": 128,
+        "id": "opena15",
+        "found_port": 12361,
+        "expected_port": 12360,
+        "snippet": "AgentInfo(id=\"opena15\", name=\"HTML Creator\",            kuerzel=\"htmlp\",       port=12361),"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 211,
+        "id": "opena15",
+        "found_port": 12361,
+        "expected_port": 12360,
+        "snippet": "{\"id\": \"opena15\", \"name\": \"HTML Creator\", \"kuerzel\": \"htmlp\", \"port\": 12361},"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 1947,
+        "id": "opena15",
+        "found_port": 12361,
+        "expected_port": 12360,
+        "snippet": "{\"id\": \"opena15\", \"port\": 12361, \"type\": \"HTML Creator\", \"status\": \"offline\"},"
+      },
+      {
+        "file": "main_dashboard.py",
+        "line": 196,
+        "id": "opena15",
+        "found_port": 12361,
+        "expected_port": 12360,
+        "snippet": "{\"id\": \"opena15\", \"name\": \"HTML Creator\",              \"kuerzel\": \"htmlp\",      \"port\": 12361},"
+      },
+      {
+        "file": "main_dashboard_v3.py",
+        "line": 72,
+        "id": "opena16",
+        "found_port": 12362,
+        "expected_port": 12361,
+        "snippet": "{\"id\": \"opena16\", \"name\": \"Shop Agent\",          \"kuerzel\": \"shopp\",       \"port\": 12362, \"icon\": \"🛒\"},"
+      },
+      {
+        "file": "config.py",
+        "line": 129,
+        "id": "opena16",
+        "found_port": 12362,
+        "expected_port": 12361,
+        "snippet": "AgentInfo(id=\"opena16\", name=\"Shop Agent\",              kuerzel=\"shopp\",       port=12362),"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 212,
+        "id": "opena16",
+        "found_port": 12362,
+        "expected_port": 12361,
+        "snippet": "{\"id\": \"opena16\", \"name\": \"Shop Agent\", \"kuerzel\": \"shopp\", \"port\": 12362},"
+      },
+      {
+        "file": "hyper_dashboard_fusion.py",
+        "line": 95,
+        "id": "opena16",
+        "found_port": 12360,
+        "expected_port": 12361,
+        "snippet": "{\"id\": \"opena16\", \"name\": \"Shop Creator\", \"port\": 12360, \"url\": \"http://127.0.0.1:12360\"},"
+      },
+      {
+        "file": "main_dashboard.py",
+        "line": 197,
+        "id": "opena16",
+        "found_port": 12362,
+        "expected_port": 12361,
+        "snippet": "{\"id\": \"opena16\", \"name\": \"Shop Agent\",                \"kuerzel\": \"shopp\",      \"port\": 12362},"
+      },
+      {
+        "file": "main_dashboard_v3.py",
+        "line": 73,
+        "id": "opena17",
+        "found_port": 12363,
+        "expected_port": 12362,
+        "snippet": "{\"id\": \"opena17\", \"name\": \"Homepage Creator\",    \"kuerzel\": \"hpcreatep\",   \"port\": 12363, \"icon\": \"🏠\"},"
+      },
+      {
+        "file": "config.py",
+        "line": 130,
+        "id": "opena17",
+        "found_port": 12363,
+        "expected_port": 12362,
+        "snippet": "AgentInfo(id=\"opena17\", name=\"Homepage Creator\",        kuerzel=\"hpcreatep\",   port=12363),"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 213,
+        "id": "opena17",
+        "found_port": 12363,
+        "expected_port": 12362,
+        "snippet": "{\"id\": \"opena17\", \"name\": \"Homepage Creator\", \"kuerzel\": \"hpcreatep\", \"port\": 12363},"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 1948,
+        "id": "opena17",
+        "found_port": 12363,
+        "expected_port": 12362,
+        "snippet": "{\"id\": \"opena17\", \"port\": 12363, \"type\": \"Homepage Creator\", \"status\": \"online\"},"
+      },
+      {
+        "file": "hyper_dashboard_fusion.py",
+        "line": 96,
+        "id": "opena17",
+        "found_port": 12361,
+        "expected_port": 12362,
+        "snippet": "{\"id\": \"opena17\", \"name\": \"Homepage Creator\", \"port\": 12361, \"url\": \"http://127.0.0.1:12361\"},"
+      },
+      {
+        "file": "main_dashboard.py",
+        "line": 198,
+        "id": "opena17",
+        "found_port": 12363,
+        "expected_port": 12362,
+        "snippet": "{\"id\": \"opena17\", \"name\": \"Homepage Creator\",          \"kuerzel\": \"hpcreatep\",  \"port\": 12363},"
+      },
+      {
+        "file": "main_dashboard_v3.py",
+        "line": 74,
+        "id": "opena18",
+        "found_port": 12364,
+        "expected_port": 12363,
+        "snippet": "{\"id\": \"opena18\", \"name\": \"CRM Agent\",           \"kuerzel\": \"crmp\",        \"port\": 12364, \"icon\": \"👥\"},"
+      },
+      {
+        "file": "config.py",
+        "line": 131,
+        "id": "opena18",
+        "found_port": 12364,
+        "expected_port": 12363,
+        "snippet": "AgentInfo(id=\"opena18\", name=\"CRM Agent\",               kuerzel=\"crmp\",        port=12364),"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 214,
+        "id": "opena18",
+        "found_port": 12364,
+        "expected_port": 12363,
+        "snippet": "{\"id\": \"opena18\", \"name\": \"CRM Agent\", \"kuerzel\": \"crmp\", \"port\": 12364},"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 1950,
+        "id": "opena18",
+        "found_port": 12364,
+        "expected_port": 12363,
+        "snippet": "{\"id\": \"opena18\", \"port\": 12364, \"type\": \"CRM Agent\", \"status\": \"online\"}"
+      },
+      {
+        "file": "hyper_dashboard_fusion.py",
+        "line": 97,
+        "id": "opena18",
+        "found_port": 12362,
+        "expected_port": 12363,
+        "snippet": "{\"id\": \"opena18\", \"name\": \"Local Storage\", \"port\": 12362, \"url\": \"http://127.0.0.1:12362\"},"
+      },
+      {
+        "file": "main_dashboard_v3.py",
+        "line": 75,
+        "id": "opena19",
+        "found_port": 12365,
+        "expected_port": 12364,
+        "snippet": "{\"id\": \"opena19\", \"name\": \"Stocks & Crypto\",     \"kuerzel\": \"stockcryptop\",\"port\": 12365, \"icon\": \"📈\"},"
+      },
+      {
+        "file": "config.py",
+        "line": 132,
+        "id": "opena19",
+        "found_port": 12365,
+        "expected_port": 12364,
+        "snippet": "AgentInfo(id=\"opena19\", name=\"Stocks & Crypto\",         kuerzel=\"stockcryptop\",port=12365),"
+      },
+      {
+        "file": "main_dashboard_agent.py",
+        "line": 215,
+        "id": "opena19",
+        "found_port": 12365,
+        "expected_port": 12364,
+        "snippet": "{\"id\": \"opena19\", \"name\": \"Stocks & Crypto\", \"kuerzel\": \"stockcryptop\", \"port\": 12365}"
+      },
+      {
+        "file": "hyper_dashboard_fusion.py",
+        "line": 98,
+        "id": "opena19",
+        "found_port": 12363,
+        "expected_port": 12364,
+        "snippet": "{\"id\": \"opena19\", \"name\": \"Trading\", \"port\": 12363, \"url\": \"http://127.0.0.1:12363\"}"
+      },
+      {
+        "file": "main_dashboard.py",
+        "line": 200,
+        "id": "opena19",
+        "found_port": 12365,
+        "expected_port": 12364,
+        "snippet": "{\"id\": \"opena19\", \"name\": \"Stocks & Crypto\",           \"kuerzel\": \"stockcryptop\",\"port\": 12365},"
+      },
+      {
+        "file": "config.py",
+        "line": 134,
+        "id": "opena21",
+        "found_port": 12364,
+        "expected_port": 12367,
+        "snippet": "AgentInfo(id=\"opena21\", name=\"Workflow Engine\",         kuerzel=\"workflowp\",   port=12364),"
+      }
+    ],
+    "inventory_ids": [
+      "opena1",
+      "opena10",
+      "opena11",
+      "opena12",
+      "opena13",
+      "opena14",
+      "opena15",
+      "opena16",
+      "opena17",
+      "opena18",
+      "opena19",
+      "opena2",
+      "opena20",
+      "opena21",
+      "opena3",
+      "opena4",
+      "opena5",
+      "opena6",
+      "opena7",
+      "opena8",
+      "opena9"
+    ],
+    "inventory_id_mismatch": {
+      "missing": [],
+      "extra": []
+    },
+    "summary": {
+      "ok": false,
+      "baseline_agent_count": 21,
+      "opena_refs_found": 22,
+      "ports_found": 36,
+      "compose_entries": 4
+    }
+  },
+  "messages": [
+    "loaded inventory from agent_inventory.json"
+  ]
+}

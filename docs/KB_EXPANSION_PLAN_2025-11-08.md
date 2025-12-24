@@ -1,9 +1,9 @@
 # 🧠 opena1 Wissensdatenbank – Erweiterungsplan (Nov 8, 2025)
 
-**Status:** ANALYSIS COMPLETE → EXPANSION READY  
-**Basis-Wisensdatenbank Zustund:** 13 Dateien (historisch, teilweise veraltert)  
-**Neue Lernziele:** Finance DB, Telegram-Bridge, Dashboard-Integration  
-**Ziel:** Koordinator-Wissensdatenbank mit aktuellem Stand des Systems  
+**Status:** ANALYSIS COMPLETE → EXPANSION READY
+**Basis-Wisensdatenbank Zustund:** 13 Dateien (historisch, teilweise veraltert)
+**Neue Lernziele:** Finance DB, Telegram-Bridge, Dashboard-Integration
+**Ziel:** Koordinator-Wissensdatenbank mit aktuellem Stand des Systems
 
 ---
 
@@ -531,7 +531,7 @@ Response format:
 ### New KB Files (to be created)
 
 ```
-1.portier_openai/knowledgebase/opena1/
+1.opena1&2_portier/knowledgebase/opena1/
 ├── KB_INDEX_CURRENT_2025-11-08.md          (New)
 ├── KB_FINANCE_MODULE_2025-11-08.md         (New)
 ├── KB_TELEGRAM_BRIDGE_2025-11-08.md        (New)
@@ -599,13 +599,13 @@ Response format:
 
 ---
 
-**STATUS:** 🟢 READY FOR EXPANSION  
-**NEXT STEP:** Begin Phase 1 (KB Structuring)  
-**OWNER:** opena1 (with Copilot assistance)  
-**ETA COMPLETION:** Nov 8 Evening or Nov 9 Morning  
+**STATUS:** 🟢 READY FOR EXPANSION
+**NEXT STEP:** Begin Phase 1 (KB Structuring)
+**OWNER:** opena1 (with Copilot assistance)
+**ETA COMPLETION:** Nov 8 Evening or Nov 9 Morning
 
 ---
 
-**Generated:** 2025-11-08 18:40 UTC  
-**Revision:** 1.0  
+**Generated:** 2025-11-08 18:40 UTC
+**Revision:** 1.0
 **Maintained by:** ELION Sprint Team

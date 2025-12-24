@@ -58,7 +58,7 @@ PHASE 1 agents + PHASES 2-5 agents = 19 TOTAL
 ### 1️⃣ Setup Environment
 ```bash
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
-source 1.portier_openai/venv313/bin/activate
+source 1.opena1&2_portier/venv313/bin/activate
 ```
 
 ### 2️⃣ Start All Services
@@ -309,7 +309,7 @@ bash quickstart.sh
 ```
 
 ### Step-by-Step
-1. Activate venv: `source 1.portier_openai/venv313/bin/activate`
+1. Activate venv: `source 1.opena1&2_portier/venv313/bin/activate`
 2. Start services: `cd 19.dashboard_agent && ./bin/start_all.sh`
 3. Register agents: `./bin/ops.sh agents:register`
 4. Verify system: `./bin/ops.sh verify`
@@ -382,9 +382,9 @@ bin/ops.sh status
 
 ## 📄 LICENSE & CREDITS
 
-**Project:** ELION Hyper-Dashboard  
-**Created:** 9. November 2025  
-**Status:** Production Ready  
+**Project:** ELION Hyper-Dashboard
+**Created:** 9. November 2025
+**Status:** Production Ready
 **Version:** 1.0.0
 
 ---
@@ -407,7 +407,7 @@ This project demonstrates:
 
 ```bash
 # Start the system in one command
-source 1.portier_openai/venv313/bin/activate
+source 1.opena1&2_portier/venv313/bin/activate
 cd 19.dashboard_agent
 ./bin/start_all.sh
 ```
@@ -416,8 +416,8 @@ cd 19.dashboard_agent
 
 ---
 
-**Dashboard:** http://127.0.0.1:12349  
-**Documentation:** See docs/ folder  
+**Dashboard:** http://127.0.0.1:12349
+**Documentation:** See docs/ folder
 **Support:** Check DEPLOYMENT_CHECKLIST.md
 
 🚀 **THE SYSTEM IS READY** 🚀

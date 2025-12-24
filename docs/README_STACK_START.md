@@ -2,7 +2,7 @@
 
 ```bash
 # venv aktivieren (Beispiel)
-source ../1.portier_openai/venv313/bin/activate
+source ../1.opena1&2_portier/venv313/bin/activate
 
 # Start/Verify
 ./bin/ops.sh start

@@ -180,34 +180,34 @@ validate_mode() {
 
 validate_environment() {
     local target_env=$1
-    
+
     log_info "Validating $target_env environment..."
-    
+
     # Check Python environment
     if ! command -v python3 &> /dev/null; then
         log_error "Python3 not found"
         return 1
     fi
-    
+
     # Check required files
     local required_files=(
         "19.dashboard_agent/main_dashboard.py"
         "19.dashboard_agent/config.py"
         "19.dashboard_agent/security.py"
     )
-    
+
     for file in "${required_files[@]}"; do
         if [ ! -f "$file" ]; then
             log_error "Required file missing: $file"
             return 1
         fi
     done
-    
+
     # Check ports availability (for non-production)
     if [ "$target_env" != "production" ]; then
         check_ports_available
     fi
-    
+
     # Environment-specific checks
     case "$target_env" in
         development)
@@ -220,34 +220,34 @@ validate_environment() {
             check_production_environment
             ;;
     esac
-    
+
     log_success "Environment validation passed"
     return 0
 }
 
 check_dev_environment() {
     log_info "Checking DEV environment requirements..."
-    
+
     # Check .env.development
     if [ ! -f ".env.development" ]; then
         log_warn "Missing .env.development – creating template"
         create_env_template "development"
     fi
-    
+
     # Check venv
-    if [ ! -d "1.portier_openai/venv313" ]; then
-        log_warn "Virtual environment not found – you may need to run: bash 1.portier_openai/setup_venv313.sh"
+    if [ ! -d "1.opena1&2_portier/venv313" ]; then
+        log_warn "Virtual environment not found – you may need to run: bash 1.opena1&2_portier/setup_venv313.sh"
     fi
 }
 
 check_staging_environment() {
     log_info "Checking STAGING environment requirements..."
-    
+
     # Check Vault connectivity
     if ! command -v vault &> /dev/null; then
         log_warn "HashiCorp Vault CLI not found – install with: brew install hashicorp/tap/vault"
     fi
-    
+
     # Check VAULT_ADDR
     if [ -z "${VAULT_ADDR:-}" ]; then
         log_error "VAULT_ADDR not set – required for STAGING"
@@ -257,37 +257,37 @@ check_staging_environment() {
 
 check_production_environment() {
     log_info "Checking PRODUCTION environment requirements..."
-    
+
     # Check AWS CLI
     if ! command -v aws &> /dev/null; then
         log_error "AWS CLI not found – required for PRODUCTION"
         return 1
     fi
-    
+
     # Check AWS credentials
     if ! aws sts get-caller-identity &> /dev/null; then
         log_error "AWS credentials not configured"
         return 1
     fi
-    
+
     # Check required AWS resources
     if [ -z "${AWS_SECRETS_ARN:-}" ]; then
         log_error "AWS_SECRETS_ARN not set"
         return 1
     fi
-    
+
     # Verify TLS certificates
     if [ ! -f "certs/certificate.pem" ] || [ ! -f "certs/private_key.pem" ]; then
         log_error "TLS certificates not found in certs/"
         return 1
     fi
-    
+
     log_success "PRODUCTION environment ready"
 }
 
 check_ports_available() {
     local ports=(12349 12351 12344 12345 12346 8080)
-    
+
     for port in "${ports[@]}"; do
         if lsof -Pi :$port -sTCP:LISTEN -t >/dev/null 2>&1; then
             log_warn "Port $port already in use"
@@ -298,9 +298,9 @@ check_ports_available() {
 create_env_template() {
     local env=$1
     local template_file=".env.$env"
-    
+
     log_info "Creating $template_file template"
-    
+
     case "$env" in
         development)
             cat > "$template_file" << 'EOF'
@@ -337,7 +337,7 @@ LOG_LEVEL=WARNING
 EOF
             ;;
     esac
-    
+
     chmod 600 "$template_file"
     log_success "Template created: $template_file"
 }
@@ -349,7 +349,7 @@ EOF
 show_current_mode() {
     local current_mode=$(load_current_mode)
     local config=$(get_mode_config "$current_mode")
-    
+
     echo ""
     echo -e "${BLUE}╔════════════════════════════════════════╗${NC}"
     echo -e "${BLUE}║      ELION System Mode Status          ║${NC}"
@@ -360,7 +360,7 @@ show_current_mode() {
     echo "Configuration:"
     echo "$config" | python3 -m json.tool 2>/dev/null || echo "$config"
     echo ""
-    
+
     # Show active services
     show_active_services
 }
@@ -374,7 +374,7 @@ show_active_services() {
         "12345:opena2"
         "12346:kordp"
     )
-    
+
     for service in "${services[@]}"; do
         local port=${service%%:*}
         local name=${service##*:}
@@ -389,26 +389,26 @@ show_active_services() {
 switch_mode() {
     local target_mode=$1
     local current_mode=$(load_current_mode)
-    
+
     if [ "$current_mode" = "$target_mode" ]; then
         log_warn "Already in $target_mode mode"
         return 0
     fi
-    
+
     log_info "Switching from $current_mode → $target_mode"
-    
+
     # Validate target
     if ! validate_mode "$target_mode"; then
         log_error "Invalid mode: $target_mode"
         return 1
     fi
-    
+
     # Validate environment
     if ! validate_environment "$target_mode"; then
         log_error "Environment validation failed"
         return 1
     fi
-    
+
     # Safety check: Ask for confirmation
     if [ "$target_mode" = "production" ]; then
         echo -e "${YELLOW}⚠️  WARNING: You are about to switch to PRODUCTION mode${NC}"
@@ -424,41 +424,41 @@ switch_mode() {
             return 1
         fi
     fi
-    
+
     # Stop running services
     log_info "Stopping running services..."
     if [ -f "bin/ops.sh" ]; then
         bash bin/ops.sh stop 2>/dev/null || log_warn "Could not stop services"
     fi
-    
+
     # Save new mode
     save_mode_config "$target_mode"
-    
+
     # Export new environment
     export ELION_ENV="$target_mode"
-    
+
     # Create environment file
     if [ ! -f ".env.$target_mode" ]; then
         create_env_template "$target_mode"
     fi
-    
+
     # Log mode switch
     audit_log "mode_switch" "from $current_mode to $target_mode"
-    
+
     log_success "Successfully switched to $target_mode mode"
     log_info "Environment saved to .env.current"
-    
+
     # Show next steps
     show_next_steps "$target_mode"
 }
 
 show_next_steps() {
     local mode=$1
-    
+
     echo ""
     echo "Next steps:"
     echo ""
-    
+
     case "$mode" in
         development)
             echo "1. Load environment: source .env.$mode"
@@ -477,7 +477,7 @@ show_next_steps() {
             echo "4. Monitor: docker-compose -f docker-compose.prod.yml logs -f"
             ;;
     esac
-    
+
     echo ""
 }
 
@@ -488,9 +488,9 @@ show_next_steps() {
 main() {
     # Ensure logs directory exists
     mkdir -p "$(dirname "$AUDIT_LOG")"
-    
+
     local command=${1:-show}
-    
+
     case "$command" in
         show)
             show_current_mode

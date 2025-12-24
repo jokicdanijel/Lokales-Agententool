@@ -3,7 +3,7 @@ set -euo pipefail
 
 # --- Settings (bindend) ---
 PY_VER="${PY_VER:-3.13}"
-VENV_DIR="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.portier_openai/venv313"
+VENV_DIR="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313"
 
 echo "[VENV] Bootstrap für Python ${PY_VER} → ${VENV_DIR}"
 
@@ -47,4 +47,3 @@ echo "[VENV] Beispielstart einer lokalen Bridge (Port-Policy-konform, NICHT 8080
 cat <<'CMD'
 uvicorn portier_fs_bridge:app --host 127.0.0.1 --port 12346
 CMD
-

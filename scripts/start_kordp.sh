@@ -3,7 +3,7 @@ set -euo pipefail
 
 PROJ="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent"
 cd "$PROJ"
-source ../1.portier_openai/venv313/bin/activate
+source ../1.opena1&2_portier/venv313/bin/activate
 
 mkdir -p logs .runtime
 
@@ -27,4 +27,3 @@ echo "Starte kordp (Ziel: $KORDP_ARCHIV) ..."
 nohup python3 main_kordp.py > logs/kordp.nohup.log 2>&1 &
 echo $! > .runtime/kordp.pid
 echo "kordp PID: $(cat .runtime/kordp.pid)"
-

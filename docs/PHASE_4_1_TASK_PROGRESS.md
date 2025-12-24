@@ -2,9 +2,9 @@
 
 # Phase 4.1 – System Finalisierung: Task Progress
 
-**Status:** Phase 4.1 Implementation Started  
-**Date:** 2025-11-06 20:00 UTC  
-**Target Completion:** 2025-12-05  
+**Status:** Phase 4.1 Implementation Started
+**Date:** 2025-11-06 20:00 UTC
+**Target Completion:** 2025-12-05
 **Owner:** GitHub Copilot / PDI-Agent
 
 ---
@@ -113,7 +113,7 @@ Fri (11–14): Buffer + Testing + Reviews
 ### Dev Environment Setup
 ```bash
 # 1. Activate venv
-source 1.portier_openai/venv313/bin/activate
+source 1.opena1&2_portier/venv313/bin/activate
 
 # 2. Test system_mode_switch.sh
 bin/system_mode_switch.sh show
@@ -191,13 +191,13 @@ Task 01 Completion Safepoint:
 
 ## 📞 Support & Escalation
 
-**Question:** Feature request for a new task?  
+**Question:** Feature request for a new task?
 **Answer:** File issue + get approval from Project Lead
 
-**Question:** Task blocked on dependency?  
+**Question:** Task blocked on dependency?
 **Answer:** Contact Task Lead + DevOps Lead
 
-**Question:** Compliance or security issue?  
+**Question:** Compliance or security issue?
 **Answer:** Escalate to QA + Security Review immediately
 
 ---

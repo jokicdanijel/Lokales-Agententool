@@ -1,16 +1,16 @@
 # 📚 opena1 Wissensdatenbank – Master Index
 
-**Erstellt:** Nov 8, 2025 18:45 UTC  
-**Version:** 1.0 – Initial 6-Module KB  
-**Status:** 🟢 ACTIVE FOR SPRINT  
+**Erstellt:** Nov 8, 2025 18:45 UTC
+**Version:** 1.0 – Initial 6-Module KB
+**Status:** 🟢 ACTIVE FOR SPRINT
 
 ---
 
 ## 🎯 Überblick
 
-**6 Module** dokumentieren das Nov 8 System-State (5/6 Services live).  
-**Fokus:** Koordinator-Wissen + Integrationen für Nov 9 Dashboard-Start.  
-**Struktur:** Append-Only (keine Löschungen, nur Erweiterungen).  
+**6 Module** dokumentieren das Nov 8 System-State (5/6 Services live).
+**Fokus:** Koordinator-Wissen + Integrationen für Nov 9 Dashboard-Start.
+**Struktur:** Append-Only (keine Löschungen, nur Erweiterungen).
 
 ---
 
@@ -313,17 +313,17 @@ Alle KB-Dateien nutzen:
 
 ---
 
-**Status:** 🟢 ACTIVE  
-**Last Updated:** Nov 8, 2025 18:45 UTC  
-**Version:** 1.0  
-**Maintained by:** ELION Sprint Team  
+**Status:** 🟢 ACTIVE
+**Last Updated:** Nov 8, 2025 18:45 UTC
+**Version:** 1.0
+**Maintained by:** ELION Sprint Team
 
 ---
 
 ## 📚 Anhang: Alle Dateien im System
 
 ```
-1.portier_openai/knowledgebase/opena1/
+1.opena1&2_portier/knowledgebase/opena1/
 ├── KB_INDEX_CURRENT_2025-11-08.md ................. (Diese Datei)
 ├── KB_TELEGRAM_BRIDGE_2025-11-08.md .............. (Modul 1)
 ├── KB_DASHBOARD_INTEGRATION_2025-11-08.md ........ (Modul 2)

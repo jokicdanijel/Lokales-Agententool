@@ -1,7 +1,7 @@
 # 🔒 **GOVERNANCE EXECUTION CHECKLIST**
 
-**Datum:** 27. November 2025  
-**Zweck:** Sichere Ausführung der 3 Governance-Fix-Skripte  
+**Datum:** 27. November 2025
+**Zweck:** Sichere Ausführung der 3 Governance-Fix-Skripte
 **Kritisch:** Befolge **ALLE** Schritte vor Ausführung
 
 ---
@@ -212,7 +212,7 @@ pip list | grep -E "PySocks|pytest"
 
 ```bash
 # opena2 Config prüfen
-grep -R "ARCHIV\|archivp" 1.portier_openai/config/ 19.dashboard_agent/config/
+grep -R "ARCHIV\|archivp" 1.opena1&2_portier/config/ 19.dashboard_agent/config/
 # Sollte auf archivp/ARCHIV/ zeigen, NICHT configs/
 
 # Option-2-Flow Test
@@ -306,11 +306,11 @@ Bei Problemen:
 - [ ] Tests laufen durch (`pytest tests/`)
 - [ ] Git Commits sauber dokumentiert
 
-**Unterschrift:** _________________________________  
-**Datum:** ___________________  
+**Unterschrift:** _________________________________
+**Datum:** ___________________
 **Branch:** ___________________
 
 ---
 
-**Ende der Checklist.**  
+**Ende der Checklist.**
 **Keine Ausführung ohne vollständigen Sign-Off!**

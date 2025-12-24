@@ -1,0 +1,35 @@
+{
+  "gate": "consistency_gate",
+  "ok": true,
+  "started_utc": "2025-12-24T07:57:16Z",
+  "finished_utc": "2025-12-24T07:57:16Z",
+  "duration_ms": 0,
+  "errors": [],
+  "violations": [],
+  "warnings": [
+    {
+      "level": "warning",
+      "gate": "consistency_gate",
+      "rule": "static_mount_defaulted",
+      "message": "Static mount not provided; defaulting to /html. Pass --static-mount to avoid mismatch.",
+      "file": null,
+      "evidence": null
+    },
+    {
+      "level": "warning",
+      "gate": "consistency_gate",
+      "rule": "config_js_missing",
+      "message": "No config.js found in ..",
+      "file": null,
+      "evidence": null
+    }
+  ],
+  "info": [],
+  "stats": {
+    "discovery": {
+      "backend_port": 12348,
+      "static_mount": "/html",
+      "static_dir": "."
+    }
+  }
+}

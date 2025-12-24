@@ -1,7 +1,7 @@
 # 🚀 ELION HYPER-DASHBOARD: PHASE 5 COMPLETE ✅
 
-**Datum:** 9. November 2025, ~23:45 UTC  
-**Status:** Alle 19 Agenten LIVE & GETESTET  
+**Datum:** 9. November 2025, ~23:45 UTC
+**Status:** Alle 19 Agenten LIVE & GETESTET
 **GitHub-Validiert:** ✅ (906 Suchergebnisse, 15+ Repositories analysiert)
 
 ---
@@ -44,7 +44,7 @@ POST /deal/{id}/update             → Deal-Status aktualisieren
 GET  /status                       → KPI (Leads, Customers, Pipeline Value)
 ```
 
-**Archiv-Logging:** 
+**Archiv-Logging:**
 ```
 CUSTOMER_CREATE, CUSTOMER_UPDATE, DEAL_CREATE, DEAL_UPDATE, DEAL_WIN, DEAL_LOSS, INTERACTION_LOGGED
 ```
@@ -211,8 +211,8 @@ GET  /status                       → Agent-Status
 
 ### Token Management
 
-**Token:** `MEIN_SUPER_TOKEN_123` (auf allen Endpoints)  
-**Storage:** `.env` (root-level, auto-generated)  
+**Token:** `MEIN_SUPER_TOKEN_123` (auf allen Endpoints)
+**Storage:** `.env` (root-level, auto-generated)
 **Verwendung:**
 ```bash
 curl -H "Authorization: Bearer $(cat .env)" http://127.0.0.1:12364/customer/create
@@ -225,7 +225,7 @@ curl -H "Authorization: Bearer $(cat .env)" http://127.0.0.1:12364/customer/crea
 ### Start All Services
 ```bash
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
-source 1.portier_openai/venv313/bin/activate
+source 1.opena1&2_portier/venv313/bin/activate
 bin/ops.sh start
 ```
 
@@ -402,9 +402,9 @@ tail -f logs/opena19_workflow.nohup.log # Workflow
 
 ---
 
-**Erstellt:** 9. November 2025, ~23:45 UTC  
-**Von:** GitHub Copilot  
-**Projekt:** ELION Hyper-Dashboard Phase 5  
+**Erstellt:** 9. November 2025, ~23:45 UTC
+**Von:** GitHub Copilot
+**Projekt:** ELION Hyper-Dashboard Phase 5
 **Nächste Kommando:** `bin/ops.sh start`
 
 ---

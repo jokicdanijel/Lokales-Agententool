@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -117,7 +117,7 @@ def validate(baseline: dict[str, Any], root: Path) -> list[str]:
 def write_artifact(hash: str, success: bool, errors: list[str]) -> None:
     ARTIFACTS_DIR.mkdir(exist_ok=True)
     payload = {
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
         "baseline_hash": hash,
         "success": success,
         "errors": errors,

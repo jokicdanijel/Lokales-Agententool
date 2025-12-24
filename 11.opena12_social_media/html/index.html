@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📱 OPENA12 Social Media - PORTIER PAS-6.0 Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/html/style.css">
 </head>
 <body>
     <div class="dashboard-container">
@@ -25,24 +25,36 @@
 
         <main class="main-grid">
             <section class="platform-cards">
-                <div class="card platform-card" data-platform="linkedin">
+                <div class="card platform-card" data-platform="linkedin" id="linkedinCard">
                     <div class="card-icon">💼</div>
-                    <div class="card-content"><h3>LinkedIn</h3><span id="linkedin-posts" class="metric-value">0</span></div>
+                    <div class="card-content">
+                        <h3>LinkedIn</h3>
+                        <span id="linkedin-posts" class="metric-value">0</span>
+                    </div>
                     <span class="platform-status" id="status-linkedin">●</span>
                 </div>
-                <div class="card platform-card" data-platform="x">
+                <div class="card platform-card" data-platform="x" id="xCard">
                     <div class="card-icon">𝕏</div>
-                    <div class="card-content"><h3>X (Twitter)</h3><span id="x-posts" class="metric-value">0</span></div>
+                    <div class="card-content">
+                        <h3>X (Twitter)</h3>
+                        <span id="x-posts" class="metric-value">0</span>
+                    </div>
                     <span class="platform-status" id="status-x">●</span>
                 </div>
-                <div class="card platform-card" data-platform="facebook">
+                <div class="card platform-card" data-platform="facebook" id="facebookCard">
                     <div class="card-icon">📘</div>
-                    <div class="card-content"><h3>Facebook</h3><span id="facebook-posts" class="metric-value">0</span></div>
+                    <div class="card-content">
+                        <h3>Facebook</h3>
+                        <span id="facebook-posts" class="metric-value">0</span>
+                    </div>
                     <span class="platform-status" id="status-facebook">●</span>
                 </div>
-                <div class="card platform-card" data-platform="instagram">
+                <div class="card platform-card" data-platform="instagram" id="instagramCard">
                     <div class="card-icon">📸</div>
-                    <div class="card-content"><h3>Instagram</h3><span id="instagram-posts" class="metric-value">0</span></div>
+                    <div class="card-content">
+                        <h3>Instagram</h3>
+                        <span id="instagram-posts" class="metric-value">0</span>
+                    </div>
                     <span class="platform-status" id="status-instagram">●</span>
                 </div>
             </section>
@@ -58,28 +70,28 @@
 
                 <div class="card">
                     <h2>🚀 Post Now</h2>
-                    <form id="post-form">
+                    <form id="postForm">
                         <div class="form-group">
                             <label>Plattformen</label>
                             <div class="checkbox-group">
-                                <label><input type="checkbox" name="platform" value="linkedin" checked> LinkedIn</label>
-                                <label><input type="checkbox" name="platform" value="x"> X</label>
-                                <label><input type="checkbox" name="platform" value="facebook"> Facebook</label>
-                                <label><input type="checkbox" name="platform" value="instagram"> Instagram</label>
+                                <label><input type="checkbox" id="linkedinCheck" name="platform" value="linkedin" checked> LinkedIn</label>
+                                <label><input type="checkbox" id="xCheck" name="platform" value="x"> X</label>
+                                <label><input type="checkbox" id="facebookCheck" name="platform" value="facebook"> Facebook</label>
+                                <label><input type="checkbox" id="instagramCheck" name="platform" value="instagram"> Instagram</label>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="post-text">Nachricht</label>
-                            <textarea id="post-text" rows="4" placeholder="Ihr Social Media Post..."></textarea>
-                            <span class="char-counter"><span id="char-count">0</span>/280</span>
+                            <label for="postContent">Nachricht</label>
+                            <textarea id="postContent" rows="4" placeholder="Ihr Social Media Post..."></textarea>
+                            <span class="char-counter"><span id="charCount">0</span>/280</span>
                         </div>
                         <div class="form-group">
                             <label for="hashtags">Hashtags</label>
                             <input type="text" id="hashtags" placeholder="#Marketing #Business">
                         </div>
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">�� Posten</button>
-                            <button type="button" onclick="generateAI()" class="btn btn-secondary">🤖 AI</button>
+                            <button type="submit" class="btn btn-primary">📤 Posten</button>
+                            <button type="button" id="aiGenBtn" class="btn btn-secondary">🤖 AI</button>
                         </div>
                     </form>
                     <pre id="post-output" class="output hidden"></pre>
@@ -88,14 +100,14 @@
                 <div class="card">
                     <h2>🤖 AI Generator</h2>
                     <div class="form-group">
-                        <input type="text" id="ai-topic" placeholder="Thema eingeben...">
+                        <input type="text" id="aiTopic" placeholder="Thema eingeben...">
                     </div>
                     <select id="ai-style" class="form-group">
                         <option value="professional">Professionell</option>
                         <option value="casual">Casual</option>
                         <option value="engaging">Engaging</option>
                     </select>
-                    <button onclick="generateAIText()" class="btn btn-accent">✨ Generieren</button>
+                    <button onclick="dashboard.generateAIText()" class="btn btn-accent">✨ Generieren</button>
                     <pre id="ai-output" class="output hidden"></pre>
                 </div>
             </section>
@@ -105,24 +117,50 @@
                     <h2>🗓️ Scheduler</h2>
                     <form id="schedule-form">
                         <div class="form-group">
-                            <textarea id="schedule-text" rows="2" placeholder="Geplanter Post..."></textarea>
+                            <textarea id="scheduleText" rows="2" placeholder="Geplanter Post..."></textarea>
                         </div>
                         <div class="form-row">
-                            <input type="date" id="schedule-date">
-                            <input type="time" id="schedule-time" value="09:00">
+                            <input type="date" id="scheduleDate">
+                            <input type="time" id="scheduleTime" value="09:00">
                         </div>
-                        <button type="submit" class="btn btn-primary">📅 Planen</button>
+                        <button type="button" id="scheduleBtn" class="btn btn-primary">📅 Planen</button>
                     </form>
                 </div>
 
                 <div class="card">
-                    <h2>📋 Queue (<span id="queue-count">0</span>)</h2>
-                    <div id="queue-list" class="queue-list"><p class="empty-state">Keine geplanten Posts</p></div>
+                    <h2>📋 Queue (<span id="queueCount">0</span>)</h2>
+                    <div class="queue-list">
+                        <table id="queueTable">
+                            <thead>
+                                <tr>
+                                    <th>Zeit</th>
+                                    <th>Plattform</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td colspan="4" class="empty-state">Keine geplanten Posts</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div class="card">
-                    <h2>📜 Aktivitäten</h2>
-                    <div id="activity-log" class="activity-log"><p class="empty-state">Keine Aktivitäten</p></div>
+                    <h2>📈 Status</h2>
+                    <div class="status-grid">
+                        <div class="status-item">
+                            <span class="status-label">Agent</span>
+                            <span id="agentStatus" class="badge">offline</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Port</span>
+                            <span class="badge">12357</span>
+                        </div>
+                    </div>
+                    <div id="activity-log" class="activity-log">
+                        <p class="empty-state">Keine Aktivitäten</p>
+                    </div>
                 </div>
             </section>
 
@@ -130,12 +168,30 @@
                 <div class="card metrics-card">
                     <h2>📊 Metriken</h2>
                     <div class="metrics-grid">
-                        <div class="metric-item"><span class="metric-label">Posts</span><span id="total-posts" class="metric-value">0</span></div>
-                        <div class="metric-item"><span class="metric-label">Geplant</span><span id="scheduled-posts" class="metric-value">0</span></div>
-                        <div class="metric-item"><span class="metric-label">AI</span><span id="ai-generations" class="metric-value">0</span></div>
-                        <div class="metric-item"><span class="metric-label">Erfolg</span><span id="success-rate" class="metric-value">0%</span></div>
-                        <div class="metric-item"><span class="metric-label">Posts/h</span><span id="posts-per-hour" class="metric-value">0</span></div>
-                        <div class="metric-item"><span class="metric-label">API</span><span id="api-response" class="metric-value">0ms</span></div>
+                        <div class="metric-item">
+                            <span class="metric-label">Posts</span>
+                            <span id="totalPosts" class="metric-value">0</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Geplant</span>
+                            <span id="scheduledCount" class="metric-value">0</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">AI</span>
+                            <span id="aiGenerations" class="metric-value">0</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Erfolg</span>
+                            <span id="success-rate" class="metric-value">0%</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Engagement</span>
+                            <span id="engagementRate" class="metric-value">0%</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">API</span>
+                            <span id="api-response" class="metric-value">0ms</span>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -143,12 +199,23 @@
 
         <footer class="dashboard-footer">
             <span>ELION PORTIER PAS-6.0 | opena12_social_media</span>
-            <span>Port: 12358</span>
+            <span>Port: 12357</span>
             <span id="last-update">--:--:--</span>
         </footer>
     </div>
-    <div id="toast-container" class="toast-container"></div>
-    <script src="config.js"></script>
-    <script src="app.js"></script>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script>
+        function saveToken() {
+            const token = document.getElementById('token').value;
+            if (token) {
+                localStorage.setItem('opena12_auth_token', token);
+                alert('Token gespeichert!');
+            }
+        }
+    </script>
+    <script src="/html/config.js"></script>
+    <script src="/html/app.js"></script>
 </body>
 </html>

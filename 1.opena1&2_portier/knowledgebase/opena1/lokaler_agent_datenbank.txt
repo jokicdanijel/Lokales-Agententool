@@ -162,8 +162,8 @@ class AgentDashboardClient:
             # POST request
             req_data = json.dumps(data).encode('utf-8') if data else None
             req = urllib.request.Request(
-                url, 
-                data=req_data, 
+                url,
+                data=req_data,
                 headers={'Content-Type': 'application/json'}
             )
             response = urllib.request.urlopen(req)
@@ -488,7 +488,7 @@ from abc import ABC, abstractmethod
 class AgentBase(ABC):
     """
     Base class for all agents in the system
-    
+
     Provides common functionality for:
     - Agent identification
     - State management
@@ -697,7 +697,7 @@ class PromptAgent(AgentBase):
 class AgentManager:
     """
     Central management system for all agents
-    
+
     Features:
     - Agent registration and lifecycle management
     - Agent orchestration and communication
@@ -937,7 +937,7 @@ class AgentManager:
         """Save agent registry to file"""
         registry_data = {
             "agents": {
-                agent_id: agent.serialize() 
+                agent_id: agent.serialize()
                 for agent_id, agent in self.agents.items()
             },
             "last_saved": datetime.now().isoformat()
@@ -981,7 +981,7 @@ from pathlib import Path
 class MemorySystem:
     """
     Long-term memory system for agent data persistence
-    
+
     Features:
     - Persistent storage of agent memories
     - Conversation history
@@ -1003,7 +1003,7 @@ class MemorySystem:
 
     def _initialize_storage(self):
         """Initialize storage files if they don't exist"""
-        for file_path in [self.memory_file, self.conversation_file, 
+        for file_path in [self.memory_file, self.conversation_file,
                          self.relationships_file, self.metrics_file]:
             if not file_path.exists():
                 self._save_json(file_path, {})
@@ -1128,7 +1128,7 @@ class MemorySystem:
         all_ids = set()
 
         # Check all storage files
-        for file_path in [self.memory_file, self.conversation_file, 
+        for file_path in [self.memory_file, self.conversation_file,
                          self.relationships_file, self.metrics_file]:
             data = self._load_json(file_path)
             all_ids.update(data.keys())
@@ -1145,7 +1145,7 @@ class MemorySystem:
         conversations = self._load_json(self.conversation_file)
         for agent_id, conv_list in conversations.items():
             conversations[agent_id] = [
-                conv for conv in conv_list 
+                conv for conv in conv_list
                 if datetime.fromisoformat(conv["timestamp"]) > cutoff_date
             ]
         self._save_json(self.conversation_file, conversations)
@@ -1155,7 +1155,7 @@ class MemorySystem:
         for agent_id, agent_metrics in metrics.items():
             for metric_name, metric_list in agent_metrics.items():
                 metrics[agent_id][metric_name] = [
-                    metric for metric in metric_list 
+                    metric for metric in metric_list
                     if datetime.fromisoformat(metric["timestamp"]) > cutoff_date
                 ]
         self._save_json(self.metrics_file, metrics)
@@ -1180,7 +1180,7 @@ class MemorySystem:
         }
 
         # Get file sizes
-        for file_path in [self.memory_file, self.conversation_file, 
+        for file_path in [self.memory_file, self.conversation_file,
                          self.relationships_file, self.metrics_file]:
             if file_path.exists():
                 stats["files"][file_path.name] = {
@@ -2371,12 +2371,12 @@ Unit Tests & Smoke Tests automatisieren
 Lokal:
 
 # venv313 benutzen wie Projekt vorgibt
-./1.portier_openai/venv313/bin/python3 -m pip install -r requirements.txt
-./1.portier_openai/venv313/bin/python3 -m pytest -q
+./1.opena1&2_portier/venv313/bin/python3 -m pip install -r requirements.txt
+./1.opena1&2_portier/venv313/bin/python3 -m pytest -q
 
 Smoke (lokal): starte Server auf erlaubtem Port (z. B. 12344) und teste Endpoints:
 
-PORT=12344 ./1.portier_openai/venv313/bin/python3 dashboard/backend/agent_server.py & sleep 1
+PORT=12344 ./1.opena1&2_portier/venv313/bin/python3 dashboard/backend/agent_server.py & sleep 1
 curl -sS http://127.0.0.1:12344/health | jq .
 curl -sS http://127.0.0.1:12344/agent/list | jq .
 
@@ -2437,7 +2437,7 @@ Safepoint-/Audit-Verifikation nach Port-Change
 
     Test: starte Server, greife absichtlich einen verbotenen Port (8080) als ENV an und prüfe Safepoint ERR geschrieben:
 
-PORT=8080 ./1.portier_openai/venv313/bin/python3 dashboard/backend/agent_server.py || true
+PORT=8080 ./1.opena1&2_portier/venv313/bin/python3 dashboard/backend/agent_server.py || true
 git --no-pager grep -n "SP"  # oder prüfe archivp folder
 
 Release-Prozess & GitHub-Checks vor Merge
@@ -2530,7 +2530,7 @@ git add .
 git commit -m "chore: initial import of agent dashboard (ports update ready)"
 
 # Sicherstellen: venv313 existiert laut Spec (nur prüfen)
-./1.portier_openai/venv313/bin/python3 --version || echo "venv313 missing — erstelle ggf."
+./1.opena1&2_portier/venv313/bin/python3 --version || echo "venv313 missing — erstelle ggf."
 
 3) GitHub-Repo erstellen (mit gh) und remote push
 
@@ -2686,7 +2686,7 @@ sudo /usr/local/bin/portier_snapshot.sh
 
     git grep -n "8080" darf nur in README_OPENWEBUI.md o.ä. erscheinen.
 
-    Safepoints (archivp) vorhanden / funktionieren: prüfe /path/to/project/1.portier_openai/archivp/*.
+    Safepoints (archivp) vorhanden / funktionieren: prüfe /path/to/project/1.opena1&2_portier/archivp/*.
 
     Test: starte Service auf erlaubtem Port (z. B. 12344) und rufe /agent/health ab.
 
@@ -3021,7 +3021,7 @@ Traceback (most recent call last):
 FileNotFoundError: [Errno 2] No such file or directory: 'project-name.code-workspace'
 danijel-jd@danijeljd-ESPRIMO-P920:~/Schreibtisch$ git grep -n "terminal.integrated.cwd\|HYPERDASHBOARD_ROOT" || true
 Schwerwiegend: Kein Git-Repository (oder irgendeines der Elternverzeichnisse): .git
-danijel-jd@danijeljd-ESPRIMO-P920:~/Schreibtisch$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~/Schreibtisch$
 ChatGPT:
 
 Gut — du hast wild in die Shell reingepastet, das hat die Fehlermeldungen erklärt (die diff --git-Zeilen und das Markdown wurden als Shell-Befehle interpretiert). Wir kriegen das sauber: ich gebe dir jetzt eine kurze, sichere Schritt-für-Schritt-Anleitung mit Befehlen, die du genau so in deinem Linux-Terminal laufen lässt. Keine Magie, nur konkrete Fixes + Backup. Du kannst das in ~5–10 Minuten abarbeiten.
@@ -3266,14 +3266,14 @@ Du:
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/lokaler gpt$ pwd
 echo "HYPERDASHBOARD_ROOT ->" "$HYPERDASHBOARD_ROOT"
 /home/danijel-jd/Dokumente/Workspace/Projekte/lokaler gpt
-HYPERDASHBOARD_ROOT -> 
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/lokaler gpt$ 
+HYPERDASHBOARD_ROOT ->
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/lokaler gpt$
 
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/lokaler gpt$ pwd
 echo "HYPERDASHBOARD_ROOT ->" "$HYPERDASHBOARD_ROOT"
 /home/danijel-jd/Dokumente/Workspace/Projekte/lokaler gpt
-HYPERDASHBOARD_ROOT -> 
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/lokaler gpt$ 
+HYPERDASHBOARD_ROOT ->
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/lokaler gpt$
 ChatGPT:
 
 Gute Beobachtung — der Wert ist leer, weil die Variable in deiner aktuellen Shell nicht gesetzt ist. Zwei Dinge kurz und klar:
@@ -3739,17 +3739,17 @@ Backup-Verzeichnis: /home/danijel-jd/.local_backup_docker_20251024T011242Z
 
 1) System: clean + show current containerd packages
 OK:1 https://cli.github.com/packages stable InRelease
-OK:2 http://archive.ubuntu.com/ubuntu noble InRelease                          
-OK:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease                  
-OK:4 https://packages.microsoft.com/repos/code stable InRelease                
-OK:5 http://archive.ubuntu.com/ubuntu noble-backports InRelease                
-Ign:6 https://releases.warp.dev/linux/deb stable InRelease                     
-OK:7 https://ppa.launchpadcontent.net/git-core/ppa/ubuntu noble InRelease      
-OK:8 http://security.ubuntu.com/ubuntu noble-security InRelease                
-Ign:9 http://packages.linuxmint.com zara InRelease                             
-Ign:10 https://download.docker.com/linux/ubuntu zara InRelease            
-OK:11 https://releases.warp.dev/linux/deb stable Release                  
-OK:12 http://packages.linuxmint.com zara Release  
+OK:2 http://archive.ubuntu.com/ubuntu noble InRelease
+OK:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+OK:4 https://packages.microsoft.com/repos/code stable InRelease
+OK:5 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Ign:6 https://releases.warp.dev/linux/deb stable InRelease
+OK:7 https://ppa.launchpadcontent.net/git-core/ppa/ubuntu noble InRelease
+OK:8 http://security.ubuntu.com/ubuntu noble-security InRelease
+Ign:9 http://packages.linuxmint.com zara InRelease
+Ign:10 https://download.docker.com/linux/ubuntu zara InRelease
+OK:11 https://releases.warp.dev/linux/deb stable Release
+OK:12 http://packages.linuxmint.com zara Release
 Fehl:13 https://download.docker.com/linux/ubuntu zara Release
   404  Not Found [IP: 2600:9000:2304:ae00:3:db06:4200:93a1 443]
 Paketlisten werden gelesen… Fertig
@@ -4270,7 +4270,7 @@ Wenn du willst, erstelle ich dir:
 Sag kurz SCHREIB und ich lege das Skript hier vollständig als Dateiblock an (du kopierst es dann nur noch ins Repo), oder sag ICH FÜHRE wenn du's lokal ausführen willst und mir die Ausgabe schickst — dann helfe ich mit dem nächsten Schritt (Tests / Serverstart).
 Du:
 # in dashboard/backend
- 
+
 # oder logs von uvicorn
 journalctl -u portier-agent -n 200 --no-pager   # falls systemd / service genutztdanijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/lokaler gpt/-portier-openai./tools$ python3 -m venv venv313
 source venv313/bin/activate
@@ -4468,7 +4468,7 @@ Traceback (most recent call last):
   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
   File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
-ModuleNotFoundError: No module named 'agents'  
+ModuleNotFoundError: No module named 'agents'
 
 
 # 1. Suche nach requirements
@@ -4674,7 +4674,7 @@ Ich weiß, das war zäh — das geht anders und geht besser. Wenn du willst, mac
 
 Nochmals: tut mir leid für das Durcheinander. Du bestimmst den nächsten Schritt.
 Du:
-Ich glaube, 4 Stunden oder für einen 20-Minuten-Skript, 
+Ich glaube, 4 Stunden oder für einen 20-Minuten-Skript,
 ChatGPT:
 
 Du hast recht — das hätte in 20 Minuten erledigt sein sollen. Sorry, dass’s so gezogen hat. Hier ist jetzt das minimale, sofort ausführbare Skript, exakt auf dein Projekt angepasst. Einmal kopieren, ausführbar machen, starten — fertig. Keine Experimente, keine Extras.
@@ -4777,7 +4777,7 @@ agent_server:app danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekt
 insgesamt 8
 drwxrwxr-x 2 danijel-jd danijel-jd 4096 Okt 24 03:36 .
 drwxrwxr-x 3 danijel-jd danijel-jd 4096 Okt 24 03:36 ..
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/lokaler gpt/-portier-openai./dashboard/backend$  
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/lokaler gpt/-portier-openai./dashboard/backend$
 ChatGPT:
 
 dashboard/backend/agent_server.py
@@ -5583,7 +5583,7 @@ danijel-jd@danijeljd-ESPRIMO-P920:~$ hello mainPromptAgent
 Der Befehl 'hello' wurde nicht gefunden, kann aber installiert werden mit:
 sudo apt install hello              # version 2.10-3, or
 sudo apt install hello-traditional  # version 2.10-6
-danijel-jd@danijeljd-ESPRIMO-P920:~$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~$
 
 
 
@@ -7304,8 +7304,8 @@ ENDE DES CODE-CHANGE-OHNE-GIT-PROMPTS.
 
 Wenn du willst, können wir im nächsten Schritt:
 
-- beide Prompts gleich noch in **kurzer „Lite“-Fassung** bauen für schnellere Tools,  
-- oder sie direkt **auf Englisch für Tools** formulieren, während du weiter auf Deutsch mit mir arbeitest.  
+- beide Prompts gleich noch in **kurzer „Lite“-Fassung** bauen für schnellere Tools,
+- oder sie direkt **auf Englisch für Tools** formulieren, während du weiter auf Deutsch mit mir arbeitest.
 
 
 MASTER-PROMPT FÜR GITHUB COPILOT CLOUD AGENT
@@ -7315,7 +7315,7 @@ Version: ausführlich, erklärend, mit Governance & Selbstkontrolle
 =================================================
 0. GRUNDIDEE DIESES PROMPTS
 =================================================
-Du arbeitest in einem sensiblen, über Jahre aufgebauten Projekt ("Lokales Agententool" / "LocalAgent-Pro"), das als Hyper-Dashboard und Agentensystem dient. 
+Du arbeitest in einem sensiblen, über Jahre aufgebauten Projekt ("Lokales Agententool" / "LocalAgent-Pro"), das als Hyper-Dashboard und Agentensystem dient.
 Es ist ein Lebenswerk, kein Spielplatz.
 
 Dieser Prompt definiert:
@@ -7342,19 +7342,19 @@ Rollenbeschreibung:
   - klare Kommunikation
 
 Deine Hauptziele:
-1. Projektstabilität schützen  
+1. Projektstabilität schützen
    - Keine stillen, unübersichtlichen Großumbauten.
    - Keine riskanten Änderungen ohne expliziten Auftrag.
 
-2. Nur explizite Aufgaben ausführen  
+2. Nur explizite Aufgaben ausführen
    - Du machst NICHT „einfach mal das ganze Projekt besser“.
    - Du arbeitest immer auf Basis der konkreten User-Anfrage.
 
-3. Qualität erhöhen, nicht nur „Code schreiben“  
+3. Qualität erhöhen, nicht nur „Code schreiben“
    - Lesbarkeit, Wartbarkeit, Konsistenz mit bestehendem Stil.
    - Möglichst wenig unnötige Komplexität.
 
-4. Git-Historie sauber halten  
+4. Git-Historie sauber halten
    - Kleine, sinnvolle Commits mit klaren, verständlichen Messages.
    - Keine Commits mit zufälligem Müll (pycache, Backups etc.).
 
@@ -7382,7 +7382,7 @@ Merke dir die grobe Struktur:
       - copilot-instructions.md → projektspezifische Copilot-Regeln
     - README.md & weitere *.md  → Doku, Integration Guides, Analysen
 
-WICHTIG: 
+WICHTIG:
 - Du liest und respektierst alle projektinternen Copilot-/Commit-Regeln.
 - Wenn dort etwas steht, integrierst du es in dein Verhalten (sofern nicht offensichtlich unsinnig/gefährlich).
 
@@ -7748,25 +7748,25 @@ Wenn ja:
   - Funktionsnamen, Klassen, Commit-Messages, Branch-Namen: Englisch.
 
 Typischer Antwortaufbau:
-1. Kontext / Verständnis  
+1. Kontext / Verständnis
    - „Ich verstehe die Aufgabe so: …“
 
-2. Analyse  
+2. Analyse
    - „Ich habe mir Datei A, B, C angesehen. Relevante Stellen sind …“
 
-3. Plan  
+3. Plan
    - „Plan: 1) ..., 2) ..., 3) ...“
 
-4. Umsetzung (Code / Diff-Beschreibung)  
+4. Umsetzung (Code / Diff-Beschreibung)
    - Ausgewählte Code-Blocks, klar kommentiert.
 
-5. Tests  
+5. Tests
    - „Bitte führe folgendes aus: …“
 
-6. Git / Commit-Vorschlag  
+6. Git / Commit-Vorschlag
    - Commit-Message + kurze Summary.
 
-7. Compliance- & Execution-Check  
+7. Compliance- & Execution-Check
    - wie in Abschnitt 10 beschrieben.
 
 Keine:
@@ -8269,10 +8269,10 @@ ENDE DES CODE-CHANGE-OHNE-GIT-PROMPTS.
 
 Wenn du willst, können wir im nächsten Schritt:
 
-- beide Prompts gleich noch in **kurzer „Lite“-Fassung** bauen für schnellere Tools,  
-- oder sie direkt **auf Englisch für Tools** formulieren, während du weiter auf Deutsch mit mir arbeitest.  
+- beide Prompts gleich noch in **kurzer „Lite“-Fassung** bauen für schnellere Tools,
+- oder sie direkt **auf Englisch für Tools** formulieren, während du weiter auf Deutsch mit mir arbeitest.
 
-Sag einfach:  
+Sag einfach:
 „Mach mir die Commit-Variante in kurz“ oder „Gib mir beide auf Englisch für Copilot X/Y“.
 
 Du:
@@ -10376,7 +10376,3 @@ Wetter für Wien, Österreich, für die nächsten 3 Tage:
 
 Aktuell -3° · Eisnebel
 Wien, Österreich
-
-
-
-

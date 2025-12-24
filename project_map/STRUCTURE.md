@@ -20,7 +20,7 @@
 ├── .env
 ├── .gitignore
 ├── .pre-commit-config.yaml
-├── 1.portier_openai
+├── 1.opena1&2_portier
 │   ├── .env
 │   ├── .mypy_cache
 │   │   ├── .gitignore
@@ -929,26 +929,26 @@
 
 | File | Size |
 |---|---|
-| `1.portier_openai/venv313/lib/python3.12/site-packages/selenium/webdriver/common/macos/selenium-manager` | 8 MB |
-| `1.portier_openai/venv313/lib/python3.12/site-packages/selenium/webdriver/common/linux/selenium-manager` | 5 MB |
-| `1.portier_openai/venv313/lib/python3.12/site-packages/selenium/webdriver/common/windows/selenium-manager.exe` | 4 MB |
+| `1.opena1&2_portier/venv313/lib/python3.12/site-packages/selenium/webdriver/common/macos/selenium-manager` | 8 MB |
+| `1.opena1&2_portier/venv313/lib/python3.12/site-packages/selenium/webdriver/common/linux/selenium-manager` | 5 MB |
+| `1.opena1&2_portier/venv313/lib/python3.12/site-packages/selenium/webdriver/common/windows/selenium-manager.exe` | 4 MB |
 | `project_map/path_index.json` | 2 MB |
-| `1.portier_openai/.mypy_cache/3.12/builtins.data.json` | 2 MB |
+| `1.opena1&2_portier/.mypy_cache/3.12/builtins.data.json` | 2 MB |
 | `docs/violations_report.md` | 2 MB |
 | `project_map/files.csv` | 1 MB |
-| `1.portier_openai/.mypy_cache/3.12/collections/__init__.data.json` | 828 KB |
+| `1.opena1&2_portier/.mypy_cache/3.12/collections/__init__.data.json` | 828 KB |
 | `project_map/violations.md` | 668 KB |
 | `docs/ChatGPT_Agent_8` | 615 KB |
-| `1.portier_openai/.mypy_cache/3.12/typing.data.json` | 595 KB |
-| `1.portier_openai/.mypy_cache/3.12/ast.data.json` | 521 KB |
-| `1.portier_openai/knowledgebase/opena1/Unbenanntes Dokument` | 460 KB |
-| `1.portier_openai/knowledgebase/opena1/2.openwebui2.txt` | 460 KB |
-| `1.portier_openai/.mypy_cache/3.12/os/__init__.data.json` | 427 KB |
-| `1.portier_openai/knowledgebase/opena1/portier_tree.txt` | 406 KB |
-| `1.portier_openai/venv313/lib/python3.12/site-packages/asyncssh/connection.py` | 405 KB |
-| `1.portier_openai/.mypy_cache/3.12/types.data.json` | 360 KB |
-| `1.portier_openai/knowledgebase/opena1/ausgebeopena1&opena2.txt` | 358 KB |
-| `1.portier_openai/venv313/lib/python3.12/site-packages/setuptools/config/_validate_pyproject/fastjsonschema_validations.py` | 346 KB |
+| `1.opena1&2_portier/.mypy_cache/3.12/typing.data.json` | 595 KB |
+| `1.opena1&2_portier/.mypy_cache/3.12/ast.data.json` | 521 KB |
+| `1.opena1&2_portier/knowledgebase/opena1/Unbenanntes Dokument` | 460 KB |
+| `1.opena1&2_portier/knowledgebase/opena1/2.openwebui2.txt` | 460 KB |
+| `1.opena1&2_portier/.mypy_cache/3.12/os/__init__.data.json` | 427 KB |
+| `1.opena1&2_portier/knowledgebase/opena1/portier_tree.txt` | 406 KB |
+| `1.opena1&2_portier/venv313/lib/python3.12/site-packages/asyncssh/connection.py` | 405 KB |
+| `1.opena1&2_portier/.mypy_cache/3.12/types.data.json` | 360 KB |
+| `1.opena1&2_portier/knowledgebase/opena1/ausgebeopena1&opena2.txt` | 358 KB |
+| `1.opena1&2_portier/venv313/lib/python3.12/site-packages/setuptools/config/_validate_pyproject/fastjsonschema_validations.py` | 346 KB |
 
 ## Hotspots: Newest Files (Top 20)
 
@@ -961,19 +961,19 @@
 | `5.kordp_scheduler/main.py` | 2025-11-09T03:41:18.220717+00:00 |
 | `3.opena1_coordinator/main.py` | 2025-11-09T03:41:08.614799+00:00 |
 | `src/portier_service_base.py` | 2025-11-09T03:40:57.645271+00:00 |
-| `1.portier_openai/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/RECORD` | 2025-11-09T03:38:03.017360+00:00 |
-| `1.portier_openai/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/REQUESTED` | 2025-11-09T03:38:03.014360+00:00 |
-| `1.portier_openai/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/INSTALLER` | 2025-11-09T03:38:03.011613+00:00 |
-| `1.portier_openai/venv312/bin/pip3.12` | 2025-11-09T03:38:03.011409+00:00 |
-| `1.portier_openai/venv312/bin/pip3` | 2025-11-09T03:38:03.011006+00:00 |
-| `1.portier_openai/venv312/bin/pip` | 2025-11-09T03:38:03.010669+00:00 |
-| `1.portier_openai/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/METADATA` | 2025-11-09T03:38:02.074256+00:00 |
-| `1.portier_openai/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/WHEEL` | 2025-11-09T03:38:02.074125+00:00 |
-| `1.portier_openai/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/urllib3/LICENSE.txt` | 2025-11-09T03:38:02.074005+00:00 |
-| `1.portier_openai/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/truststore/LICENSE` | 2025-11-09T03:38:02.073864+00:00 |
-| `1.portier_openai/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/tomli_w/LICENSE` | 2025-11-09T03:38:02.073678+00:00 |
-| `1.portier_openai/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/tomli/LICENSE` | 2025-11-09T03:38:02.073531+00:00 |
-| `1.portier_openai/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/rich/LICENSE` | 2025-11-09T03:38:02.073361+00:00 |
+| `1.opena1&2_portier/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/RECORD` | 2025-11-09T03:38:03.017360+00:00 |
+| `1.opena1&2_portier/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/REQUESTED` | 2025-11-09T03:38:03.014360+00:00 |
+| `1.opena1&2_portier/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/INSTALLER` | 2025-11-09T03:38:03.011613+00:00 |
+| `1.opena1&2_portier/venv312/bin/pip3.12` | 2025-11-09T03:38:03.011409+00:00 |
+| `1.opena1&2_portier/venv312/bin/pip3` | 2025-11-09T03:38:03.011006+00:00 |
+| `1.opena1&2_portier/venv312/bin/pip` | 2025-11-09T03:38:03.010669+00:00 |
+| `1.opena1&2_portier/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/METADATA` | 2025-11-09T03:38:02.074256+00:00 |
+| `1.opena1&2_portier/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/WHEEL` | 2025-11-09T03:38:02.074125+00:00 |
+| `1.opena1&2_portier/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/urllib3/LICENSE.txt` | 2025-11-09T03:38:02.074005+00:00 |
+| `1.opena1&2_portier/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/truststore/LICENSE` | 2025-11-09T03:38:02.073864+00:00 |
+| `1.opena1&2_portier/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/tomli_w/LICENSE` | 2025-11-09T03:38:02.073678+00:00 |
+| `1.opena1&2_portier/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/tomli/LICENSE` | 2025-11-09T03:38:02.073531+00:00 |
+| `1.opena1&2_portier/venv312/lib/python3.12/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/rich/LICENSE` | 2025-11-09T03:38:02.073361+00:00 |
 
 ## Files by Extension
 
@@ -1041,7 +1041,7 @@
 | `.env/` | 1 |
 | `.gitignore/` | 1 |
 | `.pre-commit-config.yaml/` | 1 |
-| `1.portier_openai/` | 4554 |
+| `1.opena1&2_portier/` | 4554 |
 | `10.opena8_telephone/` | 5 |
 | `11.opena9_call_tracking/` | 5 |
 | `12.opena10_unlock/` | 5 |
@@ -1087,4 +1087,3 @@
 | `SESSION_RECORDING_2025-11-09.md/` | 1 |
 | `src/` | 58 |
 | `tools/` | 3 |
-

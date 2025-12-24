@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📱 Telegram Mobile Agent | PAS-6.0 Enterprise</title>
+    <link rel="stylesheet" href="telegram_style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-left">
+            <span class="logo">📱</span>
+            <div class="header-info">
+                <h1>Telegram Mobile Agent</h1>
+                <span class="version">opena4 | PAS-6.0 Enterprise</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="status-badge" id="statusBadge">
+                <span class="status-dot"></span>
+                <span class="status-text">Verbinde...</span>
+            </div>
+            <span class="port-badge">Port 12348</span>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="dashboard-nav">
+        <button class="nav-btn active" data-section="overview">📊 Übersicht</button>
+        <button class="nav-btn" data-section="messaging">💬 Messaging</button>
+        <button class="nav-btn" data-section="contacts">👥 Kontakte</button>
+        <button class="nav-btn" data-section="media">🖼️ Media</button>
+        <button class="nav-btn" data-section="ai-reply">🤖 AI Reply</button>
+        <button class="nav-btn" data-section="webhook">🔗 Webhook</button>
+        <button class="nav-btn" data-section="analytics">📈 Analytics</button>
+        <button class="nav-btn" data-section="templates">📝 Templates</button>
+        <button class="nav-btn" data-section="logs">📋 Logs</button>
+        <button class="nav-btn" data-section="settings">⚙️ Settings</button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <div class="section-header">
+                <h2>📊 Telegram Dashboard</h2>
+                <button class="btn btn-primary" onclick="app.refreshAll()">🔄 Aktualisieren</button>
+            </div>
+
+            <!-- Metrics Cards -->
+            <div class="metrics-grid">
+                <div class="metric-card primary">
+                    <div class="metric-icon">💬</div>
+                    <div class="metric-content">
+                        <span class="metric-value" id="messagesSent">0</span>
+                        <span class="metric-label">Nachrichten gesendet</span>
+                    </div>
+                </div>
+                <div class="metric-card success">
+                    <div class="metric-icon">📥</div>
+                    <div class="metric-content">
+                        <span class="metric-value" id="messagesReceived">0</span>
+                        <span class="metric-label">Nachrichten empfangen</span>
+                    </div>
+                </div>
+                <div class="metric-card warning">
+                    <div class="metric-icon">👥</div>
+                    <div class="metric-content">
+                        <span class="metric-value" id="activeChats">0</span>
+                        <span class="metric-label">Aktive Chats</span>
+                    </div>
+                </div>
+                <div class="metric-card info">
+                    <div class="metric-icon">⚡</div>
+                    <div class="metric-content">
+                        <span class="metric-value" id="responseTime">0ms</span>
+                        <span class="metric-label">Antwortzeit</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bot Control -->
+            <div class="card">
+                <h3>🤖 Bot Control</h3>
+                <div class="bot-control-grid">
+                    <button class="control-btn start" onclick="app.startBot()">
+                        <span class="btn-icon">▶️</span>
+                        <span class="btn-label">Start Bot</span>
+                    </button>
+                    <button class="control-btn stop" onclick="app.stopBot()">
+                        <span class="btn-icon">⏹️</span>
+                        <span class="btn-label">Stop Bot</span>
+                    </button>
+                    <button class="control-btn restart" onclick="app.restartBot()">
+                        <span class="btn-icon">🔄</span>
+                        <span class="btn-label">Restart Bot</span>
+                    </button>
+                    <button class="control-btn status" onclick="app.getBotDetails()">
+                        <span class="btn-icon">📊</span>
+                        <span class="btn-label">Details</span>
+                    </button>
+                </div>
+                <div class="bot-info" id="botInfo">
+                    <div class="info-item">
+                        <span class="info-label">Status:</span>
+                        <span class="info-value" id="botStatus">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Uptime:</span>
+                        <span class="info-value" id="botUptime">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">CPU:</span>
+                        <span class="info-value" id="botCPU">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">RAM:</span>
+                        <span class="info-value" id="botRAM">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Capabilities Grid -->
+            <div class="card">
+                <h3>🚀 12 Spezialisierte Fähigkeiten</h3>
+                <div class="capabilities-grid">
+                    <div class="capability-item" onclick="app.showSection('messaging')">
+                        <span class="cap-icon">📤</span>
+                        <span class="cap-name">Outgoing Sender</span>
+                        <span class="cap-status online">Aktiv</span>
+                    </div>
+                    <div class="capability-item" onclick="app.showSection('messaging')">
+                        <span class="cap-icon">📥</span>
+                        <span class="cap-name">Incoming Listener</span>
+                        <span class="cap-status online">Aktiv</span>
+                    </div>
+                    <div class="capability-item" onclick="app.showSection('media')">
+                        <span class="cap-icon">🖼️</span>
+                        <span class="cap-name">Media Handler</span>
+                        <span class="cap-status online">Aktiv</span>
+                    </div>
+                    <div class="capability-item" onclick="app.showSection('contacts')">
+                        <span class="cap-icon">👥</span>
+                        <span class="cap-name">Contact Manager</span>
+                        <span class="cap-status online">Aktiv</span>
+                    </div>
+                    <div class="capability-item" onclick="app.showSection('ai-reply')">
+                        <span class="cap-icon">🤖</span>
+                        <span class="cap-name">AI Reply Engine</span>
+                        <span class="cap-status online">Aktiv</span>
+                    </div>
+                    <div class="capability-item">
+                        <span class="cap-icon">⏱️</span>
+                        <span class="cap-name">Rate Limiter</span>
+                        <span class="cap-status online">Aktiv</span>
+                    </div>
+                    <div class="capability-item">
+                        <span class="cap-icon">🧠</span>
+                        <span class="cap-name">Context Engine</span>
+                        <span class="cap-status online">Aktiv</span>
+                    </div>
+                    <div class="capability-item" onclick="app.showSection('templates')">
+                        <span class="cap-icon">📝</span>
+                        <span class="cap-name">Template Engine</span>
+                        <span class="cap-status online">Aktiv</span>
+                    </div>
+                    <div class="capability-item" onclick="app.showSection('webhook')">
+                        <span class="cap-icon">🔗</span>
+                        <span class="cap-name">Webhook Receiver</span>
+                        <span class="cap-status online">Aktiv</span>
+                    </div>
+                    <div class="capability-item" onclick="app.showSection('analytics')">
+                        <span class="cap-icon">📊</span>
+                        <span class="cap-name">Chat Analytics</span>
+                        <span class="cap-status online">Aktiv</span>
+                    </div>
+                    <div class="capability-item">
+                        <span class="cap-icon">🔀</span>
+                        <span class="cap-name">Multi-Chat Routing</span>
+                        <span class="cap-status online">Aktiv</span>
+                    </div>
+                    <div class="capability-item">
+                        <span class="cap-icon">🔄</span>
+                        <span class="cap-name">Error Recovery</span>
+                        <span class="cap-status online">Aktiv</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <h3>⚡ Schnellaktionen</h3>
+                <div class="action-grid">
+                    <button class="action-btn" onclick="app.sendTestMessage()">
+                        <span class="action-icon">📤</span>
+                        <span class="action-label">Test-Nachricht</span>
+                    </button>
+                    <button class="action-btn" onclick="app.checkBotStatus()">
+                        <span class="action-icon">🤖</span>
+                        <span class="action-label">Bot Status</span>
+                    </button>
+                    <button class="action-btn" onclick="app.getUpdates()">
+                        <span class="action-icon">📥</span>
+                        <span class="action-label">Updates abrufen</span>
+                    </button>
+                    <button class="action-btn" onclick="app.viewWebhookInfo()">
+                        <span class="action-icon">🔗</span>
+                        <span class="action-label">Webhook Info</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Live Inbox Preview -->
+            <div class="card">
+                <h3>💬 Live Inbox</h3>
+                <div class="inbox-preview" id="inboxPreview">
+                    <div class="inbox-empty">Keine neuen Nachrichten</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Messaging Section -->
+        <section id="messaging" class="section">
+            <div class="section-header">
+                <h2>💬 Messaging Center</h2>
+            </div>
+
+            <!-- Send Message -->
+            <div class="card">
+                <h3>📤 Nachricht senden</h3>
+                <div class="form-group">
+                    <label>Chat ID:</label>
+                    <input type="text" id="msgChatId" class="form-control" placeholder="123456789">
+                </div>
+                <div class="form-group">
+                    <label>Nachricht:</label>
+                    <textarea id="msgText" class="form-control" rows="4" placeholder="Nachricht eingeben..."></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="app.sendMessage()">📤 Senden</button>
+            </div>
+
+            <!-- Message History -->
+            <div class="card">
+                <h3>📜 Nachrichtenverlauf</h3>
+                <div class="message-history" id="messageHistory">
+                    <div class="loading">Lade Verlauf...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="section">
+            <div class="section-header">
+                <h2>⚙️ Einstellungen</h2>
+            </div>
+
+            <!-- Connection Settings -->
+            <div class="card">
+                <h3>🔌 Bot Konfiguration</h3>
+                <div class="form-group">
+                    <label>Bot Token:</label>
+                    <input type="password" id="botToken" class="form-control" placeholder="bot123456:ABC-DEF...">
+                </div>
+                <div class="form-group">
+                    <label>Agent URL:</label>
+                    <input type="text" id="agentUrl" class="form-control" value="http://127.0.0.1:12348">
+                </div>
+                <button class="btn btn-primary" onclick="app.saveSettings()">💾 Speichern</button>
+                <button class="btn btn-secondary" onclick="app.testConnection()">🔗 Verbindung testen</button>
+            </div>
+        </section>
+
+        <!-- Placeholder sections für andere Tabs -->
+        <section id="contacts" class="section"><div class="card"><h3>👥 Kontakte</h3><p>Feature wird geladen...</p></div></section>
+        <section id="media" class="section"><div class="card"><h3>🖼️ Media</h3><p>Feature wird geladen...</p></div></section>
+        <section id="ai-reply" class="section"><div class="card"><h3>🤖 AI Reply</h3><p>Feature wird geladen...</p></div></section>
+        <section id="webhook" class="section"><div class="card"><h3>🔗 Webhook</h3><p>Feature wird geladen...</p></div></section>
+        <section id="analytics" class="section"><div class="card"><h3>📈 Analytics</h3><p>Feature wird geladen...</p></div></section>
+        <section id="templates" class="section"><div class="card"><h3>📝 Templates</h3><p>Feature wird geladen...</p></div></section>
+        <section id="logs" class="section"><div class="card"><h3>📋 Logs</h3><p>Feature wird geladen...</p></div></section>
+    </main>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <div class="footer-left">
+            <span>📱 opena4 Telegram Mobile | PAS-6.0 Enterprise</span>
+        </div>
+        <div class="footer-right">
+            <span id="lastUpdate">Letzte Aktualisierung: --:--:--</span>
+        </div>
+    </footer>
+
+    <script src="telegram_config.js"></script>
+    <script src="telegram_app.js"></script>
+</body>
+</html>

@@ -130,7 +130,7 @@ Authorization: Bearer <DASHBOARD_TOKEN>
 ├── 16.homepage_creator/       # Frontend
 │   ├── templates/
 │   └── assets/
-└── 1.portier_openai/         # Basis
+└── 1.opena1&2_portier/         # Basis
     ├── opena1/
     ├── opena2/
     └── archivp/
@@ -259,10 +259,10 @@ archivp/
    ```bash
    # Health
    curl http://127.0.0.1:12344/health
-   
+
    # Status
    curl http://127.0.0.1:12344/api/status/all
-   
+
    # Command
    curl -X POST http://127.0.0.1:12344/api/command/opena19 \
      -H "Authorization: Bearer $TOKEN" \

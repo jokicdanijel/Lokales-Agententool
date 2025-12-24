@@ -1,0 +1,78 @@
+# ELION Hyper-Dashboard - Makefile for Entitlements & Validation
+# Usage: make <target>
+
+.PHONY: help entitlements validate clean-entitlements test-entitlements
+
+# Default target
+help:
+	@echo "🔐 ELION Entitlements & Validation Targets"
+	@echo ""
+	@echo "Available targets:"
+	@echo "  entitlements         - Build entitlements.json from baseline"
+	@echo "  validate            - Validate entitlements against constraints"
+	@echo "  test-entitlements   - Build + Validate (full pipeline)"
+	@echo "  clean-entitlements  - Remove generated entitlements files"
+	@echo "  view-basic          - Show Basic plan summary"
+	@echo "  view-validation     - Show validation results"
+	@echo ""
+
+# Build entitlements
+entitlements:
+	@echo "🏗️  Building entitlements..."
+	@python3 scripts/build_entitlements.py
+
+# Validate entitlements
+validate:
+	@echo "🔍 Validating entitlements..."
+	@python3 scripts/validate_entitlements.py
+
+# Full pipeline (build + validate)
+test-entitlements: entitlements validate
+	@echo ""
+	@echo "✅ Entitlements pipeline complete!"
+	@echo ""
+	@echo "📊 Results:"
+	@jq '.summary' artifacts/entitlements_validation.json
+	@echo ""
+	@if [ $$(jq -r '.summary.failed' artifacts/entitlements_validation.json) -gt 0 ]; then \
+		echo "❌ FAILED: Entitlements validation failed"; \
+		exit 1; \
+	else \
+		echo "✅ PASSED: All validations successful"; \
+	fi
+
+# Clean generated files
+clean-entitlements:
+	@echo "🧹 Cleaning entitlements..."
+	@rm -f build/entitlements.json
+	@rm -f artifacts/entitlements_validation.json
+	@echo "✅ Cleaned"
+
+# View Basic plan summary
+view-basic:
+	@echo "📊 Basic Plan Summary:"
+	@jq '.basic | {clickable_count, limits}' build/entitlements.json
+
+# View validation results
+view-validation:
+	@echo "🔍 Validation Summary:"
+	@jq '.summary' artifacts/entitlements_validation.json
+	@echo ""
+	@echo "📋 Validations:"
+	@jq -r '.validations[] | "\(.name): \(if .passed then "✅" else "❌" end) \(.message)"' \
+		artifacts/entitlements_validation.json
+
+# Show all clickable agents per plan
+view-clickable:
+	@echo "📊 Clickable Agents per Plan:"
+	@echo ""
+	@for plan in basic pro premium ultimum; do \
+		echo "$$plan:"; \
+		jq -r ".$$plan.agents | to_entries | map(select(.value.clickable == true) | .key) | .[]" \
+			build/entitlements.json | grep -v opena1 | grep -v opena2 | grep -v opena20 | grep -v opena21 | sed 's/^/  - /'; \
+		echo ""; \
+	done
+
+# CI target (fails on validation error)
+ci-validate: test-entitlements
+	@echo "✅ CI validation passed"
