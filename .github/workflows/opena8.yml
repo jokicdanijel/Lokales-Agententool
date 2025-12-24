@@ -2,16 +2,16 @@ name: opena8 CI/CD Pipeline (Robust)
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths:
-      - '7.opena8_whatsapp/**'
-      - 'dist/opena8/**'
-      - '.github/workflows/opena8.yml'
+      - "7.opena8_whatsapp/**"
+      - "dist/opena8/**"
+      - ".github/workflows/opena8.yml"
   pull_request:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - '7.opena8_whatsapp/**'
-      - '.github/workflows/opena8.yml'
+      - "7.opena8_whatsapp/**"
+      - ".github/workflows/opena8.yml"
 
 concurrency:
   group: opena8-${{ github.ref }}
@@ -98,7 +98,7 @@ jobs:
     name: Docker Build Test
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    needs: [ lint, python-check ]
+    needs: [lint, python-check]
     env:
       COMPOSE_PROJECT_NAME: opena8_ci
       DOCKER_BUILDKIT: "1"
@@ -229,16 +229,16 @@ jobs:
       - name: Run Trivy filesystem scan
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          scan-type: 'fs'
-          scan-ref: '${{ env.APP_DIR }}'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
+          scan-type: "fs"
+          scan-ref: "${{ env.APP_DIR }}"
+          format: "sarif"
+          output: "trivy-results.sarif"
 
       - name: Upload Trivy results
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: "trivy-results.sarif"
 
   # ========================================
   # COVERAGE & METRICS
@@ -274,7 +274,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: [ lint, python-check, docker-build, api-test ]
+    needs: [lint, python-check, docker-build, api-test]
     steps:
       - uses: actions/checkout@v4
 
@@ -314,7 +314,7 @@ jobs:
     name: Deployment Readiness
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    needs: [ lint, python-check, docker-build, api-test ]
+    needs: [lint, python-check, docker-build, api-test]
     steps:
       - uses: actions/checkout@v4
 
@@ -347,14 +347,22 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const fs = require('fs');
-            const report = fs.readFileSync('/tmp/deployment_report.md', 'utf8');
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `## 🚀 opena8 Deployment Ready\n\n${report}`
-            });
+            try {
+              const fs = require('fs');
+              const report = fs.readFileSync('/tmp/deployment_report.md', 'utf8');
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## 🚀 opena8 Deployment Ready\n\n${report}`
+              });
+            } catch (err) {
+              if (err && err.status === 403) {
+                console.log('Skipping comment: Resource not accessible by integration (403)');
+              } else {
+                throw err;
+              }
+            }
 
   # ========================================
   # SUMMARY
@@ -363,7 +371,7 @@ jobs:
     name: CI Summary
     runs-on: ubuntu-latest
     if: always()
-    needs: [ lint, python-check, docker-build, api-test, metrics ]
+    needs: [lint, python-check, docker-build, api-test, metrics]
     steps:
       - name: Print summary
         run: |
