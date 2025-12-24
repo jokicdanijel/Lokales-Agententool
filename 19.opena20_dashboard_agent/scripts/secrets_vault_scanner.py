@@ -36,6 +36,9 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import ClassVar
 
+# tracing
+from scripts.tracing import init_tracing  # init tracing for scripts
+
 # ============================================================================
 # SECRET PATTERNS
 # ============================================================================
@@ -327,4 +330,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # initialize tracing for this script
+    init_tracing("secrets_vault_scanner")
     sys.exit(main())

@@ -29,6 +29,9 @@ from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, ClassVar
 
+# tracing
+from scripts.tracing import init_tracing  # init tracing for scripts
+
 # ============================================================================
 # HTML PARSER
 # ============================================================================
@@ -372,4 +375,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # initialize tracing for this script
+    init_tracing("html_contract_scanner")
     sys.exit(main())

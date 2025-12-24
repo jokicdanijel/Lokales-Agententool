@@ -28,6 +28,9 @@ from typing import Any
 
 import yaml
 
+# tracing
+from scripts.tracing import init_tracing  # init tracing for scripts
+
 
 @dataclass
 class FolderCoverageResult:
@@ -280,4 +283,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # initialize tracing for this script
+    init_tracing("folder_coverage_scanner")
     sys.exit(main())

@@ -37,6 +37,9 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import ClassVar
 
+# tracing
+from scripts.tracing import init_tracing  # init tracing for scripts
+
 # ============================================================================
 # BINDING PATTERNS
 # ============================================================================
@@ -348,4 +351,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # initialize tracing for this script
+    init_tracing("api_binding_scanner")
     sys.exit(main())

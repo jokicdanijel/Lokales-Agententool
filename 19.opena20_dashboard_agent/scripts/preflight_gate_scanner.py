@@ -36,6 +36,9 @@ from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
 
+# tracing
+from scripts.tracing import init_tracing  # init tracing for scripts
+
 # ============================================================================
 # EXPECTED CONFIGURATION
 # ============================================================================
@@ -364,4 +367,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # initialize tracing for this script
+    init_tracing("preflight_gate_scanner")
     sys.exit(main())

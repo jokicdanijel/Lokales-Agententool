@@ -25,8 +25,8 @@ jobs:
         with:
           path: |
             ~/.cache/pip
-            1.opena1&2_portier/venv313
-          key: venv-${{ runner.os }}-${{ hashFiles('1.opena1&2_portier/requirements.txt') }}
+            "1.opena1&2_portier"/venv313
+          key: venv-${{ runner.os }}-${{ hashFiles('"1.opena1&2_portier"/requirements.txt') }}
           restore-keys: |
             venv-${{ runner.os }}-
 
@@ -39,8 +39,8 @@ jobs:
         run: |
           echo "🔍 Verifying critical files…"
           test -f .github/workflows/portier-ci.yml || { echo "❌ CI Workflow missing"; exit 1; }
-          test -f 1.opena1&2_portier/skripte/validate_portier.sh || { echo "❌ Policy validator missing"; exit 1; }
-          test -f 1.opena1&2_portier/config/tools_registry.json || { echo "❌ Tools registry missing"; exit 1; }
+          test -f "1.opena1&2_portier"/skripte/validate_portier.sh || { echo "❌ Policy validator missing"; exit 1; }
+          test -f "1.opena1&2_portier"/config/tools_registry.json || { echo "❌ Tools registry missing"; exit 1; }
           for agent_dir in 4.telegram_agent 5.vscode_agent 6.mail_agent 7.whatsapp_agent; do
             test -f "$agent_dir/main_agent.py" || { echo "❌ $agent_dir/main_agent.py missing"; exit 1; }
           done
@@ -70,13 +70,13 @@ jobs:
 
       - name: Ensure policy validator is executable
         run: |
-          chmod +x 1.opena1&2_portier/skripte/validate_portier.sh
+          chmod +x "1.opena1&2_portier"/skripte/validate_portier.sh
           echo "✅ Policy validator executable set."
 
       - name: Run policy validator
         run: |
           echo "🔍 Running comprehensive policy validator…"
-          bash 1.opena1&2_portier/skripte/validate_portier.sh
+          bash "1.opena1&2_portier"/skripte/validate_portier.sh
 
       - name: Generate deployment summary
         if: success()

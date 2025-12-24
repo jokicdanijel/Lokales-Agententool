@@ -32,6 +32,9 @@ from difflib import SequenceMatcher
 from html.parser import HTMLParser
 from pathlib import Path
 
+# tracing
+from scripts.tracing import init_tracing  # init tracing for scripts
+
 # ============================================================================
 # CONFIGURATION
 # ============================================================================
@@ -439,4 +442,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # initialize tracing for this script
+    init_tracing("public_website_scanner")
     sys.exit(main())

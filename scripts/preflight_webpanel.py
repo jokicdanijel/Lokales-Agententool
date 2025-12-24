@@ -893,7 +893,7 @@ def api_gate(
         rep.stats["endpoints_discovered_count"] = len(endpoints)
         rep.stats["endpoints_sample"] = sorted(endpoints)[:25]
         tests = {"tests": []}
-        # minimal safe defaults (won't brick if endpoint name differs -> warns on 404, but blocks if nothing returns 2xx)
+        # minimal safe defaults (won't brick if endpoint name differs → warns on 404, but blocks if nothing returns 2xx)
         for hp in ["/health", "/status", "/api/status/all"]:
             tests["tests"].append(
                 {"name": f"GET {hp}", "method": "GET", "path": hp, "allowed_statuses": [200, 204, 401, 403, 404]}
