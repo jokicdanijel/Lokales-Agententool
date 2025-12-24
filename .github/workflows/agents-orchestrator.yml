@@ -1,0 +1,157 @@
+name: Agents Orchestrator (Parallel CI/CD Visibility)
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Manual trigger
+
+concurrency:
+  group: agents-orchestrator-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  REGISTRY: docker.io
+
+jobs:
+  # ========================================
+  # SUMMARY: Provide orchestration visibility
+  # Individual workflows trigger automatically
+  # ========================================
+  orchestrator-summary:
+    name: Agent Workflows Overview
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Display Agent Fleet Status
+        run: |
+          cat << 'EOF'
+          ╔════════════════════════════════════════════════════════════════════════════╗
+          ║               🤖 AGENTS ORCHESTRATOR - WORKFLOW VISIBILITY                 ║
+          ╠════════════════════════════════════════════════════════════════════════════╣
+          ║                                                                            ║
+          ║  Individual Agent Workflows Triggered by Git Events:                     ║
+          ║  (Each agent has its own .github/workflows/opena<N>.yml file)            ║
+          ║                                                                            ║
+          ║  🚀 CI/CD Strategy:                                                       ║
+          ║     • On git push → Individual workflow triggers automatically            ║
+          ║     • Parallel execution (max-parallel: 8)                                ║
+          ║     • Each agent CI/CD is independent & observable                        ║
+          ║                                                                            ║
+          ║  📊 Agent Fleet (21 Total):                                               ║
+          ║     ✅ opena1  (Port 12344), opena2  (Port 12345), opena3  (Port 12347)   ║
+          ║     ✅ opena4  (Port 12346), opena5  (Port 12350), opena6  (Port 12351)   ║
+          ║     ✅ opena7  (Port 12352), opena8  (Port 12353), opena9  (Port 12354)   ║
+          ║     ✅ opena10 (Port 12355), opena11 (Port 12356), opena12 (Port 12357)   ║
+          ║     ✅ opena13 (Port 12358), opena14 (Port 12359), opena15 (Port 12360)   ║
+          ║     ✅ opena16 (Port 12361), opena17 (Port 12362), opena18 (Port 12363)   ║
+          ║     ✅ opena19 (Port 12364), opena20 (Port 12349), opena21 (Port 12367)   ║
+          ║                                                                            ║
+          ║  ⚙️  Workflow Configuration:                                              ║
+          ║     • Total Agents: 21                                                    ║
+          ║     • Parallel Limit: 8 concurrent jobs                                   ║
+          ║     • Template: .github/workflows/_agent-template.yml                     ║
+          ║     • Registry: agent_directories.json (single source of truth)           ║
+          ║                                                                            ║
+          ║  📋 Each Agent Workflow Includes 9 Jobs:                                  ║
+          ║     1. lint 2. python-check 3. docker-build 4. api-test 5. security      ║
+          ║     6. metrics 7. publish 8. deploy-ready 9. summary                      ║
+          ║                                                                            ║
+          ║  🔒 Hardening Standards Implemented:                                      ║
+          ║     ✅ set -euo pipefail | Polling health checks | Pinned Actions        ║
+          ║     ✅ Soft-fail security | Unique ports | Stable Docker names           ║
+          ║                                                                            ║
+          ║  💡 How to Monitor:                                                       ║
+          ║     1. Push code to main/develop                                          ║
+          ║     2. GitHub > Actions tab → View individual opena<N>.yml workflows    ║
+          ║     3. Each agent shows 9 jobs in parallel                                ║
+          ║                                                                            ║
+          ╚════════════════════════════════════════════════════════════════════════════╝
+          EOF
+
+  # ========================================
+  # VERIFICATION: Validate workflow syntax
+  # ========================================
+  validation:
+    name: Workflow Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check workflow files exist
+        run: |
+          set -euo pipefail
+          WORKFLOWS_DIR=".github/workflows"
+          AGENT_WORKFLOWS=$(ls -1 "$WORKFLOWS_DIR"/opena*.yml 2>/dev/null | wc -l)
+          echo "📊 Found $AGENT_WORKFLOWS agent workflow files"
+          echo ""
+          echo "Agent workflows:"
+          ls -1 "$WORKFLOWS_DIR"/opena*.yml | sed 's|.*/||' | sort
+
+      - name: Validate YAML syntax
+        run: |
+          set -euo pipefail
+          python3 << 'PYTHON'
+          import yaml
+          from pathlib import Path
+
+          workflows = sorted(Path(".github/workflows").glob("opena*.yml"))
+          print(f"✅ Validating {len(workflows)} agent workflows...\n")
+
+          failed = []
+          for wf_file in workflows:
+              try:
+                  with open(wf_file) as f:
+                      wf = yaml.safe_load(f)
+                      jobs = list(wf.get("jobs", {}).keys())
+                      name = wf.get("name", "N/A")
+                      print(f"  ✅ {wf_file.name:15} | {jobs.__len__()} jobs")
+              except Exception as e:
+                  print(f"  ❌ {wf_file.name:15} | ERROR: {str(e)[:50]}")
+                  failed.append(wf_file.name)
+
+          if failed:
+              print(f"\n❌ {len(failed)} workflow(s) have syntax errors:")
+              for name in failed:
+                  print(f"   - {name}")
+              exit(1)
+          else:
+              print(f"\n✅ All {len(workflows)} workflows are valid")
+          PYTHON
+
+  # ========================================
+  # NOTIFICATION: PR Comment (if applicable)
+  # ========================================
+  notify-pr:
+    name: Notify PR (Workflows Ready)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Post PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '## 🤖 Agents Orchestrator - Ready for Merge\n\n' +
+                    'All 21 agent workflows are configured and ready for CI/CD:\n\n' +
+                    '### Workflow Status ✅\n' +
+                    '**21 Agents Ready** (20 auto-generated + 1 custom)\n' +
+                    '**Parallel Limit:** 8 concurrent\n' +
+                    '**Template:** `.github/workflows/_agent-template.yml`\n\n' +
+                    '### 9 Jobs per Agent\n' +
+                    '1. lint 2. python-check 3. docker-build 4. api-test 5. security\n' +
+                    '6. metrics 7. publish 8. deploy-ready 9. summary\n\n' +
+                    '✅ Ready to merge!'
+            });

@@ -1,0 +1,206 @@
+# ============================================================================
+# MAKEFILE.agents: Local Agent Testing & Management
+# ============================================================================
+# Einfache Verwaltung aller 21 Agents lokal
+# Usage: make -f Makefile.agents agents-list
+#        make -f Makefile.agents opena5-health
+# ============================================================================
+
+.PHONY: help agents-list agents-health agents-lint agents-preflight agents-clean agents-workflows-check
+
+AGENTS_JSON := agent_directories.json
+
+help:
+	@echo "╔════════════════════════════════════════════════════════╗"
+	@echo "║   Agent Testing & Management (make -f Makefile.agents) ║"
+	@echo "╠════════════════════════════════════════════════════════╣"
+	@echo "│                                                        │"
+	@echo "│ make agents-list             List all agents           │"
+	@echo "│ make agents-health           Health check all          │"
+	@echo "│ make agents-lint             Lint all Python code      │"
+	@echo "│ make agents-preflight        Preflight validation      │"
+	@echo "│ make agents-clean            Kill all processes        │"
+	@echo "│ make agents-workflows-check  Validate workflow files   │"
+	@echo "│                                                        │"
+	@echo "│ make opena5-start            Start specific agent      │"
+	@echo "│ make opena7-health           Health check specific     │"
+	@echo "│ make AGENT=opena6 agent-lint Lint specific agent       │"
+	@echo "│                                                        │"
+	@echo "╚════════════════════════════════════════════════════════╝"
+
+agents-list:
+	@echo "📊 Registered Agents (from agent_directories.json):"
+	@jq -r '.agents[] | "\(.name)\t| Port: \(.port)\t| Dir: \(.folder)"' $(AGENTS_JSON) | column -t -s '|'
+
+agents-ports:
+	@echo "🔌 Agent Port Map:"
+	@jq -r '.agents[] | "\(.port)\t-> \(.name)\t(\(.folder))"' $(AGENTS_JSON) | sort -n | column -t
+
+agents-health:
+	@echo "🏥 Agent Health Check:"
+	@jq -r '.agents[] | "\(.name)|\(.port)"' $(AGENTS_JSON) | while IFS='|' read -r AGENT PORT; do \
+		RESULT=$$(curl -s -o /dev/null -w "%{http_code}" http://localhost:$$PORT/health 2>/dev/null || echo "000"); \
+		if [ "$$RESULT" = "200" ]; then \
+			echo "✅ $$AGENT (Port $$PORT): ALIVE"; \
+		else \
+			echo "❌ $$AGENT (Port $$PORT): DOWN (HTTP $$RESULT)"; \
+		fi; \
+	done
+
+agents-lint:
+	@echo "🧹 Python Syntax Check (all agents):"
+	@AGENT_DIRS=$$(jq -r '.agents[] | .folder | split("/")[0]' $(AGENTS_JSON) | sort -u); \
+	for DIR in $$AGENT_DIRS; do \
+		if [ -f "$$DIR/main.py" ]; then \
+			if python3 -m py_compile "$$DIR/main.py" 2>/dev/null; then \
+				echo "✅ $$DIR/main.py"; \
+			else \
+				echo "❌ $$DIR/main.py"; \
+			fi; \
+		fi; \
+	done
+
+agents-preflight:
+	@echo "🔍 Preflight Checks (all agents):"
+	@python3 << 'PYTHON'
+import json
+from pathlib import Path
+
+with open("agent_directories.json") as f:
+    registry = json.load(f)
+
+print("\n╔════════════════════════════════════════════════════════╗")
+print("║   Agent Structure Validation                          ║")
+print("╠════════════════════════════════════════════════════════╣")
+
+passed = 0
+warned = 0
+
+for agent in registry["agents"]:
+    name = agent["name"]
+    port = agent["port"]
+    folder = agent["folder"]
+    agent_dir = folder.split("/")[0] if "/" in folder else folder
+
+    checks = {
+        "main.py": Path(agent_dir) / "main.py",
+        "requirements.txt": Path(agent_dir) / "requirements.txt",
+        "Dockerfile": Path(agent_dir) / "Dockerfile",
+        "index.html": Path(agent_dir) / "app" / "html" / "index.html",
+    }
+
+    results = {name: path.exists() for name, path in checks.items()}
+    pass_count = sum(1 for v in results.values() if v)
+
+    status = "✅" if pass_count == 4 else "⚠️ "
+    print(f"║ {status} {name:10} (Port {port:5}) | {pass_count}/4 files")
+
+    if pass_count == 4:
+        passed += 1
+    else:
+        warned += 1
+
+print("╠════════════════════════════════════════════════════════╣")
+print(f"║ Summary: {passed} complete | {warned} incomplete")
+print("╚════════════════════════════════════════════════════════╝\n")
+PYTHON
+
+agents-clean:
+	@echo "🧹 Killing all agent processes..."
+	@PORTS=$$(jq -r '.agents[] | .port' $(AGENTS_JSON)); \
+	for PORT in $$PORTS; do \
+		PID=$$(lsof -t -i :$$PORT 2>/dev/null); \
+		if [ -n "$$PID" ]; then \
+			kill -9 $$PID 2>/dev/null && echo "✅ Killed process on port $$PORT" || echo "⚠️  Failed to kill port $$PORT"; \
+		fi; \
+	done
+	@echo "✅ Cleanup complete"
+
+agents-workflows-check:
+	@echo "📋 Checking Agent Workflow Files:"
+	@WORKFLOWS_DIR=".github/workflows"; \
+	AGENT_WFS=$$(ls -1 $$WORKFLOWS_DIR/opena*.yml 2>/dev/null | wc -l); \
+	echo "  Found: $$AGENT_WFS workflows"; \
+	echo ""; \
+	python3 << 'PYTHON'
+import yaml
+from pathlib import Path
+
+workflows = sorted(Path(".github/workflows").glob("opena*.yml"))
+print("  Workflow Validation:")
+print("  ╔════════════════════════════════════════════════════╗")
+
+for wf_file in workflows:
+    try:
+        with open(wf_file) as f:
+            wf = yaml.safe_load(f)
+            jobs = len(wf.get("jobs", {}))
+            print(f"  ║ ✅ {wf_file.name:15} | {jobs} jobs")
+    except Exception as e:
+        print(f"  ║ ❌ {wf_file.name:15} | ERROR: {str(e)[:30]}")
+
+print("  ╚════════════════════════════════════════════════════╝")
+PYTHON
+
+# Agent-specific convenience targets
+opena1-start: AGENT=opena1
+opena2-start: AGENT=opena2
+opena3-start: AGENT=opena3
+opena4-start: AGENT=opena4
+opena5-start: AGENT=opena5
+opena6-start: AGENT=opena6
+opena7-start: AGENT=opena7
+opena8-start: AGENT=opena8
+opena9-start: AGENT=opena9
+opena10-start: AGENT=opena10
+
+opena1-start opena2-start opena3-start opena4-start opena5-start \
+opena6-start opena7-start opena8-start opena9-start opena10-start:
+	@FOLDER=$$(jq -r ".agents[] | select(.name==\"$(AGENT)\") | .folder" $(AGENTS_JSON) | cut -d/ -f1); \
+	PORT=$$(jq -r ".agents[] | select(.name==\"$(AGENT)\") | .port" $(AGENTS_JSON)); \
+	if [ -z "$$FOLDER" ]; then echo "❌ Agent not found: $(AGENT)"; exit 1; fi; \
+	echo "🚀 Starting $(AGENT) (Port $$PORT)..."; \
+	echo "   (Press Ctrl+C to stop)"; \
+	cd $$FOLDER && python3 -m app.main
+
+# Health checks for agents
+opena1-health: AGENT=opena1
+opena2-health: AGENT=opena2
+opena3-health: AGENT=opena3
+opena4-health: AGENT=opena4
+opena5-health: AGENT=opena5
+opena6-health: AGENT=opena6
+opena7-health: AGENT=opena7
+opena8-health: AGENT=opena8
+opena9-health: AGENT=opena9
+opena10-health: AGENT=opena10
+
+opena1-health opena2-health opena3-health opena4-health opena5-health \
+opena6-health opena7-health opena8-health opena9-health opena10-health:
+	@PORT=$$(jq -r ".agents[] | select(.name==\"$(AGENT)\") | .port" $(AGENTS_JSON)); \
+	if [ -z "$$PORT" ]; then echo "❌ Agent not found: $(AGENT)"; exit 1; fi; \
+	echo "🏥 Checking $(AGENT) (Port $$PORT)..."; \
+	curl -s http://localhost:$$PORT/health | jq . || echo "❌ No response"
+
+# Generic agent target (use: make AGENT=opena5 agent-health)
+ifdef AGENT
+agent-health:
+	@PORT=$$(jq -r ".agents[] | select(.name==\"$(AGENT)\") | .port" $(AGENTS_JSON)); \
+	if [ -z "$$PORT" ]; then echo "❌ Agent not found: $(AGENT)"; exit 1; fi; \
+	echo "🏥 Health check: $(AGENT) (Port $$PORT)"; \
+	curl -s http://localhost:$$PORT/health | jq . || echo "❌ Not responding"
+
+agent-lint:
+	@FOLDER=$$(jq -r ".agents[] | select(.name==\"$(AGENT)\") | .folder" $(AGENTS_JSON) | cut -d/ -f1); \
+	if [ -z "$$FOLDER" ]; then echo "❌ Agent not found: $(AGENT)"; exit 1; fi; \
+	python3 -m py_compile $$FOLDER/main.py && echo "✅ $(AGENT) syntax OK" || echo "❌ $(AGENT) syntax ERROR"
+
+agent-start:
+	@FOLDER=$$(jq -r ".agents[] | select(.name==\"$(AGENT)\") | .folder" $(AGENTS_JSON) | cut -d/ -f1); \
+	PORT=$$(jq -r ".agents[] | select(.name==\"$(AGENT)\") | .port" $(AGENTS_JSON)); \
+	if [ -z "$$FOLDER" ]; then echo "❌ Agent not found: $(AGENT)"; exit 1; fi; \
+	echo "🚀 Starting $(AGENT) (Port $$PORT)..."; \
+	cd $$FOLDER && python3 -m app.main
+endif
+
+.DEFAULT_GOAL := help
