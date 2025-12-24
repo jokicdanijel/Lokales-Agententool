@@ -31,4 +31,3 @@ def test_archive_store_and_health():
         data = h.json()
         assert "entries" in data
         assert isinstance(data["entries"], int)
-        assert isinstance(data["entries"], int)
