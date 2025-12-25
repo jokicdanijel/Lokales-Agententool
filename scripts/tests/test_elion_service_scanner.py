@@ -42,9 +42,16 @@ def test_scan_host_port_mapping_and_compose(tmp_path):
         "Dockerfile": "EXPOSE 5432\n# mapping 12380:5432 in docs\n",
         "service_manifest.json": json.dumps({"container_port": 5432, "host_port": 12380}),
     }
+
+    # By default, exposure defaults to internal_only for unknown services -> host_port set but exposure != edge_only -> FAIL
     res = run_scan(tmp_path, files)
-    assert "status: PASS" in res.stdout or "status: WARN" in res.stdout
-    assert "--- COMPOSE_FRAGMENT_YAML_BEGIN ---" in res.stdout
-    assert "ports:" in res.stdout
+    assert "status: FAIL" in res.stdout
+    assert "host_port set but exposure != edge_only" in res.stdout
+
+    # If exposure is explicitly set to edge_only, it should PASS and map ports
+    res2 = run_scan(tmp_path, files, extra_args=["--exposure", "edge_only"])
+    assert "status: PASS" in res2.stdout or "status: WARN" in res2.stdout
+    assert "--- COMPOSE_FRAGMENT_YAML_BEGIN ---" in res2.stdout
+    assert "ports:" in res2.stdout
     # host mapping 12380 should be present
-    assert "12380" in res.stdout
+    assert "12380" in res2.stdout
