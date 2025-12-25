@@ -3437,3 +3437,147 @@ CHECKS (FAIL HARD)
 OUTPUT
 - artifacts/scans/preflight_gate_scan.json
 - artifacts/scans/preflight_gate_scan.md
+
+) Verbindliche Port-Mapping-Tabelle (Host only 123xx)
+Infrastructure (ContainerPort → HostPort)
+
+PostgreSQL: 5432 → 12380
+
+Redis: 6379 → 12381
+
+Vault: 8200 → 12382
+
+Nginx (Edge): 80 → 12383, optional 443 → 12384
+
+Monitoring (ContainerPort → HostPort)
+
+Prometheus: 9090 → 12390
+
+Grafana: 3000 → 12391
+
+Application (HostPort = ServicePort)
+
+auth: 12370
+
+billing: 12371
+
+website: 12372
+
+opena20 dashboard: 12349 (UI entry /dashboard)
+
+opena21 workflow: 12367 (oder euer fix-port; muss 123xx sein)
+
+✅ Preflight-Regel: host_port ∈ [12344..12399]
+
+
+2) Exposure-Regel (damit UI/Links sauber bleiben)
+
+Jeder Service bekommt exakt einen Exposure-Typ:
+
+edge_only: hat ports: (Host-Port Mapping)
+Nur: nginx, auth, billing, website, opena20, (optional ops-tools je nach Entscheidung)
+
+internal_only: hat kein ports:, nur expose: (interne Erreichbarkeit)
+Alle Agenten opena1–opena21 (außer opena20) sowie postgres, redis, vault, prometheus, grafana wenn du sie nicht direkt exposen willst
+
+none: weder ports noch expose (selten; z. B. reine batch jobs)
+
+UI-Routing-Gesetz bleibt:
+Nutzer klickt immer auf /dashboard /apps/ und niemals auf http://…:123xx.
+
+3) Scanner-Ausgabe: Pflicht-Felder (damit Merger 4 Compose-Dateien bauen kann)
+
+Jeder Scanner (pro Service/Agent) muss genau diese Daten liefern:
+
+service_name (z. B. postgres, auth, opena7)
+
+container_port (intern; Default erlaubt)
+
+host_port (optional; wenn gesetzt: muss 123xx sein)
+
+exposure: none | internal_only | edge_only
+
+route_prefix (z. B. /dashboard, /auth, /ops/grafana, /apps/mail)
+
+plan_min: basic | pro | premium | ultimum
+
+dependencies: Liste z. B. postgres, redis, vault, opena1, opena2, opena11
+
+Zusätzlich (Policy-Checks, Fail-Fast):
+
+violations[] (Strings)
+
+status: PASS | WARN | FAIL
+
+4) Merger-Regeln (wie aus Scanner-Outputs 4 Builds entstehen)
+
+Der Merger erzeugt:
+
+compose.basic.yml
+
+compose.pro.yml
+
+compose.premium.yml
+
+compose.ultimum.yml
+
+Inklusionsregel pro Plan:
+
+Nimm alle Services mit plan_min <= plan (basic < pro < premium < ultimum)
+
+Harte Stop-Regeln:
+
+Wenn irgendein Scanner status=FAIL → Build bricht ab.
+
+Wenn irgendein host_port außerhalb 12344–12399 oder 8080 erwähnt → FAIL.
+
+Wenn Doku/HTML direkte http://…:123xx Links enthält → FAIL (außer DEV_ONLY marker, falls ihr sowas erlaubt)
+
+5) Plan-Mindestinhalt (damit Login/Registration “wirklich” funktioniert)
+Basic muss enthalten
+
+auth, website, opena20, opena1, opena2, opena11
+
+plus: postgres/redis/vault je nach echter Implementierung
+
+Sonst hast du:
+
+Login ohne Security-Gates oder
+
+Dashboard ohne Routing/Audit oder
+
+Sessions ohne Redis/Postgres etc.
+
+Pro
+
+Basic + opena5, opena6, opena7, opena21
+
+Premium
+
+Pro + opena4/opena8/opena12/opena18/... (Messaging/CRM/Social/Tracking)
+
+Ultimum
+
+alles
+
+6) Was jetzt als „Nächster Output“ sinnvoll ist
+
+Wenn du “scanner/merger-ready” willst, sind die nächsten 2 Artefakte zwingend:
+
+Policy-Scanner-Regeln als Code (prüft Ports/Links/Secrets/HTML-Contract)
+
+Merger-Script (baut die 4 Compose-Files + 4 route manifests)
+
+Wenn du mir den Repo-Root-Pfad gibst (oder nur die Agenten-Ordnerstruktur), kann ich dir das direkt als finale Dateien liefern:
+
+scripts/elion_agent_scanner.py
+
+scripts/elion_service_scanner.py (für infra/app/monitoring)
+
+scripts/elion_compose_merger.py
+
+config/plan_entitlements.json (falls ihr das zentral halten wollt)
+
+plus Makefile-Targets, die exakt zu deinem Preflight-Workflow passen
+
+Bis dahin ist deine oben gepostete Port-/Layer-Definition als Policy-Source-of-Truth jetzt konsistent und merge-bar.

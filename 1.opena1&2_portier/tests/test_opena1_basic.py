@@ -1,4 +1,4 @@
-"""Basic tests for opena1 (Koordinator)"""
+"""Basic tests for opena1 (kordp)"""
 
 import sys
 from pathlib import Path
