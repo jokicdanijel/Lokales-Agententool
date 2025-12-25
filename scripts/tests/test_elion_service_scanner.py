@@ -10,7 +10,7 @@ def run_scan(tmp_path, content_files, extra_args=None):
         p.write_text(content)
     args = ["python3", "scripts/elion_service_scanner.py", "--service-dir", str(sd), "--plan", "basic"]
     if extra_args:
-        args[1:1] = extra_args
+        args += extra_args
     res = subprocess.run(args, capture_output=True, text=True)
     return res
 
