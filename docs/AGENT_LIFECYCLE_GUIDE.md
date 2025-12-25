@@ -31,6 +31,247 @@ rsync --version           # Für Hetzner-Deployment
 
 ---
 
+## 🚦 KURZANLEITUNG: START & INTEGRITÄTSPRÜFUNG
+
+**Schneller Einstieg für vollständige System-Validierung vor jedem Start**
+
+### 1️⃣ Vorbereitung
+
+```bash
+cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
+
+# Virtual Environment aktivieren
+source venv312/bin/activate
+
+# Kernkomponenten-Check
+echo "🔍 Prüfe Kernkomponenten..."
+FILES=(
+    "start_agent.py"
+    "system_baseline.yaml"
+    "scripts/validate_baseline.py"
+    "docker-compose.yml"
+    "index.html"
+    "app.js"
+    "style.css"
+    "config.js"
+)
+
+for file in "${FILES[@]}"; do
+    [ -f "$file" ] && echo "✅ $file" || echo "❌ FEHLT: $file"
+done
+```
+
+### 2️⃣ Baseline-Validierung (PFLICHT vor jedem Start)
+
+```bash
+# Führe Baseline-Validation aus
+python3 scripts/validate_baseline.py
+
+# ✅ Erwartete Ausgabe:
+# Baseline validation passed!
+
+# ❌ Bei Fehlern NICHT fortfahren!
+if [ $? -ne 0 ]; then
+    echo "❌ Baseline-Validierung fehlgeschlagen - System NICHT startbereit!"
+    exit 1
+fi
+```
+
+### 3️⃣ Agenten-Integrität prüfen
+
+```bash
+# Prüfe Existenz aller opena1-opena21 Ordner
+echo "🤖 Validiere Agent-Struktur..."
+for i in {1..21}; do
+    AGENT_DIR=$(ls -d *opena${i}* 2>/dev/null | head -1)
+    if [ -d "$AGENT_DIR" ]; then
+        if [ -f "$AGENT_DIR/main.py" ] || [ -f "$AGENT_DIR/main_dashboard_v3.py" ]; then
+            echo "✅ opena${i}: $AGENT_DIR"
+        else
+            echo "⚠️  opena${i}: main.py fehlt in $AGENT_DIR"
+        fi
+    else
+        echo "❌ opena${i}: Ordner nicht gefunden"
+    fi
+done
+
+# Agent-Discovery ausführen (falls vorhanden)
+if [ -f scripts/agent_discovery.py ]; then
+    echo "📡 Führe Agent-Discovery aus..."
+    python3 scripts/agent_discovery.py
+
+    # Prüfe Manifest
+    if [ -f build/agents.manifest.json ]; then
+        echo "✅ agents.manifest.json erstellt"
+        jq '.agents | length' build/agents.manifest.json
+    else
+        echo "❌ Manifest-Generierung fehlgeschlagen"
+    fi
+fi
+```
+
+### 4️⃣ HTML-Verfügbarkeit prüfen
+
+```bash
+# Starte Dashboard (opena20) falls nicht läuft
+if ! lsof -i :12349 &> /dev/null; then
+    echo "🚀 Starte Dashboard opena20..."
+    cd 19.opena20_dashboard_agent
+    nohup python3 main_dashboard_v3.py > logs/dashboard.log 2>&1 &
+    echo $! > logs/opena20.pid
+    cd ..
+    sleep 3
+fi
+
+# HTTP-Check
+echo "🌐 Prüfe Dashboard-Verfügbarkeit..."
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:12349/)
+
+if [ "$HTTP_CODE" -eq 200 ]; then
+    echo "✅ Dashboard erreichbar (HTTP $HTTP_CODE)"
+    curl -s http://127.0.0.1:12349/ | grep -q "Telegram Mobile Agent" && \
+        echo "✅ HTML-Titel korrekt" || \
+        echo "⚠️  HTML-Titel nicht gefunden"
+else
+    echo "❌ Dashboard nicht erreichbar (HTTP $HTTP_CODE)"
+fi
+```
+
+### 5️⃣ Docker-Start (Optional für Produktionshärtung)
+
+```bash
+# Docker Compose starten
+echo "🐳 Starte Docker-Stack..."
+docker compose up -d
+
+# Warte auf Healthchecks
+sleep 10
+
+# Prüfe Container-Status
+echo "📊 Container-Status:"
+docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep -E "(opena|postgres|redis|vault|nginx)"
+
+# Healthcheck-Validation
+UNHEALTHY=$(docker ps --filter "health=unhealthy" --format "{{.Names}}")
+if [ -z "$UNHEALTHY" ]; then
+    echo "✅ Alle Container healthy"
+else
+    echo "❌ Unhealthy Container: $UNHEALTHY"
+fi
+```
+
+### 6️⃣ Frontend testen
+
+```bash
+# Frontend-Verfügbarkeit über Reverse Proxy
+echo "🎨 Prüfe Frontend-Integration..."
+
+# Check 1: index.html
+curl -s http://127.0.0.1:12349/ | grep -q "<html" && \
+    echo "✅ index.html lädt" || \
+    echo "❌ index.html fehlt"
+
+# Check 2: API-Verfügbarkeit
+APIS=("/api/contacts/list" "/api/agents" "/health")
+for api in "${APIS[@]}"; do
+    STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:12349${api}")
+    if [ "$STATUS" -eq 200 ]; then
+        echo "✅ $api → HTTP $STATUS"
+    else
+        echo "❌ $api → HTTP $STATUS"
+    fi
+done
+```
+
+### 7️⃣ Abschlussprüfung
+
+```bash
+echo "🔒 Finale Policy-Validation..."
+
+# Port-Policy: Nur 12344-12399 erlaubt (außer 80/443 für Edge)
+echo "[1/4] Port-Policy..."
+INVALID_PORTS=$(docker ps --format "{{.Ports}}" | grep -oE "[0-9]+" | sort -u | \
+    awk '$1 < 12344 || $1 > 12399 {if ($1 != 80 && $1 != 443) print $1}')
+if [ -z "$INVALID_PORTS" ]; then
+    echo "✅ Alle Ports im erlaubten Bereich"
+else
+    echo "❌ Ports außerhalb Policy: $INVALID_PORTS"
+fi
+
+# Agent-Naming: Nur openaX erlaubt
+echo "[2/4] Agent-Naming..."
+INVALID_NAMES=$(docker ps --format "{{.Names}}" | grep -v "opena[0-9]\|postgres\|redis\|vault\|nginx\|prometheus\|grafana")
+if [ -z "$INVALID_NAMES" ]; then
+    echo "✅ Alle Agent-Namen konform"
+else
+    echo "⚠️  Nicht-konforme Namen: $INVALID_NAMES"
+fi
+
+# Datei-Vollständigkeit
+echo "[3/4] Datei-Vollständigkeit..."
+REQUIRED_FILES=(
+    "19.opena20_dashboard_agent/main_dashboard_v3.py"
+    "agent_directories.json"
+    "system_baseline.yaml"
+    "docker-compose.yml"
+)
+MISSING=0
+for file in "${REQUIRED_FILES[@]}"; do
+    if [ ! -f "$file" ]; then
+        echo "❌ FEHLT: $file"
+        ((MISSING++))
+    fi
+done
+[ $MISSING -eq 0 ] && echo "✅ Alle kritischen Dateien vorhanden"
+
+# Dashboard-Fehlerrate
+echo "[4/4] Dashboard-Fehlerrate..."
+if lsof -i :12349 &> /dev/null; then
+    ERROR_COUNT=$(curl -s http://127.0.0.1:12349/api/agents | jq '[.agents[] | select(.status=="error")] | length' 2>/dev/null)
+    if [ "$ERROR_COUNT" -eq 0 ]; then
+        echo "✅ Fehlerrate = 0 %"
+    else
+        echo "⚠️  $ERROR_COUNT Agent(s) mit Fehlern"
+    fi
+else
+    echo "⚠️  Dashboard nicht erreichbar"
+fi
+```
+
+### ✅ Erfolgs-Kriterien
+
+**System ist zu 100 % startfähig, wenn:**
+
+- ✅ Baseline-Validierung PASSED
+- ✅ Alle 21 Agents (opena1-opena21) mit `main.py` existieren
+- ✅ Dashboard auf Port 12349 erreichbar (HTTP 200)
+- ✅ Alle Docker-Container `healthy`
+- ✅ Frontend lädt mit korrektem Titel
+- ✅ API-Endpoints liefern HTTP 200
+- ✅ Alle Ports im Bereich 12344-12399 (außer Edge 80/443)
+- ✅ Fehlerrate = 0 % im Dashboard
+
+### 🚨 Bei Fehlern
+
+```bash
+# Logs prüfen
+tail -f 19.opena20_dashboard_agent/logs/dashboard.log
+
+# Docker-Logs
+docker logs opena20-dashboard --tail 50
+
+# Neustart einzelner Agents
+cd <agent-directory>
+source venv/bin/activate
+python3 main.py
+
+# Kompletter Neustart
+docker compose down
+docker compose up -d
+```
+
+---
+
 ## 📁 SCHRITT 1: SCANNEN
 
 **Ziel:** Vollständige Analyse der Verzeichnisstruktur und Dependencies

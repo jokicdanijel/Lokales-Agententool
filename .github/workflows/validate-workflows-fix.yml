@@ -1,0 +1,48 @@
+name: Validate Workflows (PyYAML)
+
+on:
+    pull_request:
+        branches: [main]
+
+jobs:
+    validate-workflows:
+        name: Validate workflow YAML files (install PyYAML)
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: "3.12"
+
+            - name: Install PyYAML
+              run: |
+                  python -m pip install --upgrade pip
+                  python -m pip install pyyaml
+
+            - name: Validate YAML syntax
+              run: |
+                  python - << 'PY'
+                  import yaml
+                  from pathlib import Path
+                  workflows = sorted(Path('.github/workflows').glob('opena*.yml'))
+                  print(f"✅ Validating {len(workflows)} agent workflows...\n")
+                  failed = []
+                  for wf_file in workflows:
+                      try:
+                          with open(wf_file) as f:
+                              wf = yaml.safe_load(f)
+                              jobs = list(wf.get('jobs', {}).keys())
+                              print(f"  ✅ {wf_file.name:15} | {len(jobs)} jobs")
+                      except Exception as e:
+                          print(f"  ❌ {wf_file.name:15} | ERROR: {str(e)[:120]}")
+                          failed.append(wf_file.name)
+                  if failed:
+                      print(f"\n❌ {len(failed)} workflow(s) have syntax errors:")
+                      for name in failed:
+                          print(f"   - {name}")
+                      raise SystemExit(1)
+                  else:
+                      print(f"\n✅ All {len(workflows)} workflows are valid")
+                  PY

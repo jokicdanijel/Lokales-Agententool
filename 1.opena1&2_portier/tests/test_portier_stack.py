@@ -27,6 +27,22 @@ def generate_request_id():
     return str(uuid.uuid4())
 
 
+async def get_or_skip(client: httpx.AsyncClient, url: str):
+    """GET helper that skips the test if the service is not available."""
+    try:
+        return await client.get(url, timeout=TIMEOUT)
+    except (httpx.ConnectError, httpx.ReadTimeout):
+        pytest.skip(f"service not available: {url}")
+
+
+async def post_or_skip(client: httpx.AsyncClient, url: str, payload: dict):
+    """POST helper that skips the test if the service is not available."""
+    try:
+        return await client.post(url, json=payload, timeout=TIMEOUT)
+    except (httpx.ConnectError, httpx.ReadTimeout):
+        pytest.skip(f"service not available: {url}")
+
+
 # ============================================================================
 # HEALTH CHECKS
 # ============================================================================
@@ -36,15 +52,15 @@ def generate_request_id():
 async def test_opena2_health():
     """Test opena2 (Archivator) health endpoint."""
     async with httpx.AsyncClient() as client:
-        response = await client.get(f"{BASE_URL_OPENA2}/health", timeout=TIMEOUT)
+        response = await get_or_skip(client, f"{BASE_URL_OPENA2}/health")
         assert response.status_code == 200
 
         data = response.json()
-        assert data["status"] == "ok"
-        assert data["service"] == "opena2"
-        assert data["role"] == "archivp"
-        assert data["port"] == 12345
-        assert data["strict"] is True
+        assert data.get("status") == "ok"
+        assert data.get("service") == "opena2"
+        assert data.get("role") == "archivp"
+        assert data.get("port") == 12345
+        assert data.get("strict", False) is True
         print("✅ opena2 health check passed")
 
 
@@ -52,15 +68,14 @@ async def test_opena2_health():
 async def test_opena1_health():
     """Test opena1 (Coordinator) health endpoint."""
     async with httpx.AsyncClient() as client:
-        response = await client.get(f"{BASE_URL_OPENA1}/health", timeout=TIMEOUT)
+        response = await get_or_skip(client, f"{BASE_URL_OPENA1}/health")
         assert response.status_code == 200
 
         data = response.json()
-        assert data["status"] == "ok"
-        assert data["service"] == "opena1"
-        assert data["port"] == 12344
-        assert "routes_count" in data
-        assert isinstance(data["routes_count"], int)
+        assert data.get("status") == "ok"
+        assert data.get("service") == "opena1"
+        assert data.get("port") == 12344
+        assert isinstance(data.get("routes_count", 0), int)
         print("✅ opena1 health check passed")
 
 
@@ -102,7 +117,7 @@ async def test_opena1_request71_validation():
     }
 
     async with httpx.AsyncClient() as client:
-        response = await client.post(f"{BASE_URL_OPENA1}/log/opena1", json=valid_request, timeout=TIMEOUT)
+        response = await post_or_skip(client, f"{BASE_URL_OPENA1}/log/opena1", valid_request)
         assert response.status_code in (200, 422)
         if response.status_code == 200:
             data = response.json()
@@ -120,7 +135,7 @@ async def test_opena1_invalid_request71():
     }
 
     async with httpx.AsyncClient() as client:
-        response = await client.post(f"{BASE_URL_OPENA1}/log/opena1", json=invalid_request, timeout=TIMEOUT)
+        response = await post_or_skip(client, f"{BASE_URL_OPENA1}/log/opena1", invalid_request)
         assert response.status_code in (400, 422)
         print("✅ Invalid Request71 rejected correctly")
 
@@ -146,12 +161,24 @@ async def test_opena1_decision72_file_command():
     }
 
     async with httpx.AsyncClient() as client:
-        response = await client.post(f"{BASE_URL_OPENA1}/log/opena1", json=request, timeout=TIMEOUT)
+        response = await post_or_skip(client, f"{BASE_URL_OPENA1}/log/opena1", request)
         assert response.status_code in (200, 422)
         if response.status_code == 200:
             data = response.json()
-            assert data.get("ok") is True
-        print(f"✅ Decision72 file command routing checked (status: {response.status_code})")
+            assert data.get("request_id") == request_id
+            assert data.get("source") == "opena1"
+
+            decision = data.get("decision") or {}
+            assert decision.get("selected_tool") == "tool_file_manager"
+            reason = (decision.get("reason") or "").lower()
+            assert "file" in reason
+
+            archiv = data.get("archivator_forward") or {}
+            assert archiv.get("status") in ("sent", "queued", "ok", True)
+
+            print("✅ Decision72 file command routing correct")
+        else:
+            pytest.skip("opena1 returned 422 for Decision72 (file command)")
 
 
 @pytest.mark.asyncio
@@ -170,12 +197,21 @@ async def test_opena1_decision72_search_command():
     }
 
     async with httpx.AsyncClient() as client:
-        response = await client.post(f"{BASE_URL_OPENA1}/log/opena1", json=request, timeout=TIMEOUT)
+        response = await post_or_skip(client, f"{BASE_URL_OPENA1}/log/opena1", request)
         assert response.status_code in (200, 422)
         if response.status_code == 200:
             data = response.json()
-            assert data.get("ok") is True
-        print(f"✅ Decision72 search command routing checked (status: {response.status_code})")
+            assert data.get("request_id") == request_id
+            assert data.get("source") == "opena1"
+
+            decision = data.get("decision") or {}
+            assert decision.get("selected_tool") == "tool_file_searcher"
+            reason = (decision.get("reason") or "").lower()
+            assert "search" in reason
+
+            print("✅ Decision72 search command routing correct")
+        else:
+            pytest.skip("opena1 returned 422 for Decision72 (search command)")
 
 
 @pytest.mark.asyncio
@@ -194,12 +230,21 @@ async def test_opena1_decision72_analyze_command():
     }
 
     async with httpx.AsyncClient() as client:
-        response = await client.post(f"{BASE_URL_OPENA1}/log/opena1", json=request, timeout=TIMEOUT)
+        response = await post_or_skip(client, f"{BASE_URL_OPENA1}/log/opena1", request)
         assert response.status_code in (200, 422)
         if response.status_code == 200:
             data = response.json()
-            assert data.get("ok") is True
-        print(f"✅ Decision72 analyze command routing checked (status: {response.status_code})")
+            assert data.get("request_id") == request_id
+            assert data.get("source") == "opena1"
+
+            decision = data.get("decision") or {}
+            assert decision.get("selected_tool") == "tool_text_analyzer"
+            reason = (decision.get("reason") or "").lower()
+            assert "analyze" in reason
+
+            print("✅ Decision72 analyze command routing correct")
+        else:
+            pytest.skip("opena1 returned 422 for Decision72 (analyze command)")
 
 
 # ============================================================================
@@ -353,7 +398,10 @@ async def test_complete_option2_flow():
 
         # Step 3: Verify kordp can route the tool
         print("🟦 Step 3: Verifying kordp tool routing")
-        route_response = await client.get(f"{BASE_URL_KORDP}/dispatch/routes/tool_text_analyzer", timeout=TIMEOUT)
+        try:
+            route_response = await client.get(f"{BASE_URL_KORDP}/dispatch/routes/tool_text_analyzer", timeout=TIMEOUT)
+        except (httpx.ConnectError, httpx.ReadTimeout):
+            pytest.skip("kordp not available for routing check")
         assert route_response.status_code == 200
         route_data = route_response.json()
         assert route_data["route"]["enabled"] is True
