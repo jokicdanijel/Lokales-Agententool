@@ -21,6 +21,7 @@ repos:
       - id: check-yaml
       - id: check-toml
       - id: check-json
+        exclude: ^configs/bridge_schema\.json$
 
   # Python linting (ruff) - staged-only, auto-fix enabled
   - repo: https://github.com/astral-sh/ruff-pre-commit

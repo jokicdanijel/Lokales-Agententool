@@ -6,10 +6,9 @@ import json
 import os
 import re
 import subprocess
-from dataclasses import dataclass, asdict
+from collections.abc import Iterable
+from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Iterable
-
 
 # ---------- Defaults ----------
 MAX_PREVIEW_LINES_DEFAULT = 120
@@ -120,7 +119,7 @@ def policy_scan(path: str, content: str) -> list[str]:
         hits.append("forbidden_port_8080")
 
     # compose: host ports must be within 12344-12399 if published
-    if path.startswith("docker-compose") and (path.endswith(".yml") or path.endswith(".yaml")):
+    if path.startswith("docker-compose") and path.endswith((".yml", ".yaml")):
         for line in content.splitlines():
             m = HOST_PORT_RE.search(line)
             if not m:
