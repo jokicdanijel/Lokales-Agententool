@@ -4,7 +4,7 @@ import subprocess
 
 def run_scan(tmp_path, content_files, extra_args=None):
     sd = tmp_path / "service"
-    sd.mkdir()
+    sd.mkdir(exist_ok=True)
     for name, content in content_files.items():
         p = sd / name
         p.write_text(content)
