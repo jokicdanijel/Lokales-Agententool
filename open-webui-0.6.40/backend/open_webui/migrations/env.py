@@ -1,9 +1,9 @@
 from logging.config import fileConfig
 
 from alembic import context
+from open_webui.env import DATABASE_PASSWORD, DATABASE_URL
 from open_webui.models.auths import Auth
-from open_webui.env import DATABASE_URL, DATABASE_PASSWORD
-from sqlalchemy import engine_from_config, pool, create_engine
+from sqlalchemy import create_engine, engine_from_config, pool
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -65,9 +65,7 @@ def run_migrations_online() -> None:
     # Handle SQLCipher URLs
     if DB_URL and DB_URL.startswith("sqlite+sqlcipher://"):
         if not DATABASE_PASSWORD or DATABASE_PASSWORD.strip() == "":
-            raise ValueError(
-                "DATABASE_PASSWORD is required when using sqlite+sqlcipher:// URLs"
-            )
+            raise ValueError("DATABASE_PASSWORD is required when using sqlite+sqlcipher:// URLs")
 
         # Extract database path from SQLCipher URL
         db_path = DB_URL.replace("sqlite+sqlcipher://", "")

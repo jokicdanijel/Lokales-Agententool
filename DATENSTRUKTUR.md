@@ -24,16 +24,16 @@ Das System nutzt mehrschichtige Persistence:
 
 ### Kern-Datenentitäten und Beziehungen
 
-| Entität | Beschreibung | Beziehungen | Speicherort |
-|---------|------------|-----------|-----------|
-| **Endpoint** (20) | Services auf Port 12344–12399 (opena1–opena20) | Hat viele HealthRecords; wird gepatcht via PatchBlock | SQLite, .env |
-| **PatchBlock** | Unified-Diff-Patches für Code-Updates | Gehört zu Endpoint; wird geauditet in AuditLog | `patches/` Verzeichnis |
-| **Safepoint** | Transaktions-Checkpoints (Gateway, Tool-Execution, Archive-Access) | Ist Teil von MessageRelay/GitHubWebhook-Flow | `archivp_store/index.jsonl` |
-| **HealthRecord** | Zeitstempel-basierte Gesundheitsprüfungen | Ist von Endpoint; Zeitreihen-Metadaten | SQLite, `/logs/` |
-| **AuditLog** | SHA-256 Hash-Ketten für alle Änderungen | Referenziert Endpoint & PatchBlock; vollständig verfolgbar | `audit_hashes.log` |
-| **Voice-Program-Daten** | Notizen, Kontakte, Aufgaben, Transkripte (1.041 Zeilen, 6 Programme) | Persistent in JSON | `LocalAgent-Pro/sandbox/` |
-| **MessageRelay** | Telegram → OpenWebUI Nachrichten-Routing | Wird zu Safepoint; loggt in archive.db | opena3 Bridge |
-| **GitHubWebhook** | GitHub-Events (Push, PR, Release) | Wird zu Safepoint; triggert optionale Updates | opena3 Bridge |
+| Entität                 | Beschreibung                                                         | Beziehungen                                                | Speicherort                 |
+| ----------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------- | --------------------------- |
+| **Endpoint** (20)       | Services auf Port 12344–12399 (opena1–opena20)                       | Hat viele HealthRecords; wird gepatcht via PatchBlock      | SQLite, .env                |
+| **PatchBlock**          | Unified-Diff-Patches für Code-Updates                                | Gehört zu Endpoint; wird geauditet in AuditLog             | `patches/` Verzeichnis      |
+| **Safepoint**           | Transaktions-Checkpoints (Gateway, Tool-Execution, Archive-Access)   | Ist Teil von MessageRelay/GitHubWebhook-Flow               | `archivp_store/index.jsonl` |
+| **HealthRecord**        | Zeitstempel-basierte Gesundheitsprüfungen                            | Ist von Endpoint; Zeitreihen-Metadaten                     | SQLite, `/logs/`            |
+| **AuditLog**            | SHA-256 Hash-Ketten für alle Änderungen                              | Referenziert Endpoint & PatchBlock; vollständig verfolgbar | `audit_hashes.log`          |
+| **Voice-Program-Daten** | Notizen, Kontakte, Aufgaben, Transkripte (1.041 Zeilen, 6 Programme) | Persistent in JSON                                         | `LocalAgent-Pro/sandbox/`   |
+| **MessageRelay**        | Telegram → OpenWebUI Nachrichten-Routing                             | Wird zu Safepoint; loggt in archive.db                     | opena3 Bridge               |
+| **GitHubWebhook**       | GitHub-Events (Push, PR, Release)                                    | Wird zu Safepoint; triggert optionale Updates              | opena3 Bridge               |
 
 ### Datentypen und Formate
 

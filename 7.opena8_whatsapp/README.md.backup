@@ -1,10 +1,10 @@
 # 💬 opena8 - WhatsApp Chatbot
 
-**Agent-ID:** `opena8`  
-**Port:** 12353  
-**Kürzel:** `whatsappp`  
-**Status:** ✅ RUNNING (PID: siehe logs/opena8.pid)  
-**Version:** 2.0  
+**Agent-ID:** `opena8`
+**Port:** 12353
+**Kürzel:** `whatsappp`
+**Status:** ✅ RUNNING (PID: siehe logs/opena8.pid)
+**Version:** 2.0
 **Status:** ✅ Production
 
 ---
@@ -185,5 +185,5 @@ curl http://127.0.0.1:12350/metrics
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 21. November 2025

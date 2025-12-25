@@ -3,6 +3,7 @@
 ## Overview
 
 `hdctl` (Hyper-Dashboard Control) bash completion bietet intelligente Auto-Vervollständigung für:
+
 - **Hauptbefehle:** `login`, `logout`, `pages`, `users`, `jobs`, `env`, `help`, `version`
 - **Subcommands:** Dynamische Optionen basierend auf Kontext
 - **Dynamische Werte:** Page IDs, Usernames, Job IDs aus API
@@ -18,6 +19,7 @@ bash scripts/install_completion.sh --user
 Installiert zu: `~/.bash_completion.d/hdctl`
 
 Danach neue Terminal-Session starten oder in aktueller Session:
+
 ```bash
 source ~/.bash_completion.d/hdctl
 ```
@@ -28,7 +30,7 @@ source ~/.bash_completion.d/hdctl
 sudo bash scripts/install_completion.sh --system
 ```
 
-Installiert zu: `/etc/bash_completion.d/hdctl`  
+Installiert zu: `/etc/bash_completion.d/hdctl`
 Verfügbar für alle Benutzer nach Terminal-Neustart
 
 ### Option 3: Manuelle Installation
@@ -138,15 +140,20 @@ export HDCTL_API="http://api.example.com"
 ## Kommandreferenz
 
 ### login
+
 Authentifizierung mit Benutzer/Passwort
+
 ```bash
 hdctl login admin
 hdctl login developer
 ```
+
 Auto-Completion: Listet bekannte Benutzer
 
 ### pages
+
 Verwaltung von Agenda-Seiten
+
 ```bash
 hdctl pages list              # Alle Seiten anzeigen
 hdctl pages view 5            # Seite 5 ansehen
@@ -155,40 +162,52 @@ hdctl pages update 3          # Seite 3 bearbeiten
 hdctl pages delete 7          # Seite 7 löschen
 hdctl pages search workflow   # Nach 'workflow' suchen
 ```
+
 Auto-Completion: Page IDs 1-16 (oder dynamisch von API)
 
 ### users
+
 Benutzerverwaltung
+
 ```bash
 hdctl users list              # Alle Benutzer
 hdctl users create            # Neuen Benutzer erstellen
 hdctl users delete admin      # Benutzer löschen
 hdctl users roles admin       # Rollen anzeigen/ändern
 ```
+
 Auto-Completion: Benutzernames von API
 
 ### jobs
+
 Job-Verwaltung
+
 ```bash
 hdctl jobs list               # Alle Jobs
 hdctl jobs view job-001       # Job Details
 hdctl jobs cancel job-002     # Job abbrechen
 hdctl jobs status job-003     # Job Status
 ```
+
 Auto-Completion: Job IDs von API
 
 ### env
+
 Environment-Variablen
+
 ```bash
 hdctl env list                # Alle Variablen
 hdctl env get PATH            # Variable auslesen
 hdctl env set DEBUG=1         # Variable setzen
 hdctl env unset DEBUG         # Variable löschen
 ```
+
 Auto-Completion: Umgebungsvariablen
 
 ### help
+
 Hilfe anzeigen
+
 ```bash
 hdctl help                    # Allgemeine Hilfe
 hdctl help pages              # Hilfe für 'pages' Befehl
@@ -196,7 +215,9 @@ hdctl help users              # Hilfe für 'users' Befehl
 ```
 
 ### version
+
 Version anzeigen
+
 ```bash
 hdctl version
 ```
@@ -208,17 +229,21 @@ hdctl version
 **Problem:** `hdctl <TAB>` zeigt keine Vorschläge
 
 **Lösung:**
+
 1. Prüfen, ob Datei installiert ist:
+
    ```bash
    ls -la ~/.bash_completion.d/hdctl
    ```
 
 2. Source die Datei manuell:
+
    ```bash
    source ~/.bash_completion.d/hdctl
    ```
 
 3. Prüfen Sie `~/.bashrc`:
+
    ```bash
    grep "bash_completion" ~/.bashrc
    ```
@@ -233,17 +258,21 @@ hdctl version
 **Problem:** Page IDs werden nicht vorgeschlagen
 
 **Lösung:**
+
 1. Prüfen Sie, ob API läuft:
+
    ```bash
    curl -s -H "Authorization: Bearer 250886" http://127.0.0.1:12399/health
    ```
 
 2. Prüfen Sie Token:
+
    ```bash
    echo $HDCTL_TOKEN
    ```
 
 3. Prüfen Sie API URL:
+
    ```bash
    echo $HDCTL_API
    ```
@@ -258,7 +287,9 @@ hdctl version
 **Problem:** Befehl nicht gefunden
 
 **Lösung:**
+
 1. Prüfen Sie, ob `hdctl` im PATH ist:
+
    ```bash
    which hdctl
    ```
@@ -339,11 +370,13 @@ make uninstall-completion
 ## Performance-Tipps
 
 1. **API-Timeout reduzieren:** Falls API schnell antwortet, reduzieren Sie timeout:
+
    ```bash
    curl -s -m 1 \  # 1 Sekunde statt 2
    ```
 
 2. **Caching implementieren:** Für häufig abgerufene Daten:
+
    ```bash
    # Erstellen Sie einen Cache:
    CACHE_FILE="/tmp/hdctl_completion_cache"
@@ -361,5 +394,5 @@ make uninstall-completion
 
 ---
 
-**Last Updated:** 2025-11-11  
+**Last Updated:** 2025-11-11
 **Status:** ✅ Production Ready

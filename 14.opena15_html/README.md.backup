@@ -1,9 +1,9 @@
 # 📝 opena15 - HTML Creator Agent
 
-**Agent-ID:** `opena15`  
-**Port:** 12360  
-**Kürzel:** `htmlp`  
-**Version:** 1.0  
+**Agent-ID:** `opena15`
+**Port:** 12360
+**Kürzel:** `htmlp`
+**Version:** 1.0
 **Status:** ✅ RUNNING (PID: 1766679)
 
 ---
@@ -259,5 +259,5 @@ tail -f data/html_history.jsonl | jq .
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 27. November 2025

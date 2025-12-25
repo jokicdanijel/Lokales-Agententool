@@ -71,6 +71,7 @@
 ```
 
 **Response**:
+
 ```json
 {
   "status": "success",
@@ -90,6 +91,7 @@
 ```
 
 **Response**:
+
 ```json
 {
   "status": "success",
@@ -111,6 +113,7 @@
 ```
 
 **Response**:
+
 ```json
 {
   "status": "success",
@@ -132,6 +135,7 @@
 ```
 
 **Response**:
+
 ```json
 {
   "status": "success",
@@ -152,6 +156,7 @@
 ```
 
 **Response**:
+
 ```json
 {
   "status": "success",
@@ -172,6 +177,7 @@
 ```
 
 **Response**:
+
 ```json
 {
   "status": "success",
@@ -194,6 +200,7 @@
 ```
 
 **Response**:
+
 ```json
 {
   "status": "success",
@@ -214,6 +221,7 @@
 ```
 
 **Response**:
+
 ```json
 {
   "status": "success",
@@ -234,6 +242,7 @@
 ```
 
 **Response**:
+
 ```json
 {
   "status": "success",
@@ -256,13 +265,27 @@
     "properties": {
       "action": {
         "type": "string",
-        "enum": ["open", "click", "type", "extract_text", "extract_html", "query_selector", "screenshot", "scroll", "wait_for"]
+        "enum": [
+          "open",
+          "click",
+          "type",
+          "extract_text",
+          "extract_html",
+          "query_selector",
+          "screenshot",
+          "scroll",
+          "wait_for"
+        ]
       },
       "url": { "type": "string" },
       "selector": { "type": "string" },
       "text": { "type": "string" },
       "wait_ms": { "type": "integer", "default": 500 },
-      "return_format": { "type": "string", "enum": ["text", "html", "json", "raw"], "default": "text" }
+      "return_format": {
+        "type": "string",
+        "enum": ["text", "html", "json", "raw"],
+        "default": "text"
+      }
     }
   },
   "output_schema": {
@@ -329,12 +352,14 @@
 ## 🔐 Security Rules
 
 ✅ **PERMITTED**
+
 - Click, type, scroll on authorized URLs
 - Extract text and HTML from accessible pages
 - Parse DOM structure
 - Create browser sessions
 
 ❌ **FORBIDDEN**
+
 - Execute arbitrary JavaScript
 - Make external API calls
 - Write to local filesystem
@@ -347,6 +372,7 @@
 ## 📌 Usage Example
 
 **Request (from opena1→opena2→opena6):**
+
 ```bash
 curl -X POST http://0.0.0.0:12350/execute \
   -H "Authorization: Bearer sk_opena6_browser_v3_production" \
@@ -360,6 +386,7 @@ curl -X POST http://0.0.0.0:12350/execute \
 ```
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -384,4 +411,3 @@ curl -X POST http://0.0.0.0:12350/execute \
 - **Port**: 12350
 - **Rate Limit**: 1000 req/min
 - **Status**: ✅ Production Ready
-

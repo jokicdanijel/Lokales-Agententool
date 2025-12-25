@@ -13,12 +13,12 @@ echo ""
 for AGENT_ID in {4..19}; do
   PORT=$((12344 + AGENT_ID))
   AGENT_DIR="$AGENT_BASE_DIR/opena$AGENT_ID"
-  
+
   echo -n "🔧 Generating opena$AGENT_ID (Port $PORT)... "
-  
+
   # Create directory
   mkdir -p "$AGENT_DIR"
-  
+
   # Create config.json
   cat > "$AGENT_DIR/config.json" << CFGEOF
 {
@@ -42,9 +42,9 @@ PORT, SERVICE = $PORT, "opena$AGENT_ID"
 START_TIME = time.time()
 class H(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
-        if self.path=="/health": 
+        if self.path=="/health":
             self.send_json({"status":"online","service":SERVICE,"port":PORT})
-        elif self.path=="/info": 
+        elif self.path=="/info":
             self.send_json({"name":SERVICE,"role":"scalable-agent","id":$AGENT_ID})
         else: self.send_error(404)
     def send_json(self,d):
@@ -57,10 +57,10 @@ except:print(f"❌ Port {PORT} in use")
 PYEOF
 
   chmod +x "$AGENT_DIR/main.py"
-  
+
   # Create __init__.py
   echo '"""OpenA'$AGENT_ID' - PORTIER 3.0"""' > "$AGENT_DIR/__init__.py"
-  
+
   echo "✅"
 done
 

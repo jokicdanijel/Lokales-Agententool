@@ -11,6 +11,6 @@ body:
   - type: textarea
     id: info
     attributes:
-      label: 'Information:'
+      label: "Information:"
     validations:
       required: true

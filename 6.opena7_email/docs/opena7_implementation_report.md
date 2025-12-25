@@ -1,9 +1,9 @@
 # 📋 opena7 Implementation Report
 
-**Datum:** 27. November 2025  
-**Agent:** opena7 (E-Mail Client Agent)  
-**Kürzel:** emailp  
-**Port:** 12352  
+**Datum:** 27. November 2025
+**Agent:** opena7 (E-Mail Client Agent)
+**Kürzel:** emailp
+**Port:** 12352
 **Status:** ✅ **DEPLOYED & OPERATIONAL**
 
 ---
@@ -16,13 +16,13 @@ opena7 wurde erfolgreich als **E-Mail Client Agent** implementiert. Der Agent bi
 
 ## 📦 Erstellte Artefakte
 
-| # | Datei | Zeilen | Beschreibung |
-|---|-------|--------|--------------|
-| 1 | `main_email_agent.py` | 530 | FastAPI-Service (Port 12352) mit IMAP/SMTP-Integration |
-| 2 | `bin/start_opena7.sh` | 85 | Start-Skript mit PID/Port-Check |
-| 3 | `bin/stop_opena7.sh` | 45 | Stop-Skript mit Graceful Shutdown |
-| 4 | `test_opena7.py` | 220 | Test-Suite (6 Tests) |
-| 5 | `docs/opena7_implementation_report.md` | - | Dieser Report |
+| #   | Datei                                  | Zeilen | Beschreibung                                           |
+| --- | -------------------------------------- | ------ | ------------------------------------------------------ |
+| 1   | `main_email_agent.py`                  | 530    | FastAPI-Service (Port 12352) mit IMAP/SMTP-Integration |
+| 2   | `bin/start_opena7.sh`                  | 85     | Start-Skript mit PID/Port-Check                        |
+| 3   | `bin/stop_opena7.sh`                   | 45     | Stop-Skript mit Graceful Shutdown                      |
+| 4   | `test_opena7.py`                       | 220    | Test-Suite (6 Tests)                                   |
+| 5   | `docs/opena7_implementation_report.md` | -      | Dieser Report                                          |
 
 **Gesamt:** 5 Dateien | ~880 LOC
 
@@ -32,14 +32,14 @@ opena7 wurde erfolgreich als **E-Mail Client Agent** implementiert. Der Agent bi
 
 **Status:** ✅ **6/6 Tests bestanden** (100%)
 
-| Test | Ergebnis | Beschreibung |
-|------|----------|--------------|
-| **Health-Check** | ✅ PASS | Health-Endpoint liefert korrekte Daten |
-| **Root-Endpoint** | ✅ PASS | Agent-Info mit `kuerzel: emailp` |
-| **Command-Endpoint** | ✅ PASS | Generischer Command mit Bearer-Auth |
-| **Inbox List** | ✅ PASS | 500 erwartet (Credentials nicht konfiguriert) |
-| **Folders List** | ✅ PASS | 500 erwartet (Credentials nicht konfiguriert) |
-| **Strict JSON** | ✅ PASS | Extra Fields werden mit 422 rejected |
+| Test                 | Ergebnis | Beschreibung                                  |
+| -------------------- | -------- | --------------------------------------------- |
+| **Health-Check**     | ✅ PASS  | Health-Endpoint liefert korrekte Daten        |
+| **Root-Endpoint**    | ✅ PASS  | Agent-Info mit `kuerzel: emailp`              |
+| **Command-Endpoint** | ✅ PASS  | Generischer Command mit Bearer-Auth           |
+| **Inbox List**       | ✅ PASS  | 500 erwartet (Credentials nicht konfiguriert) |
+| **Folders List**     | ✅ PASS  | 500 erwartet (Credentials nicht konfiguriert) |
+| **Strict JSON**      | ✅ PASS  | Extra Fields werden mit 422 rejected          |
 
 **Hinweis:** Inbox/Folders-Tests validieren korrekte 500-Responses wenn E-Mail-Credentials fehlen. In Production würden IMAP/SMTP-Credentials konfiguriert und Tests würden echte E-Mail-Operationen ausführen.
 
@@ -49,38 +49,38 @@ opena7 wurde erfolgreich als **E-Mail Client Agent** implementiert. Der Agent bi
 
 **Status:** ✅ **100% COMPLIANCE** (11/11 Policies)
 
-| Policy | Status | Details |
-|--------|--------|---------|
-| ✅ **Option-2-Flow** | Erfüllt | `emailp → kordp` via `/command` |
-| ✅ **Port-Policy** | Erfüllt | Port 12352 (Bereich 12344-12399) |
-| ✅ **Port 8080 Verboten** | Erfüllt | Nicht verwendet (nur UI) |
-| ✅ **Safepoint-Format** | Erfüllt | `SP<ts>_src→dst_{CMD\|RESP}.json` |
-| ✅ **Unicode-Pfeil** | Erfüllt | `→` (U+2192) in allen Safepoints |
-| ✅ **Strict JSON** | Erfüllt | `extra="forbid"` in allen Pydantic-Models |
-| ✅ **ENV-only Secrets** | Erfüllt | `EMAIL_PASSWORD`, `BEARER_TOKEN` aus `.env` |
-| ✅ **Secret-Masking** | Erfüllt | `mask_secrets()` für Credentials/E-Mail-Bodies |
-| ✅ **Max Depth** | Erfüllt | 2 Ebenen (emailp → kordp → tool) |
-| ✅ **PID-Management** | Erfüllt | `logs/opena7.pid` |
-| ✅ **Nohup-Logging** | Erfüllt | `logs/opena7.nohup.log` |
+| Policy                    | Status  | Details                                        |
+| ------------------------- | ------- | ---------------------------------------------- |
+| ✅ **Option-2-Flow**      | Erfüllt | `emailp → kordp` via `/command`                |
+| ✅ **Port-Policy**        | Erfüllt | Port 12352 (Bereich 12344-12399)               |
+| ✅ **Port 8080 Verboten** | Erfüllt | Nicht verwendet (nur UI)                       |
+| ✅ **Safepoint-Format**   | Erfüllt | `SP<ts>_src→dst_{CMD\|RESP}.json`              |
+| ✅ **Unicode-Pfeil**      | Erfüllt | `→` (U+2192) in allen Safepoints               |
+| ✅ **Strict JSON**        | Erfüllt | `extra="forbid"` in allen Pydantic-Models      |
+| ✅ **ENV-only Secrets**   | Erfüllt | `EMAIL_PASSWORD`, `BEARER_TOKEN` aus `.env`    |
+| ✅ **Secret-Masking**     | Erfüllt | `mask_secrets()` für Credentials/E-Mail-Bodies |
+| ✅ **Max Depth**          | Erfüllt | 2 Ebenen (emailp → kordp → tool)               |
+| ✅ **PID-Management**     | Erfüllt | `logs/opena7.pid`                              |
+| ✅ **Nohup-Logging**      | Erfüllt | `logs/opena7.nohup.log`                        |
 
-**Violations:** 0  
+**Violations:** 0
 **Compliance Score:** 💯 **100%**
 
 ---
 
 ## 📊 Deployment-Statistik
 
-| Metrik | Wert |
-|--------|------|
-| **Lines of Code** | 530 (main) + 350 (scripts/tests) = 880 |
-| **Endpoints** | 7 (/, /health, /command, /inbox/list, /message/send, /message/search, /folders/list) |
-| **Port** | 12352 |
-| **PID** | 1643793 |
-| **Uptime** | 29+ Sekunden |
-| **Health** | http://127.0.0.1:12352/health |
-| **Email Libraries** | ✅ Available (imaplib, smtplib) |
-| **IMAP Server** | imap.example.com:993 (SSL) |
-| **SMTP Server** | smtp.example.com:587 (TLS) |
+| Metrik              | Wert                                                                                 |
+| ------------------- | ------------------------------------------------------------------------------------ |
+| **Lines of Code**   | 530 (main) + 350 (scripts/tests) = 880                                               |
+| **Endpoints**       | 7 (/, /health, /command, /inbox/list, /message/send, /message/search, /folders/list) |
+| **Port**            | 12352                                                                                |
+| **PID**             | 1643793                                                                              |
+| **Uptime**          | 29+ Sekunden                                                                         |
+| **Health**          | http://127.0.0.1:12352/health                                                        |
+| **Email Libraries** | ✅ Available (imaplib, smtplib)                                                      |
+| **IMAP Server**     | imap.example.com:993 (SSL)                                                           |
+| **SMTP Server**     | smtp.example.com:587 (TLS)                                                           |
 
 ---
 
@@ -101,7 +101,7 @@ opena7 wurde erfolgreich als **E-Mail Client Agent** implementiert. Der Agent bi
 - ✅ **Bearer-Token-Auth** (ENV-only)
 - ✅ **Secret-Masking** in Logs/Safepoints (Credentials, Passwords)
 - ✅ **Content-Truncation** (E-Mail-Bodies > 500 chars)
-- ✅ **Credential-Masking** (user:pass@domain → user:***@domain)
+- ✅ **Credential-Masking** (user:pass@domain → user:\*\*\*@domain)
 - ✅ **500 Error** wenn Credentials fehlen (keine Default-Values)
 
 ### E-Mail-Features
@@ -291,9 +291,9 @@ if not EMAIL_PASSWORD:
 - ✅ **Graceful Degradation** (funktioniert ohne Credentials, klare Errors)
 - ✅ **Production-Ready** (PID-Management, Logging, Error-Handling)
 
-**Deployment-Status:** ✅ **OPERATIONAL**  
-**PID:** 1643793  
-**Port:** 12352  
+**Deployment-Status:** ✅ **OPERATIONAL**
+**PID:** 1643793
+**Port:** 12352
 **Health:** http://127.0.0.1:12352/health
 
 ---
@@ -302,13 +302,13 @@ if not EMAIL_PASSWORD:
 
 **Implementierte Agenten:** 5/21
 
-| Agent | Port | Kürzel | Status | Compliance |
-|-------|------|--------|--------|------------|
-| **opena3** | 12347 | owuip | ✅ Running | 💯 100% |
-| **opena4** | 12348 | telep | ✅ Running | 91% |
-| **opena5** | 12351 | vscop | ✅ Running | 💯 100% |
-| **opena6** | 12350 | browsep | ✅ Running | 💯 100% |
-| **opena7** | 12352 | emailp | ✅ Running | 💯 100% |
+| Agent      | Port  | Kürzel  | Status     | Compliance |
+| ---------- | ----- | ------- | ---------- | ---------- |
+| **opena3** | 12347 | owuip   | ✅ Running | 💯 100%    |
+| **opena4** | 12348 | telep   | ✅ Running | 91%        |
+| **opena5** | 12351 | vscop   | ✅ Running | 💯 100%    |
+| **opena6** | 12350 | browsep | ✅ Running | 💯 100%    |
+| **opena7** | 12352 | emailp  | ✅ Running | 💯 100%    |
 
 **Verbleibend:** opena8-opena21 (16 Agenten)
 
@@ -316,6 +316,6 @@ if not EMAIL_PASSWORD:
 
 ---
 
-**Erstellt:** 27. November 2025  
-**Maintainer:** Danijel Jokic (ELION Team)  
+**Erstellt:** 27. November 2025
+**Maintainer:** Danijel Jokic (ELION Team)
 **Version:** 1.0.0

@@ -1,4 +1,5 @@
 # 🤖 MASTER PROMPT - FINAL EDITION
+
 ## Vollständige Systemspezifikation für LocalAgent-Pro (opena1-20)
 
 **Version:** 2.0
@@ -102,17 +103,20 @@
 ### 2.1 CORE SERVICES (opena1-2)
 
 #### opena1-coordinator (Port 12344)
+
 **Rolle:** Gateway & Request Orchestration
 **Status:** ✅ Production Ready (PHASE 15.4 Complete)
 **Bearer Token:** `sk_opena1_coord_12344_strict_v1`
 
 **Endpoints:**
+
 - `POST /request` – Accept user queries (strict auth required)
 - `GET /health` – Health check (diagnostic, no auth)
 - `GET /log/opena1` – Retrieve safepoint logs
 - `GET /status` – System status
 
 **Capabilities:**
+
 - Bearer token validation
 - Request routing
 - Load balancing
@@ -124,17 +128,20 @@
 ---
 
 #### opena2-archivator (Port 12345)
+
 **Rolle:** Safepoint Management & Audit Trail
 **Status:** ✅ Production Ready
 **Bearer Token:** `sk_opena2_arch_12345_strict_v1`
 
 **Endpoints:**
+
 - `POST /safepoint` – Store safepoint
 - `GET /safepoint/<id>` – Retrieve safepoint
 - `GET /audit/<client_id>` – Client audit trail
 - `GET /stats` – Archive statistics
 
 **Capabilities:**
+
 - Safepoint persistence (JSON files)
 - Request deduplication (MD5 hashing)
 - Audit trail maintenance
@@ -142,6 +149,7 @@
 - Archive cleanup
 
 **Features:**
+
 - Async logging (non-blocking)
 - Client ID tracking in all records
 - Security event correlation
@@ -152,11 +160,13 @@
 ### 2.2 INTERFACE AGENTS (opena3-opena20)
 
 #### opena3-webui (Port 12347)
+
 **Rolle:** OpenWebUI Terminal Integration
 **Bearer Token:** `sk_opena3_web_12347_strict_v1`
 **Status:** 🚀 Ready for Deployment (PHASE 15.5)
 
 **Functionality:**
+
 - OpenWebUI native chat interface
 - Markdown rendering
 - File upload/download
@@ -165,11 +175,13 @@
 ---
 
 #### opena4-telegram (Port 12348)
+
 **Rolle:** Telegram Bot Integration
 **Bearer Token:** `sk_opena4_tele_12348_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
+
 - Telegram message handling
 - Group chat support
 - Inline query responses
@@ -178,11 +190,13 @@
 ---
 
 #### opena5-vscode (Port 12350)
+
 **Rolle:** VSCode Copilot Integration
 **Bearer Token:** `sk_opena5_vsc_12350_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
+
 - GitHub Copilot chat extension
 - Code context awareness
 - Inline suggestions
@@ -191,11 +205,13 @@
 ---
 
 #### opena6-browser (Port 12351)
+
 **Rolle:** Web Browser Control
 **Bearer Token:** `sk_opena6_brow_12351_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
+
 - Selenium/Playwright integration
 - Page navigation
 - Screenshot capture
@@ -204,11 +220,13 @@
 ---
 
 #### opena7-email (Port 12352)
+
 **Rolle:** Email Client Interface
 **Bearer Token:** `sk_opena7_mail_12352_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
+
 - IMAP/SMTP support
 - Email parsing
 - Attachment handling
@@ -217,11 +235,13 @@
 ---
 
 #### opena8-whatsapp (Port 12353)
+
 **Rolle:** WhatsApp Business API
 **Bearer Token:** `sk_opena8_what_12353_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
+
 - Message sending
 - Group management
 - Template messages
@@ -230,11 +250,13 @@
 ---
 
 #### opena9-call (Port 12354)
+
 **Rolle:** VoIP & Phone Integration
 **Bearer Token:** `sk_opena9_call_12354_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
+
 - Incoming call handling
 - DTMF tone recognition
 - Call recording
@@ -243,11 +265,13 @@
 ---
 
 #### opena10-answer (Port 12355)
+
 **Rolle:** IVR System (Interactive Voice Response)
 **Bearer Token:** `sk_opena10_answ_12355_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
+
 - Menu trees
 - Voice prompts
 - Call routing
@@ -256,11 +280,13 @@
 ---
 
 #### opena11-unlock (Port 12356)
+
 **Rolle:** Authentication & Access Control
 **Bearer Token:** `sk_opena11_lock_12356_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
+
 - 2FA verification
 - Token validation
 - Permission checking
@@ -269,11 +295,13 @@
 ---
 
 #### opena12-social (Port 12357)
+
 **Rolle:** Social Media Integration (Generic)
 **Bearer Token:** `sk_opena12_soc_12357_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
+
 - Tweet/Post publishing
 - Timeline fetching
 - Engagement tracking
@@ -282,11 +310,13 @@
 ---
 
 #### opena13-influencer (Port 12358)
+
 **Rolle:** Influencer Network Management
 **Bearer Token:** `sk_opena13_infl_12358_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
+
 - Influencer discovery
 - Campaign management
 - Performance analytics
@@ -295,11 +325,13 @@
 ---
 
 #### opena14-calendar (Port 12359)
+
 **Rolle:** Calendar & Scheduling
 **Bearer Token:** `sk_opena14_cal_12359_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
+
 - Event creation/deletion
 - Meeting scheduling
 - Reminder management
@@ -308,11 +340,13 @@
 ---
 
 #### opena15-html (Port 12360)
+
 **Rolle:** HTML/CSS Generator
 **Bearer Token:** `sk_opena15_html_12360_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
+
 - Dynamic HTML generation
 - CSS styling
 - Component templates
@@ -321,11 +355,13 @@
 ---
 
 #### opena16-shop (Port 12361)
+
 **Rolle:** E-Commerce Integration
 **Bearer Token:** `sk_opena16_shop_12361_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
+
 - Product management
 - Shopping cart
 - Payment processing
@@ -334,11 +370,13 @@
 ---
 
 #### opena17-homepage (Port 12362)
+
 **Rolle:** Website Builder
 **Bearer Token:** `sk_opena17_home_12362_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
+
 - Page creation
 - Drag-and-drop editing
 - SEO optimization
@@ -347,11 +385,13 @@
 ---
 
 #### opena18-archive (Port 12363)
+
 **Rolle:** Local Archive Management
 **Bearer Token:** `sk_opena18_arch_12363_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
+
 - Document indexing
 - Full-text search
 - Version control
@@ -360,11 +400,13 @@
 ---
 
 #### opena19-trading (Port 12364)
+
 **Rolle:** Financial Trading Bot
 **Bearer Token:** `sk_opena19_trade_12364_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
+
 - Market data fetching
 - Technical analysis
 - Trade execution
@@ -373,11 +415,13 @@
 ---
 
 #### opena20-dashboard (Port 12365)
+
 **Rolle:** Central Monitoring Dashboard
 **Bearer Token:** `sk_opena20_dash_12365_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
+
 - Real-time metrics
 - Agent health monitoring
 - Performance graphs
@@ -489,6 +533,7 @@ Tier 3: ADMIN
 **Policy:** Strict
 
 **Request Format:**
+
 ```json
 {
   "source": "string",
@@ -502,6 +547,7 @@ Tier 3: ADMIN
 ```
 
 **Response Format (Success - 200):**
+
 ```json
 {
   "request_id": "uuid-string",
@@ -519,6 +565,7 @@ Tier 3: ADMIN
 ```
 
 **Response Format (Error - 401):**
+
 ```json
 {
   "detail": "Missing Authorization header | Invalid bearer token | Malformed Authorization format"
@@ -526,6 +573,7 @@ Tier 3: ADMIN
 ```
 
 **Example cURL:**
+
 ```bash
 curl -X POST http://127.0.0.1:12344/request \
   -H "Authorization: Bearer sk_opena1_coord_12344_strict_v1" \
@@ -543,6 +591,7 @@ curl -X POST http://127.0.0.1:12344/request \
 **Policy:** Public
 
 **Response Format:**
+
 ```json
 {
   "status": "healthy",
@@ -559,6 +608,7 @@ curl -X POST http://127.0.0.1:12344/request \
 **Policy:** Strict
 
 **Response Format:**
+
 ```json
 {
   "client_id": "opena1-coordinator",
@@ -692,6 +742,7 @@ curl http://127.0.0.1:12344/status | jq .
 ### 6.2 Configuration Files
 
 #### opena1/config.json
+
 ```json
 {
   "service_name": "opena1-coordinator",
@@ -705,6 +756,7 @@ curl http://127.0.0.1:12344/status | jq .
 ```
 
 #### opena2/config.json
+
 ```json
 {
   "service_name": "opena2-archivator",
@@ -760,6 +812,7 @@ TOKEN_TO_CLIENT = {v: k for k, v in VALID_BEARER_TOKENS.items()}
 ### 7.1 Common Issues
 
 #### Problem: Agent not responding (Connection refused)
+
 ```bash
 # Check if service is running
 ps aux | grep "python3 main.py" | grep -v grep
@@ -775,6 +828,7 @@ tail -f /var/log/localagent/opena1.log
 ```
 
 #### Problem: Bearer token validation failing
+
 ```bash
 # Verify token format
 grep "sk_opena1_" /etc/localagent/tokens.txt
@@ -787,6 +841,7 @@ curl -v -X POST http://127.0.0.1:12344/request \
 ```
 
 #### Problem: Safepoints not being logged
+
 ```bash
 # Check archiv directory
 ls -lah /localagent_archive/safepoints/
@@ -820,16 +875,19 @@ curl http://127.0.0.1:12344/metrics | jq '.request_latency_ms | {min, max, avg}'
 ### 7.3 Maintenance Tasks
 
 #### Daily
+
 - Monitor error logs: `grep ERROR /var/log/localagent/*.log`
 - Verify all agents online: Check `/health` endpoints
 - Disk space check: `df -h /localagent_archive/`
 
 #### Weekly
+
 - Backup safepoints: `tar -czf safepoints_backup_$(date +%Y%m%d).tar.gz /localagent_archive/`
 - Review security events: `curl .../log/opena1 | jq .security_events`
 - Performance analysis: `curl .../metrics`
 
 #### Monthly
+
 - Cleanup old safepoints (>90 days): Automated by archivp
 - Update dependencies: `pip install --upgrade -r requirements.txt`
 - Security audit: Review bearer token usage patterns
@@ -839,24 +897,28 @@ curl http://127.0.0.1:12344/metrics | jq '.request_latency_ms | {min, max, avg}'
 ## 🎯 SUCCESS CRITERIA - PHASE 15.5 (Next Phase)
 
 ✅ **Deployment Complete:**
+
 - [ ] All 20 agents deployed and responding
 - [ ] Each agent has bearer token authentication working
 - [ ] Client IDs properly tracked in safepoints
 - [ ] Inter-agent communication via gateway operational
 
 ✅ **Testing Complete:**
+
 - [ ] End-to-end tests (user → gateway → archivator → agent → response)
 - [ ] Security tests (401 errors for invalid tokens)
 - [ ] Performance tests (<100ms latency maintained)
 - [ ] Load tests (100+ concurrent requests)
 
 ✅ **Monitoring Active:**
+
 - [ ] Prometheus metrics for all agents
 - [ ] Grafana dashboard showing real-time status
 - [ ] Alert rules for failures & anomalies
 - [ ] Safepoint archival verified
 
 ✅ **Documentation Complete:**
+
 - [ ] Each agent has README
 - [ ] API documentation updated for all endpoints
 - [ ] Deployment checklist completed
@@ -872,6 +934,7 @@ curl http://127.0.0.1:12344/metrics | jq '.request_latency_ms | {min, max, avg}'
 **Repository:** Gesamtprojekt-start (main branch)
 
 **Emergency:**
+
 - Service down: Restart with `systemctl restart opena1 opena2 opena3` (all services)
 - Data loss: Restore from safepoint backup
 - Security breach: Rotate all bearer tokens immediately
@@ -880,11 +943,11 @@ curl http://127.0.0.1:12344/metrics | jq '.request_latency_ms | {min, max, avg}'
 
 ## 📜 DOKUMENTVERSION
 
-| Version | Datum | Status | Änderungen |
-|---------|-------|--------|-----------|
-| 2.0 | 24.11.2025 | Production | Bearer token impl., 20 agents spec., integration guide |
-| 1.5 | 23.11.2025 | Review | PHASE 15.4 policy hardening |
-| 1.0 | 20.11.2025 | Draft | Initial system architecture |
+| Version | Datum      | Status     | Änderungen                                             |
+| ------- | ---------- | ---------- | ------------------------------------------------------ |
+| 2.0     | 24.11.2025 | Production | Bearer token impl., 20 agents spec., integration guide |
+| 1.5     | 23.11.2025 | Review     | PHASE 15.4 policy hardening                            |
+| 1.0     | 20.11.2025 | Draft      | Initial system architecture                            |
 
 ---
 

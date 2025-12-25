@@ -2,11 +2,11 @@
 arXiv Service - Integration mit arXiv API
 """
 
-import requests
-import feedparser
-from typing import List, Dict, Optional
-from datetime import datetime
 import json
+from datetime import datetime
+
+import feedparser
+import requests
 
 
 class ArxivService:
@@ -18,9 +18,14 @@ class ArxivService:
         self.max_results = max_results
         self.timeout = timeout
 
-    def search(self, query: str, category: Optional[str] = None,
-               max_results: Optional[int] = None, sort_by: str = "submittedDate",
-               sort_order: str = "descending") -> List[Dict]:
+    def search(
+        self,
+        query: str,
+        category: str | None = None,
+        max_results: int | None = None,
+        sort_by: str = "submittedDate",
+        sort_order: str = "descending",
+    ) -> list[dict]:
         """
         Suche nach Papers in arXiv
 
@@ -46,7 +51,7 @@ class ArxivService:
             "start": 0,
             "max_results": max_results,
             "sortBy": sort_by,
-            "sortOrder": sort_order
+            "sortOrder": sort_order,
         }
 
         try:
@@ -66,7 +71,7 @@ class ArxivService:
             print(f"Error querying arXiv: {e}")
             return []
 
-    def fetch_paper(self, arxiv_id: str) -> Optional[Dict]:
+    def fetch_paper(self, arxiv_id: str) -> dict | None:
         """
         Fetch spezifisches Paper von arXiv
 
@@ -77,13 +82,9 @@ class ArxivService:
             Paper-Daten oder None
         """
         # Bereinige arXiv ID (entferne Version)
-        clean_id = arxiv_id.split('v')[0] if 'v' in arxiv_id else arxiv_id
+        clean_id = arxiv_id.split("v")[0] if "v" in arxiv_id else arxiv_id
 
-        params = {
-            "id_list": clean_id,
-            "start": 0,
-            "max_results": 1
-        }
+        params = {"id_list": clean_id, "start": 0, "max_results": 1}
 
         try:
             response = requests.get(self.BASE_URL, params=params, timeout=self.timeout)
@@ -99,7 +100,7 @@ class ArxivService:
             print(f"Error fetching paper {arxiv_id}: {e}")
             return None
 
-    def get_pdf_url(self, arxiv_id: str) -> Optional[str]:
+    def get_pdf_url(self, arxiv_id: str) -> str | None:
         """
         Hole PDF URL für Paper
 
@@ -109,7 +110,7 @@ class ArxivService:
         Returns:
             PDF URL oder None
         """
-        clean_id = arxiv_id.split('v')[0]
+        clean_id = arxiv_id.split("v")[0]
         return f"https://arxiv.org/pdf/{clean_id}.pdf"
 
     def download_pdf(self, arxiv_id: str, save_path: str) -> bool:
@@ -129,7 +130,7 @@ class ArxivService:
             response = requests.get(pdf_url, timeout=self.timeout)
             response.raise_for_status()
 
-            with open(save_path, 'wb') as f:
+            with open(save_path, "wb") as f:
                 f.write(response.content)
 
             print(f"PDF downloaded to {save_path}")
@@ -139,7 +140,7 @@ class ArxivService:
             print(f"Error downloading PDF: {e}")
             return False
 
-    def parse_arxiv_id(self, text: str) -> Optional[str]:
+    def parse_arxiv_id(self, text: str) -> str | None:
         """
         Parse arXiv ID aus Text
 
@@ -158,16 +159,16 @@ class ArxivService:
         import re
 
         # Pattern für arXiv ID
-        pattern = r'(?:arXiv:|arxiv\.org/(?:abs|pdf)/)(\d{4}\.\d{4,5})'
+        pattern = r"(?:arXiv:|arxiv\.org/(?:abs|pdf)/)(\d{4}\.\d{4,5})"
 
         match = re.search(pattern, text)
         if match:
             arxiv_id = match.group(1)
             # Entferne Version
-            return arxiv_id.split('v')[0]
+            return arxiv_id.split("v")[0]
 
         # Versuche direktes Format
-        direct_pattern = r'(\d{4}\.\d{4,5})'
+        direct_pattern = r"(\d{4}\.\d{4,5})"
         match = re.search(direct_pattern, text)
         if match:
             return match.group(1)
@@ -175,45 +176,46 @@ class ArxivService:
         return None
 
     @staticmethod
-    def _parse_entry(entry) -> Dict:
+    def _parse_entry(entry) -> dict:
         """Parse feedparser entry zu Paper-Dict"""
 
         # Extrahiere Autoren
         authors = []
-        if 'authors' in entry:
+        if "authors" in entry:
             authors = [author.name for author in entry.authors]
 
         # Extrahiere arXiv ID
-        arxiv_id = entry.id.split('/abs/')[-1]
+        arxiv_id = entry.id.split("/abs/")[-1]
 
         # Extrahiere Kategorien
         categories = []
-        if 'tags' in entry:
-            categories = [tag['term'] for tag in entry.tags]
+        if "tags" in entry:
+            categories = [tag["term"] for tag in entry.tags]
 
         primary_category = categories[0] if categories else None
 
         # Zusammenfassung bereinigen
-        summary = entry.summary.replace('\n', ' ').strip() if 'summary' in entry else ""
+        summary = entry.summary.replace("\n", " ").strip() if "summary" in entry else ""
 
         return {
-            'arxiv_id': arxiv_id,
-            'title': entry.title,
-            'authors': json.dumps(authors),
-            'abstract': summary,
-            'category': primary_category,
-            'url': entry.id,
-            'pdf_url': f"https://arxiv.org/pdf/{arxiv_id}.pdf",
-            'published_date': entry.published[:10] if 'published' in entry else None,
-            'metadata': {
-                'all_categories': categories,
-                'arxiv_url': entry.id,
-                'updated': entry.updated if 'updated' in entry else None
-            }
+            "arxiv_id": arxiv_id,
+            "title": entry.title,
+            "authors": json.dumps(authors),
+            "abstract": summary,
+            "category": primary_category,
+            "url": entry.id,
+            "pdf_url": f"https://arxiv.org/pdf/{arxiv_id}.pdf",
+            "published_date": entry.published[:10] if "published" in entry else None,
+            "metadata": {
+                "all_categories": categories,
+                "arxiv_url": entry.id,
+                "updated": entry.updated if "updated" in entry else None,
+            },
         }
 
 
 # Hilfsfunktionen
+
 
 def validate_arxiv_id(arxiv_id: str) -> bool:
     """
@@ -226,12 +228,13 @@ def validate_arxiv_id(arxiv_id: str) -> bool:
         True wenn gültig
     """
     import re
+
     # Format: YYMM.NNNNN (neue Nummern) oder YYMM.NNNN (alte)
-    pattern = r'^\d{4}\.\d{4,5}(?:v\d+)?$'
+    pattern = r"^\d{4}\.\d{4,5}(?:v\d+)?$"
     return bool(re.match(pattern, arxiv_id))
 
 
-def parse_arxiv_date(date_string: str) -> Optional[datetime]:
+def parse_arxiv_date(date_string: str) -> datetime | None:
     """
     Parse arXiv Datum
 
@@ -242,6 +245,6 @@ def parse_arxiv_date(date_string: str) -> Optional[datetime]:
         datetime oder None
     """
     try:
-        return datetime.fromisoformat(date_string.replace('Z', '+00:00'))
+        return datetime.fromisoformat(date_string.replace("Z", "+00:00"))
     except:
         return None

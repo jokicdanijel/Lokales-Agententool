@@ -77,6 +77,7 @@ pip install -r requirements.txt
 ```
 
 Installed packages:
+
 - Flask 3.0.0 - Web framework
 - SQLAlchemy 2.0.0 - ORM
 - requests 2.31.0 - HTTP client
@@ -106,6 +107,7 @@ python -c "from app.db.database import init_db; init_db()"
 ```
 
 This creates the SQLite database with tables:
+
 - `papers` - Paper metadata
 - `tags` - Paper tags
 - `collections` - Paper collections
@@ -118,6 +120,7 @@ python app/main.py
 ```
 
 Output:
+
 ```
 🚀 Research Paper Manager starting...
 📚 Database: ./research_papers.db
@@ -240,7 +243,7 @@ CMD ["python", "app/main.py"]
 ### docker-compose.yml
 
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
   research-manager:
@@ -408,13 +411,13 @@ ping arxiv.org
 
 ## 📊 System Requirements
 
-| Component | Minimum | Recommended |
-|-----------|---------|-------------|
-| Python | 3.8 | 3.11+ |
-| RAM | 512MB | 2GB+ |
-| Disk | 500MB | 5GB+ |
-| CPU | 1 core | 2+ cores |
-| Internet | Required | Required for arXiv |
+| Component | Minimum  | Recommended        |
+| --------- | -------- | ------------------ |
+| Python    | 3.8      | 3.11+              |
+| RAM       | 512MB    | 2GB+               |
+| Disk      | 500MB    | 5GB+               |
+| CPU       | 1 core   | 2+ cores           |
+| Internet  | Required | Required for arXiv |
 
 ---
 

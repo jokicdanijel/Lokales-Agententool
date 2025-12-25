@@ -1,1 +1,12 @@
-[{"type":"openapi","url":"https://api.openai.com/v1","spec_type":"url","spec":"","path":"https://api.openai.com/v1","auth_type":"bearer","key":"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","info":{"id":"","name":"","description":""}}]
+[
+  {
+    "type": "openapi",
+    "url": "https://api.openai.com/v1",
+    "spec_type": "url",
+    "spec": "",
+    "path": "https://api.openai.com/v1",
+    "auth_type": "bearer",
+    "key": "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",
+    "info": { "id": "", "name": "", "description": "" }
+  }
+]

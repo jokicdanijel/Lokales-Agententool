@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena10 Call Tracking
 
-**Agent-ID:** opena10  
-**Port:** 12355  
-**Status:** 🟡 Planned  
-**Kürzel:** `calltrackp`  
+**Agent-ID:** opena10
+**Port:** 12355
+**Status:** 🟡 Planned
+**Kürzel:** `calltrackp`
 **Domäne:** Call Tracking, SQLAlchemy-Models, Campaign-Tracking
 
 ---
@@ -141,5 +141,5 @@ Kopiere diesen Prompt in:
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

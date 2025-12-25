@@ -145,7 +145,7 @@ Gesamtprojekt/
 ├─ 1.portier_openai/
 │   ├─ opena1/          # Koordinator
 │   ├─ opena2/          # Archiv-Agent
-│   ├─ kordp/           
+│   ├─ kordp/
 │   └─ archivp/
 │
 ├─ 2.openwebui/

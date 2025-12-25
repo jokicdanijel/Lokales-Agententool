@@ -24,41 +24,41 @@ start_service() {
     local service=$1
     local port=$2
     local service_dir="$PROJECT_ROOT/src/services/pool/$service"
-    
+
     if [ ! -d "$service_dir" ]; then
         echo -e "${RED}❌ Service directory not found: $service_dir${NC}"
         return 1
     fi
-    
+
     echo -e "${YELLOW}Starting $service (Port $port)...${NC}"
-    
+
     cd "$service_dir"
     bash run.sh
-    
+
     cd "$PROJECT_ROOT"
 }
 
 stop_service() {
     local service=$1
     local pid_file="$PROJECT_ROOT/.runtime/${service}.pid"
-    
+
     if [ ! -f "$pid_file" ]; then
         echo -e "${YELLOW}⚠️  $service not running (no PID file)${NC}"
         return 0
     fi
-    
+
     local pid=$(cat "$pid_file")
-    
+
     if kill -0 "$pid" 2>/dev/null; then
         echo -e "${YELLOW}Stopping $service (PID: $pid)...${NC}"
         kill "$pid"
         sleep 1
-        
+
         if kill -0 "$pid" 2>/dev/null; then
             echo -e "${RED}Force killing $service...${NC}"
             kill -9 "$pid"
         fi
-        
+
         rm -f "$pid_file"
         echo -e "${GREEN}✅ $service stopped${NC}"
     else
@@ -71,18 +71,18 @@ status_service() {
     local service=$1
     local port=$2
     local pid_file="$PROJECT_ROOT/.runtime/${service}.pid"
-    
+
     if [ ! -f "$pid_file" ]; then
         echo -e "${RED}❌ $service (Port $port): NOT RUNNING${NC}"
         return 1
     fi
-    
+
     local pid=$(cat "$pid_file")
-    
+
     if kill -0 "$pid" 2>/dev/null; then
         # Health check
         local health=$(curl -s http://127.0.0.1:$port/health 2>/dev/null || echo "UNREACHABLE")
-        
+
         if [[ "$health" == *"healthy"* ]]; then
             echo -e "${GREEN}✅ $service (Port $port): HEALTHY (PID: $pid)${NC}"
         else
@@ -103,11 +103,11 @@ cmd_start() {
     echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo -e "${GREEN}  Starting Pool Services (Agent17-20)${NC}"
     echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    
+
     for i in "${!SERVICES[@]}"; do
         start_service "${SERVICES[$i]}" "${PORTS[$i]}"
     done
-    
+
     echo ""
     echo -e "${GREEN}✅ All pool services started${NC}"
     echo -e "${YELLOW}Check status: bash bin/pool_services.sh status${NC}"
@@ -117,11 +117,11 @@ cmd_stop() {
     echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo -e "${RED}  Stopping Pool Services (Agent17-20)${NC}"
     echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    
+
     for service in "${SERVICES[@]}"; do
         stop_service "$service"
     done
-    
+
     echo ""
     echo -e "${GREEN}✅ All pool services stopped${NC}"
 }
@@ -130,7 +130,7 @@ cmd_status() {
     echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo -e "${YELLOW}  Pool Services Status (Agent17-20)${NC}"
     echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    
+
     for i in "${!SERVICES[@]}"; do
         status_service "${SERVICES[$i]}" "${PORTS[$i]}"
     done

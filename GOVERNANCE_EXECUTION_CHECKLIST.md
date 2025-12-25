@@ -31,6 +31,7 @@ Markiere **JEDES** Item mit `[x]` vor Ausführung:
 - [ ] **Kein main/master:** Du bist NICHT auf main/master Branch
 
 **Validation Command:**
+
 ```bash
 git status --porcelain  # MUSS LEER SEIN
 git branch --show-current  # DARF NICHT main/master SEIN
@@ -47,6 +48,7 @@ git branch --show-current  # DARF NICHT main/master SEIN
 - [ ] **Permissions:** Du hast Write-Rechte auf PROJECT_ROOT
 
 **Validation Command:**
+
 ```bash
 python3 --version
 pytest --version || echo "⚠️ pytest fehlt – pip install pytest"
@@ -64,6 +66,7 @@ df -h . | grep -E "Avail|Filesystem"
 - [ ] **Backup-Location notiert:** Pfad zu Backups dokumentiert
 
 **Validation Command:**
+
 ```bash
 ls -lh ../Gesamtprojekt_backup_*.tar.gz  # MUSS EXISTIEREN
 ls -d configs_backup_* src/pkg_backup_* tests_backup_*  # MUSS EXISTIEREN
@@ -80,6 +83,7 @@ ls -d configs_backup_* src/pkg_backup_* tests_backup_*  # MUSS EXISTIEREN
 - [ ] **Keine Errors:** Keine ERROR-Meldungen in Dry-Run-Logs
 
 **Validation Command:**
+
 ```bash
 cat GOVERNANCE_FIX_ARCHIV.log | grep -i error
 cat GOVERNANCE_FIX_VENV_LEAKS.log | grep -i error
@@ -98,6 +102,7 @@ cat GOVERNANCE_FIX_TESTS.log | grep -i error
 - [ ] **Test-List:** Liste der kritischen Tests erstellt (test_archivator.py, etc.)
 
 **Validation Command:**
+
 ```bash
 echo "Safepoints in configs/: $(find configs/ -name 'SP*.json' | wc -l)"
 echo "Dateien in _conflicts/: $(find _conflicts/ -type f 2>/dev/null | wc -l)"
@@ -306,9 +311,9 @@ Bei Problemen:
 - [ ] Tests laufen durch (`pytest tests/`)
 - [ ] Git Commits sauber dokumentiert
 
-**Unterschrift:** _________________________________
-**Datum:** ___________________
-**Branch:** ___________________
+**Unterschrift:** ****************\_****************
+**Datum:** ********\_\_\_********
+**Branch:** ********\_\_\_********
 
 ---
 

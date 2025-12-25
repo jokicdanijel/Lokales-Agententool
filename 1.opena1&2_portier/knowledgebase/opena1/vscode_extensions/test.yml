@@ -3,14 +3,14 @@ name: Tests
 on:
   push:
     tags-ignore:
-      - '*'
+      - "*"
     branches:
-      - 'master'
-      - 'main'
+      - "master"
+      - "main"
   pull_request:
     branches:
-      - 'master'
-      - 'main'
+      - "master"
+      - "main"
   workflow_dispatch:
 
 concurrency:

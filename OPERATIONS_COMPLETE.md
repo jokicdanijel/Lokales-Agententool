@@ -1,7 +1,7 @@
 # 🚀 ELION PORTIER 3.0 - Operations Guide
 
-**Version:** 3.0  
-**Datum:** 28. November 2025  
+**Version:** 3.0
+**Datum:** 28. November 2025
 **Status:** ✅ Production-Ready (Post-Security-Incident)
 
 ---
@@ -69,11 +69,11 @@ bin/ops.sh stop
 
 ### Core Services
 
-| Service | Port | Rolle | OpenAI Key | Startskript |
-|---------|------|-------|------------|-------------|
-| **opena1** | 12344 | Coordinator (Option-2-Flow Entry) | OPENA1 ✅ | `1.opena1&2_portier/bin/start_opena1_with_key.sh` |
-| **opena2** | 12345 | Archivator (Safepoint Storage) | OPENA2 ✅ | `1.opena1&2_portier/bin/start_opena2_with_key.sh` |
-| **Dashboard** | 12349 | Agent Registry + SSE + UI + **AI Chat** | **OPENA20 ✅** | `bin/start_dashboard.sh` |
+| Service       | Port  | Rolle                                   | OpenAI Key     | Startskript                                       |
+| ------------- | ----- | --------------------------------------- | -------------- | ------------------------------------------------- |
+| **opena1**    | 12344 | Coordinator (Option-2-Flow Entry)       | OPENA1 ✅      | `1.opena1&2_portier/bin/start_opena1_with_key.sh` |
+| **opena2**    | 12345 | Archivator (Safepoint Storage)          | OPENA2 ✅      | `1.opena1&2_portier/bin/start_opena2_with_key.sh` |
+| **Dashboard** | 12349 | Agent Registry + SSE + UI + **AI Chat** | **OPENA20 ✅** | `bin/start_dashboard.sh`                          |
 
 ### Option-2-Flow (Sacred Path)
 
@@ -240,12 +240,14 @@ tests/e2e_option2_flow.sh
 ```
 
 **Test-Ablauf:**
+
 1. **Preconditions:** Health-Check opena1/opena2/Dashboard
 2. **Flow-Trigger:** POST zu `/log/opena1` mit Test-Request
 3. **Safepoint-Verifikation:** Prüfe `archivp_store/YYYY/MM/DD/`
 4. **Validation:** Schema, Unicode-Pfeil, Request-ID
 
 **Erfolgskriterien:**
+
 - ✅ opena1/opena2 Health OK + Keys present
 - ✅ Request akzeptiert (HTTP 200)
 - ✅ Safepoint in `archivp_store/` gespeichert
@@ -361,6 +363,7 @@ ARCHIVATOR_URL=http://127.0.0.1:12345
 **Ursache:** Services wurden ohne ENV-Export gestartet
 
 **Lösung:**
+
 ```bash
 bin/ops.sh stop
 bin/ops.sh start  # Lädt Keys aus .env automatisch
@@ -383,6 +386,7 @@ bin/ops.sh start  # Lädt Keys aus .env automatisch
 **Ursache:** Fehlender/falscher Bearer Token
 
 **Lösung:**
+
 ```bash
 # Token aus .env holen
 export TOKEN=$(grep '^BEARER_TOKEN=' .env | cut -d= -f2 | tr -d '"')
@@ -419,7 +423,7 @@ find 1.opena1\&2_portier/archivp_store/ -name "*.json" -type f | sort | tail -1 
 
 - **main:** Production-Stable
 - **masterprompt-v1:** Current Development (Master-Prompts Integration)
-- **feature/*:** Feature-Branches
+- **feature/\*:** Feature-Branches
 
 ### Code-Qualität
 
@@ -504,8 +508,8 @@ Vor Deployment:
 
 ---
 
-**Maintainer:** Danijel (ELION Team)  
-**Support:** Siehe `docs/TROUBLESHOOTING.md`  
+**Maintainer:** Danijel (ELION Team)
+**Support:** Siehe `docs/TROUBLESHOOTING.md`
 **License:** Internal Use Only
 
 **Last Updated:** 28. November 2025

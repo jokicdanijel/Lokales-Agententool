@@ -1,9 +1,9 @@
 # SCHRITT 4 – opena4 Telegram Agent (Messenger Interface)
 
-**Version:** 1.0  
-**Status:** ✅ Implementation Complete  
-**Commit:** 84c2b00  
-**Date:** 2025-11-10 UTC  
+**Version:** 1.0
+**Status:** ✅ Implementation Complete
+**Commit:** 84c2b00
+**Date:** 2025-11-10 UTC
 
 ---
 
@@ -12,6 +12,7 @@
 **opena4** ist das **Telegram-Interface** des Portier-Systems – der Messenger-Eingang/Ausgang für Chat-basierte Interaktion.
 
 **Kernaufgaben:**
+
 - Empfangen von Telegram-Nachrichten (Long-Polling oder Webhook)
 - Validierung gegen RBAC (authorized user IDs)
 - Weiterleitung als **CMD** an opena2 (Archivator)
@@ -20,6 +21,7 @@
 - GitHub-Webhook Integration für CI/CD-Benachrichtigungen
 
 **Kommunikationsfluss:**
+
 ```
 ┌─ Telegram User ─────────────┐
 │                              │
@@ -55,11 +57,11 @@
 
 ### Port Assignment
 
-| Service | Port | Host | Protocol | Purpose |
-|---------|------|------|----------|---------|
-| opena4 | 12347 | 127.0.0.1 | HTTP | Telegram Interface |
-| opena2 | 12348 | 127.0.0.1 | HTTP | Archivator |
-| opena1 | 12344 | 127.0.0.1 | HTTP | Koordinator |
+| Service | Port  | Host      | Protocol | Purpose            |
+| ------- | ----- | --------- | -------- | ------------------ |
+| opena4  | 12347 | 127.0.0.1 | HTTP     | Telegram Interface |
+| opena2  | 12348 | 127.0.0.1 | HTTP     | Archivator         |
+| opena1  | 12344 | 127.0.0.1 | HTTP     | Koordinator        |
 
 ### Port-Policy Enforcement
 
@@ -81,6 +83,7 @@
 Root endpoint with service info.
 
 **Response:**
+
 ```json
 {
   "service": "opena4",
@@ -95,6 +98,7 @@ Root endpoint with service info.
 Health-check with port-policy.
 
 **Response:**
+
 ```json
 {
   "service": "opena4",
@@ -113,6 +117,7 @@ Health-check with port-policy.
 Receive Telegram message.
 
 **Request:**
+
 ```json
 {
   "chat_id": 12345,
@@ -124,6 +129,7 @@ Receive Telegram message.
 ```
 
 **Validation:**
+
 - `chat_id`: integer
 - `user_id`: integer (must be in TELEGRAM_ALLOWED_USERS if configured)
 - `message_id`: integer
@@ -131,6 +137,7 @@ Receive Telegram message.
 - `timestamp`: ISO-8601 Z format
 
 **Response (Success):**
+
 ```json
 {
   "ok": true,
@@ -142,6 +149,7 @@ Receive Telegram message.
 ```
 
 **Response (Auth Failure):**
+
 ```json
 {
   "ok": false,
@@ -150,6 +158,7 @@ Receive Telegram message.
 ```
 
 **Response (Schema Error – 8.3 Format):**
+
 ```json
 {
   "request_id": null,
@@ -159,9 +168,7 @@ Receive Telegram message.
     "code": "SCHEMA_VIOLATION",
     "message": "Invalid message schema",
     "details": {
-      "validation_errors": [
-        {"field": "text", "message": "Field required"}
-      ]
+      "validation_errors": [{ "field": "text", "message": "Field required" }]
     }
   },
   "strict": true
@@ -173,15 +180,17 @@ Receive Telegram message.
 GitHub webhook receiver for CI/CD events.
 
 **Request (GitHub Payload):**
+
 ```json
 {
   "ref": "refs/heads/main",
-  "repository": {"full_name": "user/repo"},
-  "head_commit": {"message": "feat: new feature"}
+  "repository": { "full_name": "user/repo" },
+  "head_commit": { "message": "feat: new feature" }
 }
 ```
 
 **Response:**
+
 ```json
 {
   "ok": true,
@@ -194,6 +203,7 @@ GitHub webhook receiver for CI/CD events.
 Service status with recent safepoints.
 
 **Response:**
+
 ```json
 {
   "service": "opena4",
@@ -242,6 +252,7 @@ SP<unix_ts>_<src>→<dst>_<KIND>.json
 ```
 
 **Example:**
+
 ```
 SP1731245696_opena4→opena2_CMD.json
 SP1731245698_opena2→opena4_RESP.json
@@ -260,9 +271,9 @@ SP1731245700_opena4→opena4_ERR.json
     "request_id": "1_1731245696",
     "timestamp": "2025-11-10T12:34:56Z",
     "command": "BROWSE",
-    "payload": {"url": "https://example.com"},
-    "routing": {"resolved_path": "https://example.com"},
-    "project": {"name": "telegram_relay"},
+    "payload": { "url": "https://example.com" },
+    "routing": { "resolved_path": "https://example.com" },
+    "project": { "name": "telegram_relay" },
     "strict": true
   },
   "strict": true
@@ -428,14 +439,14 @@ TELEGRAM_WEBHOOK_URL=https://yourdomain.com/telegram/webhook
 
 ### Error Codes (Schema 8.3)
 
-| Code | HTTP | Meaning | Recovery |
-|------|------|---------|----------|
-| SCHEMA_VIOLATION | 400 | Invalid request schema | Check field types, required fields |
-| UNAUTHORIZED | 403 | User not in whitelist | Add user ID to TELEGRAM_ALLOWED_USERS |
-| FORWARD_ERROR | 502 | opena2 unreachable | Check opena2 health, OPENA2_URL |
-| ANALYZE_ERROR | 500 | File analysis failed | Check file permissions, path |
-| WEBHOOK_ERROR | 500 | GitHub webhook failed | Check webhook configuration |
-| INTERNAL_ERROR | 500 | Server error | Check logs, restart agent |
+| Code             | HTTP | Meaning                | Recovery                              |
+| ---------------- | ---- | ---------------------- | ------------------------------------- |
+| SCHEMA_VIOLATION | 400  | Invalid request schema | Check field types, required fields    |
+| UNAUTHORIZED     | 403  | User not in whitelist  | Add user ID to TELEGRAM_ALLOWED_USERS |
+| FORWARD_ERROR    | 502  | opena2 unreachable     | Check opena2 health, OPENA2_URL       |
+| ANALYZE_ERROR    | 500  | File analysis failed   | Check file permissions, path          |
+| WEBHOOK_ERROR    | 500  | GitHub webhook failed  | Check webhook configuration           |
+| INTERNAL_ERROR   | 500  | Server error           | Check logs, restart agent             |
 
 ### Error Response Example
 
@@ -538,6 +549,7 @@ curl -X POST http://127.0.0.1:12347/telegram/message \
 ```
 
 **Expected:**
+
 - ✅ HTTP 200 OK
 - ✅ CMD safepoint created
 - ✅ Response forwarded to opena2
@@ -558,6 +570,7 @@ curl -X POST http://127.0.0.1:12347/telegram/message \
 ```
 
 **Expected:**
+
 - ✅ HTTP 403 Forbidden
 - ✅ Error safepoint created (opena4→opena4_ERR)
 - ✅ Message: "User not authorized"
@@ -575,6 +588,7 @@ curl -X POST http://127.0.0.1:12347/telegram/message \
 ```
 
 **Expected:**
+
 - ✅ HTTP 400 Bad Request
 - ✅ Schema 8.3 error response
 - ✅ Validation errors listed
@@ -600,6 +614,7 @@ curl -X POST http://127.0.0.1:12347/telegram/message \
 13. **Telegram sends:** Message to user
 
 **All safepoints persisted:**
+
 - `SP<ts>_opena4→opena2_CMD.json`
 - `SP<ts>_opena2→opena1_CMD.json`
 - `SP<ts>_opena1→opena3_CMD.json`
@@ -653,14 +668,17 @@ python main_telegram_agent.py --port 8080 --no-telegram
 ## References & Next Steps
 
 **Completed:**
+
 - ✅ Schritt 1 (7.1 Validation for opena1)
 - ✅ Schritt 4 (opena4 Telegram Agent)
 
 **In Progress:**
+
 - ⏳ Schritt 2 (Tool-Registry & Mapping)
 - ⏳ Schritt 3 (Safepoint Format & Dedupe)
 
 **Coming Next:**
+
 - 📋 Schritt 5 (opena5 VS Code Bridge)
 - 📋 Schritt 6 (opena2 Archivator Deep-Dive)
 - 📋 Schritt 7 (Monitoring & Release)

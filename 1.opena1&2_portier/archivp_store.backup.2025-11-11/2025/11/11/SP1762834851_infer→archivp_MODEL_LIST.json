@@ -4,9 +4,7 @@
   "kind": "MODEL_LIST",
   "body": {
     "models_count": 1,
-    "models": [
-      "llama2:latest"
-    ]
+    "models": ["llama2:latest"]
   },
   "strict": true,
   "ts": "2025-11-11T04:20:51.747563Z"

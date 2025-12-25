@@ -10,19 +10,18 @@ Architektur:
 - Auth: Bearer Token via .env
 """
 
-import asyncio
 import json
 import logging
 import sqlite3
 import uuid
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import Any
 
-from fastapi import FastAPI, HTTPException, Security, Request
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import uvicorn
+from fastapi import FastAPI, HTTPException, Security
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 # ===== CONFIG =====
 PORT = 12347
@@ -36,10 +35,7 @@ ENV_FILE = Path(".env")
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.FileHandler(LOG_DIR / "opena_finance.log"),
-        logging.StreamHandler()
-    ],
+    handlers=[logging.FileHandler(LOG_DIR / "opena_finance.log"), logging.StreamHandler()],
 )
 logger = logging.getLogger("opena_finance")
 
@@ -61,21 +57,25 @@ app.add_middleware(
 
 security = HTTPBearer()
 
+
 # ===== TOKEN & AUTH =====
 def _read_token() -> str:
     """Lese Token aus .env (gegenüber von opena19)"""
     if ENV_FILE.exists():
-        lines = ENV_FILE.read_text().strip().split('\n')
+        lines = ENV_FILE.read_text().strip().split("\n")
         for line in lines:
             if line.startswith("DASHBOARD_ADMIN_TOKEN="):
                 return line.split("=", 1)[1].strip()
     raise RuntimeError("DASHBOARD_ADMIN_TOKEN nicht in .env gefunden!")
 
+
 _TOKEN = _read_token()
+
 
 def verify_token(credentials: HTTPAuthorizationCredentials) -> bool:
     """Validiere Bearer Token"""
     return credentials.credentials == _TOKEN
+
 
 # ===== DATABASE INITIALIZATION =====
 def init_db() -> None:
@@ -84,7 +84,8 @@ def init_db() -> None:
     c = conn.cursor()
 
     # Tabelle: Accounts (Konten)
-    c.execute("""
+    c.execute(
+        """
         CREATE TABLE IF NOT EXISTS accounts (
             id TEXT PRIMARY KEY,
             name TEXT NOT NULL UNIQUE,
@@ -94,10 +95,12 @@ def init_db() -> None:
             created_at TEXT NOT NULL,
             updated_at TEXT NOT NULL
         )
-    """)
+    """
+    )
 
     # Tabelle: Transactions (Transaktionen)
-    c.execute("""
+    c.execute(
+        """
         CREATE TABLE IF NOT EXISTS transactions (
             id TEXT PRIMARY KEY,
             account_id TEXT NOT NULL,
@@ -108,10 +111,12 @@ def init_db() -> None:
             created_at TEXT NOT NULL,
             FOREIGN KEY(account_id) REFERENCES accounts(id)
         )
-    """)
+    """
+    )
 
     # Tabelle: Statements (Kontoauszüge)
-    c.execute("""
+    c.execute(
+        """
         CREATE TABLE IF NOT EXISTS statements (
             id TEXT PRIMARY KEY,
             account_id TEXT NOT NULL,
@@ -123,30 +128,29 @@ def init_db() -> None:
             created_at TEXT NOT NULL,
             FOREIGN KEY(account_id) REFERENCES accounts(id)
         )
-    """)
+    """
+    )
 
     conn.commit()
     conn.close()
     logger.info("✅ Database initialized")
 
+
 init_db()
 
+
 # ===== HELPER FUNCTIONS =====
-async def _archive_write(payload: Dict[str, Any]) -> bool:
+async def _archive_write(payload: dict[str, Any]) -> bool:
     """Schreibe Daten zu opena2 (Archivator)"""
     import urllib.request
+
     try:
-        data = {
-            "src": "opena_finance",
-            "dst": "opena2",
-            "kind": "TRANSACTION",
-            "payload": payload
-        }
+        data = {"src": "opena_finance", "dst": "opena2", "kind": "TRANSACTION", "payload": payload}
         req = urllib.request.Request(
             ARCHIV_ENDPOINT,
             data=json.dumps(data).encode("utf-8"),
             headers={"Content-Type": "application/json"},
-            method="POST"
+            method="POST",
         )
         with urllib.request.urlopen(req, timeout=5) as r:
             result = json.loads(r.read().decode())
@@ -156,26 +160,25 @@ async def _archive_write(payload: Dict[str, Any]) -> bool:
         logger.error(f"Archiv write failed: {e}")
         return False
 
+
 def _get_now() -> str:
     """ISO 8601 Timestamp"""
     return datetime.utcnow().isoformat() + "Z"
+
 
 def _gen_id() -> str:
     """Generiere eindeutige ID"""
     return str(uuid.uuid4())
 
+
 # ===== ENDPOINTS =====
+
 
 @app.get("/health")
 async def health():
     """Health Check"""
-    return {
-        "status": "healthy",
-        "service": "opena_finance",
-        "port": PORT,
-        "db": str(DB_PATH),
-        "timestamp": _get_now()
-    }
+    return {"status": "healthy", "service": "opena_finance", "port": PORT, "db": str(DB_PATH), "timestamp": _get_now()}
+
 
 @app.post("/account/create")
 async def create_account(
@@ -183,8 +186,8 @@ async def create_account(
     name: str = None,
     account_type: str = "checking",
     initial_balance: float = 0.0,
-    currency: str = "EUR"
-) -> Dict[str, Any]:
+    currency: str = "EUR",
+) -> dict[str, Any]:
     """Neues Konto erstellen"""
     if not verify_token(credentials):
         raise HTTPException(status_code=401, detail="Invalid token")
@@ -201,7 +204,7 @@ async def create_account(
         c.execute(
             """INSERT INTO accounts (id, name, account_type, balance, currency, created_at, updated_at)
                VALUES (?, ?, ?, ?, ?, ?, ?)""",
-            (account_id, name, account_type, initial_balance, currency, now, now)
+            (account_id, name, account_type, initial_balance, currency, now, now),
         )
         conn.commit()
         conn.close()
@@ -209,14 +212,16 @@ async def create_account(
         logger.info(f"Account created: {account_id} ({name})")
 
         # Archive
-        await _archive_write({
-            "action": "account_created",
-            "account_id": account_id,
-            "name": name,
-            "type": account_type,
-            "initial_balance": initial_balance,
-            "strict": True
-        })
+        await _archive_write(
+            {
+                "action": "account_created",
+                "account_id": account_id,
+                "name": name,
+                "type": account_type,
+                "initial_balance": initial_balance,
+                "strict": True,
+            }
+        )
 
         return {
             "id": account_id,
@@ -224,13 +229,14 @@ async def create_account(
             "type": account_type,
             "balance": initial_balance,
             "currency": currency,
-            "created_at": now
+            "created_at": now,
         }
     except sqlite3.IntegrityError as e:
-        raise HTTPException(status_code=409, detail=f"Account name duplicate: {str(e)}")
+        raise HTTPException(status_code=409, detail=f"Account name duplicate: {e!s}")
     except Exception as e:
         logger.error(f"Error creating account: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.get("/accounts")
 async def list_accounts(credentials: HTTPAuthorizationCredentials = Security(security)):
@@ -246,14 +252,7 @@ async def list_accounts(credentials: HTTPAuthorizationCredentials = Security(sec
         conn.close()
 
         accounts = [
-            {
-                "id": row[0],
-                "name": row[1],
-                "type": row[2],
-                "balance": row[3],
-                "currency": row[4],
-                "created_at": row[5]
-            }
+            {"id": row[0], "name": row[1], "type": row[2], "balance": row[3], "currency": row[4], "created_at": row[5]}
             for row in rows
         ]
 
@@ -264,14 +263,15 @@ async def list_accounts(credentials: HTTPAuthorizationCredentials = Security(sec
         logger.error(f"Error listing accounts: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.post("/transaction/add")
 async def add_transaction(
     credentials: HTTPAuthorizationCredentials = Security(security),
     account_id: str = None,
     amount: float = None,
     description: str = None,
-    category: str = "expense"
-) -> Dict[str, Any]:
+    category: str = "expense",
+) -> dict[str, Any]:
     """Neue Transaktion hinzufügen"""
     if not verify_token(credentials):
         raise HTTPException(status_code=401, detail="Invalid token")
@@ -299,12 +299,11 @@ async def add_transaction(
         c.execute(
             """INSERT INTO transactions (id, account_id, amount, description, category, transaction_date, created_at)
                VALUES (?, ?, ?, ?, ?, ?, ?)""",
-            (tx_id, account_id, amount, description, category, now, now)
+            (tx_id, account_id, amount, description, category, now, now),
         )
 
         # Update account balance
-        c.execute("UPDATE accounts SET balance = ?, updated_at = ? WHERE id = ?",
-                  (new_balance, now, account_id))
+        c.execute("UPDATE accounts SET balance = ?, updated_at = ? WHERE id = ?", (new_balance, now, account_id))
 
         conn.commit()
         conn.close()
@@ -312,17 +311,19 @@ async def add_transaction(
         logger.info(f"Transaction added: {tx_id} (${amount}) to {account_id}")
 
         # Archive
-        await _archive_write({
-            "action": "transaction_added",
-            "tx_id": tx_id,
-            "account_id": account_id,
-            "amount": amount,
-            "description": description,
-            "category": category,
-            "old_balance": old_balance,
-            "new_balance": new_balance,
-            "strict": True
-        })
+        await _archive_write(
+            {
+                "action": "transaction_added",
+                "tx_id": tx_id,
+                "account_id": account_id,
+                "amount": amount,
+                "description": description,
+                "category": category,
+                "old_balance": old_balance,
+                "new_balance": new_balance,
+                "strict": True,
+            }
+        )
 
         return {
             "id": tx_id,
@@ -332,7 +333,7 @@ async def add_transaction(
             "category": category,
             "old_balance": old_balance,
             "new_balance": new_balance,
-            "timestamp": now
+            "timestamp": now,
         }
 
     except HTTPException:
@@ -341,11 +342,11 @@ async def add_transaction(
         logger.error(f"Error adding transaction: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.get("/transactions")
 async def list_transactions(
-    credentials: HTTPAuthorizationCredentials = Security(security),
-    account_id: str = None
-) -> Dict[str, Any]:
+    credentials: HTTPAuthorizationCredentials = Security(security), account_id: str = None
+) -> dict[str, Any]:
     """Liste Transaktionen (optional filtert nach account_id)"""
     if not verify_token(credentials):
         raise HTTPException(status_code=401, detail="Invalid token")
@@ -358,7 +359,7 @@ async def list_transactions(
             c.execute(
                 """SELECT id, account_id, amount, description, category, transaction_date, created_at
                    FROM transactions WHERE account_id = ? ORDER BY transaction_date DESC""",
-                (account_id,)
+                (account_id,),
             )
         else:
             c.execute(
@@ -377,7 +378,7 @@ async def list_transactions(
                 "description": row[3],
                 "category": row[4],
                 "date": row[5],
-                "created_at": row[6]
+                "created_at": row[6],
             }
             for row in rows
         ]
@@ -389,12 +390,11 @@ async def list_transactions(
         logger.error(f"Error listing transactions: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.post("/statement/generate")
 async def generate_statement(
-    credentials: HTTPAuthorizationCredentials = Security(security),
-    account_id: str = None,
-    period_days: int = 30
-) -> Dict[str, Any]:
+    credentials: HTTPAuthorizationCredentials = Security(security), account_id: str = None, period_days: int = 30
+) -> dict[str, Any]:
     """Generiere Kontoauszug für Account (letzte N Tage)"""
     if not verify_token(credentials):
         raise HTTPException(status_code=401, detail="Invalid token")
@@ -425,7 +425,7 @@ async def generate_statement(
                       SUM(CASE WHEN amount < 0 THEN ABS(amount) ELSE 0 END)
                FROM transactions
                WHERE account_id = ? AND transaction_date >= ? AND transaction_date <= ?""",
-            (account_id, period_start.isoformat() + "Z", period_end.isoformat() + "Z")
+            (account_id, period_start.isoformat() + "Z", period_end.isoformat() + "Z"),
         )
         tx_count, deposits, withdrawals = c.fetchone()
         deposits = deposits or 0.0
@@ -441,8 +441,16 @@ async def generate_statement(
         c.execute(
             """INSERT INTO statements (id, account_id, period_start, period_end, opening_balance, closing_balance, transaction_count, created_at)
                VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
-            (stmt_id, account_id, period_start.isoformat() + "Z", period_end.isoformat() + "Z",
-             opening_balance, closing_balance, tx_count or 0, now)
+            (
+                stmt_id,
+                account_id,
+                period_start.isoformat() + "Z",
+                period_end.isoformat() + "Z",
+                opening_balance,
+                closing_balance,
+                tx_count or 0,
+                now,
+            ),
         )
 
         conn.commit()
@@ -451,19 +459,21 @@ async def generate_statement(
         logger.info(f"Statement generated: {stmt_id} for {account_id}")
 
         # Archive
-        await _archive_write({
-            "action": "statement_generated",
-            "stmt_id": stmt_id,
-            "account_id": account_id,
-            "period_start": period_start.isoformat() + "Z",
-            "period_end": period_end.isoformat() + "Z",
-            "opening_balance": opening_balance,
-            "closing_balance": closing_balance,
-            "deposits": deposits,
-            "withdrawals": withdrawals,
-            "transaction_count": tx_count or 0,
-            "strict": True
-        })
+        await _archive_write(
+            {
+                "action": "statement_generated",
+                "stmt_id": stmt_id,
+                "account_id": account_id,
+                "period_start": period_start.isoformat() + "Z",
+                "period_end": period_end.isoformat() + "Z",
+                "opening_balance": opening_balance,
+                "closing_balance": closing_balance,
+                "deposits": deposits,
+                "withdrawals": withdrawals,
+                "transaction_count": tx_count or 0,
+                "strict": True,
+            }
+        )
 
         return {
             "id": stmt_id,
@@ -475,7 +485,7 @@ async def generate_statement(
             "deposits": deposits,
             "withdrawals": withdrawals,
             "transaction_count": tx_count or 0,
-            "created_at": now
+            "created_at": now,
         }
 
     except HTTPException:
@@ -484,11 +494,9 @@ async def generate_statement(
         logger.error(f"Error generating statement: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.get("/statement/{stmt_id}")
-async def get_statement(
-    stmt_id: str,
-    credentials: HTTPAuthorizationCredentials = Security(security)
-) -> Dict[str, Any]:
+async def get_statement(stmt_id: str, credentials: HTTPAuthorizationCredentials = Security(security)) -> dict[str, Any]:
     """Hole Kontoauszug nach ID"""
     if not verify_token(credentials):
         raise HTTPException(status_code=401, detail="Invalid token")
@@ -499,7 +507,7 @@ async def get_statement(
         c.execute(
             """SELECT id, account_id, period_start, period_end, opening_balance, closing_balance, transaction_count, created_at
                FROM statements WHERE id = ?""",
-            (stmt_id,)
+            (stmt_id,),
         )
         row = c.fetchone()
         conn.close()
@@ -515,7 +523,7 @@ async def get_statement(
             "opening_balance": row[4],
             "closing_balance": row[5],
             "transaction_count": row[6],
-            "created_at": row[7]
+            "created_at": row[7],
         }
 
     except HTTPException:
@@ -524,10 +532,9 @@ async def get_statement(
         logger.error(f"Error fetching statement: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.get("/dashboard")
-async def dashboard_summary(
-    credentials: HTTPAuthorizationCredentials = Security(security)
-) -> Dict[str, Any]:
+async def dashboard_summary(credentials: HTTPAuthorizationCredentials = Security(security)) -> dict[str, Any]:
     """Dashboard-Zusammenfassung (alle Konten, Totals)"""
     if not verify_token(credentials):
         raise HTTPException(status_code=401, detail="Invalid token")
@@ -544,10 +551,7 @@ async def dashboard_summary(
 
         # Transactions (letzte 7 Tage)
         week_ago = (datetime.utcnow() - timedelta(days=7)).isoformat() + "Z"
-        c.execute(
-            "SELECT COUNT(*), SUM(amount) FROM transactions WHERE transaction_date >= ?",
-            (week_ago,)
-        )
+        c.execute("SELECT COUNT(*), SUM(amount) FROM transactions WHERE transaction_date >= ?", (week_ago,))
         recent_tx_count, recent_tx_sum = c.fetchone()
         recent_tx_count = recent_tx_count or 0
         recent_tx_sum = recent_tx_sum or 0.0
@@ -560,22 +564,15 @@ async def dashboard_summary(
 
         return {
             "timestamp": _get_now(),
-            "accounts": {
-                "count": account_count,
-                "total_balance": total_balance
-            },
-            "transactions": {
-                "count": recent_tx_count,
-                "sum_week": recent_tx_sum
-            },
-            "statements": {
-                "count": stmt_count
-            }
+            "accounts": {"count": account_count, "total_balance": total_balance},
+            "transactions": {"count": recent_tx_count, "sum_week": recent_tx_sum},
+            "statements": {"count": stmt_count},
         }
 
     except Exception as e:
         logger.error(f"Error generating dashboard: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
 
 # ===== MAIN =====
 if __name__ == "__main__":

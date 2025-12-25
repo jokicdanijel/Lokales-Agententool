@@ -7,6 +7,7 @@
 ## 📋 Überblick
 
 Das Entitlements-System generiert maschinell alle Plan-Berechtigungen aus:
+
 - `system_baseline.yaml` (Agent-Definitionen, Plan-Struktur)
 - `artifacts/agent_inventory.json` (Discovery-Output)
 
@@ -21,6 +22,7 @@ Das Entitlements-System generiert maschinell alle Plan-Berechtigungen aus:
 Generiert `build/entitlements.json` mit vollständigen Berechtigungen für alle Pläne.
 
 **Features:**
+
 - Plan-Hierarchie (basic → pro → premium → ultimum)
 - Inclusion-Regel (höhere Pläne enthalten niedrigere)
 - Basic-Constraint: EXAKT 4 klickbare Agenten
@@ -29,6 +31,7 @@ Generiert `build/entitlements.json` mit vollständigen Berechtigungen für alle 
 - Plan-spezifische Limits (workflows, logs, tasks, API-calls)
 
 **Usage:**
+
 ```bash
 python3 scripts/build_entitlements.py
 ```
@@ -38,6 +41,7 @@ python3 scripts/build_entitlements.py
 Validiert `build/entitlements.json` gegen alle Constraints.
 
 **Validierungen:**
+
 1. Struktur (alle 4 Pläne vorhanden)
 2. Basic-Constraint (4 klickbare Agenten)
 3. Inclusion-Ordering (ultimum ⊇ premium ⊇ pro ⊇ basic)
@@ -47,10 +51,12 @@ Validiert `build/entitlements.json` gegen alle Constraints.
 7. Limits-Monotonicity (Limits steigen mit Plan)
 
 **Exit-Codes:**
+
 - `0`: Alle Validierungen bestanden
 - `1`: Validierung fehlgeschlagen (CI fails)
 
 **Usage:**
+
 ```bash
 python3 scripts/validate_entitlements.py
 ```
@@ -60,9 +66,11 @@ python3 scripts/validate_entitlements.py
 ## 📦 Output-Dateien
 
 ### `build/entitlements.json` (24 KB)
+
 Vollständige Entitlements für alle Pläne und Agenten.
 
 **Struktur:**
+
 ```json
 {
   "basic": {
@@ -90,9 +98,11 @@ Vollständige Entitlements für alle Pläne und Agenten.
 ```
 
 ### `artifacts/entitlements_validation.json` (2 KB)
+
 Validierungsergebnis mit Details.
 
 **Struktur:**
+
 ```json
 {
   "status": "passed",
@@ -153,32 +163,36 @@ make -f Makefile.entitlements ci-validate       # CI validation (fails on error)
 
 ## 📊 Plan-Übersicht
 
-| Plan     | Clickable Agents | Workflows/Agent | Logs Access | Max Tasks | API Calls/Day |
-|----------|------------------|-----------------|-------------|-----------|---------------|
-| Basic    | 4                | 4               | read-only   | 2         | 1,000         |
-| Pro      | 8                | 10              | read-write  | 5         | 5,000         |
-| Premium  | 12               | 25              | read-write  | 10        | 20,000        |
-| Ultimum  | 17               | unlimited       | full        | unlimited | unlimited     |
+| Plan    | Clickable Agents | Workflows/Agent | Logs Access | Max Tasks | API Calls/Day |
+| ------- | ---------------- | --------------- | ----------- | --------- | ------------- |
+| Basic   | 4                | 4               | read-only   | 2         | 1,000         |
+| Pro     | 8                | 10              | read-write  | 5         | 5,000         |
+| Premium | 12               | 25              | read-write  | 10        | 20,000        |
+| Ultimum | 17               | unlimited       | full        | unlimited | unlimited     |
 
 ### Basic (4 clickable)
+
 - opena3 (OpenWebUI)
 - opena4 (Telegram)
 - opena7 (Email)
 - opena11 (Access Control)
 
 ### Pro (Basic + 4)
+
 - opena8 (WhatsApp)
 - opena12 (Social Media)
 - opena14 (Calendar)
 - opena18 (CRM)
 
 ### Premium (Pro + 4)
+
 - opena6 (Browser)
 - opena9 (Phone)
 - opena15 (HTML Generator)
 - opena16 (Shop)
 
 ### Ultimum (Premium + 5)
+
 - opena5 (VSCode)
 - opena10 (Call Tracking)
 - opena13 (Influencer)
@@ -190,21 +204,26 @@ make -f Makefile.entitlements ci-validate       # CI validation (fails on error)
 ## 🔐 Constraints (Hard Rules)
 
 ### Core Agents (IMMER visible, NIE clickable)
+
 - `opena1` (Koordinator)
 - `opena2` (Archive)
 
 ### System Agents (sichtbar, nicht clickable)
+
 - `opena20` (Dashboard)
 - `opena21` (Workflow)
 
 ### Basic Plan (EXAKT 4 clickable)
+
 - `opena3`, `opena4`, `opena7`, `opena11`
 - Keine Abweichung erlaubt!
 
 ### Inclusion-Regel
+
 ```
 ultimum ⊇ premium ⊇ pro ⊇ basic
 ```
+
 Jeder höhere Plan MUSS alle niedrigeren Pläne enthalten.
 
 ---
@@ -222,6 +241,7 @@ Das Workflow-File `.github/workflows/validate-entitlements.yml` führt automatis
 5. Comment PR with results
 
 **Trigger:**
+
 - Push to `main`, `develop`, `ci/**`
 - PR to `main`
 - Changes to:

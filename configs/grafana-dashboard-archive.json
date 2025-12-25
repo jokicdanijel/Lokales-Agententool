@@ -9,52 +9,98 @@
       {
         "title": "Archive Size (GB)",
         "type": "stat",
-        "gridPos": {"h": 4, "w": 4, "x": 0, "y": 0},
-        "targets": [{"expr": "elion_archive_size_bytes / 1024 / 1024 / 1024", "refId": "A"}],
-        "fieldConfig": {"defaults": {"unit": "decbytes", "decimals": 2}}
+        "gridPos": { "h": 4, "w": 4, "x": 0, "y": 0 },
+        "targets": [
+          {
+            "expr": "elion_archive_size_bytes / 1024 / 1024 / 1024",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": { "defaults": { "unit": "decbytes", "decimals": 2 } }
       },
       {
         "title": "Total Entries",
         "type": "stat",
-        "gridPos": {"h": 4, "w": 4, "x": 4, "y": 0},
-        "targets": [{"expr": "elion_archive_entries_total", "refId": "A"}],
-        "fieldConfig": {"defaults": {"unit": "short"}}
+        "gridPos": { "h": 4, "w": 4, "x": 4, "y": 0 },
+        "targets": [{ "expr": "elion_archive_entries_total", "refId": "A" }],
+        "fieldConfig": { "defaults": { "unit": "short" } }
       },
       {
         "title": "Growth Rate (entries/min)",
         "type": "gauge",
-        "gridPos": {"h": 4, "w": 4, "x": 8, "y": 0},
-        "targets": [{"expr": "rate(elion_archive_entries_total[1m])", "refId": "A"}],
-        "fieldConfig": {"defaults": {"unit": "short", "min": 0, "max": 10}, "overrides": [{"matcher": {"id": "byName"}, "properties": [{"id": "color", "value": {"mode": "thresholds"}}]}]}
+        "gridPos": { "h": 4, "w": 4, "x": 8, "y": 0 },
+        "targets": [
+          { "expr": "rate(elion_archive_entries_total[1m])", "refId": "A" }
+        ],
+        "fieldConfig": {
+          "defaults": { "unit": "short", "min": 0, "max": 10 },
+          "overrides": [
+            {
+              "matcher": { "id": "byName" },
+              "properties": [
+                { "id": "color", "value": { "mode": "thresholds" } }
+              ]
+            }
+          ]
+        }
       },
       {
         "title": "Entries by Type (Pie Chart)",
         "type": "piechart",
-        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
-        "targets": [{"expr": "elion_archive_entries_by_type", "refId": "A", "legendFormat": "{{type}}"}],
-        "options": {"legend": {"displayMode": "list", "placement": "right"}, "pieType": "donut"}
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+        "targets": [
+          {
+            "expr": "elion_archive_entries_by_type",
+            "refId": "A",
+            "legendFormat": "{{type}}"
+          }
+        ],
+        "options": {
+          "legend": { "displayMode": "list", "placement": "right" },
+          "pieType": "donut"
+        }
       },
       {
         "title": "Archive Size Trend (GB)",
         "type": "timeseries",
-        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
-        "targets": [{"expr": "elion_archive_size_bytes / 1024 / 1024 / 1024", "refId": "A"}],
-        "fieldConfig": {"defaults": {"unit": "decbytes", "custom": {"lineWidth": 2}}}
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+        "targets": [
+          {
+            "expr": "elion_archive_size_bytes / 1024 / 1024 / 1024",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": { "unit": "decbytes", "custom": { "lineWidth": 2 } }
+        }
       },
       {
         "title": "New Entries per 5m",
         "type": "timeseries",
-        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12},
-        "targets": [{"expr": "increase(elion_archive_entries_total[5m])", "refId": "A"}],
-        "fieldConfig": {"defaults": {"unit": "short", "custom": {"fillOpacity": 30, "lineWidth": 2}}}
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 12 },
+        "targets": [
+          { "expr": "increase(elion_archive_entries_total[5m])", "refId": "A" }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "custom": { "fillOpacity": 30, "lineWidth": 2 }
+          }
+        }
       },
       {
         "title": "Size per Type (Latest)",
         "type": "barchart",
-        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
-        "targets": [{"expr": "elion_archive_size_by_type / 1024 / 1024", "refId": "A", "legendFormat": "{{type}}"}],
-        "fieldConfig": {"defaults": {"unit": "decbytes"}},
-        "options": {"orientation": "auto"}
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 },
+        "targets": [
+          {
+            "expr": "elion_archive_size_by_type / 1024 / 1024",
+            "refId": "A",
+            "legendFormat": "{{type}}"
+          }
+        ],
+        "fieldConfig": { "defaults": { "unit": "decbytes" } },
+        "options": { "orientation": "auto" }
       }
     ],
     "schemaVersion": 38,

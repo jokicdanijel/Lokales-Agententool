@@ -4,6 +4,7 @@ import sys
 ALLOWED_PORTS = list(range(12344, 12400))
 FORBIDDEN_PORTS = {8080}
 
+
 def first_free_allowed_port():
     for port in ALLOWED_PORTS:
         if port in FORBIDDEN_PORTS:
@@ -18,7 +19,7 @@ def first_free_allowed_port():
     print("[FEHLER] Kein freier erlaubter Port gefunden.")
     sys.exit(2)
 
+
 if __name__ == "__main__":
     chosen = first_free_allowed_port()
     print(f"✅ Aktiver Port: {chosen}")
-

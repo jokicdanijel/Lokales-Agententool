@@ -51,20 +51,12 @@
         },
         "return_format": {
           "type": "string",
-          "enum": [
-            "text",
-            "html",
-            "json",
-            "raw"
-          ],
+          "enum": ["text", "html", "json", "raw"],
           "default": "text",
           "description": "Format der Rückgabe"
         }
       },
-      "required": [
-        "action",
-        "url"
-      ]
+      "required": ["action", "url"]
     }
   }
 }
@@ -469,7 +461,17 @@ Für OpenWebUI Admin Panel zu kopieren:
       "properties": {
         "action": {
           "type": "string",
-          "enum": ["open", "click", "type", "extract_text", "extract_html", "query_selector", "screenshot", "scroll", "wait_for"],
+          "enum": [
+            "open",
+            "click",
+            "type",
+            "extract_text",
+            "extract_html",
+            "query_selector",
+            "screenshot",
+            "scroll",
+            "wait_for"
+          ],
           "description": "Browser-Aktion ausführen"
         },
         "url": {
@@ -547,15 +549,15 @@ Alle Fehler folgen diesem JSON-Format:
 
 ### Error Codes
 
-| Code | Bedeutung | HTTP Status |
-|------|-----------|------------|
-| INVALID_JSON | Ungültiges JSON Format | 400 |
-| INVALID_ACTION | Unbekannte Aktion | 400 |
-| INVALID_URL | URL ist ungültig | 400 |
-| SELECTOR_NOT_FOUND | Selektor passt zu keinem Element | 404 |
-| TIMEOUT | Operation zeitlich überschritten | 504 |
-| BROWSER_ERROR | Browser Fehler | 500 |
-| AGENT_UNREACHABLE | Browser Agent nicht erreichbar | 503 |
+| Code               | Bedeutung                        | HTTP Status |
+| ------------------ | -------------------------------- | ----------- |
+| INVALID_JSON       | Ungültiges JSON Format           | 400         |
+| INVALID_ACTION     | Unbekannte Aktion                | 400         |
+| INVALID_URL        | URL ist ungültig                 | 400         |
+| SELECTOR_NOT_FOUND | Selektor passt zu keinem Element | 404         |
+| TIMEOUT            | Operation zeitlich überschritten | 504         |
+| BROWSER_ERROR      | Browser Fehler                   | 500         |
+| AGENT_UNREACHABLE  | Browser Agent nicht erreichbar   | 503         |
 
 ---
 

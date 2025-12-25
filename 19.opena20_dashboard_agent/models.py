@@ -9,17 +9,17 @@ Kürzel: dashp
 PORTIER 3.0 Strict JSON Schemas
 """
 
-from datetime import datetime
-from typing import Optional, Dict, Any, List
 from enum import Enum
+from typing import Any
 
-from pydantic import BaseModel, Field, ConfigDict
-
+from pydantic import BaseModel, ConfigDict, Field
 
 # ==================== Enums ====================
 
+
 class AgentStatus(str, Enum):
     """Agent Status Codes"""
+
     ONLINE = "online"
     OFFLINE = "offline"
     DEGRADED = "degraded"
@@ -30,6 +30,7 @@ class AgentStatus(str, Enum):
 
 class EventType(str, Enum):
     """SSE Event Types"""
+
     AGENT_STATUS = "agent_status"
     SAFEPOINT = "safepoint"
     ALERT = "alert"
@@ -41,6 +42,7 @@ class EventType(str, Enum):
 
 class AlertSeverity(str, Enum):
     """Alert Severity Levels"""
+
     INFO = "info"
     WARNING = "warning"
     ERROR = "error"
@@ -49,6 +51,7 @@ class AlertSeverity(str, Enum):
 
 class SafepointCategory(str, Enum):
     """Safepoint Kategorien nach PORTIER 3.0"""
+
     CMD = "CMD"
     RESP = "RESP"
     ROUTE = "ROUTE"
@@ -57,74 +60,81 @@ class SafepointCategory(str, Enum):
 
 # ==================== Health & Status Models ====================
 
+
 class HealthResponse(BaseModel):
     """Health Check Response - PORTIER 3.0 Standard"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     status: str = Field(..., description="Status (ok/error)")
     service: str = Field(..., description="Service-Name")
     kuerzel: str = Field(..., description="PORTIER Kürzel")
     port: int = Field(..., description="Port-Nummer")
     uptime_seconds: float = Field(..., description="Uptime in Sekunden")
     version: str = Field(..., description="Version")
-    
+
     # Dashboard-spezifisch
     agents_total: int = Field(0, description="Gesamtzahl registrierter Agents")
     agents_online: int = Field(0, description="Anzahl online Agents")
     agents_offline: int = Field(0, description="Anzahl offline Agents")
     sse_connections: int = Field(0, description="Aktive SSE-Verbindungen")
-    
+
     # Connectivity
     opena1_connected: bool = Field(False, description="Verbindung zu opena1")
     opena2_connected: bool = Field(False, description="Verbindung zu opena2")
-    
+
     strict: bool = Field(True, description="Strict JSON Mode")
 
 
 class AgentHealthResponse(BaseModel):
     """Einzelner Agent Health Status"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     agent_id: str = Field(..., description="Agent ID")
     name: str = Field(..., description="Agent Name")
     kuerzel: str = Field(..., description="PORTIER Kürzel")
     port: int = Field(..., description="Port")
     status: AgentStatus = Field(..., description="Status")
-    response_time_ms: Optional[float] = Field(None, description="Antwortzeit in ms")
+    response_time_ms: float | None = Field(None, description="Antwortzeit in ms")
     last_check: str = Field(..., description="Letzter Check (ISO 8601)")
-    error: Optional[str] = Field(None, description="Fehlermeldung")
-    version: Optional[str] = Field(None, description="Agent-Version")
+    error: str | None = Field(None, description="Fehlermeldung")
+    version: str | None = Field(None, description="Agent-Version")
 
 
 class AllAgentsStatusResponse(BaseModel):
     """Status aller Agents"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     timestamp: str = Field(..., description="Abfrage-Zeitpunkt (ISO 8601)")
     total: int = Field(..., description="Gesamtzahl Agents")
     online: int = Field(..., description="Online Agents")
     offline: int = Field(..., description="Offline Agents")
     degraded: int = Field(0, description="Degraded Agents")
-    agents: List[AgentHealthResponse] = Field(..., description="Agent-Details")
+    agents: list[AgentHealthResponse] = Field(..., description="Agent-Details")
 
 
 # ==================== SSE Models ====================
 
+
 class SSEEvent(BaseModel):
     """Server-Sent Event Struktur"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     event_type: EventType = Field(..., description="Event-Typ")
     timestamp: str = Field(..., description="Timestamp (ISO 8601)")
     source: str = Field(..., description="Quell-Agent")
-    data: Dict[str, Any] = Field(..., description="Event-Daten")
-    event_id: Optional[str] = Field(None, description="Optionale Event-ID")
+    data: dict[str, Any] = Field(..., description="Event-Daten")
+    event_id: str | None = Field(None, description="Optionale Event-ID")
 
 
 class SSEConnectionInfo(BaseModel):
     """SSE Connection Info"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     connection_id: str = Field(..., description="Connection ID")
     client_ip: str = Field(..., description="Client IP")
     connected_at: str = Field(..., description="Verbindungszeitpunkt")
@@ -133,24 +143,27 @@ class SSEConnectionInfo(BaseModel):
 
 # ==================== Safepoint Models ====================
 
+
 class SafepointRecord(BaseModel):
     """Safepoint Record nach PORTIER 3.0"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     sp_timestamp: int = Field(..., description="Unix Timestamp")
     timestamp: str = Field(..., description="ISO 8601 Timestamp")
     source: str = Field(..., description="Quell-Agent")
     destination: str = Field(..., description="Ziel-Agent")
     category: SafepointCategory = Field(..., description="Kategorie")
     request_id: str = Field(..., description="Request ID")
-    payload: Dict[str, Any] = Field(..., description="Payload (maskiert)")
+    payload: dict[str, Any] = Field(..., description="Payload (maskiert)")
     strict: bool = Field(True, description="Strict Mode Flag")
 
 
 class SafepointIndexEntry(BaseModel):
     """Safepoint Index Eintrag"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     file: str = Field(..., description="Relativer Dateipfad")
     ts: str = Field(..., description="Timestamp")
     category: SafepointCategory = Field(..., description="Kategorie")
@@ -161,61 +174,69 @@ class SafepointIndexEntry(BaseModel):
 
 # ==================== Dashboard API Models ====================
 
+
 class CommandRequest(BaseModel):
     """Generic Command Request"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     action: str = Field(..., description="Aktion")
-    target: Optional[str] = Field(None, description="Ziel-Agent")
-    params: Dict[str, Any] = Field(default_factory=dict, description="Parameter")
+    target: str | None = Field(None, description="Ziel-Agent")
+    params: dict[str, Any] = Field(default_factory=dict, description="Parameter")
 
 
 class CommandResponse(BaseModel):
     """Generic Command Response"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     status: str = Field(..., description="Status (success/error)")
     action: str = Field(..., description="Ausgeführte Aktion")
-    result: Optional[Dict[str, Any]] = Field(None, description="Ergebnis")
-    error: Optional[str] = Field(None, description="Fehlermeldung")
+    result: dict[str, Any] | None = Field(None, description="Ergebnis")
+    error: str | None = Field(None, description="Fehlermeldung")
     timestamp: str = Field(..., description="Timestamp")
 
 
 class InvokeRequest(BaseModel):
     """PORTIER 3.0 Option-2-Flow Invoke Request"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     action: str = Field(..., description="Aktion (z.B. 'get_status', 'dispatch')")
-    params: Dict[str, Any] = Field(default_factory=dict, description="Parameter")
+    params: dict[str, Any] = Field(default_factory=dict, description="Parameter")
 
 
 class DispatchRequest(BaseModel):
     """Agent Dispatch Request"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     target_agent: str = Field(..., description="Ziel-Agent ID")
     action: str = Field(..., description="Aktion")
-    payload: Dict[str, Any] = Field(default_factory=dict, description="Payload")
+    payload: dict[str, Any] = Field(default_factory=dict, description="Payload")
     timeout: int = Field(30, ge=5, le=300, description="Timeout in Sekunden")
 
 
 class DispatchResponse(BaseModel):
     """Agent Dispatch Response"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     status: str = Field(..., description="Status")
     target_agent: str = Field(..., description="Ziel-Agent")
-    response: Optional[Dict[str, Any]] = Field(None, description="Agent-Response")
+    response: dict[str, Any] | None = Field(None, description="Agent-Response")
     response_time_ms: float = Field(..., description="Antwortzeit")
-    safepoint_id: Optional[str] = Field(None, description="Safepoint ID")
+    safepoint_id: str | None = Field(None, description="Safepoint ID")
 
 
 # ==================== Alert Models ====================
 
+
 class Alert(BaseModel):
     """System Alert"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     alert_id: str = Field(..., description="Alert ID")
     severity: AlertSeverity = Field(..., description="Schweregrad")
     source: str = Field(..., description="Quelle")
@@ -228,8 +249,9 @@ class Alert(BaseModel):
 
 class AlertCreateRequest(BaseModel):
     """Alert erstellen"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     severity: AlertSeverity = Field(..., description="Schweregrad")
     source: str = Field(..., description="Quelle")
     title: str = Field(..., min_length=1, max_length=200, description="Titel")
@@ -238,34 +260,39 @@ class AlertCreateRequest(BaseModel):
 
 # ==================== Metric Models ====================
 
+
 class Metric(BaseModel):
     """System Metric"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     name: str = Field(..., description="Metrik-Name")
     value: float = Field(..., description="Wert")
     unit: str = Field(..., description="Einheit")
     timestamp: str = Field(..., description="Timestamp")
     source: str = Field(..., description="Quelle")
-    tags: Dict[str, str] = Field(default_factory=dict, description="Tags")
+    tags: dict[str, str] = Field(default_factory=dict, description="Tags")
 
 
 class MetricSeries(BaseModel):
     """Metriken-Zeitreihe"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     name: str = Field(..., description="Metrik-Name")
     source: str = Field(..., description="Quelle")
-    data_points: List[Dict[str, Any]] = Field(..., description="Datenpunkte")
+    data_points: list[dict[str, Any]] = Field(..., description="Datenpunkte")
     interval: str = Field(..., description="Aggregations-Interval")
 
 
 # ==================== Dashboard Configuration Models ====================
 
+
 class DashboardSettings(BaseModel):
     """Dashboard Einstellungen"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     theme: str = Field("dark", description="Theme (dark/light)")
     refresh_interval: int = Field(5000, description="Refresh Interval in ms")
     show_offline_agents: bool = Field(True, description="Offline Agents anzeigen")
@@ -276,33 +303,37 @@ class DashboardSettings(BaseModel):
 
 class DashboardWidget(BaseModel):
     """Dashboard Widget Konfiguration"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     widget_id: str = Field(..., description="Widget ID")
     widget_type: str = Field(..., description="Widget-Typ")
     title: str = Field(..., description="Widget-Titel")
-    position: Dict[str, int] = Field(..., description="Position (x, y, w, h)")
-    config: Dict[str, Any] = Field(default_factory=dict, description="Widget-Config")
+    position: dict[str, int] = Field(..., description="Position (x, y, w, h)")
+    config: dict[str, Any] = Field(default_factory=dict, description="Widget-Config")
     enabled: bool = Field(True, description="Widget aktiv")
 
 
 # ==================== API Response Wrappers ====================
 
+
 class APIResponse(BaseModel):
     """Generic API Response Wrapper"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     success: bool = Field(..., description="Erfolg")
-    data: Optional[Any] = Field(None, description="Daten")
-    error: Optional[str] = Field(None, description="Fehlermeldung")
+    data: Any | None = Field(None, description="Daten")
+    error: str | None = Field(None, description="Fehlermeldung")
     timestamp: str = Field(..., description="Response Timestamp")
 
 
 class PaginatedResponse(BaseModel):
     """Paginierte Response"""
+
     model_config = ConfigDict(extra="forbid")
-    
-    items: List[Any] = Field(..., description="Ergebnisse")
+
+    items: list[Any] = Field(..., description="Ergebnisse")
     total: int = Field(..., description="Gesamtzahl")
     page: int = Field(..., description="Aktuelle Seite")
     page_size: int = Field(..., description="Seitengröße")
@@ -314,7 +345,7 @@ class PaginatedResponse(BaseModel):
 __all__ = [
     # Enums
     "AgentStatus",
-    "EventType", 
+    "EventType",
     "AlertSeverity",
     "SafepointCategory",
     # Health & Status

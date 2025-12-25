@@ -3,56 +3,62 @@ portier/schemas.py — Shared Pydantic Models
 Defines request/response structures for Coordinator Gateway (kordp).
 """
 
-from typing import Any, Dict, Optional
-from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
+from typing import Any
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class ServiceInfo(BaseModel):
     """Service registration info."""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     agent: str = Field(..., min_length=1, description="Service identifier")
     agent_id: str = Field(..., min_length=1, description="Unique agent ID")
     port: int = Field(..., ge=12344, le=12399, description="Service port (Policy: 12344-12399)")
     program: str = Field(..., min_length=1, description="Program name (e.g., kordp, telep, openweb)")
     archivator_port: int = Field(default=12345, description="Archivator port (default: 12345)")
     mapping_ts: str = Field(..., description="Timestamp of route registration")
-    mapping: Dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
+    mapping: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
 
 
 class DispatchRequest(BaseModel):
     """Task dispatch request."""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     agent: str = Field(..., min_length=1, description="Target service identifier")
     action: str = Field(..., min_length=1, description="Action/command to execute")
-    data: Dict[str, Any] = Field(default_factory=dict, description="Request payload")
+    data: dict[str, Any] = Field(default_factory=dict, description="Request payload")
     request_id: str = Field(default_factory=lambda: f"req-{int(datetime.utcnow().timestamp()*1000)}")
     strict: bool = Field(default=True, description="Strict validation flag")
 
 
 class DispatchResponse(BaseModel):
     """Task dispatch response."""
+
     ok: bool = Field(..., description="Success flag")
-    routed_to: Dict[str, Any] = Field(..., description="Route information")
+    routed_to: dict[str, Any] = Field(..., description="Route information")
     request_id: str = Field(..., description="Request identifier")
     strict: bool = Field(default=True)
 
 
 class LogEntry(BaseModel):
     """Log entry model."""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     source: str = Field(..., min_length=1, description="Log source")
     event: str = Field(..., min_length=1, description="Event type")
-    payload: Dict[str, Any] = Field(default_factory=dict, description="Event data")
+    payload: dict[str, Any] = Field(default_factory=dict, description="Event data")
     strict: bool = Field(default=True)
     ts: str = Field(default_factory=lambda: datetime.utcnow().isoformat() + "Z")
 
 
 class HealthResponse(BaseModel):
     """Health check response."""
+
     status: str = Field(..., description="Service status (ok, degraded, down)")
     service: str = Field(..., description="Service name")
     program_target: str = Field(..., description="Program target (kordp, telep, etc.)")
@@ -68,18 +74,15 @@ class HealthResponse(BaseModel):
 
 class Decision72(BaseModel):
     """Decision response schema 7.2 (opena1 decision output)."""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     request_id: str = Field(..., description="Request UUID")
     timestamp: str = Field(..., description="ISO-8601 Z timestamp")
     source: str = Field(default="opena1", description="Source service")
-    decision: Dict[str, Any] = Field(
-        ...,
-        description="Decision details (selected_tool, reason, resolved_path)"
-    )
-    archivator_forward: Dict[str, Any] = Field(
-        default_factory=dict,
-        description="Archivator forwarding status (endpoint, status)"
+    decision: dict[str, Any] = Field(..., description="Decision details (selected_tool, reason, resolved_path)")
+    archivator_forward: dict[str, Any] = Field(
+        default_factory=dict, description="Archivator forwarding status (endpoint, status)"
     )
     status: str = Field(..., description="Decision status (FORWARDED, ERROR, etc.)")
     strict: bool = Field(default=True)

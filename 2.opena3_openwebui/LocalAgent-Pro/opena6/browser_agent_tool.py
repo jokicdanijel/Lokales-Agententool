@@ -7,8 +7,10 @@ license: MIT
 """
 
 import json
+from collections.abc import Callable
+from typing import Any
+
 import requests
-from typing import Callable, Any
 from pydantic import BaseModel, Field
 
 
@@ -164,7 +166,7 @@ class Tools:
             return json.dumps({"status": "error", "message": error_msg})
 
         except Exception as e:
-            error_msg = f"Unexpected error: {str(e)}"
+            error_msg = f"Unexpected error: {e!s}"
             await emitter.emit(
                 description=error_msg,
                 status="error",

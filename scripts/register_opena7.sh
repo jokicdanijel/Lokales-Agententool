@@ -80,15 +80,15 @@ if curl -s "http://127.0.0.1:${PORT}/health" 2>/dev/null | jq -e '.status' > /de
     echo "✅ opena7 already running on port ${PORT}"
 else
     echo "Starting opena7 on port ${PORT}..."
-    
+
     cd "${SERVICE_DIR}"
     export OPENA7_PORT="${PORT}"
-    
+
     # Start in background
     nohup python3 -m app.main > "${PROJECT_ROOT}/logs/opena7.nohup.log" 2>&1 &
     AGENT_PID=$!
     echo "Started with PID ${AGENT_PID}"
-    
+
     # Wait for startup (30s timeout)
     for i in {1..30}; do
         if curl -s "http://127.0.0.1:${PORT}/health" 2>/dev/null | jq -e '.status' > /dev/null 2>&1; then

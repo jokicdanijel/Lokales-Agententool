@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 OpenWebUI Bridge (opena3) – Relay between Telegram, GitHub, and OpenWebUI API
 - Port: 12347 (Port-Policy)
@@ -11,21 +10,19 @@ OpenWebUI Bridge (opena3) – Relay between Telegram, GitHub, and OpenWebUI API
 - All interactions logged as Safepoints
 """
 
-import os
-import sys
-import json
-import time
 import hashlib
 import hmac
+import json
 import logging
+import os
+import time
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Any
 
-from fastapi import FastAPI, Request, HTTPException
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
 import requests
+from fastapi import FastAPI, HTTPException, Request
+from pydantic import BaseModel
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Configuration
@@ -44,17 +41,14 @@ OPENWEBUI_URL = os.getenv("OPENWEBUI_URL", "http://localhost:8080")
 GITHUB_WEBHOOK_SECRET = os.getenv("GITHUB_WEBHOOK_SECRET", "")
 
 # Logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger("opena3.bridge")
 
 # FastAPI
 app = FastAPI(
     title="OpenWebUI Bridge (opena3)",
     description="Relay and integration for Telegram, GitHub, and OpenWebUI",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 startup_time = time.time()
@@ -63,44 +57,36 @@ startup_time = time.time()
 # Safepoint Utilities
 # ──────────────────────────────────────────────────────────────────────────────
 
-def write_safepoint(
-    src: str,
-    dst: str,
-    kind: str,
-    body: Dict[str, Any]
-) -> Path:
+
+def write_safepoint(src: str, dst: str, kind: str, body: dict[str, Any]) -> Path:
     """Write safepoint to archive."""
     today = datetime.utcnow().strftime("%Y/%m/%d")
     target_dir = ARCHIVE_DIR / today
     target_dir.mkdir(parents=True, exist_ok=True)
-    
+
     ts = int(time.time())
     name = f"SP{ts}_{src}→{dst}_{kind}.json"
     fpath = target_dir / name
-    
+
     payload = {
         "ts": datetime.utcnow().isoformat() + "Z",
         "src": src,
         "dst": dst,
         "kind": kind,
         "body": body,
-        "strict": True
+        "strict": True,
     }
-    
+
     fpath.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
-    
+
     # Append to index
     INDEX_FILE.parent.mkdir(parents=True, exist_ok=True)
     with INDEX_FILE.open("a", encoding="utf-8") as idx:
-        idx.write(json.dumps({
-            "sp": name,
-            "ts": payload["ts"],
-            "src": src,
-            "dst": dst,
-            "kind": kind,
-            "path": str(fpath)
-        }) + "\n")
-    
+        idx.write(
+            json.dumps({"sp": name, "ts": payload["ts"], "src": src, "dst": dst, "kind": kind, "path": str(fpath)})
+            + "\n"
+        )
+
     logger.debug(f"Safepoint: {name}")
     return fpath
 
@@ -125,8 +111,10 @@ def _redact_secrets(obj: Any) -> Any:
 # Models
 # ──────────────────────────────────────────────────────────────────────────────
 
+
 class MessageRelay(BaseModel):
     """Relay message from Telegram to OpenWebUI."""
+
     chat_id: int
     user_id: int
     text: str
@@ -135,15 +123,17 @@ class MessageRelay(BaseModel):
 
 class GitHubWebhook(BaseModel):
     """GitHub webhook event (simplified)."""
-    action: Optional[str] = None
-    ref: Optional[str] = None
-    repository: Optional[Dict[str, Any]] = None
-    head_commit: Optional[Dict[str, Any]] = None
+
+    action: str | None = None
+    ref: str | None = None
+    repository: dict[str, Any] | None = None
+    head_commit: dict[str, Any] | None = None
 
 
 # ──────────────────────────────────────────────────────────────────────────────
 # HTTP Endpoints
 # ──────────────────────────────────────────────────────────────────────────────
+
 
 @app.get("/health")
 async def health():
@@ -154,12 +144,9 @@ async def health():
         "service": "opena3",
         "role": "openwebui_bridge",
         "port": PORT,
-        "port_policy": {
-            "window": "12344-12399",
-            "forbidden": ["8080"]
-        },
+        "port_policy": {"window": "12344-12399", "forbidden": ["8080"]},
         "uptime_seconds": uptime,
-        "strict": True
+        "strict": True,
     }
 
 
@@ -167,55 +154,44 @@ async def health():
 async def relay_message(msg: MessageRelay):
     """Relay message from Telegram to OpenWebUI."""
     request_id = f"relay_{msg.message_id}_{int(time.time()*1000)}"
-    
+
     try:
         # Log incoming message
-        write_safepoint("opena4", "opena3", "MSG_RELAY_IN", {
-            "message_id": msg.message_id,
-            "chat_id": msg.chat_id,
-            "user_id": msg.user_id,
-            "text": msg.text
-        })
-        
+        write_safepoint(
+            "opena4",
+            "opena3",
+            "MSG_RELAY_IN",
+            {"message_id": msg.message_id, "chat_id": msg.chat_id, "user_id": msg.user_id, "text": msg.text},
+        )
+
         # Forward to OpenWebUI (if configured)
         response_data = {
             "request_id": request_id,
             "status": "received",
-            "forwarded_to": "openwebui" if OPENWEBUI_URL else "queued"
+            "forwarded_to": "openwebui" if OPENWEBUI_URL else "queued",
         }
-        
+
         if OPENWEBUI_URL:
             try:
                 # Try to reach OpenWebUI API
-                owui_resp = requests.post(
-                    f"{OPENWEBUI_URL}/api/chat",
-                    json={"message": msg.text},
-                    timeout=5
-                )
+                owui_resp = requests.post(f"{OPENWEBUI_URL}/api/chat", json={"message": msg.text}, timeout=5)
                 if owui_resp.status_code == 200:
                     response_data["openwebui_response"] = owui_resp.json()
                     response_data["status"] = "processed"
             except requests.RequestException as e:
                 logger.warning(f"OpenWebUI unreachable: {e}")
                 response_data["warning"] = f"OpenWebUI not reached: {str(e)[:100]}"
-        
+
         # Log outgoing result
         write_safepoint("opena3", "opena4", "MSG_RELAY_OUT", response_data)
-        
-        return {
-            "ok": True,
-            "request_id": request_id,
-            "response": response_data,
-            "strict": True
-        }
-    
+
+        return {"ok": True, "request_id": request_id, "response": response_data, "strict": True}
+
     except Exception as e:
         logger.exception(f"Message relay error: {e}")
-        write_safepoint("opena3", "opena3", "ERR", {
-            "error": "relay_failed",
-            "message": str(e),
-            "request_id": request_id
-        })
+        write_safepoint(
+            "opena3", "opena3", "ERR", {"error": "relay_failed", "message": str(e), "request_id": request_id}
+        )
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -227,40 +203,31 @@ async def github_webhook(req: Request):
         if GITHUB_WEBHOOK_SECRET:
             signature = req.headers.get("X-Hub-Signature-256", "")
             body = await req.body()
-            
-            expected_sig = "sha256=" + hmac.new(
-                GITHUB_WEBHOOK_SECRET.encode(),
-                body,
-                hashlib.sha256
-            ).hexdigest()
-            
+
+            expected_sig = "sha256=" + hmac.new(GITHUB_WEBHOOK_SECRET.encode(), body, hashlib.sha256).hexdigest()
+
             if not hmac.compare_digest(signature, expected_sig):
                 raise HTTPException(status_code=401, detail="Invalid signature")
-        
+
         data = await req.json()
         event_type = req.headers.get("X-GitHub-Event", "unknown")
-        
+
         # Extract key information
         repo = data.get("repository", {}).get("full_name", "unknown")
         ref = data.get("ref", "").replace("refs/heads/", "")
         action = data.get("action", "")
         commit_msg = ""
-        
+
         if event_type == "push":
             commit_msg = data.get("head_commit", {}).get("message", "")
         elif event_type == "pull_request":
             pr = data.get("pull_request", {})
             commit_msg = pr.get("title", "")
-        
+
         # Build notification message
-        emoji_map = {
-            "push": "📤",
-            "pull_request": "🔀",
-            "release": "🏷️",
-            "workflow_run": "⚙️"
-        }
+        emoji_map = {"push": "📤", "pull_request": "🔀", "release": "🏷️", "workflow_run": "⚙️"}
         emoji = emoji_map.get(event_type, "📌")
-        
+
         message = f"{emoji} GitHub {event_type}: {repo}"
         if action:
             message += f" ({action})"
@@ -268,41 +235,34 @@ async def github_webhook(req: Request):
             message += f" @ {ref}"
         if commit_msg:
             message += f"\n💬 {commit_msg.split(chr(10))[0][:80]}"
-        
+
         # Log webhook
-        write_safepoint("github", "opena3", "WEBHOOK", {
-            "event_type": event_type,
-            "action": action,
-            "repo": repo,
-            "ref": ref,
-            "message": commit_msg[:200],
-            "received_at": datetime.utcnow().isoformat() + "Z"
-        })
-        
+        write_safepoint(
+            "github",
+            "opena3",
+            "WEBHOOK",
+            {
+                "event_type": event_type,
+                "action": action,
+                "repo": repo,
+                "ref": ref,
+                "message": commit_msg[:200],
+                "received_at": datetime.utcnow().isoformat() + "Z",
+            },
+        )
+
         # Send notification to Telegram (if available)
         try:
-            requests.post(
-                f"{OPENA4_URL}/notify",
-                json={"message": message},
-                timeout=5
-            )
+            requests.post(f"{OPENA4_URL}/notify", json={"message": message}, timeout=5)
             logger.info(f"GitHub webhook notification sent to Telegram: {message[:80]}")
         except requests.RequestException as e:
             logger.warning(f"Could not notify Telegram: {e}")
-        
-        return {
-            "ok": True,
-            "event": event_type,
-            "message": message,
-            "strict": True
-        }
-    
+
+        return {"ok": True, "event": event_type, "message": message, "strict": True}
+
     except Exception as e:
         logger.exception(f"GitHub webhook error: {e}")
-        write_safepoint("github", "opena3", "ERR", {
-            "error": "webhook_failed",
-            "message": str(e)
-        })
+        write_safepoint("github", "opena3", "ERR", {"error": "webhook_failed", "message": str(e)})
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -316,29 +276,21 @@ async def status():
                 lines = f.readlines()
                 for line in lines[-10:]:  # Last 10 entries
                     recent_sps.append(json.loads(line))
-        
+
         return {
             "service": "opena3",
             "status": "operational",
             "role": "openwebui_bridge",
             "port": PORT,
             "archive_dir": str(ARCHIVE_DIR),
-            "endpoints": {
-                "opena2": OPENA2_URL,
-                "opena4": OPENA4_URL,
-                "openwebui": OPENWEBUI_URL
-            },
+            "endpoints": {"opena2": OPENA2_URL, "opena4": OPENA4_URL, "openwebui": OPENWEBUI_URL},
             "recent_safepoints_count": len(recent_sps),
             "recent_safepoints": recent_sps,
-            "strict": True
+            "strict": True,
         }
     except Exception as e:
         logger.exception(f"Status error: {e}")
-        return {
-            "service": "opena3",
-            "status": "error",
-            "error": str(e)
-        }
+        return {"service": "opena3", "status": "error", "error": str(e)}
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -347,14 +299,9 @@ async def status():
 
 if __name__ == "__main__":
     import uvicorn
+
     logger.info(f"Starting OpenWebUI Bridge @ {HOST}:{PORT}")
     logger.info(f"OpenWebUI: {OPENWEBUI_URL}")
     logger.info(f"Archive: {ARCHIVE_DIR}")
-    
-    uvicorn.run(
-        app,
-        host=HOST,
-        port=PORT,
-        reload=False,
-        access_log=False
-    )
+
+    uvicorn.run(app, host=HOST, port=PORT, reload=False, access_log=False)

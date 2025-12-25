@@ -1,7 +1,7 @@
 import logging
-from typing import Optional
-from open_webui.retrieval.web.main import SearchResult, get_filtered_results
+
 from open_webui.env import SRC_LOG_LEVELS
+from open_webui.retrieval.web.main import SearchResult, get_filtered_results
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["RAG"])
@@ -21,7 +21,7 @@ def search_azure(
     index_name: str,
     query: str,
     count: int,
-    filter_list: Optional[list[str]] = None,
+    filter_list: list[str] | None = None,
 ) -> list[SearchResult]:
     """
     Search using Azure AI Search.
@@ -42,8 +42,7 @@ def search_azure(
         from azure.search.documents import SearchClient
     except ImportError:
         log.error(
-            "azure-search-documents package is not installed. "
-            "Install it with: pip install azure-search-documents"
+            "azure-search-documents package is not installed. " "Install it with: pip install azure-search-documents"
         )
         raise ImportError(
             "azure-search-documents is required for Azure AI Search. "
@@ -53,9 +52,7 @@ def search_azure(
     try:
         # Create search client with API key authentication
         credential = AzureKeyCredential(api_key)
-        search_client = SearchClient(
-            endpoint=endpoint, index_name=index_name, credential=credential
-        )
+        search_client = SearchClient(endpoint=endpoint, index_name=index_name, credential=credential)
 
         # Perform the search
         results = search_client.search(search_text=query, top=count)

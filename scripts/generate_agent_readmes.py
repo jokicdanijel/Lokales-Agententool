@@ -25,10 +25,10 @@ AGENTS = [
 
 README_TEMPLATE = """# {emoji} {agent} - {rolle}
 
-**Agent-ID:** `{agent}`  
-**Port:** {port}  
-**Kürzel:** `{kurzel}`  
-**Version:** 2.0  
+**Agent-ID:** `{agent}`
+**Port:** {port}
+**Kürzel:** `{kurzel}`
+**Version:** 2.0
 **Status:** ✅ Production
 
 ---
@@ -206,7 +206,7 @@ curl http://127.0.0.1:{port}/metrics
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 21. November 2025
 """
 
@@ -267,12 +267,13 @@ DEFAULT_ACTIONS = {
     "dashp": "get_metrics",
 }
 
+
 def generate_readme(nr, agent, port, kurzel, rolle, ordner):
     """Generiert README.md für einen Agenten"""
     emoji = EMOJI_MAP.get(kurzel, "🔧")
     funktionen = FUNKTIONEN_MAP.get(kurzel, "- 🔧 **Generic Function** - Standard-Aktion ausführen")
     default_action = DEFAULT_ACTIONS.get(kurzel, "execute")
-    
+
     content = README_TEMPLATE.format(
         nr=nr,
         agent=agent,
@@ -282,29 +283,31 @@ def generate_readme(nr, agent, port, kurzel, rolle, ordner):
         ordner=ordner,
         emoji=emoji,
         funktionen=funktionen,
-        default_action=default_action
+        default_action=default_action,
     )
-    
+
     filepath = f"{ordner}/README.md"
-    
+
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(content)
-    
+
     print(f"✅ Erstellt: {filepath}")
+
 
 def main():
     """Hauptfunktion"""
     print("🚀 Generiere Agenten-READMEs...")
     print("=" * 60)
-    
+
     for nr, agent, port, kurzel, rolle, ordner in AGENTS:
         try:
             generate_readme(nr, agent, port, kurzel, rolle, ordner)
         except Exception as e:
             print(f"❌ Fehler bei {agent}: {e}")
-    
+
     print("=" * 60)
     print(f"✅ {len(AGENTS)} READMEs erfolgreich generiert!")
+
 
 if __name__ == "__main__":
     main()

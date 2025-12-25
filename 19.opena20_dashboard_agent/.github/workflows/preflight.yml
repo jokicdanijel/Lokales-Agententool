@@ -35,16 +35,16 @@ jobs:
       - name: Fail if blocking violations
         run: |
           python3 - << 'PY'
-import json,sys
-try:
-  with open('19.opena20_dashboard_agent/webpanel/artifacts/start_proof_report.json') as f:
-    j=json.load(f)
-    if not j.get('ok',False):
-      print('Preflight found blocking violations:', j.get('summary',{}))
-      sys.exit(1)
-    else:
-      print('Preflight OK')
-except Exception as e:
-  print('No start_proof_report.json found or error:', e)
-  sys.exit(1)
-PY
+          import json, sys
+          try:
+              with open('19.opena20_dashboard_agent/webpanel/artifacts/start_proof_report.json') as f:
+                  j = json.load(f)
+              if not j.get('ok', False):
+                  print('Preflight found blocking violations:', j.get('summary', {}))
+                  sys.exit(1)
+              else:
+                  print('Preflight OK')
+          except Exception as e:
+              print('No start_proof_report.json found or error:', e)
+              sys.exit(1)
+          PY

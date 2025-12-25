@@ -1,24 +1,19 @@
 import logging
 import math
 import re
-from datetime import datetime
-from typing import Optional, Any
 import uuid
+from datetime import datetime
+from typing import Any
 
-
-from open_webui.utils.misc import get_last_user_message, get_messages_content
-
-from open_webui.env import SRC_LOG_LEVELS
 from open_webui.config import DEFAULT_RAG_TEMPLATE
-
+from open_webui.env import SRC_LOG_LEVELS
+from open_webui.utils.misc import get_last_user_message, get_messages_content
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["RAG"])
 
 
-def get_task_model_id(
-    default_model_id: str, task_model: str, task_model_external: str, models
-) -> str:
+def get_task_model_id(default_model_id: str, task_model: str, task_model_external: str, models) -> str:
     # Set the task model
     task_model_id = default_model_id
     # Check if the user has a custom task model and use that model
@@ -38,8 +33,7 @@ def prompt_variables_template(template: str, variables: dict[str, str]) -> str:
     return template
 
 
-def prompt_template(template: str, user: Optional[Any] = None) -> str:
-
+def prompt_template(template: str, user: Any | None = None) -> str:
     USER_VARIABLES = {}
 
     if user:
@@ -58,15 +52,8 @@ def prompt_template(template: str, user: Optional[Any] = None) -> str:
                         birth_date = datetime.strptime(birth_date, "%Y-%m-%d")
 
                     today = datetime.now()
-                    age = (
-                        today.year
-                        - birth_date.year
-                        - (
-                            (today.month, today.day)
-                            < (birth_date.month, birth_date.day)
-                        )
-                    )
-                except Exception as e:
+                    age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+                except Exception:
                     pass
 
             USER_VARIABLES = {
@@ -88,34 +75,22 @@ def prompt_template(template: str, user: Optional[Any] = None) -> str:
 
     template = template.replace("{{CURRENT_DATE}}", formatted_date)
     template = template.replace("{{CURRENT_TIME}}", formatted_time)
-    template = template.replace(
-        "{{CURRENT_DATETIME}}", f"{formatted_date} {formatted_time}"
-    )
+    template = template.replace("{{CURRENT_DATETIME}}", f"{formatted_date} {formatted_time}")
     template = template.replace("{{CURRENT_WEEKDAY}}", formatted_weekday)
 
     template = template.replace("{{USER_NAME}}", USER_VARIABLES.get("name", "Unknown"))
     template = template.replace("{{USER_BIO}}", USER_VARIABLES.get("bio", "Unknown"))
-    template = template.replace(
-        "{{USER_GENDER}}", USER_VARIABLES.get("gender", "Unknown")
-    )
-    template = template.replace(
-        "{{USER_BIRTH_DATE}}", USER_VARIABLES.get("birth_date", "Unknown")
-    )
-    template = template.replace(
-        "{{USER_AGE}}", str(USER_VARIABLES.get("age", "Unknown"))
-    )
-    template = template.replace(
-        "{{USER_LOCATION}}", USER_VARIABLES.get("location", "Unknown")
-    )
+    template = template.replace("{{USER_GENDER}}", USER_VARIABLES.get("gender", "Unknown"))
+    template = template.replace("{{USER_BIRTH_DATE}}", USER_VARIABLES.get("birth_date", "Unknown"))
+    template = template.replace("{{USER_AGE}}", str(USER_VARIABLES.get("age", "Unknown")))
+    template = template.replace("{{USER_LOCATION}}", USER_VARIABLES.get("location", "Unknown"))
 
     return template
 
 
 def replace_prompt_variable(template: str, prompt: str) -> str:
     def replacement_function(match):
-        full_match = match.group(
-            0
-        ).lower()  # Normalize to lowercase for consistent handling
+        full_match = match.group(0).lower()  # Normalize to lowercase for consistent handling
         start_length = match.group(1)
         end_length = match.group(2)
         middle_length = match.group(3)
@@ -141,9 +116,7 @@ def replace_prompt_variable(template: str, prompt: str) -> str:
     return template
 
 
-def replace_messages_variable(
-    template: str, messages: Optional[list[dict]] = None
-) -> str:
+def replace_messages_variable(template: str, messages: list[dict] | None = None) -> str:
     def replacement_function(match):
         full_match = match.group(0)
         start_length = match.group(1)
@@ -193,9 +166,7 @@ def rag_template(template: str, context: str, query: str):
     template = prompt_template(template)
 
     if "[context]" not in template and "{{CONTEXT}}" not in template:
-        log.debug(
-            "WARNING: The RAG template does not contain the '[context]' or '{{CONTEXT}}' placeholder."
-        )
+        log.debug("WARNING: The RAG template does not contain the '[context]' or '{{CONTEXT}}' placeholder.")
 
     if "<context>" in context and "</context>" in context:
         log.debug(
@@ -227,10 +198,7 @@ def rag_template(template: str, context: str, query: str):
     return template
 
 
-def title_generation_template(
-    template: str, messages: list[dict], user: Optional[Any] = None
-) -> str:
-
+def title_generation_template(template: str, messages: list[dict], user: Any | None = None) -> str:
     prompt = get_last_user_message(messages)
     template = replace_prompt_variable(template, prompt)
     template = replace_messages_variable(template, messages)
@@ -240,9 +208,7 @@ def title_generation_template(
     return template
 
 
-def follow_up_generation_template(
-    template: str, messages: list[dict], user: Optional[Any] = None
-) -> str:
+def follow_up_generation_template(template: str, messages: list[dict], user: Any | None = None) -> str:
     prompt = get_last_user_message(messages)
     template = replace_prompt_variable(template, prompt)
     template = replace_messages_variable(template, messages)
@@ -251,9 +217,7 @@ def follow_up_generation_template(
     return template
 
 
-def tags_generation_template(
-    template: str, messages: list[dict], user: Optional[Any] = None
-) -> str:
+def tags_generation_template(template: str, messages: list[dict], user: Any | None = None) -> str:
     prompt = get_last_user_message(messages)
     template = replace_prompt_variable(template, prompt)
     template = replace_messages_variable(template, messages)
@@ -262,9 +226,7 @@ def tags_generation_template(
     return template
 
 
-def image_prompt_generation_template(
-    template: str, messages: list[dict], user: Optional[Any] = None
-) -> str:
+def image_prompt_generation_template(template: str, messages: list[dict], user: Any | None = None) -> str:
     prompt = get_last_user_message(messages)
     template = replace_prompt_variable(template, prompt)
     template = replace_messages_variable(template, messages)
@@ -273,9 +235,7 @@ def image_prompt_generation_template(
     return template
 
 
-def emoji_generation_template(
-    template: str, prompt: str, user: Optional[Any] = None
-) -> str:
+def emoji_generation_template(template: str, prompt: str, user: Any | None = None) -> str:
     template = replace_prompt_variable(template, prompt)
     template = prompt_template(template, user)
 
@@ -285,9 +245,9 @@ def emoji_generation_template(
 def autocomplete_generation_template(
     template: str,
     prompt: str,
-    messages: Optional[list[dict]] = None,
-    type: Optional[str] = None,
-    user: Optional[Any] = None,
+    messages: list[dict] | None = None,
+    type: str | None = None,
+    user: Any | None = None,
 ) -> str:
     template = template.replace("{{TYPE}}", type if type else "")
     template = replace_prompt_variable(template, prompt)
@@ -297,9 +257,7 @@ def autocomplete_generation_template(
     return template
 
 
-def query_generation_template(
-    template: str, messages: list[dict], user: Optional[Any] = None
-) -> str:
+def query_generation_template(template: str, messages: list[dict], user: Any | None = None) -> str:
     prompt = get_last_user_message(messages)
     template = replace_prompt_variable(template, prompt)
     template = replace_messages_variable(template, messages)
@@ -308,9 +266,7 @@ def query_generation_template(
     return template
 
 
-def moa_response_generation_template(
-    template: str, prompt: str, responses: list[str]
-) -> str:
+def moa_response_generation_template(template: str, prompt: str, responses: list[str]) -> str:
     def replacement_function(match):
         full_match = match.group(0)
         start_length = match.group(1)

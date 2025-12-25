@@ -81,6 +81,7 @@ Gesamtprojekt/
 **Backup-Priorität:** 🔴 HIGHEST
 
 **Backup-Strategie:**
+
 ```bash
 # Vault Backup (täglig)
 vault backup --path=/backup/vault/$(date +%Y-%m-%d).snap
@@ -99,6 +100,7 @@ aws s3 cp vault_backup.snap s3://backup/vault/
 **Folder:** `Gesamtprojekt/19.opena20_dashboard_agent/`
 **Funktion:** Central Dashboard, Agent Orchestration
 **Sub-Components:**
+
 - webpanel/ (Frontend)
 - backend/ (FastAPI)
 - tracing/ (Jaeger Integration - v2025.12.24)
@@ -108,6 +110,7 @@ aws s3 cp vault_backup.snap s3://backup/vault/
 ## 🔗 AGENT DEPENDENCIES
 
 ### Layer 1: Infrastructure (opena1-opena2)
+
 ```
 opena1, opena2 (PORTIER 3.0)
     ↓ Route & Load-Balance ↓
@@ -115,12 +118,14 @@ opena1, opena2 (PORTIER 3.0)
 ```
 
 ### Layer 2: Core Services
+
 ```
 opena11 (Vault)        ← opena20 (Dashboard)
                        ← All authenticated agents
 ```
 
 ### Layer 3: Connectors (opena4-opena9, opena12, opena14)
+
 ```
 opena4, opena5, opena6, opena7, opena8, opena9, opena12, opena14
     ↓ Integration Points ↓
@@ -128,6 +133,7 @@ opena4, opena5, opena6, opena7, opena8, opena9, opena12, opena14
 ```
 
 ### Layer 4: Specialized Services
+
 ```
 opena10 (Call Tracking)    → Analytics
 opena13 (Influencer)       → Analytics
@@ -165,19 +171,19 @@ done
 
 ## 📋 AGENT TYPES CLASSIFICATION
 
-| Type | Agents | Purpose |
-|------|--------|---------|
-| 🏗️ **Portier** | opena1, opena2 | Port Management, Load Balancing |
-| 🎨 **UI** | opena3 | Web Interface |
-| 🔌 **Connectors** | opena4-9, 12, 14 | External Integrations |
-| 📊 **Analytics** | opena10, opena13 | Data Collection & Analysis |
-| 🔐 **Security** | opena11 | Vault & Secrets |
-| ⚡ **Generators** | opena15, opena17 | Content Generation |
-| 🛍️ **E-Commerce** | opena16 | Shop Integration |
-| 👥 **CRM** | opena18 | Customer Management |
-| 💰 **Finance** | opena19 | Trading & Markets |
-| 📈 **Dashboard** | opena20 | Orchestration Hub |
-| 🔄 **Workflow** | opena21 | Automation Engine |
+| Type              | Agents           | Purpose                         |
+| ----------------- | ---------------- | ------------------------------- |
+| 🏗️ **Portier**    | opena1, opena2   | Port Management, Load Balancing |
+| 🎨 **UI**         | opena3           | Web Interface                   |
+| 🔌 **Connectors** | opena4-9, 12, 14 | External Integrations           |
+| 📊 **Analytics**  | opena10, opena13 | Data Collection & Analysis      |
+| 🔐 **Security**   | opena11          | Vault & Secrets                 |
+| ⚡ **Generators** | opena15, opena17 | Content Generation              |
+| 🛍️ **E-Commerce** | opena16          | Shop Integration                |
+| 👥 **CRM**        | opena18          | Customer Management             |
+| 💰 **Finance**    | opena19          | Trading & Markets               |
+| 📈 **Dashboard**  | opena20          | Orchestration Hub               |
+| 🔄 **Workflow**   | opena21          | Automation Engine               |
 
 ---
 

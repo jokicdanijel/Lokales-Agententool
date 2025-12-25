@@ -6,8 +6,8 @@
       "parameters": {
         "values": {
           "string": [
-            {"name": "chat_id", "value": "123456"},
-            {"name": "text", "value": "Test message from n8n execute"}
+            { "name": "chat_id", "value": "123456" },
+            { "name": "text", "value": "Test message from n8n execute" }
           ]
         },
         "options": {}
@@ -32,7 +32,7 @@
     }
   ],
   "connections": {
-    "Set": {"main": [[{"node": "Telegram", "type": "main", "index": 0}]]}
+    "Set": { "main": [[{ "node": "Telegram", "type": "main", "index": 0 }]] }
   },
   "active": false,
   "settings": {},
@@ -45,8 +45,8 @@
           "parameters": {
             "values": {
               "string": [
-                {"name": "chat_id", "value": "123456"},
-                {"name": "text", "value": "Test message from n8n execute"}
+                { "name": "chat_id", "value": "123456" },
+                { "name": "text", "value": "Test message from n8n execute" }
               ]
             },
             "options": {}
@@ -71,7 +71,9 @@
         }
       ],
       "connections": {
-        "Set": {"main": [[{"node": "Telegram", "type": "main", "index": 0}]]}
+        "Set": {
+          "main": [[{ "node": "Telegram", "type": "main", "index": 0 }]]
+        }
       }
     }
   }

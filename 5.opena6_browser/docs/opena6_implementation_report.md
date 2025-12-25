@@ -1,9 +1,9 @@
 # 📋 opena6 Implementation Report
 
-**Datum:** 27. November 2025  
-**Agent:** opena6 (Browser Automation Agent)  
-**Kürzel:** browsep  
-**Port:** 12350  
+**Datum:** 27. November 2025
+**Agent:** opena6 (Browser Automation Agent)
+**Kürzel:** browsep
+**Port:** 12350
 **Status:** ✅ **DEPLOYED & OPERATIONAL**
 
 ---
@@ -16,13 +16,13 @@ opena6 wurde erfolgreich als **Browser Automation Agent** implementiert. Der Age
 
 ## 📦 Erstellte Artefakte
 
-| # | Datei | Zeilen | Beschreibung |
-|---|-------|--------|--------------|
-| 1 | `main_browser_agent.py` | 650 | FastAPI-Service (Port 12350) mit Playwright-Integration |
-| 2 | `bin/start_opena6.sh` | 90 | Start-Skript mit PID/Port-Check |
-| 3 | `bin/stop_opena6.sh` | 45 | Stop-Skript mit Graceful Shutdown |
-| 4 | `test_opena6.py` | 230 | Test-Suite (6 Tests) |
-| 5 | `docs/opena6_implementation_report.md` | - | Dieser Report |
+| #   | Datei                                  | Zeilen | Beschreibung                                            |
+| --- | -------------------------------------- | ------ | ------------------------------------------------------- |
+| 1   | `main_browser_agent.py`                | 650    | FastAPI-Service (Port 12350) mit Playwright-Integration |
+| 2   | `bin/start_opena6.sh`                  | 90     | Start-Skript mit PID/Port-Check                         |
+| 3   | `bin/stop_opena6.sh`                   | 45     | Stop-Skript mit Graceful Shutdown                       |
+| 4   | `test_opena6.py`                       | 230    | Test-Suite (6 Tests)                                    |
+| 5   | `docs/opena6_implementation_report.md` | -      | Dieser Report                                           |
 
 **Gesamt:** 5 Dateien | ~1015 LOC
 
@@ -32,14 +32,14 @@ opena6 wurde erfolgreich als **Browser Automation Agent** implementiert. Der Age
 
 **Status:** ✅ **6/6 Tests bestanden** (100%)
 
-| Test | Ergebnis | Beschreibung |
-|------|----------|--------------|
-| **Health-Check** | ✅ PASS | Health-Endpoint liefert korrekte Daten |
-| **Root-Endpoint** | ✅ PASS | Agent-Info mit `kuerzel: browsep` |
-| **Command-Endpoint** | ✅ PASS | Generischer Command mit Bearer-Auth |
-| **Navigate** | ✅ PASS | 503 erwartet (Playwright nicht installiert) |
-| **Screenshot** | ✅ PASS | 503 erwartet (Playwright nicht installiert) |
-| **Strict JSON** | ✅ PASS | Extra Fields werden mit 422 rejected |
+| Test                 | Ergebnis | Beschreibung                                |
+| -------------------- | -------- | ------------------------------------------- |
+| **Health-Check**     | ✅ PASS  | Health-Endpoint liefert korrekte Daten      |
+| **Root-Endpoint**    | ✅ PASS  | Agent-Info mit `kuerzel: browsep`           |
+| **Command-Endpoint** | ✅ PASS  | Generischer Command mit Bearer-Auth         |
+| **Navigate**         | ✅ PASS  | 503 erwartet (Playwright nicht installiert) |
+| **Screenshot**       | ✅ PASS  | 503 erwartet (Playwright nicht installiert) |
+| **Strict JSON**      | ✅ PASS  | Extra Fields werden mit 422 rejected        |
 
 **Hinweis:** Navigate/Screenshot-Tests validieren korrekte 503-Responses wenn Playwright fehlt. In Production-Deployment würde Playwright installiert und Tests würden echte Browser-Aktionen ausführen.
 
@@ -49,39 +49,39 @@ opena6 wurde erfolgreich als **Browser Automation Agent** implementiert. Der Age
 
 **Status:** ✅ **100% COMPLIANCE** (11/11 Policies)
 
-| Policy | Status | Details |
-|--------|--------|---------|
-| ✅ **Option-2-Flow** | Erfüllt | `browsep → kordp` via `/command` |
-| ✅ **Port-Policy** | Erfüllt | Port 12350 (Bereich 12344-12399) |
-| ✅ **Port 8080 Verboten** | Erfüllt | Nicht verwendet (nur UI) |
-| ✅ **Safepoint-Format** | Erfüllt | `SP<ts>_src→dst_{CMD\|RESP}.json` |
-| ✅ **Unicode-Pfeil** | Erfüllt | `→` (U+2192) in allen Safepoints |
-| ✅ **Strict JSON** | Erfüllt | `extra="forbid"` in allen Pydantic-Models |
-| ✅ **ENV-only Secrets** | Erfüllt | `BEARER_TOKEN` aus `.env` |
-| ✅ **Secret-Masking** | Erfüllt | `mask_secrets()` für URLs/Tokens/Passwords |
-| ✅ **Max Depth** | Erfüllt | 2 Ebenen (browsep → kordp → tool) |
-| ✅ **PID-Management** | Erfüllt | `logs/opena6.pid` |
-| ✅ **Nohup-Logging** | Erfüllt | `logs/opena6.nohup.log` |
+| Policy                    | Status  | Details                                    |
+| ------------------------- | ------- | ------------------------------------------ |
+| ✅ **Option-2-Flow**      | Erfüllt | `browsep → kordp` via `/command`           |
+| ✅ **Port-Policy**        | Erfüllt | Port 12350 (Bereich 12344-12399)           |
+| ✅ **Port 8080 Verboten** | Erfüllt | Nicht verwendet (nur UI)                   |
+| ✅ **Safepoint-Format**   | Erfüllt | `SP<ts>_src→dst_{CMD\|RESP}.json`          |
+| ✅ **Unicode-Pfeil**      | Erfüllt | `→` (U+2192) in allen Safepoints           |
+| ✅ **Strict JSON**        | Erfüllt | `extra="forbid"` in allen Pydantic-Models  |
+| ✅ **ENV-only Secrets**   | Erfüllt | `BEARER_TOKEN` aus `.env`                  |
+| ✅ **Secret-Masking**     | Erfüllt | `mask_secrets()` für URLs/Tokens/Passwords |
+| ✅ **Max Depth**          | Erfüllt | 2 Ebenen (browsep → kordp → tool)          |
+| ✅ **PID-Management**     | Erfüllt | `logs/opena6.pid`                          |
+| ✅ **Nohup-Logging**      | Erfüllt | `logs/opena6.nohup.log`                    |
 
-**Violations:** 0  
+**Violations:** 0
 **Compliance Score:** 💯 **100%**
 
 ---
 
 ## 📊 Deployment-Statistik
 
-| Metrik | Wert |
-|--------|------|
-| **Lines of Code** | 650 (main) + 365 (scripts/tests) = 1015 |
-| **Endpoints** | 8 (/, /health, /command, /navigate, /screenshot, /extract, /click, /form/fill) |
-| **Port** | 12350 |
-| **PID** | 1634905 |
-| **Uptime** | 19+ Sekunden |
-| **Health** | http://127.0.0.1:12350/health |
-| **Playwright** | ❌ Nicht installiert (optional für Tests) |
-| **Browser-Typ** | Chromium (Headless) |
-| **Max Parallel** | 3 Browser-Sessions |
-| **Screenshot-Dir** | `data/screenshots/` |
+| Metrik             | Wert                                                                           |
+| ------------------ | ------------------------------------------------------------------------------ |
+| **Lines of Code**  | 650 (main) + 365 (scripts/tests) = 1015                                        |
+| **Endpoints**      | 8 (/, /health, /command, /navigate, /screenshot, /extract, /click, /form/fill) |
+| **Port**           | 12350                                                                          |
+| **PID**            | 1634905                                                                        |
+| **Uptime**         | 19+ Sekunden                                                                   |
+| **Health**         | http://127.0.0.1:12350/health                                                  |
+| **Playwright**     | ❌ Nicht installiert (optional für Tests)                                      |
+| **Browser-Typ**    | Chromium (Headless)                                                            |
+| **Max Parallel**   | 3 Browser-Sessions                                                             |
+| **Screenshot-Dir** | `data/screenshots/`                                                            |
 
 ---
 
@@ -287,9 +287,9 @@ elif isinstance(data, str):
 - ✅ **Graceful Degradation** (funktioniert ohne Playwright)
 - ✅ **Production-Ready** (PID-Management, Logging, Error-Handling)
 
-**Deployment-Status:** ✅ **OPERATIONAL**  
-**PID:** 1634905  
-**Port:** 12350  
+**Deployment-Status:** ✅ **OPERATIONAL**
+**PID:** 1634905
+**Port:** 12350
 **Health:** http://127.0.0.1:12350/health
 
 ---
@@ -298,12 +298,12 @@ elif isinstance(data, str):
 
 **Implementierte Agenten:** 4/21
 
-| Agent | Port | Kürzel | Status | Compliance |
-|-------|------|--------|--------|------------|
-| **opena3** | 12347 | owuip | ✅ Running | 💯 100% |
-| **opena4** | 12348 | telep | ✅ Running | 91% |
-| **opena5** | 12351 | vscop | ✅ Running | 💯 100% |
-| **opena6** | 12350 | browsep | ✅ Running | 💯 100% |
+| Agent      | Port  | Kürzel  | Status     | Compliance |
+| ---------- | ----- | ------- | ---------- | ---------- |
+| **opena3** | 12347 | owuip   | ✅ Running | 💯 100%    |
+| **opena4** | 12348 | telep   | ✅ Running | 91%        |
+| **opena5** | 12351 | vscop   | ✅ Running | 💯 100%    |
+| **opena6** | 12350 | browsep | ✅ Running | 💯 100%    |
 
 **Verbleibend:** opena7-opena21 (17 Agenten)
 
@@ -311,6 +311,6 @@ elif isinstance(data, str):
 
 ---
 
-**Erstellt:** 27. November 2025  
-**Maintainer:** Danijel Jokic (ELION Team)  
+**Erstellt:** 27. November 2025
+**Maintainer:** Danijel Jokic (ELION Team)
 **Version:** 1.0.0

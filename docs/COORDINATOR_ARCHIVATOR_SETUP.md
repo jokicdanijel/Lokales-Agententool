@@ -1,7 +1,7 @@
 # Portier Koordinator & Archivator - Implementation Complete
 
-**Datum**: 2025-11-09  
-**Status**: ✅ PRODUKTIONSREIF  
+**Datum**: 2025-11-09
+**Status**: ✅ PRODUKTIONSREIF
 **Commit**: a67fc70
 
 ---
@@ -9,6 +9,7 @@
 ## 📋 Was wurde implementiert?
 
 ### 1. **Makefile** (Idempotent Orchestration)
+
 ```bash
 make venv           # Create virtual environment
 make dry            # Dry-run structure validation
@@ -19,13 +20,16 @@ make archive        # Backup synchronization
 ```
 
 **Features**:
+
 - ✅ Farbige Output (BOLD, GREEN, YELLOW, RED)
 - ✅ Alle Targets mit Beschreibungen (`make help`)
 - ✅ Non-blocking: Fehler stoppen nicht die Pipeline (||true)
 - ✅ Logging zu `logs/*.log`
 
 ### 2. **Structure Manager** (`scripts/structure_manager.py`)
+
 Python-Tool mit:
+
 - ✅ **Dry-Run Mode**: Keine Änderungen, nur Reports
 - ✅ **Apply Mode**: Dateien kategorisieren & verschieben
 - ✅ **Conflict Handling**: Keywords (demo, mock, test, example) → `_conflicts/TIMESTAMP/`
@@ -37,6 +41,7 @@ Python-Tool mit:
   - `structure_checkpoint.json` - Snapshot
 
 **Kategorisierung**:
+
 ```
 *.py → src/pkg (außer test → src/tests)
 *.md → docs/
@@ -47,6 +52,7 @@ Python-Tool mit:
 ```
 
 ### 3. **Release Script** (`scripts/make_release.sh`)
+
 - ✅ Packt tar.gz + ZIP
 - ✅ Erzeugt SHA256 Checksummen
 - ✅ SBOM via syft (fallback: minimal SBOM)
@@ -54,6 +60,7 @@ Python-Tool mit:
 - ✅ GitHub Release Upload (falls `gh` verfügbar)
 
 ### 4. **GitHub Workflows** (`.github/workflows/structure.yml`)
+
 **Zwei Jobs**:
 
 1. **lint** (Python Ruff, Black)
@@ -61,6 +68,7 @@ Python-Tool mit:
 3. **apply-structure** (Manual Dispatch, Maintainer-Only)
 
 ### 5. **Konfiguration**
+
 - ✅ `.copilot/exclude` - Ignore für Copilot
 - ✅ `.github/pull_request_template.md` - PR-Vorlage mit AI-Checks
 
@@ -77,6 +85,7 @@ Status:            ready_for_apply ✅
 ```
 
 **Top Violations** (alle aus `venv_local/` - nicht actionable):
+
 - Tiefe > 6 Ebenen in site-packages (normal für venv)
 - Lösungsstrategie: venv in `.gitignore` + exclusions
 
@@ -85,6 +94,7 @@ Status:            ready_for_apply ✅
 ## 🚀 Verwendung
 
 ### Workflow 1: Dry-Run → Verifikation → Apply
+
 ```bash
 make dry          # Erzeuge Reports
 # Überprüfe: rename_map.csv, violations_report.md
@@ -93,11 +103,13 @@ make verify       # Prüfe Konsistenz
 ```
 
 ### Workflow 2: Automatisch via GitHub Actions
+
 1. Push → Trigger `.github/workflows/structure.yml`
 2. **dry-run-structure** (automatisch)
 3. **apply-structure** (manuell via workflow_dispatch)
 
 ### Workflow 3: Manuelle Release
+
 ```bash
 make release      # tar.gz + ZIP + SHA256 + SBOM
 make archive      # Sync zu ~/portier_openai/backups/
@@ -122,6 +134,7 @@ make archive      # Sync zu ~/portier_openai/backups/
 ## 📁 Projektverwaltung
 
 **Struktur nach `make apply`**:
+
 ```
 src/
   ├── cli/          # CLI-Skripte
@@ -145,12 +158,14 @@ _conflicts/        # Konflikt-Dateien (Timestamp-Ordner)
 ## 🔐 Sicherheit & Konsistenz
 
 **Verifikationsgates** (via `make verify`):
+
 1. ✅ Path Index vs Git (Drift-Check)
 2. ✅ Checksummen-Validierung (SHA256)
 3. ✅ Secret-Scan (AWS, TOKEN, PASSWORD)
 4. ✅ Git Status (clean)
 
 **Fehlerbehandlung**:
+
 - Alle Scripts: `set -euo pipefail` (Bash) + `sys.exit()` (Python)
 - Non-Fatal Errors: `||true` in Makefile Targets
 - Logging: `logs/ops_*.log` für Audit Trail
@@ -170,6 +185,7 @@ _conflicts/        # Konflikt-Dateien (Timestamp-Ordner)
 ## 📞 Support
 
 Alle Reports sind Git-tracked und als GitHub Artifacts archiviert:
+
 - `rename_map.csv` - Für Audits
 - `path_index.json` - Für Indizierung
 - `violations_report.md` - Für Diagnostik
@@ -179,6 +195,6 @@ Alle Reports sind Git-tracked und als GitHub Artifacts archiviert:
 
 ---
 
-**Generated**: 2025-11-09  
-**Tool Version**: v0.1  
+**Generated**: 2025-11-09
+**Tool Version**: v0.1
 **License**: MIT (implied from parent project)

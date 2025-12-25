@@ -1,9 +1,11 @@
 import os
+from datetime import UTC, datetime
+
 import httpx
-from datetime import datetime, timezone
 
 OPENA2_URL = os.getenv("OPENA2_URL", "http://127.0.0.1:12345")
 BEARER_TOKEN = os.getenv("BEARER_TOKEN", "c899b90d-xxx")
+
 
 class SafepointClient:
     """Safepoint-Client 3.0 – Remote Archivp Writer (für alle Agenten außer opena2)."""
@@ -15,8 +17,7 @@ class SafepointClient:
     def _mask(obj):
         if isinstance(obj, dict):
             return {
-                k: ("***" if any(s in k.lower() for s in SafepointClient.SECRET_KEYS)
-                    else SafepointClient._mask(v))
+                k: ("***" if any(s in k.lower() for s in SafepointClient.SECRET_KEYS) else SafepointClient._mask(v))
                 for k, v in obj.items()
             }
         if isinstance(obj, list):
@@ -28,7 +29,7 @@ class SafepointClient:
         if category not in SafepointClient.CATEGORIES:
             raise ValueError(f"Invalid category: {category}")
 
-        iso = datetime.now(timezone.utc).isoformat()
+        iso = datetime.now(UTC).isoformat()
         ts = int(datetime.now().timestamp())
 
         body = {
@@ -39,7 +40,7 @@ class SafepointClient:
             "category": category,
             "request_id": request_id,
             "payload": SafepointClient._mask(payload),
-            "strict": True
+            "strict": True,
         }
 
         async with httpx.AsyncClient() as client:

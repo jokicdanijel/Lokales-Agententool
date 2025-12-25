@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 opena4 – Telegram Agent (Main Entry Point)
 Production-ready Telegram bot with Safepoint persistence and port-policy enforcement
@@ -7,36 +6,34 @@ Production-ready Telegram bot with Safepoint persistence and port-policy enforce
 
 from __future__ import annotations
 
-import os
-import sys
 import json
 import logging
 import logging.config
-import asyncio
-import time
+import os
+import sys
 import threading
-from pathlib import Path
-from datetime import datetime, timezone
-from typing import Optional, Dict, Any
+import time
 from argparse import ArgumentParser
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
 
-import uvicorn
-from fastapi import FastAPI, Request, HTTPException, Depends
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi.responses import JSONResponse
-from pydantic import ValidationError
 import requests
+import uvicorn
+from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from pydantic import ValidationError
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
-from telegram.error import TelegramError
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, filters
 
 # Script-style imports: ensure local folder is in sys.path
 sys.path.insert(0, os.path.dirname(__file__))
 
-# Import local modules (absolute from agent folder)
-from schemas import Command71, Response71, Safepoint, ErrorSchema83, TelegramMessage, HealthResponse
 from config import get_config
 
+# Import local modules (absolute from agent folder)
+from schemas import Command71, TelegramMessage
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Initialization
@@ -52,7 +49,7 @@ logger = logging.getLogger("opena4")
 app = FastAPI(
     title="opena4 – Telegram Agent",
     description="Portier Telegram interface with Safepoint persistence",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 # Security
@@ -70,13 +67,16 @@ startup_time = time.time()
 # Secret Masking
 # ────────────────────────────────────────────────────────────────────────────
 
+
 def mask_secrets(data: Any) -> Any:
     """Mask secrets in data (recursive). Keys containing token/password/secret/key/bearer get masked."""
     if isinstance(data, dict):
         return {
-            k: "***" if any(
-                s in k.lower() for s in ["token", "password", "secret", "key", "bearer"]
-            ) else mask_secrets(v)
+            k: (
+                "***"
+                if any(s in k.lower() for s in ["token", "password", "secret", "key", "bearer"])
+                else mask_secrets(v)
+            )
             for k, v in data.items()
         }
     if isinstance(data, list):
@@ -88,23 +88,18 @@ def mask_secrets(data: Any) -> Any:
 # Safepoint Persistence
 # ──────────────────────────────────────────────────────────────────────────────
 
+
 def get_archive_dir() -> Path:
     """Get today's archive directory (UTC-based, YYYY/MM/DD)."""
-    today = datetime.now(timezone.utc).strftime("%Y/%m/%d")
+    today = datetime.now(UTC).strftime("%Y/%m/%d")
     archive_dir = config.archiv_dir / today
     archive_dir.mkdir(parents=True, exist_ok=True)
     return archive_dir
 
 
-def write_safepoint(
-    src: str,
-    dst: str,
-    kind: str,
-    payload: Dict[str, Any],
-    request_id: Optional[str] = None
-) -> Path:
+def write_safepoint(src: str, dst: str, kind: str, payload: dict[str, Any], request_id: str | None = None) -> Path:
     """Write safepoint to disk (append-only, UTC timestamps)."""
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     ts = now.isoformat()
     sp_name = f"SP{int(now.timestamp())}_{src}→{dst}_{kind}.json"
     archive_dir = get_archive_dir()
@@ -142,13 +137,10 @@ def write_safepoint(
 
 
 def create_error_response_83(
-    error_code: str,
-    message: str,
-    request_id: Optional[str] = None,
-    details: Optional[Dict[str, Any]] = None
-) -> Dict[str, Any]:
+    error_code: str, message: str, request_id: str | None = None, details: dict[str, Any] | None = None
+) -> dict[str, Any]:
     """Create standard error response (schema 8.3, UTC timestamp)."""
-    ts = datetime.now(timezone.utc).isoformat()
+    ts = datetime.now(UTC).isoformat()
     return {
         "request_id": request_id,
         "timestamp": ts,
@@ -166,6 +158,7 @@ def create_error_response_83(
 # Security
 # ────────────────────────────────────────────────────────────────────────────
 
+
 async def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
     """Verify Bearer token (optional, depending on config)."""
     if not config.bearer_token:
@@ -182,6 +175,7 @@ async def verify_token(credentials: HTTPAuthorizationCredentials = Depends(secur
 # ────────────────────────────────────────────────────────────────────────────
 # HTTP Endpoints (FastAPI)
 # ────────────────────────────────────────────────────────────────────────────
+
 
 @app.get("/", tags=["info"])
 async def root():
@@ -221,7 +215,7 @@ async def command_endpoint(req: Request, _: bool = Depends(verify_token)):
     """Command endpoint (Bearer-Auth required)."""
     try:
         data = await req.json()
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         request_id = data.get("request_id", f"cmd_{int(now.timestamp())}")
         command = data.get("command", "UNKNOWN")
 
@@ -244,7 +238,7 @@ async def command_endpoint(req: Request, _: bool = Depends(verify_token)):
 
         return JSONResponse(resp_data)
 
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         logger.exception("Command endpoint error")
         error_resp = create_error_response_83("COMMAND_ERROR", str(e))
         return JSONResponse(error_resp, status_code=500)
@@ -269,7 +263,7 @@ async def receive_telegram_message(req: Request):
             return JSONResponse({"ok": False, "error": "User not authorized"}, status_code=403)
 
         # Parse command from message text
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         request_id = f"{msg_data.message_id}_{int(now.timestamp())}"
         cmd = Command71(
             request_id=request_id,
@@ -299,7 +293,7 @@ async def receive_telegram_message(req: Request):
         except requests.RequestException as e:
             error_resp = create_error_response_83(
                 "FORWARD_ERROR",
-                f"Failed to forward to opena2: {str(e)}",
+                f"Failed to forward to opena2: {e!s}",
                 request_id,
             )
             write_safepoint("opena4", "opena2", "ERR", error_resp, request_id)
@@ -322,9 +316,9 @@ async def receive_telegram_message(req: Request):
         write_safepoint("opena4", "opena4", "ERR", error_resp)
         return JSONResponse(error_resp, status_code=400)
 
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         logger.exception("Unexpected error in receive_telegram_message")
-        error_resp = create_error_response_83("INTERNAL_ERROR", f"Server error: {str(e)}")
+        error_resp = create_error_response_83("INTERNAL_ERROR", f"Server error: {e!s}")
         write_safepoint("opena4", "opena4", "ERR", error_resp)
         return JSONResponse(error_resp, status_code=500)
 
@@ -360,9 +354,9 @@ async def github_webhook(req: Request):
         logger.info("GitHub webhook: %s", message)
         return JSONResponse({"ok": True, "message": message})
 
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         logger.exception("Error processing GitHub webhook")
-        error_resp = create_error_response_83("WEBHOOK_ERROR", f"GitHub webhook error: {str(e)}")
+        error_resp = create_error_response_83("WEBHOOK_ERROR", f"GitHub webhook error: {e!s}")
         return JSONResponse(error_resp, status_code=500)
 
 
@@ -374,7 +368,7 @@ async def status():
         recent_sps: list[dict[str, Any]] = []
 
         if index_file.exists():
-            with open(index_file, "r", encoding="utf-8") as f:
+            with open(index_file, encoding="utf-8") as f:
                 lines = f.readlines()
                 for line in lines[-10:]:
                     recent_sps.append(json.loads(line))
@@ -385,7 +379,7 @@ async def status():
             "config": config.to_dict(),
             "recent_safepoints": recent_sps,
         }
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         logger.exception("Error in status endpoint")
         return JSONResponse(
             create_error_response_83("STATUS_ERROR", str(e)),
@@ -396,6 +390,7 @@ async def status():
 # ──────────────────────────────────────────────────────────────────────────────
 # Telegram Bot Handlers
 # ──────────────────────────────────────────────────────────────────────────────
+
 
 async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /start command."""
@@ -426,7 +421,7 @@ async def browse_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     url = " ".join(context.args)
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     request_id = f"browse_{int(now.timestamp())}"
 
     try:
@@ -450,7 +445,7 @@ async def browse_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         preview = resp_data.get("preview", str(resp_data))[:800]
         await update.message.reply_text(f"📄 {url}\n\n{preview}")
 
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         logger.exception("Browse error for %s", url)
         error_resp = create_error_response_83("BROWSE_ERROR", str(e), request_id)
         write_safepoint("opena4", "opena2", "ERR", error_resp, request_id)
@@ -469,7 +464,7 @@ async def analyze_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     file = " ".join(context.args)
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     request_id = f"analyze_{int(now.timestamp())}"
 
     try:
@@ -493,7 +488,7 @@ async def analyze_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         result = resp_data.get("result", str(resp_data))[:800]
         await update.message.reply_text(f"🧠 Analyse: {file}\n\n{result}")
 
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         logger.exception("Analyze error for %s", file)
         error_resp = create_error_response_83("ANALYZE_ERROR", str(e), request_id)
         write_safepoint("opena4", "opena2", "ERR", error_resp, request_id)
@@ -508,8 +503,8 @@ async def status_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"Verbunden mit opena2 @ {config.opena2_url}\n"
             f"Archive: {config.archiv_dir}"
         )
-    except Exception as e:  # noqa: BLE001
-        await update.message.reply_text(f"❌ Error: {str(e)}")
+    except Exception as e:
+        await update.message.reply_text(f"❌ Error: {e!s}")
 
 
 async def help_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -533,7 +528,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     text = update.message.text or ""
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     request_id = f"msg_{update.message.message_id}_{int(now.timestamp())}"
 
     try:
@@ -550,7 +545,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Echo for now
         await update.message.reply_text(f"✓ Nachricht erhalten: {text[:50]}")
 
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         logger.exception("Message handler error")
         await update.message.reply_text(f"❌ Error: {str(e)[:100]}")
 
@@ -558,6 +553,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ──────────────────────────────────────────────────────────────────────────────
 # Main Entry Point
 # ──────────────────────────────────────────────────────────────────────────────
+
 
 def main():
     """Main entry point."""
@@ -609,9 +605,10 @@ def main():
                     """Run polling in a separate thread with its own event loop."""
                     try:
                         import asyncio
+
                         loop = asyncio.new_event_loop()
                         asyncio.set_event_loop(loop)
-                        
+
                         async def polling_task():
                             await telegram_app.initialize()
                             await telegram_app.start()
@@ -619,9 +616,9 @@ def main():
                             # Keep running until stopped
                             while True:
                                 await asyncio.sleep(1)
-                        
+
                         loop.run_until_complete(polling_task())
-                    except Exception as e:  # noqa: BLE001
+                    except Exception as e:
                         logger.exception("Telegram polling stopped with error: %s", e)
 
                 thread = threading.Thread(
@@ -635,7 +632,7 @@ def main():
                 logger.info("Telegram bot ready (webhook mode, no polling started)")
 
             logger.info("✅ Telegram bot initialized successfully")
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             logger.error("❌ Failed to initialize Telegram bot: %s", e)
             telegram_mode = "disabled"
             # Wenn ein Token konfiguriert ist, aber Init scheitert → hart failen

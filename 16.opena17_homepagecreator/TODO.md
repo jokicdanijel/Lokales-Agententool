@@ -1,7 +1,7 @@
 # TODO – opena17 Homepage Creator Agent
 
-**Port:** 12362  
-**Status:** 🟡 Planned  
+**Port:** 12362
+**Status:** 🟡 Planned
 **Kürzel:** `hpcreatep`
 
 ---
@@ -96,5 +96,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

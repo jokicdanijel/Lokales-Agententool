@@ -1,7 +1,7 @@
 # 🤖 GitHub Copilot — Website Integration Guide
 
-**Zweck:** Optimale Nutzung von GitHub Copilot für Website-Integrationen im ELION System  
-**Zielgruppe:** Entwickler mit GitHub Copilot  
+**Zweck:** Optimale Nutzung von GitHub Copilot für Website-Integrationen im ELION System
+**Zielgruppe:** Entwickler mit GitHub Copilot
 **Letzte Aktualisierung:** 21. Dezember 2025
 
 ---
@@ -52,6 +52,7 @@ Schreibe Web-Scraping-Script mit Playwright:
 ### 1. Landing Page erstellen
 
 **Prompt:**
+
 ```
 @docs/WEBSITE_INTEGRATION_QUICK_REFERENCE.md
 @14.opena15_html/MASTER_PROMPT.md
@@ -77,6 +78,7 @@ Output: Python-Script das HTML generiert
 ```
 
 **Erwartetes Ergebnis:**
+
 - Vollständiges Python-Script
 - FastAPI-Integration
 - Option-2-Flow-compliant
@@ -87,6 +89,7 @@ Output: Python-Script das HTML generiert
 ### 2. E-Commerce-Shop mit Stripe
 
 **Prompt:**
+
 ```
 @docs/EXTERNAL_WEBSITE_API_INTEGRATION.md
 @15.opena16_shop/
@@ -117,6 +120,7 @@ Inkludiere:
 ```
 
 **Erwartetes Ergebnis:**
+
 - Vollständige Shop-Implementation
 - Security-hardened
 - Production-ready
@@ -127,6 +131,7 @@ Inkludiere:
 ### 3. Blog-System mit CMS
 
 **Prompt:**
+
 ```
 @docs/WEBSITE_INTEGRATION_MASTER_PROMPT.md
 @16.opena17_homepagecreator/MASTER_PROMPT.md
@@ -162,6 +167,7 @@ Inkludiere:
 ### 4. Website-Scraping mit Playwright
 
 **Prompt:**
+
 ```
 @docs/WEBSITE_INTEGRATION_QUICK_REFERENCE.md
 @5.opena6_browser/MASTER_PROMPT.md
@@ -198,6 +204,7 @@ Output: Python-Script mit FastAPI-Endpoint
 ### 5. Contact Form mit E-Mail
 
 **Prompt:**
+
 ```
 @docs/WEBSITE_INTEGRATION_QUICK_REFERENCE.md
 @14.opena15_html/MASTER_PROMPT.md
@@ -237,6 +244,7 @@ Inkludiere:
 ### 6. API-Integration (Drittanbieter)
 
 **Prompt:**
+
 ```
 @docs/EXTERNAL_WEBSITE_API_INTEGRATION.md
 @.github/copilot-master-prompt.md
@@ -290,11 +298,11 @@ async def call_agent(
 ) -> Dict[str, Any]:
     """
     Call agent via Option-2-Flow.
-    
+
     Args:
         agent_port: Agent port (12344-12399)
         request: Request data
-    
+
     Returns:
         Agent response
     """
@@ -323,7 +331,7 @@ async def create_product(
 ) -> ProductResponse:
     """
     Create new product.
-    
+
     Security:
         - Bearer token required
         - Input validation via Pydantic
@@ -337,7 +345,7 @@ async def create_product(
             params=product.dict()
         )
         return ProductResponse(**result)
-        
+
     except httpx.HTTPError as e:
         raise HTTPException(status_code=500, detail=str(e))
 ```
@@ -387,11 +395,13 @@ Framework: pytest + Playwright
 ### ✅ DO
 
 1. **Spezifische Dateien referenzieren**
+
    ```
    @docs/WEBSITE_INTEGRATION_MASTER_PROMPT.md
    ```
 
 2. **Technische Requirements klar definieren**
+
    ```
    - opena15 (Port 12361)
    - Option-2-Flow einhalten
@@ -399,6 +409,7 @@ Framework: pytest + Playwright
    ```
 
 3. **Gewünschten Output spezifizieren**
+
    ```
    Output: Vollständiges Python-Script mit FastAPI, inkl. Tests
    ```
@@ -414,18 +425,21 @@ Framework: pytest + Playwright
 ### ❌ DON'T
 
 1. **Vage Anfragen**
+
    ```
    ❌ "Erstelle eine Website"
    ✅ "Erstelle Landing Page mit opena15, Hero-Section, Features-Grid"
    ```
 
 2. **Fehlende Kontext-Dateien**
+
    ```
    ❌ Keine @-Referenzen
    ✅ @docs/WEBSITE_INTEGRATION_MASTER_PROMPT.md
    ```
 
 3. **Port-Policy ignorieren**
+
    ```
    ❌ Port 8080 verwenden
    ✅ Port 12344-12399
@@ -444,6 +458,7 @@ Framework: pytest + Playwright
 ### Problem: Copilot generiert falschen Port
 
 **Lösung:**
+
 ```
 WICHTIG: Port-Policy beachten!
 - Erlaubt: 12344-12399
@@ -457,6 +472,7 @@ WICHTIG: Port-Policy beachten!
 ### Problem: Option-2-Flow nicht eingehalten
 
 **Lösung:**
+
 ```
 KRITISCH: Option-2-Flow ist Pflicht!
 
@@ -470,6 +486,7 @@ Request → Agent direkt ❌
 ### Problem: Secrets hardcoded
 
 **Lösung:**
+
 ```
 NIEMALS Secrets hardcoden!
 
@@ -492,7 +509,7 @@ API_KEY = os.getenv("API_KEY")
 
 ---
 
-**Maintainer:** Danijel Jokic (ELION Team)  
-**Letzte Aktualisierung:** 21. Dezember 2025  
-**Version:** 1.0.0  
+**Maintainer:** Danijel Jokic (ELION Team)
+**Letzte Aktualisierung:** 21. Dezember 2025
+**Version:** 1.0.0
 **Status:** ✅ Production Ready

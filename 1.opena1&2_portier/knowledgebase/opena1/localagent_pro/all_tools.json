@@ -5,7 +5,10 @@
     "parameters": {
       "type": "object",
       "properties": {
-        "path": {"type": "string", "description": "Der relative oder absolute Pfad der zu lesenden Datei."}
+        "path": {
+          "type": "string",
+          "description": "Der relative oder absolute Pfad der zu lesenden Datei."
+        }
       },
       "required": ["path"]
     }
@@ -16,8 +19,14 @@
     "parameters": {
       "type": "object",
       "properties": {
-        "path": {"type": "string", "description": "Der relative oder absolute Pfad der Datei, die geschrieben werden soll."},
-        "content": {"type": "string", "description": "Der Inhalt, der in die Datei geschrieben werden soll."}
+        "path": {
+          "type": "string",
+          "description": "Der relative oder absolute Pfad der Datei, die geschrieben werden soll."
+        },
+        "content": {
+          "type": "string",
+          "description": "Der Inhalt, der in die Datei geschrieben werden soll."
+        }
       },
       "required": ["path", "content"]
     }
@@ -28,7 +37,10 @@
     "parameters": {
       "type": "object",
       "properties": {
-        "path": {"type": "string", "description": "Der relative oder absolute Pfad des Verzeichnisses, das aufgelistet werden soll."}
+        "path": {
+          "type": "string",
+          "description": "Der relative oder absolute Pfad des Verzeichnisses, das aufgelistet werden soll."
+        }
       },
       "required": ["path"]
     }
@@ -39,7 +51,10 @@
     "parameters": {
       "type": "object",
       "properties": {
-        "cmd": {"type": "string", "description": "Das auszuführende Shell-Kommando."}
+        "cmd": {
+          "type": "string",
+          "description": "Das auszuführende Shell-Kommando."
+        }
       },
       "required": ["cmd"]
     }
@@ -50,7 +65,10 @@
     "parameters": {
       "type": "object",
       "properties": {
-        "url": {"type": "string", "description": "Die vollständige URL, die abgefragt werden soll."}
+        "url": {
+          "type": "string",
+          "description": "Die vollständige URL, die abgefragt werden soll."
+        }
       },
       "required": ["url"]
     }

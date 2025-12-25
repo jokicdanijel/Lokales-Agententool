@@ -152,6 +152,7 @@ sudo ufw status
 ### 2. SSL/TLS Configuration
 
 **Nginx SSL settings** (already in nginx.conf):
+
 - ✅ TLS 1.2 and 1.3 only
 - ✅ Strong cipher suites
 - ✅ HSTS header
@@ -160,6 +161,7 @@ sudo ufw status
 ### 3. Rate Limiting
 
 **Already configured in Nginx:**
+
 - API: 10 requests/second
 - Login: 5 requests/minute
 
@@ -172,6 +174,7 @@ sudo ufw status
 **Access:** http://localhost:9090
 
 **Targets:**
+
 - All agents (health endpoints)
 - PostgreSQL exporter
 - Redis exporter
@@ -183,6 +186,7 @@ sudo ufw status
 **Login:** admin / (from .env)
 
 **Dashboards:**
+
 1. System Overview
 2. Agent Health
 3. Database Performance

@@ -4,10 +4,9 @@ OpenWebUI Adapter – Relay-Modul für lokale OpenWebUI-Instanz (Port 8080)
 Bietet FastAPI-Endpunkte für Weiterleitungen zu OpenWebUI.
 """
 
-import json
 import logging
 import os
-from typing import Any, Dict
+from typing import Any
 
 import requests
 from fastapi import FastAPI, HTTPException
@@ -16,10 +15,7 @@ from pydantic import BaseModel
 # ============================================================================
 # LOGGING SETUP
 # ============================================================================
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger(__name__)
 
 # ============================================================================
@@ -36,12 +32,14 @@ ADAPTER_PORT = int(os.getenv("ADAPTER_PORT", "12350"))
 
 class ChatRequest(BaseModel):
     """Chat-Request für OpenWebUI"""
+
     prompt: str
-    context: Dict[str, Any] = {}
+    context: dict[str, Any] = {}
 
 
 class HealthResponse(BaseModel):
     """Health-Response"""
+
     status: str
     service: str = "openwebui_adapter"
 
@@ -49,11 +47,7 @@ class HealthResponse(BaseModel):
 # ============================================================================
 # FASTAPI APP
 # ============================================================================
-app = FastAPI(
-    title="OpenWebUI Adapter",
-    description="Relay-Adapter für OpenWebUI-Integration",
-    version="1.0.0"
-)
+app = FastAPI(title="OpenWebUI Adapter", description="Relay-Adapter für OpenWebUI-Integration", version="1.0.0")
 
 
 # ============================================================================
@@ -65,10 +59,7 @@ app = FastAPI(
 async def health_check() -> HealthResponse:
     """Health-Check für Adapter"""
     try:
-        resp = requests.get(
-            f"{OPENWEBUI_BASE_URL}/health",
-            timeout=OPENWEBUI_TIMEOUT
-        )
+        resp = requests.get(f"{OPENWEBUI_BASE_URL}/health", timeout=OPENWEBUI_TIMEOUT)
         if resp.status_code == 200:
             return HealthResponse(status="ok")
         else:
@@ -85,23 +76,14 @@ async def health_check() -> HealthResponse:
 async def openwebui_health():
     """Proxy: GET /health von OpenWebUI"""
     try:
-        resp = requests.get(
-            f"{OPENWEBUI_BASE_URL}/health",
-            timeout=OPENWEBUI_TIMEOUT
-        )
+        resp = requests.get(f"{OPENWEBUI_BASE_URL}/health", timeout=OPENWEBUI_TIMEOUT)
         return resp.json()
     except requests.Timeout as e:
         logger.error(f"OpenWebUI health timeout: {e}")
-        raise HTTPException(
-            status_code=502,
-            detail=f"OpenWebUI timeout after {OPENWEBUI_TIMEOUT}s"
-        )
+        raise HTTPException(status_code=502, detail=f"OpenWebUI timeout after {OPENWEBUI_TIMEOUT}s")
     except requests.ConnectionError as e:
         logger.error(f"OpenWebUI connection error: {e}")
-        raise HTTPException(
-            status_code=502,
-            detail="Cannot connect to OpenWebUI (ConnectionError)"
-        )
+        raise HTTPException(status_code=502, detail="Cannot connect to OpenWebUI (ConnectionError)")
     except Exception as e:
         logger.error(f"Unexpected error proxying health: {e}")
         raise HTTPException(status_code=502, detail=str(e))
@@ -116,35 +98,19 @@ async def openwebui_chat(req: ChatRequest):
     Gibt JSON-Response von OpenWebUI zurück.
     """
     try:
-        payload = {
-            "prompt": req.prompt,
-            "context": req.context
-        }
-        resp = requests.post(
-            f"{OPENWEBUI_BASE_URL}/api/chat",
-            json=payload,
-            timeout=OPENWEBUI_TIMEOUT
-        )
+        payload = {"prompt": req.prompt, "context": req.context}
+        resp = requests.post(f"{OPENWEBUI_BASE_URL}/api/chat", json=payload, timeout=OPENWEBUI_TIMEOUT)
         resp.raise_for_status()
         return resp.json()
     except requests.Timeout as e:
         logger.error(f"OpenWebUI chat timeout: {e}")
-        raise HTTPException(
-            status_code=502,
-            detail=f"OpenWebUI timeout after {OPENWEBUI_TIMEOUT}s"
-        )
+        raise HTTPException(status_code=502, detail=f"OpenWebUI timeout after {OPENWEBUI_TIMEOUT}s")
     except requests.ConnectionError as e:
         logger.error(f"OpenWebUI connection error: {e}")
-        raise HTTPException(
-            status_code=502,
-            detail="Cannot connect to OpenWebUI (ConnectionError)"
-        )
+        raise HTTPException(status_code=502, detail="Cannot connect to OpenWebUI (ConnectionError)")
     except requests.HTTPError as e:
         logger.error(f"OpenWebUI HTTP error: {e}")
-        raise HTTPException(
-            status_code=e.response.status_code,
-            detail=f"OpenWebUI error: {e.response.text}"
-        )
+        raise HTTPException(status_code=e.response.status_code, detail=f"OpenWebUI error: {e.response.text}")
     except Exception as e:
         logger.error(f"Unexpected error in chat endpoint: {e}")
         raise HTTPException(status_code=502, detail=str(e))
@@ -155,11 +121,7 @@ async def openwebui_chat(req: ChatRequest):
 # ============================================================================
 if __name__ == "__main__":
     import uvicorn
+
     logger.info(f"Starting OpenWebUI Adapter on port {ADAPTER_PORT}")
     logger.info(f"OpenWebUI base URL: {OPENWEBUI_BASE_URL}")
-    uvicorn.run(
-        app,
-        host="127.0.0.1",
-        port=ADAPTER_PORT,
-        log_level="info"
-    )
+    uvicorn.run(app, host="127.0.0.1", port=ADAPTER_PORT, log_level="info")

@@ -17,8 +17,8 @@
       "parameters": {
         "values": {
           "string": [
-            {"name": "chat_id", "value": "={{$json[\"chat_id\"]}}"},
-            {"name": "text", "value": "={{$json[\"message\"]}}"}
+            { "name": "chat_id", "value": "={{$json[\"chat_id\"]}}" },
+            { "name": "text", "value": "={{$json[\"message\"]}}" }
           ]
         },
         "options": {}
@@ -43,8 +43,8 @@
     }
   ],
   "connections": {
-    "Webhook": {"main": [[{"node": "Set", "type": "main", "index": 0}]]},
-    "Set": {"main": [[{"node": "Telegram", "type": "main", "index": 0}]]}
+    "Webhook": { "main": [[{ "node": "Set", "type": "main", "index": 0 }]] },
+    "Set": { "main": [[{ "node": "Telegram", "type": "main", "index": 0 }]] }
   },
   "active": false,
   "settings": {},
@@ -68,8 +68,8 @@
           "parameters": {
             "values": {
               "string": [
-                {"name": "chat_id", "value": "={{$json[\"chat_id\"]}}"},
-                {"name": "text", "value": "={{$json[\"message\"]}}"}
+                { "name": "chat_id", "value": "={{$json[\"chat_id\"]}}" },
+                { "name": "text", "value": "={{$json[\"message\"]}}" }
               ]
             },
             "options": {}
@@ -94,8 +94,12 @@
         }
       ],
       "connections": {
-        "Webhook": {"main": [[{"node": "Set", "type": "main", "index": 0}]]},
-        "Set": {"main": [[{"node": "Telegram", "type": "main", "index": 0}]]}
+        "Webhook": {
+          "main": [[{ "node": "Set", "type": "main", "index": 0 }]]
+        },
+        "Set": {
+          "main": [[{ "node": "Telegram", "type": "main", "index": 0 }]]
+        }
       }
     }
   }

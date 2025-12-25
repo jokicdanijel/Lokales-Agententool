@@ -131,7 +131,7 @@
 <body>
     <div class="container">
         <h1>🚀 ELION Hyper-Dashboard</h1>
-        
+
         <div class="button-group">
             <button class="btn-primary" onclick="checkHealth()">Health Check</button>
             <button class="btn-primary" onclick="showStatus()">Status</button>
@@ -140,7 +140,7 @@
             <button class="btn-openwebui" onclick="openChatModal()">💬 OpenWebUI Chat</button>
             <button class="btn-secondary" onclick="openPrivacyModal()">🔒 Privacy & Security</button>
         </div>
-        
+
         <div id="output" class="output"></div>
     </div>
 
@@ -202,7 +202,7 @@
                 }
             };
             if (body) opts.body = JSON.stringify(body);
-            
+
             try {
                 const r = await fetch(`${BASE_URL}${path}`, opts);
                 return await r.json();
@@ -267,25 +267,25 @@
             const prompt = document.getElementById('chatPrompt').value;
             const status = document.getElementById('chatStatus');
             const response = document.getElementById('chatResponse');
-            
+
             if (!prompt.trim()) {
                 status.textContent = '⚠️ Bitte Prompt eingeben';
                 status.className = 'status error';
                 status.style.display = 'block';
                 return;
             }
-            
+
             status.textContent = '⏳ Sende an OpenWebUI...';
             status.className = 'status loading';
             status.style.display = 'block';
             response.style.display = 'none';
-            
+
             try {
                 const result = await fetchAPI('/api/openwebui/chat', 'POST', {
                     prompt,
                     context: {}
                 });
-                
+
                 if (result.error) {
                     status.textContent = `❌ Fehler: ${result.error}`;
                     status.className = 'status error';

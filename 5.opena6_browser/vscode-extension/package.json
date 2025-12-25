@@ -20,7 +20,7 @@
     "Linters"
   ],
   "keywords": [
-    "ai", 
+    "ai",
     "portier",
     "assistant",
     "refactor",
@@ -40,21 +40,21 @@
         "category": "PORTIER"
       },
       {
-        "command": "portier.analyzeFile", 
+        "command": "portier.analyzeFile",
         "title": "PORTIER: Analyze Active File",
         "category": "PORTIER",
         "icon": "$(search)"
       },
       {
         "command": "portier.refactor",
-        "title": "PORTIER: Auto-Refactor", 
+        "title": "PORTIER: Auto-Refactor",
         "category": "PORTIER",
         "icon": "$(tools)"
       },
       {
         "command": "portier.explain",
         "title": "PORTIER: Explain Code",
-        "category": "PORTIER", 
+        "category": "PORTIER",
         "icon": "$(info)"
       },
       {
@@ -72,7 +72,7 @@
       {
         "command": "portier.fix",
         "title": "PORTIER: Fix Issues",
-        "category": "PORTIER", 
+        "category": "PORTIER",
         "icon": "$(lightbulb)"
       },
       {
@@ -89,7 +89,7 @@
       },
       {
         "command": "portier.reload",
-        "title": "PORTIER: Reload Agent Status", 
+        "title": "PORTIER: Reload Agent Status",
         "category": "PORTIER",
         "icon": "$(refresh)"
       },
@@ -114,14 +114,14 @@
           "when": "editorHasSelection"
         },
         {
-          "command": "portier.refactor", 
+          "command": "portier.refactor",
           "group": "portier@2",
           "when": "editorHasSelection"
         },
         {
           "command": "portier.explain",
           "group": "portier@3",
-          "when": "editorHasSelection"  
+          "when": "editorHasSelection"
         },
         {
           "command": "portier.fix",
@@ -145,9 +145,9 @@
         "when": "editorTextFocus"
       },
       {
-        "command": "portier.refactor", 
+        "command": "portier.refactor",
         "key": "ctrl+shift+r",
-        "mac": "cmd+shift+r", 
+        "mac": "cmd+shift+r",
         "when": "editorTextFocus"
       },
       {
@@ -171,7 +171,7 @@
           "description": "PORTIER opena5_vscode Agent URL"
         },
         "portier.dashboardUrl": {
-          "type": "string", 
+          "type": "string",
           "default": "http://127.0.0.1:12349",
           "description": "PORTIER Dashboard URL"
         },
@@ -186,18 +186,23 @@
           "description": "Automatically connect to agent on startup"
         },
         "portier.statusBarEnabled": {
-          "type": "boolean", 
+          "type": "boolean",
           "default": true,
           "description": "Show PORTIER status in status bar"
         },
         "portier.codeLensEnabled": {
           "type": "boolean",
-          "default": true, 
+          "default": true,
           "description": "Enable inline CodeLens actions"
         },
         "portier.logLevel": {
           "type": "string",
-          "enum": ["debug", "info", "warn", "error"],
+          "enum": [
+            "debug",
+            "info",
+            "warn",
+            "error"
+          ],
           "default": "info",
           "description": "Logging level for PORTIER extension"
         }

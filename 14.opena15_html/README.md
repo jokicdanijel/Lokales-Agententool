@@ -1,10 +1,10 @@
 # 🤖 opena15 - HTML Creator
 
-**Agent-ID:** `opena15`  
-**Port:** 12361  
-**Kürzel:** `htmlp`  
-**Version:** 3.0  
-**Status:** 🟡 **Planned** (PORTIER 3.0 Architecture Ready)  
+**Agent-ID:** `opena15`
+**Port:** 12361
+**Kürzel:** `htmlp`
+**Version:** 3.0
+**Status:** 🟡 **Planned** (PORTIER 3.0 Architecture Ready)
 **Letzte Aktualisierung:** 29. November 2025
 
 ---
@@ -166,8 +166,8 @@ curl http://127.0.0.1:12361/metrics
 
 ---
 
-**Maintainer:** Danijel Jokic (ELION Team)  
-**Letzte Aktualisierung:** 29. November 2025  
+**Maintainer:** Danijel Jokic (ELION Team)
+**Letzte Aktualisierung:** 29. November 2025
 **Status:** 🟡 **Architecture Ready** (Implementation Pending)
 
 ## 📖 Überblick
@@ -428,5 +428,5 @@ tail -f data/html_history.jsonl | jq .
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 27. November 2025

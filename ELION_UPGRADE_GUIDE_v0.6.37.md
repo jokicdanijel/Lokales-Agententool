@@ -223,6 +223,7 @@ echo "✅ Configuration applied"
 ### Overview
 
 12 patches to apply:
+
 - Backend: 5 patches (groups, forms, security, main)
 - Frontend: 5 patches (API, components, modals)
 - Agents: 2 patches (safepoint, dashboard)

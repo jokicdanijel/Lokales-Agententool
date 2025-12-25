@@ -1,6 +1,6 @@
 # 🌐 OpenWebUI Integration - Vollständige Anleitung
 
-**Datum:** 2025-11-08  
+**Datum:** 2025-11-08
 **Status:** ✅ **PRODUKTIONSREIF**
 
 ---
@@ -49,12 +49,14 @@ bash bin/ops.sh health
 ### 3. Starten aller Services (VS Code Debug)
 
 **Schritte:**
+
 1. Öffne VS Code
 2. Drücke `Ctrl+Shift+D` (Run and Debug)
 3. Wähle **"Start: Alle Services"** aus der Dropdown
 4. Drücke den grünen Play-Button
 
 **Ergebnis:** Alle 5 Services starten parallel in separaten Terminals:
+
 - Dashboard (Port 12349)
 - Agent opena1 (Port 12344)
 - Agent opena2 (Port 12345)
@@ -64,6 +66,7 @@ bash bin/ops.sh health
 ### 4. Testen in VS Code Tasks
 
 **Schritte:**
+
 1. Drücke `Ctrl+Shift+P` (Command Palette)
 2. Gib "Tasks: Run Task" ein
 3. Wähle eine Task aus:
@@ -158,27 +161,27 @@ OPENWEBUI_PORT=3000
 
 ### Agent-Ports
 
-| Agent-ID | Name | Port | Kategorie |
-|----------|------|------|-----------|
-| opena1 | Coordinator | 12344 | Core |
-| opena2 | Archivator | 12345 | Core |
-| kordp | Scheduler | 12346 | Core |
-| opena4 | Telegram | 12347 | Integration |
-| opena5 | Browser | 12348 | Tools |
-| opena6 | Email | 12349 | Tools |
-| opena7 | WhatsApp | 12350 | Integration |
-| opena8 | Telephone | 12351 | Integration |
-| opena9 | Call Tracking | 12352 | Analytics |
-| opena10 | Unlock | 12353 | Security |
-| opena11 | Social Media | 12359 | Integration |
-| opena12 | Influencer | 12360 | Tools |
-| opena13 | Calendar | 12361 | Tools |
-| opena14 | HTML Creator | 12362 | Tools |
-| opena15 | Shop | 12363 | Business |
-| opena16 | CRM | 12364 | Business |
-| opena17 | Analytics | 12365 | Analytics |
-| opena18 | Dashboard | 12366 | UI |
-| opena19 | Workflow | 12367 | Automation |
+| Agent-ID | Name          | Port  | Kategorie   |
+| -------- | ------------- | ----- | ----------- |
+| opena1   | Coordinator   | 12344 | Core        |
+| opena2   | Archivator    | 12345 | Core        |
+| kordp    | Scheduler     | 12346 | Core        |
+| opena4   | Telegram      | 12347 | Integration |
+| opena5   | Browser       | 12348 | Tools       |
+| opena6   | Email         | 12349 | Tools       |
+| opena7   | WhatsApp      | 12350 | Integration |
+| opena8   | Telephone     | 12351 | Integration |
+| opena9   | Call Tracking | 12352 | Analytics   |
+| opena10  | Unlock        | 12353 | Security    |
+| opena11  | Social Media  | 12359 | Integration |
+| opena12  | Influencer    | 12360 | Tools       |
+| opena13  | Calendar      | 12361 | Tools       |
+| opena14  | HTML Creator  | 12362 | Tools       |
+| opena15  | Shop          | 12363 | Business    |
+| opena16  | CRM           | 12364 | Business    |
+| opena17  | Analytics     | 12365 | Analytics   |
+| opena18  | Dashboard     | 12366 | UI          |
+| opena19  | Workflow      | 12367 | Automation  |
 
 ---
 
@@ -191,6 +194,7 @@ curl -s http://127.0.0.1:12344/health | jq .
 ```
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -234,6 +238,7 @@ python3 19.dashboard_agent/openwebui_integration.py
 ```
 
 **Expected Output:**
+
 ```
 === Agenten-Liste ===
   opena1     | Coordinator         | Port 12344 | Core
@@ -426,6 +431,7 @@ bash ../bin/ops.sh health
 ## 📞 Support
 
 **Bei Problemen:**
+
 1. Prüfe logs/ Verzeichnisse
 2. Führe `bash bin/ops.sh health` aus
 3. Prüfe die `.env` Konfiguration
@@ -433,6 +439,6 @@ bash ../bin/ops.sh health
 
 ---
 
-**Zuletzt aktualisiert:** 2025-11-08  
-**Version:** 1.0.0  
+**Zuletzt aktualisiert:** 2025-11-08
+**Version:** 1.0.0
 **Status:** Production Ready ✅

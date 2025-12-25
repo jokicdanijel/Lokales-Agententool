@@ -8,15 +8,15 @@
 
 ## 🎯 Quick Overview
 
-| Kategorie | Anzahl | Größe | Typ |
-|-----------|--------|-------|-----|
-| **Produktiv (main)** | 8 | 150KB | Application |
-| **Dashboards** | 3 | 75KB | Dashboard |
-| **Components** | 12 | 8KB | UI Components |
-| **Knowledge Base** | 7 | 3.5MB | Documentation |
-| **Code Coverage** | 93 | 6.8MB | Test Reports |
-| **Assets** | 6 | 40KB | Static |
-| **Dependencies** | 9 | 450KB | Libraries |
+| Kategorie            | Anzahl | Größe | Typ           |
+| -------------------- | ------ | ----- | ------------- |
+| **Produktiv (main)** | 8      | 150KB | Application   |
+| **Dashboards**       | 3      | 75KB  | Dashboard     |
+| **Components**       | 12     | 8KB   | UI Components |
+| **Knowledge Base**   | 7      | 3.5MB | Documentation |
+| **Code Coverage**    | 93     | 6.8MB | Test Reports  |
+| **Assets**           | 6      | 40KB  | Static        |
+| **Dependencies**     | 9      | 450KB | Libraries     |
 
 ---
 
@@ -25,6 +25,7 @@
 ### 2.opena3_openwebui
 
 #### Haupt-Dashboard
+
 - **`2.opena3_openwebui/index.html`** (37K)
   - OpenA3 Web Dashboard — Hauptseite
   - Moderne Glasmorphism UI
@@ -33,6 +34,7 @@
   - Tool Execution Interface
 
 #### Tools & Documentation
+
 - **`2.opena3_openwebui/tools.html`** (24K)
   - Tools Documentation
   - API Reference
@@ -42,6 +44,7 @@
 ### 1.opena1&2_portier
 
 #### Portier Dashboard
+
 - **`1.opena1&2_portier/opena20/templates/dashboard.html`** (2.6K)
   - Portier 2.0 Dashboard
   - Live Status & Control Panel
@@ -51,6 +54,7 @@
 ### 19.opena20_dashboard_agent
 
 #### opena20 Frontends
+
 - **`19.opena20_dashboard_agent/frontend/knowledge.html`** (11K)
   - Knowledge Base Frontend
   - Search & Navigation
@@ -65,6 +69,7 @@
 ### 14.opena15_html (opena15 - HTML Agent)
 
 #### opena15 Main Index
+
 - **`14.opena15_html/index.html`** (1.1K)
   - opena15 Dashboard Main
   - Router & Navigation
@@ -75,6 +80,7 @@
 ## 2. 📊 Dashboard & Pages
 
 ### 14.opena15_html Pages
+
 ```
 pages/
 ├── agent_opena5.html (474 bytes)
@@ -86,6 +92,7 @@ pages/
 ```
 
 ### 14.opena15_html Components
+
 ```
 components/
 ├── control_bar.html (984 bytes)
@@ -101,6 +108,7 @@ components/
 ```
 
 ### 14.opena15_html Partials
+
 ```
 partials/
 └── agent_opena5_header.html (72 bytes)
@@ -112,6 +120,7 @@ partials/
 ## 3. 🎨 Asset HTML-Dateien
 
 ### Static Assets (`./assets/`)
+
 ```
 assets/
 ├── ui_index.html (9.4K)
@@ -135,24 +144,28 @@ assets/
 ### Portier Knowledge Base (`1.opena1&2_portier/knowledgebase/`)
 
 #### ChatGPT Documentation
+
 - **`ChatGPT - SKRIPT & PROMPT.html`** (502K)
   - Complete ChatGPT Scripts
   - Prompt Templates
   - Usage Examples
 
 #### Replit Agent Maker
+
 - **`Replit Agent Prompt Maker v2 - Proje detayları yardımı.html`** (620K)
   - Replit Integration Guide
   - Agent Creation Tools
   - Configuration Tips
 
 #### Wissensdatenbank (Knowledge Database)
+
 - **`Wissensdatenbank_jokicdanijel_Lokales-Agententool@ddc1e68.html`** (2.3M)
   - Complete Knowledge Database
   - Largest documentation file
   - Comprehensive Reference
 
 #### Supporting Files
+
 - Various supporting `.html` files for resource linking
 
 ---
@@ -160,6 +173,7 @@ assets/
 ## 5. 🧪 Code Coverage Reports (`./htmlcov/`)
 
 ### Main Coverage Files
+
 - **`htmlcov/index.html`** (26K)
   - Coverage Report Main
   - 93 Python modules documented
@@ -174,6 +188,7 @@ assets/
   - Function signatures & locations
 
 ### Coverage by Agent
+
 ```
 htmlcov/z_a96b50dfbe9150ad_main_*.html
 
@@ -222,6 +237,7 @@ Utilities & Core:
 ## 6. 📖 Documentation
 
 ### Docs Directory (`./docs/`)
+
 ```
 docs/
 ├── agenda_test_all_pages.html (18K)
@@ -235,6 +251,7 @@ docs/
 ## 7. 🔗 Extracted & Cached Files
 
 ### VSCode Extensions (`2.opena3_openwebui/auto_indexed/extracted/`)
+
 ```
 vscode-icons-12.15.0/node_modules/
 ├── @vscode/test-web/views/
@@ -254,6 +271,7 @@ vscode-icons-12.15.0/node_modules/
 ```
 
 ### opena5 Dashboard Skeleton
+
 ```
 2.opena3_openwebui/auto_indexed/extracted/opena5_dashboard_skeleton_f5a2641b/
 opena5_dashboard/
@@ -277,6 +295,7 @@ opena5_dashboard/
 ## 8. 🛠️ Virtual Environment Files
 
 ### Coverage HTML Files (venv)
+
 ```
 .venv/lib/python3.12/site-packages/coverage/htmlfiles/
 ├── index.html (6.7K)
@@ -288,6 +307,7 @@ setuptools test indexes/
 ```
 
 ### LocalAgent-Pro venv
+
 ```
 2.opena3_openwebui/LocalAgent-Pro/venv/lib/python3.12/...
 ├── setuptools/tests/indexes/test_links_priority/ (same as above)
@@ -297,22 +317,23 @@ setuptools test indexes/
 
 ## 📊 Statistics by Category
 
-| Category | Count | Total Size | Avg Size |
-|----------|-------|-----------|----------|
-| Produktiv | 8 | 150 KB | 18.75 KB |
-| Dashboards | 3 | 75 KB | 25 KB |
-| Components | 12 | 8 KB | 667 bytes |
-| Knowledge Base | 7 | 3.5 MB | 500 KB |
-| Coverage Reports | 93 | 6.8 MB | 73 KB |
-| Assets | 6 | 40 KB | 6.67 KB |
-| Dependencies | 9 | 450 KB | 50 KB |
-| **TOTAL** | **138** | **~10.9 MB** | **~79 KB** |
+| Category         | Count   | Total Size   | Avg Size   |
+| ---------------- | ------- | ------------ | ---------- |
+| Produktiv        | 8       | 150 KB       | 18.75 KB   |
+| Dashboards       | 3       | 75 KB        | 25 KB      |
+| Components       | 12      | 8 KB         | 667 bytes  |
+| Knowledge Base   | 7       | 3.5 MB       | 500 KB     |
+| Coverage Reports | 93      | 6.8 MB       | 73 KB      |
+| Assets           | 6       | 40 KB        | 6.67 KB    |
+| Dependencies     | 9       | 450 KB       | 50 KB      |
+| **TOTAL**        | **138** | **~10.9 MB** | **~79 KB** |
 
 ---
 
 ## 🎯 HTML-Dateien nach Funktion
 
 ### 🔴 Kritisch (Produktiv)
+
 ```
 ✅ 2.opena3_openwebui/index.html — Main Dashboard
 ✅ 1.opena1&2_portier/opena20/templates/dashboard.html — Portier Dashboard
@@ -321,6 +342,7 @@ setuptools test indexes/
 ```
 
 ### 🟠 Wichtig (Core Components)
+
 ```
 ✅ 14.opena15_html/pages/*.html — Page Templates (3 files)
 ✅ 14.opena15_html/components/*.html — UI Components (5 files)
@@ -328,12 +350,14 @@ setuptools test indexes/
 ```
 
 ### 🟡 Dokumentation
+
 ```
 ✅ docs/agenda_test_all_pages.html — Test Documentation
 ✅ Knowledge Base Files — Reference (7 files)
 ```
 
 ### 🟢 Testing & Infrastructure
+
 ```
 ✅ htmlcov/*.html — Code Coverage (93 files)
 ✅ Extracted Dependencies — Framework files (15+ files)
@@ -344,6 +368,7 @@ setuptools test indexes/
 ## 🔍 HTML-Dateien Größe-Ranking
 
 ### Top 10 Größte Dateien
+
 1. `htmlcov/z_a96b50dfbe9150ad_typing_extensions_py.html` — 1.2 MB
 2. `1.opena1&2_portier/knowledgebase/.../Wissensdatenbank...html` — 2.3 MB
 3. `htmlcov/z_a96b50dfbe9150ad_socks_py.html` — 240 KB
@@ -360,6 +385,7 @@ setuptools test indexes/
 ## ✅ HTML-Dateien Status
 
 ### ✅ Produktiv (In Use)
+
 - [x] 2.opena3_openwebui/index.html
 - [x] 1.opena1&2_portier/opena20/templates/dashboard.html
 - [x] 19.opena20_dashboard_agent/frontend/knowledge.html
@@ -367,15 +393,18 @@ setuptools test indexes/
 - [x] 2.opena3_openwebui/tools.html
 
 ### ✅ Komponenten (Referenced)
+
 - [x] 14.opena15_html/ — Complete Dashboard System
 - [x] assets/ — Static Templates
 
 ### ✅ Testing & Docs (Reference)
+
 - [x] htmlcov/ — Code Coverage
 - [x] docs/ — Documentation
 - [x] Knowledge Base Files
 
 ### ⚙️ Infrastructure (Auto-Generated)
+
 - [x] venv & extracted files — Dependencies
 
 ---
@@ -383,6 +412,7 @@ setuptools test indexes/
 ## 🚀 Verwendung
 
 ### Dashboard aufrufen:
+
 ```bash
 # Hauptdashboard
 open "file:///home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.opena3_openwebui/index.html"
@@ -395,6 +425,7 @@ open "file:///home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.open
 ```
 
 ### Code Coverage Report:
+
 ```bash
 # Coverage report
 open "file:///home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/htmlcov/index.html"
@@ -413,6 +444,7 @@ open "file:///home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/htmlcov
 **Infrastructure:** 9
 
 **Hauptcategorien:**
+
 - 🎯 OpenA3 Dashboard (2.opena3_openwebui)
 - 🎯 Portier System (1.opena1&2_portier)
 - 🎯 opena20 Dashboard Agent (19.opena20_dashboard_agent)

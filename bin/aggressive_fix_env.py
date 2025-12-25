@@ -14,7 +14,7 @@ os.chdir(PROJECT_ROOT)
 # Pattern für alle .env-Loading-Varianten
 ENV_LOAD_PATTERNS = [
     # export $(grep ...) xargs Pattern
-    r'export\s+\$\(grep[^)]*\)\s+\|\s+xargs\)',
+    r"export\s+\$\(grep[^)]*\)\s+\|\s+xargs\)",
     # source .env Pattern
     r'source\s+["\']?\.\.?/?\.env["\']?',
     # . .env Pattern
@@ -24,7 +24,7 @@ ENV_LOAD_PATTERNS = [
 ]
 
 # Finde alle Start-Skripte
-scripts = list(Path('.').rglob('start_*.sh')) + list(Path('.').rglob('*_start.sh'))
+scripts = list(Path(".").rglob("start_*.sh")) + list(Path(".").rglob("*_start.sh"))
 
 print(f"🔥 Entferne ALL .env-Loading aus {len(scripts)} Agent-Skripten...\n")
 
@@ -32,34 +32,34 @@ fixed_count = 0
 
 for script in sorted(scripts):
     try:
-        with open(script, 'r') as f:
+        with open(script) as f:
             content = f.read()
-        
+
         original_content = content
-        
+
         # Entferne alle .env-Loading-Patterns
         for pattern in ENV_LOAD_PATTERNS:
-            content = re.sub(pattern, '', content, flags=re.MULTILINE | re.DOTALL)
-        
+            content = re.sub(pattern, "", content, flags=re.MULTILINE | re.DOTALL)
+
         # Entferne leere if-Blöcke
-        content = re.sub(r'if\s+\[\s+-f\s+[^\]]*\.env[^\]]*\]\s*;\s*then\s*elif.*?fi', '', content, flags=re.DOTALL)
-        content = re.sub(r'if\s+\[\s+-f\s+[^\]]*\.env[^\]]*\]\s*;\s*then\s*else.*?fi', '', content, flags=re.DOTALL)
-        
+        content = re.sub(r"if\s+\[\s+-f\s+[^\]]*\.env[^\]]*\]\s*;\s*then\s*elif.*?fi", "", content, flags=re.DOTALL)
+        content = re.sub(r"if\s+\[\s+-f\s+[^\]]*\.env[^\]]*\]\s*;\s*then\s*else.*?fi", "", content, flags=re.DOTALL)
+
         # Bereinige Whitespace
-        content = re.sub(r'\n\s*\n\s*\n+', '\n\n', content)
-        
+        content = re.sub(r"\n\s*\n\s*\n+", "\n\n", content)
+
         if content != original_content:
             # Backup
-            with open(f"{script}.bak", 'w') as f:
+            with open(f"{script}.bak", "w") as f:
                 f.write(original_content)
-            
+
             # Speichere fix
-            with open(script, 'w') as f:
+            with open(script, "w") as f:
                 f.write(content)
-            
+
             print(f"✅ {script}")
             fixed_count += 1
-    
+
     except Exception as e:
         print(f"⚠️  {script}: {e}")
 

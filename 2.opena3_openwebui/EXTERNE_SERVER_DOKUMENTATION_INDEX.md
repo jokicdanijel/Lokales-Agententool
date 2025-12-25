@@ -322,12 +322,12 @@ EXTERNE SERVER-FREIGABE
 
 ## 🔗 Quick Links
 
-| Bereich | Schnelle Links |
-|---------|---|
-| **Anfänger** | [QUICK_START](./DEPLOYMENT_QUICK_START.md) \| [ASSIST](./setup_external_access.sh) |
-| **Techniker** | [GUIDE](./EXTERNAL_ACCESS_GUIDE.md) \| [NETWORK](./NETZWERK_INFRASTRUKTUR.md) \| [REFERENCE](./QUICK_REFERENCE_EXTERNAL_ACCESS.md) |
-| **Manager** | [DASHBOARD](./INFRASTRUCTURE_DASHBOARD.md) \| [OVERVIEW](./EXTERNAL_SERVER_OVERVIEW.md) \| [STATUS](./PROJECT_STANDBUCH.md) |
-| **Tools** | [SETUP](./setup_external_access.sh) \| [VALIDATE](./validate_network.sh) \| [MANAGE](./LocalAgent-Pro/opena6/external_access_manager.py) |
+| Bereich       | Schnelle Links                                                                                                                           |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| **Anfänger**  | [QUICK_START](./DEPLOYMENT_QUICK_START.md) \| [ASSIST](./setup_external_access.sh)                                                       |
+| **Techniker** | [GUIDE](./EXTERNAL_ACCESS_GUIDE.md) \| [NETWORK](./NETZWERK_INFRASTRUKTUR.md) \| [REFERENCE](./QUICK_REFERENCE_EXTERNAL_ACCESS.md)       |
+| **Manager**   | [DASHBOARD](./INFRASTRUCTURE_DASHBOARD.md) \| [OVERVIEW](./EXTERNAL_SERVER_OVERVIEW.md) \| [STATUS](./PROJECT_STANDBUCH.md)              |
+| **Tools**     | [SETUP](./setup_external_access.sh) \| [VALIDATE](./validate_network.sh) \| [MANAGE](./LocalAgent-Pro/opena6/external_access_manager.py) |
 
 ---
 
@@ -462,9 +462,9 @@ ssh -L 8765:localhost:8765 user@remote.host -N
 
 ## 📝 Änderungshistorie
 
-| Datum | Version | Änderung |
-|-------|---------|----------|
-| 2025-11-25 | 1.0.0 | Initial Release |
+| Datum      | Version | Änderung        |
+| ---------- | ------- | --------------- |
+| 2025-11-25 | 1.0.0   | Initial Release |
 
 ---
 
@@ -480,4 +480,4 @@ ssh -L 8765:localhost:8765 user@remote.host -N
 
 **Viel Erfolg mit deiner Netzwerk-Infrastruktur!**
 
-*Fragen? Siehe FAQ oben oder konsultiere die relevante Dokumentation.*
+_Fragen? Siehe FAQ oben oder konsultiere die relevante Dokumentation._

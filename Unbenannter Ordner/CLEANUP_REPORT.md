@@ -12,13 +12,13 @@ GESPART: 299 MB | -4 Dateien
 
 ## 🗑️ Gelöschte Dateien
 
-| Datei | Größe | Begründung |
-|-------|-------|-----------|
-| `GitHubDesktop-linux-amd64-3.4.13-linux1.deb` | **125 MB** | Installer (nicht für Git) |
-| `Projekte-Gesamtprojekt1.portier_openai-main.zip` | **87 MB** | Backup-ZIP (redundant) |
-| `portier_openai_backup.tar.gz` | **63 MB** | Backup-Archive (in backups/ oder ~) |
-| `1.portier_openai/1.portier_openai.tar.xz` | **25 MB** | Lokales Archive (redundant) |
-| **TOTAL** | **299 MB** | ✅ Entfernt |
+| Datei                                             | Größe      | Begründung                          |
+| ------------------------------------------------- | ---------- | ----------------------------------- |
+| `GitHubDesktop-linux-amd64-3.4.13-linux1.deb`     | **125 MB** | Installer (nicht für Git)           |
+| `Projekte-Gesamtprojekt1.portier_openai-main.zip` | **87 MB**  | Backup-ZIP (redundant)              |
+| `portier_openai_backup.tar.gz`                    | **63 MB**  | Backup-Archive (in backups/ oder ~) |
+| `1.portier_openai/1.portier_openai.tar.xz`        | **25 MB**  | Lokales Archive (redundant)         |
+| **TOTAL**                                         | **299 MB** | ✅ Entfernt                         |
 
 ---
 
@@ -40,6 +40,7 @@ GitHubDesktop*
 ## 📈 Performance-Verbesserung
 
 ### Vorher (mit großen Dateien)
+
 ```
 Dateien:       5,257
 Repo-Größe:    383 MB
@@ -48,6 +49,7 @@ Hotspot #1:    GitHubDesktop .deb (125 MB)
 ```
 
 ### Nachher (nach Cleanup)
+
 ```
 Dateien:       5,253 (-4)
 Repo-Größe:    84 MB (78% ↓)
@@ -59,14 +61,14 @@ Hotspot #1:    selenium-manager (macOS) (8 MB) ✓ Normal
 
 ## 🔝 Top Remaining Hotspots (Legitimate)
 
-| Datei | Größe | Typ | Begründung |
-|-------|-------|-----|-----------|
-| selenium-manager (macOS) | 8 MB | Binary | Webdriver (venv dependency) |
-| selenium-manager (Linux) | 5 MB | Binary | Webdriver (venv dependency) |
-| selenium-manager (Windows .exe) | 4 MB | Binary | Webdriver (venv dependency) |
-| project_map/path_index.json | 2 MB | JSON | Scan-Artefakt (generiert) |
-| mypy_cache (builtins) | 2 MB | Cache | Type checking cache (venv) |
-| docs/violations_report.md | 2 MB | Markdown | Report (generiert) |
+| Datei                           | Größe | Typ      | Begründung                  |
+| ------------------------------- | ----- | -------- | --------------------------- |
+| selenium-manager (macOS)        | 8 MB  | Binary   | Webdriver (venv dependency) |
+| selenium-manager (Linux)        | 5 MB  | Binary   | Webdriver (venv dependency) |
+| selenium-manager (Windows .exe) | 4 MB  | Binary   | Webdriver (venv dependency) |
+| project_map/path_index.json     | 2 MB  | JSON     | Scan-Artefakt (generiert)   |
+| mypy_cache (builtins)           | 2 MB  | Cache    | Type checking cache (venv)  |
+| docs/violations_report.md       | 2 MB  | Markdown | Report (generiert)          |
 
 **Assessment**: Alle verbleibenden großen Dateien sind **legitimate** (venv dependencies, caches, generated reports).
 
@@ -86,6 +88,7 @@ Status:  ✅ Committed locally
 ## 🚀 Nächste Schritte (Optional)
 
 ### Option 1: Weiteres Cleanup (venv-Heavy)
+
 Falls Repo noch kleiner sein soll, können optionale Cache-Verzeichnisse ausgeschlossen werden:
 
 ```bash
@@ -98,6 +101,7 @@ echo ".mypy_cache/" >> .gitignore
 ```
 
 ### Option 2: venv als separates Backup
+
 Falls .venv auch zu groß wird (aktuell in 1.portier_openai/venv313):
 
 ```bash
@@ -113,17 +117,17 @@ echo "venv313/" >> .gitignore
 
 ## 📋 Zusammenfassung
 
-✅ **299 MB große Archive gelöscht**  
-✅ **.gitignore aktualisiert** (Duplikate verhindert)  
-✅ **Repo-Größe: 383 MB → 84 MB** (78% Reduktion)  
-✅ **Scan-Performance stabil** (~2s)  
-✅ **Git Commit erfolgreich** (c0971da)  
-✅ **Keine legitimen Dateien gelöscht**  
+✅ **299 MB große Archive gelöscht**
+✅ **.gitignore aktualisiert** (Duplikate verhindert)
+✅ **Repo-Größe: 383 MB → 84 MB** (78% Reduktion)
+✅ **Scan-Performance stabil** (~2s)
+✅ **Git Commit erfolgreich** (c0971da)
+✅ **Keine legitimen Dateien gelöscht**
 
 **Status: CLEANUP COMPLETE ✅**
 
 ---
 
-**Erstellt**: 9. November 2025 02:58 UTC  
-**Scan-Tool**: Repository Scanner (zero-dependency)  
+**Erstellt**: 9. November 2025 02:58 UTC
+**Scan-Tool**: Repository Scanner (zero-dependency)
 **Autor**: GitHub Copilot + Danijel J.

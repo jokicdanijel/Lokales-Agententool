@@ -38,21 +38,18 @@ Maintainer: ELION Team
 Letzte Aktualisierung: 27. November 2025
 """
 
-import os
-import sys
 import json
 import time
 import uuid
-from pathlib import Path
-from datetime import datetime, timedelta, timezone
-from typing import Optional, List, Dict, Any
+from dataclasses import asdict, dataclass
+from datetime import UTC, datetime
 from enum import Enum
-from dataclasses import dataclass, asdict
+from pathlib import Path
+from typing import Any
 
-from fastapi import FastAPI, HTTPException, Header, Request
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field, validator
 import uvicorn
+from fastapi import FastAPI, Header, HTTPException
+from pydantic import BaseModel, Field, validator
 
 # ============================================================================
 # CONFIGURATION
@@ -100,8 +97,10 @@ VERSION = "1.0"
 # ENUMS & DATA MODELS
 # ============================================================================
 
+
 class Platform(str, Enum):
     """Social Media Platforms"""
+
     INSTAGRAM = "instagram"
     TIKTOK = "tiktok"
     YOUTUBE = "youtube"
@@ -113,6 +112,7 @@ class Platform(str, Enum):
 
 class Niche(str, Enum):
     """Influencer Nischen"""
+
     FASHION = "fashion"
     BEAUTY = "beauty"
     FITNESS = "fitness"
@@ -129,6 +129,7 @@ class Niche(str, Enum):
 
 class CampaignStatus(str, Enum):
     """Campaign Lifecycle Status"""
+
     DRAFT = "draft"
     ACTIVE = "active"
     PAUSED = "paused"
@@ -139,22 +140,23 @@ class CampaignStatus(str, Enum):
 @dataclass
 class InfluencerProfile:
     """Influencer Profile Data Class"""
+
     profile_id: str
     name: str
     platform: str
     followers: int
     engagement_rate: float  # 0.0 - 100.0
     niche: str
-    contact_email: Optional[str] = None
-    avg_likes: Optional[int] = None
-    avg_comments: Optional[int] = None
+    contact_email: str | None = None
+    avg_likes: int | None = None
+    avg_comments: int | None = None
     created_at: str = ""
     updated_at: str = ""
     active: bool = True
 
     def __post_init__(self):
         if not self.created_at:
-            self.created_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+            self.created_at = datetime.now(UTC).isoformat().replace("+00:00", "Z")
         if not self.updated_at:
             self.updated_at = self.created_at
 
@@ -162,27 +164,29 @@ class InfluencerProfile:
 @dataclass
 class Campaign:
     """Marketing Campaign Data Class"""
+
     campaign_id: str
     name: str
     budget: float  # EUR
     target_audience: str
-    niches: List[str]
+    niches: list[str]
     min_followers: int
     min_engagement_rate: float
     start_date: str
-    end_date: Optional[str] = None
+    end_date: str | None = None
     status: str = CampaignStatus.DRAFT.value
     created_at: str = ""
     created_by: str = "system"
 
     def __post_init__(self):
         if not self.created_at:
-            self.created_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+            self.created_at = datetime.now(UTC).isoformat().replace("+00:00", "Z")
 
 
 @dataclass
 class Match:
     """Influencer-Campaign Match Result"""
+
     match_id: str
     campaign_id: str
     profile_id: str
@@ -192,23 +196,25 @@ class Match:
 
     def __post_init__(self):
         if not self.matched_at:
-            self.matched_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+            self.matched_at = datetime.now(UTC).isoformat().replace("+00:00", "Z")
 
 
 # ============================================================================
 # PYDANTIC REQUEST/RESPONSE MODELS (STRICT JSON)
 # ============================================================================
 
+
 class ProfileCreateRequest(BaseModel):
     """Request: Influencer-Profil erstellen"""
+
     name: str = Field(..., min_length=1, max_length=200)
     platform: Platform
     followers: int = Field(..., ge=0)
     engagement_rate: float = Field(..., ge=0.0, le=100.0)
     niche: Niche
-    contact_email: Optional[str] = Field(None, max_length=255)
-    avg_likes: Optional[int] = Field(None, ge=0)
-    avg_comments: Optional[int] = Field(None, ge=0)
+    contact_email: str | None = Field(None, max_length=255)
+    avg_likes: int | None = Field(None, ge=0)
+    avg_comments: int | None = Field(None, ge=0)
 
     class Config:
         extra = "forbid"  # Strict JSON
@@ -216,15 +222,16 @@ class ProfileCreateRequest(BaseModel):
 
 class ProfileResponse(BaseModel):
     """Response: Influencer-Profil"""
+
     profile_id: str
     name: str
     platform: str
     followers: int
     engagement_rate: float
     niche: str
-    contact_email: Optional[str]
-    avg_likes: Optional[int]
-    avg_comments: Optional[int]
+    contact_email: str | None
+    avg_likes: int | None
+    avg_comments: int | None
     created_at: str
     updated_at: str
     active: bool
@@ -235,14 +242,15 @@ class ProfileResponse(BaseModel):
 
 class CampaignCreateRequest(BaseModel):
     """Request: Kampagne erstellen"""
+
     name: str = Field(..., min_length=1, max_length=300)
     budget: float = Field(..., gt=0)
     target_audience: str = Field(..., min_length=1, max_length=500)
-    niches: List[Niche] = Field(..., min_items=1, max_items=5)
+    niches: list[Niche] = Field(..., min_items=1, max_items=5)
     min_followers: int = Field(..., ge=0)
     min_engagement_rate: float = Field(..., ge=0.0, le=100.0)
     start_date: str  # ISO 8601
-    end_date: Optional[str] = None  # ISO 8601
+    end_date: str | None = None  # ISO 8601
 
     @validator("start_date", "end_date")
     def validate_date(cls, v):
@@ -259,15 +267,16 @@ class CampaignCreateRequest(BaseModel):
 
 class CampaignResponse(BaseModel):
     """Response: Kampagne"""
+
     campaign_id: str
     name: str
     budget: float
     target_audience: str
-    niches: List[str]
+    niches: list[str]
     min_followers: int
     min_engagement_rate: float
     start_date: str
-    end_date: Optional[str]
+    end_date: str | None
     status: str
     created_at: str
     created_by: str
@@ -278,6 +287,7 @@ class CampaignResponse(BaseModel):
 
 class MatchRequest(BaseModel):
     """Request: Influencer-Matching für Kampagne"""
+
     campaign_id: str
     max_results: int = Field(10, ge=1, le=50)
     min_score: float = Field(50.0, ge=0.0, le=100.0)
@@ -288,6 +298,7 @@ class MatchRequest(BaseModel):
 
 class MatchResult(BaseModel):
     """Response: Einzelnes Match-Ergebnis"""
+
     match_id: str
     profile: ProfileResponse
     score: float
@@ -299,8 +310,9 @@ class MatchResult(BaseModel):
 
 class MatchResponse(BaseModel):
     """Response: Matching-Ergebnisse"""
+
     campaign_id: str
-    matches: List[MatchResult]
+    matches: list[MatchResult]
     total_candidates: int
     matched_at: str
 
@@ -310,10 +322,11 @@ class MatchResponse(BaseModel):
 
 class MetricsRequest(BaseModel):
     """Request: Metriken abrufen"""
-    profile_ids: Optional[List[str]] = Field(None, max_items=100)
-    campaign_ids: Optional[List[str]] = Field(None, max_items=50)
-    platform: Optional[Platform] = None
-    niche: Optional[Niche] = None
+
+    profile_ids: list[str] | None = Field(None, max_items=100)
+    campaign_ids: list[str] | None = Field(None, max_items=50)
+    platform: Platform | None = None
+    niche: Niche | None = None
 
     class Config:
         extra = "forbid"
@@ -321,13 +334,14 @@ class MetricsRequest(BaseModel):
 
 class MetricsResponse(BaseModel):
     """Response: Aggregierte Metriken"""
+
     total_profiles: int
     total_campaigns: int
     total_matches: int
     avg_engagement_rate: float
     total_followers: int
-    platforms: Dict[str, int]
-    niches: Dict[str, int]
+    platforms: dict[str, int]
+    niches: dict[str, int]
 
     class Config:
         extra = "forbid"
@@ -335,8 +349,9 @@ class MetricsResponse(BaseModel):
 
 class CommandRequest(BaseModel):
     """Option-2-Flow Command Request"""
+
     action: str = Field(..., min_length=1, max_length=100)
-    params: Dict[str, Any] = Field(default_factory=dict)
+    params: dict[str, Any] = Field(default_factory=dict)
 
     class Config:
         extra = "forbid"
@@ -344,6 +359,7 @@ class CommandRequest(BaseModel):
 
 class HealthResponse(BaseModel):
     """Health Check Response"""
+
     status: str
     service: str
     kuerzel: str
@@ -361,11 +377,12 @@ class HealthResponse(BaseModel):
 # DATA PERSISTENCE LAYER
 # ============================================================================
 
+
 class DataStore:
     """JSON-based Data Persistence (upgradeable to PostgreSQL/SQLAlchemy)"""
 
     @staticmethod
-    def load_profiles() -> List[InfluencerProfile]:
+    def load_profiles() -> list[InfluencerProfile]:
         """Load all influencer profiles from JSON"""
         if not PROFILES_FILE.exists():
             return []
@@ -374,13 +391,13 @@ class DataStore:
             return [InfluencerProfile(**p) for p in data]
 
     @staticmethod
-    def save_profiles(profiles: List[InfluencerProfile]):
+    def save_profiles(profiles: list[InfluencerProfile]):
         """Save all profiles to JSON"""
         with open(PROFILES_FILE, "w") as f:
             json.dump([asdict(p) for p in profiles], f, indent=2)
 
     @staticmethod
-    def load_campaigns() -> List[Campaign]:
+    def load_campaigns() -> list[Campaign]:
         """Load all campaigns from JSON"""
         if not CAMPAIGNS_FILE.exists():
             return []
@@ -389,13 +406,13 @@ class DataStore:
             return [Campaign(**c) for c in data]
 
     @staticmethod
-    def save_campaigns(campaigns: List[Campaign]):
+    def save_campaigns(campaigns: list[Campaign]):
         """Save all campaigns to JSON"""
         with open(CAMPAIGNS_FILE, "w") as f:
             json.dump([asdict(c) for c in campaigns], f, indent=2)
 
     @staticmethod
-    def load_matches() -> List[Match]:
+    def load_matches() -> list[Match]:
         """Load all matches from JSON"""
         if not MATCHES_FILE.exists():
             return []
@@ -404,7 +421,7 @@ class DataStore:
             return [Match(**m) for m in data]
 
     @staticmethod
-    def save_matches(matches: List[Match]):
+    def save_matches(matches: list[Match]):
         """Save all matches to JSON"""
         with open(MATCHES_FILE, "w") as f:
             json.dump([asdict(m) for m in matches], f, indent=2)
@@ -414,15 +431,15 @@ class AuditLog:
     """JSONL Append-Only Audit Log (WORM-compliant)"""
 
     @staticmethod
-    def log(operation: str, actor: str, resource_type: str, resource_id: str, details: Optional[Dict] = None):
+    def log(operation: str, actor: str, resource_type: str, resource_id: str, details: dict | None = None):
         """Append audit entry to JSONL log"""
         entry = {
-            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "timestamp": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
             "operation": operation,
             "actor": actor,
             "resource_type": resource_type,
             "resource_id": resource_id,
-            "details": details or {}
+            "details": details or {},
         }
         with open(AUDIT_LOG_FILE, "a") as f:
             f.write(json.dumps(entry) + "\n")
@@ -432,6 +449,7 @@ class AuditLog:
 # MATCHING ALGORITHM
 # ============================================================================
 
+
 class MatchingEngine:
     """Influencer-Campaign Matching Algorithm"""
 
@@ -439,13 +457,13 @@ class MatchingEngine:
     def calculate_score(profile: InfluencerProfile, campaign: Campaign) -> tuple[float, str]:
         """
         Calculate match score (0-100) and reasoning
-        
+
         Scoring Factors:
         - Niche match: 40 points
         - Followers threshold: 20 points (HARD REQUIREMENT - no score if below)
         - Engagement rate: 30 points
         - Platform preference: 10 points
-        
+
         Note: Follower threshold is a HARD REQUIREMENT. Profile must meet
         min_followers to be considered, regardless of other factors.
         """
@@ -476,7 +494,9 @@ class MatchingEngine:
             score += engagement_bonus
             reasons.append(f"Engagement rate {profile.engagement_rate:.2f}% (min {campaign.min_engagement_rate:.2f}%)")
         else:
-            reasons.append(f"Engagement below threshold ({profile.engagement_rate:.2f}% < {campaign.min_engagement_rate:.2f}%)")
+            reasons.append(
+                f"Engagement below threshold ({profile.engagement_rate:.2f}% < {campaign.min_engagement_rate:.2f}%)"
+            )
 
         # Platform Preference (10 points) - bonus for Instagram/TikTok
         if profile.platform in ["instagram", "tiktok"]:
@@ -487,10 +507,12 @@ class MatchingEngine:
         return round(score, 2), reasoning
 
     @staticmethod
-    def match_influencers(campaign: Campaign, profiles: List[InfluencerProfile], max_results: int = 10, min_score: float = 50.0) -> List[Match]:
+    def match_influencers(
+        campaign: Campaign, profiles: list[InfluencerProfile], max_results: int = 10, min_score: float = 50.0
+    ) -> list[Match]:
         """
         Match influencers to campaign based on scoring algorithm
-        
+
         Returns: Top N matches above min_score threshold
         """
         matches = []
@@ -504,7 +526,7 @@ class MatchingEngine:
                     campaign_id=campaign.campaign_id,
                     profile_id=profile.profile_id,
                     score=score,
-                    reasoning=reasoning
+                    reasoning=reasoning,
                 )
                 matches.append(match)
 
@@ -531,15 +553,16 @@ SERVICE_START_TIME = time.time()
 # SECURITY MIDDLEWARE
 # ============================================================================
 
-async def verify_bearer_token(authorization: Optional[str] = Header(None)):
+
+async def verify_bearer_token(authorization: str | None = Header(None)):
     """Verify Bearer Token for protected endpoints"""
     if not authorization:
         raise HTTPException(status_code=401, detail="Missing Authorization header")
-    
+
     parts = authorization.split()
     if len(parts) != 2 or parts[0].lower() != "bearer":
         raise HTTPException(status_code=401, detail="Invalid Authorization header format")
-    
+
     token = parts[1]
     if token != BEARER_TOKEN:
         raise HTTPException(status_code=401, detail="Invalid Bearer token")
@@ -549,7 +572,8 @@ async def verify_bearer_token(authorization: Optional[str] = Header(None)):
 # ENDPOINTS
 # ============================================================================
 
-@app.get("/", response_model=Dict[str, str])
+
+@app.get("/", response_model=dict[str, str])
 async def root():
     """Root endpoint - Service Info"""
     return {
@@ -557,7 +581,7 @@ async def root():
         "kuerzel": KUERZEL,
         "version": VERSION,
         "port": str(PORT),
-        "description": "Influencer Management Agent - Profile CRUD, Campaign Matching, Metrics"
+        "description": "Influencer Management Agent - Profile CRUD, Campaign Matching, Metrics",
     }
 
 
@@ -578,12 +602,12 @@ async def health():
         uptime_seconds=round(uptime, 2),
         total_profiles=len(profiles),
         total_campaigns=len(campaigns),
-        total_matches=len(matches)
+        total_matches=len(matches),
     )
 
 
 @app.post("/profiles/create", response_model=ProfileResponse)
-async def create_profile(req: ProfileCreateRequest, authorization: Optional[str] = Header(None)):
+async def create_profile(req: ProfileCreateRequest, authorization: str | None = Header(None)):
     """Create new influencer profile (Auth required)"""
     await verify_bearer_token(authorization)
 
@@ -599,28 +623,30 @@ async def create_profile(req: ProfileCreateRequest, authorization: Optional[str]
         niche=req.niche.value,
         contact_email=req.contact_email,
         avg_likes=req.avg_likes,
-        avg_comments=req.avg_comments
+        avg_comments=req.avg_comments,
     )
 
     profiles.append(profile)
     DataStore.save_profiles(profiles)
 
-    AuditLog.log("CREATE_PROFILE", "api_user", "profile", profile.profile_id, {
-        "name": profile.name,
-        "platform": profile.platform,
-        "followers": profile.followers
-    })
+    AuditLog.log(
+        "CREATE_PROFILE",
+        "api_user",
+        "profile",
+        profile.profile_id,
+        {"name": profile.name, "platform": profile.platform, "followers": profile.followers},
+    )
 
     return ProfileResponse(**asdict(profile))
 
 
-@app.get("/profiles", response_model=List[ProfileResponse])
+@app.get("/profiles", response_model=list[ProfileResponse])
 async def list_profiles(
-    platform: Optional[str] = None,
-    niche: Optional[str] = None,
-    min_followers: Optional[int] = None,
+    platform: str | None = None,
+    niche: str | None = None,
+    min_followers: int | None = None,
     active_only: bool = True,
-    authorization: Optional[str] = Header(None)
+    authorization: str | None = Header(None),
 ):
     """List/search influencer profiles (Auth required)"""
     await verify_bearer_token(authorization)
@@ -641,7 +667,7 @@ async def list_profiles(
 
 
 @app.post("/campaigns/create", response_model=CampaignResponse)
-async def create_campaign(req: CampaignCreateRequest, authorization: Optional[str] = Header(None)):
+async def create_campaign(req: CampaignCreateRequest, authorization: str | None = Header(None)):
     """Create new marketing campaign (Auth required)"""
     await verify_bearer_token(authorization)
 
@@ -657,26 +683,25 @@ async def create_campaign(req: CampaignCreateRequest, authorization: Optional[st
         min_engagement_rate=req.min_engagement_rate,
         start_date=req.start_date,
         end_date=req.end_date,
-        status=CampaignStatus.DRAFT.value
+        status=CampaignStatus.DRAFT.value,
     )
 
     campaigns.append(campaign)
     DataStore.save_campaigns(campaigns)
 
-    AuditLog.log("CREATE_CAMPAIGN", "api_user", "campaign", campaign.campaign_id, {
-        "name": campaign.name,
-        "budget": campaign.budget,
-        "niches": campaign.niches
-    })
+    AuditLog.log(
+        "CREATE_CAMPAIGN",
+        "api_user",
+        "campaign",
+        campaign.campaign_id,
+        {"name": campaign.name, "budget": campaign.budget, "niches": campaign.niches},
+    )
 
     return CampaignResponse(**asdict(campaign))
 
 
-@app.get("/campaigns", response_model=List[CampaignResponse])
-async def list_campaigns(
-    status: Optional[str] = None,
-    authorization: Optional[str] = Header(None)
-):
+@app.get("/campaigns", response_model=list[CampaignResponse])
+async def list_campaigns(status: str | None = None, authorization: str | None = Header(None)):
     """List campaigns (Auth required)"""
     await verify_bearer_token(authorization)
 
@@ -689,7 +714,7 @@ async def list_campaigns(
 
 
 @app.post("/match", response_model=MatchResponse)
-async def match_influencers(req: MatchRequest, authorization: Optional[str] = Header(None)):
+async def match_influencers(req: MatchRequest, authorization: str | None = Header(None)):
     """Match influencers to campaign (Auth required)"""
     await verify_bearer_token(authorization)
 
@@ -710,33 +735,37 @@ async def match_influencers(req: MatchRequest, authorization: Optional[str] = He
     existing_matches.extend(matches)
     DataStore.save_matches(existing_matches)
 
-    AuditLog.log("MATCH_INFLUENCERS", "api_user", "campaign", campaign.campaign_id, {
-        "matches_found": len(matches),
-        "max_results": req.max_results,
-        "min_score": req.min_score
-    })
+    AuditLog.log(
+        "MATCH_INFLUENCERS",
+        "api_user",
+        "campaign",
+        campaign.campaign_id,
+        {"matches_found": len(matches), "max_results": req.max_results, "min_score": req.min_score},
+    )
 
     # Build response
     match_results = []
     for match in matches:
         profile = next(p for p in profiles if p.profile_id == match.profile_id)
-        match_results.append(MatchResult(
-            match_id=match.match_id,
-            profile=ProfileResponse(**asdict(profile)),
-            score=match.score,
-            reasoning=match.reasoning
-        ))
+        match_results.append(
+            MatchResult(
+                match_id=match.match_id,
+                profile=ProfileResponse(**asdict(profile)),
+                score=match.score,
+                reasoning=match.reasoning,
+            )
+        )
 
     return MatchResponse(
         campaign_id=campaign.campaign_id,
         matches=match_results,
         total_candidates=len([p for p in profiles if p.active]),
-        matched_at=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+        matched_at=datetime.now(UTC).isoformat().replace("+00:00", "Z"),
     )
 
 
 @app.post("/metrics", response_model=MetricsResponse)
-async def get_metrics(req: MetricsRequest, authorization: Optional[str] = Header(None)):
+async def get_metrics(req: MetricsRequest, authorization: str | None = Header(None)):
     """Get aggregated metrics (Auth required)"""
     await verify_bearer_token(authorization)
 
@@ -755,7 +784,9 @@ async def get_metrics(req: MetricsRequest, authorization: Optional[str] = Header
 
     # Aggregate metrics
     total_followers = sum(p.followers for p in filtered_profiles)
-    avg_engagement = sum(p.engagement_rate for p in filtered_profiles) / len(filtered_profiles) if filtered_profiles else 0.0
+    avg_engagement = (
+        sum(p.engagement_rate for p in filtered_profiles) / len(filtered_profiles) if filtered_profiles else 0.0
+    )
 
     platforms_count = {}
     niches_count = {}
@@ -770,12 +801,12 @@ async def get_metrics(req: MetricsRequest, authorization: Optional[str] = Header
         avg_engagement_rate=round(avg_engagement, 2),
         total_followers=total_followers,
         platforms=platforms_count,
-        niches=niches_count
+        niches=niches_count,
     )
 
 
 @app.post("/command")
-async def command_endpoint(req: CommandRequest, authorization: Optional[str] = Header(None)):
+async def command_endpoint(req: CommandRequest, authorization: str | None = Header(None)):
     """Option-2-Flow Command Endpoint (Auth required)"""
     await verify_bearer_token(authorization)
 
@@ -810,9 +841,4 @@ if __name__ == "__main__":
     print(f"📊 Data directory: {DATA_DIR}")
     print(f"🔐 Bearer token loaded: {BEARER_TOKEN[:20]}..." if BEARER_TOKEN else "⚠️  No Bearer token!")
 
-    uvicorn.run(
-        app,
-        host="127.0.0.1",
-        port=PORT,
-        log_level="info"
-    )
+    uvicorn.run(app, host="127.0.0.1", port=PORT, log_level="info")

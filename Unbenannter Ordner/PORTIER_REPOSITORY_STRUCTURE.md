@@ -1,7 +1,7 @@
 # 📂 PORTIER 3.0 — Repository Structure Guide
 
-**Version:** 3.0.0  
-**Date:** 21. November 2025  
+**Version:** 3.0.0
+**Date:** 21. November 2025
 **Purpose:** Complete guide to all folders, their purpose, and integration
 
 ---
@@ -11,6 +11,7 @@
 **PORTIER 3.0** ist ein modulares Multi-Agent-System mit 20+ spezialisierten Agenten, organisiert in einer klaren, skalierbaren Ordnerstruktur.
 
 **Hauptpfad:**
+
 ```
 /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 ```
@@ -61,6 +62,7 @@
 ```
 
 **Ports:**
+
 - opena1: 12344
 - opena2: 12345
 - kordp: 12346
@@ -86,6 +88,7 @@
 ```
 
 **Ports:**
+
 - opena3: 12347
 - Adapter: 12350
 
@@ -111,7 +114,7 @@
 └── requirements.txt
 ```
 
-**Port:** 12348  
+**Port:** 12348
 **Status:** 🟡 Planned (Struktur vorhanden)
 
 ---
@@ -130,7 +133,7 @@
 └── requirements.txt
 ```
 
-**Port:** 12349 (Konflikt mit opena20, wird zu 12365 verschoben)  
+**Port:** 12349 (Konflikt mit opena20, wird zu 12365 verschoben)
 **Status:** 🟡 Planned
 
 ---
@@ -139,7 +142,7 @@
 
 **Zweck:** Selenium/Playwright, Scraping, Testing
 
-**Port:** 12350  
+**Port:** 12350
 **Status:** 🟡 Planned
 
 ---
@@ -148,7 +151,7 @@
 
 **Zweck:** IMAP/SMTP, Inbox Monitoring, Templates
 
-**Port:** 12351  
+**Port:** 12351
 **Status:** 🟡 Planned
 
 ---
@@ -157,7 +160,7 @@
 
 **Zweck:** WhatsApp Business API, Message Queue
 
-**Port:** 12352  
+**Port:** 12352
 **Status:** 🟡 Planned
 
 ---
@@ -166,7 +169,7 @@
 
 **Zweck:** SIP/VoIP Integration, Call Logging
 
-**Port:** 12353  
+**Port:** 12353
 **Status:** 🟡 Planned
 
 ---
@@ -175,7 +178,7 @@
 
 **Zweck:** Call Analytics, Recording, Transcription
 
-**Port:** 12354  
+**Port:** 12354
 **Status:** 🟡 Planned
 
 ---
@@ -184,7 +187,7 @@
 
 **Zweck:** Password Manager Integration, Secret Vault
 
-**Port:** 12355  
+**Port:** 12355
 **Status:** 🟡 Planned
 
 ---
@@ -193,7 +196,7 @@
 
 **Zweck:** Multi-Platform Posting (X, LinkedIn, etc.)
 
-**Port:** 12356  
+**Port:** 12356
 **Status:** 🟡 Planned
 
 ---
@@ -202,7 +205,7 @@
 
 **Zweck:** Content Calendar, Analytics, Outreach
 
-**Port:** 12357  
+**Port:** 12357
 **Status:** 🟡 Planned
 
 ---
@@ -211,7 +214,7 @@
 
 **Zweck:** Google Calendar, iCal Sync, Reminders
 
-**Port:** 12358  
+**Port:** 12358
 **Status:** 🟡 Planned
 
 ---
@@ -220,7 +223,7 @@
 
 **Zweck:** Template Engine, Static Site Gen, Preview
 
-**Port:** 12359  
+**Port:** 12359
 **Status:** 🟡 Planned
 
 ---
@@ -229,7 +232,7 @@
 
 **Zweck:** E-Commerce Integration, Product Catalog
 
-**Port:** 12360  
+**Port:** 12360
 **Status:** 🟡 Planned
 
 ---
@@ -238,7 +241,7 @@
 
 **Zweck:** Website Builder, Template System
 
-**Port:** 12361  
+**Port:** 12361
 **Status:** 🟡 Planned
 
 ---
@@ -247,7 +250,7 @@
 
 **Zweck:** Contact Management, Sales Pipeline
 
-**Port:** 12362  
+**Port:** 12362
 **Status:** 🟡 Planned
 
 **Hinweis:** Typo im Ordnernamen (sollte CRM sein)
@@ -258,7 +261,7 @@
 
 **Zweck:** Market Data, Portfolio Tracking, Alerts
 
-**Port:** 12363  
+**Port:** 12363
 **Status:** 🟡 Planned
 
 ---
@@ -285,10 +288,11 @@
 └── requirements.txt
 ```
 
-**Port:** 12349  
+**Port:** 12349
 **Status:** ✅ Running (Production)
 
 **Features:**
+
 - Live Status Grid (alle Agenten)
 - E2E Test Trigger
 - Safepoint Inspector
@@ -301,7 +305,7 @@
 
 **Zweck:** Process Automation, Task Orchestration
 
-**Port:** 12364  
+**Port:** 12364
 **Status:** 🟡 Planned
 
 ---
@@ -478,7 +482,7 @@ pydantic = "^2.4.0"
 #### **docker-compose.prod.yml** — Docker Stack 🟡
 
 ```yaml
-version: '3.8'
+version: "3.8"
 services:
   opena1:
     build: ./1.opena1&2_portier
@@ -542,35 +546,35 @@ DB_PATH=/path/to/db.sqlite
 
 #### **README.md** — Main README ✅
 
-**Inhalt:** Quick Start, Architektur, Port-Mapping, Operations  
+**Inhalt:** Quick Start, Architektur, Port-Mapping, Operations
 **Zeilen:** ~700 LOC
 
 ---
 
 #### **README_ENTERPRISE.md** — Enterprise Documentation ✅
 
-**Inhalt:** 20-Seiten vollständiges Dossier (Executive Summary, Agenten-Register, Port-Registry, Ordnerstruktur, SCTA, Option-2-Flow, etc.)  
+**Inhalt:** 20-Seiten vollständiges Dossier (Executive Summary, Agenten-Register, Port-Registry, Ordnerstruktur, SCTA, Option-2-Flow, etc.)
 **Zeilen:** 5,890 LOC
 
 ---
 
 #### **PORTIER_3.0_RELEASE.md** — Release Notes ✅
 
-**Inhalt:** Release v3.0.0, Deliverables, E2E Testing, Metrics  
+**Inhalt:** Release v3.0.0, Deliverables, E2E Testing, Metrics
 **Zeilen:** 511 LOC
 
 ---
 
 #### **PORTIER_SYSTEM_DOCS.md** — System Documentation ✅
 
-**Inhalt:** Complete Technical Docs (Architecture, APIs, Operations, Troubleshooting)  
+**Inhalt:** Complete Technical Docs (Architecture, APIs, Operations, Troubleshooting)
 **Zeilen:** 654 LOC
 
 ---
 
 #### **SCTA_IMPLEMENTATION_CHECKPOINT.md** — SCTA Status ✅
 
-**Inhalt:** Phases 1-3 Complete, Phases 4-10 Queued  
+**Inhalt:** Phases 1-3 Complete, Phases 4-10 Queued
 **Zeilen:** ~200 LOC
 
 ---
@@ -593,14 +597,14 @@ __pycache__/                    # Python Bytecode
 
 ## 📊 Ordner-Statistiken
 
-| Typ | Anzahl | Zweck |
-|-----|--------|-------|
-| **Agenten** | 20 | opena1-opena21 (Service-Slots) |
-| **✅ Running** | 5 | opena1, opena2, kordp, opena3, opena20 |
-| **🟡 Planned** | 15 | opena4-opena21 (außer opena20) |
-| **Systemordner** | 10+ | src/, docs/, bin/, scripts/, configs/, tests/, logs/ |
-| **Konfigurationsdateien** | 6+ | pyproject.toml, Makefile, .env.example, etc. |
-| **Hauptdokumente** | 5 | README.md, README_ENTERPRISE.md, PORTIER_*.md, SCTA_*.md |
+| Typ                       | Anzahl | Zweck                                                     |
+| ------------------------- | ------ | --------------------------------------------------------- |
+| **Agenten**               | 20     | opena1-opena21 (Service-Slots)                            |
+| **✅ Running**            | 5      | opena1, opena2, kordp, opena3, opena20                    |
+| **🟡 Planned**            | 15     | opena4-opena21 (außer opena20)                            |
+| **Systemordner**          | 10+    | src/, docs/, bin/, scripts/, configs/, tests/, logs/      |
+| **Konfigurationsdateien** | 6+     | pyproject.toml, Makefile, .env.example, etc.              |
+| **Hauptdokumente**        | 5      | README.md, README*ENTERPRISE.md, PORTIER*_.md, SCTA\__.md |
 
 ---
 
@@ -609,7 +613,7 @@ __pycache__/                    # Python Bytecode
 ### **1. Option-2-Flow Integration**
 
 ```
-opena1 (1.opena1&2_portier/) 
+opena1 (1.opena1&2_portier/)
   → opena2 (1.opena1&2_portier/)
   → kordp (1.opena1&2_portier/)
   → Tools (3-21.opena*/)
@@ -688,12 +692,12 @@ less docs/OPERATIONS.md
 
 ## 📞 Support
 
-**Issues:** https://github.com/jokicdanijel/Gesamtprojekt-start/issues  
-**Docs:** https://github.com/jokicdanijel/Gesamtprojekt-start/wiki  
+**Issues:** https://github.com/jokicdanijel/Gesamtprojekt-start/issues
+**Docs:** https://github.com/jokicdanijel/Gesamtprojekt-start/wiki
 **Email:** contact@elion-tech.de (fiktiv)
 
 ---
 
-**Last Updated:** 21. November 2025  
-**Version:** 3.0.0  
+**Last Updated:** 21. November 2025
+**Version:** 3.0.0
 **Maintainer:** Danijel Jokic (ELION Team)

@@ -3,15 +3,15 @@ Unit tests for Speech Input Module
 Tests speech recognition and audio processing functionality
 """
 
-import unittest
-from unittest.mock import patch, MagicMock
 import sys
+import unittest
 from pathlib import Path
+from unittest.mock import MagicMock, patch
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.speech_input import SpeechInput, initialize, listen, test_mic
+from src.speech_input import SpeechInput, initialize, test_mic
 
 
 class TestSpeechInput(unittest.TestCase):
@@ -32,13 +32,13 @@ class TestSpeechInput(unittest.TestCase):
         self.speech.change_language("en-US")
         self.assertEqual(self.speech.language, "en-US")
 
-    @patch('speech_recognition.Microphone')
+    @patch("speech_recognition.Microphone")
     def test_listen_once_success(self, mock_mic):
         """Test successful single listen"""
         mock_recognizer = MagicMock()
         mock_recognizer.recognize_google.return_value = "test command"
 
-        with patch.object(self.speech, 'recognizer', mock_recognizer):
+        with patch.object(self.speech, "recognizer", mock_recognizer):
             # This would require more complex mocking
             # Skipped for now as it needs audio data
             pass
@@ -47,6 +47,7 @@ class TestSpeechInput(unittest.TestCase):
         """Test microphone listing"""
         try:
             import speech_recognition as sr
+
             mics = sr.Microphone.list_microphone_indexes()
             self.assertIsInstance(mics, list)
         except Exception as e:
@@ -85,9 +86,10 @@ class TestSpeechInputIntegration(unittest.TestCase):
     def test_module_imports(self):
         """Test that module imports correctly"""
         import src.speech_input
-        self.assertTrue(hasattr(src.speech_input, 'SpeechInput'))
-        self.assertTrue(hasattr(src.speech_input, 'initialize'))
-        self.assertTrue(hasattr(src.speech_input, 'listen'))
+
+        self.assertTrue(hasattr(src.speech_input, "SpeechInput"))
+        self.assertTrue(hasattr(src.speech_input, "initialize"))
+        self.assertTrue(hasattr(src.speech_input, "listen"))
 
     def test_exception_handling(self):
         """Test exception handling"""

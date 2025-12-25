@@ -7,8 +7,8 @@ Generic Service Template — Reusable for all scalable services
 
 import os
 from datetime import datetime
-from typing import Any, Dict
 from socket import gethostname
+from typing import Any
 
 import httpx
 from fastapi import FastAPI
@@ -35,23 +35,27 @@ STATS = {
 # Models
 # ────────────────────────────────────────────────────────────────────
 
+
 class EchoRequest(BaseModel):
     """Echo request."""
+
     msg: str
 
 
 class HealthResponse(BaseModel):
     """Health response."""
+
     status: str
     service: str
     program_target: str
     port: int
-    stats: Dict[str, Any]
+    stats: dict[str, Any]
 
 
 # ────────────────────────────────────────────────────────────────────
 # Helpers
 # ────────────────────────────────────────────────────────────────────
+
 
 def _hostname() -> str:
     """Get hostname."""
@@ -66,17 +70,10 @@ def _now() -> str:
     return datetime.utcnow().isoformat() + "Z"
 
 
-async def _store_safepoint(kind: str, body: Dict[str, Any]) -> None:
+async def _store_safepoint(kind: str, body: dict[str, Any]) -> None:
     """Delegate safepoint storage to OpenA2."""
     url = f"http://127.0.0.1:{ARCHIVP_PORT}/store/archivp"
-    payload = {
-        "src": PROGRAM_TARGET,
-        "dst": "archivp",
-        "kind": kind,
-        "body": body,
-        "strict": True,
-        "ts": _now()
-    }
+    payload = {"src": PROGRAM_TARGET, "dst": "archivp", "kind": kind, "body": body, "strict": True, "ts": _now()}
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
             await client.post(url, json=payload)
@@ -90,9 +87,7 @@ async def _store_safepoint(kind: str, body: Dict[str, Any]) -> None:
 # ────────────────────────────────────────────────────────────────────
 
 app = FastAPI(
-    title=f"{SERVICE_NAME} — {PROGRAM_TARGET}",
-    description="Generic scalable service template",
-    version="1.0.0"
+    title=f"{SERVICE_NAME} — {PROGRAM_TARGET}", description="Generic scalable service template", version="1.0.0"
 )
 
 
@@ -100,13 +95,16 @@ app = FastAPI(
 async def health() -> HealthResponse:
     """Health check."""
     STATS["requests_received"] += 1
-    
-    await _store_safepoint("HEALTH", {
-        "service": SERVICE_NAME,
-        "port": PORT,
-        "timestamp": _now(),
-    })
-    
+
+    await _store_safepoint(
+        "HEALTH",
+        {
+            "service": SERVICE_NAME,
+            "port": PORT,
+            "timestamp": _now(),
+        },
+    )
+
     return HealthResponse(
         status="ok",
         service=SERVICE_NAME,
@@ -117,15 +115,18 @@ async def health() -> HealthResponse:
 
 
 @app.post("/echo")
-async def echo(req: EchoRequest) -> Dict[str, Any]:
+async def echo(req: EchoRequest) -> dict[str, Any]:
     """Echo endpoint for testing."""
     STATS["requests_received"] += 1
-    
-    await _store_safepoint("ECHO", {
-        "msg": req.msg,
-        "echo_time": _now(),
-    })
-    
+
+    await _store_safepoint(
+        "ECHO",
+        {
+            "msg": req.msg,
+            "echo_time": _now(),
+        },
+    )
+
     return {
         "ok": True,
         "service": SERVICE_NAME,
@@ -137,17 +138,20 @@ async def echo(req: EchoRequest) -> Dict[str, Any]:
 
 
 @app.post("/action")
-async def action(payload: Dict[str, Any]) -> Dict[str, Any]:
+async def action(payload: dict[str, Any]) -> dict[str, Any]:
     """Generic action endpoint."""
     STATS["requests_received"] += 1
-    
+
     action_name = payload.get("action", "unknown")
-    
-    await _store_safepoint("ACTION", {
-        "action": action_name,
-        "payload": payload,
-    })
-    
+
+    await _store_safepoint(
+        "ACTION",
+        {
+            "action": action_name,
+            "payload": payload,
+        },
+    )
+
     return {
         "ok": True,
         "service": SERVICE_NAME,
@@ -163,6 +167,7 @@ async def action(payload: Dict[str, Any]) -> Dict[str, Any]:
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(
         "main:app",
         host="127.0.0.1",

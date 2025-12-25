@@ -9,12 +9,14 @@
 ## Achievements (Phase P0: Blockierende Änderungen)
 
 ### ✅ P0.1 – Port-Policy durchziehen
+
 - ✅ `make/portier.mk` created (Policy-Enforcement)
 - ✅ `make policy` – Scans für forbidden ports (80, 443, 3000-5000, 5432, 6379, 8000-8009)
 - ✅ `make ports` – Port-Mapping Display (all 19 agents in 12344-12399 range)
 - ✅ Policy Status: **PASS** – No violations found
 
 **Compliance:**
+
 - Allowed Range: **12344–12399**
 - Exception: **8080** only for 2.openwebui
 - All 19 agents operating in compliant range ✅
@@ -22,6 +24,7 @@
 ---
 
 ### ✅ P0.2 – Python 3.13 + venv313 Vereinheitlichung
+
 - ✅ Created: `1.opena1&2_portier/venv312` (Python 3.12.3)
 - ✅ Symlink: `.venv → 1.opena1&2_portier/venv312`
 - ✅ Generated: `requirements.lock` (snapshot baseline: setuptools, wheel)
@@ -32,6 +35,7 @@
 ---
 
 ### ✅ P0.3 – Verbindliche Endpunkte & Safepoints Standardisieren
+
 - ✅ Created: `src/portier_service_base.py` (Base template class)
 - ✅ Created: `3.opena1_coordinator/main.py` (Template: /log/opena1)
 - ✅ Created: `5.kordp_scheduler/main.py` (Template: /dispatch/kordp)
@@ -44,6 +48,7 @@
   - `POST /finalize/opena2` – Finalization
 
 **Safepoint Format:**
+
 ```
 SP<unix_ms>_src→dst_KIND.json
 Example: SP1731139430123_bootstrap→opena1_CMD.json
@@ -54,6 +59,7 @@ Example: SP1731139430123_bootstrap→opena1_CMD.json
 ---
 
 ### ✅ P0.4 – Health-Probes überall implementieren
+
 - ✅ HealthResponse Model (Pydantic BaseModel)
 - ✅ Health Check Response Fields:
   ```json
@@ -76,6 +82,7 @@ Example: SP1731139430123_bootstrap→opena1_CMD.json
 ---
 
 ### ✅ P0.5 – Root-Härtung: Problematische Namen eliminieren
+
 - ✅ Moved: `ChatGPT - Agent 8/` → `docs/ChatGPT_Agent_8/`
 - ✅ Moved: `**Hinweis:**` → `docs/HINWEIS.md`
 - ✅ Updated: `.gitignore` (protection patterns for renamed files)
@@ -86,6 +93,7 @@ Example: SP1731139430123_bootstrap→opena1_CMD.json
 ## Infrastructure Status
 
 ### Port-Policy Compliance
+
 ```
 Allowed Range: 12344–12399 (56 ports)
 Active Services: 19 agents (all in range ✅)
@@ -95,6 +103,7 @@ Status: ✅ POLICY PASS
 ```
 
 ### venv Setup
+
 ```
 venv Location: 1.opena1&2_portier/venv312
 Python Version: 3.12.3
@@ -104,6 +113,7 @@ Status: ✅ VERIFIED
 ```
 
 ### Build Performance
+
 ```
 make bootstrap: 1.4 seconds ✅
 make scan:     3.1 seconds ✅
@@ -116,30 +126,33 @@ Status: ✅ FAST
 ## Key Files Created/Modified
 
 ### New Files
-| File | Purpose |
-|------|---------|
-| `make/portier.mk` | Port-Policy & Orchestration Makefile |
-| `scripts/bootstrap_core.sh` | Core Service Bootstrap (executable) |
-| `src/portier_service_base.py` | Standardized Service Base Class |
-| `3.opena1_coordinator/main.py` | opena1 Service Template |
-| `5.kordp_scheduler/main.py` | kordp Service Template |
-| `4.opena2_archivator/main.py` | archivp Service Template |
-| `docs/PORTIER_ENDPOINTS.md` | Endpoint Specification & Examples |
-| `requirements.lock` | Python Package Lock File |
+
+| File                           | Purpose                              |
+| ------------------------------ | ------------------------------------ |
+| `make/portier.mk`              | Port-Policy & Orchestration Makefile |
+| `scripts/bootstrap_core.sh`    | Core Service Bootstrap (executable)  |
+| `src/portier_service_base.py`  | Standardized Service Base Class      |
+| `3.opena1_coordinator/main.py` | opena1 Service Template              |
+| `5.kordp_scheduler/main.py`    | kordp Service Template               |
+| `4.opena2_archivator/main.py`  | archivp Service Template             |
+| `docs/PORTIER_ENDPOINTS.md`    | Endpoint Specification & Examples    |
+| `requirements.lock`            | Python Package Lock File             |
 
 ### Modified Files
-| File | Changes |
-|------|---------|
-| `Makefile` | Added: `include make/portier.mk` |
-| `.gitignore` | Added: Patterns for special characters & archives |
-| `docs/HINWEIS.md` | Created from root **Hinweis:** |
-| `.venv` | Symlink → `1.opena1&2_portier/venv312` |
+
+| File              | Changes                                           |
+| ----------------- | ------------------------------------------------- |
+| `Makefile`        | Added: `include make/portier.mk`                  |
+| `.gitignore`      | Added: Patterns for special characters & archives |
+| `docs/HINWEIS.md` | Created from root **Hinweis:**                    |
+| `.venv`           | Symlink → `1.opena1&2_portier/venv312`            |
 
 ---
 
 ## Git Status
 
 ### Commits
+
 ```
 835e2f6 (HEAD → main) P0: Port-Policy, venv312, Endpoints, Root-Hardening
 e8ade31 docs: add cleanup report (299 MB freed, 78% reduction)
@@ -148,6 +161,7 @@ c0971da chore: cleanup large archive files (299 MB freed)
 ```
 
 ### Uncommitted Changes
+
 ```
 Modified: project_map/* (STRUCTURE.md, TREE.txt, files.csv, etc.)
 Status: Ready for next phase commit
@@ -157,28 +171,30 @@ Status: Ready for next phase commit
 
 ## Quality Checks
 
-| Check | Result | Notes |
-|-------|--------|-------|
-| Port-Policy (make policy) | ✅ PASS | No forbidden ports detected |
-| Port-Mapping (make ports) | ✅ PASS | All services in 12344-12399 range |
-| Health-Checks (make health) | ⚠️ 2/4 | archivp & opena2 online (as expected) |
-| venv Integrity | ✅ PASS | Python 3.12.3, symlink verified |
-| Bootstrap Speed | ✅ PASS | 1.4 seconds |
-| Scanner Performance | ✅ PASS | 3.1 seconds for 6,490+ files |
-| Root-Hardening | ✅ PASS | No files with spaces in root |
-| Documentation | ✅ PASS | PORTIER_ENDPOINTS.md complete |
+| Check                       | Result  | Notes                                 |
+| --------------------------- | ------- | ------------------------------------- |
+| Port-Policy (make policy)   | ✅ PASS | No forbidden ports detected           |
+| Port-Mapping (make ports)   | ✅ PASS | All services in 12344-12399 range     |
+| Health-Checks (make health) | ⚠️ 2/4  | archivp & opena2 online (as expected) |
+| venv Integrity              | ✅ PASS | Python 3.12.3, symlink verified       |
+| Bootstrap Speed             | ✅ PASS | 1.4 seconds                           |
+| Scanner Performance         | ✅ PASS | 3.1 seconds for 6,490+ files          |
+| Root-Hardening              | ✅ PASS | No files with spaces in root          |
+| Documentation               | ✅ PASS | PORTIER_ENDPOINTS.md complete         |
 
 ---
 
 ## Recommended Next Steps (P1-P2)
 
 ### Immediate (P1)
+
 1. **P1.1** – Integrate `make generate-original` into CI/CD
 2. **P1.2** – Auto-detect startcommands (run.sh, start.sh, main.py)
 3. **P1.3** – Create `.env.example` → `.env` consolidation
 4. **P1.4** – Standardize logging to `logs/{service}.log`
 
 ### Future (P2)
+
 1. **P2.1** – GitHub Actions: policy job + scan job + smoke test
 2. **P2.2** – Weekly autoscan with trend analysis
 
@@ -187,6 +203,7 @@ Status: Ready for next phase commit
 ## Dependencies & Requirements
 
 ### Python Packages (for Services)
+
 ```
 fastapi>=0.100.0
 uvicorn[standard]>=0.24.0
@@ -195,6 +212,7 @@ aiohttp>=3.9.0 (optional, for async HTTP)
 ```
 
 ### System Requirements
+
 - Python 3.12+ (or 3.11)
 - curl (for health checks)
 - netstat or ss (for port monitoring)
@@ -214,15 +232,15 @@ aiohttp>=3.9.0 (optional, for async HTTP)
 
 ## Session Statistics
 
-| Metric | Value |
-|--------|-------|
-| Duration | ~45 minutes |
-| Files Created | 8 |
-| Files Modified | 4 |
-| Lines of Code | ~1,800+ |
-| Git Commits | 1 (835e2f6) |
-| Policy Violations Fixed | 0 (already compliant) |
-| Repo Size | ~81 MB (after cleanup) |
+| Metric                  | Value                  |
+| ----------------------- | ---------------------- |
+| Duration                | ~45 minutes            |
+| Files Created           | 8                      |
+| Files Modified          | 4                      |
+| Lines of Code           | ~1,800+                |
+| Git Commits             | 1 (835e2f6)            |
+| Policy Violations Fixed | 0 (already compliant)  |
+| Repo Size               | ~81 MB (after cleanup) |
 
 ---
 

@@ -1,14 +1,11 @@
 import time
-from typing import Optional
 
 from open_webui.internal.db import Base, get_db
 from open_webui.models.groups import Groups
-from open_webui.models.users import Users, UserResponse
-
-from pydantic import BaseModel, ConfigDict
-from sqlalchemy import BigInteger, Column, String, Text, JSON
-
+from open_webui.models.users import UserResponse, Users
 from open_webui.utils.access_control import has_access
+from pydantic import BaseModel, ConfigDict
+from sqlalchemy import JSON, BigInteger, Column, String, Text
 
 ####################
 # Prompts DB Schema
@@ -49,7 +46,7 @@ class PromptModel(BaseModel):
     content: str
     timestamp: int  # timestamp in epoch
 
-    access_control: Optional[dict] = None
+    access_control: dict | None = None
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -59,20 +56,18 @@ class PromptModel(BaseModel):
 
 
 class PromptUserResponse(PromptModel):
-    user: Optional[UserResponse] = None
+    user: UserResponse | None = None
 
 
 class PromptForm(BaseModel):
     command: str
     title: str
     content: str
-    access_control: Optional[dict] = None
+    access_control: dict | None = None
 
 
 class PromptsTable:
-    def insert_new_prompt(
-        self, user_id: str, form_data: PromptForm
-    ) -> Optional[PromptModel]:
+    def insert_new_prompt(self, user_id: str, form_data: PromptForm) -> PromptModel | None:
         prompt = PromptModel(
             **{
                 "user_id": user_id,
@@ -94,7 +89,7 @@ class PromptsTable:
         except Exception:
             return None
 
-    def get_prompt_by_command(self, command: str) -> Optional[PromptModel]:
+    def get_prompt_by_command(self, command: str) -> PromptModel | None:
         try:
             with get_db() as db:
                 prompt = db.query(Prompt).filter_by(command=command).first()
@@ -125,22 +120,17 @@ class PromptsTable:
 
             return prompts
 
-    def get_prompts_by_user_id(
-        self, user_id: str, permission: str = "write"
-    ) -> list[PromptUserResponse]:
+    def get_prompts_by_user_id(self, user_id: str, permission: str = "write") -> list[PromptUserResponse]:
         prompts = self.get_prompts()
         user_group_ids = {group.id for group in Groups.get_groups_by_member_id(user_id)}
 
         return [
             prompt
             for prompt in prompts
-            if prompt.user_id == user_id
-            or has_access(user_id, permission, prompt.access_control, user_group_ids)
+            if prompt.user_id == user_id or has_access(user_id, permission, prompt.access_control, user_group_ids)
         ]
 
-    def update_prompt_by_command(
-        self, command: str, form_data: PromptForm
-    ) -> Optional[PromptModel]:
+    def update_prompt_by_command(self, command: str, form_data: PromptForm) -> PromptModel | None:
         try:
             with get_db() as db:
                 prompt = db.query(Prompt).filter_by(command=command).first()

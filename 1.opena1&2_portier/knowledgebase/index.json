@@ -27,14 +27,27 @@
       "id": "portier-architektur",
       "source_file": "raw/portier-system.md",
       "title": "Portier Systemarchitektur",
-      "keywords": ["opena1", "opena2", "kordp", "archivp", "Safepoints", "Option-2-Flow"],
+      "keywords": [
+        "opena1",
+        "opena2",
+        "kordp",
+        "archivp",
+        "Safepoints",
+        "Option-2-Flow"
+      ],
       "summary": "Komplette Architektur, Prozesse und Endpunkte des Portier-Systems mit Option-2-Nachrichtenfluss."
     },
     {
       "id": "koordinator-spec",
       "source_file": "raw/koordinator-opena1.md",
       "title": "Koordinator Spezifikation",
-      "keywords": ["Routing", "Schema 7.1", "Schema 7.2", "Tools", "Validation"],
+      "keywords": [
+        "Routing",
+        "Schema 7.1",
+        "Schema 7.2",
+        "Tools",
+        "Validation"
+      ],
       "summary": "Strikte Definition des Koordinators, Entscheidungslogik und Endpunkte."
     },
     {
@@ -76,7 +89,12 @@
       "id": "schema-71-72",
       "source_file": "raw/schemas-71-72.md",
       "title": "JSON Schemas 7.1 und 7.2",
-      "keywords": ["strict", "additionalProperties", "JSON Schema", "Draft 2020-12"],
+      "keywords": [
+        "strict",
+        "additionalProperties",
+        "JSON Schema",
+        "Draft 2020-12"
+      ],
       "summary": "Strikte JSON-Schema-Validierung fuer Request (7.1) und Response (7.2)."
     },
     {
@@ -90,7 +108,13 @@
       "id": "openwebui-integration",
       "source_file": "raw/openwebui-opena3.md",
       "title": "OpenWebUI Integration opena3",
-      "keywords": ["OpenWebUI", "Port 8080", "Port 12347", "Adapter", "Terminal"],
+      "keywords": [
+        "OpenWebUI",
+        "Port 8080",
+        "Port 12347",
+        "Adapter",
+        "Terminal"
+      ],
       "summary": "OpenWebUI Terminal-Integration mit Adapter-Pattern."
     }
   ],

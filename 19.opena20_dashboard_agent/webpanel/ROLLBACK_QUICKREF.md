@@ -16,6 +16,7 @@ bash bin/merge_finalize.sh --rollback
 ```
 
 **Das Script wird:**
+
 1. ✅ Versuchen, File-based Rollback zu verwenden (< 1 Minute)
 2. ⚠️ Fallback zu Tag-based Rollback, wenn Checkpoint fehlt (< 2 Minuten)
 3. ✅ Automatisch zu Git pushen
@@ -43,6 +44,7 @@ git log -1 --oneline
 ```
 
 **Voraussetzungen:**
+
 - ✅ Checkpoint-Datei vorhanden
 - ✅ Lokaler Zugriff auf Repository
 - ✅ Push-Berechtigung
@@ -72,6 +74,7 @@ git describe --tags
 ```
 
 **Voraussetzungen:**
+
 - ✅ Git Tags auf Remote verfügbar
 - ✅ Push-Berechtigung
 - ✅ GitHub-Zugriff
@@ -80,12 +83,12 @@ git describe --tags
 
 ## 📋 WHEN TO USE WHICH OPTION
 
-| Situation | Option | Befehl |
-|-----------|--------|--------|
-| **Unbekannt** | Hybrid (Auto) | `bash bin/merge_finalize.sh --rollback` |
-| **Schnell & lokal** | File-based | `git reset --hard $(cat .git/merge_checkpoint \| cut -d: -f2)` |
-| **Audit-sicher** | Tag-based | `git reset --hard v2025.12.24-tracing.backup` |
-| **Automatisch** | Hybrid | Hybrid versucht File → Tag |
+| Situation           | Option        | Befehl                                                         |
+| ------------------- | ------------- | -------------------------------------------------------------- |
+| **Unbekannt**       | Hybrid (Auto) | `bash bin/merge_finalize.sh --rollback`                        |
+| **Schnell & lokal** | File-based    | `git reset --hard $(cat .git/merge_checkpoint \| cut -d: -f2)` |
+| **Audit-sicher**    | Tag-based     | `git reset --hard v2025.12.24-tracing.backup`                  |
+| **Automatisch**     | Hybrid        | Hybrid versucht File → Tag                                     |
 
 ---
 
@@ -233,13 +236,13 @@ Tag-b   Hybrid-Auto    File-based  Manual
 
 ## 📞 WHEN TO CALL FOR HELP
 
-| Issue | Action | Contact |
-|-------|--------|---------|
-| Rollback fails | Stop & wait | DevOps Lead |
-| Multiple DBs affected | Stop & wait | DBA |
+| Issue                   | Action             | Contact     |
+| ----------------------- | ------------------ | ----------- |
+| Rollback fails          | Stop & wait        | DevOps Lead |
+| Multiple DBs affected   | Stop & wait        | DBA         |
 | Application won't start | Rollback + Monitor | On-Call Eng |
-| Unsure which commit | Consult log | Team Lead |
-| Need force-push | Provide context | Git Admin |
+| Unsure which commit     | Consult log        | Team Lead   |
+| Need force-push         | Provide context    | Git Admin   |
 
 ---
 
@@ -280,13 +283,13 @@ Hybrid = File-based + Tag-based
 
 ### Vorteile
 
-| Aspect | Benefit |
-|--------|---------|
-| Speed | < 2 minutes total |
-| Safety | Audit trail preserved |
+| Aspect     | Benefit               |
+| ---------- | --------------------- |
+| Speed      | < 2 minutes total     |
+| Safety     | Audit trail preserved |
 | Redundancy | 2 independent methods |
-| Automation | Script handles it |
-| Recovery | 100% reproducible |
+| Automation | Script handles it     |
+| Recovery   | 100% reproducible     |
 
 ---
 

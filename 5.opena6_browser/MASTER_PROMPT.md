@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena6 Browser Automation
 
-**Agent-ID:** opena6  
-**Port:** 12350  
-**Status:** 🟡 Planned  
-**Kürzel:** `browsep`  
+**Agent-ID:** opena6
+**Port:** 12350
+**Status:** 🟡 Planned
+**Kürzel:** `browsep`
 **Domäne:** Browser Automation, Playwright, Selenium, Web-Scraping
 
 ---
@@ -141,5 +141,5 @@ Kopiere diesen Prompt in:
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

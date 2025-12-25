@@ -10,32 +10,36 @@
 
 ## 🎯 Was wurde installiert
 
-### 1. **tools/_common.py** (Utilities-Modul, 450 Zeilen)
-   - Pfad-Helfer: `relpath_posix()`, `path_depth()`
-   - Zeit: `iso_utc()`
-   - Inhalts-Analyse: `is_probably_binary()`, `sha256_limited()` (gechunked)
-   - Gitignore-Parser (Light): `.gitignore`-Unterstützung via `fnmatch`
-   - Tree-Rendering: `render_tree()` für ASCII-Bäume
-   - Format-Helper: `human_bytes()` (1.5 MB, etc.)
+### 1. **tools/\_common.py** (Utilities-Modul, 450 Zeilen)
+
+- Pfad-Helfer: `relpath_posix()`, `path_depth()`
+- Zeit: `iso_utc()`
+- Inhalts-Analyse: `is_probably_binary()`, `sha256_limited()` (gechunked)
+- Gitignore-Parser (Light): `.gitignore`-Unterstützung via `fnmatch`
+- Tree-Rendering: `render_tree()` für ASCII-Bäume
+- Format-Helper: `human_bytes()` (1.5 MB, etc.)
 
 ### 2. **tools/scan_project.py** (Hauptscanner, 550 Zeilen)
-   - Argument-Parsing: `--root`, `--out`, `--max-tree-depth`, `--hash-limit-mb`
-   - Os-Walk mit Pruning + Symlink-Handling
-   - Exclude-Logik: Harte Defaults + `.gitignore`-Filter
-   - Metadaten-Sammlung + Binary-Detection
-   - 6 Artefakte erzeugen (STRUCTURE.md, path_index.json, files.csv, stats.json, TREE.txt, violations.md)
-   - Error-Handling pro Datei (nicht fatal)
+
+- Argument-Parsing: `--root`, `--out`, `--max-tree-depth`, `--hash-limit-mb`
+- Os-Walk mit Pruning + Symlink-Handling
+- Exclude-Logik: Harte Defaults + `.gitignore`-Filter
+- Metadaten-Sammlung + Binary-Detection
+- 6 Artefakte erzeugen (STRUCTURE.md, path_index.json, files.csv, stats.json, TREE.txt, violations.md)
+- Error-Handling pro Datei (nicht fatal)
 
 ### 3. **Makefile** (Update mit 2 neuen Targets)
-   - `make scan` – Scanner ausführen
-   - `make clean-map` – project_map/ löschen
-   - Hilfsprompts + Integration in bestehende Targets
+
+- `make scan` – Scanner ausführen
+- `make clean-map` – project_map/ löschen
+- Hilfsprompts + Integration in bestehende Targets
 
 ### 4. **tools/README_SCANNER.md** (Dokumentation, 400 Zeilen)
-   - Quickstart, CLI-Optionen, Output-Erklärungen
-   - Performance-Metriken, Exclude-Regeln
-   - Use Cases (Code Review, ChatGPT, Excel, Audit)
-   - Troubleshooting, CI/CD-Integration
+
+- Quickstart, CLI-Optionen, Output-Erklärungen
+- Performance-Metriken, Exclude-Regeln
+- Use Cases (Code Review, ChatGPT, Excel, Audit)
+- Troubleshooting, CI/CD-Integration
 
 ---
 
@@ -49,14 +53,14 @@ Files: 5249 | Size: 379 MB | Skipped: 50 | Duration: 1.7s
 
 ### Output-Dateien
 
-| Artefakt          | Größe   | Zweck                                  |
-|-------------------|---------|----------------------------------------|
-| **STRUCTURE.md**  | 37 KB   | ChatGPT-ready Überblick (Tree, Stats, Hotspots) |
-| **path_index.json** | 2.1 MB | JSON: alle Dateien + Metadaten + SHA256 |
-| **files.csv**     | 1.1 MB  | CSV-Export (Excel-kompatibel)          |
-| **stats.json**    | 2.5 KB  | Summen: Counts, Größe, Extensions      |
-| **TREE.txt**      | 326 KB  | Vollständiger Ordnerbaum (kein Pruning) |
-| **violations.md** | 668 KB  | Compliance-Report (Tiefe, Größe, etc.) |
+| Artefakt            | Größe  | Zweck                                           |
+| ------------------- | ------ | ----------------------------------------------- |
+| **STRUCTURE.md**    | 37 KB  | ChatGPT-ready Überblick (Tree, Stats, Hotspots) |
+| **path_index.json** | 2.1 MB | JSON: alle Dateien + Metadaten + SHA256         |
+| **files.csv**       | 1.1 MB | CSV-Export (Excel-kompatibel)                   |
+| **stats.json**      | 2.5 KB | Summen: Counts, Größe, Extensions               |
+| **TREE.txt**        | 326 KB | Vollständiger Ordnerbaum (kein Pruning)         |
+| **violations.md**   | 668 KB | Compliance-Report (Tiefe, Größe, etc.)          |
 
 ---
 
@@ -253,6 +257,7 @@ agents                       95 files
 ## 🎯 Nächste Schritte (Optional)
 
 1. **Integration in CI/CD**
+
    ```yaml
    # GitHub Actions
    - name: Scan project structure
@@ -266,6 +271,7 @@ agents                       95 files
    ```
 
 2. **Git-Hooks (Pre-Commit)**
+
    ```bash
    # .git/hooks/pre-commit
    #!/bin/bash
@@ -284,7 +290,7 @@ agents                       95 files
 
 ## 📞 Support & Troubleshooting
 
-### "ModuleNotFoundError: No module named '_common'"
+### "ModuleNotFoundError: No module named '\_common'"
 
 ```bash
 # Check: beide Dateien vorhanden?
@@ -326,21 +332,25 @@ make scan
 
 ## 📄 Dateien (zum Review)
 
-### tools/_common.py
+### tools/\_common.py
+
 - 450 Zeilen
 - Utilities: Pfade, Zeit, Binary-Detection, Gitignore, Tree-Rendering
 - Nur Stdlib (`os`, `hashlib`, `stat`, `datetime`, `fnmatch`)
 
 ### tools/scan_project.py
+
 - 550 Zeilen
 - Main-Scanner: Argument-Parsing, os.walk, Exclude-Logik, Artefakt-Erzeugung
 - Nur Stdlib (`json`, `csv`, `argparse`, `time`, `platform`)
 
 ### tools/README_SCANNER.md
+
 - 400 Zeilen
 - Dokumentation: Quickstart, Output-Erklärung, Use Cases, Troubleshooting
 
 ### Makefile (updated)
+
 - 2 neue Targets: `make scan`, `make clean-map`
 - Integration in bestehende Targets
 

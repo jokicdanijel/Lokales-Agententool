@@ -81,7 +81,7 @@ script_path = 'scripts/register_agents.py'
 if os.path.exists(script_path):
     with open(script_path, 'r') as f:
         lines = f.readlines()
-    
+
     print(f'   Total lines: {len(lines)}')
     print(f'   Contains token() function: {\"def token():\" in \"\".join(lines)}')
     print(f'   Contains post() function: {\"def post(\" in \"\".join(lines)}')

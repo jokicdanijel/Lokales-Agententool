@@ -1,19 +1,20 @@
 """Save evaluation reports as JSON and human-readable summaries."""
+
 from __future__ import annotations
 
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any
 
 
-def save_report(report: Dict[str, Any], path: Path) -> None:
+def save_report(report: dict[str, Any], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(report, fh, default=str, indent=2)
 
 
-def save_human(report: Dict[str, Any], path: Path) -> None:
+def save_human(report: dict[str, Any], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     lines = []
     ts = report.get("data", {}).get("timestamp") or str(datetime.utcnow())

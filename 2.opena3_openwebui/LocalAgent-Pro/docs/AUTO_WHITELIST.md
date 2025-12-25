@@ -22,14 +22,14 @@ Das Auto-Whitelist-System erlaubt **alle Domains** mit Wildcard `*` und speicher
 
 ```yaml
 allowed_domains:
-  - "*"  # Erlaubt ALLE Domains
+  - "*" # Erlaubt ALLE Domains
 
 # Auto-Whitelist: Domains automatisch zur Whitelist hinzufügen
 auto_whitelist_enabled: true
 auto_whitelist_file: "config/domain_whitelist.yaml"
 
 # Rückfrage bei neuen Domains
-ask_before_new_domain: false  # false = alle erlauben, true = nachfragen
+ask_before_new_domain: false # false = alle erlauben, true = nachfragen
 ```
 
 ---
@@ -182,10 +182,10 @@ Basierend auf der Auto-Whitelist kannst du eine Blocklist erstellen:
      - "*"
 
    blocked_domains_file: "config/blocklist.yaml"
-   block_mode: true  # Blocklist statt Whitelist
+   block_mode: true # Blocklist statt Whitelist
    ```
 
-*Hinweis: Blocklist-Modus muss noch im Code implementiert werden - aktuell nur Whitelist*
+_Hinweis: Blocklist-Modus muss noch im Code implementiert werden - aktuell nur Whitelist_
 
 ---
 
@@ -294,7 +294,7 @@ Für Produktiv-Umgebungen:
 2. **Auto-Whitelist optional:**
 
    ```yaml
-   auto_whitelist_enabled: false  # Keine automatische Speicherung
+   auto_whitelist_enabled: false # Keine automatische Speicherung
    ```
 
 3. **Regelmäßig prüfen:**
@@ -328,7 +328,7 @@ ask_before_new_domain: true
 - Bei "ja": Domain wird geladen UND gespeichert
 - Bei "nein": Domain wird blockiert
 
-*Hinweis: Aktuell noch nicht implementiert - alle Domains werden direkt erlaubt*
+_Hinweis: Aktuell noch nicht implementiert - alle Domains werden direkt erlaubt_
 
 ---
 
@@ -379,12 +379,12 @@ curl -X POST http://127.0.0.1:8001/test \
 
 ## 🔄 Zusammenfassung
 
-| Modus | Config | Verhalten |
-|-------|--------|-----------|
-| **Wildcard + Auto-Whitelist** (aktuell) | `allowed_domains: ["*"]`<br>`auto_whitelist_enabled: true` | Alle Domains erlaubt<br>Automatische Speicherung |
-| **Nur Wildcard** | `allowed_domains: ["*"]`<br>`auto_whitelist_enabled: false` | Alle Domains erlaubt<br>Keine Speicherung |
-| **Strikte Whitelist** | `allowed_domains: ["domain1.com", ...]`<br>`auto_whitelist_enabled: false` | Nur gelistete Domains<br>Keine Speicherung |
-| **Whitelist + Auto-Expand** | `allowed_domains: ["domain1.com", ...]`<br>`auto_whitelist_enabled: true` | Nur gelistete + gespeicherte<br>Neue Domains werden gespeichert |
+| Modus                                   | Config                                                                     | Verhalten                                                       |
+| --------------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| **Wildcard + Auto-Whitelist** (aktuell) | `allowed_domains: ["*"]`<br>`auto_whitelist_enabled: true`                 | Alle Domains erlaubt<br>Automatische Speicherung                |
+| **Nur Wildcard**                        | `allowed_domains: ["*"]`<br>`auto_whitelist_enabled: false`                | Alle Domains erlaubt<br>Keine Speicherung                       |
+| **Strikte Whitelist**                   | `allowed_domains: ["domain1.com", ...]`<br>`auto_whitelist_enabled: false` | Nur gelistete Domains<br>Keine Speicherung                      |
+| **Whitelist + Auto-Expand**             | `allowed_domains: ["domain1.com", ...]`<br>`auto_whitelist_enabled: true`  | Nur gelistete + gespeicherte<br>Neue Domains werden gespeichert |
 
 ---
 

@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 _common: Hilfsfunktionen für den Repo-Scanner (nur Python-Stdlib).
 Cross-platform, keine externen Pakete.
 Funktionen für Pfade, Zeit, Inhalte, .gitignore-Parsing, Tree-Rendering.
 """
+
 from __future__ import annotations
 
-import os
-import sys
-import hashlib
-import stat
 import datetime as dt
-from typing import Iterable, List, Tuple, Dict, Set
+import hashlib
+import os
+import stat
+from collections.abc import Iterable
 from fnmatch import fnmatch
+
 
 # -------------------------
 # Pfad & Zeit-Helfer
@@ -26,7 +26,7 @@ def relpath_posix(path: str, root: str) -> str:
 
 def iso_utc(ts: float) -> str:
     """Zeitstempel als ISO 8601 UTC."""
-    return dt.datetime.fromtimestamp(ts, dt.timezone.utc).isoformat()
+    return dt.datetime.fromtimestamp(ts, dt.UTC).isoformat()
 
 
 def file_ext(path: str) -> str:
@@ -85,13 +85,13 @@ def sha256_limited(path: str, limit_bytes: int) -> str | None:
 # -------------------------
 # .gitignore (Lightweight)
 # -------------------------
-def load_gitignore_patterns(root: str) -> List[str]:
+def load_gitignore_patterns(root: str) -> list[str]:
     """Lade .gitignore aus Repo-Root."""
-    patterns: List[str] = []
+    patterns: list[str] = []
     root_gi = os.path.join(root, ".gitignore")
     if os.path.isfile(root_gi):
         try:
-            with open(root_gi, "r", encoding="utf-8", errors="ignore") as f:
+            with open(root_gi, encoding="utf-8", errors="ignore") as f:
                 for line in f:
                     s = line.strip()
                     if not s or s.startswith("#"):
@@ -105,8 +105,8 @@ def load_gitignore_patterns(root: str) -> List[str]:
 def should_exclude(
     rel_posix: str,
     is_dir: bool,
-    root_patterns: List[str],
-    hard_excludes: Set[str],
+    root_patterns: list[str],
+    hard_excludes: set[str],
 ) -> bool:
     """Prüfe ob Pfad ausgeschlossen werden soll (harte + gitignore)."""
     # Harte Excludes (Verzeichnisse, Globs)
@@ -161,7 +161,7 @@ def render_tree(root: str, include_files: Iterable[str], max_depth: int | None) 
     """
     # Baue Baumstruktur (dict-nested)
     sep = "/"
-    tree: Dict[str, Dict] = {}
+    tree: dict[str, dict] = {}
 
     for rel in include_files:
         parts = [p for p in rel.split(sep) if p and p != "."]
@@ -170,9 +170,9 @@ def render_tree(root: str, include_files: Iterable[str], max_depth: int | None) 
             node = node.setdefault(part, {})
 
     # DFS Render
-    lines: List[str] = []
+    lines: list[str] = []
 
-    def _walk(node: Dict, prefix: str, depth: int):
+    def _walk(node: dict, prefix: str, depth: int):
         if max_depth is not None and depth > max_depth:
             return
         keys = sorted(node.keys(), key=lambda s: s.lower())

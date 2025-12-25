@@ -7,10 +7,7 @@
     "end": "2025-11-28T22:43:38.497010Z",
     "description": "Updated weekly team sync",
     "location": "Conference Room B",
-    "attendees": [
-      "alice@example.com",
-      "bob@example.com"
-    ],
+    "attendees": ["alice@example.com", "bob@example.com"],
     "status": "confirmed",
     "all_day": false,
     "recurrence_rule": null,

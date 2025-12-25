@@ -8,14 +8,14 @@
 
 ## 📊 Workflow-Zusammenfassung
 
-| Phase | Dauer | Status | Bemerkung |
-|-------|-------|--------|-----------|
-| **1. Linux Plattform-Check** | 0s | ✅ OK | Linux wird unterstützt |
-| **2. Firewall-Check** | 0s | ✅ OK | Keine Konfiguration nötig |
-| **3. Playwright Pre-Download** | 0s | ✅ OK | Background-Installation gestartet |
-| **4. Copilot-Vorbereitung** | 14s | ✅ OK | Runtime v33e4963 heruntergeladen |
-| **5. MCP-Server-Start** | 15s | ✅ OK | 49 Tools registriert |
-| **GESAMT** | **~30s** | ✅ | Production-ready |
+| Phase                          | Dauer    | Status | Bemerkung                         |
+| ------------------------------ | -------- | ------ | --------------------------------- |
+| **1. Linux Plattform-Check**   | 0s       | ✅ OK  | Linux wird unterstützt            |
+| **2. Firewall-Check**          | 0s       | ✅ OK  | Keine Konfiguration nötig         |
+| **3. Playwright Pre-Download** | 0s       | ✅ OK  | Background-Installation gestartet |
+| **4. Copilot-Vorbereitung**    | 14s      | ✅ OK  | Runtime v33e4963 heruntergeladen  |
+| **5. MCP-Server-Start**        | 15s      | ✅ OK  | 49 Tools registriert              |
+| **GESAMT**                     | **~30s** | ✅     | Production-ready                  |
 
 ---
 
@@ -30,6 +30,7 @@ fi
 ```
 
 **Output:**
+
 ```
 ✅ RESULT: Linux wird unterstützt
 ✅ SHOULD_CONTINUE=true
@@ -48,12 +49,14 @@ fi
 ```
 
 **Output:**
+
 ```
 ⏱️  Dauer: 0 Sek.
 ✅ Status: OK - Keine Firewall-Konfiguration erforderlich
 ```
 
 **Analyse:**
+
 - GitHub Actions Runner hat standardmäßige Firewall-Regeln
 - Outbound-Traffic ist erlaubt (für API-Calls, npm install, etc.)
 - Keine Aktion erforderlich
@@ -74,6 +77,7 @@ npm install -g @playwright/mcp@0.0.40 > /tmp/npm_install.log 2>&1 & disown
 ```
 
 **Output:**
+
 ```
 ✅ npm found: verfügbar
 ✅ Starting background installation of @playwright/mcp@0.0.40
@@ -82,6 +86,7 @@ npm install -g @playwright/mcp@0.0.40 > /tmp/npm_install.log 2>&1 & disown
 ```
 
 **Analyse:**
+
 - npm ist verfügbar
 - Installation läuft im Hintergrund
 - Blockiert nicht den Hauptworkflow
@@ -120,6 +125,7 @@ tar -zxvf ./action.tar.gz
 ```
 
 **Output:**
+
 ```
 ✅ Preparing Copilot...
 ✅ Runtime version: runtime-a33e49636ccdfdd09357ed93a9427c867c1f6485
@@ -131,6 +137,7 @@ tar -zxvf ./action.tar.gz
 ```
 
 **Detailed Breakdown:**
+
 ```
 | Schritt | Dauer | Status |
 |---------|-------|--------|
@@ -141,6 +148,7 @@ tar -zxvf ./action.tar.gz
 ```
 
 **Analyse:**
+
 - Runtime wird erfolgreich heruntergeladen (retry mechanism funktioniert)
 - Node v22.21.1 aus Tool-Cache geladen (schneller als Installation)
 - Alle Authentifizierungstokens sind maskiert (Sicherheit ✅)
@@ -159,6 +167,7 @@ export RUNNER_PATH="/home/runner/work/_temp"
 ```
 
 **Output:**
+
 ```
 ✅ Starting MCP servers...
 ✅ Waiting for MCP servers to be ready...
@@ -170,6 +179,7 @@ export RUNNER_PATH="/home/runner/work/_temp"
 ```
 
 **Retry-Mechanismus:**
+
 ```
 Versuch 1: MCP-Server nicht bereit → Warte 5s → Wiederhole
 Versuch 2: MCP-Server nicht bereit → Warte 5s → Wiederhole
@@ -191,11 +201,13 @@ Versuch 3: ✅ MCP-Server bereit! → Weiter
 ```
 
 **Performance:**
+
 - **Verbindungsaufbau:** 140ms (sehr schnell!)
 - **Typ:** Remote (HTTPS zu api.githubcopilot.com)
 - **Status:** Sofort einsatzbereit
 
 **Verwendete Configuration:**
+
 ```json
 {
   "type": "remote",
@@ -223,6 +235,7 @@ Versuch 3: ✅ MCP-Server bereit! → Weiter
 ```
 
 **Performance:**
+
 - **Verbindungsaufbau:** 4930ms (erwartet, da lokal installiert)
 - **Typ:** Lokal (npx Kommando)
 - **Configuration:**
@@ -231,6 +244,7 @@ Versuch 3: ✅ MCP-Server bereit! → Weiter
   - Allowed Origins: localhost und 127.0.0.1 (Security)
 
 **Warum langsamer als GitHub?**
+
 ```
 GitHub:     Remote API → 140ms (schnelle Netzwerk-Verbindung)
 Playwright: Lokal     → 4930ms (Browser-Installation + Start)
@@ -255,17 +269,20 @@ Playwright: Lokal     → 4930ms (Browser-Installation + Start)
 **GitHub MCP - 28 Tools kategorisiert:**
 
 **🔄 Workflow Management (4)**
+
 - `actions_get` - Details zu Workflows/Runs/Jobs/Artifacts
 - `actions_list` - Liste von Workflows
 - `get_job_logs` - Job-Logs abrufen
 - [weitere Workflow-Tools]
 
 **📝 Commit Management (4)**
+
 - `get_commit` - Commit-Details
 - `list_commits` - Commit-Liste
 - [weitere Commit-Tools]
 
 **🏷️ Release Management (5)**
+
 - `get_latest_release`
 - `get_release_by_tag`
 - `list_releases`
@@ -273,6 +290,7 @@ Playwright: Lokal     → 4930ms (Browser-Installation + Start)
 - `list_tags`
 
 **💬 Issue & PR Management (6)**
+
 - `issue_read` - Issue-Details
 - `list_issues`
 - `list_issue_types`
@@ -281,18 +299,21 @@ Playwright: Lokal     → 4930ms (Browser-Installation + Start)
 - `search_pull_requests`
 
 **🔒 Security (2)**
+
 - `get_code_scanning_alert`
 - `list_code_scanning_alerts`
 - `get_secret_scanning_alert`
 - `list_secret_scanning_alerts`
 
 **🔍 Search (3)**
+
 - `search_code`
 - `search_issues`
 - `search_repositories`
 - `search_users`
 
 **🏷️ Utilities (2)**
+
 - `get_label`
 - `get_file_contents`
 - `web_search`
@@ -330,10 +351,12 @@ Playwright: Lokal     → 4930ms (Browser-Installation + Start)
 **Playwright - 21 Tools kategorisiert:**
 
 **🗂️ Navigation (2)**
+
 - `browser_navigate`
 - `browser_navigate_back`
 
 **🖱️ Interaction (6)**
+
 - `browser_click`
 - `browser_drag`
 - `browser_hover`
@@ -342,12 +365,14 @@ Playwright: Lokal     → 4930ms (Browser-Installation + Start)
 - `browser_fill_form`
 
 **📸 Snapshots (4)**
+
 - `browser_snapshot`
 - `browser_take_screenshot`
 - `browser_console_messages`
 - `browser_network_requests`
 
 **⚙️ Advanced (5)**
+
 - `browser_evaluate` (JavaScript)
 - `browser_handle_dialog`
 - `browser_tabs`
@@ -355,11 +380,13 @@ Playwright: Lokal     → 4930ms (Browser-Installation + Start)
 - `browser_wait_for`
 
 **🔧 Management (3)**
+
 - `browser_close`
 - `browser_resize`
 - `browser_install`
 
 **📁 File Handling (1)**
+
 - `browser_file_upload`
 
 ---
@@ -376,6 +403,7 @@ Playwright: Lokal     → 4930ms (Browser-Installation + Start)
 ```
 
 **Finale Konfiguration:**
+
 ```
 Datei: /home/runner/work/_temp/mcp-server/mcp-config.json
 
@@ -450,11 +478,13 @@ Erfolgreiche Operationen: 27 / 27 (100%)
 ### Problem 1: Playwright Ladezeit (4930ms)
 
 **Symptom:**
+
 ```
 ⏱️ Playwright connection took 4930ms
 ```
 
 **Analyse:**
+
 - Normales Verhalten bei lokaler Browser-Installation
 - Nicht kritisch für die Gesamtperformance
 
@@ -477,6 +507,7 @@ npx @playwright/mcp --browser webkit
 ### Problem 2: Fehlende Environment-Variablen
 
 **Kritische Variables:**
+
 ```bash
 # Sollten alle gesetzt sein:
 ✅ GITHUB_COPILOT_API_TOKEN       [maskiert in Logs]
@@ -485,6 +516,7 @@ npx @playwright/mcp --browser webkit
 ```
 
 **Falls fehlen:**
+
 ```bash
 # In GitHub Actions Secrets hinzufügen:
 Settings → Secrets and variables → Actions
@@ -495,6 +527,7 @@ Settings → Secrets and variables → Actions
 ### Problem 3: Network Connectivity
 
 **Überprüfung:**
+
 ```bash
 # GitHub API Erreichbarkeit
 curl -H "Authorization: token $GITHUB_TOKEN" \
@@ -512,6 +545,7 @@ curl http://localhost:2301/health
 ## 🎯 Empfehlungen für Workflow-Optimierung
 
 ### 1. **Parallel Execution** (Schon implementiert ✅)
+
 ```
 ✅ Firewall + Platform checks laufen parallel
 ✅ Playwright pre-download läuft im Background
@@ -519,6 +553,7 @@ curl http://localhost:2301/health
 ```
 
 ### 2. **Caching für Playwright**
+
 ```yaml
 # In GitHub Actions Workflow:
 - uses: actions/cache@v3
@@ -528,6 +563,7 @@ curl http://localhost:2301/health
 ```
 
 ### 3. **Conditional Execution**
+
 ```yaml
 # Nur wenn MCP-Tools gebraucht werden:
 - name: Start MCP Servers

@@ -30,9 +30,11 @@
 ## System Overview
 
 ### What is OpenA3?
+
 The **OpenA3 Web Dashboard** is a production-ready, zero-dependency web interface for managing AI voice programs and executing system operations through a secure HTTP API.
 
 ### Key Features
+
 - ✅ **No External Dependencies** - Uses only Python stdlib
 - ✅ **Secure by Default** - Path traversal & command injection prevention
 - ✅ **Voice Program Launcher** - Execute 6 different voice AI programs
@@ -44,6 +46,7 @@ The **OpenA3 Web Dashboard** is a production-ready, zero-dependency web interfac
 - ✅ **Production Tested** - 100% test coverage, security audited
 
 ### Technology Stack
+
 - **Backend:** Python 3.12.3 (http.server module only)
 - **Frontend:** HTML5, CSS3, Vanilla JavaScript
 - **API:** RESTful, JSON, HTTP/1.0
@@ -51,6 +54,7 @@ The **OpenA3 Web Dashboard** is a production-ready, zero-dependency web interfac
 - **OS:** Linux, macOS, Windows
 
 ### Project Structure
+
 ```
 2.opena3_openwebui/
 ├── LocalAgent-Pro/
@@ -92,6 +96,7 @@ open http://localhost:8000
 **That's it!** Dashboard is now running.
 
 ### First Steps
+
 1. View system status in dashboard
 2. Click a voice program card
 3. Click "▶️ Starten" to launch program
@@ -103,36 +108,41 @@ open http://localhost:8000
 ## Features
 
 ### 🎤 Voice Programs (6 Available)
-| Program | Purpose | Status |
-|---|---|---|
-| voice_assistant.py | AI-powered voice commands | ✅ Ready |
-| voice_command_parser.py | Parse voice input | ✅ Ready |
-| voice_call_system.py | Manage voice calls | ✅ Ready |
-| voice_note_recorder.py | Record voice notes | ✅ Ready |
-| voice_transcriber.py | Transcribe audio | ✅ Ready |
-| voice_scheduler.py | Schedule voice tasks | ✅ Ready |
+
+| Program                 | Purpose                   | Status   |
+| ----------------------- | ------------------------- | -------- |
+| voice_assistant.py      | AI-powered voice commands | ✅ Ready |
+| voice_command_parser.py | Parse voice input         | ✅ Ready |
+| voice_call_system.py    | Manage voice calls        | ✅ Ready |
+| voice_note_recorder.py  | Record voice notes        | ✅ Ready |
+| voice_transcriber.py    | Transcribe audio          | ✅ Ready |
+| voice_scheduler.py      | Schedule voice tasks      | ✅ Ready |
 
 ### 🛠️ Tools & Operations
 
 #### File Management
+
 - **Read Files** - Display file content in JSON
 - **Write Files** - Create/update files safely
 - **Delete Files** - Remove files with validation
 - **List Files** - Browse directory contents
 
 #### Shell Execution
+
 - **18 Whitelisted Commands** - Safe command execution
 - **10-Second Timeout** - Prevent resource exhaustion
 - **Output Limiting** - 5000 character max (security)
 - **Error Handling** - Safe error reporting
 
 #### Program Management
+
 - **Background Execution** - Programs run isolated
 - **PID Tracking** - Monitor processes
 - **Process Isolation** - Stdout/stderr capture
-- **Pattern Validation** - Only voice_*.py allowed
+- **Pattern Validation** - Only voice\_\*.py allowed
 
 ### 📊 Monitoring
+
 - Real-time service status
 - System status tracking
 - Response time monitoring
@@ -143,6 +153,7 @@ open http://localhost:8000
 ## Architecture
 
 ### Request Flow
+
 ```
 Browser / CLI
     ↓
@@ -157,6 +168,7 @@ Response (HTML / JSON)
 ```
 
 ### Security Layers
+
 ```
 Input → Validation → Sanitization → Execution → Error Handling
   ↓         ↓           ↓              ↓           ↓
@@ -165,6 +177,7 @@ Check   Traversal  Whitelisting   Isolation   Messages
 ```
 
 ### API Structure
+
 ```
 10 Endpoints (5 GET + 5 POST)
 ├─ Status & Info (GET)
@@ -189,37 +202,47 @@ Check   Traversal  Whitelisting   Isolation   Messages
 ### 📚 For Different Users
 
 #### 🚀 Want to Get Started Quickly?
+
 → Read **QUICK_START.md** (2 minutes)
 
 #### 📖 Need Complete API Documentation?
+
 → Read **API_REFERENCE.md**
+
 - All endpoints detailed
 - Request/response examples
 - Error codes explained
 - Best practices
 
 #### 🔒 Concerned About Security?
+
 → Read **SECURITY_AUDIT_REPORT.md**
+
 - Security findings
 - Vulnerability assessment
 - Compliance verification
 - Recommendations
 
 #### ✅ Want to See Test Results?
+
 → Read **FUNCTIONAL_TEST_REPORT.md**
+
 - All 43 tests passed
 - Performance metrics
 - Feature verification
 - Compatibility testing
 
 #### 🛠️ Ready to Deploy to Production?
+
 → Read **DEPLOYMENT_GUIDE.md**
+
 - 5 deployment methods (systemd, Docker, etc.)
 - Configuration options
 - Monitoring setup
 - Troubleshooting guide
 
 #### 📚 Need Everything at Once?
+
 → This file provides overview of all above
 
 ---
@@ -228,23 +251,23 @@ Check   Traversal  Whitelisting   Isolation   Messages
 
 ### GET Endpoints
 
-| Endpoint | Purpose | Response |
-|---|---|---|
-| `GET /` | Dashboard HTML | HTML page (37 KB) |
-| `GET /api/status` | System status | JSON with services |
-| `GET /api/programs` | Voice programs | JSON array |
-| `GET /api/tools` | Available tools | JSON array |
-| `GET /api/file/list` | File listing | JSON array |
+| Endpoint             | Purpose         | Response           |
+| -------------------- | --------------- | ------------------ |
+| `GET /`              | Dashboard HTML  | HTML page (37 KB)  |
+| `GET /api/status`    | System status   | JSON with services |
+| `GET /api/programs`  | Voice programs  | JSON array         |
+| `GET /api/tools`     | Available tools | JSON array         |
+| `GET /api/file/list` | File listing    | JSON array         |
 
 ### POST Endpoints
 
-| Endpoint | Purpose | Input | Output |
-|---|---|---|---|
-| `POST /api/file/read` | Read file | `{path: ""}` | File content |
-| `POST /api/file/write` | Write file | `{path, content}` | Status |
-| `POST /api/file/delete` | Delete file | `{path}` | Status |
-| `POST /api/shell/exec` | Run command | `{command}` | Output + PID |
-| `POST /api/program/start` | Start program | `{file}` | PID + status |
+| Endpoint                  | Purpose       | Input             | Output       |
+| ------------------------- | ------------- | ----------------- | ------------ |
+| `POST /api/file/read`     | Read file     | `{path: ""}`      | File content |
+| `POST /api/file/write`    | Write file    | `{path, content}` | Status       |
+| `POST /api/file/delete`   | Delete file   | `{path}`          | Status       |
+| `POST /api/shell/exec`    | Run command   | `{command}`       | Output + PID |
+| `POST /api/program/start` | Start program | `{file}`          | PID + status |
 
 ### Example API Call
 
@@ -269,19 +292,20 @@ curl -X POST http://localhost:8000/api/program/start \
 
 ### ✅ Security Controls Implemented
 
-| Control | Status | Details |
-|---|---|---|
-| **Path Traversal Prevention** | ✅ | Blocks `..` and `/` prefix |
-| **Command Whitelisting** | ✅ | 18 approved commands only |
-| **Program Pattern Validation** | ✅ | Only `voice_*.py` allowed |
-| **Process Isolation** | ✅ | Subprocess pipes for I/O |
-| **Timeout Protection** | ✅ | 10-second max execution |
-| **Output Limiting** | ✅ | 5000 character max |
-| **Error Sanitization** | ✅ | No stack traces leaked |
-| **JSON Encoding** | ✅ | Safe serialization |
-| **File Permissions** | ✅ | User-level execution |
+| Control                        | Status | Details                    |
+| ------------------------------ | ------ | -------------------------- |
+| **Path Traversal Prevention**  | ✅     | Blocks `..` and `/` prefix |
+| **Command Whitelisting**       | ✅     | 18 approved commands only  |
+| **Program Pattern Validation** | ✅     | Only `voice_*.py` allowed  |
+| **Process Isolation**          | ✅     | Subprocess pipes for I/O   |
+| **Timeout Protection**         | ✅     | 10-second max execution    |
+| **Output Limiting**            | ✅     | 5000 character max         |
+| **Error Sanitization**         | ✅     | No stack traces leaked     |
+| **JSON Encoding**              | ✅     | Safe serialization         |
+| **File Permissions**           | ✅     | User-level execution       |
 
 ### 🔍 Security Audit Results
+
 - **Tests Conducted:** 12 major security vectors
 - **Tests Passed:** 12/12 (100%)
 - **Vulnerabilities Found:** 0 critical, 0 high
@@ -289,6 +313,7 @@ curl -X POST http://localhost:8000/api/program/start \
 - **Recommendation:** Production ready for internal use
 
 ### ⚠️ Known Limitations
+
 - No authentication (assumes trusted network)
 - No rate limiting (not for public internet)
 - Requires HTTPS for production internet use
@@ -301,6 +326,7 @@ See **SECURITY_AUDIT_REPORT.md** for complete analysis.
 ## Getting Started
 
 ### Prerequisites
+
 - Python 3.12+
 - Linux/macOS/Windows with bash
 - Port 8000 available
@@ -309,6 +335,7 @@ See **SECURITY_AUDIT_REPORT.md** for complete analysis.
 ### Installation
 
 #### Option 1: Direct (Recommended for Development)
+
 ```bash
 cd LocalAgent-Pro
 python3 web_dashboard.py
@@ -316,6 +343,7 @@ python3 web_dashboard.py
 ```
 
 #### Option 2: Background Process
+
 ```bash
 cd LocalAgent-Pro
 nohup python3 web_dashboard.py > web_dashboard.log 2>&1 &
@@ -324,9 +352,11 @@ echo $! > web_dashboard.pid
 ```
 
 #### Option 3: systemd Service (Linux)
+
 See **DEPLOYMENT_GUIDE.md** section "Advanced Deployment"
 
 #### Option 4: Docker
+
 See **DEPLOYMENT_GUIDE.md** section "Docker Deployment"
 
 ### First Test
@@ -347,6 +377,7 @@ tail -f LocalAgent-Pro/web_dashboard.log
 ## Deployment
 
 ### Development
+
 ```bash
 python3 web_dashboard.py
 # Server runs in foreground
@@ -354,6 +385,7 @@ python3 web_dashboard.py
 ```
 
 ### Production (Recommended)
+
 ```bash
 # Using systemd
 sudo systemctl enable opena3-dashboard
@@ -362,6 +394,7 @@ sudo systemctl status opena3-dashboard
 ```
 
 See **DEPLOYMENT_GUIDE.md** for:
+
 - All 5 deployment methods
 - Configuration options
 - Monitoring setup
@@ -372,6 +405,7 @@ See **DEPLOYMENT_GUIDE.md** for:
 ## Testing & Verification
 
 ### ✅ Functional Testing
+
 - **Total Tests:** 43
 - **Passed:** 43
 - **Failed:** 0
@@ -379,6 +413,7 @@ See **DEPLOYMENT_GUIDE.md** for:
 - **Report:** See `FUNCTIONAL_TEST_REPORT.md`
 
 ### ✅ Security Testing
+
 - **Security Vectors:** 12
 - **Passed:** 12
 - **Failed:** 0
@@ -386,15 +421,17 @@ See **DEPLOYMENT_GUIDE.md** for:
 - **Report:** See `SECURITY_AUDIT_REPORT.md`
 
 ### ✅ Performance Benchmarks
-| Operation | Response Time |
-|---|---|
-| GET / | 10-20ms |
-| GET /api/status | 1-2ms |
-| POST /api/file/read (1KB) | 5-10ms |
-| POST /api/program/start | 50-100ms |
-| POST /api/shell/exec | 10-50ms |
+
+| Operation                 | Response Time |
+| ------------------------- | ------------- |
+| GET /                     | 10-20ms       |
+| GET /api/status           | 1-2ms         |
+| POST /api/file/read (1KB) | 5-10ms        |
+| POST /api/program/start   | 50-100ms      |
+| POST /api/shell/exec      | 10-50ms       |
 
 ### ✅ Compatibility
+
 - Chrome/Chromium: ✅
 - Firefox: ✅
 - Safari: ✅
@@ -406,6 +443,7 @@ See **DEPLOYMENT_GUIDE.md** for:
 ## Support
 
 ### 📚 Documentation
+
 1. **Quick Start** → QUICK_START.md
 2. **API Reference** → API_REFERENCE.md
 3. **Deployment** → DEPLOYMENT_GUIDE.md
@@ -415,6 +453,7 @@ See **DEPLOYMENT_GUIDE.md** for:
 ### 🐛 Troubleshooting
 
 #### Server won't start
+
 ```bash
 # Check Python version
 python3 --version  # Should be 3.12+
@@ -427,21 +466,25 @@ pwd  # Should be in LocalAgent-Pro
 ```
 
 #### API returns 404
+
 - Check endpoint URL spelling
 - Verify method (GET vs POST)
 - Check JSON format for POST
 
 #### Command blocked
+
 - Check whitelist: `ls`, `pwd`, `echo`, etc.
 - Cannot use `sudo` or other restricted commands
 - See API_REFERENCE.md for full list
 
 #### File operation fails
+
 - Use relative paths only
 - Cannot access `/etc/` or use `../../`
 - Verify file permissions
 
 ### 🆘 Emergency Contacts
+
 1. Check logs: `tail -f web_dashboard.log`
 2. Test API: `curl http://localhost:8000/api/status`
 3. Review docs in `API_REFERENCE.md`
@@ -452,16 +495,21 @@ pwd  # Should be in LocalAgent-Pro
 ## Frequently Asked Questions
 
 ### Q: Do I need to install dependencies?
+
 **A:** No! The system uses only Python stdlib (`http.server`, `json`, `os`, `subprocess`, etc.). No pip packages required.
 
 ### Q: Can I change the port?
+
 **A:** Yes. Edit `web_dashboard.py` line 17: `PORT = 8000` → your port
 
 ### Q: Is it secure?
+
 **A:** Yes! See `SECURITY_AUDIT_REPORT.md` - 100% of security checks passed. It's production-ready for internal networks.
 
 ### Q: Can I run it in production?
+
 **A:** Yes, but:
+
 1. Use a systemd service (see DEPLOYMENT_GUIDE.md)
 2. Run as unprivileged user
 3. Use firewall to restrict access
@@ -469,18 +517,23 @@ pwd  # Should be in LocalAgent-Pro
 5. Add authentication for internet access
 
 ### Q: How do I add new voice programs?
+
 **A:** Place `.py` file in `tools/` directory matching pattern `voice_*.py`. It automatically appears in the dashboard.
 
 ### Q: Can I add new shell commands?
+
 **A:** Yes. Edit `web_dashboard.py` line 1209 in `handle_shell_exec()` method. Add command to `allowed_commands` list.
 
 ### Q: Does it support HTTPS?
+
 **A:** Currently no, but can be added (see DEPLOYMENT_GUIDE.md "Enable HTTPS/TLS")
 
 ### Q: How many connections can it handle?
+
 **A:** Single-threaded server (SimpleHTTPRequestHandler), so one at a time. For high load, use reverse proxy (nginx) or gunicorn.
 
 ### Q: Where are logs stored?
+
 **A:** By default printed to stdout. Redirect when running in background: `python3 web_dashboard.py > web_dashboard.log 2>&1`
 
 ---
@@ -488,6 +541,7 @@ pwd  # Should be in LocalAgent-Pro
 ## Performance & Capacity
 
 ### Typical Performance
+
 - **Concurrent Connections:** 1 (SimpleHTTPServer, use reverse proxy for more)
 - **Average Response Time:** 5-100ms
 - **Memory Usage:** ~50MB idle
@@ -495,7 +549,9 @@ pwd  # Should be in LocalAgent-Pro
 - **Max File Size:** 1MB (configurable)
 
 ### Scaling Strategy
+
 For production with high traffic:
+
 1. Use reverse proxy (nginx)
 2. Run multiple instances behind proxy
 3. Use gunicorn or uwsgi
@@ -507,6 +563,7 @@ For production with high traffic:
 ## Version History
 
 ### v1.0 (2025-11-24)
+
 - ✅ Initial production release
 - ✅ 6 voice programs
 - ✅ 10 API endpoints

@@ -35,7 +35,7 @@ LocalAgent-Pro bietet jetzt ein **OpenWebUI Password Reset Utility** für einfac
 
 ```yaml
 # docker-compose.yml
-version: '3.8'
+version: "3.8"
 
 services:
   localagent-pro:

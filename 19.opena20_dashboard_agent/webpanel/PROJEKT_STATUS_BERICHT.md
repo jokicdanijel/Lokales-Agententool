@@ -249,13 +249,13 @@ WORKFLOWS_LOADED = 20
 ### Frontend Configuration
 
 ```javascript
-api.baseUrl = "http://127.0.0.1:12348"
-capabilities = 12
+api.baseUrl = "http://127.0.0.1:12348";
+capabilities = 12;
 rateLimit = {
-    messages_per_second: 30,
-    messages_per_minute: 20,
-    bulk_max: 100
-}
+  messages_per_second: 30,
+  messages_per_minute: 20,
+  bulk_max: 100,
+};
 ```
 
 ### Reverse Proxy Configuration

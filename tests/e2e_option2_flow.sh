@@ -48,7 +48,7 @@ echo -n "🔹 opena1 (Port 12344): "
 if OPENA1_HEALTH=$(curl -s http://127.0.0.1:12344/health 2>/dev/null); then
     OPENA1_STATUS=$(echo "$OPENA1_HEALTH" | jq -r '.status' 2>/dev/null || echo "error")
     OPENA1_KEY=$(echo "$OPENA1_HEALTH" | jq -r '.openai_key_present' 2>/dev/null || echo "false")
-    
+
     if [[ "$OPENA1_STATUS" == "ok" ]] && [[ "$OPENA1_KEY" == "true" ]]; then
         echo -e "${GREEN}✅ OK (Key present)${NC}"
     else
@@ -66,7 +66,7 @@ if OPENA2_HEALTH=$(curl -s http://127.0.0.1:12345/health 2>/dev/null); then
     OPENA2_STATUS=$(echo "$OPENA2_HEALTH" | jq -r '.status' 2>/dev/null || echo "error")
     OPENA2_KEY=$(echo "$OPENA2_HEALTH" | jq -r '.openai_key_present' 2>/dev/null || echo "false")
     OPENA2_ENTRIES=$(echo "$OPENA2_HEALTH" | jq -r '.entries' 2>/dev/null || echo "0")
-    
+
     if [[ "$OPENA2_STATUS" == "ok" ]] && [[ "$OPENA2_KEY" == "true" ]]; then
         echo -e "${GREEN}✅ OK (Key present, $OPENA2_ENTRIES entries)${NC}"
     else

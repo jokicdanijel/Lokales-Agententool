@@ -3,7 +3,7 @@ danijel-jd@danijeljd-ESPRIMO-P920:~$ cd docker-site
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ nano docker-compose.yml
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ nano docker-compose.yaml
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ sudo docker-compose up -d
-[sudo] Passwort für danijel-jd:       
+[sudo] Passwort für danijel-jd:
 Creating network "docker-site_default" with the default driver
 Creating docker-site_website_1 ...
 Creating docker-site_website_1 ... error
@@ -20,7 +20,7 @@ ERROR: Encountered errors while bringing up the project.
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ docker-compose ps
         Name                       Command                State     Ports
 -------------------------------------------------------------------------
-docker-site_website_1   /docker-entrypoint.sh ngin ...   Exit 128        
+docker-site_website_1   /docker-entrypoint.sh ngin ...   Exit 128
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ nano docker-compose.yaml
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ sudo docker-compose up -d
@@ -291,7 +291,7 @@ Traceback (most recent call last):
     ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
 KeyError: 'ContainerConfig'
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$
-  
+
 ich wollte openweb ui verbinden was war falsch?
 
 ### ASSISTANT
@@ -415,8 +415,8 @@ Dein Auftrag ist, den Nutzer _interaktiv, streng sequentiell_ durch Aufgaben zu 
   7. Monitoring & Logs (Compose Logs, Fail2ban/ufw-Hinweise)
 - **Frage:** „Sollen wir starten? (antworte: `start`)“
 ### Schritt-Vorlage (für jeden einzelnen Schritt)
-**Schritt X — <Kurzbezeichnung>**  
-**Ziel:** <1–2 Sätze Nutzen/Warum>  
+**Schritt X — <Kurzbezeichnung>**
+**Ziel:** <1–2 Sätze Nutzen/Warum>
 **Befehle:**
 ```bash
 # Beispiel – anpassen:
@@ -548,11 +548,11 @@ danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ export PROJECT_DIR=${HOME}/dock
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ cd ${PROJECT_DIR}
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ cd ${PROJECT_DIR}
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ sudo lsof -i :3001 || true
-[sudo] Passwort für danijel-jd:       
+[sudo] Passwort für danijel-jd:
 COMMAND  PID       USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
 python  1107 danijel-jd    3u  IPv4   8027      0t0  TCP *:3001 (LISTEN)
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ sudo ss -ltnp | grep 3001 || true
-LISTEN 0      128          0.0.0.0:3001       0.0.0.0:*    users:(("python",pid=1107,fd=3))         
+LISTEN 0      128          0.0.0.0:3001       0.0.0.0:*    users:(("python",pid=1107,fd=3))
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ printf "PORT=${PORT:-3001}\n" > .env
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$
 
@@ -580,11 +580,11 @@ Antworte fertig, wenn Schritt 1 erfolgreich ist, oder poste Fehlerausgaben (nur 
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ cd ${PROJECT_DIR}
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ cd ${PROJECT_DIR}
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ sudo lsof -i :3001 || true
-[sudo] Passwort für danijel-jd:       
+[sudo] Passwort für danijel-jd:
 COMMAND  PID       USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
 python  1107 danijel-jd    3u  IPv4   8027      0t0  TCP *:3001 (LISTEN)
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ sudo ss -ltnp | grep 3001 || true
-LISTEN 0      128          0.0.0.0:3001       0.0.0.0:*    users:(("python",pid=1107,fd=3))         
+LISTEN 0      128          0.0.0.0:3001       0.0.0.0:*    users:(("python",pid=1107,fd=3))
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ printf "PORT=${PORT:-3001}\n" > .env
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ kill 1107
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$
@@ -620,11 +620,11 @@ Antworte fertig, wenn Schritt 2 erfolgreich ist, oder poste Fehlerausgaben (nur 
 ### USER
 Falls es noch immer nicht frei sein sollte, machen wir Port 3002.danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ cd ${PROJECT_DIR}
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ sudo lsof -i :3001 || true
-[sudo] Passwort für danijel-jd:       
+[sudo] Passwort für danijel-jd:
 COMMAND  PID       USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
 python  1107 danijel-jd    3u  IPv4   8027      0t0  TCP *:3001 (LISTEN)
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ sudo ss -ltnp | grep 3001 || true
-LISTEN 0      128          0.0.0.0:3001       0.0.0.0:*    users:(("python",pid=1107,fd=3))         
+LISTEN 0      128          0.0.0.0:3001       0.0.0.0:*    users:(("python",pid=1107,fd=3))
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ printf "PORT=${PORT:-3001}\n" > .env
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ kill 1107
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ # Falls der Prozess 1107 der Port-Belegung ist und du ihn freigeben willst
@@ -634,7 +634,7 @@ sudo lsof -i :3001 || true
 sudo ss -ltnp | grep 3001 || true
 COMMAND   PID       USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
 python  97012 danijel-jd    3u  IPv4 788365      0t0  TCP *:3001 (LISTEN)
-LISTEN 0      128          0.0.0.0:3001       0.0.0.0:*    users:(("python",pid=97012,fd=3))        
+LISTEN 0      128          0.0.0.0:3001       0.0.0.0:*    users:(("python",pid=97012,fd=3))
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$
 
 ### ASSISTANT
@@ -675,11 +675,11 @@ ss -ltnp | grep 3002
 Antworte fertig, wenn Schritt 2 erfolgreich ist, oder poste Fehlerausgaben (nur letzte 40 Zeilen).
 
 ### USER
-sudo] Passwort für danijel-jd:       
+sudo] Passwort für danijel-jd:
 COMMAND  PID       USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
 python  1107 danijel-jd    3u  IPv4   8027      0t0  TCP *:3001 (LISTEN)
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ sudo ss -ltnp | grep 3001 || true
-LISTEN 0      128          0.0.0.0:3001       0.0.0.0:*    users:(("python",pid=1107,fd=3))         
+LISTEN 0      128          0.0.0.0:3001       0.0.0.0:*    users:(("python",pid=1107,fd=3))
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ printf "PORT=${PORT:-3001}\n" > .env
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ kill 1107
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ # Falls der Prozess 1107 der Port-Belegung ist und du ihn freigeben willst
@@ -689,7 +689,7 @@ sudo lsof -i :3001 || true
 sudo ss -ltnp | grep 3001 || true
 COMMAND   PID       USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
 python  97012 danijel-jd    3u  IPv4 788365      0t0  TCP *:3001 (LISTEN)
-LISTEN 0      128          0.0.0.0:3001       0.0.0.0:*    users:(("python",pid=97012,fd=3))        
+LISTEN 0      128          0.0.0.0:3001       0.0.0.0:*    users:(("python",pid=97012,fd=3))
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ # Falls du Port 3002 verwenden willst (Option B)
 export PROJECT_DIR=${HOME}/docker-site
 cd ${PROJECT_DIR}
@@ -750,7 +750,7 @@ Antworte fertig, wenn Schritt 3 erfolgreich ist, oder poste Fehlerausgaben (nur 
 ### USER
 #COMMAND   PID       USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
 python  97012 danijel-jd    3u  IPv4 788365      0t0  TCP *:3001 (LISTEN)
-LISTEN 0      128          0.0.0.0:3001       0.0.0.0:*    users:(("python",pid=97012,fd=3))        
+LISTEN 0      128          0.0.0.0:3001       0.0.0.0:*    users:(("python",pid=97012,fd=3))
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ # Falls du Port 3002 verwenden willst (Option B)
 export PROJECT_DIR=${HOME}/docker-site
 cd ${PROJECT_DIR}
@@ -758,14 +758,14 @@ sed -i 's/PORT=.*/PORT=3002/' .env
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ # Falls in docker-compose.yaml eine explizite 3001:80-Mapping existiert, passe diese auf 3002:80 um
 sed -i 's/3001:80/3002:80/' docker-compose.yaml
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ docker compose down
-WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ docker compose up -d
-WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
 [+] Running 2/2
- ✔ Network docker-site_default      Creat...                               0.1s 
- ✔ Container docker-site-website-1  S...                                   0.3s 
+ ✔ Network docker-site_default      Creat...                               0.1s
+ ✔ Container docker-site-website-1  S...                                   0.3s
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ docker compose ps
-WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
 NAME                    IMAGE     COMMAND                  SERVICE   CREATED          STATUS          PORTS
 docker-site-website-1   nginx     "/docker-entrypoint.…"   website   16 seconds ago   Up 15 seconds   0.0.0.0:8081->80/tcp, [::]:8081->80/tcp
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ ss -ltnp | grep 3002
@@ -775,29 +775,29 @@ grep -n "3002:80" docker-compose.yaml || true
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ # 3) Service neu starten
 docker compose down
 docker compose up -d
-WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
 [+] Running 2/2
- ✔ Container docker-site-website-1  R...                                   0.2s 
- ✔ Network docker-site_default      Remov...                               0.1s 
-WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+ ✔ Container docker-site-website-1  R...                                   0.2s
+ ✔ Network docker-site_default      Remov...                               0.1s
+WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
 [+] Running 2/2
- ✔ Network docker-site_default      Creat...                               0.1s 
- ✔ Container docker-site-website-1  S...                                   0.2s 
+ ✔ Network docker-site_default      Creat...                               0.1s
+ ✔ Container docker-site-website-1  S...                                   0.2s
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ sudo] Passwort für danijel-jd:                                                  docker compose up -d
                                                  # 4) Status prüfen
 docker compose ps
 ss -ltnp | grep 3002 || true
-WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
 NAME                    IMAGE     COMMAND                  SERVICE   CREATED          STATUS          PORTS
 docker-site-website-1   nginx     "/docker-entrypoint.…"   website   34 seconds ago   Up 34 seconds   0.0.0.0:8081->80/tcp, [::]:8081->80/tcp
-danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$
 
 
 
 
 
 
-  
+
 können auch port 8081 nehmen auch kein problem!
 
 ### ASSISTANT
@@ -820,7 +820,7 @@ Erwarteter Output/Check:
 Fehlerhilfe (kurz):
 - Falls kein Zugriff: prüfe erneut, ob der Container läuft (docker compose ps) und ob 8081 korrekt gebunden ist.
 - Logs prüfen: docker compose logs website
-- Falls nötig, prüfe Firewall/ufw-Regeln am Host und stelle sicher, dass Port 8081 offen ist. 
+- Falls nötig, prüfe Firewall/ufw-Regeln am Host und stelle sicher, dass Port 8081 offen ist.
 
 Antworte fertig, wenn Schritt 4 erfolgreich ist, oder poste Fehlerausgaben (nur letzte 40 Zeilen).
 
@@ -849,7 +849,7 @@ Connection: keep-alive
 ETag: "6900b176-267"
 Accept-Ranges: bytes
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$
-  
+
 wenn kein fehler weiter mit 4
 
 ### ASSISTANT
@@ -1009,11 +1009,11 @@ docker inspect --format='{{.State.Health.Status}}' docker-site-website-1 2>/dev/
 bash: Syntaxfehler beim unerwarteten Wort »)«
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ # 4) Netzwerk-Verbindungen zur UI prüfen (Port 8081)
 ss -ltnp | grep -E '8081|80' || true
-LISTEN 0      4096         0.0.0.0:8081       0.0.0.0:*                                     
-LISTEN 0      4096            [::]:8081          [::]:*                                     
+LISTEN 0      4096         0.0.0.0:8081       0.0.0.0:*
+LISTEN 0      4096            [::]:8081          [::]:*
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ # 5) Firewallstatus prüfen (falls UFW aktiv)
 sudo ufw status | grep -i 8081 || true
-[sudo] Passwort für danijel-jd:       
+[sudo] Passwort für danijel-jd:
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$
 6 geht?
 
@@ -1063,11 +1063,11 @@ docker inspect --format='{{.State.Health.Status}}' docker-site-website-1 2>/dev/
 bash: Syntaxfehler beim unerwarteten Wort »)«
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ # 4) Netzwerk-Verbindungen zur UI prüfen (Port 8081)
 ss -ltnp | grep -E '8081|80' || true
-LISTEN 0      4096         0.0.0.0:8081       0.0.0.0:*                                     
-LISTEN 0      4096            [::]:8081          [::]:*                                     
+LISTEN 0      4096         0.0.0.0:8081       0.0.0.0:*
+LISTEN 0      4096            [::]:8081          [::]:*
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ # 5) Firewallstatus prüfen (falls UFW aktiv)
 sudo ufw status | grep -i 8081 || true
-[sudo] Passwort für danijel-jd:       
+[sudo] Passwort für danijel-jd:
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ # 1) Letzte 200 Zeilen der Website-Logs ansehen
 docker compose logs --tail=200 website
 WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
@@ -1178,7 +1178,7 @@ website-1  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worke
 website-1  | /docker-entrypoint.sh: Configuration complete; ready for start up
 website-1  | 2025/10/29 11:04:13 [notice] 1#1: using the "epoll" event method
 website-1  | 2025/10/29 11:04:13 [notice] 1#1: nginx/1.29.3
-website-1  | 2025/10/29 11:04:13 [notice] 1#1: built by gcc 14.2.0 (Debian 14.2.0-19) 
+website-1  | 2025/10/29 11:04:13 [notice] 1#1: built by gcc 14.2.0 (Debian 14.2.0-19)
 website-1  | 2025/10/29 11:04:13 [notice] 1#1: OS: Linux 6.14.0-33-generic
 website-1  | 2025/10/29 11:04:13 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
 website-1  | 2025/10/29 11:04:13 [notice] 1#1: start worker processes
@@ -1190,10 +1190,10 @@ website-1  | 172.19.0.1 - - [29/Oct/2025:11:09:47 +0000] "HEAD / HTTP/1.1" 200 0
 website-1  | 172.19.0.1 - - [29/Oct/2025:11:13:31 +0000] "HEAD / HTTP/1.1" 200 0 "-" "curl/8.5.0" "-"
 website-1  | 2025/10/29 11:14:34 [error] 31#31: *3 open() "/usr/share/nginx/html/health" failed (2: No such file or directory), client: 172.19.0.1, server: localhost, request: "HEAD /health HTTP/1.1", host: "localhost:8081"
 website-1  | 172.19.0.1 - - [29/Oct/2025:11:14:34 +0000] "HEAD /health HTTP/1.1" 404 0 "-" "curl/8.5.0" "-"
-danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$
 # 2) Aktuellen Status der Container prüfen
 docker compose ps
-WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
 NAME                    IMAGE     COMMAND                  SERVICE   CREATED          STATUS          PORTS
 docker-site-website-1   nginx     "/docker-entrypoint.…"   website   20 minutes ago   Up 20 minutes   0.0.0.0:8081->80/tcp, [::]:8081->80/tcp
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ # 3) Health-Status des Website-Containers anzeigen (falls Healthcheck konfiguriert)
@@ -1202,10 +1202,10 @@ docker inspect --format='{{.State.Health.Status}}' docker-site-website-1 2>/dev/
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ # 3) Health-Status des Website-Containers anzeigen (falls Healthcheck konfiguriert)
 docker inspect --format='{{.State.Health.Status}}' docker-site-website-1 2>/dev/null || true
 
-danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$
 # 5) Optional: detailliertere Logs prüfen
 docker compose logs website | tail -n 100
-WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
 website-1  | /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
 website-1  | /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
 website-1  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
@@ -1217,7 +1217,7 @@ website-1  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worke
 website-1  | /docker-entrypoint.sh: Configuration complete; ready for start up
 website-1  | 2025/10/29 11:04:13 [notice] 1#1: using the "epoll" event method
 website-1  | 2025/10/29 11:04:13 [notice] 1#1: nginx/1.29.3
-website-1  | 2025/10/29 11:04:13 [notice] 1#1: built by gcc 14.2.0 (Debian 14.2.0-19) 
+website-1  | 2025/10/29 11:04:13 [notice] 1#1: built by gcc 14.2.0 (Debian 14.2.0-19)
 website-1  | 2025/10/29 11:04:13 [notice] 1#1: OS: Linux 6.14.0-33-generic
 website-1  | 2025/10/29 11:04:13 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
 website-1  | 2025/10/29 11:04:13 [notice] 1#1: start worker processes
@@ -1231,21 +1231,21 @@ website-1  | 2025/10/29 11:14:34 [error] 31#31: *3 open() "/usr/share/nginx/html
 website-1  | 172.19.0.1 - - [29/Oct/2025:11:14:34 +0000] "HEAD /health HTTP/1.1" 404 0 "-" "curl/8.5.0" "-"
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ # 1) Images aktualisieren (beste aktuelle Versionen ziehen)
 docker compose pull
-WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
 [+] Pulling 1/1
- ✔ website Pulled                                                          1.2s 
+ ✔ website Pulled                                                          1.2s
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ # 2) Website-Service mit aktualisierten Images neu starten (ohne Dependency-Neuaufbau)
 docker compose up -d --no-deps --force-recreate website
-WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
 [+] Running 1/1
- ✔ Container docker-site-website-1  S...                                   0.5s 
-danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ 
+ ✔ Container docker-site-website-1  S...                                   0.5s
+danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$
 # 3) Überblick über verfügbare Images & Tags holen (Optional)
 docker compose images
-WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
 CONTAINER               REPOSITORY          TAG                 PLATFORM            IMAGE ID            SIZE                CREATED
 docker-site-website-1   nginx               latest              linux/amd64         9d0e6f6199dc        152MB               292 years ago
-danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$
 
 
 
@@ -1359,8 +1359,8 @@ WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `vers
 WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
 NAME                    IMAGE     COMMAND                  SERVICE   CREATED        STATUS                  PORTS
 docker-site-website-1   nginx     "/docker-entrypoint.…"   website   1 second ago   Up Less than a second   0.0.0.0:8081->80/tcp, [::]:8081->80/tcp
-LISTEN 0      4096         0.0.0.0:8081       0.0.0.0:*                                     
-LISTEN 0      4096            [::]:8081          [::]:*                                     
+LISTEN 0      4096         0.0.0.0:8081       0.0.0.0:*
+LISTEN 0      4096            [::]:8081          [::]:*
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$
 fertig
 
@@ -1463,7 +1463,7 @@ website-1  | 2025/10/29 11:39:44 [notice] 1#1: start worker process 32
 DRIVER    VOLUME NAME
 local     2openwebui_openwebui_data
 local     open-webui
-[sudo] Passwort für danijel-jd:       
+[sudo] Passwort für danijel-jd:
 Regel hinzugefügt
 Regel hinzugefügt (v6)
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$
@@ -1526,8 +1526,8 @@ ss -ltnp | grep 8081 || true
 WARN[0000] /home/danijel-jd/docker-site/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
 NAME                    IMAGE     COMMAND                  SERVICE   CREATED          STATUS          PORTS
 docker-site-website-1   nginx     "/docker-entrypoint.…"   website   17 seconds ago   Up 17 seconds   0.0.0.0:8081->80/tcp, [::]:8081->80/tcp
-LISTEN 0      4096         0.0.0.0:8081       0.0.0.0:*                                     
-LISTEN 0      4096            [::]:8081          [::]:*                                     
+LISTEN 0      4096         0.0.0.0:8081       0.0.0.0:*
+LISTEN 0      4096            [::]:8081          [::]:*
 danijel-jd@danijeljd-ESPRIMO-P920:~/docker-site$
 sind wir fertig?
 

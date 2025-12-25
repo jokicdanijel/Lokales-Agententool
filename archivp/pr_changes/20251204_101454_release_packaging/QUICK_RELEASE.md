@@ -67,7 +67,7 @@ See `docs/RELEASE_GUIDE.md` for complete instructions.
 
 ---
 
-**Package Size:** ~8MB (tar.gz) | ~19MB (zip)  
-**Unpacked Size:** ~25-30MB  
-**Files:** ~3,000  
+**Package Size:** ~8MB (tar.gz) | ~19MB (zip)
+**Unpacked Size:** ~25-30MB
+**Files:** ~3,000
 **Setup Time:** ~2-5 minutes

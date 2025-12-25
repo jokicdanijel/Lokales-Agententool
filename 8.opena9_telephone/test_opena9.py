@@ -6,8 +6,9 @@ Port: 12354 | Kürzel: telphonep
 
 import os
 import sys
-import requests
 import time
+
+import requests
 
 # ============================================================================
 # CONFIG
@@ -21,10 +22,7 @@ if not BEARER_TOKEN:
     print("   export BEARER_TOKEN=$(grep BEARER_TOKEN ../.env | cut -d= -f2)")
     sys.exit(1)
 
-HEADERS = {
-    "Authorization": f"Bearer {BEARER_TOKEN}",
-    "Content-Type": "application/json"
-}
+HEADERS = {"Authorization": f"Bearer {BEARER_TOKEN}", "Content-Type": "application/json"}
 
 # ============================================================================
 # COLORS
@@ -42,20 +40,25 @@ RESET = "\033[0m"
 
 results = {}
 
+
 def test(name):
     print(f"\n{BLUE}TEST:{RESET} {name}")
+
 
 def success(name):
     results[name] = "✅ PASS"
     print(f"{GREEN}✅ {name} OK{RESET}")
 
+
 def fail(name, reason):
     results[name] = "❌ FAIL"
     print(f"{RED}❌ {name} FAILED: {reason}{RESET}")
 
+
 # ============================================================================
 # TESTS
 # ============================================================================
+
 
 def test_health():
     test("Health-Check")
@@ -73,6 +76,7 @@ def test_health():
     except Exception as e:
         fail("Health", str(e))
 
+
 def test_root():
     test("Root-Endpoint")
     try:
@@ -89,13 +93,11 @@ def test_root():
     except Exception as e:
         fail("Root", str(e))
 
+
 def test_command():
     test("Command-Endpoint")
     try:
-        payload = {
-            "command": "test_command",
-            "params": {"test": "data"}
-        }
+        payload = {"command": "test_command", "params": {"test": "data"}}
         resp = requests.post(f"{BASE_URL}/command", json=payload, headers=HEADERS, timeout=5)
         if resp.status_code == 200:
             data = resp.json()
@@ -109,15 +111,13 @@ def test_command():
     except Exception as e:
         fail("Command", str(e))
 
+
 def test_call_start():
     test("Call Start (Twilio erforderlich)")
     try:
-        payload = {
-            "to": "+491234567890",
-            "timeout": 30
-        }
+        payload = {"to": "+491234567890", "timeout": 30}
         resp = requests.post(f"{BASE_URL}/call/start", json=payload, headers=HEADERS, timeout=10)
-        
+
         if resp.status_code == 500 and ("TWILIO_ACCOUNT_SID" in resp.text or "TWILIO_AUTH_TOKEN" in resp.text):
             print(f"   {YELLOW}⚠️  Twilio-Credentials nicht konfiguriert (erwartet){RESET}")
             success("Call Start")
@@ -141,14 +141,13 @@ def test_call_start():
     except Exception as e:
         fail("Call Start", str(e))
 
+
 def test_call_hangup():
     test("Call Hangup (Dummy Call ID)")
     try:
-        payload = {
-            "call_id": "CA00000000000000000000000000000000"
-        }
+        payload = {"call_id": "CA00000000000000000000000000000000"}
         resp = requests.post(f"{BASE_URL}/call/hangup", json=payload, headers=HEADERS, timeout=10)
-        
+
         if resp.status_code == 500 and "Twilio credentials" in resp.text:
             print(f"   {YELLOW}⚠️  Twilio-Credentials nicht konfiguriert (erwartet){RESET}")
             success("Call Hangup")
@@ -169,12 +168,13 @@ def test_call_hangup():
     except Exception as e:
         fail("Call Hangup", str(e))
 
+
 def test_call_status():
     test("Call Status (Dummy Call ID)")
     try:
         call_id = "CA00000000000000000000000000000000"
         resp = requests.get(f"{BASE_URL}/call/status/{call_id}", headers=HEADERS, timeout=10)
-        
+
         if resp.status_code == 500 and "Twilio credentials" in resp.text:
             print(f"   {YELLOW}⚠️  Twilio-Credentials nicht konfiguriert (erwartet){RESET}")
             success("Call Status")
@@ -195,15 +195,12 @@ def test_call_status():
     except Exception as e:
         fail("Call Status", str(e))
 
+
 def test_strict_json():
     test("Strict JSON Validation")
     try:
         # Extra field sollte rejected werden
-        payload = {
-            "command": "test",
-            "params": {},
-            "extra_field": "not_allowed"
-        }
+        payload = {"command": "test", "params": {}, "extra_field": "not_allowed"}
         resp = requests.post(f"{BASE_URL}/command", json=payload, headers=HEADERS, timeout=5)
         if resp.status_code == 422:
             print(f"   {YELLOW}Strict JSON:{RESET} Extra fields korrekt rejected (422)")
@@ -213,6 +210,7 @@ def test_strict_json():
     except Exception as e:
         fail("Strict JSON", str(e))
 
+
 # ============================================================================
 # MAIN
 # ============================================================================
@@ -221,10 +219,10 @@ if __name__ == "__main__":
     print("=" * 60)
     print("  opena9 Test Suite")
     print("=" * 60)
-    
+
     # Warte kurz falls Service gerade gestartet wurde
     time.sleep(1)
-    
+
     test_health()
     test_root()
     test_command()
@@ -232,24 +230,24 @@ if __name__ == "__main__":
     test_call_hangup()
     test_call_status()
     test_strict_json()
-    
+
     # ========================================================================
     # RESULTS
     # ========================================================================
-    
+
     print("\n" + "=" * 60)
     print("ERGEBNISSE")
     print("=" * 60)
-    
+
     for name, status in results.items():
         print(f"{name:20} {status}")
-    
+
     passed = sum(1 for v in results.values() if "PASS" in v)
     total = len(results)
-    
+
     print("")
     print(f"Tests bestanden: {passed}/{total}")
-    
+
     if passed == total:
         print(f"{GREEN}✅ Alle Tests erfolgreich!{RESET}")
         sys.exit(0)

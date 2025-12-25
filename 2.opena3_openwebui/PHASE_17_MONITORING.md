@@ -29,45 +29,45 @@ global:
   scrape_interval: 15s
   evaluation_interval: 15s
   external_labels:
-    monitor: 'portier-3.0'
+    monitor: "portier-3.0"
 
 scrape_configs:
-  - job_name: 'opena1'
+  - job_name: "opena1"
     static_configs:
-      - targets: ['localhost:12345']
-    metrics_path: '/metrics'
+      - targets: ["localhost:12345"]
+    metrics_path: "/metrics"
     scrape_interval: 10s
 
-  - job_name: 'opena2'
+  - job_name: "opena2"
     static_configs:
-      - targets: ['localhost:12346']
-    metrics_path: '/metrics'
+      - targets: ["localhost:12346"]
+    metrics_path: "/metrics"
     scrape_interval: 10s
 
-  - job_name: 'opena3'
+  - job_name: "opena3"
     static_configs:
-      - targets: ['localhost:12347']
-    metrics_path: '/metrics'
+      - targets: ["localhost:12347"]
+    metrics_path: "/metrics"
     scrape_interval: 10s
 
-  - job_name: 'dashboard'
+  - job_name: "dashboard"
     static_configs:
-      - targets: ['localhost:8000']
-    metrics_path: '/metrics'
+      - targets: ["localhost:8000"]
+    metrics_path: "/metrics"
     scrape_interval: 10s
 
-  - job_name: 'prometheus'
+  - job_name: "prometheus"
     static_configs:
-      - targets: ['localhost:9090']
+      - targets: ["localhost:9090"]
 
 # Alert rules
 rule_files:
-  - 'alerts.yml'
+  - "alerts.yml"
 
 alerting:
   alertmanagers:
     - static_configs:
-        - targets: ['localhost:9093']
+        - targets: ["localhost:9093"]
 ```
 
 ### alerts.yml
@@ -201,7 +201,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 ## 🐳 Docker Compose (Prometheus + Grafana)
 
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
   prometheus:
@@ -213,8 +213,8 @@ services:
       - ./alerts.yml:/etc/prometheus/alerts.yml
       - prometheus_data:/prometheus
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
     restart: unless-stopped
     networks:
       - portier
@@ -245,8 +245,8 @@ services:
       - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
       - alertmanager_data:/alertmanager
     command:
-      - '--config.file=/etc/alertmanager/alertmanager.yml'
-      - '--storage.path=/alertmanager'
+      - "--config.file=/etc/alertmanager/alertmanager.yml"
+      - "--storage.path=/alertmanager"
     restart: unless-stopped
     networks:
       - portier
@@ -394,21 +394,21 @@ sudo systemctl enable grafana-server
 ```yaml
 global:
   resolve_timeout: 5m
-  slack_api_url: 'YOUR_SLACK_WEBHOOK_URL'
+  slack_api_url: "YOUR_SLACK_WEBHOOK_URL"
 
 route:
-  receiver: 'slack'
-  group_by: ['alertname', 'cluster', 'service']
+  receiver: "slack"
+  group_by: ["alertname", "cluster", "service"]
   group_wait: 10s
   group_interval: 10s
   repeat_interval: 12h
 
 receivers:
-  - name: 'slack'
+  - name: "slack"
     slack_configs:
-      - channel: '#portier-alerts'
-        title: 'PORTIER 3.0 Alert'
-        text: '{{ range .Alerts }}{{ .Annotations.description }}{{ end }}'
+      - channel: "#portier-alerts"
+        title: "PORTIER 3.0 Alert"
+        text: "{{ range .Alerts }}{{ .Annotations.description }}{{ end }}"
 ```
 
 ---
@@ -428,14 +428,14 @@ receivers:
 
 ## 📊 Key Metrics to Monitor
 
-| Metric | Threshold | Action |
-|--------|-----------|--------|
-| Service Up | 0 | Restart service |
-| Error Rate | >10% | Investigate logs |
-| Latency P95 | >1s | Scale up/optimize |
-| Memory | >500MB | Restart service |
-| CPU | >50% | Check for loops |
-| Requests/sec | >1000 | Check capacity |
+| Metric       | Threshold | Action            |
+| ------------ | --------- | ----------------- |
+| Service Up   | 0         | Restart service   |
+| Error Rate   | >10%      | Investigate logs  |
+| Latency P95  | >1s       | Scale up/optimize |
+| Memory       | >500MB    | Restart service   |
+| CPU          | >50%      | Check for loops   |
+| Requests/sec | >1000     | Check capacity    |
 
 ---
 

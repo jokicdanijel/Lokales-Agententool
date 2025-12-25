@@ -9,17 +9,17 @@ SSE Client für opena20 Dashboard Events
 Safepoint Client für opena2 Archivierung
 """
 
-import asyncio
 import json
 import logging
 import os
 import time
 import uuid
-import httpx
-from datetime import datetime, timezone
-from typing import Dict, Any, Optional, AsyncGenerator, Callable, Awaitable
+from collections.abc import AsyncGenerator, Awaitable, Callable
 from dataclasses import dataclass, field
+from datetime import UTC, datetime
+from typing import Any
 
+import httpx
 
 logger = logging.getLogger(__name__)
 
@@ -31,49 +31,38 @@ BEARER_TOKEN = os.getenv("BEARER_TOKEN", "c899b90d-faf8-485b-afa4-078357cf5313")
 @dataclass
 class SSEEvent:
     event_type: str
-    data: Dict[str, Any]
-    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
-    event_id: Optional[str] = None
+    data: dict[str, Any]
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
+    event_id: str | None = None
 
 
 class SSEClient:
     """SSE Client für Verbindung zu opena20 Dashboard"""
-    
-    def __init__(
-        self,
-        base_url: str = OPENA20_URL,
-        bearer_token: str = BEARER_TOKEN,
-        timeout: float = 30.0
-    ):
+
+    def __init__(self, base_url: str = OPENA20_URL, bearer_token: str = BEARER_TOKEN, timeout: float = 30.0):
         self.base_url = base_url.rstrip("/")
         self.bearer_token = bearer_token
         self.timeout = timeout
-        self._client: Optional[httpx.AsyncClient] = None
+        self._client: httpx.AsyncClient | None = None
         self._running = False
-    
+
     async def connect(self) -> None:
         headers = {"Authorization": f"Bearer {self.bearer_token}"}
-        self._client = httpx.AsyncClient(
-            base_url=self.base_url,
-            headers=headers,
-            timeout=self.timeout
-        )
+        self._client = httpx.AsyncClient(base_url=self.base_url, headers=headers, timeout=self.timeout)
         self._running = True
-    
+
     async def disconnect(self) -> None:
         self._running = False
         if self._client:
             await self._client.aclose()
             self._client = None
-    
+
     async def subscribe(
-        self,
-        endpoint: str = "/api/events/live",
-        on_event: Optional[Callable[[Dict[str, Any]], Awaitable[None]]] = None
-    ) -> AsyncGenerator[Dict[str, Any], None]:
+        self, endpoint: str = "/api/events/live", on_event: Callable[[dict[str, Any]], Awaitable[None]] | None = None
+    ) -> AsyncGenerator[dict[str, Any], None]:
         if not self._client:
             await self.connect()
-        
+
         try:
             async with self._client.stream("GET", endpoint) as response:
                 response.raise_for_status()
@@ -92,9 +81,9 @@ class SSEClient:
         except Exception as e:
             logger.error(f"SSE Error: {e}")
             raise
-    
-    def _parse_event(self, event_str: str) -> Optional[Dict[str, Any]]:
-        event_data: Dict[str, Any] = {}
+
+    def _parse_event(self, event_str: str) -> dict[str, Any] | None:
+        event_data: dict[str, Any] = {}
         for line in event_str.strip().split("\n"):
             if line.startswith("event:"):
                 event_data["event_type"] = line[6:].strip()
@@ -110,52 +99,39 @@ class SSEClient:
 
 class SafepointClient:
     """Client für Safepoint-Archivierung via opena2"""
-    
-    def __init__(
-        self,
-        base_url: str = OPENA2_URL,
-        bearer_token: str = BEARER_TOKEN,
-        source_agent: str = "opena2"
-    ):
+
+    def __init__(self, base_url: str = OPENA2_URL, bearer_token: str = BEARER_TOKEN, source_agent: str = "opena2"):
         self.base_url = base_url.rstrip("/")
         self.bearer_token = bearer_token
         self.source_agent = source_agent
-        self._client: Optional[httpx.AsyncClient] = None
-    
+        self._client: httpx.AsyncClient | None = None
+
     async def connect(self) -> None:
         headers = {"Authorization": f"Bearer {self.bearer_token}"}
-        self._client = httpx.AsyncClient(
-            base_url=self.base_url,
-            headers=headers,
-            timeout=10.0
-        )
-    
+        self._client = httpx.AsyncClient(base_url=self.base_url, headers=headers, timeout=10.0)
+
     async def disconnect(self) -> None:
         if self._client:
             await self._client.aclose()
             self._client = None
-    
+
     async def write_safepoint(
-        self,
-        category: str,
-        destination: str,
-        payload: Dict[str, Any],
-        request_id: Optional[str] = None
-    ) -> Optional[str]:
+        self, category: str, destination: str, payload: dict[str, Any], request_id: str | None = None
+    ) -> str | None:
         if not self._client:
             await self.connect()
-        
+
         safepoint = {
             "sp_timestamp": int(time.time() * 1000),
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
             "source": self.source_agent,
             "destination": destination,
             "category": category,
             "request_id": request_id or str(uuid.uuid4())[:8],
             "payload": payload,
-            "strict": True
+            "strict": True,
         }
-        
+
         try:
             response = await self._client.post("/api/safepoint", json=safepoint)
             response.raise_for_status()
@@ -165,8 +141,8 @@ class SafepointClient:
             return None
 
 
-_sse_client: Optional[SSEClient] = None
-_safepoint_client: Optional[SafepointClient] = None
+_sse_client: SSEClient | None = None
+_safepoint_client: SafepointClient | None = None
 
 
 def get_sse_client() -> SSEClient:
@@ -183,7 +159,4 @@ def get_safepoint_client() -> SafepointClient:
     return _safepoint_client
 
 
-__all__ = [
-    "SSEEvent", "SSEClient", "SafepointClient",
-    "get_sse_client", "get_safepoint_client"
-]
+__all__ = ["SSEEvent", "SSEClient", "SafepointClient", "get_sse_client", "get_safepoint_client"]

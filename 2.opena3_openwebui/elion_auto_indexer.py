@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ELION Auto-Indexer für OpenWebUI Integration
 - Auto-extrahiert und indexiert hochgeladene Projektdateien
@@ -8,18 +7,18 @@ ELION Auto-Indexer für OpenWebUI Integration
 - Safepoint-Integration für alle Operationen
 """
 
-import os
-import sys
-import json
-import time
-import tarfile
-import zipfile
-import shutil
 import hashlib
-from pathlib import Path
-from datetime import datetime
-from typing import Dict, List, Any, Optional
+import json
 import logging
+import os
+import shutil
+import sys
+import tarfile
+import time
+import zipfile
+from datetime import datetime
+from pathlib import Path
+from typing import Any
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Configuration
@@ -40,7 +39,7 @@ METADATA_FILE = AUTO_INDEX_DIR / "index_metadata.jsonl"
 TARGET_FILES = [
     OPENA3_DIR / "openwebui_data_backup.tar",
     OPENA3_DIR / "main_openwebui_bridge.py",
-    OPENA3_DIR / "main_openwebui_bridge_v2.py"
+    OPENA3_DIR / "main_openwebui_bridge_v2.py",
 ]
 
 # Zusätzliche Archive (erweiterte Integration)
@@ -54,49 +53,43 @@ ADDITIONAL_ARCHIVES = [
 ]
 
 # Logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger("elion.auto_indexer")
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Safepoint Utilities
 # ──────────────────────────────────────────────────────────────────────────────
 
-def write_safepoint(src: str, dst: str, kind: str, body: Dict[str, Any]) -> Path:
+
+def write_safepoint(src: str, dst: str, kind: str, body: dict[str, Any]) -> Path:
     """Schreibt Safepoint für Indexierungs-Operationen."""
     today = datetime.utcnow().strftime("%Y/%m/%d")
     target_dir = ARCHIVE_DIR / today
     target_dir.mkdir(parents=True, exist_ok=True)
-    
+
     ts = int(time.time())
     name = f"SP{ts}_{src}→{dst}_{kind}.json"
     fpath = target_dir / name
-    
+
     payload = {
         "ts": datetime.utcnow().isoformat() + "Z",
         "src": src,
         "dst": dst,
         "kind": kind,
         "body": body,
-        "strict": True
+        "strict": True,
     }
-    
+
     fpath.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
-    
+
     # Append to index
     INDEX_FILE.parent.mkdir(parents=True, exist_ok=True)
     with INDEX_FILE.open("a", encoding="utf-8") as idx:
-        idx.write(json.dumps({
-            "sp": name,
-            "ts": payload["ts"],
-            "src": src,
-            "dst": dst,
-            "kind": kind,
-            "path": str(fpath)
-        }) + "\n")
-    
+        idx.write(
+            json.dumps({"sp": name, "ts": payload["ts"], "src": src, "dst": dst, "kind": kind, "path": str(fpath)})
+            + "\n"
+        )
+
     logger.debug(f"Safepoint: {name}")
     return fpath
 
@@ -104,6 +97,7 @@ def write_safepoint(src: str, dst: str, kind: str, body: Dict[str, Any]) -> Path
 # ──────────────────────────────────────────────────────────────────────────────
 # Hash & Metadata Utilities
 # ──────────────────────────────────────────────────────────────────────────────
+
 
 def compute_file_hash(filepath: Path) -> str:
     """Berechnet SHA256-Hash einer Datei."""
@@ -114,11 +108,11 @@ def compute_file_hash(filepath: Path) -> str:
     return sha256.hexdigest()
 
 
-def load_metadata() -> Dict[str, Any]:
+def load_metadata() -> dict[str, Any]:
     """Lädt bestehende Metadata."""
     if not METADATA_FILE.exists():
         return {}
-    
+
     metadata = {}
     with METADATA_FILE.open("r", encoding="utf-8") as f:
         for line in f:
@@ -127,7 +121,7 @@ def load_metadata() -> Dict[str, Any]:
     return metadata
 
 
-def save_metadata_entry(entry: Dict[str, Any]):
+def save_metadata_entry(entry: dict[str, Any]):
     """Speichert einzelnen Metadata-Eintrag."""
     METADATA_FILE.parent.mkdir(parents=True, exist_ok=True)
     with METADATA_FILE.open("a", encoding="utf-8") as f:
@@ -138,66 +132,67 @@ def save_metadata_entry(entry: Dict[str, Any]):
 # Extraction & Indexing
 # ──────────────────────────────────────────────────────────────────────────────
 
-def extract_tar_archive(tar_path: Path, dest_dir: Path) -> List[Path]:
+
+def extract_tar_archive(tar_path: Path, dest_dir: Path) -> list[Path]:
     """Extrahiert TAR-Archiv und gibt Liste der extrahierten Dateien zurück."""
     logger.info(f"Extrahiere TAR-Archiv: {tar_path.name}")
-    
+
     dest_dir.mkdir(parents=True, exist_ok=True)
     extracted_files = []
-    
+
     try:
-        with tarfile.open(tar_path, 'r') as tar:
+        with tarfile.open(tar_path, "r") as tar:
             members = tar.getmembers()
             logger.info(f"  {len(members)} Dateien gefunden")
-            
+
             tar.extractall(path=dest_dir)
-            
+
             for member in members:
                 if member.isfile():
                     extracted_path = dest_dir / member.name
                     if extracted_path.exists():
                         extracted_files.append(extracted_path)
-        
+
         logger.info(f"  ✓ {len(extracted_files)} Dateien extrahiert")
         return extracted_files
-    
+
     except Exception as e:
         logger.error(f"Fehler beim Extrahieren: {e}")
         return []
 
 
-def extract_zip_archive(zip_path: Path, dest_dir: Path) -> List[Path]:
+def extract_zip_archive(zip_path: Path, dest_dir: Path) -> list[Path]:
     """Extrahiert ZIP-Archiv und gibt Liste der extrahierten Dateien zurück."""
     logger.info(f"Extrahiere ZIP-Archiv: {zip_path.name}")
-    
+
     dest_dir.mkdir(parents=True, exist_ok=True)
     extracted_files = []
-    
+
     try:
-        with zipfile.ZipFile(zip_path, 'r') as zf:
+        with zipfile.ZipFile(zip_path, "r") as zf:
             members = zf.namelist()
             logger.info(f"  {len(members)} Einträge gefunden")
-            
+
             zf.extractall(path=dest_dir)
-            
+
             for member in members:
                 extracted_path = dest_dir / member
                 if extracted_path.exists() and extracted_path.is_file():
                     extracted_files.append(extracted_path)
-        
+
         logger.info(f"  ✓ {len(extracted_files)} Dateien extrahiert")
         return extracted_files
-    
+
     except Exception as e:
         logger.error(f"Fehler beim Extrahieren von ZIP: {e}")
         return []
 
 
-def index_file(filepath: Path, metadata: Dict[str, Any]) -> Dict[str, Any]:
+def index_file(filepath: Path, metadata: dict[str, Any]) -> dict[str, Any]:
     """Indexiert einzelne Datei und gibt Metadata zurück."""
     file_hash = compute_file_hash(filepath)
     file_stat = filepath.stat()
-    
+
     entry = {
         "file_path": str(filepath),
         "file_name": filepath.name,
@@ -205,9 +200,11 @@ def index_file(filepath: Path, metadata: Dict[str, Any]) -> Dict[str, Any]:
         "file_hash": file_hash,
         "indexed_at": datetime.utcnow().isoformat() + "Z",
         "file_type": filepath.suffix,
-        "relative_path": str(filepath.relative_to(AUTO_INDEX_DIR)) if filepath.is_relative_to(AUTO_INDEX_DIR) else str(filepath)
+        "relative_path": (
+            str(filepath.relative_to(AUTO_INDEX_DIR)) if filepath.is_relative_to(AUTO_INDEX_DIR) else str(filepath)
+        ),
     }
-    
+
     # Prüfe ob bereits indexiert
     if str(filepath) in metadata:
         existing = metadata[str(filepath)]
@@ -218,7 +215,7 @@ def index_file(filepath: Path, metadata: Dict[str, Any]) -> Dict[str, Any]:
             logger.info(f"  ↻ Datei geändert: {filepath.name}")
     else:
         logger.info(f"  + Neu indexiert: {filepath.name}")
-    
+
     save_metadata_entry(entry)
     return entry
 
@@ -227,7 +224,7 @@ def copy_to_knowledgebase(source_path: Path, kb_category: str = "opena3") -> Pat
     """Kopiert Datei in Knowledgebase ohne bestehende Struktur zu stören."""
     kb_target_dir = KNOWLEDGEBASE_DIR / "opena1" / kb_category
     kb_target_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Generiere eindeutigen Dateinamen falls nötig
     target_path = kb_target_dir / source_path.name
     counter = 1
@@ -236,7 +233,7 @@ def copy_to_knowledgebase(source_path: Path, kb_category: str = "opena3") -> Pat
         suffix = source_path.suffix
         target_path = kb_target_dir / f"{stem}_{counter}{suffix}"
         counter += 1
-    
+
     shutil.copy2(source_path, target_path)
     logger.info(f"  ✓ Kopiert nach Knowledgebase: {kb_category}/{target_path.name}")
     return target_path
@@ -246,16 +243,17 @@ def copy_to_knowledgebase(source_path: Path, kb_category: str = "opena3") -> Pat
 # Main Auto-Indexing Workflow
 # ──────────────────────────────────────────────────────────────────────────────
 
+
 def auto_index_all():
     """Hauptfunktion für Auto-Indexierung aller Projektdateien."""
     logger.info("=" * 80)
     logger.info("ELION Auto-Indexer gestartet")
     logger.info("=" * 80)
-    
+
     # Lade bestehende Metadata
     metadata = load_metadata()
     logger.info(f"Bestehende Index-Einträge: {len(metadata)}")
-    
+
     # Zähler
     stats = {
         "total_files": 0,
@@ -263,110 +261,112 @@ def auto_index_all():
         "updated_files": 0,
         "skipped_files": 0,
         "extracted_archives": 0,
-        "kb_entries": 0
+        "kb_entries": 0,
     }
-    
+
     # Safepoint: Start
-    write_safepoint("elion_indexer", "opena3", "INDEX_START", {
-        "timestamp": datetime.utcnow().isoformat() + "Z",
-        "target_files": [str(f) for f in TARGET_FILES]
-    })
-    
+    write_safepoint(
+        "elion_indexer",
+        "opena3",
+        "INDEX_START",
+        {"timestamp": datetime.utcnow().isoformat() + "Z", "target_files": [str(f) for f in TARGET_FILES]},
+    )
+
     # ─────────────────────────────────────────────────────────────────────────
     # 1. Python-Dateien direkt indexieren
     # ─────────────────────────────────────────────────────────────────────────
-    
+
     logger.info("\n[1/3] Indexiere Python Bridge-Dateien...")
-    
+
     for py_file in TARGET_FILES:
         if not py_file.exists() or py_file.suffix != ".py":
             continue
-        
+
         stats["total_files"] += 1
         entry = index_file(py_file, metadata)
-        
+
         if str(py_file) not in metadata:
             stats["new_files"] += 1
         elif entry.get("file_hash") != metadata.get(str(py_file), {}).get("file_hash"):
             stats["updated_files"] += 1
         else:
             stats["skipped_files"] += 1
-        
+
         # Kopiere in Knowledgebase
         kb_path = copy_to_knowledgebase(py_file, "openwebui_bridge")
         stats["kb_entries"] += 1
-    
+
     # ─────────────────────────────────────────────────────────────────────────
     # 2. TAR-Archive extrahieren und indexieren
     # ─────────────────────────────────────────────────────────────────────────
-    
+
     logger.info("\n[2/4] Extrahiere und indexiere TAR-Archive...")
-    
+
     for tar_file in TARGET_FILES:
         if not tar_file.exists() or not tar_file.name.endswith(".tar"):
             continue
-        
+
         tar_hash = compute_file_hash(tar_file)
         extract_dir = EXTRACTION_DIR / f"{tar_file.stem}_{tar_hash[:8]}"
-        
+
         # Prüfe ob bereits extrahiert
         if extract_dir.exists():
             logger.info(f"  ⊙ Bereits extrahiert: {tar_file.name}")
         else:
             extracted_files = extract_tar_archive(tar_file, extract_dir)
             stats["extracted_archives"] += 1
-            
+
             # Indexiere extrahierte Dateien
             logger.info(f"  Indexiere {len(extracted_files)} extrahierte Dateien...")
             for extracted_file in extracted_files:
                 stats["total_files"] += 1
                 entry = index_file(extracted_file, metadata)
-                
+
                 if str(extracted_file) not in metadata:
                     stats["new_files"] += 1
-                
+
                 # Selektive Knowledgebase-Integration (nur relevante Dateien)
-                if extracted_file.suffix in ['.json', '.md', '.txt', '.py', '.js', '.yml', '.yaml']:
+                if extracted_file.suffix in [".json", ".md", ".txt", ".py", ".js", ".yml", ".yaml"]:
                     if extracted_file.stat().st_size < 1024 * 1024:  # < 1MB
                         kb_path = copy_to_knowledgebase(extracted_file, "openwebui_data")
                         stats["kb_entries"] += 1
-    
+
     # ─────────────────────────────────────────────────────────────────────────
     # 3. ZIP-Archive extrahieren und indexieren (erweiterte Integration)
     # ─────────────────────────────────────────────────────────────────────────
-    
+
     logger.info("\n[3/4] Extrahiere und indexiere ZIP-Archive...")
-    
+
     for zip_file in ADDITIONAL_ARCHIVES:
         if not zip_file.exists():
             logger.debug(f"  ⊘ Nicht gefunden: {zip_file.name}")
             continue
-        
+
         zip_hash = compute_file_hash(zip_file)
         extract_dir = EXTRACTION_DIR / f"{zip_file.stem}_{zip_hash[:8]}"
-        
+
         # Prüfe ob bereits extrahiert
         if extract_dir.exists():
             logger.info(f"  ⊙ Bereits extrahiert: {zip_file.name}")
             continue
-        
+
         extracted_files = extract_zip_archive(zip_file, extract_dir)
         if extracted_files:
             stats["extracted_archives"] += 1
-            
+
             # Indexiere extrahierte Dateien (mit Limit für große Archive)
             max_files = min(len(extracted_files), 500)  # Max 500 Dateien pro Archiv
             logger.info(f"  Indexiere {max_files} von {len(extracted_files)} extrahierten Dateien...")
-            
+
             for extracted_file in extracted_files[:max_files]:
                 stats["total_files"] += 1
                 entry = index_file(extracted_file, metadata)
-                
+
                 if str(extracted_file) not in metadata:
                     stats["new_files"] += 1
-                
+
                 # Selektive Knowledgebase-Integration
-                if extracted_file.suffix in ['.py', '.js', '.ts', '.json', '.md', '.txt', '.yml', '.yaml']:
+                if extracted_file.suffix in [".py", ".js", ".ts", ".json", ".md", ".txt", ".yml", ".yaml"]:
                     if extracted_file.stat().st_size < 512 * 1024:  # < 512KB
                         # Bestimme Kategorie basierend auf Quellarchiv
                         if "LocalAgent" in zip_file.name:
@@ -377,16 +377,16 @@ def auto_index_all():
                             category = "dashboard_skeleton"
                         else:
                             category = "misc_archives"
-                        
+
                         kb_path = copy_to_knowledgebase(extracted_file, category)
                         stats["kb_entries"] += 1
-    
+
     # ─────────────────────────────────────────────────────────────────────────
     # 4. Generiere Index-Bericht
     # ─────────────────────────────────────────────────────────────────────────
-    
+
     logger.info("\n[4/4] Generiere Index-Bericht...")
-    
+
     report = {
         "indexer_version": "1.1.0",  # Version erhöht wegen ZIP-Support
         "timestamp": datetime.utcnow().isoformat() + "Z",
@@ -395,20 +395,20 @@ def auto_index_all():
         "extraction_dir": str(EXTRACTION_DIR),
         "knowledgebase_dir": str(KNOWLEDGEBASE_DIR),
         "metadata_file": str(METADATA_FILE),
-        "additional_archives_count": len([f for f in ADDITIONAL_ARCHIVES if f.exists()])
+        "additional_archives_count": len([f for f in ADDITIONAL_ARCHIVES if f.exists()]),
     }
-    
+
     report_file = AUTO_INDEX_DIR / f"index_report_{int(time.time())}.json"
     report_file.parent.mkdir(parents=True, exist_ok=True)
     report_file.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
-    
+
     # Safepoint: Completion
     write_safepoint("elion_indexer", "opena3", "INDEX_COMPLETE", report)
-    
+
     # ─────────────────────────────────────────────────────────────────────────
     # Ausgabe
     # ─────────────────────────────────────────────────────────────────────────
-    
+
     logger.info("\n" + "=" * 80)
     logger.info("ELION Auto-Indexer abgeschlossen")
     logger.info("=" * 80)
@@ -430,30 +430,20 @@ def auto_index_all():
 
 if __name__ == "__main__":
     import argparse
-    
-    parser = argparse.ArgumentParser(
-        description="ELION Auto-Indexer für OpenWebUI Integration"
-    )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Simuliere Indexierung ohne Änderungen"
-    )
-    parser.add_argument(
-        "--verbose",
-        action="store_true",
-        help="Verbose Logging"
-    )
-    
+
+    parser = argparse.ArgumentParser(description="ELION Auto-Indexer für OpenWebUI Integration")
+    parser.add_argument("--dry-run", action="store_true", help="Simuliere Indexierung ohne Änderungen")
+    parser.add_argument("--verbose", action="store_true", help="Verbose Logging")
+
     args = parser.parse_args()
-    
+
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
-    
+
     if args.dry_run:
         logger.warning("DRY RUN MODE - Keine Änderungen werden vorgenommen")
         sys.exit(0)
-    
+
     try:
         auto_index_all()
     except KeyboardInterrupt:

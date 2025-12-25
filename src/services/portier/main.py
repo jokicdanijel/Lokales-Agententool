@@ -8,19 +8,17 @@ Port: 12344 (Policy-bound, fixed)
 Integration: OpenA1 (same as opena1_app.py from Phase 7b)
 """
 
-import asyncio
 import hashlib
-import json
 import os
 import socket
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any
 
-from fastapi import FastAPI, HTTPException, Request, Response
-from pydantic import BaseModel, Field, ConfigDict
 import httpx
+from fastapi import FastAPI, HTTPException, Response
+from pydantic import BaseModel, ConfigDict, Field
 
 # Metrics Exporter (Phase 17 Monitoring)
 # Note: metrics_exporter.py is in "19.opena20_dashboard_agent/" which starts with a digit,
@@ -28,7 +26,10 @@ import httpx
 METRICS_ENABLED = False
 try:
     import importlib.util
-    metrics_path = Path(__file__).resolve().parent.parent.parent.parent / "19.opena20_dashboard_agent" / "metrics_exporter.py"
+
+    metrics_path = (
+        Path(__file__).resolve().parent.parent.parent.parent / "19.opena20_dashboard_agent" / "metrics_exporter.py"
+    )
     spec = importlib.util.spec_from_file_location("metrics_exporter", metrics_path)
     if spec and spec.loader:
         metrics_module = importlib.util.module_from_spec(spec)  # type: ignore
@@ -64,15 +65,22 @@ OPENAI_PRESENT = bool(OPENAI_API_KEY)
 OPENAI_FP = _key_fingerprint(OPENAI_API_KEY)
 
 REDACT_KEYS = {
-    "authorization", "openai_api_key", "api_key", "openai-key", "x-api-key",
-    "OPENAI_API_KEY", "OPENAI_ORG", "OPENAI_BASE_URL", "bearer"
+    "authorization",
+    "openai_api_key",
+    "api_key",
+    "openai-key",
+    "x-api-key",
+    "OPENAI_API_KEY",
+    "OPENAI_ORG",
+    "OPENAI_BASE_URL",
+    "bearer",
 }
 
 
 def _redact_secrets(obj: Any) -> Any:
     """Remove/obfuscate sensitive fields recursively."""
     if isinstance(obj, dict):
-        sanitized: Dict[str, Any] = {}
+        sanitized: dict[str, Any] = {}
         for k, v in obj.items():
             kl = str(k).lower()
             if kl in REDACT_KEYS or "token" in kl or "secret" in kl or "key" in kl:
@@ -102,8 +110,10 @@ def _hostname() -> str:
 # Pydantic Models
 # ────────────────────────────────────────────────────────────────────────
 
+
 class RouteUpdateIn(BaseModel):
     """Register a service route."""
+
     model_config = ConfigDict(extra="forbid")
     agent: str = Field(..., min_length=1)
     agent_id: str = Field(..., min_length=1)
@@ -111,26 +121,28 @@ class RouteUpdateIn(BaseModel):
     program: str = Field(..., min_length=1)
     archivator_port: int = Field(default=12345)
     mapping_ts: str = Field(default_factory=_now)
-    mapping: Dict[str, Any] = Field(default_factory=dict)
+    mapping: dict[str, Any] = Field(default_factory=dict)
     strict: bool = True
 
 
 class DispatchIn(BaseModel):
     """Dispatch a task to a service."""
+
     model_config = ConfigDict(extra="forbid")
     agent: str = Field(..., min_length=1)
     action: str = Field(..., min_length=1)
-    data: Dict[str, Any] = Field(default_factory=dict)
+    data: dict[str, Any] = Field(default_factory=dict)
     request_id: str = Field(default_factory=lambda: f"req-{int(time.time()*1000)}")
     strict: bool = True
 
 
 class LogEntryIn(BaseModel):
     """Log an event."""
+
     model_config = ConfigDict(extra="forbid")
     source: str = Field(..., min_length=1)
     event: str = Field(..., min_length=1)
-    payload: Dict[str, Any] = Field(default_factory=dict)
+    payload: dict[str, Any] = Field(default_factory=dict)
     strict: bool = True
     ts: str = Field(default_factory=_now)
 
@@ -142,11 +154,11 @@ class LogEntryIn(BaseModel):
 app = FastAPI(
     title=f"Portier — {PROGRAM_TARGET.upper()}",
     description="Coordinator Gateway for Multi-Agent Orchestration",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 # In-memory route registry
-ROUTES: Dict[str, Dict[str, Any]] = {}
+ROUTES: dict[str, dict[str, Any]] = {}
 APP_META = {
     "service": SERVICE_NAME,
     "program_target": PROGRAM_TARGET,
@@ -161,6 +173,7 @@ APP_META = {
 # ────────────────────────────────────────────────────────────────────────
 # Startup Event: Initialize Metrics Exporter (Phase 17)
 # ────────────────────────────────────────────────────────────────────────
+
 
 @app.on_event("startup")
 async def startup_metrics():
@@ -178,7 +191,8 @@ async def startup_metrics():
 # Helper: Store Safepoint (delegate to OpenA2)
 # ────────────────────────────────────────────────────────────────────────
 
-async def _store_safepoint(kind: str, body: Dict[str, Any]) -> None:
+
+async def _store_safepoint(kind: str, body: dict[str, Any]) -> None:
     """Delegate safepoint storage to OpenA2 (/store/archivp)."""
     url = f"http://127.0.0.1:{ARCHIVP_PORT}/store/archivp"
     payload = {
@@ -187,7 +201,7 @@ async def _store_safepoint(kind: str, body: Dict[str, Any]) -> None:
         "kind": kind,
         "body": _redact_secrets(body),
         "strict": True,
-        "ts": _now()
+        "ts": _now(),
     }
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
@@ -201,8 +215,9 @@ async def _store_safepoint(kind: str, body: Dict[str, Any]) -> None:
 # Endpoints
 # ────────────────────────────────────────────────────────────────────────
 
+
 @app.get("/health")
-async def health() -> Dict[str, Any]:
+async def health() -> dict[str, Any]:
     """Health check endpoint."""
     return {
         **APP_META,
@@ -219,28 +234,28 @@ async def metrics() -> Response:
     """Prometheus metrics endpoint (Phase 17 Monitoring)."""
     if not METRICS_ENABLED:
         return Response("# Metrics not available (prometheus-client not installed)", media_type="text/plain")
-    
+
     exporter = get_exporter()
     return Response(exporter.get_metrics_text(), media_type="text/plain")
 
 
 @app.get("/api/health/metrics")
-async def health_metrics() -> Dict[str, Any]:
+async def health_metrics() -> dict[str, Any]:
     """JSON health summary with metrics (Phase 17 Monitoring)."""
     if not METRICS_ENABLED:
         return {"error": "Metrics not available (prometheus-client not installed)"}
-    
+
     exporter = get_exporter()
     return exporter.get_health_summary()
 
 
 @app.post("/route/update")
-async def route_update(info: RouteUpdateIn) -> Dict[str, Any]:
+async def route_update(info: RouteUpdateIn) -> dict[str, Any]:
     """Register or update a service route."""
     # Validate port policy
     if not (12344 <= info.port <= 12399):
         raise HTTPException(400, "PORT_POLICY_VIOLATION: port must be 12344-12399")
-    
+
     # Store route in registry
     ROUTES[info.agent] = {
         "agent_id": info.agent_id,
@@ -249,15 +264,18 @@ async def route_update(info: RouteUpdateIn) -> Dict[str, Any]:
         "archivator_port": info.archivator_port,
         "mapping_ts": info.mapping_ts,
     }
-    
+
     # Log to archive
-    await _store_safepoint("ROUTE", {
-        "agent": info.agent,
-        "agent_id": info.agent_id,
-        "port": info.port,
-        "program": info.program,
-    })
-    
+    await _store_safepoint(
+        "ROUTE",
+        {
+            "agent": info.agent,
+            "agent_id": info.agent_id,
+            "port": info.port,
+            "program": info.program,
+        },
+    )
+
     return {
         "ok": True,
         "route": ROUTES[info.agent],
@@ -266,22 +284,25 @@ async def route_update(info: RouteUpdateIn) -> Dict[str, Any]:
 
 
 @app.post("/dispatch/kordp")
-async def dispatch_task(req: DispatchIn) -> Dict[str, Any]:
+async def dispatch_task(req: DispatchIn) -> dict[str, Any]:
     """Dispatch a task to a registered service."""
-    route: Optional[Dict[str, Any]] = ROUTES.get(req.agent)
+    route: dict[str, Any] | None = ROUTES.get(req.agent)
     if not route:
         raise HTTPException(404, f"no route for agent '{req.agent}'")
-    
+
     # Log dispatch to archive (redact sensitive data)
     safe_data = _redact_secrets(req.data)
-    await _store_safepoint("DISPATCH", {
-        "request_id": req.request_id,
-        "agent": req.agent,
-        "action": req.action,
-        "data": safe_data,
-        "route": route,
-    })
-    
+    await _store_safepoint(
+        "DISPATCH",
+        {
+            "request_id": req.request_id,
+            "agent": req.agent,
+            "action": req.action,
+            "data": safe_data,
+            "route": route,
+        },
+    )
+
     return {
         "ok": True,
         "routed_to": route,
@@ -291,7 +312,7 @@ async def dispatch_task(req: DispatchIn) -> Dict[str, Any]:
 
 
 @app.post("/log/portier")
-async def log_event(entry: LogEntryIn) -> Dict[str, Any]:
+async def log_event(entry: LogEntryIn) -> dict[str, Any]:
     """Log an event to archive."""
     await _store_safepoint("LOG", entry.model_dump())
     return {
@@ -307,11 +328,5 @@ async def log_event(entry: LogEntryIn) -> Dict[str, Any]:
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(
-        "main:app",
-        host="127.0.0.1",
-        port=PORT,
-        reload=False,
-        access_log=False,
-        log_level="info"
-    )
+
+    uvicorn.run("main:app", host="127.0.0.1", port=PORT, reload=False, access_log=False, log_level="info")

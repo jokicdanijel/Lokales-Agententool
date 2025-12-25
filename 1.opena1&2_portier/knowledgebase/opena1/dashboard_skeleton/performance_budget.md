@@ -1,4 +1,5 @@
 # Performance Budget
+
 - LCP <= 2.5s
 - CLS <= 0.1
 - Initial JS <= 120KB

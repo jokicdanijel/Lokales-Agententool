@@ -3,17 +3,20 @@
 ## 🎯 Schnellstart (3 Schritte)
 
 ### 1️⃣ Tool Server starten
+
 ```bash
 cd LocalAgent-Pro/opena6
 python3 tool_server.py --host 0.0.0.0 --port 8765
 ```
 
 ### 2️⃣ OpenWebUI öffnen
+
 ```
 http://192.168.0.70:3000
 ```
 
 ### 3️⃣ Tool importieren
+
 ```
 Admin → Settings → Tools → "+" → URL eingeben:
 http://192.168.0.70:8765/manifest
@@ -25,13 +28,13 @@ http://192.168.0.70:8765/manifest
 
 ## 📦 Dateien
 
-| Datei | Zweck |
-|-------|-------|
-| `tool_server.py` | HTTP Server (Port 8765) |
-| `start_tool_server.sh` | Start Script |
+| Datei                   | Zweck                      |
+| ----------------------- | -------------------------- |
+| `tool_server.py`        | HTTP Server (Port 8765)    |
+| `start_tool_server.sh`  | Start Script               |
 | `browser_agent_tool.py` | OpenWebUI-kompatibles Tool |
-| `openapi.json` | OpenAPI 3.0 Spezifikation |
-| `tool_manifest.json` | Tool Definition (JSON) |
+| `openapi.json`          | OpenAPI 3.0 Spezifikation  |
+| `tool_manifest.json`    | Tool Definition (JSON)     |
 
 ---
 

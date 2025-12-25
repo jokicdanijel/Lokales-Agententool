@@ -32,24 +32,24 @@ CURRENT_DATE=$(date +"%d. %B %Y")
 # Update each agent README
 for AGENT_DIR in "${!AGENTS[@]}"; do
     IFS=':' read -r AGENT_ID PORT KUERZEL DESCRIPTION <<< "${AGENTS[$AGENT_DIR]}"
-    
+
     README_PATH="${AGENT_DIR}/README.md"
-    
+
     if [ -f "$README_PATH" ]; then
         echo "📝 Updating: $README_PATH"
-        
+
         # Create backup
         cp "$README_PATH" "${README_PATH}.backup"
-        
+
         # Create new header
         cat > "${README_PATH}.tmp" << EOF
 # 🤖 ${AGENT_ID} - ${DESCRIPTION}
 
-**Agent-ID:** \`${AGENT_ID}\`  
-**Port:** ${PORT}  
-**Kürzel:** \`${KUERZEL}\`  
-**Version:** 3.0  
-**Status:** 🟡 **Planned** (PORTIER 3.0 Architecture Ready)  
+**Agent-ID:** \`${AGENT_ID}\`
+**Port:** ${PORT}
+**Kürzel:** \`${KUERZEL}\`
+**Version:** 3.0
+**Status:** 🟡 **Planned** (PORTIER 3.0 Architecture Ready)
 **Letzte Aktualisierung:** ${CURRENT_DATE}
 
 ---
@@ -211,8 +211,8 @@ curl http://127.0.0.1:${PORT}/metrics
 
 ---
 
-**Maintainer:** Danijel Jokic (ELION Team)  
-**Letzte Aktualisierung:** ${CURRENT_DATE}  
+**Maintainer:** Danijel Jokic (ELION Team)
+**Letzte Aktualisierung:** ${CURRENT_DATE}
 **Status:** 🟡 **Architecture Ready** (Implementation Pending)
 
 EOF
@@ -225,10 +225,10 @@ EOF
             # Append everything after line 10 if no ## heading found
             tail -n +11 "$README_PATH" >> "${README_PATH}.tmp"
         fi
-        
+
         # Replace original with updated version
         mv "${README_PATH}.tmp" "$README_PATH"
-        
+
         echo "✅ Updated: $AGENT_ID ($PORT)"
     else
         echo "⚠️  README not found: $README_PATH"

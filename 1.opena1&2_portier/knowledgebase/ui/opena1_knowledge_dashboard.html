@@ -246,27 +246,27 @@
                 <span class="badge">Dokumente</span>
             </div>
             <p>Relevante KB-Dateien für den Koordinator (Priorität 1–3):</p>
-            
+
             <h4 style="margin: 8px 0 4px 0; font-size: 0.85rem; color: #a5b4fc;">Priorität 1 (Primär)</h4>
             <ul>
                 <li><code>KB_OPENA1_COORDINATOR_2025-11-08.md</code></li>
                 <li><code>KB_SYSTEM_INTEGRATION_FLOWS_2025-11-08.md</code></li>
                 <li><code>KB_ARCHIVE_PATTERNS_2025-11-08.md</code></li>
             </ul>
-            
+
             <h4 style="margin: 8px 0 4px 0; font-size: 0.85rem; color: #a5b4fc;">Priorität 2 (Sekundär)</h4>
             <ul>
                 <li><code>KB_DASHBOARD_INTEGRATION_2025-11-08.md</code></li>
                 <li><code>KB_TELEGRAM_BRIDGE_2025-11-08.md</code></li>
                 <li><code>KB_PROGRESS_REPORT_2025-11-08.md</code></li>
             </ul>
-            
+
             <h4 style="margin: 8px 0 4px 0; font-size: 0.85rem; color: #a5b4fc;">Priorität 3 (Ergänzend)</h4>
             <ul>
                 <li><code>KB_EXPANSION_PLAN_2025-11-08.md</code></li>
                 <li><code>KB_INDEX_CURRENT_2025-11-08.md</code></li>
             </ul>
-            
+
             <p class="muted">
                 Diese Seite kann von opena21 genutzt werden, um KB-Links dynamisch zu laden und anzuzeigen
                 (z.B. über eine REST-API oder direkte Dateizugriffe im Dashboard-Agenten).
@@ -349,14 +349,14 @@
     async function refreshStatus() {
         const statusBadge = document.getElementById('status-badge');
         const statusText = document.getElementById('status-opena1');
-        
+
         statusBadge.className = 'badge badge-warn';
         statusText.textContent = 'prüfen...';
-        
+
         try {
             const response = await fetch('http://127.0.0.1:12344/health');
             const data = await response.json();
-            
+
             if (data.status === 'ok' || data.status === 'healthy') {
                 statusBadge.className = 'badge';
                 statusText.textContent = '✓ online';
@@ -370,20 +370,20 @@
             console.error('Health-Check fehlgeschlagen:', error);
         }
     }
-    
+
     // Safepoints laden (von opena2)
     async function loadSafepoints() {
         const table = document.getElementById('safepoints-table');
-        
+
         try {
             const response = await fetch('http://127.0.0.1:12345/archiv/last?n=10');
             const data = await response.json();
-            
+
             // Entferne alte Zeilen (außer Header)
             while (table.children.length > 1) {
                 table.removeChild(table.lastChild);
             }
-            
+
             // Füge neue Zeilen hinzu
             data.safepoints.forEach(sp => {
                 const row = document.createElement('div');
@@ -401,7 +401,7 @@
             alert('Fehler beim Laden der Safepoints. Ist opena2 erreichbar?');
         }
     }
-    
+
     // Beim Laden der Seite Status prüfen
     window.addEventListener('load', () => {
         refreshStatus();

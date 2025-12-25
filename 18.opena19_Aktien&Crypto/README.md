@@ -1,10 +1,10 @@
 # 🤖 opena19 - Aktien & Crypto
 
-**Agent-ID:** `opena19`  
-**Port:** 12365  
-**Kürzel:** `stockcryptop`  
-**Version:** 3.0  
-**Status:** 🟡 **Planned** (PORTIER 3.0 Architecture Ready)  
+**Agent-ID:** `opena19`
+**Port:** 12365
+**Kürzel:** `stockcryptop`
+**Version:** 3.0
+**Status:** 🟡 **Planned** (PORTIER 3.0 Architecture Ready)
 **Letzte Aktualisierung:** 29. November 2025
 
 ---
@@ -166,8 +166,8 @@ curl http://127.0.0.1:12365/metrics
 
 ---
 
-**Maintainer:** Danijel Jokic (ELION Team)  
-**Letzte Aktualisierung:** 29. November 2025  
+**Maintainer:** Danijel Jokic (ELION Team)
+**Letzte Aktualisierung:** 29. November 2025
 **Status:** 🟡 **Architecture Ready** (Implementation Pending)
 
 ## 📖 Überblick
@@ -208,6 +208,7 @@ Client/UI
 ## 📡 API-Endpoints
 
 ### `GET /health`
+
 Health-Check des Agents.
 
 ```bash
@@ -215,6 +216,7 @@ curl http://127.0.0.1:12364/health | jq .
 ```
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -229,6 +231,7 @@ curl http://127.0.0.1:12364/health | jq .
 ```
 
 ### `GET /prices`
+
 Aktuelle Kurse abrufen.
 
 ```bash
@@ -237,6 +240,7 @@ curl -X GET "http://127.0.0.1:12364/prices?symbols=AAPL,TSLA&market=stock" \
 ```
 
 ### `POST /portfolio`
+
 Portfolio-Position hinzufügen.
 
 ```bash
@@ -252,6 +256,7 @@ curl -X POST http://127.0.0.1:12364/portfolio \
 ```
 
 ### `GET /portfolio`
+
 Portfolio-Übersicht abrufen.
 
 ```bash
@@ -260,6 +265,7 @@ curl -X GET http://127.0.0.1:12364/portfolio \
 ```
 
 ### `POST /alerts`
+
 Kurs-Alarm erstellen.
 
 ```bash
@@ -276,6 +282,7 @@ curl -X POST http://127.0.0.1:12364/alerts \
 ```
 
 ### `GET /alerts`
+
 Aktive Alarme auflisten.
 
 ```bash
@@ -405,7 +412,7 @@ tail -f data/stockcrypto_history.jsonl | jq .
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 27. November 2025
 EXTREM WICHTIG — FILE-SCAN-PFLICHT FÜR DIESEN AGENT
 Bevor du irgendeine Datei erzeugst, MUSST du folgendes tun:
@@ -415,17 +422,17 @@ Scanne rekursiv das Verzeichnis dieses Agents:
 
 css
 ￼Code kopieren
-<AgentRoot>/   → z. B. 16.opena17_homepagecreator
-    main.py
-    routes.py
-    models.py
-    agent_logic.py
-    config.py
-    security.py
-    bin/
-    data/
-    templates/
-    tests/
+<AgentRoot>/ → z. B. 16.opena17_homepagecreator
+main.py
+routes.py
+models.py
+agent_logic.py
+config.py
+security.py
+bin/
+data/
+templates/
+tests/
 ✔ 2. Existierende Dateien feststellen
 Alle vorhandenen Dateien müssen analysiert werden:
 
@@ -468,9 +475,9 @@ Neue Dateien dürfen nur erstellt werden, wenn sie wirklich fehlen:
 sql
 ￼Code kopieren
 if file_exists:
-    patch
+patch
 else:
-    create new file
+create new file
 ✔ 5. PRIORITÄT: EXISTING > NEW
 Immer:
 

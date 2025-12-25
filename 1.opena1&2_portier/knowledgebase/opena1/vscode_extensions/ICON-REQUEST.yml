@@ -1,6 +1,6 @@
 name: Icon Request
 description: Request an Icon
-title: '[Icon Request]: '
+title: "[Icon Request]: "
 body:
   - type: checkboxes
     id: housekeeping
@@ -52,4 +52,4 @@ body:
   - type: textarea
     id: more-info
     attributes:
-      label: 'More Information:'
+      label: "More Information:"

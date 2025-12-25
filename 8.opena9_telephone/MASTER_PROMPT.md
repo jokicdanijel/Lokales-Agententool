@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena9 Telefonie
 
-**Agent-ID:** opena9  
-**Port:** 12354  
-**Status:** 🟡 Planned  
-**Kürzel:** `telphonep`  
+**Agent-ID:** opena9
+**Port:** 12354
+**Status:** 🟡 Planned
+**Kürzel:** `telphonep`
 **Domäne:** Telefonie, SIP/Twilio, Call-State-Machine
 
 ---
@@ -141,5 +141,5 @@ Kopiere diesen Prompt in:
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

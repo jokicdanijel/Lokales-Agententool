@@ -14,27 +14,24 @@ Usage:
   # → Listening on http://127.0.0.1:12344
 """
 
+import asyncio
 import os
 import sys
-import asyncio
-import uvicorn
-import json
 import uuid
 from datetime import datetime
-from typing import Dict, Any, Optional
 from pathlib import Path
+from typing import Any
+
+import uvicorn
 
 # Add parent to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import httpx
-from fastapi import FastAPI, Request, HTTPException, Depends
+from fastapi import Depends, FastAPI, HTTPException, Request
 from pydantic import BaseModel
-from src.portier_service_base import (
-    PortierServiceBase,
-    PortierServiceConfig,
-    PortPolicyMiddleware
-)
+
+from src.portier_service_base import PortierServiceBase, PortierServiceConfig, PortPolicyMiddleware
 
 # ─────────────────────────────────────────────────────────────────────────
 # BEARER TOKEN CONFIGURATION – PHASE 15.4 STRICT POLICY
@@ -44,7 +41,6 @@ VALID_BEARER_TOKENS = {
     # Core Services
     "opena1-coordinator": "sk_opena1_coord_12344_strict_v1",
     "opena2-archivator": "sk_opena2_arch_12345_strict_v1",
-
     # Agent Services (opena3-opena20)
     "opena3-webui": "sk_opena3_web_12347_strict_v1",
     "opena4-telegram": "sk_opena4_tele_12348_strict_v1",
@@ -64,12 +60,12 @@ VALID_BEARER_TOKENS = {
     "opena18-archive": "sk_opena18_arch_12363_strict_v1",
     "opena19-trading": "sk_opena19_trade_12364_strict_v1",
     "opena20-dashboard": "sk_opena20_dash_12365_strict_v1",
-
     # Testing
     "test-harness": "sk_test_harness_phase15_strict_v1",
 }
 
 TOKEN_TO_CLIENT = {v: k for k, v in VALID_BEARER_TOKENS.items()}
+
 
 async def verify_bearer_token(request: Request) -> str:
     """
@@ -81,36 +77,22 @@ async def verify_bearer_token(request: Request) -> str:
 
     if not auth_header:
         # Log security event
-        asyncio.create_task(
-            log_security_event("auth_missing", "No Authorization header")
-        )
-        raise HTTPException(
-            status_code=401,
-            detail="Missing Authorization header"
-        )
+        asyncio.create_task(log_security_event("auth_missing", "No Authorization header"))
+        raise HTTPException(status_code=401, detail="Missing Authorization header")
 
     if not auth_header.startswith("Bearer "):
-        asyncio.create_task(
-            log_security_event("auth_malformed", "Invalid Authorization format")
-        )
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid Authorization format (use: Bearer <token>)"
-        )
+        asyncio.create_task(log_security_event("auth_malformed", "Invalid Authorization format"))
+        raise HTTPException(status_code=401, detail="Invalid Authorization format (use: Bearer <token>)")
 
     token = auth_header[7:]  # Remove "Bearer " prefix
 
     if token not in TOKEN_TO_CLIENT:
-        asyncio.create_task(
-            log_security_event("auth_invalid", f"Invalid token: {token[:10]}...")
-        )
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid bearer token"
-        )
+        asyncio.create_task(log_security_event("auth_invalid", f"Invalid token: {token[:10]}..."))
+        raise HTTPException(status_code=401, detail="Invalid bearer token")
 
     client_id = TOKEN_TO_CLIENT[token]
     return client_id
+
 
 async def log_security_event(event_type: str, details: str) -> None:
     """Log security events (auth failures, etc.) to archiv"""
@@ -120,20 +102,13 @@ async def log_security_event(event_type: str, details: str) -> None:
             "src": "system",
             "dst": "opena1",
             "kind": "SECURITY_EVENT",
-            "payload": {
-                "event_type": event_type,
-                "details": details,
-                "timestamp": timestamp
-            }
+            "payload": {"event_type": event_type, "details": details, "timestamp": timestamp},
         }
         async with httpx.AsyncClient() as client:
-            await client.post(
-                "http://127.0.0.1:12344/log/opena1",
-                json=security_data,
-                timeout=2.0
-            )
+            await client.post("http://127.0.0.1:12344/log/opena1", json=security_data, timeout=2.0)
     except Exception as e:
         print(f"[opena1] Warning: Failed to log security event: {e}")
+
 
 # ─────────────────────────────────────────────────────────────────────────
 # CONFIGURATION
@@ -145,7 +120,7 @@ config = PortierServiceConfig(
     allowed_port_min=12344,
     allowed_port_max=12399,
     bind_addr=os.getenv("BIND_ADDR", "127.0.0.1"),
-    archiv_base=os.getenv("ARCHIV_BASE", "./archiv")
+    archiv_base=os.getenv("ARCHIV_BASE", "./archiv"),
 )
 
 # ─────────────────────────────────────────────────────────────────────────
@@ -155,7 +130,7 @@ config = PortierServiceConfig(
 app = FastAPI(
     title="opena1 – Portier Coordinator",
     description="Coordinator service for Portier agent orchestration",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 # Middleware for port-policy enforcement
@@ -176,7 +151,7 @@ LOG_FILE_OPENA1 = os.path.join(LOG_DIR, "opena1_safepoints.log")
 
 print(f"[opena1] Safepoint log directory: {LOG_DIR}")
 print(f"[opena1] Safepoint log file: {LOG_FILE_OPENA1}")
-print(f"[opena1] /log/opena1 endpoint available via PortierServiceBase")
+print("[opena1] /log/opena1 endpoint available via PortierServiceBase")
 
 
 # Setup endpoints
@@ -187,16 +162,11 @@ service_base.setup_safepoints(app, config.archiv_base)
 # ROOT ENDPOINT
 # ─────────────────────────────────────────────────────────────────────────
 
+
 @app.get("/")
 async def root():
     """Root endpoint"""
-    return {
-        "service": "opena1",
-        "status": "online",
-        "port": config.service_port,
-        "docs": "/docs"
-    }
-
+    return {"service": "opena1", "status": "online", "port": config.service_port, "docs": "/docs"}
 
 
 # ─────────────────────────────────────────────────────────────────────────
@@ -207,24 +177,27 @@ async def root():
 # Automatically creates safepoint logs for all requests
 # ─────────────────────────────────────────────────────────────────────────
 
+
 class RequestPayload(BaseModel):
     """Incoming request structure"""
+
     source: str  # "user", "agent", "system"
     user_query: str  # The actual question/command
-    context: Optional[Dict[str, Any]] = None  # Additional context
+    context: dict[str, Any] | None = None  # Additional context
+
 
 class ResponsePayload(BaseModel):
     """Response structure"""
+
     request_id: str
     status: str  # "success", "pending", "error"
     response: str
-    metadata: Dict[str, Any]
+    metadata: dict[str, Any]
+
 
 @app.post("/request")
 async def handle_request(
-    payload: RequestPayload,
-    request: Request,
-    client_id: str = Depends(verify_bearer_token)
+    payload: RequestPayload, request: Request, client_id: str = Depends(verify_bearer_token)
 ) -> ResponsePayload:
     """
     POST /request – Main Option-2-Flow entry point with STRICT POLICY
@@ -258,8 +231,8 @@ async def handle_request(
                         "query": payload.user_query,
                         "context": payload.context,
                         "timestamp": timestamp,
-                        "client_id": client_id
-                    }
+                        "client_id": client_id,
+                    },
                 }
                 # Fire and forget - don't wait
                 await asyncio.create_task(log_safepoint_async(cmd_data))
@@ -286,8 +259,8 @@ async def handle_request(
                         "status": "success",
                         "timestamp": timestamp,
                         "latency_ms": response_time_ms,
-                        "client_id": client_id
-                    }
+                        "client_id": client_id,
+                    },
                 }
                 # Fire and forget
                 await asyncio.create_task(log_safepoint_async(resp_data))
@@ -312,12 +285,13 @@ async def handle_request(
                 "latency_ms": response_time_ms,
                 "safepoint_logged": True,
                 "policy": "strict",
-                "auth_verified": True
-            }
+                "auth_verified": True,
+            },
         )
 
     except Exception as e:
         import traceback
+
         error_msg = str(e)
         print(f"[opena1] Error in /request: {error_msg}")
         traceback.print_exc()
@@ -329,11 +303,7 @@ async def handle_request(
                     "src": payload.source,
                     "dst": "opena1",
                     "kind": "ERROR",
-                    "payload": {
-                        "request_id": request_id,
-                        "error": error_msg,
-                        "timestamp": timestamp
-                    }
+                    "payload": {"request_id": request_id, "error": error_msg, "timestamp": timestamp},
                 }
                 await asyncio.create_task(log_safepoint_async(err_data))
             except:
@@ -345,19 +315,15 @@ async def handle_request(
             request_id=request_id,
             status="error",
             response=f"Error processing request: {error_msg}",
-            metadata={"source": "opena1", "timestamp": timestamp, "error": error_msg}
+            metadata={"source": "opena1", "timestamp": timestamp, "error": error_msg},
         )
 
 
-async def log_safepoint_async(safepoint_data: Dict[str, Any]) -> None:
+async def log_safepoint_async(safepoint_data: dict[str, Any]) -> None:
     """Helper function to log safepoint asynchronously"""
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.post(
-                "http://127.0.0.1:12344/log/opena1",
-                json=safepoint_data,
-                timeout=2.0
-            )
+            response = await client.post("http://127.0.0.1:12344/log/opena1", json=safepoint_data, timeout=2.0)
             if response.status_code == 200:
                 data = response.json()
                 request_id = safepoint_data.get("payload", {}).get("request_id", "?")
@@ -367,15 +333,17 @@ async def log_safepoint_async(safepoint_data: Dict[str, Any]) -> None:
     except Exception as e:
         print(f"[opena1] Safepoint logging error: {e}")
 
+
 @app.get("/request/status/{request_id}")
-async def get_request_status(request_id: str) -> Dict[str, Any]:
+async def get_request_status(request_id: str) -> dict[str, Any]:
     """GET /request/status/{request_id} – Check status of a request"""
     return {
         "request_id": request_id,
         "status": "pending",
         "timestamp": datetime.utcnow().isoformat() + "Z",
-        "message": "Status lookup (Phase 15.2)"
+        "message": "Status lookup (Phase 15.2)",
     }
+
 
 # ─────────────────────────────────────────────────────────────────────────
 # MAIN
@@ -384,7 +352,8 @@ async def get_request_status(request_id: str) -> Dict[str, Any]:
 if __name__ == "__main__":
     port = config.service_port
 
-    print(f"""
+    print(
+        f"""
     ╔════════════════════════════════════════════════════════════╗
     ║           opena1 – Portier Coordinator                    ║
     ╚════════════════════════════════════════════════════════════╝
@@ -395,12 +364,7 @@ if __name__ == "__main__":
     Health:    http://{config.bind_addr}:{port}/health
 
     Starting server...
-    """)
-
-    uvicorn.run(
-        "main:app",
-        host=config.bind_addr,
-        port=port,
-        reload=False,
-        log_level="info"
+    """
     )
+
+    uvicorn.run("main:app", host=config.bind_addr, port=port, reload=False, log_level="info")

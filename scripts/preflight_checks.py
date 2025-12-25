@@ -10,7 +10,7 @@ Checks implemented:
 
 Exit code: 0 = OK, 2 = fatal checks failed
 """
-import os
+
 import re
 import subprocess
 import sys
@@ -98,5 +98,5 @@ def main():
     print("✅ Preflight checks passed")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

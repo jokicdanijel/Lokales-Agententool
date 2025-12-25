@@ -9,6 +9,7 @@
 ## 📋 Deliverables Overview
 
 ### ✅ Phase 1: Core Infrastructure (20 Tasks)
+
 - **Orchestration Engine:** `bin/ops.sh` + 11 root-level wrappers
 - **VS Code Integration:** Launch configs + task runners
 - **Documentation:** Operations guide, quick-start, AI Copilot instructions (200+ lines)
@@ -17,6 +18,7 @@
 **Status:** All working ✅ | All executable ✅
 
 ### ✅ Phase 2: OpenWebUI Integration (20 Tasks)
+
 - **Adapter:** HTTP forwarding layer (Port 12350 → 8080)
 - **Agent:** opena3 FastAPI wrapper with `/health`, `/command`, `/invoke`
 - **Dashboard Endpoints:** `/api/openwebui/status` + `/api/openwebui/chat`
@@ -27,6 +29,7 @@
 **Status:** All working ✅ | All tested ✅ | Ready for deployment ✅
 
 ### ✅ Phase 3: AI Governance (1 Task)
+
 - **Copilot Instructions:** `.github/copilot-instructions.md` (200+ lines)
 - **Completion Checklist:** `.github/COMPLETION_CHECKLIST.md`
 - **Project Summary:** `PROJECT_COMPLETE.md` (this workspace)
@@ -66,6 +69,7 @@ bin/ops.sh stop
 ## 📦 What You Get
 
 ### Production-Ready Infrastructure
+
 ```
 ✅ Multi-service orchestration (ops.sh)
 ✅ Root-level wrapper pattern (call from anywhere)
@@ -79,21 +83,23 @@ bin/ops.sh stop
 
 ### 7 Fully Integrated Services
 
-| Service | Port | Status | Purpose |
-|---------|------|--------|---------|
-| Dashboard | 12349 | ✅ FastAPI | Central REST API |
-| opena1 | 12344 | ✅ FastAPI | AI Agent (GPT-4) |
-| opena2 | 12345 | ✅ FastAPI | File Archivator |
-| kordp | 12346 | ✅ FastAPI | Coordinator |
-| opena3 | 12347 | ✅ NEW FastAPI | OpenWebUI Wrapper |
-| Adapter | 12350 | ✅ NEW FastAPI | → OpenWebUI Bridge |
-| OpenWebUI | 8080 | ✅ Docker | Chat Interface |
+| Service   | Port  | Status         | Purpose            |
+| --------- | ----- | -------------- | ------------------ |
+| Dashboard | 12349 | ✅ FastAPI     | Central REST API   |
+| opena1    | 12344 | ✅ FastAPI     | AI Agent (GPT-4)   |
+| opena2    | 12345 | ✅ FastAPI     | File Archivator    |
+| kordp     | 12346 | ✅ FastAPI     | Coordinator        |
+| opena3    | 12347 | ✅ NEW FastAPI | OpenWebUI Wrapper  |
+| Adapter   | 12350 | ✅ NEW FastAPI | → OpenWebUI Bridge |
+| OpenWebUI | 8080  | ✅ Docker      | Chat Interface     |
 
 ### 29 Executable Scripts
+
 - **11 Root wrappers** (Gesamtprojekt/bin/)
 - **18 Dashboard scripts** (19.dashboard_agent/bin/)
 
 ### 7+ Documentation Files
+
 - Copilot Instructions (200+ lines)
 - Operations Guide
 - API Reference
@@ -103,6 +109,7 @@ bin/ops.sh stop
 - Completion Checklist
 
 ### 3 Test Suites
+
 - Archivator integration tests
 - OpenWebUI agent tests
 - Seed/validation scripts
@@ -112,25 +119,31 @@ bin/ops.sh stop
 ## 💡 Key Features
 
 ### 1. **Root-Level Wrapper Pattern**
+
 Call `bin/ops.sh` from **any directory** in the project. Works from:
+
 - Project root (`Gesamtprojekt/`)
 - Subdirectories (`19.dashboard_agent/`, `1.opena1&2_portier/`, etc.)
 - No path configuration needed
 
 ### 2. **OpenWebUI Chat Integration**
+
 - **UI Modal:** Built into Dashboard at `ui_index.html`
 - **JavaScript Integration:** Bearer token stored in localStorage
 - **API Endpoints:** `/api/openwebui/status` (health) + `/api/openwebui/chat` (prompt)
 - **Full Test Coverage:** Health checks, command endpoints, OpenWebUI availability
 
 ### 3. **Comprehensive Documentation**
+
 Every component documented:
+
 - **API Reference:** Endpoint specifications, error codes, examples
 - **Troubleshooting:** 8+ common scenarios with solutions
 - **Backlog:** 30+ items for future development
 - **AI Copilot Instructions:** 200+ line guide for AI agents
 
 ### 4. **Production-Ready Monitoring**
+
 ```bash
 bin/ops.sh status           # All agents status
 bin/ops.sh health           # Dashboard health
@@ -140,6 +153,7 @@ bin/log_tail.sh             # Follow logs (tail -f)
 ```
 
 ### 5. **Security**
+
 - Bearer token authentication (from `.env`)
 - Rate limiting on sensitive endpoints
 - Port policy middleware (validates inbound traffic)
@@ -149,18 +163,18 @@ bin/log_tail.sh             # Follow logs (tail -f)
 
 ## 📊 Project Metrics
 
-| Category | Value |
-|----------|-------|
-| **Total Tasks** | 41 ✅ |
-| **Files Created/Modified** | 60+ |
-| **Root Wrappers** | 11 |
-| **Dashboard Scripts** | 18 |
-| **OpenWebUI Files** | 2 (adapter + agent) |
-| **Documentation** | 7+ files |
-| **Test Suites** | 3 |
-| **Python Code** | ~3500 lines |
-| **Documentation** | ~2000 lines |
-| **Executable Scripts** | 29 |
+| Category                   | Value               |
+| -------------------------- | ------------------- |
+| **Total Tasks**            | 41 ✅               |
+| **Files Created/Modified** | 60+                 |
+| **Root Wrappers**          | 11                  |
+| **Dashboard Scripts**      | 18                  |
+| **OpenWebUI Files**        | 2 (adapter + agent) |
+| **Documentation**          | 7+ files            |
+| **Test Suites**            | 3                   |
+| **Python Code**            | ~3500 lines         |
+| **Documentation**          | ~2000 lines         |
+| **Executable Scripts**     | 29                  |
 
 ---
 
@@ -185,18 +199,21 @@ bin/log_tail.sh             # Follow logs (tail -f)
 ## 🎓 For Development Teams
 
 ### Getting Started
+
 1. **First Time:** `bin/env_bootstrap.sh` (generates `.env` token)
 2. **Daily:** `bin/ops.sh start` → work → `bin/ops.sh stop`
 3. **Debugging:** `bin/ops.sh logs` or `bin/log_tail.sh`
 4. **Testing:** `bin/ops.sh verify` (full integration test)
 
 ### Adding New Features
+
 - **New API Endpoint:** Edit `main_dashboard.py` (async/await pattern)
 - **New Agent:** Create `main_newagent.py`, update `bin/ops.sh`
 - **Store Data:** POST to `/store/archivp` (opena2)
 - **Read Data:** GET from `/archiv/last?n=N` (opena2)
 
 ### Testing New Code
+
 ```bash
 # Python unit tests
 cd 19.dashboard_agent
@@ -213,21 +230,22 @@ python scripts/test_openwebui.py
 
 ## 📚 Documentation Map
 
-| Need | File |
-|------|------|
+| Need                  | File                                             |
+| --------------------- | ------------------------------------------------ |
 | **Starting services** | `PROJECT_COMPLETE.md` or `README_STACK_START.md` |
-| **Daily operations** | `docs/OPERATIONS.md` |
-| **API usage** | `docs/OPENWEBUI_API.md` |
-| **Troubleshooting** | `docs/TROUBLESHOOTING.md` |
-| **Future work** | `docs/OPENWEBUI_TODO.md` |
-| **AI agent guidance** | `.github/copilot-instructions.md` |
-| **Project status** | `.github/COMPLETION_CHECKLIST.md` |
+| **Daily operations**  | `docs/OPERATIONS.md`                             |
+| **API usage**         | `docs/OPENWEBUI_API.md`                          |
+| **Troubleshooting**   | `docs/TROUBLESHOOTING.md`                        |
+| **Future work**       | `docs/OPENWEBUI_TODO.md`                         |
+| **AI agent guidance** | `.github/copilot-instructions.md`                |
+| **Project status**    | `.github/COMPLETION_CHECKLIST.md`                |
 
 ---
 
 ## 🚦 Current State
 
 ### What's Working ✅
+
 - Multi-service orchestration (7 services)
 - Root-level wrapper pattern
 - Bearer token authentication
@@ -239,7 +257,9 @@ python scripts/test_openwebui.py
 - All scripts executable
 
 ### What's Next 📋
+
 See `docs/OPENWEBUI_TODO.md` for 30+ backlog items:
+
 - Persistent chat history
 - Multi-turn conversations
 - E2E UI tests
@@ -274,6 +294,7 @@ See `docs/OPENWEBUI_TODO.md` for 30+ backlog items:
 **Last Updated:** 2025-11-06
 
 For questions, refer to:
+
 - **Quick answers:** `PROJECT_COMPLETE.md` (this file)
 - **Detailed help:** `.github/copilot-instructions.md` (200+ lines)
 - **Troubleshooting:** `docs/TROUBLESHOOTING.md` (8+ scenarios)

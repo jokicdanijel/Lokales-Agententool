@@ -18,14 +18,8 @@
     "auth_token_present": false
   },
   "summary": {
-    "gates_run": [
-      "security_gate",
-      "consistency_gate",
-      "frontend_gate"
-    ],
-    "blocking_failed": [
-      "frontend_gate"
-    ],
+    "gates_run": ["security_gate", "consistency_gate", "frontend_gate"],
+    "blocking_failed": ["frontend_gate"],
     "violations_total": 1,
     "warnings_total": 2,
     "errors_total": 0

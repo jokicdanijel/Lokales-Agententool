@@ -9,15 +9,15 @@
 
 ## 🎯 Service Overview
 
-| Eigenschaft | Wert |
-|-------------|------|
-| **Port** | 12349 |
-| **File** | `19.dashboard_agent/main_dashboard.py` (FastAPI) |
-| **Runtime** | Python 3.13 + FastAPI + Uvicorn |
-| **Status** | ⏳ READY FOR TESTING (Nov 9) |
-| **Python Fixes** | 3 Applied (security.py, sse_bus.py, main_dashboard.py) ✅ |
-| **Last Test** | Individual components Nov 8, 17:00 UTC |
-| **Full System Test** | Nov 9, 08:00 UTC (planned) |
+| Eigenschaft          | Wert                                                      |
+| -------------------- | --------------------------------------------------------- |
+| **Port**             | 12349                                                     |
+| **File**             | `19.dashboard_agent/main_dashboard.py` (FastAPI)          |
+| **Runtime**          | Python 3.13 + FastAPI + Uvicorn                           |
+| **Status**           | ⏳ READY FOR TESTING (Nov 9)                              |
+| **Python Fixes**     | 3 Applied (security.py, sse_bus.py, main_dashboard.py) ✅ |
+| **Last Test**        | Individual components Nov 8, 17:00 UTC                    |
+| **Full System Test** | Nov 9, 08:00 UTC (planned)                                |
 
 ---
 
@@ -30,6 +30,7 @@
 **Root Cause:** In Python, functions must be defined before they're called.
 
 **Solution Applied:**
+
 ```python
 # BEFORE (wrong order):
 def _ensure_token_file():
@@ -65,6 +66,7 @@ def generate_token():
 **Root Cause:** Async generators can't use `return <value>` syntax (only in Python 3.3+, but discouraged)
 
 **Solution Applied:**
+
 ```python
 # BEFORE (wrong):
 async def event_stream():
@@ -90,6 +92,7 @@ async def event_stream():
 ```
 
 **Changes Made:**
+
 - Added: `import contextlib`
 - Changed: Async generator pattern to `@contextlib.asynccontextmanager`
 - Removed: `return` statement with value
@@ -105,6 +108,7 @@ async def event_stream():
 **Root Cause:** AgentRegistry constructor doesn't accept `state_path` parameter
 
 **Solution Applied:**
+
 ```python
 # BEFORE (wrong):
 registry = AgentRegistry(state_path="/path/to/state.json")
@@ -116,6 +120,7 @@ registry = AgentRegistry()
 ```
 
 **Additional Context:**
+
 - AgentRegistry uses built-in default state file: `agent_registry.json`
 - State file auto-created in current directory on first use
 - No need to pass it explicitly
@@ -137,6 +142,7 @@ cat /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/.env | head -1
 ```
 
 **If .env missing:**
+
 ```bash
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 bash bin/env_bootstrap.sh > .env
@@ -166,6 +172,7 @@ curl -s http://127.0.0.1:12348/health | jq .status
 **Expected:** All return `"status": "healthy"`
 
 **If any missing:** Start them:
+
 ```bash
 cd 19.dashboard_agent
 bash bin/start_opena1.sh
@@ -180,6 +187,7 @@ bash bin/start_opena4_telegram.sh
 ### Step 3: Start opena19 (Dashboard)
 
 **Option A: Start in Background (Production)**
+
 ```bash
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent
 
@@ -194,6 +202,7 @@ nohup python3 main_dashboard.py > logs/opena19.nohup.log 2>&1 &
 ```
 
 **Option B: Start in Foreground (Debugging)**
+
 ```bash
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent
 
@@ -227,6 +236,7 @@ curl -s http://127.0.0.1:12349/health | jq .
 ```
 
 **If 500 error:** Check logs:
+
 ```bash
 tail -20 logs/opena19.nohup.log | grep -i error
 ```
@@ -256,6 +266,7 @@ grep -i "error\|traceback\|exception" logs/opena19.nohup.log
 **No Authentication Required**
 
 **Response (200 OK):**
+
 ```json
 {
   "status": "healthy",
@@ -266,6 +277,7 @@ grep -i "error\|traceback\|exception" logs/opena19.nohup.log
 ```
 
 **Response (500 Internal Error):**
+
 ```json
 {
   "detail": "Service error"
@@ -279,12 +291,14 @@ grep -i "error\|traceback\|exception" logs/opena19.nohup.log
 **Endpoint:** `POST /api/agent/register`
 
 **Headers:**
+
 ```
 Authorization: Bearer <token_from_.env>
 Content-Type: application/json
 ```
 
 **Request Payload:**
+
 ```json
 {
   "service": "opena_finance",
@@ -294,6 +308,7 @@ Content-Type: application/json
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "registered": true,
@@ -303,6 +318,7 @@ Content-Type: application/json
 ```
 
 **Example curl:**
+
 ```bash
 TOKEN=$(cat /Gesamtprojekt/.env | grep DASHBOARD_ADMIN_TOKEN | cut -d= -f2)
 
@@ -323,11 +339,13 @@ curl -X POST http://127.0.0.1:12349/api/agent/register \
 **Endpoint:** `GET /api/agent/status`
 
 **Headers:**
+
 ```
 Authorization: Bearer <token_from_.env>
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "agents": [
@@ -363,6 +381,7 @@ Authorization: Bearer <token_from_.env>
 ```
 
 **Example curl:**
+
 ```bash
 TOKEN=$(cat /Gesamtprojekt/.env | grep DASHBOARD_ADMIN_TOKEN | cut -d= -f2)
 
@@ -377,22 +396,24 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 **Endpoint:** `GET /api/dashboard`
 
 **Headers:**
+
 ```
 Authorization: Bearer <token_from_.env>
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "services": {
-    "opena1": {"status": "healthy"},
-    "opena2": {"status": "healthy"},
-    "opena_finance": {"status": "healthy"},
-    "opena4_telegram": {"status": "healthy"}
+    "opena1": { "status": "healthy" },
+    "opena2": { "status": "healthy" },
+    "opena_finance": { "status": "healthy" },
+    "opena4_telegram": { "status": "healthy" }
   },
   "finance": {
     "accounts": 2,
-    "total_balance": 6050.00,
+    "total_balance": 6050.0,
     "recent_transactions": 3
   },
   "telegram": {
@@ -414,12 +435,14 @@ Authorization: Bearer <token_from_.env>
 **Endpoint:** `GET /events`
 
 **Headers:**
+
 ```
 Authorization: Bearer <token_from_.env>
 Accept: text/event-stream
 ```
 
 **Response (Streaming):**
+
 ```
 event: agent_registered
 data: {"agent": "opena_finance", "timestamp": "2025-11-08T18:35:00Z"}
@@ -432,23 +455,24 @@ data: {"finance_balance": 6050.00, "timestamp": "2025-11-08T18:35:00Z"}
 ```
 
 **Example (Browser JavaScript):**
+
 ```javascript
 const token = "MEIN_SUPER_TOKEN_123";
 
-const eventSource = new EventSource('/events', {
-  headers: {'Authorization': 'Bearer ' + token}
+const eventSource = new EventSource("/events", {
+  headers: { Authorization: "Bearer " + token },
 });
 
-eventSource.addEventListener('agent_registered', (e) => {
-  console.log('Agent registered:', JSON.parse(e.data));
+eventSource.addEventListener("agent_registered", (e) => {
+  console.log("Agent registered:", JSON.parse(e.data));
 });
 
-eventSource.addEventListener('agent_unhealthy', (e) => {
-  console.log('Agent unhealthy:', JSON.parse(e.data));
+eventSource.addEventListener("agent_unhealthy", (e) => {
+  console.log("Agent unhealthy:", JSON.parse(e.data));
 });
 
-eventSource.addEventListener('error', (e) => {
-  console.error('Event stream error:', e);
+eventSource.addEventListener("error", (e) => {
+  console.error("Event stream error:", e);
   eventSource.close();
 });
 ```
@@ -482,6 +506,7 @@ eventSource.addEventListener('error', (e) => {
 **Location:** `19.dashboard_agent/agent_registry.json`
 
 **Format:**
+
 ```json
 {
   "agents": {
@@ -506,6 +531,7 @@ eventSource.addEventListener('error', (e) => {
 ```
 
 **View Registry:**
+
 ```bash
 cat 19.dashboard_agent/agent_registry.json | jq .
 ```
@@ -519,19 +545,20 @@ cat 19.dashboard_agent/agent_registry.json | jq .
 Server-Sent Events = One-way streaming from server to clients.
 
 **Used for:**
+
 - Real-time service status updates
 - Agent registration/unregistration events
 - Dashboard widget auto-refresh
 
 ### Events Emitted
 
-| Event | When | Data |
-|-------|------|------|
-| `agent_registered` | New agent registers | `{agent: "...", timestamp: "..."}` |
-| `agent_unregistered` | Agent unregisters | `{agent: "...", timestamp: "..."}` |
-| `agent_unhealthy` | Health check fails | `{agent: "...", reason: "..."}` |
-| `agent_recovered` | Service comes back | `{agent: "...", timestamp: "..."}` |
-| `dashboard_update` | Any state change | `{finance_balance: ..., ...}` |
+| Event                | When                | Data                               |
+| -------------------- | ------------------- | ---------------------------------- |
+| `agent_registered`   | New agent registers | `{agent: "...", timestamp: "..."}` |
+| `agent_unregistered` | Agent unregisters   | `{agent: "...", timestamp: "..."}` |
+| `agent_unhealthy`    | Health check fails  | `{agent: "...", reason: "..."}`    |
+| `agent_recovered`    | Service comes back  | `{agent: "...", timestamp: "..."}` |
+| `dashboard_update`   | Any state change    | `{finance_balance: ..., ...}`      |
 
 ---
 
@@ -542,6 +569,7 @@ Server-Sent Events = One-way streaming from server to clients.
 **Location:** `logs/opena19.nohup.log`
 
 **View Logs:**
+
 ```bash
 # Last 30 lines
 tail -30 logs/opena19.nohup.log
@@ -589,13 +617,13 @@ contextlib           # Context managers (used for SSE)
 
 ### External Services (Must be running)
 
-| Service | Port | For What |
-|---------|------|----------|
-| opena1 (Coordinator) | 12344 | Agent coordination (optional) |
-| opena2 (Archive) | 12345 | Event logging (optional) |
-| opena_finance | 12347 | Finance widget data (optional) |
-| opena4_telegram | 12348 | Telegram widget data (optional) |
-| kordp (Relay) | 12346 | Message routing (optional) |
+| Service              | Port  | For What                        |
+| -------------------- | ----- | ------------------------------- |
+| opena1 (Coordinator) | 12344 | Agent coordination (optional)   |
+| opena2 (Archive)     | 12345 | Event logging (optional)        |
+| opena_finance        | 12347 | Finance widget data (optional)  |
+| opena4_telegram      | 12348 | Telegram widget data (optional) |
+| kordp (Relay)        | 12346 | Message routing (optional)      |
 
 **All optional:** Dashboard works with or without them, but data won't populate.
 
@@ -688,6 +716,7 @@ contextlib           # Context managers (used for SSE)
 ### Problem: Port 12349 already in use
 
 **Solution:**
+
 ```bash
 lsof -i :12349
 kill -9 <PID>
@@ -699,6 +728,7 @@ bash bin/start_opena19.sh  # or manual nohup
 ### Problem: Python import errors in logs
 
 **Solution:**
+
 1. Check logs:
    ```bash
    grep "Traceback\|ImportError\|NameError" logs/opena19.nohup.log
@@ -715,6 +745,7 @@ bash bin/start_opena19.sh  # or manual nohup
 ### Problem: Health endpoint returns 500
 
 **Solution:**
+
 1. Check dependencies running:
    ```bash
    curl -s http://127.0.0.1:12344/health  # opena1
@@ -731,6 +762,7 @@ bash bin/start_opena19.sh  # or manual nohup
 ### Problem: Agent registration fails (401 Unauthorized)
 
 **Solution:**
+
 1. Check bearer token is correct:
    ```bash
    cat /Gesamtprojekt/.env | grep DASHBOARD_ADMIN_TOKEN

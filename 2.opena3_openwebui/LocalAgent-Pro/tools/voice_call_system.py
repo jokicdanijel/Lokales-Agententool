@@ -6,61 +6,58 @@ Production tool for voice-based communication
 
 import sys
 from pathlib import Path
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.speech_input import SpeechInput
 import json
 from datetime import datetime
-import subprocess
+
+from src.speech_input import SpeechInput
 
 
 class VoiceCallSystem:
     """Manage voice calls and contacts"""
-    
+
     def __init__(self, contacts_file="contacts.json", language="de-DE"):
         self.speech = SpeechInput(language=language)
         self.contacts_file = Path(contacts_file)
         self.load_contacts()
         self.call_history = []
-    
+
     def load_contacts(self):
         """Load contacts from file"""
         if self.contacts_file.exists():
-            with open(self.contacts_file, 'r', encoding='utf-8') as f:
+            with open(self.contacts_file, encoding="utf-8") as f:
                 self.contacts = json.load(f)
         else:
             self.contacts = {}
-    
+
     def save_contacts(self):
         """Save contacts to file"""
-        with open(self.contacts_file, 'w', encoding='utf-8') as f:
+        with open(self.contacts_file, "w", encoding="utf-8") as f:
             json.dump(self.contacts, f, ensure_ascii=False, indent=2)
-    
+
     def add_contact(self, name, phone, email=None):
         """Add new contact"""
-        self.contacts[name] = {
-            "phone": phone,
-            "email": email,
-            "added": datetime.now().isoformat()
-        }
+        self.contacts[name] = {"phone": phone, "email": email, "added": datetime.now().isoformat()}
         self.save_contacts()
         print(f"✅ Kontakt hinzugefügt: {name}")
-    
+
     def list_contacts(self):
         """List all contacts"""
         print("\n📞 Kontakte:")
         print("-" * 40)
-        
+
         if not self.contacts:
             print("Keine Kontakte vorhanden")
             return
-        
+
         for name, info in self.contacts.items():
             print(f"👤 {name}")
             print(f"   ☎️  {info['phone']}")
-            if info.get('email'):
+            if info.get("email"):
                 print(f"   📧 {info['email']}")
-    
+
     def dial_contact(self, name):
         """Initiate call to contact"""
         if name in self.contacts:
@@ -68,17 +65,14 @@ class VoiceCallSystem:
             print(f"\n📞 Rufe an: {name}")
             print(f"   Nummer: {contact['phone']}")
             print("   [Simulated call - would use VoIP integration]")
-            
-            self.call_history.append({
-                "contact": name,
-                "phone": contact['phone'],
-                "timestamp": datetime.now().isoformat(),
-                "duration": 0
-            })
+
+            self.call_history.append(
+                {"contact": name, "phone": contact["phone"], "timestamp": datetime.now().isoformat(), "duration": 0}
+            )
             print("✅ Anruf beendet")
         else:
             print(f"❌ Kontakt nicht gefunden: {name}")
-    
+
     def send_sms(self, name, message):
         """Send SMS to contact"""
         if name in self.contacts:
@@ -90,42 +84,42 @@ class VoiceCallSystem:
             print("✅ SMS gesendet")
         else:
             print(f"❌ Kontakt nicht gefunden: {name}")
-    
+
     def voice_dial(self):
         """Dial using voice command"""
         print("\n🎤 Sagen Sie den Namen des Kontakts:")
         name = self.speech.listen_once()
-        
+
         if name:
             # Find best match
             for contact_name in self.contacts.keys():
                 if name.lower() in contact_name.lower():
                     self.dial_contact(contact_name)
                     return
-            
+
             print(f"❌ Kontakt nicht gefunden: {name}")
         else:
             print("❌ Keine Sprache erkannt")
-    
+
     def view_call_history(self):
         """View call history"""
         print("\n📋 Anrufverlauf:")
         print("-" * 40)
-        
+
         if not self.call_history:
             print("Keine Anrufe vorhanden")
             return
-        
+
         for i, call in enumerate(self.call_history[-10:], 1):  # Last 10 calls
-            timestamp = datetime.fromisoformat(call['timestamp']).strftime('%Y-%m-%d %H:%M')
+            timestamp = datetime.fromisoformat(call["timestamp"]).strftime("%Y-%m-%d %H:%M")
             print(f"{i}. {call['contact']} - {timestamp}")
-    
+
     def run_interactive(self):
         """Run interactive voice call system"""
         print("\n" + "=" * 60)
         print("  📞 Voice Call System")
         print("=" * 60)
-        
+
         while True:
             print("\n📞 Menü:")
             print("  1. Kontakte anzeigen")
@@ -135,9 +129,9 @@ class VoiceCallSystem:
             print("  5. SMS senden")
             print("  6. Anrufverlauf")
             print("  0. Beenden")
-            
+
             choice = input("\nWahl: ").strip()
-            
+
             if choice == "1":
                 self.list_contacts()
             elif choice == "2":

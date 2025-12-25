@@ -11,7 +11,7 @@ pydantic==2.5.0
 # HTTP Client (für Agent-Calls)
 httpx==0.25.2
 
-# Environment & Configuration  
+# Environment & Configuration
 python-dotenv==1.0.0
 
 # Testing Framework
@@ -20,5 +20,5 @@ pytest-asyncio==0.21.1
 
 # Optional: Production Dependencies
 # redis==5.0.1          # Für Persistent Storage
-# celery==5.3.4         # Für Async Workflows  
+# celery==5.3.4         # Für Async Workflows
 # psycopg2-binary==2.9.9  # Für PostgreSQL Storage

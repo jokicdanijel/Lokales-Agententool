@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena7 E-Mail Client
 
-**Agent-ID:** opena7  
-**Port:** 12352  
-**Status:** 🟡 Planned  
-**Kürzel:** `emailp`  
+**Agent-ID:** opena7
+**Port:** 12352
+**Status:** 🟡 Planned
+**Kürzel:** `emailp`
 **Domäne:** E-Mail Client, IMAP/SMTP, Inbox-Monitoring
 
 ---
@@ -141,5 +141,5 @@ Kopiere diesen Prompt in:
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

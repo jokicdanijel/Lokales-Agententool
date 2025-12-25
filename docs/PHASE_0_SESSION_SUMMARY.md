@@ -11,13 +11,13 @@
 
 ### Objectives
 
-| Objective | Status | Outcome |
-|-----------|--------|---------|
-| Port-Policy Standardization Analysis | ✅ Complete | All 4 services verified compliant; patches doc created |
+| Objective                                 | Status      | Outcome                                                 |
+| ----------------------------------------- | ----------- | ------------------------------------------------------- |
+| Port-Policy Standardization Analysis      | ✅ Complete | All 4 services verified compliant; patches doc created  |
 | Schritt 1 Implementation (7.1 Validation) | ✅ Complete | schemas.py, koordinator.py, main_production.py deployed |
-| Schritt 1 Testing | ✅ Complete | Positive & negative tests PASSED |
-| Schritt 5 Specification | ✅ Complete | 380+ line comprehensive VS Code Bridge spec |
-| PROJECT_CHARTER | ✅ Complete | Governance framework, milestones, roles documented |
+| Schritt 1 Testing                         | ✅ Complete | Positive & negative tests PASSED                        |
+| Schritt 5 Specification                   | ✅ Complete | 380+ line comprehensive VS Code Bridge spec             |
+| PROJECT_CHARTER                           | ✅ Complete | Governance framework, milestones, roles documented      |
 
 ---
 
@@ -34,6 +34,7 @@ Total: +262 lines of production code
 ```
 
 **Key Components:**
+
 - ✅ Pydantic v2 Request71 model with strict mode
 - ✅ POST /log/opena1 endpoint with schema 8.3 error responses
 - ✅ FastAPI app with health endpoint & port-policy enforcement
@@ -49,6 +50,7 @@ Total: +700 lines of governance & specification docs
 ```
 
 **Key Sections:**
+
 - PROJECT_CHARTER: Ziele, Umfang, Rollen, Meilensteine, Risiken, Success-Kriterien
 - SCHRITT_05: Topologie, API-Endpoints, Workflow, Safepoint-Format, Error-Handling
 
@@ -59,6 +61,7 @@ Total: +700 lines of governance & specification docs
 ### Port-Policy Standardization
 
 ✅ **Finding:** All 4 core services already use `PortierServiceBase` with proper config
+
 - opena1 (Koordinator) @ 12344
 - kordp (Koordinator variant) @ 12346
 - opena2 (Archivator) @ 12348
@@ -71,17 +74,20 @@ Total: +700 lines of governance & specification docs
 ### Schritt 1 Implementation
 
 ✅ **Test Results:**
+
 - Health-check: ✅ PASSED (returns port_policy window [12344-12349], forbidden [8080])
 - Positive (strict=true): ✅ PASSED (HTTP 200, status "accepted")
 - Negative (missing strict): ✅ PASSED (HTTP 400, schema 8.3 code "STRICT_REQUIRED")
 
 ✅ **Validation Layers:**
+
 1. UUID4 validation on request_id
 2. ISO-8601 Z timestamp validation
 3. strict=True enforcement
 4. Extra-fields rejection (Pydantic `extra='forbid'`)
 
 ✅ **Error Handling:**
+
 - Schema 8.3 format compliant
 - Error codes: STRICT_REQUIRED, SCHEMA_VIOLATION, EXTRA_FIELDS_FORBIDDEN, INTERNAL_ERROR
 - Detailed validation_errors in response
@@ -89,11 +95,13 @@ Total: +700 lines of governance & specification docs
 ### Schritt 5 Specification
 
 ✅ **Topology Defined:**
+
 - Port 12348 binding (Loopback 127.0.0.1)
 - Connections: VS Code ↔ opena5 ↔ opena2
 - Safepoint naming: `SP<ts>_vscode→opena2_EDIT.json`
 
 ✅ **API Documented:**
+
 1. `GET /tasks/poll` – Retrieve pending edits
 2. `POST /tasks/apply` – Submit completed diffs
 3. `GET /tasks/status/<request_id>` – Query task status
@@ -111,33 +119,33 @@ Total: +700 lines of governance & specification docs
 
 ### Code Quality
 
-| Metric | Status | Evidence |
-|--------|--------|----------|
-| Type Hints | ✅ 100% | All functions annotated (Pydantic + FastAPI) |
+| Metric         | Status           | Evidence                                                |
+| -------------- | ---------------- | ------------------------------------------------------- |
+| Type Hints     | ✅ 100%          | All functions annotated (Pydantic + FastAPI)            |
 | Error Handling | ✅ Comprehensive | ValidationError, malformed input, server errors covered |
-| Port-Policy | ✅ Enforced | Port 8080 rejected with sys.exit(1) |
-| Logging | ✅ Present | Structured error responses, timestamped logs |
-| Async/Await | ✅ Correct | All I/O non-blocking, FastAPI async handlers |
+| Port-Policy    | ✅ Enforced      | Port 8080 rejected with sys.exit(1)                     |
+| Logging        | ✅ Present       | Structured error responses, timestamped logs            |
+| Async/Await    | ✅ Correct       | All I/O non-blocking, FastAPI async handlers            |
 
 ### Testing
 
-| Test Case | Status | Evidence |
-|-----------|--------|----------|
-| Health-Endpoint | ✅ PASSED | Returns service="opena1", status="ok", port_policy |
-| Positive Input | ✅ PASSED | strict=true → HTTP 200 "accepted" |
-| Negative Input | ✅ PASSED | missing strict → HTTP 400 schema 8.3 |
-| Schema Compliance | ✅ PASSED | All validators working (UUID4, ISO-8601 Z) |
-| Port-Policy | ✅ PASSED | Port 8080 enforcement working |
+| Test Case         | Status    | Evidence                                           |
+| ----------------- | --------- | -------------------------------------------------- |
+| Health-Endpoint   | ✅ PASSED | Returns service="opena1", status="ok", port_policy |
+| Positive Input    | ✅ PASSED | strict=true → HTTP 200 "accepted"                  |
+| Negative Input    | ✅ PASSED | missing strict → HTTP 400 schema 8.3               |
+| Schema Compliance | ✅ PASSED | All validators working (UUID4, ISO-8601 Z)         |
+| Port-Policy       | ✅ PASSED | Port 8080 enforcement working                      |
 
 ### Documentation
 
-| Document | Lines | Purpose | Status |
-|----------|-------|---------|--------|
-| PROJECT_CHARTER.md | 320+ | Governance, milestones, roles | ✅ Complete |
-| SCHRITT_05_OPENA5_VSCODE_BRIDGE.md | 380+ | VS Code Bridge specification | ✅ Complete |
-| PATCH_APPLICATION_REPORT.md | 300+ | Port-Policy compliance analysis | ✅ Complete |
-| PORT_POLICY_VERIFICATION_GUIDE.md | 180+ | Verification procedures | ✅ Complete |
-| PR_SUMMARY_PORT_POLICY.md | 250+ | Executive PR summary | ✅ Complete |
+| Document                           | Lines | Purpose                         | Status      |
+| ---------------------------------- | ----- | ------------------------------- | ----------- |
+| PROJECT_CHARTER.md                 | 320+  | Governance, milestones, roles   | ✅ Complete |
+| SCHRITT_05_OPENA5_VSCODE_BRIDGE.md | 380+  | VS Code Bridge specification    | ✅ Complete |
+| PATCH_APPLICATION_REPORT.md        | 300+  | Port-Policy compliance analysis | ✅ Complete |
+| PORT_POLICY_VERIFICATION_GUIDE.md  | 180+  | Verification procedures         | ✅ Complete |
+| PR_SUMMARY_PORT_POLICY.md          | 250+  | Executive PR summary            | ✅ Complete |
 
 ---
 
@@ -169,6 +177,7 @@ ae25bf8 – feat: add health_check.sh verification script + port-policy verifica
 ### Phase P0 (Production Hardening) – COMPLETE ✅
 
 All infrastructure documentation and governance frameworks established:
+
 - ✅ Port-Policy verified across all services
 - ✅ Governance rules documented
 - ✅ Large-file cleanup completed
@@ -186,7 +195,7 @@ All infrastructure documentation and governance frameworks established:
    - **Estimated:** 1–2 days
 
 2. **Schritt 3: Safepoint Format & Dedupe**
-   - Implement SP<ts>_src→dst_EVENT.json structure
+   - Implement SP<ts>\_src→dst_EVENT.json structure
    - Build SHA-256 dedupe engine
    - Create audit-index (append-only)
    - **Estimated:** 1–2 days
@@ -288,13 +297,13 @@ All infrastructure documentation and governance frameworks established:
 
 ## Sign-Off
 
-| Role | Status | Notes |
-|------|--------|-------|
-| Code Implementation | ✅ Complete | All 3 files production-ready, tests PASSED |
-| Documentation | ✅ Complete | 5 major docs, 700+ lines governance framework |
-| Testing | ✅ Complete | Positive/negative/health-check all PASSED |
-| Security Review | ⏳ Pending | Pre-commit will enforce on future PRs |
-| Release Readiness | ✅ Ready | Code tagged for Phase-0 completion |
+| Role                | Status      | Notes                                         |
+| ------------------- | ----------- | --------------------------------------------- |
+| Code Implementation | ✅ Complete | All 3 files production-ready, tests PASSED    |
+| Documentation       | ✅ Complete | 5 major docs, 700+ lines governance framework |
+| Testing             | ✅ Complete | Positive/negative/health-check all PASSED     |
+| Security Review     | ⏳ Pending  | Pre-commit will enforce on future PRs         |
+| Release Readiness   | ✅ Ready    | Code tagged for Phase-0 completion            |
 
 ---
 
@@ -356,6 +365,7 @@ git branch -a                       # All branches
 ## Session Artifacts
 
 **Created Files:**
+
 - `1.opena1&2_portier/schemas.py` – Pydantic v2 schemas
 - `1.opena1&2_portier/koordinator.py` – FastAPI router
 - `1.opena1&2_portier/main_production.py` – Application entry point
@@ -363,13 +373,16 @@ git branch -a                       # All branches
 - `docs/SCHRITT_05_OPENA5_VSCODE_BRIDGE.md` – VS Code Bridge spec
 
 **Modified Files:**
+
 - `.gitignore` – Expanded wildcard patterns (previous session)
 
 **Commits:**
+
 - 151c11c – Schritt 1 implementation
 - 18db861 – Documentation (Charter + Schritt 5)
 
 **GitHub:**
+
 - All commits pushed to origin/main
 - HEAD synchronized at 18db861
 

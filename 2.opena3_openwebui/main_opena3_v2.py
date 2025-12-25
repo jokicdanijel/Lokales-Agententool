@@ -16,15 +16,14 @@ Service Target: openwebui3
 Version: 2.0 (Production Upgrade)
 """
 
-import os
-import httpx
 import logging
-from datetime import datetime, timezone
-from typing import Dict, Any, Optional
+import os
+from datetime import UTC, datetime
+from typing import Any
 
+import httpx
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, ConfigDict
-
 
 # ============================================================================
 # CONFIG
@@ -37,8 +36,8 @@ PORT = 12347
 OPENWEBUI_URL = os.getenv("OPENWEBUI_URL", "http://127.0.0.1:3000")
 TIMEOUT = float(os.getenv("OPENWEBUI_TIMEOUT", "15.0"))
 
-OPENA2_URL = os.getenv("OPENA2_URL", "http://127.0.0.1:12345")     # Safepoint handler
-KORDP_URL = os.getenv("KORDP_URL", "http://127.0.0.1:12346")       # Dispatcher
+OPENA2_URL = os.getenv("OPENA2_URL", "http://127.0.0.1:12345")  # Safepoint handler
+KORDP_URL = os.getenv("KORDP_URL", "http://127.0.0.1:12346")  # Dispatcher
 DASHBOARD_URL = os.getenv("DASHBOARD_URL", "http://127.0.0.1:12349")
 
 BEARER_TOKEN = os.getenv("BEARER_TOKEN", "c899b90d-faf8-485b-afa4-078357cf5313")
@@ -47,10 +46,7 @@ BEARER_TOKEN = os.getenv("BEARER_TOKEN", "c899b90d-faf8-485b-afa4-078357cf5313")
 # ============================================================================
 # LOGGING
 # ============================================================================
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(AGENT_ID)
 
 
@@ -58,29 +54,32 @@ logger = logging.getLogger(AGENT_ID)
 # MODELS
 # ============================================================================
 
+
 class CMD(BaseModel):
     """Envelope vom Coordinator → opena3"""
+
     model_config = ConfigDict(extra="forbid")
     request_id: str
     timestamp: str
     source: str
     command: str
-    payload: Dict[str, Any]
+    payload: dict[str, Any]
 
 
 class RESP(BaseModel):
     """Envelope von opena3 → Archivator"""
+
     model_config = ConfigDict(extra="forbid")
     request_id: str
     timestamp: str
     agent: str
-    result: Dict[str, Any]
+    result: dict[str, Any]
 
 
 class ChatRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
     prompt: str
-    model: Optional[str] = None
+    model: str | None = None
     temperature: float = 0.7
     max_tokens: int = 800
 
@@ -88,9 +87,9 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     model_config = ConfigDict(extra="forbid")
     response: str
-    model: Optional[str]
+    model: str | None
     timestamp: str
-    usage: Dict[str, int]
+    usage: dict[str, int]
 
 
 class HealthResponse(BaseModel):
@@ -108,13 +107,14 @@ class HealthResponse(BaseModel):
 app = FastAPI(
     title="opena3 Terminal Agent – Portier 3.0 Upgrade",
     version="2.0",
-    description="OpenWebUI Integration mit Safepoints & Dispatcher Routing"
+    description="OpenWebUI Integration mit Safepoints & Dispatcher Routing",
 )
 
 
 # ============================================================================
 # HELPER
 # ============================================================================
+
 
 async def openwebui_health() -> bool:
     try:
@@ -125,22 +125,18 @@ async def openwebui_health() -> bool:
         return False
 
 
-async def call_openwebui(req: ChatRequest) -> Dict[str, Any]:
+async def call_openwebui(req: ChatRequest) -> dict[str, Any]:
     """OpenWebUI ansprechen"""
     try:
         payload = {
             "message": req.prompt,
             "model": req.model,
             "temperature": req.temperature,
-            "max_tokens": req.max_tokens
+            "max_tokens": req.max_tokens,
         }
 
         async with httpx.AsyncClient() as client:
-            resp = await client.post(
-                f"{OPENWEBUI_URL}/api/chat/completions",
-                json=payload,
-                timeout=TIMEOUT
-            )
+            resp = await client.post(f"{OPENWEBUI_URL}/api/chat/completions", json=payload, timeout=TIMEOUT)
 
         if resp.status_code != 200:
             raise HTTPException(502, f"OpenWebUI Error {resp.status_code}")
@@ -152,7 +148,7 @@ async def call_openwebui(req: ChatRequest) -> Dict[str, Any]:
         raise HTTPException(503, "OpenWebUI unreachable")
 
 
-async def safepoint(category: str, body: Dict[str, Any]):
+async def safepoint(category: str, body: dict[str, Any]):
     """Safepoint zu opena2 schreiben"""
     try:
         async with httpx.AsyncClient() as client:
@@ -160,7 +156,7 @@ async def safepoint(category: str, body: Dict[str, Any]):
                 f"{OPENA2_URL}/store/{category}",
                 json=body,
                 headers={"Authorization": f"Bearer {BEARER_TOKEN}"},
-                timeout=10.0
+                timeout=10.0,
             )
     except Exception as e:
         logger.error(f"Safepoint error: {e}")
@@ -170,13 +166,14 @@ async def safepoint(category: str, body: Dict[str, Any]):
 # ROUTES
 # ============================================================================
 
+
 @app.get("/health", response_model=HealthResponse)
 async def health():
     return HealthResponse(
         agent_id=AGENT_ID,
         status="ok",
         openwebui=await openwebui_health(),
-        timestamp=datetime.now(timezone.utc).isoformat()
+        timestamp=datetime.now(UTC).isoformat(),
     )
 
 
@@ -185,7 +182,6 @@ async def health():
 # ----------------------------------------------------------------------------
 @app.post("/chat", response_model=ChatResponse)
 async def chat(req: ChatRequest):
-
     if not await openwebui_health():
         raise HTTPException(503, "OpenWebUI offline")
 
@@ -194,8 +190,8 @@ async def chat(req: ChatRequest):
     return ChatResponse(
         response=data.get("message", ""),
         model=data.get("model"),
-        timestamp=datetime.now(timezone.utc).isoformat(),
-        usage=data.get("usage", {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0})
+        timestamp=datetime.now(UTC).isoformat(),
+        usage=data.get("usage", {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}),
     )
 
 
@@ -219,12 +215,7 @@ async def run_cmd(envelope: CMD):
 
     result = await call_openwebui(req)
 
-    resp = RESP(
-        request_id=envelope.request_id,
-        timestamp=datetime.now(timezone.utc).isoformat(),
-        agent=AGENT_ID,
-        result=result
-    )
+    resp = RESP(request_id=envelope.request_id, timestamp=datetime.now(UTC).isoformat(), agent=AGENT_ID, result=result)
 
     # Safepoint: RESP Ausgang
     await safepoint("RESP", resp.model_dump())
@@ -235,8 +226,8 @@ async def run_cmd(envelope: CMD):
 # ----------------------------------------------------------------------------
 # DISPATCH INTERFACE (kordp)
 # ----------------------------------------------------------------------------
-@app.post("/dispatch", response_model=Dict[str, Any])
-async def dispatch(payload: Dict[str, Any]):
+@app.post("/dispatch", response_model=dict[str, Any])
+async def dispatch(payload: dict[str, Any]):
     """
     dispatcher → opena3
     """
@@ -252,7 +243,7 @@ async def dispatch(payload: Dict[str, Any]):
         "service": AGENT_ID,
         "target": SERVICE_TARGET,
         "result": data,
-        "timestamp": datetime.now(timezone.utc).isoformat()
+        "timestamp": datetime.now(UTC).isoformat(),
     }
 
 

@@ -1,11 +1,10 @@
-import logging
-import os
-from pprint import pprint
-from typing import Optional
-import requests
-from open_webui.retrieval.web.main import SearchResult, get_filtered_results
-from open_webui.env import SRC_LOG_LEVELS
 import argparse
+import logging
+from pprint import pprint
+
+import requests
+from open_webui.env import SRC_LOG_LEVELS
+from open_webui.retrieval.web.main import SearchResult, get_filtered_results
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["RAG"])
@@ -20,7 +19,7 @@ def search_bing(
     locale: str,
     query: str,
     count: int,
-    filter_list: Optional[list[str]] = None,
+    filter_list: list[str] | None = None,
 ) -> list[SearchResult]:
     mkt = locale
     params = {"q": query, "mkt": mkt, "count": count}
@@ -54,12 +53,8 @@ def main():
         default="Top 10 international news today",
         help="The search query.",
     )
-    parser.add_argument(
-        "--count", type=int, default=10, help="Number of search results to return."
-    )
-    parser.add_argument(
-        "--filter", nargs="*", help="List of filters to apply to the search results."
-    )
+    parser.add_argument("--count", type=int, default=10, help="Number of search results to return.")
+    parser.add_argument("--filter", nargs="*", help="List of filters to apply to the search results.")
     parser.add_argument(
         "--locale",
         type=str,

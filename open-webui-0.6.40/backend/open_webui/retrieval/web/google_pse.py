@@ -1,9 +1,8 @@
 import logging
-from typing import Optional
 
 import requests
-from open_webui.retrieval.web.main import SearchResult, get_filtered_results
 from open_webui.env import SRC_LOG_LEVELS
+from open_webui.retrieval.web.main import SearchResult, get_filtered_results
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["RAG"])
@@ -14,8 +13,8 @@ def search_google_pse(
     search_engine_id: str,
     query: str,
     count: int,
-    filter_list: Optional[list[str]] = None,
-    referer: Optional[str] = None,
+    filter_list: list[str] | None = None,
+    referer: str | None = None,
 ) -> list[SearchResult]:
     """Search using Google's Programmable Search Engine API and return the results as a list of SearchResult objects.
     Handles pagination for counts greater than 10.
@@ -54,9 +53,7 @@ def search_google_pse(
         results = json_response.get("items", [])
         if results:  # check if results are returned. If not, no more pages to fetch.
             all_results.extend(results)
-            count -= len(
-                results
-            )  # Decrement count by the number of results fetched in this page.
+            count -= len(results)  # Decrement count by the number of results fetched in this page.
             start_index += 10  # Increment start index for the next page
         else:
             break  # No more results from Google PSE, break the loop

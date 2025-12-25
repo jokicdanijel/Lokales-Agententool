@@ -2,14 +2,10 @@
   "queue": [
     {
       "post_id": "post_1764244546719496",
-      "platforms": [
-        "linkedin"
-      ],
+      "platforms": ["linkedin"],
       "text": "Scheduled post test",
       "media_urls": [],
-      "hashtags": [
-        "scheduled"
-      ],
+      "hashtags": ["scheduled"],
       "status": "scheduled",
       "created_at": "2025-11-27T11:55:46.719543Z",
       "scheduled_at": "2025-11-27T12:55:46.717677Z",
@@ -19,15 +15,10 @@
     },
     {
       "post_id": "post_1764244659713120",
-      "platforms": [
-        "linkedin"
-      ],
+      "platforms": ["linkedin"],
       "text": "Test post from opena12 - Social Media Automation Agent",
       "media_urls": [],
-      "hashtags": [
-        "testing",
-        "automation"
-      ],
+      "hashtags": ["testing", "automation"],
       "status": "published",
       "created_at": "2025-11-27T11:57:39.713210Z",
       "scheduled_at": null,
@@ -39,17 +30,10 @@
     },
     {
       "post_id": "post_1764244660219822",
-      "platforms": [
-        "linkedin",
-        "x",
-        "facebook"
-      ],
+      "platforms": ["linkedin", "x", "facebook"],
       "text": "Multi-platform test post \ud83d\ude80",
       "media_urls": [],
-      "hashtags": [
-        "multiplatform",
-        "socialmedia"
-      ],
+      "hashtags": ["multiplatform", "socialmedia"],
       "status": "published",
       "created_at": "2025-11-27T11:57:40.219837Z",
       "scheduled_at": null,
@@ -63,14 +47,10 @@
     },
     {
       "post_id": "post_1764244660771517",
-      "platforms": [
-        "linkedin"
-      ],
+      "platforms": ["linkedin"],
       "text": "Scheduled post test",
       "media_urls": [],
-      "hashtags": [
-        "scheduled"
-      ],
+      "hashtags": ["scheduled"],
       "status": "scheduled",
       "created_at": "2025-11-27T11:57:40.771583Z",
       "scheduled_at": "2025-11-27T12:57:40.769764Z",
@@ -80,9 +60,7 @@
     },
     {
       "post_id": "post_1764244661276381",
-      "platforms": [
-        "x"
-      ],
+      "platforms": ["x"],
       "text": "Status check test post",
       "media_urls": [],
       "hashtags": [],
@@ -97,9 +75,7 @@
     },
     {
       "post_id": "post_1764244662794755",
-      "platforms": [
-        "x"
-      ],
+      "platforms": ["x"],
       "text": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
       "media_urls": [],
       "hashtags": [],
@@ -114,9 +90,7 @@
     },
     {
       "post_id": "post_1764244663298288",
-      "platforms": [
-        "linkedin"
-      ],
+      "platforms": ["linkedin"],
       "text": "Command endpoint test",
       "media_urls": [],
       "hashtags": [],

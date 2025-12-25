@@ -1,7 +1,7 @@
 # Schritt 5 – opena5 · VS Code Bridge
 
 **Erstellt am:** 2025-11-09 UTC
-**Verantwortlich:** *(Team/Person eintragen)*
+**Verantwortlich:** _(Team/Person eintragen)_
 **Version:** 1.0
 **Regeln:** Append-only · Dedupe (SHA-256/IDs) · keine Doppelblobs · Auditierbarkeit durchgängig
 
@@ -94,18 +94,18 @@ VS Code (local)
 
 Wenn über **UI (opena3)** oder **Bot (opena4)** eine Edit/DIFF-Aufgabe generiert wird:
 
-| Feld | Wert | Beschreibung |
-|------|------|-------------|
-| `event_type` | `EDIT_TASK` | Aufgabentyp |
-| `file_path` | `src/main.py` | Zieldatei im Workspace |
-| `diff_content` | `@@ -5,3 +5,5 @@ ...` | Unified Diff Format |
-| `diff_sha256` | `a1b2c3d4...` | SHA-256 Hash des Diffs (für Dedupe) |
-| `request_id` | UUID v4 | Eindeutige Anfrage-ID |
-| `timestamp` | ISO-8601 Z | Erstellungszeit |
-| `source` | `opena3` oder `opena4` | Ursprung |
-| `target_preference` | `opena5` (optional) | Bevorzugter Ziel-Agent |
-| `project` | `{"id": "proj-001", "name": "Gesamtprojekt"}` | Projekt-Metadaten |
-| `strict` | `true` | Compliance-Flag |
+| Feld                | Wert                                          | Beschreibung                        |
+| ------------------- | --------------------------------------------- | ----------------------------------- |
+| `event_type`        | `EDIT_TASK`                                   | Aufgabentyp                         |
+| `file_path`         | `src/main.py`                                 | Zieldatei im Workspace              |
+| `diff_content`      | `@@ -5,3 +5,5 @@ ...`                         | Unified Diff Format                 |
+| `diff_sha256`       | `a1b2c3d4...`                                 | SHA-256 Hash des Diffs (für Dedupe) |
+| `request_id`        | UUID v4                                       | Eindeutige Anfrage-ID               |
+| `timestamp`         | ISO-8601 Z                                    | Erstellungszeit                     |
+| `source`            | `opena3` oder `opena4`                        | Ursprung                            |
+| `target_preference` | `opena5` (optional)                           | Bevorzugter Ziel-Agent              |
+| `project`           | `{"id": "proj-001", "name": "Gesamtprojekt"}` | Projekt-Metadaten                   |
+| `strict`            | `true`                                        | Compliance-Flag                     |
 
 ### 2.2 Persistierung (Append-Only)
 
@@ -187,7 +187,7 @@ Content-Type: application/json
       "diff_sha256": "a1b2c3d4...",
       "timestamp": "2025-11-09T12:00:00Z",
       "source": "opena3",
-      "project": {"id": "proj-001", "name": "Gesamtprojekt"},
+      "project": { "id": "proj-001", "name": "Gesamtprojekt" },
       "strict": true
     }
   ],
@@ -275,8 +275,8 @@ Authorization: Bearer <token>
   "status": "applied",
   "file_path": "src/main.py",
   "events": [
-    {"ts": "2025-11-09T12:00:00Z", "event": "EDIT_TASK", "source": "opena3"},
-    {"ts": "2025-11-09T12:00:01Z", "event": "EDIT_APPLY", "source": "opena5"}
+    { "ts": "2025-11-09T12:00:00Z", "event": "EDIT_TASK", "source": "opena3" },
+    { "ts": "2025-11-09T12:00:01Z", "event": "EDIT_APPLY", "source": "opena5" }
   ]
 }
 ```
@@ -374,13 +374,13 @@ Host: 127.0.0.1:12348
 
 ## 6) Fehlerbehandlung & Recovery
 
-| Fehler | Code | HTTP | Behandlung |
-|--------|------|------|-----------|
-| Diff ungültig | `INVALID_DIFF` | 400 | Safepoint mit ERROR-Flag, Audit-Log |
-| Authentifizierung fehlgeschlagen | `UNAUTHORIZED` | 401 | Request ablehnen, Log |
-| Port-Policy verletzt | `PORT_POLICY_VIOLATION` | 403 | Server startet nicht |
-| Archiv unerreichbar | `ARCHIV_UNREACHABLE` | 503 | Health-Check FAILED, Retry-Logic |
-| Datei nicht gefunden | `FILE_NOT_FOUND` | 404 | Error-Safepoint, Audit |
+| Fehler                           | Code                    | HTTP | Behandlung                          |
+| -------------------------------- | ----------------------- | ---- | ----------------------------------- |
+| Diff ungültig                    | `INVALID_DIFF`          | 400  | Safepoint mit ERROR-Flag, Audit-Log |
+| Authentifizierung fehlgeschlagen | `UNAUTHORIZED`          | 401  | Request ablehnen, Log               |
+| Port-Policy verletzt             | `PORT_POLICY_VIOLATION` | 403  | Server startet nicht                |
+| Archiv unerreichbar              | `ARCHIV_UNREACHABLE`    | 503  | Health-Check FAILED, Retry-Logic    |
+| Datei nicht gefunden             | `FILE_NOT_FOUND`        | 404  | Error-Safepoint, Audit              |
 
 ---
 

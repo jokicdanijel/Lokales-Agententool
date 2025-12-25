@@ -64,13 +64,9 @@ class TestAuths(AbstractPostgresTest):
             )
         assert response.status_code == 200
 
-        old_auth = self.auths.authenticate_user(
-            "john.doe@openwebui.com", "old_password"
-        )
+        old_auth = self.auths.authenticate_user("john.doe@openwebui.com", "old_password")
         assert old_auth is None
-        new_auth = self.auths.authenticate_user(
-            "john.doe@openwebui.com", "new_password"
-        )
+        new_auth = self.auths.authenticate_user("john.doe@openwebui.com", "new_password")
         assert new_auth is not None
 
     def test_signin(self):

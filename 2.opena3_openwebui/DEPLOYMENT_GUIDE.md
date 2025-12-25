@@ -3,6 +3,7 @@
 ## Quick Start
 
 ### Prerequisites
+
 - Python 3.12+
 - Linux/macOS/Windows with bash
 - 8000 port available
@@ -23,6 +24,7 @@ open http://localhost:8000
 ```
 
 **Expected Output:**
+
 ```
 ======================================================================
 🤖 OpenA3 Web Dashboard - Production System
@@ -51,6 +53,7 @@ open http://localhost:8000
 ### Background Execution
 
 #### Option 1: nohup
+
 ```bash
 cd /path/to/LocalAgent-Pro && \
 nohup python3 web_dashboard.py > web_dashboard.log 2>&1 &
@@ -58,7 +61,9 @@ echo $! > web_dashboard.pid
 ```
 
 #### Option 2: systemd Service
+
 Create `/etc/systemd/system/opena3-dashboard.service`:
+
 ```ini
 [Unit]
 Description=OpenA3 Web Dashboard
@@ -79,6 +84,7 @@ WantedBy=multi-user.target
 ```
 
 Enable and start:
+
 ```bash
 sudo systemctl daemon-reload
 sudo systemctl enable opena3-dashboard
@@ -87,6 +93,7 @@ sudo systemctl status opena3-dashboard
 ```
 
 #### Option 3: Docker
+
 ```dockerfile
 FROM python:3.12-slim
 
@@ -99,12 +106,14 @@ CMD ["python3", "web_dashboard.py"]
 ```
 
 Build and run:
+
 ```bash
 docker build -t opena3-dashboard .
 docker run -d -p 8000:8000 --name opena3 opena3-dashboard
 ```
 
 #### Option 4: Screen Session
+
 ```bash
 screen -S opena3-dashboard -d -m bash -c \
   "cd /path/to/LocalAgent-Pro && python3 web_dashboard.py"
@@ -116,6 +125,7 @@ screen -r opena3-dashboard
 ```
 
 #### Option 5: tmux Session
+
 ```bash
 tmux new-session -d -s opena3 -x 200 -y 50 \
   -c /path/to/LocalAgent-Pro \
@@ -132,6 +142,7 @@ tmux attach-session -t opena3
 ## Monitoring & Management
 
 ### Check Server Status
+
 ```bash
 # HTTP status check
 curl -s http://localhost:8000/api/status | python3 -m json.tool
@@ -147,6 +158,7 @@ tail -f /path/to/LocalAgent-Pro/web_dashboard.log
 ```
 
 ### Stop Server
+
 ```bash
 # Graceful shutdown (running in foreground)
 Ctrl+C
@@ -168,6 +180,7 @@ docker stop opena3 && docker rm opena3
 ```
 
 ### Restart Server
+
 ```bash
 # Method 1: Kill and restart
 pkill -f "python3 web_dashboard" && \
@@ -186,16 +199,19 @@ docker restart opena3
 ## API Usage Examples
 
 ### 1. Check System Status
+
 ```bash
 curl -s http://localhost:8000/api/status | python3 -m json.tool
 ```
 
 ### 2. List Voice Programs
+
 ```bash
 curl -s http://localhost:8000/api/programs | python3 -m json.tool
 ```
 
 ### 3. Start Voice Program
+
 ```bash
 curl -X POST http://localhost:8000/api/program/start \
   -H "Content-Type: application/json" \
@@ -203,6 +219,7 @@ curl -X POST http://localhost:8000/api/program/start \
 ```
 
 ### 4. Execute Shell Command
+
 ```bash
 curl -X POST http://localhost:8000/api/shell/exec \
   -H "Content-Type: application/json" \
@@ -210,6 +227,7 @@ curl -X POST http://localhost:8000/api/shell/exec \
 ```
 
 ### 5. Read File
+
 ```bash
 curl -X POST http://localhost:8000/api/file/read \
   -H "Content-Type: application/json" \
@@ -218,6 +236,7 @@ curl -X POST http://localhost:8000/api/file/read \
 ```
 
 ### 6. Write File
+
 ```bash
 curl -X POST http://localhost:8000/api/file/write \
   -H "Content-Type: application/json" \
@@ -226,6 +245,7 @@ curl -X POST http://localhost:8000/api/file/write \
 ```
 
 ### 7. Delete File
+
 ```bash
 curl -X POST http://localhost:8000/api/file/delete \
   -H "Content-Type: application/json" \
@@ -238,13 +258,17 @@ curl -X POST http://localhost:8000/api/file/delete \
 ## Configuration
 
 ### Port Configuration
+
 Edit web_dashboard.py, line ~17:
+
 ```python
 PORT = 8000  # Change to desired port
 ```
 
 ### Command Whitelisting
+
 Edit web_dashboard.py, line ~1209:
+
 ```python
 allowed_commands = [
     "ls", "pwd", "echo", "cat", "grep", "find", "wc",
@@ -255,13 +279,17 @@ allowed_commands = [
 ```
 
 ### Timeout Configuration
+
 Edit web_dashboard.py, line ~1229:
+
 ```python
 timeout=10  # Change timeout in seconds
 ```
 
 ### Output Limiting
+
 Edit web_dashboard.py, line ~1234-1235:
+
 ```python
 "stdout": result.stdout[:5000],  # Change character limit
 "stderr": result.stderr[:5000],  # Change character limit
@@ -272,12 +300,14 @@ Edit web_dashboard.py, line ~1234-1235:
 ## Performance Tuning
 
 ### Increase File Size Limit
+
 ```python
 # In handle_file_read(), around line 1140:
 "content": content[:1000000],  # Increase from default
 ```
 
 ### Optimize for High Load
+
 ```bash
 # Increase file descriptors
 ulimit -n 65536
@@ -288,6 +318,7 @@ gunicorn -w 4 -b 0.0.0.0:8000 web_dashboard:app
 ```
 
 ### Add Reverse Proxy (nginx)
+
 ```nginx
 server {
     listen 80;
@@ -306,6 +337,7 @@ server {
 ## Security Hardening
 
 ### 1. Restrict Network Access
+
 ```bash
 # Only allow localhost
 sudo ufw allow from 127.0.0.1 to any port 8000
@@ -316,6 +348,7 @@ sudo iptables -A INPUT -p tcp --dport 8000 -j DROP
 ```
 
 ### 2. Run as Unprivileged User
+
 ```bash
 sudo useradd -r -s /bin/bash opena3
 sudo chown -R opena3:opena3 /opt/opena3
@@ -323,13 +356,16 @@ sudo -u opena3 python3 /opt/opena3/LocalAgent-Pro/web_dashboard.py
 ```
 
 ### 3. Enable HTTPS/TLS
+
 Create self-signed certificate:
+
 ```bash
 openssl req -x509 -newkey rsa:4096 -nodes \
   -out cert.pem -keyout key.pem -days 365
 ```
 
 Add to web_dashboard.py:
+
 ```python
 import ssl
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -338,6 +374,7 @@ httpd.socket = context.wrap_socket(httpd.socket, server_side=True)
 ```
 
 ### 4. Add Authentication
+
 ```python
 def check_auth(self):
     auth_header = self.headers.get('Authorization', '')
@@ -349,6 +386,7 @@ def check_auth(self):
 ```
 
 ### 5. Enable Request Logging
+
 ```python
 import logging
 logging.basicConfig(
@@ -363,6 +401,7 @@ logging.basicConfig(
 ## Troubleshooting
 
 ### Issue: Port 8000 Already in Use
+
 ```bash
 # Find what's using port 8000
 lsof -i :8000
@@ -376,6 +415,7 @@ sed -i 's/PORT = 8000/PORT = 8001/' web_dashboard.py
 ```
 
 ### Issue: ModuleNotFoundError
+
 ```bash
 # Check Python version
 python3 --version  # Should be 3.12+
@@ -386,6 +426,7 @@ which python3
 ```
 
 ### Issue: Files Not Found in API
+
 ```bash
 # Verify working directory
 pwd  # Should be in LocalAgent-Pro
@@ -401,6 +442,7 @@ curl -X POST http://localhost:8000/api/file/read \
 ```
 
 ### Issue: Permission Denied
+
 ```bash
 # Check file permissions
 ls -la web_dashboard.py
@@ -413,6 +455,7 @@ chmod 755 /path/to/LocalAgent-Pro
 ```
 
 ### Issue: Connection Refused
+
 ```bash
 # Server not running
 ps aux | grep web_dashboard
@@ -426,6 +469,7 @@ sudo systemctl status firewalld
 ```
 
 ### Issue: Slow Response Times
+
 ```bash
 # Check system resources
 top  # CPU and memory usage
@@ -445,6 +489,7 @@ ulimit -u 4096   # User processes
 ## Monitoring Dashboard
 
 ### Create Custom Monitoring Script
+
 ```bash
 #!/bin/bash
 # monitor_opena3.sh
@@ -481,6 +526,7 @@ done
 ```
 
 Run monitoring:
+
 ```bash
 chmod +x monitor_opena3.sh
 ./monitor_opena3.sh
@@ -491,6 +537,7 @@ chmod +x monitor_opena3.sh
 ## Backup & Recovery
 
 ### Backup Configuration
+
 ```bash
 # Backup entire directory
 tar -czf opena3_backup_$(date +%s).tar.gz /path/to/LocalAgent-Pro
@@ -501,6 +548,7 @@ cp -r tools/ tools.bak/
 ```
 
 ### Recover from Backup
+
 ```bash
 # Extract full backup
 tar -xzf opena3_backup_<timestamp>.tar.gz
@@ -511,6 +559,7 @@ cp -r tools.bak/ tools/
 ```
 
 ### Database Backup (if applicable)
+
 ```bash
 # SQLite backup
 cp projekte.db projekte.db.backup
@@ -524,6 +573,7 @@ cp projekte.db.backup projekte.db
 ## Logs & Debugging
 
 ### View Live Logs
+
 ```bash
 # Using tail
 tail -f /path/to/LocalAgent-Pro/web_dashboard.log
@@ -536,7 +586,9 @@ docker logs -f opena3
 ```
 
 ### Enable Debug Mode
+
 Add to web_dashboard.py:
+
 ```python
 DEBUG = True
 
@@ -548,6 +600,7 @@ def log_request(self):
 ```
 
 ### Log Rotation
+
 ```bash
 # Using logrotate
 echo "/path/to/LocalAgent-Pro/web_dashboard.log {
@@ -564,6 +617,7 @@ echo "/path/to/LocalAgent-Pro/web_dashboard.log {
 ## Upgrade & Maintenance
 
 ### Check for Updates
+
 ```bash
 cd /path/to/2.opena3_openwebui
 git status
@@ -571,6 +625,7 @@ git pull origin main
 ```
 
 ### Update Voice Programs
+
 ```bash
 # Backup current
 cp -r tools/ tools.backup/
@@ -584,6 +639,7 @@ wget -O tools/voice_assistant.py \
 ```
 
 ### Python Dependencies
+
 ```bash
 # Already using only stdlib - no dependency management needed
 # But if you add packages:
@@ -596,15 +652,17 @@ pip install -r requirements.txt
 ## Performance Benchmarks
 
 ### Response Time Summary
-| Operation | Typical Time | Max Time |
-|---|---|---|
-| GET / | 10-20ms | 50ms |
-| GET /api/status | 1-2ms | 5ms |
-| POST /api/file/read (1KB) | 5-10ms | 20ms |
-| POST /api/program/start | 50-100ms | 200ms |
-| POST /api/shell/exec (quick) | 10-50ms | 100ms |
+
+| Operation                    | Typical Time | Max Time |
+| ---------------------------- | ------------ | -------- |
+| GET /                        | 10-20ms      | 50ms     |
+| GET /api/status              | 1-2ms        | 5ms      |
+| POST /api/file/read (1KB)    | 5-10ms       | 20ms     |
+| POST /api/program/start      | 50-100ms     | 200ms    |
+| POST /api/shell/exec (quick) | 10-50ms      | 100ms    |
 
 ### System Load Baseline
+
 - **Memory:** ~50MB idle
 - **CPU:** <1% idle
 - **Disk:** <1MB
@@ -614,12 +672,14 @@ pip install -r requirements.txt
 ## Support & Resources
 
 ### Get Help
+
 1. **Logs:** Check `/path/to/LocalAgent-Pro/web_dashboard.log`
 2. **API Test:** Try `curl http://localhost:8000/api/status`
 3. **Browser Console:** Open DevTools (F12) → Console
 4. **Manual:** See SECURITY_AUDIT_REPORT.md and FUNCTIONAL_TEST_REPORT.md
 
 ### Documentation Files
+
 - `web_dashboard.py` - Main application
 - `SECURITY_AUDIT_REPORT.md` - Security analysis
 - `FUNCTIONAL_TEST_REPORT.md` - Test results
@@ -630,6 +690,7 @@ pip install -r requirements.txt
 ## Emergency Procedures
 
 ### Emergency Stop
+
 ```bash
 # Stop all processes
 pkill -9 python3
@@ -642,6 +703,7 @@ ps aux | grep python3
 ```
 
 ### Emergency Rollback
+
 ```bash
 # Restore previous version
 cd /path/to/2.opena3_openwebui
@@ -655,6 +717,7 @@ python3 LocalAgent-Pro/web_dashboard.py
 ```
 
 ### Emergency Port Recovery
+
 ```bash
 # If port 8000 stuck:
 sudo lsof -ti:8000 | xargs sudo kill -9
@@ -698,36 +761,31 @@ Der Browser Agent Tool Server ist ein schlanker HTTP-Service, der Funktionen (�
 ### Kernaufgaben
 
 1. **Tool-Endpunkte bereitstellen**
-
    - Der Server stellt HTTP-Endpunkte zur Verfügung (z. B. für Web-Requests, Dateizugriffe, interne Services).
    - Diese Endpunkte werden nicht direkt vom Menschen, sondern primär vom LLM (z. B. `gpt5nano` im Browser Agent) aufgerufen.
    - Der Server arbeitet zustandslos pro Request: jede Anfrage enthält alle benötigten Daten (JSON-Request → JSON-Response).
 
 2. **Manifest für LLM-Integration liefern**
-
    - Der Endpoint `/manifest` liefert eine JSON-Beschreibung der verfügbaren Tools.
    - Typische Inhalte des Manifests sind u. a.:
-
      - Name und Beschreibung der Tools
      - HTTP-Methode und Pfad
      - erwartete Input-Parameter (Schema)
      - erwartete Response-Struktur
      - Informationen zur Authentifizierung (z. B. Bearer Token)
+
    - Das Manifest wird von OpenWebUI / Browser Agent geladen, damit `gpt5nano` „weiß", welche Aktionen es über den Tool Server ausführen darf.
 
 3. **Gesundheits- und Statuschecks**
-
    - Der Endpoint `/health` beantwortet einfache Statusabfragen (z. B. `status`, `service`, `version`, `timestamp`).
    - Wird verwendet für:
-
      - lokale Funktionsprüfung per `curl`
      - Monitoring / Check-Probes (z. B. von Supervisor, Systemd, externem Monitoring)
 
 4. **Backend-Entkopplung vom Modell**
-
    - Der Tool Server selbst ist **modellagnostisch**:
-
      - Er „kennt" das Modell nicht, sondern verarbeitet nur HTTP-Requests.
+
    - Die Zuordnung zum Modell erfolgt in der LLM-Schicht (z. B. OpenWebUI-Konfiguration), wo explizit `gpt5nano` als Modell gesetzt ist.
    - Dadurch kannst du das Modell (z. B. von `gpt4.1` auf `gpt5nano`) wechseln, ohne den Tool Server umzubauen.
 
@@ -738,32 +796,27 @@ Der Browser Agent Tool Server ist ein schlanker HTTP-Service, der Funktionen (�
 ### High-Level Flow
 
 1. **Nutzer-Eingabe**
-
    - Der User schreibt eine Anfrage in OpenWebUI / Browser Agent.
 
 2. **LLM-Verarbeitung (gpt5nano)**
-
    - OpenWebUI ruft das Modell `gpt5nano` auf.
    - `gpt5nano` entscheidet anhand des Systemprompts und des Manifests, ob ein Tool-Aufruf nötig ist (z. B. HTTP-Request, Suche, Dateizugriff).
 
 3. **Tool-Aufruf über Tool Server (Port 8765)**
-
    - OpenWebUI / Browser Agent sendet einen HTTP-Request an den Browser Agent Tool Server, z. B.:
-
      - `GET http://<SERVER-IP>:8765/health`
      - `GET http://<SERVER-IP>:8765/manifest`
      - weitere Tool-Endpunkte (z. B. `POST /tool/...`) je nach Konfiguration.
 
 4. **Antwortfluss**
-
    - Der Tool Server verarbeitet die Anfrage und liefert eine JSON-Response.
    - `gpt5nano` erhält die Tool-Response, interpretiert sie und baut daraus die finale Antwort für den Benutzer.
 
 ### Wichtiger Punkt
 
-* Die „Intelligenz" (Planung, Entscheidung, Interpretation) liegt bei **`gpt5nano`**.
-* Die „Aktionen" (HTTP-Aufrufe, Daten holen, externe Systeme ansprechen) liegen beim **Browser Agent Tool Server**.
-* Die externe Zugänglichkeit (LAN, ngrok, SSH) erweitert nur den Netzwerkbereich, **nicht** die Logik des Servers.
+- Die „Intelligenz" (Planung, Entscheidung, Interpretation) liegt bei **`gpt5nano`**.
+- Die „Aktionen" (HTTP-Aufrufe, Daten holen, externe Systeme ansprechen) liegen beim **Browser Agent Tool Server**.
+- Die externe Zugänglichkeit (LAN, ngrok, SSH) erweitert nur den Netzwerkbereich, **nicht** die Logik des Servers.
 
 ---
 
@@ -773,27 +826,27 @@ Der Browser Agent Tool Server ist ein schlanker HTTP-Service, der Funktionen (�
 
 Bevor du startest, stelle sicher dass folgende Punkte erfüllt sind:
 
-| # | Voraussetzung                     | Status | Befehl                         |
-| - | --------------------------------- | ------ | ------------------------------ |
-| 1 | Server läuft auf Port 8765        | ✅      | `ps aux \| grep tool_server`   |
-| 2 | 0.0.0.0 Binding aktiv             | ✅      | `ss -tlnp \| grep 8765`        |
-| 3 | Firewall/Router erlaubt Port 8765 | ✅      | `sudo ufw status \| grep 8765` |
-| 4 | CLI/Terminal Zugriff              | ✅      | Bash, Zsh, PowerShell, WSL     |
-| 5 | Bearer Token gesetzt              | ✅      | `echo $BEARER_TOKEN`           |
+| #   | Voraussetzung                     | Status | Befehl                         |
+| --- | --------------------------------- | ------ | ------------------------------ |
+| 1   | Server läuft auf Port 8765        | ✅     | `ps aux \| grep tool_server`   |
+| 2   | 0.0.0.0 Binding aktiv             | ✅     | `ss -tlnp \| grep 8765`        |
+| 3   | Firewall/Router erlaubt Port 8765 | ✅     | `sudo ufw status \| grep 8765` |
+| 4   | CLI/Terminal Zugriff              | ✅     | Bash, Zsh, PowerShell, WSL     |
+| 5   | Bearer Token gesetzt              | ✅     | `echo $BEARER_TOKEN`           |
 
 ### Optional (2 Punkte)
 
-| # | Option                | Nutzen             | Quelle                                 |
-| - | --------------------- | ------------------ | -------------------------------------- |
-| 6 | ngrok Account & Token | Internet-Zugriff   | [https://ngrok.com](https://ngrok.com) |
-| 7 | SSH Remote Zugriff    | Sicheres Tunneling | SSH-Schlüssel                          |
+| #   | Option                | Nutzen             | Quelle                                 |
+| --- | --------------------- | ------------------ | -------------------------------------- |
+| 6   | ngrok Account & Token | Internet-Zugriff   | [https://ngrok.com](https://ngrok.com) |
+| 7   | SSH Remote Zugriff    | Sicheres Tunneling | SSH-Schlüssel                          |
 
 ### Spezifisch für LLM / Browser Agent
 
-| # | Voraussetzung                          | Status | Hinweis                                                          |
-| - | -------------------------------------- | ------ | ---------------------------------------------------------------- |
-| 8 | OpenWebUI / Browser Agent konfiguriert | ✅      | Instanz läuft und kann HTTP-Tools nutzen                         |
-| 9 | LLM-Modell `gpt5nano` aktiv            | ✅      | In der OpenWebUI-/Agent-Konfiguration als Standardmodell gesetzt |
+| #   | Voraussetzung                          | Status | Hinweis                                                          |
+| --- | -------------------------------------- | ------ | ---------------------------------------------------------------- |
+| 8   | OpenWebUI / Browser Agent konfiguriert | ✅     | Instanz läuft und kann HTTP-Tools nutzen                         |
+| 9   | LLM-Modell `gpt5nano` aktiv            | ✅     | In der OpenWebUI-/Agent-Konfiguration als Standardmodell gesetzt |
 
 ---
 
@@ -1015,7 +1068,6 @@ http://192.168.0.70:8765
 2. **Port Forwarding suchen** (Settings → Advanced → Port Forwarding)
 
 3. **Eintrag erstellen:**
-
    - External Port: `8765`
    - Internal IP: `192.168.0.70`
    - Internal Port: `8765`
@@ -1035,9 +1087,9 @@ curl https://YOUR_PUBLIC_IP:8765/health
 
 ⚠️ **Sicherheit beachten:**
 
-* Port-Forwarding nur für vertrauenswürdige Services
-* Immer Bearer Token verwenden
-* Idealerweise: ngrok oder SSH verwenden (sicherer)
+- Port-Forwarding nur für vertrauenswürdige Services
+- Immer Bearer Token verwenden
+- Idealerweise: ngrok oder SSH verwenden (sicherer)
 
 ---
 
@@ -1077,11 +1129,9 @@ choco install ngrok
 #### Authentifizierung
 
 1. **Kostenlos Account erstellen:**
-
    - [https://dashboard.ngrok.com/signup](https://dashboard.ngrok.com/signup)
 
 2. **Auth Token abrufen:**
-
    - [https://dashboard.ngrok.com/auth/your-authtoken](https://dashboard.ngrok.com/auth/your-authtoken)
 
 3. **Token konfigurieren:**
@@ -1145,10 +1195,10 @@ http://127.0.0.1:4040
 
 Hier siehst du:
 
-* Alle eingehenden Requests
-* Response Status Codes
-* Headers & Body
-* Replay Möglichkeiten
+- Alle eingehenden Requests
+- Response Status Codes
+- Headers & Body
+- Replay Möglichkeiten
 
 #### Multi-Port Setup
 
@@ -1172,8 +1222,8 @@ ngrok http 12350
 
 **Problem: URL ändert sich bei jedem Neustart**
 
-* Lösung: ngrok Pro Account ($5/Monat) für reserved domains
-* Oder: Immer neue URL kommunizieren
+- Lösung: ngrok Pro Account ($5/Monat) für reserved domains
+- Oder: Immer neue URL kommunizieren
 
 **Rate Limiting:**
 
@@ -1311,9 +1361,9 @@ curl -H "Authorization: Bearer sk_opena6_browser_v3_production" \
 
 **2. HTTPS erzwingen:**
 
-* ngrok: Automatisch HTTPS
-* SSH: Verschlüsselt
-* Firewall: Nur HTTPS bei externem Zugriff
+- ngrok: Automatisch HTTPS
+- SSH: Verschlüsselt
+- Firewall: Nur HTTPS bei externem Zugriff
 
 **3. IP Whitelist (optional):**
 
@@ -1460,17 +1510,17 @@ time curl https://your-tunnel.ngrok.io/health | wc -c
 
 ## 📊 Vergleich der Methoden
 
-| Feature               | LAN (Firewall)  | ngrok         | SSH              |
-| --------------------- | --------------- | ------------- | ---------------- |
-| **Einrichtung**       | ⚡ 5 Min         | ⚡ 10 Min      | ⚡⚡ 15 Min        |
-| **Sicherheit**        | ⚠️ Grundlegend  | ✅ HTTPS       | ✅✅ Encrypted     |
-| **Kostenlos**         | ✅               | ✅ (Free Tier) | ✅                |
-| **Latenz**            | 🟢 <5ms         | 🟡 ~50ms      | 🟢 ~20ms         |
-| **Internet-Zugriff**  | ❌ (nur LAN)     | ✅ Weltweit    | ✅ Remote Host    |
+| Feature               | LAN (Firewall)   | ngrok          | SSH              |
+| --------------------- | ---------------- | -------------- | ---------------- |
+| **Einrichtung**       | ⚡ 5 Min         | ⚡ 10 Min      | ⚡⚡ 15 Min      |
+| **Sicherheit**        | ⚠️ Grundlegend   | ✅ HTTPS       | ✅✅ Encrypted   |
+| **Kostenlos**         | ✅               | ✅ (Free Tier) | ✅               |
+| **Latenz**            | 🟢 <5ms          | 🟡 ~50ms       | 🟢 ~20ms         |
+| **Internet-Zugriff**  | ❌ (nur LAN)     | ✅ Weltweit    | ✅ Remote Host   |
 | **Persistenz**        | ✅ Solange läuft | ✅ Pro Abo     | ⚠️ Kann Abreißen |
-| **Setup-Komplexität** | 🟢 Einfach      | 🟡 Mittel     | 🟡 Mittel        |
-| **Performance**       | 🟢 Maximal      | 🟡 Gut        | 🟢 Gut           |
-| **Mobile Tests**      | ✅               | ✅             | ✅ (mit Remote)   |
+| **Setup-Komplexität** | 🟢 Einfach       | 🟡 Mittel      | 🟡 Mittel        |
+| **Performance**       | 🟢 Maximal       | 🟡 Gut         | 🟢 Gut           |
+| **Mobile Tests**      | ✅               | ✅             | ✅ (mit Remote)  |
 
 ---
 
@@ -1509,11 +1559,11 @@ ssh -R 8765:localhost:8765 user@example.com -N
 
 ## 📚 Weitere Ressourcen
 
-* [ngrok Dokumentation](https://ngrok.com/docs)
-* [SSH Port Forwarding](https://www.ssh.com/ssh/tunneling/)
-* [Linux Firewall Basics](https://wiki.ubuntu.com/UncomplicatedFirewall)
-* [OpenWebUI Integration](./README_OPENWEBUI.md)
-* [Tool Server Dokumentation](./tool_server.py)
+- [ngrok Dokumentation](https://ngrok.com/docs)
+- [SSH Port Forwarding](https://www.ssh.com/ssh/tunneling/)
+- [Linux Firewall Basics](https://wiki.ubuntu.com/UncomplicatedFirewall)
+- [OpenWebUI Integration](./README_OPENWEBUI.md)
+- [Tool Server Dokumentation](./tool_server.py)
 
 ---
 

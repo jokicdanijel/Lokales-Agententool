@@ -1,4 +1,5 @@
 # 🚀 PORTIER 3.0 - Operations Runbook
+
 **Enterprise Multi-Agent Intelligence Platform**
 
 Version: 3.0.0
@@ -81,16 +82,16 @@ bin/ops.sh status
 
 ### Port Mapping (Enterprise)
 
-| Service | Port | Protocol | Status | Owner |
-|---------|------|----------|--------|-------|
-| opena1 (Koordinator) | 12345 | HTTP | ✅ Live | Core |
-| opena2 (Archivator) | 12346 | HTTP | ✅ Live | Core |
-| opena3 (Gateway) | 12347 | HTTP | ✅ Live | Core |
-| opena20 (Dashboard) | 12349 | HTTP | ✅ Live | Monitor |
-| OpenWebUI | 3000 | HTTP | 🔄 Optional | UI |
-| Ollama | 11434 | HTTP | 🔄 Optional | LLM |
-| Prometheus | 9090 | HTTP | ⏳ Phase 17 | Monitor |
-| Grafana | 3001 | HTTP | ⏳ Phase 17 | Monitor |
+| Service              | Port  | Protocol | Status      | Owner   |
+| -------------------- | ----- | -------- | ----------- | ------- |
+| opena1 (Koordinator) | 12345 | HTTP     | ✅ Live     | Core    |
+| opena2 (Archivator)  | 12346 | HTTP     | ✅ Live     | Core    |
+| opena3 (Gateway)     | 12347 | HTTP     | ✅ Live     | Core    |
+| opena20 (Dashboard)  | 12349 | HTTP     | ✅ Live     | Monitor |
+| OpenWebUI            | 3000  | HTTP     | 🔄 Optional | UI      |
+| Ollama               | 11434 | HTTP     | 🔄 Optional | LLM     |
+| Prometheus           | 9090  | HTTP     | ⏳ Phase 17 | Monitor |
+| Grafana              | 3001  | HTTP     | ⏳ Phase 17 | Monitor |
 
 ---
 

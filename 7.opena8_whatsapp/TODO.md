@@ -1,7 +1,7 @@
 # TODO – opena8 WhatsApp Agent
 
-**Port:** 12353  
-**Status:** 🟡 Planned  
+**Port:** 12353
+**Status:** 🟡 Planned
 **Kürzel:** `whatsappp`
 
 ---
@@ -96,5 +96,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

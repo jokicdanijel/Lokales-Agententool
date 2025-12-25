@@ -16,6 +16,7 @@
 - **SafepointManager Integration**: Seamless lifecycle management with dedupe
 
 **Why Schritt 3?** Schritt 2 established the **Tool-Registry & Routing**. Schritt 3 adds **Data Integrity** at the archival layer, ensuring:
+
 - No duplicate processing (via hash matching)
 - Immutable chain of custody (HEADS chain)
 - Verifiable integrity (checkpoints)
@@ -48,6 +49,7 @@
 ### 2.2 Data Model
 
 #### DedupeRecord
+
 ```python
 @dataclass
 class DedupeRecord:
@@ -60,6 +62,7 @@ class DedupeRecord:
 ```
 
 #### IntegrityCheckpoint
+
 ```python
 @dataclass
 class IntegrityCheckpoint:
@@ -108,6 +111,7 @@ def compute_hash(content: dict) -> str:
 ```
 
 **Why deterministic JSON?**
+
 - Same content always → same hash (order-independent)
 - Detects duplicates reliably
 - Suitable for chain-of-custody
@@ -221,22 +225,22 @@ manager.get_status() → {
 
 ### DedupeEngine
 
-| Method | Signature | Returns | Purpose |
-|--------|-----------|---------|---------|
-| `compute_hash` | `(content: dict) → str` | SHA-256 hex | Hash safepoint content |
-| `register_safepoint` | `(sp_path, content, source) → Dict` | `{is_duplicate, hash, record}` | Check/record dedupe |
-| `append_head` | `(hash: str, meta: Optional[dict]) → None` | - | Add to HEADS chain |
-| `create_checkpoint` | `(window_label: str) → Optional[Dict]` | Checkpoint dict | Create integrity snapshot |
-| `verify_integrity` | `() → Dict` | `{is_valid, errors, warnings}` | Validate chains |
-| `get_dedupe_stats` | `() → Dict` | Stats dict | Get dedupe metrics |
+| Method               | Signature                                  | Returns                        | Purpose                   |
+| -------------------- | ------------------------------------------ | ------------------------------ | ------------------------- |
+| `compute_hash`       | `(content: dict) → str`                    | SHA-256 hex                    | Hash safepoint content    |
+| `register_safepoint` | `(sp_path, content, source) → Dict`        | `{is_duplicate, hash, record}` | Check/record dedupe       |
+| `append_head`        | `(hash: str, meta: Optional[dict]) → None` | -                              | Add to HEADS chain        |
+| `create_checkpoint`  | `(window_label: str) → Optional[Dict]`     | Checkpoint dict                | Create integrity snapshot |
+| `verify_integrity`   | `() → Dict`                                | `{is_valid, errors, warnings}` | Validate chains           |
+| `get_dedupe_stats`   | `() → Dict`                                | Stats dict                     | Get dedupe metrics        |
 
 ### SafepointManager
 
-| Method | Signature | Returns | Purpose |
-|--------|-----------|---------|---------|
+| Method            | Signature                           | Returns                         | Purpose        |
+| ----------------- | ----------------------------------- | ------------------------------- | -------------- |
 | `write_safepoint` | `(sp_path, content, source) → Dict` | `{success, hash, is_duplicate}` | Write + dedupe |
-| `read_safepoint` | `(sp_path: str) → Optional[dict]` | Safepoint dict | Read from disk |
-| `get_status` | `() → Dict` | Full status | Health check |
+| `read_safepoint`  | `(sp_path: str) → Optional[dict]`   | Safepoint dict                  | Read from disk |
+| `get_status`      | `() → Dict`                         | Full status                     | Health check   |
 
 ---
 
@@ -334,6 +338,7 @@ SafepointManager (Schritt 3)
 ```
 
 **Shared Context:**
+
 - `tool_dispatcher.py` calls `manager.write_safepoint()` after execution
 - `registry.py` can query `manager.get_status()` for health checks
 - Dedupe stats inform task retry logic (if duplicate detected)
@@ -342,16 +347,17 @@ SafepointManager (Schritt 3)
 
 ## 8. Performance Considerations
 
-| Operation | Time Complexity | Notes |
-|-----------|-----------------|-------|
-| `compute_hash` | O(n) | n = JSON size |
-| `register_safepoint` | O(1) | Hash table lookup |
-| `append_head` | O(1) | List append (except JSON save) |
-| `create_checkpoint` | O(m) | m = current HEADS length |
-| `verify_integrity` | O(n + m) | n = HEADS, m = checkpoints |
-| `get_dedupe_stats` | O(k) | k = unique contents |
+| Operation            | Time Complexity | Notes                          |
+| -------------------- | --------------- | ------------------------------ |
+| `compute_hash`       | O(n)            | n = JSON size                  |
+| `register_safepoint` | O(1)            | Hash table lookup              |
+| `append_head`        | O(1)            | List append (except JSON save) |
+| `create_checkpoint`  | O(m)            | m = current HEADS length       |
+| `verify_integrity`   | O(n + m)        | n = HEADS, m = checkpoints     |
+| `get_dedupe_stats`   | O(k)            | k = unique contents            |
 
 **Optimization Notes:**
+
 - Dedupe cache is in-memory (no disk I/O until save)
 - HEADS/INTEGRITY only saved on append/checkpoint (batching possible)
 - Consider Redis for distributed dedupe (future)
@@ -360,12 +366,12 @@ SafepointManager (Schritt 3)
 
 ## 9. Error Handling
 
-| Scenario | Behavior | Recovery |
-|----------|----------|----------|
-| HEADS.json corrupted | Log error, start fresh | Dedupe cache reset |
-| INTEGRITY chain broken | `verify_integrity()` returns errors | Manual audit/repair needed |
-| Disk full on write | Exception caught, safepoint not written | Retry or fail gracefully |
-| Concurrent writes | File locks (OS-level) | Serialize writes via queue |
+| Scenario               | Behavior                                | Recovery                   |
+| ---------------------- | --------------------------------------- | -------------------------- |
+| HEADS.json corrupted   | Log error, start fresh                  | Dedupe cache reset         |
+| INTEGRITY chain broken | `verify_integrity()` returns errors     | Manual audit/repair needed |
+| Disk full on write     | Exception caught, safepoint not written | Retry or fail gracefully   |
+| Concurrent writes      | File locks (OS-level)                   | Serialize writes via queue |
 
 ---
 
@@ -493,6 +499,7 @@ else:
 ## 12. Migration Path (From Schritt 2)
 
 **Current State (Schritt 2):**
+
 ```
 tool_dispatcher.py
 └─ Creates safepoints (manual)
@@ -500,6 +507,7 @@ tool_dispatcher.py
 ```
 
 **After Schritt 3:**
+
 ```
 tool_dispatcher.py
 ├─ Creates safepoints
@@ -509,6 +517,7 @@ tool_dispatcher.py
 ```
 
 **Backwards Compatibility:**
+
 - Existing safepoints remain untouched (append-only)
 - HEADS.json created on first use
 - No data loss or migration required
@@ -517,13 +526,13 @@ tool_dispatcher.py
 
 ## 13. Future Enhancements
 
-| Enhancement | Priority | Notes |
-|-------------|----------|-------|
-| Redis-backed dedupe cache | Medium | Distributed services |
-| Parallel checkpoint creation | Low | Improve batch performance |
-| Cryptographic signing (Ed25519) | Medium | Tamper-proof integrity |
-| Compression (zstd) | Low | Reduce storage by 50-70% |
-| Qdrant vector search | Low | Semantic duplicate detection |
+| Enhancement                     | Priority | Notes                        |
+| ------------------------------- | -------- | ---------------------------- |
+| Redis-backed dedupe cache       | Medium   | Distributed services         |
+| Parallel checkpoint creation    | Low      | Improve batch performance    |
+| Cryptographic signing (Ed25519) | Medium   | Tamper-proof integrity       |
+| Compression (zstd)              | Low      | Reduce storage by 50-70%     |
+| Qdrant vector search            | Low      | Semantic duplicate detection |
 
 ---
 
@@ -557,6 +566,7 @@ tool_dispatcher.py
 **End of Schritt 3 Specification**
 
 Commit this documentation + dedupe_engine.py as:
+
 ```bash
 git add 1.opena1&2_portier/dedupe_engine.py docs/SCHRITT_03_SAFEPOINT_DEDUPE.md
 git commit -m "feat: implement schritt 3 - safepoint dedupe & integrity engine"

@@ -25,7 +25,6 @@ import os
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Set, Tuple
 
 try:
     import yaml
@@ -37,13 +36,14 @@ except ImportError:
 @dataclass(frozen=True)
 class GuardConfig:
     """Immutable configuration for Copilot Guard."""
+
     base_dir: Path
-    required: Set[str]
-    optional: Set[str]
+    required: set[str]
+    optional: set[str]
     strict: bool = True
 
     @staticmethod
-    def load(path: Path) -> "GuardConfig":
+    def load(path: Path) -> GuardConfig:
         """Load configuration from YAML file."""
         if not path.exists():
             raise FileNotFoundError(f"Config file not found: {path}")
@@ -57,20 +57,20 @@ class GuardConfig:
         return GuardConfig(base_dir=base_dir, required=required, optional=optional, strict=strict)
 
 
-def list_top_level_dirs(root: Path) -> List[str]:
+def list_top_level_dirs(root: Path) -> list[str]:
     """List all top-level directories in root."""
     if not root.exists():
         raise FileNotFoundError(f"Base directory not found: {root}")
-    items: List[str] = []
+    items: list[str] = []
     for entry in root.iterdir():
         if entry.is_dir() and not entry.name.startswith("."):
             items.append(entry.name)
     return sorted(items)
 
 
-def validate_directory_set(cfg: GuardConfig) -> Tuple[List[str], List[str]]:
+def validate_directory_set(cfg: GuardConfig) -> tuple[list[str], list[str]]:
     """Validate actual directories against required + optional set.
-    
+
     Returns:
         Tuple[List[str], List[str]]: (missing, extra) directory names
         - missing: required agent dirs not found
@@ -90,16 +90,21 @@ def print_json(payload: dict) -> None:
     sys.stdout.flush()
 
 
-def main(argv: List[str] | None = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     """Main entry point."""
     ap = argparse.ArgumentParser(
-        prog="copilot_guard",
-        description="Enforce fixed top-level directory names per whitelist."
+        prog="copilot_guard", description="Enforce fixed top-level directory names per whitelist."
     )
-    ap.add_argument("--config", "-c", type=Path, default=Path("configs/agent_dirs.yaml"),
-                    help="Path to agent_dirs.yaml whitelist")
-    ap.add_argument("--mode", "-m", choices=["validate", "check_name"], default="validate",
-                    help="Validation mode: 'validate' or 'check_name'")
+    ap.add_argument(
+        "--config", "-c", type=Path, default=Path("configs/agent_dirs.yaml"), help="Path to agent_dirs.yaml whitelist"
+    )
+    ap.add_argument(
+        "--mode",
+        "-m",
+        choices=["validate", "check_name"],
+        default="validate",
+        help="Validation mode: 'validate' or 'check_name'",
+    )
     ap.add_argument("--name", "-n", type=str, help="Directory name to check (for mode=check_name)")
     args = ap.parse_args(argv)
 
@@ -113,14 +118,16 @@ def main(argv: List[str] | None = None) -> int:
         name = (args.name or "").strip()
         allowed = cfg.required | cfg.optional
         ok = name in allowed
-        print_json({
-            "ok": ok,
-            "checked": name,
-            "required_count": len(cfg.required),
-            "optional_count": len(cfg.optional),
-            "policy": "agents_required_infrastructure_optional",
-            "strict": cfg.strict
-        })
+        print_json(
+            {
+                "ok": ok,
+                "checked": name,
+                "required_count": len(cfg.required),
+                "optional_count": len(cfg.optional),
+                "policy": "agents_required_infrastructure_optional",
+                "strict": cfg.strict,
+            }
+        )
         return 0 if ok else 2
 
     # mode = validate
@@ -138,7 +145,7 @@ def main(argv: List[str] | None = None) -> int:
             "optional_count": len(cfg.optional),
             "actual_count": len(list_top_level_dirs(cfg.base_dir)),
             "strict": cfg.strict,
-            "policy": "agents_required_infrastructure_optional"
+            "policy": "agents_required_infrastructure_optional",
         }
         print_json(result)
         if missing:
@@ -153,16 +160,16 @@ def main(argv: List[str] | None = None) -> int:
 def guard_mkdir(path: os.PathLike | str, cfg: GuardConfig) -> None:
     """
     Guard against creating directories outside whitelist.
-    
+
     Raises PermissionError if:
     - Path is outside base directory
     - Top-level directory is not in whitelist
     - Called with any path (this is a dry policy hook)
-    
+
     Args:
         path: Directory path to guard
         cfg: GuardConfig instance
-    
+
     Raises:
         PermissionError: Always, as this is a policy enforcement hook
     """
@@ -182,7 +189,7 @@ def guard_mkdir(path: os.PathLike | str, cfg: GuardConfig) -> None:
     allowed = cfg.required | cfg.optional
     if top_name not in allowed:
         raise PermissionError(f"Creation of top-level directory '{top_name}' is forbidden by policy.")
-    
+
     # Subdirs allowed but guard_mkdir never creates anything
     raise PermissionError("guard_mkdir is a dry policy hook and never creates directories.")
 

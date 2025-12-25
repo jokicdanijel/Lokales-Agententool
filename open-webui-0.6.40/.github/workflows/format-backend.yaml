@@ -6,21 +6,21 @@ on:
       - main
       - dev
     paths:
-      - 'backend/**'
-      - 'pyproject.toml'
-      - 'uv.lock'
+      - "backend/**"
+      - "pyproject.toml"
+      - "uv.lock"
   pull_request:
     branches:
       - main
       - dev
     paths:
-      - 'backend/**'
-      - 'pyproject.toml'
-      - 'uv.lock'
+      - "backend/**"
+      - "pyproject.toml"
+      - "uv.lock"
 
 jobs:
   build:
-    name: 'Format Backend'
+    name: "Format Backend"
     runs-on: ubuntu-latest
 
     strategy:
@@ -35,7 +35,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: '${{ matrix.python-version }}'
+          python-version: "${{ matrix.python-version }}"
 
       - name: Install dependencies
         run: |

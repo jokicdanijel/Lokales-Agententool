@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 import http.server
-import socketserver
 import json
-import time
+import socketserver
+
 PORT = 12358
 SERVICE_NAME = "opena14"
 TOKEN = "sk_opena14_compute_v3_production"
+
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
@@ -18,10 +19,15 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         self.send_response(404)
         self.end_headers()
-    def log_message(self, format, *args): pass
+
+    def log_message(self, format, *args):
+        pass
+
 
 if __name__ == "__main__":
     with socketserver.TCPServer(("0.0.0.0", PORT), Handler) as httpd:
         print(f"🚀 {SERVICE_NAME} on port {PORT}")
-        try: httpd.serve_forever()
-        except KeyboardInterrupt: print("\n⏹️  Shutting down...")
+        try:
+            httpd.serve_forever()
+        except KeyboardInterrupt:
+            print("\n⏹️  Shutting down...")

@@ -1,9 +1,9 @@
 # 🏢 **ELION / PORTIER 2.0** — Enterprise Multi-Agent Intelligence Platform
 
-**Version:** 2.0.0  
-**Status:** ✅ **Production-Ready**  
-**Release Date:** 21. November 2025  
-**Lead Developer:** Danijel Jokic  
+**Version:** 2.0.0
+**Status:** ✅ **Production-Ready**
+**Release Date:** 21. November 2025
+**Lead Developer:** Danijel Jokic
 **Repository:** [jokicdanijel/Gesamtprojekt-start](https://github.com/jokicdanijel/Gesamtprojekt-start)
 
 ---
@@ -16,14 +16,14 @@ Das System folgt dem **Option-2-Flow** Architekturprinzip, bei dem jede Anfrage 
 
 ### **Kernmerkmale**
 
-✅ **20 Agenten-Module** – Telegram, Browser, VS Code, E-Mail, WhatsApp, Telefon, Social Media, Shop, CRM, Analytics, Workflow, Calendar, HTML, Influencer, Dashboard, OpenWebUI, Unlock, Archiv  
-✅ **Option-2-Flow-Architektur** – OpenAI → opena1 → opena2 → kordp → Tools → RESP  
-✅ **Append-Only Safepoint System** – YYYY/MM/DD-Struktur mit Unicode-Pfeilen (→) in Dateinamen  
-✅ **Live Dashboard** – Realtime-Monitoring, E2E-Test-Trigger, Safepoint-Inspector  
-✅ **Port Policy Enforcement** – 12344-12399 (Backend), 8080 (UI-only für OpenWebUI)  
-✅ **Strict JSON Schemas** – Pydantic `extra="forbid"`, OpenAI-kompatibel  
-✅ **Security-First Design** – Bearer Token Auth, Secret Masking, Pre-Commit Hooks  
-✅ **SCTA-Integration** – Structured Code Task Automation für HR-Dokumente  
+✅ **20 Agenten-Module** – Telegram, Browser, VS Code, E-Mail, WhatsApp, Telefon, Social Media, Shop, CRM, Analytics, Workflow, Calendar, HTML, Influencer, Dashboard, OpenWebUI, Unlock, Archiv
+✅ **Option-2-Flow-Architektur** – OpenAI → opena1 → opena2 → kordp → Tools → RESP
+✅ **Append-Only Safepoint System** – YYYY/MM/DD-Struktur mit Unicode-Pfeilen (→) in Dateinamen
+✅ **Live Dashboard** – Realtime-Monitoring, E2E-Test-Trigger, Safepoint-Inspector
+✅ **Port Policy Enforcement** – 12344-12399 (Backend), 8080 (UI-only für OpenWebUI)
+✅ **Strict JSON Schemas** – Pydantic `extra="forbid"`, OpenAI-kompatibel
+✅ **Security-First Design** – Bearer Token Auth, Secret Masking, Pre-Commit Hooks
+✅ **SCTA-Integration** – Structured Code Task Automation für HR-Dokumente
 
 ---
 
@@ -85,40 +85,41 @@ Das System folgt dem **Option-2-Flow** Architekturprinzip, bei dem jede Anfrage 
 
 ### **Kern-Agenten (Core Infrastructure)**
 
-| Agent | Port | Rolle | Status | Hauptfunktion |
-|-------|------|-------|--------|---------------|
-| **opena1** | 12344 | Coordinator | ✅ Running | Request71→Decision72, Tool-Selection, Port-Policy |
-| **opena2** | 12345 | Archivator | ✅ Running | CMD/RESP Safepoints, Unicode → in Dateinamen |
-| **kordp** | 12346 | Gateway | ✅ Running | Tool Routing, HTTP Forwarding, Registry |
-| **archivp** | Filesystem | Lokales Archiv | ✅ Active | YYYY/MM/DD Struktur, index.jsonl |
+| Agent       | Port       | Rolle          | Status     | Hauptfunktion                                     |
+| ----------- | ---------- | -------------- | ---------- | ------------------------------------------------- |
+| **opena1**  | 12344      | Coordinator    | ✅ Running | Request71→Decision72, Tool-Selection, Port-Policy |
+| **opena2**  | 12345      | Archivator     | ✅ Running | CMD/RESP Safepoints, Unicode → in Dateinamen      |
+| **kordp**   | 12346      | Gateway        | ✅ Running | Tool Routing, HTTP Forwarding, Registry           |
+| **archivp** | Filesystem | Lokales Archiv | ✅ Active  | YYYY/MM/DD Struktur, index.jsonl                  |
 
 ---
 
 ### **Spezialisierte Agenten (Tools)**
 
-| Agent | Port | Rolle | Status | Hauptfunktion |
-|-------|------|-------|--------|---------------|
-| **opena3** | 12347 | OpenWebUI Terminal | ✅ Running | Chat-Interface, Terminal-Agent, Bearer Token Auth |
-| **opena4** | 12348 | Telegram Bot | 🟡 Planned | Telegram API Integration, Bot-Commands |
-| **opena5** | 12349 | VS Code Agent | 🟡 Planned | Extension Host, Remote SSH, File Watcher |
-| **opena6** | 12350 | Browser Automation | 🟡 Planned | Selenium/Playwright, Scraping, Testing |
-| **opena7** | 12351 | E-Mail Client | 🟡 Planned | IMAP/SMTP, Inbox Monitoring, Templates |
-| **opena8** | 12352 | WhatsApp API | 🟡 Planned | WhatsApp Business API, Message Queue |
-| **opena9** | 12353 | Telefonie | 🟡 Planned | SIP/VoIP Integration, Call Logging |
-| **opena10** | 12354 | Call Tracking | 🟡 Planned | Call Analytics, Recording, Transcription |
-| **opena11** | 12355 | Unlock Master | 🟡 Planned | Password Manager Integration, Secret Vault |
-| **opena12** | 12356 | Social Media | 🟡 Planned | Multi-Platform Posting (X, LinkedIn, etc.) |
-| **opena13** | 12357 | Influencer | 🟡 Planned | Content Calendar, Analytics, Outreach |
-| **opena14** | 12358 | Calendar | 🟡 Planned | Google Calendar, iCal Sync, Reminders |
-| **opena15** | 12359 | HTML Creator | 🟡 Planned | Template Engine, Static Site Gen, Preview |
-| **opena16** | 12360 | Shop | 🟡 Planned | E-Commerce Integration, Product Catalog |
-| **opena17** | 12361 | CRM | 🟡 Planned | Contact Management, Sales Pipeline |
-| **opena18** | 12362 | Analytics | 🟡 Planned | Data Aggregation, Reporting, Dashboards |
-| **opena19** | 12363 | Aktien & Crypto | 🟡 Planned | Market Data, Portfolio Tracking, Alerts |
-| **opena20** | 12349 | Dashboard | ✅ Running | Web UI, Status Monitor, E2E Trigger |
-| **opena21** | 12364 | Workflow Engine | 🟡 Planned | Process Automation, Task Orchestration |
+| Agent       | Port  | Rolle              | Status     | Hauptfunktion                                     |
+| ----------- | ----- | ------------------ | ---------- | ------------------------------------------------- |
+| **opena3**  | 12347 | OpenWebUI Terminal | ✅ Running | Chat-Interface, Terminal-Agent, Bearer Token Auth |
+| **opena4**  | 12348 | Telegram Bot       | 🟡 Planned | Telegram API Integration, Bot-Commands            |
+| **opena5**  | 12349 | VS Code Agent      | 🟡 Planned | Extension Host, Remote SSH, File Watcher          |
+| **opena6**  | 12350 | Browser Automation | 🟡 Planned | Selenium/Playwright, Scraping, Testing            |
+| **opena7**  | 12351 | E-Mail Client      | 🟡 Planned | IMAP/SMTP, Inbox Monitoring, Templates            |
+| **opena8**  | 12352 | WhatsApp API       | 🟡 Planned | WhatsApp Business API, Message Queue              |
+| **opena9**  | 12353 | Telefonie          | 🟡 Planned | SIP/VoIP Integration, Call Logging                |
+| **opena10** | 12354 | Call Tracking      | 🟡 Planned | Call Analytics, Recording, Transcription          |
+| **opena11** | 12355 | Unlock Master      | 🟡 Planned | Password Manager Integration, Secret Vault        |
+| **opena12** | 12356 | Social Media       | 🟡 Planned | Multi-Platform Posting (X, LinkedIn, etc.)        |
+| **opena13** | 12357 | Influencer         | 🟡 Planned | Content Calendar, Analytics, Outreach             |
+| **opena14** | 12358 | Calendar           | 🟡 Planned | Google Calendar, iCal Sync, Reminders             |
+| **opena15** | 12359 | HTML Creator       | 🟡 Planned | Template Engine, Static Site Gen, Preview         |
+| **opena16** | 12360 | Shop               | 🟡 Planned | E-Commerce Integration, Product Catalog           |
+| **opena17** | 12361 | CRM                | 🟡 Planned | Contact Management, Sales Pipeline                |
+| **opena18** | 12362 | Analytics          | 🟡 Planned | Data Aggregation, Reporting, Dashboards           |
+| **opena19** | 12363 | Aktien & Crypto    | 🟡 Planned | Market Data, Portfolio Tracking, Alerts           |
+| **opena20** | 12349 | Dashboard          | ✅ Running | Web UI, Status Monitor, E2E Trigger               |
+| **opena21** | 12364 | Workflow Engine    | 🟡 Planned | Process Automation, Task Orchestration            |
 
 **Legende:**
+
 - ✅ Running = Produktiv im Einsatz
 - 🟡 Planned = Ordnerstruktur vorhanden, noch nicht implementiert
 
@@ -138,32 +139,32 @@ PORT_FORBIDDEN = [8080]  # Exklusiv für OpenWebUI Frontend
 
 ### **Vollständige Port-Zuordnung**
 
-| Port | Service | Typ | Status |
-|------|---------|-----|--------|
-| **12344** | opena1 (Coordinator) | FastAPI | ✅ Running |
-| **12345** | opena2 (Archivator) | FastAPI | ✅ Running |
-| **12346** | kordp (Gateway) | FastAPI | ✅ Running |
-| **12347** | opena3 (OpenWebUI) | FastAPI | ✅ Running |
-| **12348** | opena4 (Telegram) | FastAPI | 🟡 Planned |
-| **12349** | opena20 (Dashboard) | FastAPI+Jinja2 | ✅ Running |
-| **12350** | opena6 (Browser) / OpenWebUI Adapter | FastAPI | ✅ Adapter Running |
-| **12351** | opena7 (E-Mail) | FastAPI | 🟡 Planned |
-| **12352** | opena8 (WhatsApp) | FastAPI | 🟡 Planned |
-| **12353** | opena9 (Telefon) | FastAPI | 🟡 Planned |
-| **12354** | opena10 (Call Tracking) | FastAPI | 🟡 Planned |
-| **12355** | opena11 (Unlock) | FastAPI | 🟡 Planned |
-| **12356** | opena12 (Social Media) | FastAPI | 🟡 Planned |
-| **12357** | opena13 (Influencer) | FastAPI | 🟡 Planned |
-| **12358** | opena14 (Calendar) | FastAPI | 🟡 Planned |
-| **12359** | opena15 (HTML) | FastAPI | 🟡 Planned |
-| **12360** | opena16 (Shop) | FastAPI | 🟡 Planned |
-| **12361** | opena17 (CRM) | FastAPI | 🟡 Planned |
-| **12362** | opena18 (Analytics) | FastAPI | 🟡 Planned |
-| **12363** | opena19 (Aktien/Crypto) | FastAPI | 🟡 Planned |
-| **12364** | opena21 (Workflow) | FastAPI | 🟡 Planned |
-| **12365** | archivp (Lokales Archiv) | Filesystem | ✅ Active |
-| **12399** | agenda_api (16-Seiten Agenda) | FastAPI | ✅ Running |
-| **8080** | OpenWebUI UI (Frontend Only) | Docker | ✅ Running |
+| Port      | Service                              | Typ            | Status             |
+| --------- | ------------------------------------ | -------------- | ------------------ |
+| **12344** | opena1 (Coordinator)                 | FastAPI        | ✅ Running         |
+| **12345** | opena2 (Archivator)                  | FastAPI        | ✅ Running         |
+| **12346** | kordp (Gateway)                      | FastAPI        | ✅ Running         |
+| **12347** | opena3 (OpenWebUI)                   | FastAPI        | ✅ Running         |
+| **12348** | opena4 (Telegram)                    | FastAPI        | 🟡 Planned         |
+| **12349** | opena20 (Dashboard)                  | FastAPI+Jinja2 | ✅ Running         |
+| **12350** | opena6 (Browser) / OpenWebUI Adapter | FastAPI        | ✅ Adapter Running |
+| **12351** | opena7 (E-Mail)                      | FastAPI        | 🟡 Planned         |
+| **12352** | opena8 (WhatsApp)                    | FastAPI        | 🟡 Planned         |
+| **12353** | opena9 (Telefon)                     | FastAPI        | 🟡 Planned         |
+| **12354** | opena10 (Call Tracking)              | FastAPI        | 🟡 Planned         |
+| **12355** | opena11 (Unlock)                     | FastAPI        | 🟡 Planned         |
+| **12356** | opena12 (Social Media)               | FastAPI        | 🟡 Planned         |
+| **12357** | opena13 (Influencer)                 | FastAPI        | 🟡 Planned         |
+| **12358** | opena14 (Calendar)                   | FastAPI        | 🟡 Planned         |
+| **12359** | opena15 (HTML)                       | FastAPI        | 🟡 Planned         |
+| **12360** | opena16 (Shop)                       | FastAPI        | 🟡 Planned         |
+| **12361** | opena17 (CRM)                        | FastAPI        | 🟡 Planned         |
+| **12362** | opena18 (Analytics)                  | FastAPI        | 🟡 Planned         |
+| **12363** | opena19 (Aktien/Crypto)              | FastAPI        | 🟡 Planned         |
+| **12364** | opena21 (Workflow)                   | FastAPI        | 🟡 Planned         |
+| **12365** | archivp (Lokales Archiv)             | Filesystem     | ✅ Active          |
+| **12399** | agenda_api (16-Seiten Agenda)        | FastAPI        | ✅ Running         |
+| **8080**  | OpenWebUI UI (Frontend Only)         | Docker         | ✅ Running         |
 
 ---
 
@@ -364,6 +365,7 @@ SP<TIMESTAMP>_<SOURCE>→<DESTINATION>_<CATEGORY>.json
 ```
 
 **Komponenten:**
+
 - **SP**: Prefix (Safepoint)
 - **TIMESTAMP**: Unix Epoch (10 Ziffern)
 - **SOURCE**: opena1, opena2, kordp, tool, archivp
@@ -387,12 +389,12 @@ archivp_store/
 
 ### **Kategorien**
 
-| Kategorie | Zweck | Erstellt von |
-|-----------|-------|--------------|
-| **CMD** | Command from coordinator | opena2 (via /finalize/opena2) |
-| **RESP** | Response from tool | opena2 (via /store/resp) |
-| **ROUTE** | Routing information | kordp (before dispatch) |
-| **DISPATCH** | Dispatch metadata | kordp (after dispatch) |
+| Kategorie    | Zweck                    | Erstellt von                  |
+| ------------ | ------------------------ | ----------------------------- |
+| **CMD**      | Command from coordinator | opena2 (via /finalize/opena2) |
+| **RESP**     | Response from tool       | opena2 (via /store/resp)      |
+| **ROUTE**    | Routing information      | kordp (before dispatch)       |
+| **DISPATCH** | Dispatch metadata        | kordp (after dispatch)        |
 
 ### **Policies (Append-Only)**
 
@@ -458,6 +460,7 @@ pytest tests/test_portier_stack.py -v
 ```
 
 **Abgedeckte Szenarien:**
+
 - ✅ Request71 Schema-Validierung
 - ✅ Decision72 Generierung
 - ✅ CMD Safepoint Creation
@@ -495,6 +498,7 @@ GITHUB_TOKEN=ghp_...
 ```
 
 **Sicherheitsmaßnahmen:**
+
 - ✅ `.gitignore` blockiert `.env` (40+ Patterns)
 - ✅ Pre-Commit Hook validiert Secrets
 - ✅ Secret Masking in Logs (API Keys → `***`)
@@ -586,11 +590,12 @@ curl -H "Authorization: Bearer 250886" http://127.0.0.1:12399/agenda/pages | jq 
 ```
 
 **16 Seiten:**
+
 1. Main Dashboard
 2. Logische Seite
 3. API Registry
 4. Bromt Studio
-5-16. Agenda 01-12 (Datenaufnahme, Bearbeitung, Validierung, Speicherung, Auth/RBAC, Monitoring, Logging, Alerts, Reporting, Import/Export, Versionierung, Governance)
+   5-16. Agenda 01-12 (Datenaufnahme, Bearbeitung, Validierung, Speicherung, Auth/RBAC, Monitoring, Logging, Alerts, Reporting, Import/Export, Versionierung, Governance)
 
 ---
 
@@ -651,6 +656,7 @@ xdg-open http://127.0.0.1:12349/dashboard
 ```
 
 **Features:**
+
 - ✅ Live Status Grid (alle Agenten)
 - ✅ E2E Test Trigger
 - ✅ Safepoint Inspector (heute)
@@ -724,14 +730,14 @@ PDF/Excel Export
 
 ### **Kernmodule**
 
-| Modul | Abhängigkeiten | Verwendet von |
-|-------|----------------|---------------|
-| **koordinator.py** | schemas.py, opena2 API | opena1 main_production.py |
-| **opena2_app.py** | archivp (Filesystem) | opena1, kordp |
-| **tool_resolver.py** | tool_registry.json, httpx | kordp router.py |
-| **dashboard.js** | fetch API, SSE | dashboard.html |
-| **config.py** | os.environ, dotenv | Alle Services |
-| **schemas.py** | pydantic | Alle Services |
+| Modul                | Abhängigkeiten            | Verwendet von             |
+| -------------------- | ------------------------- | ------------------------- |
+| **koordinator.py**   | schemas.py, opena2 API    | opena1 main_production.py |
+| **opena2_app.py**    | archivp (Filesystem)      | opena1, kordp             |
+| **tool_resolver.py** | tool_registry.json, httpx | kordp router.py           |
+| **dashboard.js**     | fetch API, SSE            | dashboard.html            |
+| **config.py**        | os.environ, dotenv        | Alle Services             |
+| **schemas.py**       | pydantic                  | Alle Services             |
 
 ### **Inter-Service Communication**
 
@@ -792,11 +798,11 @@ git diff v3.0.0..HEAD
 
 ```javascript
 // dashboard.js (Activity Log)
-function logActivity(message, level = 'info') {
-  const now = new Date().toLocaleTimeString('de-DE');
+function logActivity(message, level = "info") {
+  const now = new Date().toLocaleTimeString("de-DE");
   const logEntry = `[${now}] ${level.toUpperCase()}: ${message}`;
-  const logContainer = document.getElementById('activityLog');
-  const logLine = document.createElement('div');
+  const logContainer = document.getElementById("activityLog");
+  const logLine = document.createElement("div");
   logLine.textContent = logEntry;
   logLine.className = level;
   logContainer.appendChild(logLine);
@@ -835,12 +841,14 @@ async def health():
 6. ✅ **Produktiv** ist (Live Dashboard, Auto-Refresh, Realtime Monitoring)
 
 **Zielgruppe:**
+
 - Unternehmen mit komplexen KI-Workflows
 - Entwicklerteams, die Multi-Agent-Systeme orchestrieren
 - Data Scientists, die Experimente tracken müssen
 - DevOps Engineers, die Infrastruktur überwachen
 
 **Use Cases:**
+
 - ✅ HR-Dokument-Automatisierung (SCTA)
 - ✅ Social Media Management (opena12, opena13)
 - ✅ E-Commerce Integration (opena16)
@@ -853,11 +861,12 @@ async def health():
 ## 🏢 **Firmen-Kontext**
 
 **Entwickelt für:**
-ELION Technologies GmbH  
-Lead Developer: **Danijel Jokic**  
+ELION Technologies GmbH
+Lead Developer: **Danijel Jokic**
 Team: AI Engineering & Automation
 
 **Technologie-Partner:**
+
 - OpenAI (GPT-4, Claude Sonnet 4.5)
 - GitHub (Repository Hosting, CI/CD)
 - Docker (Containerization)
@@ -865,10 +874,12 @@ Team: AI Engineering & Automation
 - Pydantic (Schema Validation)
 
 **Lizenzierung:**
+
 - MIT License (Open Source)
 - Internal Use Only (Enterprise Components)
 
 **Support:**
+
 - GitHub Issues: https://github.com/jokicdanijel/Gesamtprojekt-start/issues
 - Documentation: https://github.com/jokicdanijel/Gesamtprojekt-start/wiki
 - Email: contact@elion-tech.de (fiktiv)
@@ -879,18 +890,18 @@ Team: AI Engineering & Automation
 
 ### **Primäre Guides**
 
-| Dokument | Pfad | Inhalt |
-|----------|------|--------|
-| **Hyper-Master-Prompt** | `.github/copilot-master-prompt.md` | Vollständiges System-Wissen (Option-2, Ports, Schemas, Policies) |
-| **CoPilot Instructions** | `.github/copilot-instructions.md` | AI Integration Guide (200+ Zeilen) |
-| **Release Notes** | `PORTIER_3.0_RELEASE.md` | Release v3.0.0 (511 Zeilen) |
-| **System Docs** | `PORTIER_SYSTEM_DOCS.md` | Architektur, APIs, Operations (654 Zeilen) |
-| **SCTA Checkpoint** | `SCTA_IMPLEMENTATION_CHECKPOINT.md` | Phase 1-3 Status (Phases 4-10 Queued) |
-| **Operations Guide** | `docs/OPERATIONS.md` | Runtime-Befehle, Troubleshooting |
-| **OpenWebUI Integration** | `docs/OPENWEBUI_INTEGRATION.md` | opena3 Specs, Adapter |
-| **API Docs** | `docs/OPENWEBUI_API.md` | Endpoint Specs, cURL Examples |
-| **Structure Runbook** | `docs/structure_runbook.md` | SCTA Architektur (500+ Zeilen) |
-| **GitHub Review** | `reports/github_review.md` | Security Audit (6 Findings) |
+| Dokument                  | Pfad                                | Inhalt                                                           |
+| ------------------------- | ----------------------------------- | ---------------------------------------------------------------- |
+| **Hyper-Master-Prompt**   | `.github/copilot-master-prompt.md`  | Vollständiges System-Wissen (Option-2, Ports, Schemas, Policies) |
+| **CoPilot Instructions**  | `.github/copilot-instructions.md`   | AI Integration Guide (200+ Zeilen)                               |
+| **Release Notes**         | `PORTIER_3.0_RELEASE.md`            | Release v3.0.0 (511 Zeilen)                                      |
+| **System Docs**           | `PORTIER_SYSTEM_DOCS.md`            | Architektur, APIs, Operations (654 Zeilen)                       |
+| **SCTA Checkpoint**       | `SCTA_IMPLEMENTATION_CHECKPOINT.md` | Phase 1-3 Status (Phases 4-10 Queued)                            |
+| **Operations Guide**      | `docs/OPERATIONS.md`                | Runtime-Befehle, Troubleshooting                                 |
+| **OpenWebUI Integration** | `docs/OPENWEBUI_INTEGRATION.md`     | opena3 Specs, Adapter                                            |
+| **API Docs**              | `docs/OPENWEBUI_API.md`             | Endpoint Specs, cURL Examples                                    |
+| **Structure Runbook**     | `docs/structure_runbook.md`         | SCTA Architektur (500+ Zeilen)                                   |
+| **GitHub Review**         | `reports/github_review.md`          | Security Audit (6 Findings)                                      |
 
 ### **Zusätzliche Ressourcen**
 
@@ -903,9 +914,10 @@ Team: AI Engineering & Automation
 
 ## 🧑‍💻 **Lead Developer**
 
-**Name:** Danijel Jokic  
-**Rolle:** Lead Software Engineer, AI Orchestration Specialist  
+**Name:** Danijel Jokic
+**Rolle:** Lead Software Engineer, AI Orchestration Specialist
 **Verantwortlich für:**
+
 - ✅ Konzeption & Architektur (Option-2-Flow)
 - ✅ Implementierung aller Kern-Services (opena1, opena2, kordp)
 - ✅ Dashboard-Entwicklung (opena20, 717 Zeilen)
@@ -915,11 +927,12 @@ Team: AI Engineering & Automation
 - ✅ Testing (450+ Zeilen E2E Tests)
 
 **Technologien:**
+
 - Python 3.13, FastAPI, Pydantic, SQLAlchemy
 - JavaScript (ES6+), CSS3, Jinja2
 - Docker, Git, Pytest, httpx
 
-**GitHub:** [jokicdanijel](https://github.com/jokicdanijel)  
+**GitHub:** [jokicdanijel](https://github.com/jokicdanijel)
 **Repository:** [Gesamtprojekt-start](https://github.com/jokicdanijel/Gesamtprojekt-start)
 
 ---
@@ -928,15 +941,15 @@ Team: AI Engineering & Automation
 
 ### **Code-Statistiken**
 
-| Kategorie | LOC | Dateien |
-|-----------|-----|---------|
-| **Core Services** | 1,500+ | 6 |
-| **Dashboard** | 717 | 5 |
-| **SCTA Shared** | 490+ | 3 |
-| **Tests** | 450+ | 3 |
-| **Scripts** | 100+ | 15+ |
-| **Dokumentation** | 1,165+ | 10+ |
-| **TOTAL** | **4,422+** | **42+** |
+| Kategorie         | LOC        | Dateien |
+| ----------------- | ---------- | ------- |
+| **Core Services** | 1,500+     | 6       |
+| **Dashboard**     | 717        | 5       |
+| **SCTA Shared**   | 490+       | 3       |
+| **Tests**         | 450+       | 3       |
+| **Scripts**       | 100+       | 15+     |
+| **Dokumentation** | 1,165+     | 10+     |
+| **TOTAL**         | **4,422+** | **42+** |
 
 ### **Agenten-Status**
 
@@ -958,12 +971,14 @@ git log --oneline -3
 ## 🔮 **Roadmap (Zukunft)**
 
 ### **Phase 4: OpenWebUI Integration** (COMPLETED ✅)
+
 - [x] opena3 terminal agent (Port 12347)
 - [x] OpenWebUI adapter (Port 12350)
 - [ ] Chat modal in dashboard UI
 - [x] Bearer token authentication
 
 ### **Phase 5: Agenten-Expansion** (IN-PROGRESS 🟡)
+
 - [ ] opena4: Telegram Bot (12348)
 - [ ] opena5: VS Code Integration (12349)
 - [ ] opena6: Browser Automation (12350)
@@ -971,6 +986,7 @@ git log --oneline -3
 - [ ] opena8-opena21: Weitere 14 Agenten
 
 ### **Phase 6: SCTA Completion** (QUEUED ⏳)
+
 - [ ] Core Orchestrator (Phase 4)
 - [ ] Shared Layer (Queue, DB, Auth) (Phase 5)
 - [ ] Test Suite ≥85% Coverage (Phase 6)
@@ -980,6 +996,7 @@ git log --oneline -3
 - [ ] Integration & Acceptance (Phase 10)
 
 ### **Phase 7: Advanced Features** (LONG-TERM 🌟)
+
 - [ ] Persistent chat history
 - [ ] Multi-turn conversations
 - [ ] OAuth2 integration
@@ -993,18 +1010,18 @@ git log --oneline -3
 
 ## 📞 **Support & Kontakt**
 
-**GitHub Issues:** https://github.com/jokicdanijel/Gesamtprojekt-start/issues  
-**Discussions:** https://github.com/jokicdanijel/Gesamtprojekt-start/discussions  
+**GitHub Issues:** https://github.com/jokicdanijel/Gesamtprojekt-start/issues
+**Discussions:** https://github.com/jokicdanijel/Gesamtprojekt-start/discussions
 **Email:** contact@elion-tech.de (fiktiv)
 
-**Dokumentation:** https://github.com/jokicdanijel/Gesamtprojekt-start/wiki  
+**Dokumentation:** https://github.com/jokicdanijel/Gesamtprojekt-start/wiki
 **Changelog:** https://github.com/jokicdanijel/Gesamtprojekt-start/releases
 
 ---
 
 ## 📄 **Lizenz**
 
-**MIT License** (Open Source Components)  
+**MIT License** (Open Source Components)
 **Internal Use Only** (Enterprise Components)
 
 ```
@@ -1036,6 +1053,7 @@ SOFTWARE.
 **ELION / PORTIER 2.0** ist das Ergebnis von **10+ Sessions intensiver Entwicklung**, umfasst **4,422+ Zeilen produktionsreifen Code** und bietet eine **skalierbare, sichere, auditfähige Multi-Agent-Plattform** für Enterprise-Grade KI-Workflows.
 
 **Dieses System ist:**
+
 - ✅ **Produktionsbereit** (alle Kern-Services laufen stabil)
 - ✅ **Vollständig dokumentiert** (1,165+ Zeilen Markdown)
 - ✅ **Security-hardened** (Port Policy, Secret Masking, Bearer Token)
@@ -1047,15 +1065,15 @@ SOFTWARE.
 
 ---
 
-**🚀 Dashboard:** http://127.0.0.1:12349/dashboard  
-**📊 Status API:** http://127.0.0.1:12349/api/status  
+**🚀 Dashboard:** http://127.0.0.1:12349/dashboard
+**📊 Status API:** http://127.0.0.1:12349/api/status
 **💚 Health Check:** http://127.0.0.1:12349/health
 
 ---
 
-**Last Updated:** 21. November 2025  
-**Version:** 2.0.0  
-**Lead Developer:** Danijel Jokic  
+**Last Updated:** 21. November 2025
+**Version:** 2.0.0
+**Lead Developer:** Danijel Jokic
 **Status:** ✅ **PRODUCTION-READY**
 
 ---

@@ -18,6 +18,7 @@ Dieses Dokument beschreibt die komplette Netzwerkinfrastruktur für die externe 
 ### 1. Switch/Router-Konfiguration
 
 #### Lokale Netzwerk-Einstellungen
+
 ```
 Netzwerk:        192.168.0.0/24
 Server-IP:       192.168.0.70
@@ -27,6 +28,7 @@ DNS:             [Lokal oder Standard]
 ```
 
 #### Router-Port-Freigabe
+
 ```
 Port:            8765
 Protocol:        TCP
@@ -36,6 +38,7 @@ Status:          ✅ Konfiguriert
 ```
 
 #### Best Practices
+
 - ✅ Port-Bereich: Außerhalb DHCP-Range
 - ✅ IP-Reservation für Server (Static IP)
 - ✅ UPnP/UPNP: Deaktiviert (manuell konfigurieren)
@@ -48,12 +51,14 @@ Status:          ✅ Konfiguriert
 ### UFW (Ubuntu Uncomplicated Firewall)
 
 #### Status überprüfen
+
 ```bash
 sudo ufw status
 sudo ufw status verbose
 ```
 
 #### Port 8765 freigeben
+
 ```bash
 # TCP-Verbindungen erlauben
 sudo ufw allow 8765/tcp
@@ -66,6 +71,7 @@ sudo ufw allow in 8765/tcp from 192.168.0.0/24 comment "LAN-Zugriff"
 ```
 
 #### Port 8765 blockieren
+
 ```bash
 # Falls Zugriff einschränken
 sudo ufw deny 8765/tcp
@@ -76,6 +82,7 @@ sudo ufw deny in 8765/tcp from any
 ```
 
 #### Regeln prüfen
+
 ```bash
 # Alle aktiven Regeln
 sudo ufw show added
@@ -90,6 +97,7 @@ sudo ufw delete allow 8765/tcp
 ### iptables (Alternative für erweiterte Konfiguration)
 
 #### Regeln überprüfen
+
 ```bash
 # INPUT Rules
 sudo iptables -L INPUT -n -v
@@ -99,6 +107,7 @@ sudo iptables -L | grep 8765
 ```
 
 #### Port 8765 öffnen
+
 ```bash
 # TCP-Verbindungen erlauben
 sudo iptables -A INPUT -p tcp --dport 8765 -j ACCEPT
@@ -108,6 +117,7 @@ sudo iptables-save | sudo tee /etc/iptables/rules.v4 > /dev/null
 ```
 
 #### Rules speichern
+
 ```bash
 # Für iptables-persistent Paket
 sudo apt-get install iptables-persistent
@@ -154,6 +164,7 @@ ngrok version
 ### 2. Authentication Token
 
 #### Token generieren
+
 1. Gehe zu: https://dashboard.ngrok.com
 2. Melde dich an (oder erstelle Account)
 3. Gehe zu: "Your Authtoken"
@@ -175,6 +186,7 @@ export NGROK_AUTHTOKEN="dein_token_hier"
 ```
 
 #### Token überprüfen
+
 ```bash
 # Konfiguration anzeigen
 cat ~/.ngrok2/ngrok.yml
@@ -240,12 +252,12 @@ curl http://127.0.0.1:4040/api/tunnels | jq
 
 ### 5. ngrok-Fehlerbehandlung
 
-| Problem | Ursache | Lösung |
-|---------|--------|--------|
-| "Failed to authenticate" | Token ungültig/fehlt | Token neu erstellen und konfigurieren |
-| "Request limit exceeded" | Kostenlos-Plan Limit | Premium-Plan erwägen oder Wartezeit |
-| "Connection refused" | Server läuft nicht | `python3 tool_server.py --host 0.0.0.0 --port 8765` |
-| "Address already in use" | Port 8765 bereits belegt | `sudo lsof -i :8765` dann `kill -9 PID` |
+| Problem                  | Ursache                  | Lösung                                              |
+| ------------------------ | ------------------------ | --------------------------------------------------- |
+| "Failed to authenticate" | Token ungültig/fehlt     | Token neu erstellen und konfigurieren               |
+| "Request limit exceeded" | Kostenlos-Plan Limit     | Premium-Plan erwägen oder Wartezeit                 |
+| "Connection refused"     | Server läuft nicht       | `python3 tool_server.py --host 0.0.0.0 --port 8765` |
+| "Address already in use" | Port 8765 bereits belegt | `sudo lsof -i :8765` dann `kill -9 PID`             |
 
 ---
 
@@ -294,6 +306,7 @@ Host tool_server
 ### 4. SSH Tunnel-Verbindungen
 
 #### Forward Tunnel (Local Port Forwarding)
+
 ```bash
 # Tool Server remote, lokal zugreifen
 ssh -L 8765:localhost:8765 user@remote.host -N
@@ -309,6 +322,7 @@ ps aux | grep "ssh.*8765"
 ```
 
 #### Reverse Tunnel (Remote Port Forwarding)
+
 ```bash
 # Tool Server lokal, remote zugreifen
 ssh -R 8765:localhost:8765 user@remote.host -N
@@ -317,6 +331,7 @@ ssh -R 8765:localhost:8765 user@remote.host -N
 ```
 
 #### Multi-Hop Tunnel
+
 ```bash
 # Via Jumphost
 ssh -J jumphost.com -L 8765:tool_server:8765 user@tool_server -N
@@ -325,6 +340,7 @@ ssh -J jumphost.com -L 8765:tool_server:8765 user@tool_server -N
 ### 5. SSH-Tunnel Automatisierung
 
 #### Mit autossh (verbindungswiederherstellung)
+
 ```bash
 # Installation
 sudo apt-get install autossh
@@ -354,6 +370,7 @@ systemctl --user start ssh_tunnel
 ```
 
 #### Mit SSH-Keys in Cron
+
 ```bash
 # Crontab-Eintrag (SSH Tunnel alle 5 Min prüfen/starten)
 */5 * * * * pgrep -f "ssh.*8765" || ssh -L 8765:localhost:8765 user@remote.host -N &
@@ -446,14 +463,15 @@ nethogs
 
 ### Methode 1: LAN-Zugriff (Schnellste)
 
-| Komponente | Status | Befehl |
-|-----------|--------|--------|
-| Server läuft | ✅ | `ps aux \| grep tool_server` |
-| Port 0.0.0.0:8765 | ✅ | `ss -tlnp \| grep 8765` |
-| Firewall offen | ✅ | `sudo ufw status \| grep 8765` |
-| Health Endpoint | ✅ | `curl http://192.168.0.70:8765/health` |
+| Komponente        | Status | Befehl                                 |
+| ----------------- | ------ | -------------------------------------- |
+| Server läuft      | ✅     | `ps aux \| grep tool_server`           |
+| Port 0.0.0.0:8765 | ✅     | `ss -tlnp \| grep 8765`                |
+| Firewall offen    | ✅     | `sudo ufw status \| grep 8765`         |
+| Health Endpoint   | ✅     | `curl http://192.168.0.70:8765/health` |
 
 **Aktivierung:**
+
 ```bash
 python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
 ```
@@ -462,14 +480,15 @@ python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
 
 ### Methode 2: ngrok Internet-Zugriff (Global)
 
-| Komponente | Status | Befehl |
-|-----------|--------|--------|
-| ngrok installiert | ✅ | `ngrok --version` |
-| Token konfiguriert | ✅ | `cat ~/.ngrok2/ngrok.yml` |
-| Server läuft | ✅ | `ps aux \| grep tool_server` |
-| ngrok Tunnel aktiv | ✅ | `curl http://127.0.0.1:4040/api/tunnels` |
+| Komponente         | Status | Befehl                                   |
+| ------------------ | ------ | ---------------------------------------- |
+| ngrok installiert  | ✅     | `ngrok --version`                        |
+| Token konfiguriert | ✅     | `cat ~/.ngrok2/ngrok.yml`                |
+| Server läuft       | ✅     | `ps aux \| grep tool_server`             |
+| ngrok Tunnel aktiv | ✅     | `curl http://127.0.0.1:4040/api/tunnels` |
 
 **Aktivierung:**
+
 ```bash
 # Terminal 1: Server
 python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
@@ -482,14 +501,15 @@ ngrok http 8765 --region eu
 
 ### Methode 3: SSH Tunnel-Zugriff (Sicherste)
 
-| Komponente | Status | Befehl |
-|-----------|--------|--------|
-| SSH-Keys erstellt | ✅ | `ls ~/.ssh/id_server*` |
-| Public Key auf Server | ✅ | `ssh user@remote.host "cat ~/.ssh/authorized_keys"` |
-| Server läuft | ✅ | `ps aux \| grep tool_server` |
-| Tunnel verbunden | ✅ | `ssh -L 8765:localhost:8765 user@remote.host -N &` |
+| Komponente            | Status | Befehl                                              |
+| --------------------- | ------ | --------------------------------------------------- |
+| SSH-Keys erstellt     | ✅     | `ls ~/.ssh/id_server*`                              |
+| Public Key auf Server | ✅     | `ssh user@remote.host "cat ~/.ssh/authorized_keys"` |
+| Server läuft          | ✅     | `ps aux \| grep tool_server`                        |
+| Tunnel verbunden      | ✅     | `ssh -L 8765:localhost:8765 user@remote.host -N &`  |
 
 **Aktivierung:**
+
 ```bash
 # Terminal 1: Server
 python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
@@ -505,6 +525,7 @@ ssh -L 8765:localhost:8765 user@remote.host -N &
 ## 🧪 Validierungsbefehle
 
 ### Schnell-Tests
+
 ```bash
 #!/bin/bash
 # save as: test_network.sh
@@ -542,6 +563,7 @@ echo "Validierung abgeschlossen!"
 ```
 
 ### Detaillierte Diagnostik
+
 ```bash
 echo "🔧 Detaillierte Diagnostik"
 echo "============================"
@@ -578,11 +600,13 @@ nslookup 192.168.0.70
 ### Problem: "Connection refused" auf LAN
 
 **Symptome:**
+
 ```
 curl: (7) Failed to connect to 192.168.0.70 port 8765: Connection refused
 ```
 
 **Lösungen:**
+
 1. Server läuft? → `ps aux | grep tool_server`
 2. Port korrekt? → `ss -tlnp | grep 8765`
 3. Firewall blockiert? → `sudo ufw status | grep 8765`
@@ -591,11 +615,13 @@ curl: (7) Failed to connect to 192.168.0.70 port 8765: Connection refused
 ### Problem: "Network is unreachable"
 
 **Symptome:**
+
 ```
 curl: (7) Failed to connect to 192.168.0.70 port 8765: Network is unreachable
 ```
 
 **Lösungen:**
+
 1. Netzwerk-Konnektivität → `ping 192.168.0.1`
 2. Gerät im selben Netz? → `ip route show`
 3. IP-Adresse statisch? → `ip addr show`
@@ -603,11 +629,13 @@ curl: (7) Failed to connect to 192.168.0.70 port 8765: Network is unreachable
 ### Problem: ngrok "Failed to authenticate"
 
 **Symptome:**
+
 ```
 Error: Failed to authenticate your account with token
 ```
 
 **Lösungen:**
+
 1. Token gültig? → ngrok Dashboard überprüfen
 2. Token neu setzen → `ngrok config add-authtoken "TOKEN"`
 3. Konfiguration → `cat ~/.ngrok2/ngrok.yml`
@@ -615,11 +643,13 @@ Error: Failed to authenticate your account with token
 ### Problem: SSH Tunnel bricht ab
 
 **Symptome:**
+
 ```
 Connection closed by remote host
 ```
 
 **Lösungen:**
+
 1. SSH-Key Test → `ssh -i ~/.ssh/id_server user@remote.host`
 2. autossh verwenden → `autossh -M 20000 -L 8765:localhost:8765 user@remote.host -N`
 3. Timeout-Werte → ServerAliveInterval in ~/.ssh/config
@@ -630,15 +660,15 @@ Connection closed by remote host
 
 ### Befehle-Übersicht
 
-| Befehl | Beschreibung |
-|--------|-------------|
-| `sudo ufw status` | Firewall-Status |
-| `sudo ufw allow 8765/tcp` | Port öffnen |
-| `ss -tlnp \| grep 8765` | Port-Status |
-| `ps aux \| grep tool_server` | Prozess überprüfen |
-| `curl http://192.168.0.70:8765/health` | Health Check |
-| `ngrok http 8765` | ngrok Tunnel |
-| `ssh -L 8765:localhost:8765 user@host -N` | SSH Tunnel |
+| Befehl                                    | Beschreibung       |
+| ----------------------------------------- | ------------------ |
+| `sudo ufw status`                         | Firewall-Status    |
+| `sudo ufw allow 8765/tcp`                 | Port öffnen        |
+| `ss -tlnp \| grep 8765`                   | Port-Status        |
+| `ps aux \| grep tool_server`              | Prozess überprüfen |
+| `curl http://192.168.0.70:8765/health`    | Health Check       |
+| `ngrok http 8765`                         | ngrok Tunnel       |
+| `ssh -L 8765:localhost:8765 user@host -N` | SSH Tunnel         |
 
 ### Externe Ressourcen
 

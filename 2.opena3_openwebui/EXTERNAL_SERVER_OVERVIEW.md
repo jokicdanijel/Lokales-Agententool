@@ -33,9 +33,11 @@
 ## 1️⃣ LAN-ZUGRIFF
 
 ### Was ist das?
+
 Lokale Geräte im gleichen Netzwerk (192.168.0.x) greifen auf den Server zu.
 
 ### Installation
+
 ```bash
 # Serverscript ist bereits vorhanden!
 # Starten mit:
@@ -43,6 +45,7 @@ python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
 ```
 
 ### Verwendung
+
 ```
 Von iPhone/Laptop im selben Netz:
 Browser → http://192.168.0.70:8765
@@ -50,16 +53,19 @@ Terminal → curl http://192.168.0.70:8765/health
 ```
 
 ### Vorteile
+
 - ✅ Instant erreichbar (<5ms)
 - ✅ Kostenlos
 - ✅ Keine externe Abhängigkeit
 - ✅ Vollständig lokal
 
 ### Nachteile
+
 - ❌ Nur lokales Netzwerk
 - ❌ Keine externen Geräte
 
 ### Setup-Zeit
+
 **5 Minuten**
 
 ---
@@ -67,9 +73,11 @@ Terminal → curl http://192.168.0.70:8765/health
 ## 2️⃣ INTERNET-ZUGRIFF (ngrok)
 
 ### Was ist das?
+
 Service, der lokalen Port über öffentliche URL weltweit erreichbar macht.
 
 ### Installation
+
 ```bash
 # 1. ngrok installieren
 brew install ngrok  # macOS
@@ -94,6 +102,7 @@ ngrok http 8765
 ```
 
 ### Verwendung
+
 ```
 Browser → https://abc123def456.ngrok.io
 Terminal → curl https://abc123def456.ngrok.io/health
@@ -101,6 +110,7 @@ Dashboard → http://127.0.0.1:4040
 ```
 
 ### Vorteile
+
 - ✅ Weltweit erreichbar
 - ✅ HTTPS verschlüsselt
 - ✅ Kostenlos (Free Tier)
@@ -108,11 +118,13 @@ Dashboard → http://127.0.0.1:4040
 - ✅ Web Dashboard für Monitoring
 
 ### Nachteile
+
 - ❌ URL ändert sich bei Neustart (Free Tier)
 - ❌ Externe Abhängigkeit
 - ❌ ~50ms Latenz
 
 ### Setup-Zeit
+
 **10-15 Minuten**
 
 ---
@@ -120,9 +132,11 @@ Dashboard → http://127.0.0.1:4040
 ## 3️⃣ SSH TUNNELING
 
 ### Was ist das?
+
 Sichere Verbindung über SSH zu Remote-Server, der lokale Services weitergeleitet.
 
 ### Installation
+
 ```bash
 # SSH ist bereits installiert
 
@@ -141,6 +155,7 @@ autossh -M 20000 -L 8765:localhost:8765 user@example.com -N
 ```
 
 ### Verwendung
+
 ```
 Nach Tunnel-Etablierung:
 Remote Terminal → curl http://localhost:8765/health
@@ -148,6 +163,7 @@ Remote Browser → http://localhost:8765
 ```
 
 ### Vorteile
+
 - ✅ Am sichersten (verschlüsselt)
 - ✅ Kostenlos
 - ✅ Zuverlässig
@@ -155,41 +171,46 @@ Remote Browser → http://localhost:8765
 - ✅ Funktioniert überall
 
 ### Nachteile
+
 - ❌ SSH-Zugriff erforderlich
 - ❌ Etwas komplexer zu konfigurieren
 - ❌ Kann bei SSH-Disconnect unterbrochen werden
 
 ### Setup-Zeit
+
 **15-20 Minuten**
 
 ---
 
 ## 📁 Dateien & Tools
 
-| Datei | Zweck | Größe |
-|-------|-------|-------|
-| `tool_server.py` | Haupt-HTTP-Server | 300 Zeilen |
-| `external_access_manager.py` | Management Tool | 400 Zeilen |
-| `setup_external_access.sh` | Interaktives Menü | 350 Zeilen |
-| `EXTERNAL_ACCESS_GUIDE.md` | Vollständige Docs | 500 Zeilen |
-| `QUICK_REFERENCE_EXTERNAL_ACCESS.md` | Quick Tips | 200 Zeilen |
-| `DEPLOYMENT_QUICK_START.md` | Ultra-Kurz | 100 Zeilen |
+| Datei                                | Zweck             | Größe      |
+| ------------------------------------ | ----------------- | ---------- |
+| `tool_server.py`                     | Haupt-HTTP-Server | 300 Zeilen |
+| `external_access_manager.py`         | Management Tool   | 400 Zeilen |
+| `setup_external_access.sh`           | Interaktives Menü | 350 Zeilen |
+| `EXTERNAL_ACCESS_GUIDE.md`           | Vollständige Docs | 500 Zeilen |
+| `QUICK_REFERENCE_EXTERNAL_ACCESS.md` | Quick Tips        | 200 Zeilen |
+| `DEPLOYMENT_QUICK_START.md`          | Ultra-Kurz        | 100 Zeilen |
 
 ---
 
 ## 🚀 Start-Befehle
 
 ### Option A: Interaktives Menü (EMPFOHLEN)
+
 ```bash
 bash setup_external_access.sh
 ```
 
 ### Option B: Direkt LAN starten
+
 ```bash
 python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
 ```
 
 ### Option C: Mit ngrok
+
 ```bash
 # Terminal 1
 python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
@@ -199,6 +220,7 @@ ngrok http 8765
 ```
 
 ### Option D: SSH Tunnel
+
 ```bash
 ssh -L 8765:localhost:8765 user@remote.host -N
 ```
@@ -233,27 +255,27 @@ ssh -L 8765:localhost:8765 user@remote.host -N
 
 ## 🆘 Häufige Probleme
 
-| Problem | Lösung |
-|---------|--------|
-| Port in Verwendung | `lsof -i :8765` dann `kill -9 PID` |
-| ngrok funktioniert nicht | `ngrok diagnose` |
-| SSH Tunnel bricht | `autossh` verwenden |
-| Firewall blockiert | `sudo ufw allow 8765/tcp` |
-| Keine LAN-Verbindung | `hostname -I` IP überprüfen |
+| Problem                  | Lösung                             |
+| ------------------------ | ---------------------------------- |
+| Port in Verwendung       | `lsof -i :8765` dann `kill -9 PID` |
+| ngrok funktioniert nicht | `ngrok diagnose`                   |
+| SSH Tunnel bricht        | `autossh` verwenden                |
+| Firewall blockiert       | `sudo ufw allow 8765/tcp`          |
+| Keine LAN-Verbindung     | `hostname -I` IP überprüfen        |
 
 ---
 
 ## 📈 Performance-Vergleich
 
-| Metrik | LAN | ngrok | SSH |
-|--------|-----|-------|-----|
-| Latenz | <5ms | ~50ms | ~20ms |
-| Uptime | 99.99% | 99.9% | 99% |
-| Setup | 5 Min | 15 Min | 20 Min |
-| Kosten | Kostenlos | Kostenlos* | Kostenlos |
-| Komplexität | Einfach | Mittel | Mittel-Komplex |
+| Metrik      | LAN       | ngrok       | SSH            |
+| ----------- | --------- | ----------- | -------------- |
+| Latenz      | <5ms      | ~50ms       | ~20ms          |
+| Uptime      | 99.99%    | 99.9%       | 99%            |
+| Setup       | 5 Min     | 15 Min      | 20 Min         |
+| Kosten      | Kostenlos | Kostenlos\* | Kostenlos      |
+| Komplexität | Einfach   | Mittel      | Mittel-Komplex |
 
-*ngrok Pro: $5-19/Monat für zusätzliche Features
+\*ngrok Pro: $5-19/Monat für zusätzliche Features
 
 ---
 

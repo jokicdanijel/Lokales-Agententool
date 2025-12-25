@@ -13,7 +13,7 @@
             color: var(--vscode-editor-foreground);
             font-size: 13px;
         }
-        
+
         .header {
             display: flex;
             align-items: center;
@@ -21,7 +21,7 @@
             padding-bottom: 10px;
             border-bottom: 1px solid var(--vscode-panel-border);
         }
-        
+
         .logo {
             width: 24px;
             height: 24px;
@@ -35,12 +35,12 @@
             font-weight: bold;
             font-size: 12px;
         }
-        
+
         .title {
             font-size: 16px;
             font-weight: 600;
         }
-        
+
         .status {
             margin-left: auto;
             padding: 4px 8px;
@@ -48,35 +48,35 @@
             font-size: 11px;
             font-weight: 500;
         }
-        
+
         .status.connected {
             background-color: var(--vscode-testing-iconPassed);
             color: white;
         }
-        
+
         .status.disconnected {
             background-color: var(--vscode-testing-iconFailed);
             color: white;
         }
-        
+
         .section {
             margin-bottom: 25px;
         }
-        
+
         .section-title {
             font-size: 14px;
             font-weight: 600;
             margin-bottom: 10px;
             color: var(--vscode-textLink-foreground);
         }
-        
+
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
             margin-bottom: 15px;
         }
-        
+
         .metric-card {
             background-color: var(--vscode-input-background);
             border: 1px solid var(--vscode-input-border);
@@ -84,19 +84,19 @@
             padding: 12px;
             text-align: center;
         }
-        
+
         .metric-value {
             font-size: 20px;
             font-weight: 600;
             color: var(--vscode-textLink-foreground);
         }
-        
+
         .metric-label {
             font-size: 11px;
             color: var(--vscode-descriptionForeground);
             margin-top: 4px;
         }
-        
+
         .button {
             background-color: var(--vscode-button-background);
             color: var(--vscode-button-foreground);
@@ -108,21 +108,21 @@
             margin: 4px;
             transition: background-color 0.2s;
         }
-        
+
         .button:hover {
             background-color: var(--vscode-button-hoverBackground);
         }
-        
+
         .button.secondary {
             background-color: var(--vscode-input-background);
             color: var(--vscode-input-foreground);
             border: 1px solid var(--vscode-input-border);
         }
-        
+
         .button.secondary:hover {
             background-color: var(--vscode-list-hoverBackground);
         }
-        
+
         .logs-container {
             background-color: var(--vscode-terminal-background);
             border: 1px solid var(--vscode-panel-border);
@@ -133,35 +133,35 @@
             font-family: 'Consolas', 'Monaco', monospace;
             font-size: 12px;
         }
-        
+
         .log-entry {
             margin-bottom: 4px;
             padding: 2px 0;
         }
-        
+
         .log-entry.info {
             color: var(--vscode-terminal-ansiBlue);
         }
-        
+
         .log-entry.error {
             color: var(--vscode-terminal-ansiRed);
         }
-        
+
         .log-entry.warn {
             color: var(--vscode-terminal-ansiYellow);
         }
-        
+
         .input-group {
             margin-bottom: 10px;
         }
-        
+
         .input-group label {
             display: block;
             margin-bottom: 4px;
             font-size: 12px;
             color: var(--vscode-input-foreground);
         }
-        
+
         .input-group input, .input-group textarea {
             width: 100%;
             padding: 8px;
@@ -172,51 +172,51 @@
             font-size: 13px;
             box-sizing: border-box;
         }
-        
+
         .input-group textarea {
             height: 80px;
             resize: vertical;
             font-family: 'Consolas', 'Monaco', monospace;
         }
-        
+
         .agents-list {
             background-color: var(--vscode-list-activeSelectionBackground);
             border: 1px solid var(--vscode-list-activeSelectionBackground);
             border-radius: 6px;
             padding: 10px;
         }
-        
+
         .agent-item {
             display: flex;
             align-items: center;
             padding: 6px 0;
             border-bottom: 1px solid var(--vscode-panel-border);
         }
-        
+
         .agent-item:last-child {
             border-bottom: none;
         }
-        
+
         .agent-status {
             width: 8px;
             height: 8px;
             border-radius: 50%;
             margin-right: 10px;
         }
-        
+
         .agent-status.online {
             background-color: #4caf50;
         }
-        
+
         .agent-status.offline {
             background-color: #f44336;
         }
-        
+
         .agent-name {
             flex-grow: 1;
             font-weight: 500;
         }
-        
+
         .agent-port {
             font-size: 11px;
             color: var(--vscode-descriptionForeground);
@@ -250,7 +250,7 @@
                 <div class="metric-label">Errors</div>
             </div>
         </div>
-        
+
         <button class="button" onclick="refreshMetrics()">🔄 Refresh</button>
         <button class="button secondary" onclick="openDashboard()">🌐 Dashboard</button>
     </div>
@@ -308,73 +308,73 @@
     <script>
         // VSCode API
         const vscode = acquireVsCodeApi();
-        
+
         // State management
         let isConnected = false;
         let currentMetrics = {};
-        
+
         // Initialize panel
         document.addEventListener('DOMContentLoaded', function() {
             initializePanel();
             setInterval(updateStatus, 5000); // Update every 5 seconds
         });
-        
+
         function initializePanel() {
             addLog('info', 'PORTIER Panel initialized');
             refreshMetrics();
             updateAgentsList();
         }
-        
+
         function updateStatus() {
             // Send message to extension to get current status
             vscode.postMessage({
                 command: 'getStatus'
             });
         }
-        
+
         function refreshMetrics() {
             vscode.postMessage({
                 command: 'getMetrics'
             });
         }
-        
+
         function analyzeCurrentFile() {
             vscode.postMessage({
                 command: 'analyzeFile'
             });
             addLog('info', 'Code analysis initiated');
         }
-        
+
         function refactorCurrentFile() {
             vscode.postMessage({
                 command: 'refactor'
             });
             addLog('info', 'Refactoring initiated');
         }
-        
+
         function explainCurrentFile() {
             vscode.postMessage({
                 command: 'explain'
             });
             addLog('info', 'Code explanation requested');
         }
-        
+
         function generateTests() {
             vscode.postMessage({
                 command: 'generateTests'
             });
             addLog('info', 'Test generation initiated');
         }
-        
+
         function executeCommand() {
             const input = document.getElementById('commandInput');
             const command = input.value.trim();
-            
+
             if (!command) {
                 addLog('error', 'Command input is empty');
                 return;
             }
-            
+
             try {
                 JSON.parse(command); // Validate JSON
                 vscode.postMessage({
@@ -386,80 +386,80 @@
                 addLog('error', `Invalid JSON: ${error.message}`);
             }
         }
-        
+
         function clearCommand() {
             document.getElementById('commandInput').value = '';
         }
-        
+
         function openDashboard() {
             vscode.postMessage({
                 command: 'openDashboard'
             });
         }
-        
+
         function updateAgentsList() {
             vscode.postMessage({
                 command: 'getAgents'
             });
         }
-        
+
         function addLog(level, message) {
             const container = document.getElementById('logsContainer');
             const entry = document.createElement('div');
             entry.className = `log-entry ${level}`;
             entry.textContent = `[${new Date().toLocaleTimeString()}] [${level.toUpperCase()}] ${message}`;
-            
+
             container.appendChild(entry);
             container.scrollTop = container.scrollHeight;
-            
+
             // Keep only last 50 log entries
             while (container.children.length > 50) {
                 container.removeChild(container.firstChild);
             }
         }
-        
+
         function clearLogs() {
             document.getElementById('logsContainer').innerHTML = '';
             addLog('info', 'Logs cleared');
         }
-        
+
         function exportLogs() {
             const logs = Array.from(document.querySelectorAll('.log-entry'))
                 .map(entry => entry.textContent)
                 .join('\\n');
-            
+
             vscode.postMessage({
                 command: 'exportLogs',
                 data: logs
             });
         }
-        
+
         // Message handling from extension
         window.addEventListener('message', event => {
             const message = event.data;
-            
+
             switch (message.command) {
                 case 'updateStatus':
                     updateConnectionStatus(message.data);
                     break;
-                    
+
                 case 'updateMetrics':
                     updateMetricsDisplay(message.data);
                     break;
-                    
+
                 case 'addLog':
                     addLog(message.level || 'info', message.message);
                     break;
-                    
+
                 case 'updateAgents':
                     updateAgentsDisplay(message.data);
                     break;
             }
         });
-        
+
         function updateConnectionStatus(status) {
             const statusElement = document.getElementById('connectionStatus');
-            
+
             if (status.connected) {
                 statusElement.textContent = 'Connected';
                 statusElement.className = 'status connected';
@@ -470,34 +470,34 @@
                 isConnected = false;
             }
         }
-        
+
         function updateMetricsDisplay(metrics) {
             currentMetrics = metrics;
-            
+
             document.getElementById('uptime').textContent = formatUptime(metrics.uptime_seconds || 0);
             document.getElementById('requests').textContent = metrics.requests_total || '0';
             document.getElementById('responseTime').textContent = `${(metrics.response_time_ms || 0).toFixed(1)}ms`;
             document.getElementById('errors').textContent = metrics.errors_total || '0';
         }
-        
+
         function updateAgentsDisplay(agents) {
             const container = document.getElementById('agentsList');
             container.innerHTML = '';
-            
+
             agents.forEach(agent => {
                 const item = document.createElement('div');
                 item.className = 'agent-item';
-                
+
                 item.innerHTML = `
                     <div class="agent-status ${agent.status === 'online' ? 'online' : 'offline'}"></div>
                     <div class="agent-name">${agent.name}</div>
                     <div class="agent-port">:${agent.port}</div>
                 `;
-                
+
                 container.appendChild(item);
             });
         }
-        
+
         function formatUptime(seconds) {
             if (seconds < 60) return `${Math.floor(seconds)}s`;
             if (seconds < 3600) return `${Math.floor(seconds / 60)}m`;

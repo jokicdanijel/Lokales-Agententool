@@ -7,7 +7,7 @@ Vollständige VSCode Extension für PORTIER 3.0 Stack Integration mit opena5_vsc
 ```
 vscode-extension/
 ├── package.json         # Extension Manifest
-├── extension.js         # Hauptlogik & Commands  
+├── extension.js         # Hauptlogik & Commands
 ├── src/
 │   └── api.js          # PORTIER API Client
 ├── media/
@@ -21,7 +21,7 @@ vscode-extension/
 # 1. Dependencies installieren
 npm install vsce -g
 
-# 2. Extension Package erstellen  
+# 2. Extension Package erstellen
 vsce package
 
 # 3. In VSCode installieren
@@ -31,7 +31,7 @@ vsce package
 ## Commands
 
 - **PORTIER: Run Command on VSCode Agent**
-- **PORTIER: Analyze Active File** 
+- **PORTIER: Analyze Active File**
 - **PORTIER: Auto-Refactor**
 - **PORTIER: Explain Code**
 - **PORTIER: Generate Unit Tests**
@@ -45,7 +45,7 @@ Die Extension verbindet sich automatisch mit opena5_vscode Agent auf Port 12348.
 ## Features
 
 - ✅ Inline CodeLens Actions
-- ✅ StatusBar Integration  
+- ✅ StatusBar Integration
 - ✅ Commands Palette
 - ✅ AI-Powered Development
 - ✅ Real-time Agent Status

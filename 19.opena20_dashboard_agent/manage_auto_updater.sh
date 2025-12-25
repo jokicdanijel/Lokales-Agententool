@@ -38,26 +38,26 @@ check_root() {
 
 install_auto_updater() {
     log "Installing opena20 Auto-Updater..."
-    
+
     # Create service user if not exists
     if ! id "$SERVICE_USER" &>/dev/null; then
         log "Creating service user: $SERVICE_USER"
         useradd --system --no-create-home --shell /bin/false "$SERVICE_USER"
     fi
-    
+
     # Create directories
     mkdir -p "$INSTALL_DIR"/{bin,config,logs,backups}
     chown -R "$SERVICE_USER:$SERVICE_USER" "$INSTALL_DIR"
-    
+
     # Copy auto-updater script
     cp "$SCRIPT_DIR/auto_updater.py" "$INSTALL_DIR/bin/"
     chmod +x "$INSTALL_DIR/bin/auto_updater.py"
-    
+
     # Copy configuration
     if [[ ! -f "$INSTALL_DIR/config/auto_update_config.json" ]]; then
         cp "$SCRIPT_DIR/auto_update_config.json" "$INSTALL_DIR/config/"
     fi
-    
+
     # Create systemd service
     cat > "/etc/systemd/system/$SERVICE_NAME.service" << EOF
 [Unit]
@@ -91,14 +91,14 @@ Environment=LOG_LEVEL=INFO
 [Install]
 WantedBy=multi-user.target
 EOF
-    
+
     # Set permissions
     chown -R "$SERVICE_USER:$SERVICE_USER" "$INSTALL_DIR"
     chmod 644 "/etc/systemd/system/$SERVICE_NAME.service"
-    
+
     # Reload systemd
     systemctl daemon-reload
-    
+
     log "Auto-updater installed successfully"
 }
 
@@ -106,9 +106,9 @@ start_service() {
     log "Starting $SERVICE_NAME service..."
     systemctl enable "$SERVICE_NAME"
     systemctl start "$SERVICE_NAME"
-    
+
     sleep 2
-    
+
     if systemctl is-active --quiet "$SERVICE_NAME"; then
         log "Service started successfully"
         systemctl status "$SERVICE_NAME" --no-pager
@@ -129,10 +129,10 @@ stop_service() {
 status_service() {
     echo "=== Service Status ==="
     systemctl status "$SERVICE_NAME" --no-pager || true
-    
+
     echo -e "\n=== Recent Logs ==="
     journalctl -u "$SERVICE_NAME" --no-pager -n 20 || true
-    
+
     echo -e "\n=== Configuration ==="
     if [[ -f "$INSTALL_DIR/config/auto_update_config.json" ]]; then
         cat "$INSTALL_DIR/config/auto_update_config.json" | jq . 2>/dev/null || cat "$INSTALL_DIR/config/auto_update_config.json"
@@ -178,7 +178,7 @@ list_backups() {
 rollback() {
     local backup_name="$1"
     log "Rolling back to backup: $backup_name"
-    
+
     if [[ -f "$INSTALL_DIR/bin/auto_updater.py" ]]; then
         sudo -u "$SERVICE_USER" python3 "$INSTALL_DIR/bin/auto_updater.py" --rollback "$backup_name" --config "$INSTALL_DIR/config/auto_update_config.json"
     else
@@ -202,24 +202,24 @@ uninstall() {
     warn "This will completely remove the auto-updater service and files"
     read -p "Are you sure? (y/N): " -n 1 -r
     echo
-    
+
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         log "Uninstalling auto-updater..."
-        
+
         # Stop and disable service
         systemctl stop "$SERVICE_NAME" 2>/dev/null || true
         systemctl disable "$SERVICE_NAME" 2>/dev/null || true
-        
+
         # Remove service file
         rm -f "/etc/systemd/system/$SERVICE_NAME.service"
         systemctl daemon-reload
-        
+
         # Remove installation directory
         rm -rf "$INSTALL_DIR"
-        
+
         # Remove service user
         userdel "$SERVICE_USER" 2>/dev/null || true
-        
+
         log "Auto-updater uninstalled successfully"
     else
         log "Uninstall cancelled"

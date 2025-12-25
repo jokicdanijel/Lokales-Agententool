@@ -6,9 +6,8 @@ Repariert und integriert alle Komponenten
 
 import subprocess
 import sys
-import time
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 
 def log_msg(icon, msg):
@@ -19,9 +18,9 @@ def log_msg(icon, msg):
 def main():
     base_path = Path(__file__).parent
 
-    print("\n" + "="*70)
+    print("\n" + "=" * 70)
     print("  🔧 OpenA3 REPAIR & INTEGRATION")
-    print("="*70 + "\n")
+    print("=" * 70 + "\n")
 
     # 1. Verifiziere Dateien
     log_msg("🔍", "Verifiziere Komponenten...")
@@ -54,15 +53,14 @@ def main():
     print()
     log_msg("🧪", "Prüfe Python-Syntax...")
 
-    py_files = list(base_path.glob("web_dashboard.py")) + \
-               list(base_path.glob("tools/voice_*.py")) + \
-               list(base_path.glob("src/speech_input.py"))
+    py_files = (
+        list(base_path.glob("web_dashboard.py"))
+        + list(base_path.glob("tools/voice_*.py"))
+        + list(base_path.glob("src/speech_input.py"))
+    )
 
     for py_file in py_files:
-        result = subprocess.run(
-            [sys.executable, "-m", "py_compile", str(py_file)],
-            capture_output=True
-        )
+        result = subprocess.run([sys.executable, "-m", "py_compile", str(py_file)], capture_output=True)
         if result.returncode == 0:
             log_msg("✅", f"{py_file.name}: OK")
         else:
@@ -97,7 +95,7 @@ def main():
 
     for port, service in ports.items():
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        result = sock.connect_ex(('127.0.0.1', port))
+        result = sock.connect_ex(("127.0.0.1", port))
         sock.close()
 
         if result == 0:
@@ -106,9 +104,9 @@ def main():
             log_msg("⚠️ ", f"{service} ({port}): frei")
 
     # 5. Status Report
-    print("\n" + "="*70)
+    print("\n" + "=" * 70)
     print("  📊 INTEGRATION STATUS")
-    print("="*70)
+    print("=" * 70)
 
     print("\n✅ REPARATUR:")
     print("   • Alle Dateien vorhanden")
@@ -135,17 +133,14 @@ def main():
     print("   • python3 tools/voice_transcriber.py")
     print("   • python3 tools/voice_scheduler.py")
 
-    print("\n" + "="*70)
+    print("\n" + "=" * 70)
     print("  🎉 ALLES REPARIERT & INTEGRIERT ✅")
-    print("="*70)
+    print("=" * 70)
     print("\n🚀 Starte Web Dashboard...\n")
 
     # 6. Starte Dashboard
     try:
-        subprocess.run(
-            [sys.executable, str(base_path / "web_dashboard.py")],
-            cwd=str(base_path)
-        )
+        subprocess.run([sys.executable, str(base_path / "web_dashboard.py")], cwd=str(base_path))
     except KeyboardInterrupt:
         log_msg("👋", "Shutdown...")
 

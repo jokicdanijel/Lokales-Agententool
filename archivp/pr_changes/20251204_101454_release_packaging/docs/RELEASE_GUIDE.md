@@ -1,7 +1,7 @@
 # PORTIER 3.0 - Release Guide
 
-**Document Version:** 1.0  
-**Last Updated:** 2025-12-02  
+**Document Version:** 1.0
+**Last Updated:** 2025-12-02
 **Maintainer:** Danijel Jokic
 
 ---
@@ -35,9 +35,9 @@ The release package is designed to:
 ### Excluded from Release
 
 - ❌ Virtual environments (.venv, venv)
-- ❌ Python cache (\_\_pycache\_\_, *.pyc)
-- ❌ Log files (*.log, logs/)
-- ❌ Database files (*.db, *.sqlite)
+- ❌ Python cache (\_\_pycache\_\_, \*.pyc)
+- ❌ Log files (\*.log, logs/)
+- ❌ Database files (_.db, _.sqlite)
 - ❌ Git history (.git/)
 - ❌ Backup files
 - ❌ Broken/deprecated components
@@ -81,6 +81,7 @@ bash bin/prepare_release.sh v1.0.0
 ```
 
 The script will:
+
 1. Clean up any previous release directory
 2. Copy all essential service directories
 3. Copy core infrastructure (bin, scripts, configs)
@@ -193,6 +194,7 @@ bash setup.sh
 ```
 
 The setup script will:
+
 - Create Python virtual environment
 - Install all dependencies
 - Set up directory structure
@@ -281,6 +283,7 @@ sha256sum -c portier-v1.0.0.tar.gz.sha256
 ### Issue: Checksum Verification Fails
 
 **Solution:**
+
 ```bash
 # Re-download the file
 # Ensure no corruption during download
@@ -292,6 +295,7 @@ cat portier-v1.0.0.tar.gz.sha256
 ### Issue: Setup Script Fails
 
 **Solution:**
+
 ```bash
 # Check Python version (requires 3.11+)
 python3 --version
@@ -306,6 +310,7 @@ bash -x setup.sh
 ### Issue: Missing Dependencies
 
 **Solution:**
+
 ```bash
 # Activate virtual environment
 source .venv/bin/activate
@@ -317,6 +322,7 @@ pip install -r requirements.txt
 ### Issue: Port Conflicts
 
 **Solution:**
+
 ```bash
 # Check which ports are in use
 bash bin/check_ports.sh
@@ -391,6 +397,6 @@ For issues with the release package:
 
 ---
 
-**Document Version:** 1.0  
-**Last Updated:** 2025-12-02  
+**Document Version:** 1.0
+**Last Updated:** 2025-12-02
 **Next Review:** 2026-01-02

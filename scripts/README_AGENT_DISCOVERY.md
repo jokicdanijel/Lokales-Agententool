@@ -14,7 +14,7 @@ Scannt alle 21 Agent-Ordner rekursiv und extrahiert:
 
 - **Dateien**: SHA256, Größe, Typ
 - **Python**: Imports, Endpoints, Ports, Agent-Refs (via AST)
-- **HTML**: data-* Attribute, Ports, Agent-Refs
+- **HTML**: data-\* Attribute, Ports, Agent-Refs
 - **Config**: Ports, Agent-Refs (JSON/YAML/ENV)
 
 ## Validierungen

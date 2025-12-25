@@ -1,7 +1,7 @@
 # opena8 WhatsApp Chatbot Agent
 
-**Port:** 12351  
-**Component:** WhatsApp Business API Integration  
+**Port:** 12351
+**Component:** WhatsApp Business API Integration
 **Protocol:** FastAPI + Meta Webhooks + Async HTTPX
 
 ---
@@ -9,6 +9,7 @@
 ## Overview
 
 **opena8** is a high-performance WhatsApp automation agent that:
+
 - ✅ Receives inbound messages via Meta Webhook (verified and deduped)
 - ✅ Classifies messages (sentiment, urgency, language: DE/EN)
 - ✅ Sends outbound text + media messages (image, document, audio, video)
@@ -119,6 +120,7 @@ curl http://127.0.0.1:12351/health | jq .
 ```
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -136,6 +138,7 @@ bash scripts/register_opena8.sh
 ```
 
 **Output:**
+
 ```
 ✅ opena8 (WhatsApp Agent) registered successfully!
    Route: opena8@12351
@@ -147,28 +150,38 @@ bash scripts/register_opena8.sh
 **Meta sends POST to:** `https://your-domain.com/webhook`
 
 **Example webhook payload:**
+
 ```json
 {
-  "entry": [{
-    "changes": [{
-      "value": {
-        "messages": [{
-          "id": "wamid.HBEUxxxxxxxxxxx",
-          "from": "49123456789",
-          "timestamp": "1699500000",
-          "type": "text",
-          "text": {"body": "Hello, need help urgently!"}
-        }],
-        "contacts": [{
-          "profile": {"name": "John Doe"}
-        }]
-      }
-    }]
-  }]
+  "entry": [
+    {
+      "changes": [
+        {
+          "value": {
+            "messages": [
+              {
+                "id": "wamid.HBEUxxxxxxxxxxx",
+                "from": "49123456789",
+                "timestamp": "1699500000",
+                "type": "text",
+                "text": { "body": "Hello, need help urgently!" }
+              }
+            ],
+            "contacts": [
+              {
+                "profile": { "name": "John Doe" }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
 }
 ```
 
 **opena8 processes:**
+
 - ✅ Parses message structure
 - ✅ Classifies: sentiment=URGENT, urgency=9, language=EN
 - ✅ Archives as Safepoint to opena2
@@ -187,6 +200,7 @@ curl -X POST http://127.0.0.1:12351/send \
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -215,16 +229,16 @@ curl -X POST http://127.0.0.1:12351/send \
 
 ### Endpoints
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/health` | GET | Health check (opena2/opena1 status) |
-| `/webhook` | GET | Webhook verification (Meta) |
-| `/webhook` | POST | Inbound message handler (Meta) |
-| `/send` | POST | Send message/media |
-| `/run` | POST | Generic action (ingest, send, etc.) |
-| `/metrics` | GET | Prometheus metrics |
-| `/api/status` | GET | Agent status |
-| `/` | GET | API info |
+| Endpoint      | Method | Description                         |
+| ------------- | ------ | ----------------------------------- |
+| `/health`     | GET    | Health check (opena2/opena1 status) |
+| `/webhook`    | GET    | Webhook verification (Meta)         |
+| `/webhook`    | POST   | Inbound message handler (Meta)      |
+| `/send`       | POST   | Send message/media                  |
+| `/run`        | POST   | Generic action (ingest, send, etc.) |
+| `/metrics`    | GET    | Prometheus metrics                  |
+| `/api/status` | GET    | Agent status                        |
+| `/`           | GET    | API info                            |
 
 ### Message Types
 
@@ -332,6 +346,7 @@ curl http://127.0.0.1:12351/metrics | grep whatsapp
 ```
 
 **Exported Metrics:**
+
 - `whatsapp_in_total` — Inbound messages by type
 - `whatsapp_out_total` — Outbound messages by type
 - `whatsapp_errors_total` — Errors by category (webhook_parse, send_failed, etc.)
@@ -340,6 +355,7 @@ curl http://127.0.0.1:12351/metrics | grep whatsapp
 ### Logging
 
 **Log files:**
+
 - `logs/opena8.nohup.log` — stdout/stderr (if started via nohup)
 - `logs/opena8/` — Structured logs (if enabled)
 
@@ -398,28 +414,28 @@ spec:
         app: opena8
     spec:
       containers:
-      - name: opena8
-        image: registry.example.com/opena8:latest
-        ports:
-        - containerPort: 12351
-        env:
-        - name: META_ACCESS_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: meta-secrets
-              key: access_token
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 12351
-          initialDelaySeconds: 10
-          periodSeconds: 30
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 12351
-          initialDelaySeconds: 5
-          periodSeconds: 10
+        - name: opena8
+          image: registry.example.com/opena8:latest
+          ports:
+            - containerPort: 12351
+          env:
+            - name: META_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: meta-secrets
+                  key: access_token
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 12351
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 12351
+            initialDelaySeconds: 5
+            periodSeconds: 10
 ```
 
 ---
@@ -448,6 +464,7 @@ spec:
 **Symptom:** Health check shows `meta_api_connected: false`
 
 **Solution:**
+
 ```bash
 # 1. Verify credentials
 grep META_ACCESS_TOKEN 8.opena8_whatsapp/.env
@@ -465,6 +482,7 @@ curl -H "Authorization: Bearer $TOKEN" \
 **Symptom:** No messages appear in logs after sending WhatsApp message
 
 **Solution:**
+
 ```bash
 # 1. Verify webhook URL in Meta dashboard
 # → WhatsApp > API Setup > Webhook URL
@@ -487,6 +505,7 @@ curl -v https://your-domain.com/webhook
 **Symptom:** Safepoints not appearing in opena2 archive
 
 **Solution:**
+
 ```bash
 # 1. Verify opena2 is running
 curl http://127.0.0.1:12345/health
@@ -532,6 +551,7 @@ pytest tests/test_whatsapp_service.py -v
 ```
 
 **Coverage:**
+
 - `TestHealthEndpoints` — Health response structure
 - `TestMessageClassifier` — Sentiment, language, allowlist
 - `TestMediaHandler` — Size validation, SHA256
@@ -592,6 +612,6 @@ For issues, feature requests, or documentation improvements:
 
 ---
 
-**Last Updated:** 2025-11-10  
-**Maintained by:** ELION Team  
+**Last Updated:** 2025-11-10
+**Maintained by:** ELION Team
 **Status:** Production Ready ✅

@@ -1,10 +1,10 @@
 2025-12-18 20:10:26,080 [INFO] opena12: Loaded 7 posts from queue
-/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/11.opena12_social_media/main_socialmedia_agent.py:600: DeprecationWarning: 
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/11.opena12_social_media/main_socialmedia_agent.py:600: DeprecationWarning:
         on_event is deprecated, use lifespan event handlers instead.
 
         Read more about it in the
         [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
-        
+
   @app.on_event("startup")
 2025-12-18 20:10:26,088 [INFO] opena12: 🚀 Starting opena12 (smp) on 127.0.0.1:12357
 INFO:     Started server process [218436]

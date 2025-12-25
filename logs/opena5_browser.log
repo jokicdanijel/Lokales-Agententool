@@ -1,17 +1,17 @@
 nohup: Eingabe wird ignoriert
-/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena5_browser.py:80: DeprecationWarning: 
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena5_browser.py:80: DeprecationWarning:
         on_event is deprecated, use lifespan event handlers instead.
 
         Read more about it in the
         [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
-        
+
   @app.on_event("startup")
-/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena5_browser.py:92: DeprecationWarning: 
+/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena5_browser.py:92: DeprecationWarning:
         on_event is deprecated, use lifespan event handlers instead.
 
         Read more about it in the
         [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
-        
+
   @app.on_event("shutdown")
 INFO:__main__:🚀 Starting opena5_Browser on port 12353
 INFO:     Started server process [2851644]

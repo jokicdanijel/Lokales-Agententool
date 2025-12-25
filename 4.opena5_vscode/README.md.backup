@@ -1,10 +1,10 @@
 # 💻 opena5 - VS Code Programmier-Bridge
 
-**Agent-ID:** `opena5`  
-**Port:** 12351  
-**Kürzel:** `vscop`  
-**Status:** ✅ RUNNING (PID: siehe logs/opena5.pid)  
-**Version:** 2.0  
+**Agent-ID:** `opena5`
+**Port:** 12351
+**Kürzel:** `vscop`
+**Status:** ✅ RUNNING (PID: siehe logs/opena5.pid)
+**Version:** 2.0
 **Status:** ✅ Production
 
 ---
@@ -191,5 +191,5 @@ curl http://127.0.0.1:12347/metrics
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 27. November 2025

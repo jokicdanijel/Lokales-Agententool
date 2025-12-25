@@ -29,6 +29,7 @@ Currently no authentication required (local development only).
 **Description:** Check server status
 
 **Response:**
+
 ```json
 {
   "status": "healthy",
@@ -39,6 +40,7 @@ Currently no authentication required (local development only).
 ```
 
 **Example:**
+
 ```bash
 curl http://localhost:8001/health
 ```
@@ -52,6 +54,7 @@ curl http://localhost:8001/health
 **Description:** Get available AI models
 
 **Response:**
+
 ```json
 {
   "object": "list",
@@ -67,6 +70,7 @@ curl http://localhost:8001/health
 ```
 
 **Example:**
+
 ```bash
 curl http://localhost:8001/v1/models
 ```
@@ -80,6 +84,7 @@ curl http://localhost:8001/v1/models
 **Description:** Send chat message and get AI response
 
 **Request Body:**
+
 ```json
 {
   "messages": [
@@ -92,6 +97,7 @@ curl http://localhost:8001/v1/models
 ```
 
 **Response:**
+
 ```json
 {
   "id": "chatcmpl-abc123",
@@ -112,6 +118,7 @@ curl http://localhost:8001/v1/models
 ```
 
 **Example:**
+
 ```bash
 curl -X POST http://localhost:8001/v1/chat/completions \
   -H "Content-Type: application/json" \
@@ -131,6 +138,7 @@ curl -X POST http://localhost:8001/v1/chat/completions \
 **Description:** Get Prometheus-compatible metrics
 
 **Response:**
+
 ```
 # HELP http_requests_total Total HTTP requests
 # TYPE http_requests_total counter
@@ -142,6 +150,7 @@ sandbox_files 5
 ```
 
 **Example:**
+
 ```bash
 curl http://localhost:8001/metrics
 ```
@@ -159,6 +168,7 @@ LocalAgent-Pro automatically detects tool calls in user messages.
 **Trigger:** Keywords: "erstelle", "write", "create"
 
 **Example:**
+
 ```json
 {
   "messages": [
@@ -171,6 +181,7 @@ LocalAgent-Pro automatically detects tool calls in user messages.
 ```
 
 **Response:**
+
 ```json
 {
   "choices": [
@@ -188,6 +199,7 @@ LocalAgent-Pro automatically detects tool calls in user messages.
 **Trigger:** Keywords: "lies", "read"
 
 **Example:**
+
 ```json
 {
   "messages": [
@@ -200,6 +212,7 @@ LocalAgent-Pro automatically detects tool calls in user messages.
 ```
 
 **Response:**
+
 ```json
 {
   "choices": [
@@ -217,6 +230,7 @@ LocalAgent-Pro automatically detects tool calls in user messages.
 **Trigger:** Keywords: "lösche", "delete"
 
 **Example:**
+
 ```json
 {
   "messages": [
@@ -233,6 +247,7 @@ LocalAgent-Pro automatically detects tool calls in user messages.
 **Trigger:** Keywords: "führe aus", "execute", "command"
 
 **Example:**
+
 ```json
 {
   "messages": [
@@ -245,6 +260,7 @@ LocalAgent-Pro automatically detects tool calls in user messages.
 ```
 
 **Whitelisted Commands:**
+
 - `ls`, `cat`, `grep`, `echo`, `pwd`, `date`, `whoami`, `uname`
 
 #### 5. fetch_webpage
@@ -252,6 +268,7 @@ LocalAgent-Pro automatically detects tool calls in user messages.
 **Trigger:** Keywords: "hole", "fetch", URLs starting with "http"
 
 **Example:**
+
 ```json
 {
   "messages": [
@@ -264,6 +281,7 @@ LocalAgent-Pro automatically detects tool calls in user messages.
 ```
 
 **Whitelisted Domains:**
+
 - `example.com`, `api.github.com`, `httpbin.org`
 
 ---
@@ -329,6 +347,7 @@ LocalAgent-Pro automatically detects tool calls in user messages.
 Currently no rate limiting (local development).
 
 **Production:** Implement rate limiting:
+
 - 100 requests/minute per IP
 - 1000 requests/hour per API key
 
@@ -339,6 +358,7 @@ Currently no rate limiting (local development).
 ### Sandbox Isolation
 
 All file operations are restricted to:
+
 ```
 ~/localagent_sandbox/
 ```
@@ -346,6 +366,7 @@ All file operations are restricted to:
 ### Command Whitelisting
 
 Only whitelisted commands allowed:
+
 ```yaml
 - ls, cat, grep, echo, pwd, date, whoami, uname
 ```
@@ -353,6 +374,7 @@ Only whitelisted commands allowed:
 ### Domain Whitelisting
 
 Only whitelisted domains accessible:
+
 ```yaml
 - example.com
 - api.github.com
@@ -362,6 +384,7 @@ Only whitelisted domains accessible:
 ### Request Deduplication
 
 MD5-based caching prevents duplicate requests:
+
 - Cache size: 1000 requests
 - Detection: MD5 hash of request JSON
 
@@ -390,17 +413,15 @@ print(response.json())
 ### JavaScript Client
 
 ```javascript
-fetch('http://localhost:8001/v1/chat/completions', {
-  method: 'POST',
-  headers: {'Content-Type': 'application/json'},
+fetch("http://localhost:8001/v1/chat/completions", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
-    messages: [
-      {role: 'user', content: 'Hallo!'}
-    ]
-  })
+    messages: [{ role: "user", content: "Hallo!" }],
+  }),
 })
-.then(res => res.json())
-.then(data => console.log(data));
+  .then((res) => res.json())
+  .then((data) => console.log(data));
 ```
 
 ### Curl Examples
@@ -435,11 +456,13 @@ curl -X POST http://localhost:8001/v1/chat/completions \
 **Planned:** Real-time streaming responses
 
 ```javascript
-const ws = new WebSocket('ws://localhost:8001/v1/chat/stream');
+const ws = new WebSocket("ws://localhost:8001/v1/chat/stream");
 
-ws.send(JSON.stringify({
-  messages: [{role: 'user', content: 'Hallo!'}]
-}));
+ws.send(
+  JSON.stringify({
+    messages: [{ role: "user", content: "Hallo!" }],
+  }),
+);
 
 ws.onmessage = (event) => {
   console.log(JSON.parse(event.data));
@@ -451,6 +474,7 @@ ws.onmessage = (event) => {
 ## Changelog
 
 ### v1.0.0 (2025-11-21)
+
 - Initial release
 - Chat completions
 - Tool calling (file ops, shell, web)

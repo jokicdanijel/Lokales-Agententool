@@ -158,7 +158,7 @@ ollama:
 sandbox:
   enabled: true
   base_dir: ~/localagent_sandbox
-  max_file_size: 10485760  # 10 MB
+  max_file_size: 10485760 # 10 MB
 
 security:
   shell_whitelist:

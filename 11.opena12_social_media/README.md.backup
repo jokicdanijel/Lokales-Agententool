@@ -1,9 +1,9 @@
 # 📱 opena12 - Social Media Automation
 
-**Agent-ID:** `opena12`  
-**Port:** 12357  
-**Kürzel:** `smp`  
-**Version:** 2.0  
+**Agent-ID:** `opena12`
+**Port:** 12357
+**Kürzel:** `smp`
+**Version:** 2.0
 **Status:** ✅ RUNNING (PID: siehe logs/opena12.pid)
 
 ---
@@ -196,5 +196,5 @@ curl http://127.0.0.1:12357/metrics
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 27. November 2025

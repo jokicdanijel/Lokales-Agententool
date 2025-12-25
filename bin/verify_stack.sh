@@ -22,9 +22,9 @@ FAILED=0
 echo "📍 Health Checks:"
 for service in "${SERVICES[@]}"; do
     IFS=':' read -r name port endpoint <<< "$service"
-    
+
     url="http://127.0.0.1:${port}${endpoint}"
-    
+
     if response=$(curl -s -f "$url" 2>&1); then
         echo "  ✅ $name ($port) — OK"
         ((PASSED++))
@@ -57,7 +57,7 @@ INDEX_FILE="$ARCHIVP_STORE/index.jsonl"
 if [ -f "$INDEX_FILE" ]; then
     count=$(wc -l < "$INDEX_FILE")
     echo "  ✅ Index: $count safepoints"
-    
+
     latest_dir=$(find "$ARCHIVP_STORE" -type d -name "[0-9][0-9]" | sort -r | head -1)
     if [ -n "$latest_dir" ]; then
         latest_count=$(find "$latest_dir" -name "SP*.json" 2>/dev/null | wc -l)
@@ -73,7 +73,7 @@ echo ""
 echo "📍 Environment:"
 if [ -f ".env" ]; then
     echo "  ✅ .env file present"
-    
+
     if grep -q "OPENAI_API_KEY=" .env; then
         echo "  ✅ OPENAI_API_KEY configured"
     else

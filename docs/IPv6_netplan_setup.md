@@ -1,8 +1,8 @@
 # IPv6 Configuration with Netplan — Setup & Operations Guide
 
-**Author:** Danijel (ELION Infrastructure)  
-**Date:** 2025-12-17  
-**Status:** Production  
+**Author:** Danijel (ELION Infrastructure)
+**Date:** 2025-12-17
+**Status:** Production
 **Scope:** Ubuntu 25.04 | Netplan v2 | Hetzner Cloud
 
 ---
@@ -12,6 +12,7 @@
 This guide documents the persistent IPv6 configuration for ELION Hyper-Dashboard infrastructure using Netplan. All changes survive system reboots and integrate with NetworkManager for seamless management.
 
 **Current Setup:**
+
 - **Server:** Hetzner Cloud (AS24940)
 - **IPv6 Address:** `2a01:4f9:c01f:e01b::1/64`
 - **Interface:** `enp0s25` (primary Ethernet)
@@ -36,6 +37,7 @@ ip link show
 ```
 
 **Actions:**
+
 - Note the interface name (e.g., `enp0s25`)
 - Verify MAC address matches your provider's records
 - Do NOT assume `eth0` (may not exist on modern Ubuntu)
@@ -47,11 +49,13 @@ ip link show
 ### Requesting IPv6 from Hetzner
 
 Contact **abuse@hetzner.com** with:
+
 - Server ID / IP: `77.42.23.168`
 - Request: IPv6 /64 subnet
 - Use case: ELION multi-agent dashboard
 
 **Hetzner Provides:**
+
 - Prefix: `2a01:4f9:c01f:e01b::/64`
 - Routable IPs: `2a01:4f9:c01f:e01b::1` through `2a01:4f9:c01f:e01b::ffff:ffff:ffff:ffff`
 - Gateway: Typically first usable in range (provided by Hetzner)
@@ -167,6 +171,7 @@ ip -6 addr show dev enp0s25
 ```
 
 **Key Status Indicators:**
+
 - `scope global` = Globally routable ✅
 - `noprefixroute` = Persistent (managed by Netplan) ✅
 - `valid_lft forever` = No expiration ✅
@@ -259,6 +264,7 @@ chmod +x /tmp/check_ipv6_persistence.sh
 **Contact:** abuse@hetzner.com
 
 **Email Template:**
+
 ```
 Subject: PTR Record Setup for IPv6 Address
 
@@ -427,17 +433,20 @@ sudo netplan apply
 ## 11. Next Steps
 
 ### Phase 1: Completion ✅
+
 - [x] IPv6 address added to interface
 - [x] Netplan configuration applied
 - [x] Local ping test passed
 - [x] Persistence validated
 
 ### Phase 2: DNS (Pending)
+
 - [ ] Contact Hetzner for PTR setup (see Section 7)
 - [ ] Verify reverse DNS resolution
 - [ ] Validate FCrDNS (forward/reverse match)
 
 ### Phase 3: Production Validation
+
 - [ ] Enable IPv6 on dashboard (`/api/status/all` returns IPv6 info)
 - [ ] Test mail delivery with IPv6 source
 - [ ] Monitor for connection drops
@@ -453,6 +462,6 @@ sudo netplan apply
 
 ---
 
-**Last Updated:** 2025-12-17  
-**Maintainer:** Danijel (ELION Infrastructure)  
+**Last Updated:** 2025-12-17
+**Maintainer:** Danijel (ELION Infrastructure)
 **Status:** Production Ready ✅

@@ -2,6 +2,7 @@
 """
 opena3 Test Configuration
 """
+
 import sys
 from pathlib import Path
 

@@ -54,7 +54,7 @@ We appreciate the community's interest in identifying potential vulnerabilities.
 
 7. **Default Configuration Testing**: All vulnerability reports MUST be tested and reproducible using Open WebUI's out-of-the-box default configuration. Claims of vulnerabilities that only manifest with explicitly weakened security settings may be discarded, unless they are covered by the following exception:
 
-> [!NOTE]  
+> [!NOTE]
 > **Note**: If you believe you have found a security issue that
 >
 > 1. affects default configurations, **or**

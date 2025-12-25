@@ -1,7 +1,7 @@
 # 📊 Service-Matrix - ELION Hyper-Dashboard / Portier System
 
-**Version:** 2.0  
-**Stand:** 21. November 2025  
+**Version:** 2.0
+**Stand:** 21. November 2025
 **Status:** ✅ Produktiv
 
 ---
@@ -40,55 +40,58 @@
 
 ## 📋 Haupt-Services (Core-Infrastruktur)
 
-| Port | Service | Rolle | program_target | API-Endpoint | Status |
-|------|---------|-------|----------------|--------------|--------|
-| **3000** | **OpenWebUI** | UI Frontend (KEIN Backend!) | - | - | ✅ Online |
-| **12344** | **Portier** | Koordinator/Dispatcher | `portierp` | `/route/update`, `/dispatch/kordp` | ✅ Online |
-| **12345** | **OpenA2** | Archivator/JSONL Safepoints | `archp` | `/store/archivp`, `/query/archivp` | ✅ Online |
-| **12346** | **Telegram** | Messaging ChatOps | `telep` | `/send_message`, `/poll_updates` | ✅ Online |
-| **12348** | **Inference** | Llama2/Ollama ChatCompletion | `inferp` | `/chat/completions` | ✅ Online |
+| Port      | Service       | Rolle                        | program_target | API-Endpoint                       | Status    |
+| --------- | ------------- | ---------------------------- | -------------- | ---------------------------------- | --------- |
+| **3000**  | **OpenWebUI** | UI Frontend (KEIN Backend!)  | -              | -                                  | ✅ Online |
+| **12344** | **Portier**   | Koordinator/Dispatcher       | `portierp`     | `/route/update`, `/dispatch/kordp` | ✅ Online |
+| **12345** | **OpenA2**    | Archivator/JSONL Safepoints  | `archp`        | `/store/archivp`, `/query/archivp` | ✅ Online |
+| **12346** | **Telegram**  | Messaging ChatOps            | `telep`        | `/send_message`, `/poll_updates`   | ✅ Online |
+| **12348** | **Inference** | Llama2/Ollama ChatCompletion | `inferp`       | `/chat/completions`                | ✅ Online |
 
 ---
 
 ## 🔢 Pool-Services (Skalierbare Agents, 12349–12368)
 
-| Port | Service | program_target | Rolle | Status |
-|------|---------|----------------|-------|--------|
-| **12349** | agent01 | `agent01p` | Template-basierter Service | 📋 Template |
-| **12350** | agent02 (Mini-Orchestrator) | `miniorchp` | Interner Agent-Manager (Mail, Browser, Workflow) | ✅ Online |
-| **12351** | agent03 | `agent03p` | Template-basierter Service | 📋 Template |
-| **12352** | agent04 | `agent04p` | Template-basierter Service | 📋 Template |
-| **12353** | agent05 | `agent05p` | Template-basierter Service | 📋 Template |
-| **12354** | agent06 | `agent06p` | Template-basierter Service | 📋 Template |
-| **12355** | agent07 | `agent07p` | Template-basierter Service | 📋 Template |
-| **12356** | agent08 | `agent08p` | Template-basierter Service | 📋 Template |
-| **12357** | agent09 | `agent09p` | Template-basierter Service | 📋 Template |
-| **12358** | agent10 | `agent10p` | Template-basierter Service | 📋 Template |
-| **12359** | agent11 | `agent11p` | Template-basierter Service | 📋 Template |
-| **12360** | agent12 | `agent12p` | Template-basierter Service | 📋 Template |
-| **12361** | agent13 | `agent13p` | Template-basierter Service | 📋 Template |
-| **12362** | agent14 | `agent14p` | Template-basierter Service | 📋 Template |
-| **12363** | agent15 | `agent15p` | Template-basierter Service | 📋 Template |
-| **12364** | agent16 | `agent16p` | Template-basierter Service | 📋 Template |
-| **12365** | agent17 | `agent17p` | Template-basierter Service | 📋 Template |
-| **12366** | agent18 | `agent18p` | Template-basierter Service | 📋 Template |
-| **12367** | agent19 | `agent19p` | Template-basierter Service | 📋 Template |
-| **12368** | agent20 | `agent20p` | Template-basierter Service | 📋 Template |
+| Port      | Service                     | program_target | Rolle                                            | Status      |
+| --------- | --------------------------- | -------------- | ------------------------------------------------ | ----------- |
+| **12349** | agent01                     | `agent01p`     | Template-basierter Service                       | 📋 Template |
+| **12350** | agent02 (Mini-Orchestrator) | `miniorchp`    | Interner Agent-Manager (Mail, Browser, Workflow) | ✅ Online   |
+| **12351** | agent03                     | `agent03p`     | Template-basierter Service                       | 📋 Template |
+| **12352** | agent04                     | `agent04p`     | Template-basierter Service                       | 📋 Template |
+| **12353** | agent05                     | `agent05p`     | Template-basierter Service                       | 📋 Template |
+| **12354** | agent06                     | `agent06p`     | Template-basierter Service                       | 📋 Template |
+| **12355** | agent07                     | `agent07p`     | Template-basierter Service                       | 📋 Template |
+| **12356** | agent08                     | `agent08p`     | Template-basierter Service                       | 📋 Template |
+| **12357** | agent09                     | `agent09p`     | Template-basierter Service                       | 📋 Template |
+| **12358** | agent10                     | `agent10p`     | Template-basierter Service                       | 📋 Template |
+| **12359** | agent11                     | `agent11p`     | Template-basierter Service                       | 📋 Template |
+| **12360** | agent12                     | `agent12p`     | Template-basierter Service                       | 📋 Template |
+| **12361** | agent13                     | `agent13p`     | Template-basierter Service                       | 📋 Template |
+| **12362** | agent14                     | `agent14p`     | Template-basierter Service                       | 📋 Template |
+| **12363** | agent15                     | `agent15p`     | Template-basierter Service                       | 📋 Template |
+| **12364** | agent16                     | `agent16p`     | Template-basierter Service                       | 📋 Template |
+| **12365** | agent17                     | `agent17p`     | Template-basierter Service                       | 📋 Template |
+| **12366** | agent18                     | `agent18p`     | Template-basierter Service                       | 📋 Template |
+| **12367** | agent19                     | `agent19p`     | Template-basierter Service                       | 📋 Template |
+| **12368** | agent20                     | `agent20p`     | Template-basierter Service                       | 📋 Template |
 
 ---
 
 ## 🔌 Port-Policy (erweitert)
 
 ### ✅ **Erlaubte Ports:**
+
 - **12344-12399:** Backend Services (Microservices, Agents, Tools)
 - **3000:** UI (OpenWebUI) - **NUR Frontend, KEIN Backend-Prozess**
 
 ### ❌ **Verbotene Ports:**
+
 - **< 12344:** Ungültig für Backend-Services
 - **8080:** Historisch verboten (Portier/ELION-Legacy-Konflikt)
 - **3000 als Backend:** UI-Port darf NIEMALS Backend-Logik hosten
 
 ### 🔓 **Reserviert:**
+
 - **12369-12399:** Zukünftige Erweiterungen (31 Slots verfügbar)
 
 ---
@@ -116,9 +119,10 @@ Client/UI (3000)
 ```
 
 ### **Verbotene Kommunikation:**
-❌ `UI → Service` (direkt)  
-❌ `Service → Service` (ohne Portier)  
-❌ `Service → OpenA2` (ohne Portier)  
+
+❌ `UI → Service` (direkt)
+❌ `Service → Service` (ohne Portier)
+❌ `Service → OpenA2` (ohne Portier)
 ❌ `UI → OpenA2` (direkt)
 
 ---
@@ -138,6 +142,7 @@ Client/UI (3000)
 ```
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -165,6 +170,7 @@ Client/UI (3000)
 ```
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -188,13 +194,14 @@ Client/UI (3000)
   "kind": "CMD",
   "body": {
     "action": "send_message",
-    "params": {"chat_id": 12345, "message": "Test"}
+    "params": { "chat_id": 12345, "message": "Test" }
   },
   "strict": true
 }
 ```
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -212,15 +219,14 @@ Client/UI (3000)
 ```json
 {
   "model": "llama2",
-  "messages": [
-    {"role": "user", "content": "Hello, how are you?"}
-  ],
+  "messages": [{ "role": "user", "content": "Hello, how are you?" }],
   "max_tokens": 50,
   "temperature": 0.7
 }
 ```
 
 **Response:**
+
 ```json
 {
   "id": "chatcmpl-123",
@@ -244,11 +250,11 @@ Client/UI (3000)
 
 ## ⚡ Performance-Metriken (Load-Test-Ergebnisse)
 
-| Szenario | Services | Throughput | Latenz (P95) | Status |
-|----------|----------|------------|--------------|--------|
-| **4 Services** | Portier + OpenA2 + Telegram + Inference | ~24.55 req/s | ~160ms | ✅ Getestet |
-| **Inference-Only** | Llama2 ChatCompletion | ~0.87 req/s | ~1150ms (GPU-bound) | ✅ Getestet |
-| **20 Services** | Full Pool Active | ~27.74 req/s | ~720ms | 📋 Geplant |
+| Szenario           | Services                                | Throughput   | Latenz (P95)        | Status      |
+| ------------------ | --------------------------------------- | ------------ | ------------------- | ----------- |
+| **4 Services**     | Portier + OpenA2 + Telegram + Inference | ~24.55 req/s | ~160ms              | ✅ Getestet |
+| **Inference-Only** | Llama2 ChatCompletion                   | ~0.87 req/s  | ~1150ms (GPU-bound) | ✅ Getestet |
+| **20 Services**    | Full Pool Active                        | ~27.74 req/s | ~720ms              | 📋 Geplant  |
 
 **Load-Test-Script:** `scripts/load_test_20_services.py`
 
@@ -257,12 +263,14 @@ Client/UI (3000)
 ## 🔐 Sicherheit & Authentifizierung
 
 ### **Security-Layer:**
+
 1. ✅ **Bearer-Token-Validierung** für alle Endpoints außer `/health`
 2. ✅ **Archiv-Anonymisierung** (token, api_key maskiert in Safepoints)
 3. ✅ **`.env` NIEMALS in Git** (`.gitignore` enforcement)
 4. ✅ **Portier = Security-Gateway** (Single Point of Auth)
 
 ### **Header-Format:**
+
 ```http
 Authorization: Bearer <BEARER_TOKEN>
 Content-Type: application/json
@@ -275,6 +283,7 @@ Content-Type: application/json
 **Metrics-Endpoint:** `/metrics` (Prometheus-Format)
 
 **Verfügbare Metriken:**
+
 - `service_requests_total{service, endpoint, status}` - Request Counter
 - `service_request_duration_seconds{service, endpoint}` - Latenz Histogram
 - `service_active_connections{service}` - Active Connections Gauge
@@ -284,34 +293,36 @@ Content-Type: application/json
 - `memory_system_entries_total{agent_id}` - Memory-System Stats
 
 **Prometheus Scraping Config:**
+
 ```yaml
 scrape_configs:
-  - job_name: 'portier_system'
+  - job_name: "portier_system"
     static_configs:
       - targets:
-        - '127.0.0.1:12344'  # Portier
-        - '127.0.0.1:12345'  # OpenA2
-        - '127.0.0.1:12346'  # Telegram
-        - '127.0.0.1:12348'  # Inference
-        - '127.0.0.1:12350'  # Mini-Orchestrator
+          - "127.0.0.1:12344" # Portier
+          - "127.0.0.1:12345" # OpenA2
+          - "127.0.0.1:12346" # Telegram
+          - "127.0.0.1:12348" # Inference
+          - "127.0.0.1:12350" # Mini-Orchestrator
 ```
 
 ---
 
 ## 🗺️ Roadmap (PHASE 17-20)
 
-| Phase | Feature | Status | Ziel-Datum |
-|-------|---------|--------|------------|
-| **17** | Monitoring Dashboard (Prometheus/Grafana) | ⏳ In Arbeit | Q1 2026 |
-| **18** | Deployment (Docker Compose/K8s) | 📋 Geplant | Q1 2026 |
-| **19** | Service Mesh (Istio/Linkerd) | 📋 Geplant | Q2 2026 |
-| **20** | RBAC + Multi-Tenant | 📋 Geplant | Q2 2026 |
+| Phase  | Feature                                   | Status       | Ziel-Datum |
+| ------ | ----------------------------------------- | ------------ | ---------- |
+| **17** | Monitoring Dashboard (Prometheus/Grafana) | ⏳ In Arbeit | Q1 2026    |
+| **18** | Deployment (Docker Compose/K8s)           | 📋 Geplant   | Q1 2026    |
+| **19** | Service Mesh (Istio/Linkerd)              | 📋 Geplant   | Q2 2026    |
+| **20** | RBAC + Multi-Tenant                       | 📋 Geplant   | Q2 2026    |
 
 ---
 
 ## 🚀 Quick Start
 
 ### **Alle Services starten:**
+
 ```bash
 # Core-Services
 bin/start_all.sh
@@ -329,6 +340,7 @@ curl http://127.0.0.1:12350/health | jq .
 ```
 
 ### **Test-Dispatch senden:**
+
 ```bash
 curl -X POST http://127.0.0.1:12344/dispatch/kordp \
   -H "Authorization: Bearer $BEARER_TOKEN" \
@@ -341,6 +353,7 @@ curl -X POST http://127.0.0.1:12344/dispatch/kordp \
 ```
 
 ### **Load-Test ausführen:**
+
 ```bash
 python3 scripts/load_test_20_services.py
 ```
@@ -394,6 +407,6 @@ Gesamtprojekt/
 
 ---
 
-**Maintainer:** ELION Team  
-**Lizenz:** Internal Use Only  
+**Maintainer:** ELION Team
+**Lizenz:** Internal Use Only
 **Letzte Aktualisierung:** 21. November 2025

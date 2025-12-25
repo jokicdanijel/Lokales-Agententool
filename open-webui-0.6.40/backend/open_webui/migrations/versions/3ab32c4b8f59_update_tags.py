@@ -6,12 +6,12 @@ Create Date: 2024-10-09 21:02:35.241684
 
 """
 
-from alembic import op
-import sqlalchemy as sa
-from sqlalchemy.sql import table, select, update, column
-from sqlalchemy.engine.reflection import Inspector
-
 import json
+
+import sqlalchemy as sa
+from alembic import op
+from sqlalchemy.engine.reflection import Inspector
+from sqlalchemy.sql import column, select, table, update
 
 revision = "3ab32c4b8f59"
 down_revision = "1af9b942657b"
@@ -54,10 +54,7 @@ def upgrade():
 
         for index in existing_indexes:
             if index["unique"]:
-                if not any(
-                    constraint["name"] == index["name"]
-                    for constraint in unique_constraints
-                ):
+                if not any(constraint["name"] == index["name"] for constraint in unique_constraints):
                     # You are attempting to drop unique indexes
                     print(f"Dropping unique index: {index['name']}")
                     batch_op.drop_index(index["name"])

@@ -1,18 +1,13 @@
 import logging
-import json
 import time
 import uuid
-from typing import Optional
 
-from open_webui.internal.db import Base, get_db
-from open_webui.models.tags import TagModel, Tag, Tags
-from open_webui.models.folders import Folders
 from open_webui.env import SRC_LOG_LEVELS
-
+from open_webui.internal.db import Base, get_db
+from open_webui.models.folders import Folders
+from open_webui.models.tags import TagModel, Tags
 from pydantic import BaseModel, ConfigDict
-from sqlalchemy import BigInteger, Boolean, Column, String, Text, JSON, Index
-from sqlalchemy import or_, func, select, and_, text
-from sqlalchemy.sql import exists
+from sqlalchemy import JSON, BigInteger, Boolean, Column, Index, String, Text, and_, or_, text
 from sqlalchemy.sql.expression import bindparam
 
 ####################
@@ -67,12 +62,12 @@ class ChatModel(BaseModel):
     created_at: int  # timestamp in epoch
     updated_at: int  # timestamp in epoch
 
-    share_id: Optional[str] = None
+    share_id: str | None = None
     archived: bool = False
-    pinned: Optional[bool] = False
+    pinned: bool | None = False
 
     meta: dict = {}
-    folder_id: Optional[str] = None
+    folder_id: str | None = None
 
 
 ####################
@@ -82,14 +77,14 @@ class ChatModel(BaseModel):
 
 class ChatForm(BaseModel):
     chat: dict
-    folder_id: Optional[str] = None
+    folder_id: str | None = None
 
 
 class ChatImportForm(ChatForm):
-    meta: Optional[dict] = {}
-    pinned: Optional[bool] = False
-    created_at: Optional[int] = None
-    updated_at: Optional[int] = None
+    meta: dict | None = {}
+    pinned: bool | None = False
+    created_at: int | None = None
+    updated_at: int | None = None
 
 
 class ChatsImportForm(BaseModel):
@@ -112,11 +107,11 @@ class ChatResponse(BaseModel):
     chat: dict
     updated_at: int  # timestamp in epoch
     created_at: int  # timestamp in epoch
-    share_id: Optional[str] = None  # id of the chat to be shared
+    share_id: str | None = None  # id of the chat to be shared
     archived: bool
-    pinned: Optional[bool] = False
+    pinned: bool | None = False
     meta: dict = {}
-    folder_id: Optional[str] = None
+    folder_id: str | None = None
 
 
 class ChatTitleIdResponse(BaseModel):
@@ -164,23 +159,17 @@ class ChatTable:
 
         return changed
 
-    def insert_new_chat(self, user_id: str, form_data: ChatForm) -> Optional[ChatModel]:
+    def insert_new_chat(self, user_id: str, form_data: ChatForm) -> ChatModel | None:
         with get_db() as db:
             id = str(uuid.uuid4())
             chat = ChatModel(
-                **{
-                    "id": id,
-                    "user_id": user_id,
-                    "title": self._clean_null_bytes(
-                        form_data.chat["title"]
-                        if "title" in form_data.chat
-                        else "New Chat"
-                    ),
-                    "chat": self._clean_null_bytes(form_data.chat),
-                    "folder_id": form_data.folder_id,
-                    "created_at": int(time.time()),
-                    "updated_at": int(time.time()),
-                }
+                id=id,
+                user_id=user_id,
+                title=self._clean_null_bytes(form_data.chat["title"] if "title" in form_data.chat else "New Chat"),
+                chat=self._clean_null_bytes(form_data.chat),
+                folder_id=form_data.folder_id,
+                created_at=int(time.time()),
+                updated_at=int(time.time()),
             )
 
             chat_item = Chat(**chat.model_dump())
@@ -189,34 +178,22 @@ class ChatTable:
             db.refresh(chat_item)
             return ChatModel.model_validate(chat_item) if chat_item else None
 
-    def _chat_import_form_to_chat_model(
-        self, user_id: str, form_data: ChatImportForm
-    ) -> ChatModel:
+    def _chat_import_form_to_chat_model(self, user_id: str, form_data: ChatImportForm) -> ChatModel:
         id = str(uuid.uuid4())
         chat = ChatModel(
-            **{
-                "id": id,
-                "user_id": user_id,
-                "title": self._clean_null_bytes(
-                    form_data.chat["title"] if "title" in form_data.chat else "New Chat"
-                ),
-                "chat": self._clean_null_bytes(form_data.chat),
-                "meta": form_data.meta,
-                "pinned": form_data.pinned,
-                "folder_id": form_data.folder_id,
-                "created_at": (
-                    form_data.created_at if form_data.created_at else int(time.time())
-                ),
-                "updated_at": (
-                    form_data.updated_at if form_data.updated_at else int(time.time())
-                ),
-            }
+            id=id,
+            user_id=user_id,
+            title=self._clean_null_bytes(form_data.chat["title"] if "title" in form_data.chat else "New Chat"),
+            chat=self._clean_null_bytes(form_data.chat),
+            meta=form_data.meta,
+            pinned=form_data.pinned,
+            folder_id=form_data.folder_id,
+            created_at=(form_data.created_at if form_data.created_at else int(time.time())),
+            updated_at=(form_data.updated_at if form_data.updated_at else int(time.time())),
         )
         return chat
 
-    def import_chats(
-        self, user_id: str, chat_import_forms: list[ChatImportForm]
-    ) -> list[ChatModel]:
+    def import_chats(self, user_id: str, chat_import_forms: list[ChatImportForm]) -> list[ChatModel]:
         with get_db() as db:
             chats = []
 
@@ -228,16 +205,12 @@ class ChatTable:
             db.commit()
             return [ChatModel.model_validate(chat) for chat in chats]
 
-    def update_chat_by_id(self, id: str, chat: dict) -> Optional[ChatModel]:
+    def update_chat_by_id(self, id: str, chat: dict) -> ChatModel | None:
         try:
             with get_db() as db:
                 chat_item = db.get(Chat, id)
                 chat_item.chat = self._clean_null_bytes(chat)
-                chat_item.title = (
-                    self._clean_null_bytes(chat["title"])
-                    if "title" in chat
-                    else "New Chat"
-                )
+                chat_item.title = self._clean_null_bytes(chat["title"]) if "title" in chat else "New Chat"
 
                 chat_item.updated_at = int(time.time())
 
@@ -248,7 +221,7 @@ class ChatTable:
         except Exception:
             return None
 
-    def update_chat_title_by_id(self, id: str, title: str) -> Optional[ChatModel]:
+    def update_chat_title_by_id(self, id: str, title: str) -> ChatModel | None:
         chat = self.get_chat_by_id(id)
         if chat is None:
             return None
@@ -258,9 +231,7 @@ class ChatTable:
 
         return self.update_chat_by_id(id, chat)
 
-    def update_chat_tags_by_id(
-        self, id: str, tags: list[str], user
-    ) -> Optional[ChatModel]:
+    def update_chat_tags_by_id(self, id: str, tags: list[str], user) -> ChatModel | None:
         chat = self.get_chat_by_id(id)
         if chat is None:
             return None
@@ -278,32 +249,28 @@ class ChatTable:
             self.add_chat_tag_by_id_and_user_id_and_tag_name(id, user.id, tag_name)
         return self.get_chat_by_id(id)
 
-    def get_chat_title_by_id(self, id: str) -> Optional[str]:
+    def get_chat_title_by_id(self, id: str) -> str | None:
         chat = self.get_chat_by_id(id)
         if chat is None:
             return None
 
         return chat.chat.get("title", "New Chat")
 
-    def get_messages_map_by_chat_id(self, id: str) -> Optional[dict]:
+    def get_messages_map_by_chat_id(self, id: str) -> dict | None:
         chat = self.get_chat_by_id(id)
         if chat is None:
             return None
 
         return chat.chat.get("history", {}).get("messages", {}) or {}
 
-    def get_message_by_id_and_message_id(
-        self, id: str, message_id: str
-    ) -> Optional[dict]:
+    def get_message_by_id_and_message_id(self, id: str, message_id: str) -> dict | None:
         chat = self.get_chat_by_id(id)
         if chat is None:
             return None
 
         return chat.chat.get("history", {}).get("messages", {}).get(message_id, {})
 
-    def upsert_message_to_chat_by_id_and_message_id(
-        self, id: str, message_id: str, message: dict
-    ) -> Optional[ChatModel]:
+    def upsert_message_to_chat_by_id_and_message_id(self, id: str, message_id: str, message: dict) -> ChatModel | None:
         chat = self.get_chat_by_id(id)
         if chat is None:
             return None
@@ -330,7 +297,7 @@ class ChatTable:
 
     def add_message_status_to_chat_by_id_and_message_id(
         self, id: str, message_id: str, status: dict
-    ) -> Optional[ChatModel]:
+    ) -> ChatModel | None:
         chat = self.get_chat_by_id(id)
         if chat is None:
             return None
@@ -346,9 +313,7 @@ class ChatTable:
         chat["history"] = history
         return self.update_chat_by_id(id, chat)
 
-    def add_message_files_by_id_and_message_id(
-        self, id: str, message_id: str, files: list[dict]
-    ) -> list[dict]:
+    def add_message_files_by_id_and_message_id(self, id: str, message_id: str, files: list[dict]) -> list[dict]:
         chat = self.get_chat_by_id(id)
         if chat is None:
             return None
@@ -367,7 +332,7 @@ class ChatTable:
         self.update_chat_by_id(id, chat)
         return message_files
 
-    def insert_shared_chat_by_chat_id(self, chat_id: str) -> Optional[ChatModel]:
+    def insert_shared_chat_by_chat_id(self, chat_id: str) -> ChatModel | None:
         with get_db() as db:
             # Get the existing chat to share
             chat = db.get(Chat, chat_id)
@@ -376,17 +341,15 @@ class ChatTable:
                 return self.get_chat_by_id_and_user_id(chat.share_id, "shared")
             # Create a new chat with the same data, but with a new ID
             shared_chat = ChatModel(
-                **{
-                    "id": str(uuid.uuid4()),
-                    "user_id": f"shared-{chat_id}",
-                    "title": chat.title,
-                    "chat": chat.chat,
-                    "meta": chat.meta,
-                    "pinned": chat.pinned,
-                    "folder_id": chat.folder_id,
-                    "created_at": chat.created_at,
-                    "updated_at": int(time.time()),
-                }
+                id=str(uuid.uuid4()),
+                user_id=f"shared-{chat_id}",
+                title=chat.title,
+                chat=chat.chat,
+                meta=chat.meta,
+                pinned=chat.pinned,
+                folder_id=chat.folder_id,
+                created_at=chat.created_at,
+                updated_at=int(time.time()),
             )
             shared_result = Chat(**shared_chat.model_dump())
             db.add(shared_result)
@@ -394,21 +357,15 @@ class ChatTable:
             db.refresh(shared_result)
 
             # Update the original chat with the share_id
-            result = (
-                db.query(Chat)
-                .filter_by(id=chat_id)
-                .update({"share_id": shared_chat.id})
-            )
+            result = db.query(Chat).filter_by(id=chat_id).update({"share_id": shared_chat.id})
             db.commit()
             return shared_chat if (shared_result and result) else None
 
-    def update_shared_chat_by_chat_id(self, chat_id: str) -> Optional[ChatModel]:
+    def update_shared_chat_by_chat_id(self, chat_id: str) -> ChatModel | None:
         try:
             with get_db() as db:
                 chat = db.get(Chat, chat_id)
-                shared_chat = (
-                    db.query(Chat).filter_by(user_id=f"shared-{chat_id}").first()
-                )
+                shared_chat = db.query(Chat).filter_by(user_id=f"shared-{chat_id}").first()
 
                 if shared_chat is None:
                     return self.insert_shared_chat_by_chat_id(chat_id)
@@ -445,9 +402,7 @@ class ChatTable:
         except Exception:
             return False
 
-    def update_chat_share_id_by_id(
-        self, id: str, share_id: Optional[str]
-    ) -> Optional[ChatModel]:
+    def update_chat_share_id_by_id(self, id: str, share_id: str | None) -> ChatModel | None:
         try:
             with get_db() as db:
                 chat = db.get(Chat, id)
@@ -458,7 +413,7 @@ class ChatTable:
         except Exception:
             return None
 
-    def toggle_chat_pinned_by_id(self, id: str) -> Optional[ChatModel]:
+    def toggle_chat_pinned_by_id(self, id: str) -> ChatModel | None:
         try:
             with get_db() as db:
                 chat = db.get(Chat, id)
@@ -470,7 +425,7 @@ class ChatTable:
         except Exception:
             return None
 
-    def toggle_chat_archive_by_id(self, id: str) -> Optional[ChatModel]:
+    def toggle_chat_archive_by_id(self, id: str) -> ChatModel | None:
         try:
             with get_db() as db:
                 chat = db.get(Chat, id)
@@ -495,11 +450,10 @@ class ChatTable:
     def get_archived_chat_list_by_user_id(
         self,
         user_id: str,
-        filter: Optional[dict] = None,
+        filter: dict | None = None,
         skip: int = 0,
         limit: int = 50,
     ) -> list[ChatModel]:
-
         with get_db() as db:
             query = db.query(Chat).filter_by(user_id=user_id, archived=True)
 
@@ -536,7 +490,7 @@ class ChatTable:
         self,
         user_id: str,
         include_archived: bool = False,
-        filter: Optional[dict] = None,
+        filter: dict | None = None,
         skip: int = 0,
         limit: int = 50,
     ) -> list[ChatModel]:
@@ -577,8 +531,8 @@ class ChatTable:
         include_archived: bool = False,
         include_folders: bool = False,
         include_pinned: bool = False,
-        skip: Optional[int] = None,
-        limit: Optional[int] = None,
+        skip: int | None = None,
+        limit: int | None = None,
     ) -> list[ChatTitleIdResponse]:
         with get_db() as db:
             query = db.query(Chat).filter_by(user_id=user_id)
@@ -616,9 +570,7 @@ class ChatTable:
                 for chat in all_chats
             ]
 
-    def get_chat_list_by_chat_ids(
-        self, chat_ids: list[str], skip: int = 0, limit: int = 50
-    ) -> list[ChatModel]:
+    def get_chat_list_by_chat_ids(self, chat_ids: list[str], skip: int = 0, limit: int = 50) -> list[ChatModel]:
         with get_db() as db:
             all_chats = (
                 db.query(Chat)
@@ -629,7 +581,7 @@ class ChatTable:
             )
             return [ChatModel.model_validate(chat) for chat in all_chats]
 
-    def get_chat_by_id(self, id: str) -> Optional[ChatModel]:
+    def get_chat_by_id(self, id: str) -> ChatModel | None:
         try:
             with get_db() as db:
                 chat_item = db.get(Chat, id)
@@ -644,7 +596,7 @@ class ChatTable:
         except Exception:
             return None
 
-    def get_chat_by_share_id(self, id: str) -> Optional[ChatModel]:
+    def get_chat_by_share_id(self, id: str) -> ChatModel | None:
         try:
             with get_db() as db:
                 # it is possible that the shared link was deleted. hence,
@@ -658,7 +610,7 @@ class ChatTable:
         except Exception:
             return None
 
-    def get_chat_by_id_and_user_id(self, id: str, user_id: str) -> Optional[ChatModel]:
+    def get_chat_by_id_and_user_id(self, id: str, user_id: str) -> ChatModel | None:
         try:
             with get_db() as db:
                 chat = db.query(Chat).filter_by(id=id, user_id=user_id).first()
@@ -677,29 +629,19 @@ class ChatTable:
 
     def get_chats_by_user_id(self, user_id: str) -> list[ChatModel]:
         with get_db() as db:
-            all_chats = (
-                db.query(Chat)
-                .filter_by(user_id=user_id)
-                .order_by(Chat.updated_at.desc())
-            )
+            all_chats = db.query(Chat).filter_by(user_id=user_id).order_by(Chat.updated_at.desc())
             return [ChatModel.model_validate(chat) for chat in all_chats]
 
     def get_pinned_chats_by_user_id(self, user_id: str) -> list[ChatModel]:
         with get_db() as db:
             all_chats = (
-                db.query(Chat)
-                .filter_by(user_id=user_id, pinned=True, archived=False)
-                .order_by(Chat.updated_at.desc())
+                db.query(Chat).filter_by(user_id=user_id, pinned=True, archived=False).order_by(Chat.updated_at.desc())
             )
             return [ChatModel.model_validate(chat) for chat in all_chats]
 
     def get_archived_chats_by_user_id(self, user_id: str) -> list[ChatModel]:
         with get_db() as db:
-            all_chats = (
-                db.query(Chat)
-                .filter_by(user_id=user_id, archived=True)
-                .order_by(Chat.updated_at.desc())
-            )
+            all_chats = db.query(Chat).filter_by(user_id=user_id, archived=True).order_by(Chat.updated_at.desc())
             return [ChatModel.model_validate(chat) for chat in all_chats]
 
     def get_chats_by_user_id_and_search_text(
@@ -716,27 +658,19 @@ class ChatTable:
         search_text = search_text.replace("\u0000", "").lower().strip()
 
         if not search_text:
-            return self.get_chat_list_by_user_id(
-                user_id, include_archived, filter={}, skip=skip, limit=limit
-            )
+            return self.get_chat_list_by_user_id(user_id, include_archived, filter={}, skip=skip, limit=limit)
 
         search_text_words = search_text.split(" ")
 
         # search_text might contain 'tag:tag_name' format so we need to extract the tag_name, split the search_text and remove the tags
         tag_ids = [
-            word.replace("tag:", "").replace(" ", "_").lower()
-            for word in search_text_words
-            if word.startswith("tag:")
+            word.replace("tag:", "").replace(" ", "_").lower() for word in search_text_words if word.startswith("tag:")
         ]
 
         # Extract folder names - handle spaces and case insensitivity
         folders = Folders.search_folders_by_names(
             user_id,
-            [
-                word.replace("folder:", "")
-                for word in search_text_words
-                if word.startswith("folder:")
-            ],
+            [word.replace("folder:", "") for word in search_text_words if word.startswith("folder:")],
         )
         folder_ids = [folder.id for folder in folders]
 
@@ -807,9 +741,9 @@ class ChatTable:
                 )
                 sqlite_content_clause = text(sqlite_content_sql)
                 query = query.filter(
-                    or_(
-                        Chat.title.ilike(bindparam("title_key")), sqlite_content_clause
-                    ).params(title_key=f"%{search_text}%", content_key=search_text)
+                    or_(Chat.title.ilike(bindparam("title_key")), sqlite_content_clause).params(
+                        title_key=f"%{search_text}%", content_key=search_text
+                    )
                 )
 
                 # Check if there are any tags to filter, it should have all the tags
@@ -900,9 +834,7 @@ class ChatTable:
                         )
                     )
             else:
-                raise NotImplementedError(
-                    f"Unsupported dialect: {db.bind.dialect.name}"
-                )
+                raise NotImplementedError(f"Unsupported dialect: {db.bind.dialect.name}")
 
             # Perform pagination at the SQL level
             all_chats = query.offset(skip).limit(limit).all()
@@ -930,13 +862,9 @@ class ChatTable:
             all_chats = query.all()
             return [ChatModel.model_validate(chat) for chat in all_chats]
 
-    def get_chats_by_folder_ids_and_user_id(
-        self, folder_ids: list[str], user_id: str
-    ) -> list[ChatModel]:
+    def get_chats_by_folder_ids_and_user_id(self, folder_ids: list[str], user_id: str) -> list[ChatModel]:
         with get_db() as db:
-            query = db.query(Chat).filter(
-                Chat.folder_id.in_(folder_ids), Chat.user_id == user_id
-            )
+            query = db.query(Chat).filter(Chat.folder_id.in_(folder_ids), Chat.user_id == user_id)
             query = query.filter(or_(Chat.pinned == False, Chat.pinned == None))
             query = query.filter_by(archived=False)
 
@@ -945,9 +873,7 @@ class ChatTable:
             all_chats = query.all()
             return [ChatModel.model_validate(chat) for chat in all_chats]
 
-    def update_chat_folder_id_by_id_and_user_id(
-        self, id: str, user_id: str, folder_id: str
-    ) -> Optional[ChatModel]:
+    def update_chat_folder_id_by_id_and_user_id(self, id: str, user_id: str, folder_id: str) -> ChatModel | None:
         try:
             with get_db() as db:
                 chat = db.get(Chat, id)
@@ -977,29 +903,21 @@ class ChatTable:
             if db.bind.dialect.name == "sqlite":
                 # SQLite JSON1 querying for tags within the meta JSON field
                 query = query.filter(
-                    text(
-                        f"EXISTS (SELECT 1 FROM json_each(Chat.meta, '$.tags') WHERE json_each.value = :tag_id)"
-                    )
+                    text("EXISTS (SELECT 1 FROM json_each(Chat.meta, '$.tags') WHERE json_each.value = :tag_id)")
                 ).params(tag_id=tag_id)
             elif db.bind.dialect.name == "postgresql":
                 # PostgreSQL JSON query for tags within the meta JSON field (for `json` type)
                 query = query.filter(
-                    text(
-                        "EXISTS (SELECT 1 FROM json_array_elements_text(Chat.meta->'tags') elem WHERE elem = :tag_id)"
-                    )
+                    text("EXISTS (SELECT 1 FROM json_array_elements_text(Chat.meta->'tags') elem WHERE elem = :tag_id)")
                 ).params(tag_id=tag_id)
             else:
-                raise NotImplementedError(
-                    f"Unsupported dialect: {db.bind.dialect.name}"
-                )
+                raise NotImplementedError(f"Unsupported dialect: {db.bind.dialect.name}")
 
             all_chats = query.all()
             log.debug(f"all_chats: {all_chats}")
             return [ChatModel.model_validate(chat) for chat in all_chats]
 
-    def add_chat_tag_by_id_and_user_id_and_tag_name(
-        self, id: str, user_id: str, tag_name: str
-    ) -> Optional[ChatModel]:
+    def add_chat_tag_by_id_and_user_id_and_tag_name(self, id: str, user_id: str, tag_name: str) -> ChatModel | None:
         tag = Tags.get_tag_by_name_and_user_id(tag_name, user_id)
         if tag is None:
             tag = Tags.insert_new_tag(tag_name, user_id)
@@ -1030,23 +948,17 @@ class ChatTable:
             if db.bind.dialect.name == "sqlite":
                 # SQLite JSON1 support for querying the tags inside the `meta` JSON field
                 query = query.filter(
-                    text(
-                        f"EXISTS (SELECT 1 FROM json_each(Chat.meta, '$.tags') WHERE json_each.value = :tag_id)"
-                    )
+                    text("EXISTS (SELECT 1 FROM json_each(Chat.meta, '$.tags') WHERE json_each.value = :tag_id)")
                 ).params(tag_id=tag_id)
 
             elif db.bind.dialect.name == "postgresql":
                 # PostgreSQL JSONB support for querying the tags inside the `meta` JSON field
                 query = query.filter(
-                    text(
-                        "EXISTS (SELECT 1 FROM json_array_elements_text(Chat.meta->'tags') elem WHERE elem = :tag_id)"
-                    )
+                    text("EXISTS (SELECT 1 FROM json_array_elements_text(Chat.meta->'tags') elem WHERE elem = :tag_id)")
                 ).params(tag_id=tag_id)
 
             else:
-                raise NotImplementedError(
-                    f"Unsupported dialect: {db.bind.dialect.name}"
-                )
+                raise NotImplementedError(f"Unsupported dialect: {db.bind.dialect.name}")
 
             # Get the count of matching records
             count = query.count()
@@ -1066,9 +978,7 @@ class ChatTable:
             log.info(f"Count of chats for folder '{folder_id}': {count}")
             return count
 
-    def delete_tag_by_id_and_user_id_and_tag_name(
-        self, id: str, user_id: str, tag_name: str
-    ) -> bool:
+    def delete_tag_by_id_and_user_id_and_tag_name(self, id: str, user_id: str, tag_name: str) -> bool:
         try:
             with get_db() as db:
                 chat = db.get(Chat, id)
@@ -1131,9 +1041,7 @@ class ChatTable:
         except Exception:
             return False
 
-    def delete_chats_by_user_id_and_folder_id(
-        self, user_id: str, folder_id: str
-    ) -> bool:
+    def delete_chats_by_user_id_and_folder_id(self, user_id: str, folder_id: str) -> bool:
         try:
             with get_db() as db:
                 db.query(Chat).filter_by(user_id=user_id, folder_id=folder_id).delete()
@@ -1143,14 +1051,10 @@ class ChatTable:
         except Exception:
             return False
 
-    def move_chats_by_user_id_and_folder_id(
-        self, user_id: str, folder_id: str, new_folder_id: Optional[str]
-    ) -> bool:
+    def move_chats_by_user_id_and_folder_id(self, user_id: str, folder_id: str, new_folder_id: str | None) -> bool:
         try:
             with get_db() as db:
-                db.query(Chat).filter_by(user_id=user_id, folder_id=folder_id).update(
-                    {"folder_id": new_folder_id}
-                )
+                db.query(Chat).filter_by(user_id=user_id, folder_id=folder_id).update({"folder_id": new_folder_id})
                 db.commit()
 
                 return True

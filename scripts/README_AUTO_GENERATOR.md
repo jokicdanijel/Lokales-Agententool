@@ -34,23 +34,25 @@ open http://127.0.0.1:12350/
 ## ⚙️ Usage
 
 ### Basis Agent (ohne CI/CD)
+
 ```bash
 ./scripts/create-agent --name opena8_whatsapp --port 12353 --specialization messaging
 ```
 
 ### Enterprise Agent (mit CI/CD Pipeline)
+
 ```bash
 ./scripts/create-agent --name opena9_phone --port 12354 --specialization telephony --ci
 ```
 
 ### Parameter
 
-| Parameter | Beschreibung | Beispiel |
-|-----------|-------------|----------|
-| `--name` | Agent Name (openaX_description) | `opena5_vscode` |
-| `--port` | Port (12344-12399) | `12350` |
-| `--specialization` | Agent Spezialisierung | `development` |
-| `--ci` | Include CI/CD Pipeline | Flag |
+| Parameter          | Beschreibung                    | Beispiel        |
+| ------------------ | ------------------------------- | --------------- |
+| `--name`           | Agent Name (openaX_description) | `opena5_vscode` |
+| `--port`           | Port (12344-12399)              | `12350`         |
+| `--specialization` | Agent Spezialisierung           | `development`   |
+| `--ci`             | Include CI/CD Pipeline          | Flag            |
 
 ## 📁 Generierte Struktur
 
@@ -74,6 +76,7 @@ openaX_example/
 ## 🧪 Features
 
 ### ✅ **FastAPI Backend**
+
 - Health Check (`/health`)
 - Status Reporting (`/status`)
 - Command Execution (`/command`)
@@ -82,6 +85,7 @@ openaX_example/
 - HTML Dashboard (`/`)
 
 ### ✅ **HTML Dashboard**
+
 - **Dark Theme** Enterprise UI
 - **Real-time** Health Monitoring
 - **Interactive** Command Execution
@@ -89,6 +93,7 @@ openaX_example/
 - **Auto-refresh** Status
 
 ### ✅ **Docker Container**
+
 - **Python 3.13** Base Image
 - **Non-root User** Security
 - **Health Checks** Built-in
@@ -96,6 +101,7 @@ openaX_example/
 - **Production** Ready
 
 ### ✅ **CI/CD Pipeline**
+
 - **Security Scanning** (Trivy, Bandit)
 - **Code Quality** (flake8, black)
 - **Unit Testing** (pytest)
@@ -104,6 +110,7 @@ openaX_example/
 - **Health Verification** Post-deploy
 
 ### ✅ **PORTIER 3.0 Compliance**
+
 - **Port Range** 12344-12399
 - **Bearer Auth** Ready
 - **Structured Logging** JSON Format
@@ -144,17 +151,20 @@ TELEGRAM_TOKEN=<agent-specific-token>
 ## 🚀 Deployment
 
 ### Lokal
+
 ```bash
 python3 main.py
 ```
 
 ### Docker
+
 ```bash
 docker build -t openaX_example .
 docker run -d -p 12350:12350 openaX_example
 ```
 
 ### Production (via CI/CD)
+
 ```bash
 # Push to main branch triggers automatic deployment
 git push origin main
@@ -189,6 +199,7 @@ Agenten erscheinen automatisch im HYPER-DASHBOARD:
 ## 🔧 Development
 
 ### Testing
+
 ```bash
 cd openaX_example
 pytest -v
@@ -197,17 +208,19 @@ black --check .
 ```
 
 ### Local Development
+
 ```bash
 # Auto-reload für Development
 uvicorn main:app --host 127.0.0.1 --port 12350 --reload
 ```
 
 ### Code Quality
+
 ```bash
 # Format Code
 black . --line-length 120
 
-# Lint Code  
+# Lint Code
 flake8 . --max-line-length=120
 
 # Security Audit
@@ -217,6 +230,7 @@ bandit -r .
 ## 🎯 Examples
 
 ### Create Development Agent
+
 ```bash
 ./scripts/create-agent \
   --name opena5_vscode \
@@ -226,6 +240,7 @@ bandit -r .
 ```
 
 ### Create Mobile Agent
+
 ```bash
 ./scripts/create-agent \
   --name opena8_whatsapp \
@@ -235,6 +250,7 @@ bandit -r .
 ```
 
 ### Create Browser Agent
+
 ```bash
 ./scripts/create-agent \
   --name opena6_browser \
@@ -247,12 +263,12 @@ bandit -r .
 
 ### Common Issues
 
-| Problem | Solution |
-|---------|----------|
-| Port already in use | Use different port in range 12344-12399 |
-| Permission denied | Run `chmod +x scripts/create-agent` |
-| Invalid agent name | Use format `openaX_description` |
-| CI/CD secrets missing | Add required secrets to GitHub repo |
+| Problem               | Solution                                |
+| --------------------- | --------------------------------------- |
+| Port already in use   | Use different port in range 12344-12399 |
+| Permission denied     | Run `chmod +x scripts/create-agent`     |
+| Invalid agent name    | Use format `openaX_description`         |
+| CI/CD secrets missing | Add required secrets to GitHub repo     |
 
 ### Debug
 
@@ -271,6 +287,6 @@ tail -f logs/agent.log
 
 ---
 
-**🎆 PORTIER 3.0 Auto-Generator - Enterprise Ready!**  
-**Generated:** 29. November 2025  
+**🎆 PORTIER 3.0 Auto-Generator - Enterprise Ready!**
+**Generated:** 29. November 2025
 **Status:** ✅ Production Ready

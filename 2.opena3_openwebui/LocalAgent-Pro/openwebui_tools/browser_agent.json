@@ -10,7 +10,18 @@
       "type": "string",
       "description": "Browser action: open, click, type, scroll, extract_text, extract_html, screenshot, wait_for, submit_form, navigate_back",
       "required": true,
-      "enum": ["open", "click", "type", "scroll", "extract_text", "extract_html", "screenshot", "wait_for", "submit_form", "navigate_back"]
+      "enum": [
+        "open",
+        "click",
+        "type",
+        "scroll",
+        "extract_text",
+        "extract_html",
+        "screenshot",
+        "wait_for",
+        "submit_form",
+        "navigate_back"
+      ]
     },
     "url": {
       "type": "string",
@@ -43,11 +54,14 @@
   "response": {
     "type": "object",
     "properties": {
-      "status": {"type": "string", "enum": ["success", "error", "timeout"]},
-      "action": {"type": "string"},
-      "data": {"type": "object"},
-      "screenshot": {"type": "string", "description": "Base64 encoded screenshot"},
-      "timestamp": {"type": "string"}
+      "status": { "type": "string", "enum": ["success", "error", "timeout"] },
+      "action": { "type": "string" },
+      "data": { "type": "object" },
+      "screenshot": {
+        "type": "string",
+        "description": "Base64 encoded screenshot"
+      },
+      "timestamp": { "type": "string" }
     }
   }
 }

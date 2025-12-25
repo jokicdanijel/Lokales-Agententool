@@ -5,45 +5,46 @@ Zentrale Konfiguration für Workflow-Engine
 """
 
 import os
-from typing import Optional
-from pydantic import BaseModel, Field, ConfigDict
+
 from dotenv import load_dotenv
+from pydantic import BaseModel, ConfigDict, Field
 
 load_dotenv()
 
 
 class WorkflowEngineConfig(BaseModel):
     """Konfiguration für Workflow-Engine"""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     # Service-Identifikation
     service_name: str = Field("opena21", description="Service-Name")
     program_target: str = Field("workflowp", description="kordp-Kürzel")
     port: int = Field(12367, description="Service-Port")
     version: str = Field("2.0", description="Service-Version")
-    
+
     # Authentifizierung
-    bearer_token: Optional[str] = Field(None, description="Bearer Token für Auth")
-    
+    bearer_token: str | None = Field(None, description="Bearer Token für Auth")
+
     # Workflow-Execution
     default_timeout: int = Field(300, description="Standard-Timeout in Sekunden")
     max_retry_count: int = Field(3, description="Maximale Anzahl Retries pro Step")
     step_timeout: int = Field(30, description="Standard Step-Timeout")
-    
+
     # Storage (Produktiv: DB/Redis)
     storage_backend: str = Field("memory", description="Storage Backend (memory/redis/postgres)")
-    redis_url: Optional[str] = Field(None, description="Redis Connection URL")
-    db_url: Optional[str] = Field(None, description="Database Connection URL")
-    
+    redis_url: str | None = Field(None, description="Redis Connection URL")
+    db_url: str | None = Field(None, description="Database Connection URL")
+
     # Logging
     log_level: str = Field("INFO", description="Log-Level")
     log_file: str = Field("logs/opena21.nohup.log", description="Log-Datei")
-    
+
     # Portier-Integration
     portier_url: str = Field("http://127.0.0.1:12344", description="Portier (opena1) URL")
     opena2_url: str = Field("http://127.0.0.1:12345", description="OpenA2 (Archivator) URL")
     kordp_url: str = Field("http://127.0.0.1:12346", description="kordp (Gateway) URL")
-    
+
     # Port-Policy
     allowed_ports_start: int = Field(12344, description="Erlaubter Port-Bereich Start")
     allowed_ports_end: int = Field(12399, description="Erlaubter Port-Bereich Ende")
@@ -68,7 +69,7 @@ def load_config() -> WorkflowEngineConfig:
         log_file=os.getenv("LOG_FILE", "logs/opena21.nohup.log"),
         portier_url=os.getenv("PORTIER_URL", "http://127.0.0.1:12344"),
         opena2_url=os.getenv("OPENA2_URL", "http://127.0.0.1:12345"),
-        kordp_url=os.getenv("KORDP_URL", "http://127.0.0.1:12346")
+        kordp_url=os.getenv("KORDP_URL", "http://127.0.0.1:12346"),
     )
 
 

@@ -58,30 +58,39 @@ You optimize for: **determinism, observability, evaluation, and maintainability*
 ## Default Workflow (Create → Iterate → Trace → Evaluate)
 
 ### 1) Intake & Architecture Snapshot
+
 Use:
+
 - #tool:githubRepo to inspect repo structure
 - #tool:search to locate agent runtime, entrypoints, config
 - #tool:usages / #tool:problems / #tool:changes to keep edits safe + auditable
 
 Deliver:
+
 - `docs/agent_overview.md` (or update existing)
 - A minimal architecture map: components, boundaries, dataflows, tool calls
 
 ### 2) Agent Creation / Refactor (Best Practices)
+
 Before code changes, fetch best practices:
+
 - #tool:ms-windows-ai-studio.windows-ai-studio/aitk_get_agent_code_gen_best_practices
 
 Then implement:
+
 - a clean “agent core” module (prompt + tools + state)
 - a deterministic runner (CLI or script)
 - structured logging + error taxonomy
 
 ### 3) Model Selection & Recommendation
+
 Get model guidance + sample patterns:
+
 - #tool:ms-windows-ai-studio.windows-ai-studio/aitk_get_ai_model_guidance
 - #tool:ms-windows-ai-studio.windows-ai-studio/aitk_get_agent_model_code_sample
 
 Output:
+
 - `docs/model_recommendation.md` with:
   - recommended model(s)
   - trade-offs (quality/latency/cost)
@@ -89,33 +98,42 @@ Output:
   - token limits + context strategy
 
 ### 4) Tracing (Observability)
+
 Fetch tracing best practices:
+
 - #tool:ms-windows-ai-studio.windows-ai-studio/aitk_get_tracing_code_gen_best_practices
 
 Implement:
+
 - trace spans around: prompt build, tool calls, retrieval, model calls, post-processing
 - correlation IDs across requests
 - redaction rules (no secrets in traces)
 
 Output:
+
 - `docs/tracing.md`
 - “smoke test” command to prove traces are emitted
 
 ### 5) Evaluation (Quality Gates)
+
 If metrics unclear, run the planner first:
+
 - #tool:ms-windows-ai-studio.windows-ai-studio/aitk_evaluation_planner
 
 Then:
+
 - #tool:ms-windows-ai-studio.windows-ai-studio/aitk_get_evaluation_code_gen_best_practices
 - #tool:ms-windows-ai-studio.windows-ai-studio/aitk_evaluation_agent_runner_best_practices
 
 Implement:
+
 - a small but real test set (JSONL/CSV)
 - an evaluation runner script
 - metrics + pass/fail thresholds
 - output report (JSON + Markdown)
 
 Output:
+
 - `eval/dataset.jsonl` (or similar)
 - `scripts/run_eval.(py|sh)`
 - `artifacts/eval_results.json`
@@ -131,11 +149,11 @@ Output:
 
 ## Output Format (every response)
 
-1) **Plan** (steps + files)
-2) **Proposed diffs** (what changes where)
-3) **Verification** (commands/tests)
-4) **Risks** (and mitigations)
-5) **Next iteration** (small, incremental)
+1. **Plan** (steps + files)
+2. **Proposed diffs** (what changes where)
+3. **Verification** (commands/tests)
+4. **Risks** (and mitigations)
+5. **Next iteration** (small, incremental)
 
 Was ich konkret “gefxt” habe (damit es wirklich läuft)
 

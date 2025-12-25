@@ -10,61 +10,79 @@
 ## 🚀 Quick Start (Choose Your Path)
 
 ### 👤 I'm New — Where Do I Start?
+
 → **[QUICK_START.md](2.opena3_openwebui/QUICK_START.md)** (5 minutes)
+
 - Gets you running in 5 minutes
 - Step 0: Initialize Masterprompt
 - Step 1-3: Deploy & Test
 
 ### 👨‍💼 I'm a Developer — I Need APIs
+
 → **[API_REFERENCE.md](2.opena3_openwebui/API_REFERENCE.md)** (Complete REST API docs)
+
 - All 10 endpoints documented
 - Request/response examples
 - Integration with Portier system
 - Whitelisted commands & programs
 
 ### 🔒 I Need Security Info
+
 → **[SECURITY_AUDIT_REPORT.md](2.opena3_openwebui/SECURITY_AUDIT_REPORT.md)** (Security & Compliance)
+
 - OWASP Top 10 compliance
 - Path traversal protection
 - Command whitelisting
 - Port security policy
 
 ### 🧠 I Want to Understand the Architecture
+
 → **[AGENTENREGISTER_VOLLSTÄNDIG.md](AGENTENREGISTER_VOLLSTÄNDIG.md)** (20-Agent System)
+
 - All 20 agents documented (opena1–opena20)
 - Portier architecture (opena1, opena2, kordp, archivp)
 - 4 communication flows
 - Port policy (12344–12399)
 
 ### ⚙️ I'm Deploying to Production
+
 → **[DEPLOYMENT_GUIDE.md](2.opena3_openwebui/DEPLOYMENT_GUIDE.md)** (Production Setup)
+
 - Docker deployment
 - Systemd service setup
 - Environment configuration
 - Monitoring & logging
 
 ### 🔬 I Want Initialization Details
+
 → **[MASTERPROMPT_OPENWEBUI.md](2.openwebui/MASTERPROMPT_OPENWEBUI.md)** (4-Phase System)
+
 - Phase 1: Self-recovery & Memory
 - Phase 2: Docker Auto-Installation
 - Phase 3: Portier System Integration
 - Phase 4: Technical Framework
 
 ### ✅ I Want to See Test Results
+
 → **[FUNCTIONAL_TEST_REPORT.md](2.opena3_openwebui/FUNCTIONAL_TEST_REPORT.md)** (Test Coverage)
+
 - 6 voice programs tested
 - API endpoint validation
 - Integration test results
 - 100% pass rate
 
 ### 🔬 I Want to Run Evaluations
+
 → **[Evaluation Framework](docs/EVALUATION.md)** (How to run evaluation runner, datasets, CI integration)
+
 - Lightweight runner + sample datasets
 - CI job: `.github/workflows/evaluation.yml` (daily + on push)
 - Integration tests opt-in via `RUN_EVAL_INTEGRATION=1`
 
 ### 📊 I Need an Audit Report
+
 → **[AUDIT_REPORT_2025-11-24.md](AUDIT_REPORT_2025-11-24.md)** (Final System Audit)
+
 - Code quality metrics
 - Consistency validation
 - Security review
@@ -279,18 +297,21 @@ AUDIT_REPORT_2025-11-24.md (???)
 ## 🎯 Documentation by Role
 
 ### 👤 User (Just Want to Use It)
+
 1. Read: **QUICK_START.md** (5 min)
 2. Run: `bash MASTERPROMPT_OPENWEBUI.md`
 3. Open: `http://localhost:8000`
 4. Done! ✅
 
 ### 👨‍💻 Developer (Building on Top)
+
 1. Read: **API_REFERENCE.md** (20 min)
 2. Review: **SECURITY_AUDIT_REPORT.md** (15 min)
 3. Understand: **AGENTENREGISTER_VOLLSTÄNDIG.md** (30 min)
 4. Build integrations! ✅
 
 ### 🏗️ DevOps (Deploying to Production)
+
 1. Read: **DEPLOYMENT_GUIDE.md** (20 min)
 2. Review: **SECURITY_AUDIT_REPORT.md** (25 min)
 3. Setup: Docker/Systemd service
@@ -298,6 +319,7 @@ AUDIT_REPORT_2025-11-24.md (???)
 5. Deploy! ✅
 
 ### 🔍 Auditor (Compliance & Security)
+
 1. Read: **SECURITY_AUDIT_REPORT.md** (25 min)
 2. Review: **AUDIT_REPORT_2025-11-24.md** (10 min)
 3. Check: Port security policy
@@ -305,6 +327,7 @@ AUDIT_REPORT_2025-11-24.md (???)
 5. Approve! ✅
 
 ### 🧠 Architect (Understanding System)
+
 1. Read: **AGENTENREGISTER_VOLLSTÄNDIG.md** (30 min)
 2. Study: **MASTERPROMPT_OPENWEBUI.md** (35 min)
 3. Review: **API_REFERENCE.md** (20 min)
@@ -314,23 +337,24 @@ AUDIT_REPORT_2025-11-24.md (???)
 
 ## 📊 Documentation Statistics
 
-| Document | Lines | Size | Purpose |
-|----------|-------|------|---------|
-| QUICK_START.md | 484 | 12K | Getting started (5 min) |
-| API_REFERENCE.md | 871 | 17K | REST API documentation |
-| SECURITY_AUDIT_REPORT.md | ??? | ??? | Security & compliance |
-| AGENTENREGISTER_VOLLSTÄNDIG.md | 929 | 36K | 20-agent architecture |
-| MASTERPROMPT_OPENWEBUI.md | 897 | 36K | 4-phase initialization |
-| DEPLOYMENT_GUIDE.md | ??? | ??? | Production deployment |
-| FUNCTIONAL_TEST_REPORT.md | ??? | ??? | Test coverage & results |
-| AUDIT_REPORT_2025-11-24.md | ??? | ??? | Final system audit |
-| **TOTAL** | **2,400+** | **150+K** | **Complete system docs** |
+| Document                       | Lines      | Size      | Purpose                  |
+| ------------------------------ | ---------- | --------- | ------------------------ |
+| QUICK_START.md                 | 484        | 12K       | Getting started (5 min)  |
+| API_REFERENCE.md               | 871        | 17K       | REST API documentation   |
+| SECURITY_AUDIT_REPORT.md       | ???        | ???       | Security & compliance    |
+| AGENTENREGISTER_VOLLSTÄNDIG.md | 929        | 36K       | 20-agent architecture    |
+| MASTERPROMPT_OPENWEBUI.md      | 897        | 36K       | 4-phase initialization   |
+| DEPLOYMENT_GUIDE.md            | ???        | ???       | Production deployment    |
+| FUNCTIONAL_TEST_REPORT.md      | ???        | ???       | Test coverage & results  |
+| AUDIT_REPORT_2025-11-24.md     | ???        | ???       | Final system audit       |
+| **TOTAL**                      | **2,400+** | **150+K** | **Complete system docs** |
 
 ---
 
 ## 🔗 Quick Links
 
 ### Documentation Files
+
 - [QUICK_START.md](2.opena3_openwebui/QUICK_START.md) — Start here
 - [API_REFERENCE.md](2.opena3_openwebui/API_REFERENCE.md) — All endpoints
 - [SECURITY_AUDIT_REPORT.md](2.opena3_openwebui/SECURITY_AUDIT_REPORT.md) — Security details
@@ -341,11 +365,13 @@ AUDIT_REPORT_2025-11-24.md (???)
 - [AUDIT_REPORT_2025-11-24.md](AUDIT_REPORT_2025-11-24.md) — Final audit
 
 ### Key Directories
+
 - `2.opena3_openwebui/` — OpenA3 dashboard
 - `2.openwebui/` — Masterprompt files
 - `1.opena1&2_portier/` — Portier system (opena1, opena2, kordp, archivp)
 
 ### Important Files
+
 - `QUICK_START.md` — Start here (5 min setup)
 - `INDEX.md` — This file (navigation hub)
 - `AUDIT_REPORT_2025-11-24.md` — System readiness
@@ -355,6 +381,7 @@ AUDIT_REPORT_2025-11-24.md (???)
 ## ✅ Before You Go
 
 **Did You:**
+
 - [ ] Read QUICK_START.md?
 - [ ] Run `bash MASTERPROMPT_OPENWEBUI.md`?
 - [ ] Open http://localhost:8000?
@@ -369,28 +396,28 @@ AUDIT_REPORT_2025-11-24.md (???)
 
 ## 📞 Support Resources
 
-| Issue | Resource |
-|-------|----------|
-| "Where do I start?" | → QUICK_START.md |
-| "How do I call the API?" | → API_REFERENCE.md |
-| "Is it secure?" | → SECURITY_AUDIT_REPORT.md |
-| "How do I deploy?" | → DEPLOYMENT_GUIDE.md |
-| "Does it work?" | → FUNCTIONAL_TEST_REPORT.md |
-| "What's the architecture?" | → AGENTENREGISTER_VOLLSTÄNDIG.md |
-| "Is it ready for production?" | → AUDIT_REPORT_2025-11-24.md |
+| Issue                         | Resource                         |
+| ----------------------------- | -------------------------------- |
+| "Where do I start?"           | → QUICK_START.md                 |
+| "How do I call the API?"      | → API_REFERENCE.md               |
+| "Is it secure?"               | → SECURITY_AUDIT_REPORT.md       |
+| "How do I deploy?"            | → DEPLOYMENT_GUIDE.md            |
+| "Does it work?"               | → FUNCTIONAL_TEST_REPORT.md      |
+| "What's the architecture?"    | → AGENTENREGISTER_VOLLSTÄNDIG.md |
+| "Is it ready for production?" | → AUDIT_REPORT_2025-11-24.md     |
 
 ---
 
 ## 🎉 System Status
 
-| Component | Status |
-|-----------|--------|
-| Code Quality | ✅ 100% |
-| Security | ✅ OWASP Compliant |
-| Testing | ✅ 100% Pass Rate |
-| Documentation | ✅ Complete |
-| Integration | ✅ Portier Ready |
-| Production | ✅ READY TO DEPLOY |
+| Component     | Status             |
+| ------------- | ------------------ |
+| Code Quality  | ✅ 100%            |
+| Security      | ✅ OWASP Compliant |
+| Testing       | ✅ 100% Pass Rate  |
+| Documentation | ✅ Complete        |
+| Integration   | ✅ Portier Ready   |
+| Production    | ✅ READY TO DEPLOY |
 
 **Overall Status: ✅ PRODUCTION READY**
 

@@ -1,7 +1,7 @@
 # 🚀 **OPENA15 UI-PROFILE SYSTEM – DOKUMENTATION**
 
-**Version:** 3.0  
-**Datum:** 27. November 2025  
+**Version:** 3.0
+**Datum:** 27. November 2025
 **Status:** ✅ **PRODUCTION-READY**
 
 ---
@@ -28,12 +28,12 @@ README.md → parse_readme() → ui_profile → Template + Partial → HTML
 
 ### **Komponenten**
 
-| Komponente                        | Funktion                                                    | Pfad                                          |
-| --------------------------------- | ----------------------------------------------------------- | --------------------------------------------- |
-| **production_batch.py**           | README-Parser + UI-Profile Detection                        | `14.opena15_html/production_batch.py`         |
-| **agent_dashboard.html.j2**       | Base-Template mit OpenAI-Key-Panel + Agent-Specific Block   | `data/templates/agent_dashboard.html.j2`      |
-| **Partials (4 Typen)**            | UI-Blöcke pro Agent-Typ                                     | `data/templates/partials/*.html.j2`           |
-| **opena15 API**                   | Jinja2-Renderer (Port 12360)                                | `14.opena15_html/main_html_agent.py`          |
+| Komponente                  | Funktion                                                  | Pfad                                     |
+| --------------------------- | --------------------------------------------------------- | ---------------------------------------- |
+| **production_batch.py**     | README-Parser + UI-Profile Detection                      | `14.opena15_html/production_batch.py`    |
+| **agent_dashboard.html.j2** | Base-Template mit OpenAI-Key-Panel + Agent-Specific Block | `data/templates/agent_dashboard.html.j2` |
+| **Partials (4 Typen)**      | UI-Blöcke pro Agent-Typ                                   | `data/templates/partials/*.html.j2`      |
+| **opena15 API**             | Jinja2-Renderer (Port 12360)                              | `14.opena15_html/main_html_agent.py`     |
 
 ---
 
@@ -44,7 +44,7 @@ README.md → parse_readme() → ui_profile → Template + Partial → HTML
 ```python
 def parse_readme(agent_id: str) -> Dict[str, Any]:
     """Parse README.md aus Agent-Ordner - extrahiert Role, Features & UI-Profile"""
-    
+
     # Pattern-basierte Detection
     if contains(r"Telegram", r"/send", r"/webhook"):
         ui_profile = "telegram_bot"
@@ -53,7 +53,7 @@ def parse_readme(agent_id: str) -> Dict[str, Any]:
     elif contains(r"E-?Mail", r"IMAP", r"SMTP"):
         ui_profile = "email_agent"
     # ... weitere Profile
-    
+
     return {
         "beschreibung": "Role: ...",
         "features": [...],
@@ -65,16 +65,16 @@ def parse_readme(agent_id: str) -> Dict[str, Any]:
 
 ### **Unterstützte UI-Profile**
 
-| UI-Profile           | Trigger-Pattern                                | Partial                              |
-| -------------------- | ---------------------------------------------- | ------------------------------------ |
-| `telegram_bot`       | "Telegram", "/send", "/webhook"                | `telegram_agent_dashboard.html.j2`   |
-| `whatsapp_agent`     | "WhatsApp", "Meta", "/webhook"                 | `whatsapp_agent_dashboard.html.j2`   |
-| `browser_automation` | "Browser", "Playwright", "/run"                | `browser_agent_dashboard.html.j2`    |
-| `email_agent`        | "E-Mail", "IMAP", "SMTP"                       | `email_agent_dashboard.html.j2`      |
-| `calendar_agent`     | "Calendar", "/events"                          | `calendar_agent_dashboard.html.j2`   |
-| `shop_agent`         | "Shop", "/products", "/orders"                 | `shop_agent_dashboard.html.j2`       |
-| `crm_agent`          | "CRM", "Customer"                              | `crm_agent_dashboard.html.j2`        |
-| `generic`            | (Fallback für alle anderen)                    | `generic_agent_dashboard.html.j2`    |
+| UI-Profile           | Trigger-Pattern                 | Partial                            |
+| -------------------- | ------------------------------- | ---------------------------------- |
+| `telegram_bot`       | "Telegram", "/send", "/webhook" | `telegram_agent_dashboard.html.j2` |
+| `whatsapp_agent`     | "WhatsApp", "Meta", "/webhook"  | `whatsapp_agent_dashboard.html.j2` |
+| `browser_automation` | "Browser", "Playwright", "/run" | `browser_agent_dashboard.html.j2`  |
+| `email_agent`        | "E-Mail", "IMAP", "SMTP"        | `email_agent_dashboard.html.j2`    |
+| `calendar_agent`     | "Calendar", "/events"           | `calendar_agent_dashboard.html.j2` |
+| `shop_agent`         | "Shop", "/products", "/orders"  | `shop_agent_dashboard.html.j2`     |
+| `crm_agent`          | "CRM", "Customer"               | `crm_agent_dashboard.html.j2`      |
+| `generic`            | (Fallback für alle anderen)     | `generic_agent_dashboard.html.j2`  |
 
 ---
 
@@ -92,19 +92,19 @@ def parse_readme(agent_id: str) -> Dict[str, Any]:
 
 ```html
 <div class="main-card">
-    <div class="section-card">
-        <h3>🔑 OpenAI API Key</h3>
-        <div class="input-group">
-            <input id="openaiKeyInput" type="password" placeholder="sk-..." />
-            <button id="openaiKeyToggleVisibility">👁</button>
-        </div>
-        <div class="btn-group">
-            <button id="openaiKeySaveBtn">💾 Speichern</button>
-            <button id="openaiKeyTogglePauseBtn">⏸ Pausieren</button>
-            <button id="openaiKeyDeleteBtn">🗑 Löschen</button>
-        </div>
-        <small id="openaiKeyInfo"></small>
+  <div class="section-card">
+    <h3>🔑 OpenAI API Key</h3>
+    <div class="input-group">
+      <input id="openaiKeyInput" type="password" placeholder="sk-..." />
+      <button id="openaiKeyToggleVisibility">👁</button>
     </div>
+    <div class="btn-group">
+      <button id="openaiKeySaveBtn">💾 Speichern</button>
+      <button id="openaiKeyTogglePauseBtn">⏸ Pausieren</button>
+      <button id="openaiKeyDeleteBtn">🗑 Löschen</button>
+    </div>
+    <small id="openaiKeyInfo"></small>
+  </div>
 </div>
 ```
 
@@ -112,17 +112,17 @@ def parse_readme(agent_id: str) -> Dict[str, Any]:
 
 ```javascript
 // Speichern
-window.localStorage.setItem('opena_opena4_openai_api_key', 'sk-...');
-window.localStorage.setItem('opena_opena4_openai_api_key_status', 'active');
+window.localStorage.setItem("opena_opena4_openai_api_key", "sk-...");
+window.localStorage.setItem("opena_opena4_openai_api_key_status", "active");
 
 // Laden
 const { key, status } = loadOpenAIState();
 
 // Verwendung in Agent-Code
-window.withOpenAIKey(async function(apiKey) {
-    const resp = await fetch('/endpoint', {
-        headers: { "Authorization": `Bearer ${apiKey}` }
-    });
+window.withOpenAIKey(async function (apiKey) {
+  const resp = await fetch("/endpoint", {
+    headers: { Authorization: `Bearer ${apiKey}` },
+  });
 });
 ```
 
@@ -140,39 +140,40 @@ window.withOpenAIKey(async function(apiKey) {
 ### **Base-Template: `agent_dashboard.html.j2`**
 
 ```html
-<body data-agent-slug="{{ slug }}" data-agent-id="{{ agent_id }}" data-agent-port="{{ port }}">
-    <!-- Header -->
-    <div class="main-card">
-        <h1>{{ agent_name }}</h1>
-        <p>{{ beschreibung }}</p>
+<body
+  data-agent-slug="{{ slug }}"
+  data-agent-id="{{ agent_id }}"
+  data-agent-port="{{ port }}"
+>
+  <!-- Header -->
+  <div class="main-card">
+    <h1>{{ agent_name }}</h1>
+    <p>{{ beschreibung }}</p>
+  </div>
+
+  <!-- OpenAI API Key Panel (GLOBAL) -->
+  <div class="main-card">
+    <div class="section-card">
+      <h3>🔑 OpenAI API Key</h3>
+      <!-- ... Panel-Content ... -->
     </div>
+  </div>
 
-    <!-- OpenAI API Key Panel (GLOBAL) -->
-    <div class="main-card">
-        <div class="section-card">
-            <h3>🔑 OpenAI API Key</h3>
-            <!-- ... Panel-Content ... -->
-        </div>
-    </div>
+  <!-- Agent-Specific UI Block -->
+  {% block agent_specific %} {% if ui_profile == "telegram_bot" %} {% include
+  "partials/telegram_agent_dashboard.html.j2" ignore missing %} {% elif
+  ui_profile == "browser_automation" %} {% include
+  "partials/browser_agent_dashboard.html.j2" ignore missing %} {% elif
+  ui_profile == "email_agent" %} {% include
+  "partials/email_agent_dashboard.html.j2" ignore missing %} {% else %} {%
+  include "partials/generic_agent_dashboard.html.j2" ignore missing %} {% endif
+  %} {% endblock %}
 
-    <!-- Agent-Specific UI Block -->
-    {% block agent_specific %}
-        {% if ui_profile == "telegram_bot" %}
-            {% include "partials/telegram_agent_dashboard.html.j2" ignore missing %}
-        {% elif ui_profile == "browser_automation" %}
-            {% include "partials/browser_agent_dashboard.html.j2" ignore missing %}
-        {% elif ui_profile == "email_agent" %}
-            {% include "partials/email_agent_dashboard.html.j2" ignore missing %}
-        {% else %}
-            {% include "partials/generic_agent_dashboard.html.j2" ignore missing %}
-        {% endif %}
-    {% endblock %}
-
-    <!-- Footer -->
-    <script>
-        // OpenAI Key Management JS
-        // Health Check JS
-    </script>
+  <!-- Footer -->
+  <script>
+    // OpenAI Key Management JS
+    // Health Check JS
+  </script>
 </body>
 ```
 
@@ -181,24 +182,26 @@ window.withOpenAIKey(async function(apiKey) {
 ```html
 <!-- Telegram-spezifische UI -->
 <div class="main-card">
-    <h3>📡 Telegram Webhook Status</h3>
-    <div id="botStatusValue">–</div>
-    <div id="webhookUrlValue">{{ endpoints.webhook or "/webhook" }}</div>
+  <h3>📡 Telegram Webhook Status</h3>
+  <div id="botStatusValue">–</div>
+  <div id="webhookUrlValue">{{ endpoints.webhook or "/webhook" }}</div>
 </div>
 
 <div class="main-card">
-    <h3>💬 Chat-Interface</h3>
-    <input id="inputChatId" placeholder="123456789" />
-    <textarea id="inputMessage"></textarea>
-    <button id="btnSendMessage">📨 Senden</button>
+  <h3>💬 Chat-Interface</h3>
+  <input id="inputChatId" placeholder="123456789" />
+  <textarea id="inputMessage"></textarea>
+  <button id="btnSendMessage">📨 Senden</button>
 </div>
 
 <script>
-document.getElementById("btnSendMessage").addEventListener("click", function() {
-    window.withOpenAIKey(async function(apiKey) {
+  document
+    .getElementById("btnSendMessage")
+    .addEventListener("click", function () {
+      window.withOpenAIKey(async function (apiKey) {
         // Send message via API with Bearer token
+      });
     });
-});
 </script>
 ```
 
@@ -208,13 +211,13 @@ document.getElementById("btnSendMessage").addEventListener("click", function() {
 
 ### **Keine Breaking Changes**
 
-| Komponente              | Alt (vor v3.0)              | Neu (v3.0)                          | Kompatibel? |
-| ----------------------- | --------------------------- | ----------------------------------- | ----------- |
-| **Template-Name**       | `agent_dashboard.html.j2`   | `agent_dashboard.html.j2`           | ✅ Gleich   |
-| **Output-Pfad**         | `data/output/*.html.j2`     | `data/output/*.html.j2`             | ✅ Gleich   |
-| **agent-Objekt**        | `{id, name, port, ...}`     | `+ {ui_profile, endpoints, workflows}` | ✅ Erweitert |
-| **production_batch.py** | Bestehende Logik erhalten   | + README-Parser erweitert           | ✅ Additiv  |
-| **opena15 API**         | `POST /generate`            | `POST /generate` (unverändert)      | ✅ Stabil   |
+| Komponente              | Alt (vor v3.0)            | Neu (v3.0)                             | Kompatibel?  |
+| ----------------------- | ------------------------- | -------------------------------------- | ------------ |
+| **Template-Name**       | `agent_dashboard.html.j2` | `agent_dashboard.html.j2`              | ✅ Gleich    |
+| **Output-Pfad**         | `data/output/*.html.j2`   | `data/output/*.html.j2`                | ✅ Gleich    |
+| **agent-Objekt**        | `{id, name, port, ...}`   | `+ {ui_profile, endpoints, workflows}` | ✅ Erweitert |
+| **production_batch.py** | Bestehende Logik erhalten | + README-Parser erweitert              | ✅ Additiv   |
+| **opena15 API**         | `POST /generate`          | `POST /generate` (unverändert)         | ✅ Stabil    |
 
 ### **Neue Felder im agent-Objekt**
 
@@ -227,7 +230,7 @@ document.getElementById("btnSendMessage").addEventListener("click", function() {
     "port": 12348,
     "beschreibung": "...",
     "features": [...],
-    
+
     # NEU (additiv, kein Breaking Change)
     "slug": "opena4",
     "ui_profile": "telegram_bot",
@@ -368,8 +371,8 @@ touch data/templates/partials/whatsapp_agent_dashboard.html.j2
 **3. Template-Switch erweitern (agent_dashboard.html.j2)**
 
 ```html
-{% elif ui_profile == "whatsapp_agent" %}
-    {% include "partials/whatsapp_agent_dashboard.html.j2" ignore missing %}
+{% elif ui_profile == "whatsapp_agent" %} {% include
+"partials/whatsapp_agent_dashboard.html.j2" ignore missing %}
 ```
 
 **4. Regenerieren**
@@ -384,16 +387,16 @@ python3 production_batch.py
 
 ## 📦 **Deliverables**
 
-| Datei                                       | Funktion                                  | Status      |
-| ------------------------------------------- | ----------------------------------------- | ----------- |
-| `production_batch.py`                       | README-Parser + UI-Profile Detection      | ✅ Updated  |
-| `data/templates/agent_dashboard.html.j2`    | Base-Template mit OpenAI-Key-Panel        | ✅ Updated  |
-| `partials/generic_agent_dashboard.html.j2`  | Fallback-UI                               | ✅ Created  |
-| `partials/telegram_agent_dashboard.html.j2` | Telegram-spezifische UI                   | ✅ Created  |
-| `partials/browser_agent_dashboard.html.j2`  | Browser-Automation UI                     | ✅ Created  |
-| `partials/email_agent_dashboard.html.j2`    | Email-Agent UI                            | ✅ Created  |
-| **17 generierte Dashboards**                | `data/output/*.html.j2`                   | ✅ Generated |
-| `UI_PROFILE_SYSTEM.md` (diese Datei)        | Dokumentation                             | ✅ Created  |
+| Datei                                       | Funktion                             | Status       |
+| ------------------------------------------- | ------------------------------------ | ------------ |
+| `production_batch.py`                       | README-Parser + UI-Profile Detection | ✅ Updated   |
+| `data/templates/agent_dashboard.html.j2`    | Base-Template mit OpenAI-Key-Panel   | ✅ Updated   |
+| `partials/generic_agent_dashboard.html.j2`  | Fallback-UI                          | ✅ Created   |
+| `partials/telegram_agent_dashboard.html.j2` | Telegram-spezifische UI              | ✅ Created   |
+| `partials/browser_agent_dashboard.html.j2`  | Browser-Automation UI                | ✅ Created   |
+| `partials/email_agent_dashboard.html.j2`    | Email-Agent UI                       | ✅ Created   |
+| **17 generierte Dashboards**                | `data/output/*.html.j2`              | ✅ Generated |
+| `UI_PROFILE_SYSTEM.md` (diese Datei)        | Dokumentation                        | ✅ Created   |
 
 ---
 
@@ -415,6 +418,6 @@ python3 production_batch.py
 
 ---
 
-**Maintainer:** Danijel (ELION Team)  
-**Letzte Aktualisierung:** 27. November 2025  
+**Maintainer:** Danijel (ELION Team)
+**Letzte Aktualisierung:** 27. November 2025
 **Version:** 3.0

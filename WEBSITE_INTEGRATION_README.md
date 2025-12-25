@@ -1,7 +1,7 @@
 # 🌐 Website Integration für ELION Hyper-Dashboard
 
-**Version:** 1.0.0  
-**Status:** ✅ Production Ready  
+**Version:** 1.0.0
+**Status:** ✅ Production Ready
 **Erstellt:** 21. Dezember 2025
 
 ---
@@ -37,18 +37,19 @@ Diese Dokumentation beschreibt, wie Websites und Web-Services in das ELION Hyper
 
 ## 🤖 Web-Agenten
 
-| Agent | Port | Funktion | Dokumentation |
-|-------|------|----------|---------------|
-| **opena15** | 12361 | HTML Creator | `14.opena15_html/MASTER_PROMPT.md` |
-| **opena16** | 12362 | Shop Creator | `15.opena16_shop/` |
-| **opena17** | 12366 | Homepage Creator | `16.opena17_homepagecreator/MASTER_PROMPT.md` |
-| **opena6** | 12352 | Browser Automation | `5.opena6_browser/MASTER_PROMPT.md` |
+| Agent       | Port  | Funktion           | Dokumentation                                 |
+| ----------- | ----- | ------------------ | --------------------------------------------- |
+| **opena15** | 12361 | HTML Creator       | `14.opena15_html/MASTER_PROMPT.md`            |
+| **opena16** | 12362 | Shop Creator       | `15.opena16_shop/`                            |
+| **opena17** | 12366 | Homepage Creator   | `16.opena17_homepagecreator/MASTER_PROMPT.md` |
+| **opena6**  | 12352 | Browser Automation | `5.opena6_browser/MASTER_PROMPT.md`           |
 
 ---
 
 ## 🚀 Quick Start
 
 ### Landing Page erstellen
+
 ```python
 # Siehe: docs/WEBSITE_INTEGRATION_QUICK_REFERENCE.md
 import httpx
@@ -70,6 +71,7 @@ asyncio.run(create_landing_page())
 ```
 
 ### E-Commerce-Shop einrichten
+
 ```python
 # Siehe: docs/WEBSITE_INTEGRATION_QUICK_REFERENCE.md
 # opena16 (Shop Creator) verwenden
@@ -77,6 +79,7 @@ asyncio.run(create_landing_page())
 ```
 
 ### Website scrapen
+
 ```python
 # Siehe: docs/WEBSITE_INTEGRATION_QUICK_REFERENCE.md
 # opena6 (Browser Automation) verwenden
@@ -87,17 +90,18 @@ asyncio.run(create_landing_page())
 
 ## 🔐 Security
 
-✅ **Option-2-Flow:** Alle Requests durch opena1 → opena2 → kordp  
-✅ **Port-Policy:** Nur 12344-12399 (Backend)  
-✅ **Secrets:** Nur aus ENV, nie hardcoded  
-✅ **Safepoints:** CMD & RESP für jeden Request  
-✅ **Validation:** Input-Sanitization & XSS-Prevention  
+✅ **Option-2-Flow:** Alle Requests durch opena1 → opena2 → kordp
+✅ **Port-Policy:** Nur 12344-12399 (Backend)
+✅ **Secrets:** Nur aus ENV, nie hardcoded
+✅ **Safepoints:** CMD & RESP für jeden Request
+✅ **Validation:** Input-Sanitization & XSS-Prevention
 
 ---
 
 ## 🎯 Für GitHub Copilot
 
 ### Kontext laden
+
 ```
 @docs/WEBSITE_INTEGRATION_MASTER_PROMPT.md
 @docs/WEBSITE_INTEGRATION_QUICK_REFERENCE.md
@@ -118,12 +122,12 @@ Erstelle eine Landing Page mit Hero-Section und Kontaktformular.
 
 ## 🤝 Support
 
-**Dokumentation-Fehler?** → GitHub Issue  
-**Fragen?** → ELION Team kontaktieren  
+**Dokumentation-Fehler?** → GitHub Issue
+**Fragen?** → ELION Team kontaktieren
 **Verbesserungen?** → Pull Request
 
 ---
 
-**Maintainer:** Danijel Jokic (ELION Team)  
-**Repository:** [jokicdanijel/Gesamtprojekt-start](https://github.com/jokicdanijel/Gesamtprojekt-start)  
+**Maintainer:** Danijel Jokic (ELION Team)
+**Repository:** [jokicdanijel/Gesamtprojekt-start](https://github.com/jokicdanijel/Gesamtprojekt-start)
 **Dashboard:** http://127.0.0.1:12349/dashboard

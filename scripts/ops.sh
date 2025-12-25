@@ -629,7 +629,7 @@ case "$cmd" in
           echo "$STATUS"; \
         else \
           echo "UNREACHABLE"; \
-        fi' 
+        fi'
       echo ""
       echo "Next check in 5s... (Ctrl+C to stop)"
       sleep 5

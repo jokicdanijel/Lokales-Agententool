@@ -1,7 +1,8 @@
-import requests
 import logging
-from typing import Iterator, List, Literal, Union
+from collections.abc import Iterator
+from typing import Literal
 
+import requests
 from langchain_core.document_loaders import BaseLoader
 from langchain_core.documents import Document
 from open_webui.env import SRC_LOG_LEVELS
@@ -25,7 +26,7 @@ class TavilyLoader(BaseLoader):
 
     def __init__(
         self,
-        urls: Union[str, List[str]],
+        urls: str | list[str],
         api_key: str,
         extract_depth: Literal["basic", "advanced"] = "basic",
         continue_on_failure: bool = True,

@@ -23,15 +23,12 @@ Abhängigkeiten:
 - VS Code Thunder Client (Alternative)
 """
 
-import os
-import json
 import asyncio
-import httpx
-import subprocess
-from datetime import datetime
+import json
 from pathlib import Path
-from typing import Optional, Dict, Any
+from typing import Any
 
+import httpx
 
 # ==================== REST Client Templates ====================
 
@@ -155,20 +152,12 @@ Authorization: Bearer {{token}}
 
 VSCODE_SETTINGS = {
     "rest-client.environmentVariables": {
-        "$shared": {
-            "baseUrl": "http://192.168.0.70:8765",
-            "token": "sk_opena6_browser_v3_production"
-        }
+        "$shared": {"baseUrl": "http://192.168.0.70:8765", "token": "sk_opena6_browser_v3_production"}
     },
-    "rest-client.defaultHeaders": {
-        "User-Agent": "VS Code REST Client",
-        "Accept": "application/json"
-    },
+    "rest-client.defaultHeaders": {"User-Agent": "VS Code REST Client", "Accept": "application/json"},
     "rest-client.timeoutinmilliseconds": 30000,
     "explorer.fileNesting.enabled": True,
-    "explorer.fileNesting.patterns": {
-        "*.rest": "${basename}.json, ${basename}.http"
-    }
+    "explorer.fileNesting.patterns": {"*.rest": "${basename}.json, ${basename}.http"},
 }
 
 
@@ -185,10 +174,7 @@ VSCODE_LAUNCH_CONFIG = {
             "console": "integratedTerminal",
             "justMyCode": False,
             "args": ["--host", "0.0.0.0", "--port", "8765"],
-            "env": {
-                "BEARER_TOKEN": "sk_opena6_browser_v3_production",
-                "DEBUG": "1"
-            }
+            "env": {"BEARER_TOKEN": "sk_opena6_browser_v3_production", "DEBUG": "1"},
         },
         {
             "name": "Browser Agent opena6",
@@ -197,21 +183,15 @@ VSCODE_LAUNCH_CONFIG = {
             "program": "${workspaceFolder}/LocalAgent-Pro/opena6/main.py",
             "console": "integratedTerminal",
             "justMyCode": False,
-            "env": {
-                "PORT": "12350",
-                "DEBUG": "1"
-            }
-        }
+            "env": {"PORT": "12350", "DEBUG": "1"},
+        },
     ],
     "compounds": [
         {
             "name": "Full Stack (Tool Server + Agent)",
-            "configurations": [
-                "Browser Agent Tool Server",
-                "Browser Agent opena6"
-            ]
+            "configurations": ["Browser Agent Tool Server", "Browser Agent opena6"],
         }
-    ]
+    ],
 }
 
 
@@ -226,44 +206,36 @@ VSCODE_TASKS = {
             "command": "cd LocalAgent-Pro/opena6 && python3 tool_server.py --host 0.0.0.0 --port 8765",
             "isBackground": True,
             "problemMatcher": {
-                "pattern": {
-                    "regexp": "^.*$",
-                    "file": 1,
-                    "location": 2,
-                    "message": 3
-                },
+                "pattern": {"regexp": "^.*$", "file": 1, "location": 2, "message": 3},
                 "background": {
                     "activeOnStart": True,
                     "beginsPattern": ".*Tool Server.*",
-                    "endsPattern": ".*Listening.*"
-                }
+                    "endsPattern": ".*Listening.*",
+                },
             },
-            "group": {
-                "kind": "build",
-                "isDefault": True
-            }
+            "group": {"kind": "build", "isDefault": True},
         },
         {
             "label": "Health Check",
             "type": "shell",
             "command": "curl -s http://192.168.0.70:8765/health | jq",
             "problemMatcher": [],
-            "group": "test"
+            "group": "test",
         },
         {
             "label": "Test Tool Actions",
             "type": "shell",
             "command": "python3 -c \"import httpx; r = httpx.get('http://192.168.0.70:8765/manifest'); print(r.json())\"",
             "problemMatcher": [],
-            "group": "test"
+            "group": "test",
         },
         {
             "label": "View Dashboard",
             "type": "shell",
             "command": "python3 -m webbrowser 'http://192.168.0.70:8765/'",
-            "problemMatcher": []
-        }
-    ]
+            "problemMatcher": [],
+        },
+    ],
 }
 
 
@@ -355,6 +327,7 @@ VSCODE_KEYBINDINGS = """
 
 # ==================== Python Bridge Class ====================
 
+
 class VSCodeBridge:
     """Bridge zwischen VS Code und Browser Agent Tool Server"""
 
@@ -368,7 +341,7 @@ class VSCodeBridge:
         """Initialisiere HTTP Client"""
         self.client = httpx.AsyncClient(timeout=30)
 
-    async def health_check(self) -> Dict[str, Any]:
+    async def health_check(self) -> dict[str, Any]:
         """Überprüfe Server Health"""
         try:
             response = await self.client.get(f"{self.base_url}/health")
@@ -376,27 +349,18 @@ class VSCodeBridge:
         except Exception as e:
             return {"status": "error", "error": str(e)}
 
-    async def execute_action(
-        self,
-        action: str,
-        url: str,
-        **kwargs
-    ) -> Dict[str, Any]:
+    async def execute_action(self, action: str, url: str, **kwargs) -> dict[str, Any]:
         """Führe Browser Action aus"""
         try:
             headers = {"Authorization": f"Bearer {self.token}"}
             payload = {"action": action, "url": url, **kwargs}
 
-            response = await self.client.post(
-                f"{self.base_url}/call",
-                json=payload,
-                headers=headers
-            )
+            response = await self.client.post(f"{self.base_url}/call", json=payload, headers=headers)
             return response.json()
         except Exception as e:
             return {"status": "error", "error": str(e)}
 
-    def generate_rest_client_file(self, output_path: Optional[str] = None):
+    def generate_rest_client_file(self, output_path: str | None = None):
         """Generiere REST Client .http Datei"""
         if output_path is None:
             output_path = self.workspace_path / "browser_agent.http"
@@ -407,7 +371,7 @@ class VSCodeBridge:
         print(f"✅ REST Client File erstellt: {output_path}")
         return output_path
 
-    def generate_vscode_config(self, output_dir: Optional[str] = None):
+    def generate_vscode_config(self, output_dir: str | None = None):
         """Generiere VS Code Konfigurationsdateien"""
         if output_dir is None:
             output_dir = self.workspace_path / ".vscode"
@@ -418,17 +382,17 @@ class VSCodeBridge:
         # settings.json
         with open(output_dir / "settings.json", "w") as f:
             json.dump(VSCODE_SETTINGS, f, indent=2)
-        print(f"✅ settings.json erstellt")
+        print("✅ settings.json erstellt")
 
         # launch.json
         with open(output_dir / "launch.json", "w") as f:
             json.dump(VSCODE_LAUNCH_CONFIG, f, indent=2)
-        print(f"✅ launch.json erstellt")
+        print("✅ launch.json erstellt")
 
         # tasks.json
         with open(output_dir / "tasks.json", "w") as f:
             json.dump(VSCODE_TASKS, f, indent=2)
-        print(f"✅ tasks.json erstellt")
+        print("✅ tasks.json erstellt")
 
     async def close(self):
         """Schließe HTTP Client"""
@@ -444,6 +408,7 @@ class VSCodeBridge:
 
 
 # ==================== CLI Commands ====================
+
 
 async def setup_vscode_integration(workspace_path: str = "."):
     """Vollständige VS Code Integration Setup"""

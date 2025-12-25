@@ -6,11 +6,11 @@ Mache deine lokalen Server (Tool Server 8765, Browser Agent 12350, Compute Agent
 
 ## 🎯 Übersicht: 3 Methoden
 
-| Methode | Setup | Sicherheit | Geschwindigkeit | Best For |
-|---------|-------|-----------|-----------------|----------|
-| **ngrok** | ⭐⭐ Medium | ⭐⭐⭐ Hoch | ⭐⭐⭐ Schnell | Schnelle Prototypen, Teams |
-| **LocalTunnel** | ⭐ Einfach | ⭐⭐ Mittel | ⭐⭐ Mittel | Kostenlos, GitHub Pages |
-| **SSH Tunnel** | ⭐⭐⭐ Komplex | ⭐⭐⭐⭐ Sehr Hoch | ⭐⭐⭐ Schnell | Produktiv, Private Infrastruktur |
+| Methode         | Setup          | Sicherheit         | Geschwindigkeit | Best For                         |
+| --------------- | -------------- | ------------------ | --------------- | -------------------------------- |
+| **ngrok**       | ⭐⭐ Medium    | ⭐⭐⭐ Hoch        | ⭐⭐⭐ Schnell  | Schnelle Prototypen, Teams       |
+| **LocalTunnel** | ⭐ Einfach     | ⭐⭐ Mittel        | ⭐⭐ Mittel     | Kostenlos, GitHub Pages          |
+| **SSH Tunnel**  | ⭐⭐⭐ Komplex | ⭐⭐⭐⭐ Sehr Hoch | ⭐⭐⭐ Schnell  | Produktiv, Private Infrastruktur |
 
 ---
 
@@ -19,11 +19,13 @@ Mache deine lokalen Server (Tool Server 8765, Browser Agent 12350, Compute Agent
 ### Installation
 
 **macOS:**
+
 ```bash
 brew install ngrok
 ```
 
 **Linux (Ubuntu/Debian):**
+
 ```bash
 curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
 echo 'deb https://ngrok-agent.s3.amazonaws.com buster main' | sudo tee /etc/apt/sources.list.d/ngrok.list
@@ -32,6 +34,7 @@ sudo apt install ngrok
 ```
 
 **Windows:**
+
 ```powershell
 # Mit Chocolatey:
 choco install ngrok
@@ -44,6 +47,7 @@ choco install ngrok
 1. Gehe zu https://dashboard.ngrok.com/auth
 2. Copy deinen Auth Token
 3. Konfiguriere lokal:
+
 ```bash
 ngrok config add-authtoken YOUR_TOKEN_HERE
 ```
@@ -51,11 +55,13 @@ ngrok config add-authtoken YOUR_TOKEN_HERE
 ### Tunnel starten
 
 **Tool Server (Port 8765):**
+
 ```bash
 ngrok http 8765
 ```
 
 **Output:**
+
 ```
 Session Status                online
 Account                       username@example.com
@@ -65,6 +71,7 @@ Forwarding                    https://abc123.ngrok.io -> http://localhost:8765
 ```
 
 **Die URL nutzen:**
+
 ```bash
 # Health Check
 curl https://abc123.ngrok.io/health
@@ -97,6 +104,7 @@ ngrok http 3000 --subdomain openwebui
 Öffne: **http://127.0.0.1:4040**
 
 Sehe:
+
 - Alle aktiven Tunnels
 - Request/Response Inspektionen
 - Logs und Debugging-Infos
@@ -127,6 +135,7 @@ lt --port 8765 --subdomain browser-agent --open false
 ```
 
 **Output:**
+
 ```
 your url is: https://browser-agent.loca.lt
 ```
@@ -170,6 +179,7 @@ ssh -L LOCAL_PORT:REMOTE_HOST:REMOTE_PORT user@remote.server.com -N
 ```
 
 **Beispiel:**
+
 ```bash
 # Greife auf Remote Tool Server zu
 ssh -L 8765:localhost:8765 danijel@192.168.0.70 -N
@@ -187,6 +197,7 @@ ssh -R REMOTE_PORT:localhost:LOCAL_PORT user@remote.server.com -N
 ```
 
 **Beispiel:**
+
 ```bash
 # Mache lokalen Tool Server auf Remote Port 8765 zugänglich
 ssh -R 8765:localhost:8765 danijel@192.168.0.70 -N
@@ -223,6 +234,7 @@ Host browser-tunnel
 ```
 
 Dann einfach:
+
 ```bash
 ssh -N browser-tunnel
 ```
@@ -272,6 +284,7 @@ Erstelle `.vscode/tasks.json`:
 ```
 
 **Nutzen:**
+
 ```
 Ctrl+Shift+P → "Tasks: Run Task" → Wähle "🌐 Start ngrok"
 ```
@@ -365,6 +378,7 @@ curl http://localhost:8765/health
 ## 🔒 Sicherheit Best Practices
 
 ### 1. Verwende HTTPS (Automatisch)
+
 - ngrok: ✅ HTTPS nur
 - LocalTunnel: ✅ HTTPS nur
 - SSH: ✅ Encrypted
@@ -456,13 +470,13 @@ lt --port 8765 --subdomain browser-agent --local-host 127.0.0.1
 
 ## 📊 Performance Vergleich
 
-| Metrik | ngrok | LocalTunnel | SSH |
-|--------|-------|------------|-----|
-| Latenz | ~50ms | ~100ms | ~10ms |
-| Uptime | 99.9% | 99% | 100% |
-| Bandbreite | Unbegrenzt | Begrenzt | Unbegrenzt |
-| Kosten | $5-20/mo | Kostenlos | Kostenlos |
-| Support | ⭐⭐⭐ | ⭐⭐ | Selbst |
+| Metrik     | ngrok      | LocalTunnel | SSH        |
+| ---------- | ---------- | ----------- | ---------- |
+| Latenz     | ~50ms      | ~100ms      | ~10ms      |
+| Uptime     | 99.9%      | 99%         | 100%       |
+| Bandbreite | Unbegrenzt | Begrenzt    | Unbegrenzt |
+| Kosten     | $5-20/mo   | Kostenlos   | Kostenlos  |
+| Support    | ⭐⭐⭐     | ⭐⭐        | Selbst     |
 
 ---
 

@@ -1,1 +1,86 @@
-[{"updatedAt":"2025-12-16T14:30:11.000Z","createdAt":"2025-12-16T14:08:58.293Z","id":"auto_telegram_1","name":"Telegram Webhook Send","description":null,"active":false,"isArchived":false,"nodes":[{"parameters":{"httpMethod":"POST","path":"telegram-webhook","responseMode":"lastNode"},"name":"Webhook","type":"n8n-nodes-base.webhook","typeVersion":1,"position":[250,300],"id":"376ec3f5-ab15-4640-94a4-838641cb2a4c"},{"parameters":{"values":{"string":[{"name":"chat_id","value":"={{$json[\"chat_id\"]}}"},{"name":"text","value":"={{$json[\"message\"]}}"}]},"options":{}},"name":"Set","type":"n8n-nodes-base.set","typeVersion":1,"position":[450,300],"id":"cefa71c3-e276-4b0e-ab99-d324ab5923bf"},{"parameters":{"requestMethod":"POST","url":"https://httpbin.org/post","jsonParameters":true,"options":{},"bodyParametersJson":"={\"chat_id\": {{$json[\"chat_id\"]}}, \"text\": \"{{$json[\"text\"]}}\"}"},"name":"Telegram","type":"n8n-nodes-base.httpRequest","typeVersion":1,"position":[650,300],"id":"e4aff216-dc93-42a0-959d-44e3d17d8f10"}],"connections":{"Webhook":{"main":[[{"node":"Set","type":"main","index":0}]]},"Set":{"main":[[{"node":"Telegram","type":"main","index":0}]]}},"settings":{},"staticData":null,"meta":null,"pinData":null,"versionId":"1","activeVersionId":null,"versionCounter":17,"triggerCount":1,"tags":[],"shared":[{"updatedAt":"2025-12-16T14:08:58.298Z","createdAt":"2025-12-16T14:08:58.298Z","role":"workflow:owner","workflowId":"auto_telegram_1","projectId":"XbOOG902y0EUW69S","project":{"updatedAt":"2025-12-16T12:59:02.602Z","createdAt":"2025-12-16T12:59:02.602Z","id":"XbOOG902y0EUW69S","name":"Unnamed Project","type":"personal","icon":null,"description":null}}]}]
+[
+  {
+    "updatedAt": "2025-12-16T14:30:11.000Z",
+    "createdAt": "2025-12-16T14:08:58.293Z",
+    "id": "auto_telegram_1",
+    "name": "Telegram Webhook Send",
+    "description": null,
+    "active": false,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "telegram-webhook",
+          "responseMode": "lastNode"
+        },
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1,
+        "position": [250, 300],
+        "id": "376ec3f5-ab15-4640-94a4-838641cb2a4c"
+      },
+      {
+        "parameters": {
+          "values": {
+            "string": [
+              { "name": "chat_id", "value": "={{$json[\"chat_id\"]}}" },
+              { "name": "text", "value": "={{$json[\"message\"]}}" }
+            ]
+          },
+          "options": {}
+        },
+        "name": "Set",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 1,
+        "position": [450, 300],
+        "id": "cefa71c3-e276-4b0e-ab99-d324ab5923bf"
+      },
+      {
+        "parameters": {
+          "requestMethod": "POST",
+          "url": "https://httpbin.org/post",
+          "jsonParameters": true,
+          "options": {},
+          "bodyParametersJson": "={\"chat_id\": {{$json[\"chat_id\"]}}, \"text\": \"{{$json[\"text\"]}}\"}"
+        },
+        "name": "Telegram",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 1,
+        "position": [650, 300],
+        "id": "e4aff216-dc93-42a0-959d-44e3d17d8f10"
+      }
+    ],
+    "connections": {
+      "Webhook": { "main": [[{ "node": "Set", "type": "main", "index": 0 }]] },
+      "Set": { "main": [[{ "node": "Telegram", "type": "main", "index": 0 }]] }
+    },
+    "settings": {},
+    "staticData": null,
+    "meta": null,
+    "pinData": null,
+    "versionId": "1",
+    "activeVersionId": null,
+    "versionCounter": 17,
+    "triggerCount": 1,
+    "tags": [],
+    "shared": [
+      {
+        "updatedAt": "2025-12-16T14:08:58.298Z",
+        "createdAt": "2025-12-16T14:08:58.298Z",
+        "role": "workflow:owner",
+        "workflowId": "auto_telegram_1",
+        "projectId": "XbOOG902y0EUW69S",
+        "project": {
+          "updatedAt": "2025-12-16T12:59:02.602Z",
+          "createdAt": "2025-12-16T12:59:02.602Z",
+          "id": "XbOOG902y0EUW69S",
+          "name": "Unnamed Project",
+          "type": "personal",
+          "icon": null,
+          "description": null
+        }
+      }
+    ]
+  }
+]

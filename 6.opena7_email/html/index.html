@@ -20,7 +20,7 @@
                 <p class="subtitle">AI-Powered Email Automation • IMAP/SMTP Integration</p>
             </div>
         </div>
-        
+
         <div class="status-section">
             <div class="connection-status">
                 <div id="statusDot" class="status-dot"></div>
@@ -38,9 +38,9 @@
     <div class="auth-card">
         <h2>🔐 Authentication</h2>
         <div class="auth-form">
-            <input 
-                type="password" 
-                id="token" 
+            <input
+                type="password"
+                id="token"
                 placeholder="Bearer Token eingeben..."
                 class="auth-input"
             >
@@ -56,7 +56,7 @@
 
 <!-- 📊 Main Dashboard -->
 <div class="container">
-    
+
     <!-- Health & Status Row -->
     <div class="grid-row">
         <!-- Health Check -->
@@ -71,7 +71,7 @@
                 <pre id="health_output" class="log-output"></pre>
             </div>
         </div>
-        
+
         <!-- Agent Status -->
         <div class="card">
             <div class="card-header">
@@ -85,7 +85,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Email Commands Row -->
     <div class="grid-row">
         <!-- Email Commands -->
@@ -112,8 +112,8 @@
             </div>
             <div class="card-body">
                 <div class="editor-section">
-                    <textarea 
-                        id="cmd_payload" 
+                    <textarea
+                        id="cmd_payload"
                         class="json-editor"
                         placeholder="Enter email command JSON payload..."
                     >{
@@ -136,7 +136,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- AI Functions Row -->
     <div class="grid-row">
         <!-- AI Specialized Functions -->
@@ -166,8 +166,8 @@
             </div>
             <div class="card-body">
                 <div class="editor-section">
-                    <textarea 
-                        id="spec_payload" 
+                    <textarea
+                        id="spec_payload"
                         class="json-editor"
                         placeholder="Enter AI function JSON payload..."
                     >{
@@ -189,7 +189,7 @@
             </div>
         </div>
     </div>
-        
+
         .log-container {
             max-height: 300px;
             overflow-y: auto;
@@ -199,7 +199,7 @@
             padding: 1rem;
             border-radius: 0.375rem;
         }
-        
+
         .agent-icon {
             width: 80px;
             height: 80px;
@@ -212,7 +212,7 @@
             color: var(--agent-color);
             margin: 0 auto 1rem;
         }
-        
+
         .feature-card {
             border: 1px solid #dee2e6;
             border-radius: 0.5rem;
@@ -322,7 +322,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
@@ -330,11 +330,11 @@
                     </div>
                     <div class="card-body">
                         <div id="specialized-functions">
-                            
+
             <button class="btn btn-outline-primary btn-sm mb-2 w-100" onclick="executeSpecialized('default')">
                 <i class="fas fa-cog me-2"></i>Standard Funktion
             </button>
-        
+
                         </div>
                     </div>
                 </div>
@@ -345,27 +345,27 @@
         <div class="row mb-4">
             <div class="col-12">
                 <h3><i class="fas fa-star me-2"></i>Agent Features</h3>
-                
+
                 <div class="feature-card">
                     <h6><i class="fas fa-check-circle me-2 text-success"></i>Enterprise Ready</h6>
                     <p class="text-muted mb-0">Production-ready Implementation</p>
                 </div>
-            
+
                 <div class="feature-card">
                     <h6><i class="fas fa-check-circle me-2 text-success"></i>Real-time Processing</h6>
                     <p class="text-muted mb-0">Sofortige Anfragen-Bearbeitung</p>
                 </div>
-            
+
                 <div class="feature-card">
                     <h6><i class="fas fa-check-circle me-2 text-success"></i>API Integration</h6>
                     <p class="text-muted mb-0">RESTful API Endpoints</p>
                 </div>
-            
+
                 <div class="feature-card">
                     <h6><i class="fas fa-check-circle me-2 text-success"></i>Monitoring & Logging</h6>
                     <p class="text-muted mb-0">Umfassende Überwachung</p>
                 </div>
-            
+
             </div>
         </div>
 
@@ -402,7 +402,7 @@
                 const response = await fetch(`http://127.0.0.1:${AGENT_PORT}/health`, {
                     headers: { 'Authorization': `Bearer ${BEARER_TOKEN}` }
                 });
-                
+
                 if (response.ok) {
                     const data = await response.json();
                     updateStatusDisplay(data);
@@ -423,15 +423,15 @@
             const statusEl = document.getElementById('status-indicator');
             statusEl.textContent = '●';
             statusEl.style.color = data.status === 'ok' ? '#28a745' : '#dc3545';
-            
+
             if (data.uptime_seconds) {
                 document.getElementById('uptime').textContent = Math.floor(data.uptime_seconds / 60) + 'm';
             }
-            
+
             if (data.requests_total) {
                 document.getElementById('requests').textContent = data.requests_total;
             }
-            
+
             if (data.performance_score) {
                 document.getElementById('performance').textContent = data.performance_score + '%';
             }
@@ -439,7 +439,7 @@
 
         async function executeAgentFunction(functionType) {
             addLogEntry(`🔄 Führe ${functionType} aus...`);
-            
+
             try {
                 let endpoint = '';
                 switch (functionType) {
@@ -453,12 +453,12 @@
                         endpoint = '/command';
                         break;
                 }
-                
+
                 const response = await fetch(`http://127.0.0.1:${AGENT_PORT}${endpoint}`, {
                     method: 'GET',
                     headers: { 'Authorization': `Bearer ${BEARER_TOKEN}` }
                 });
-                
+
                 if (response.ok) {
                     const data = await response.json();
                     addLogEntry(`✅ ${functionType} erfolgreich: ${JSON.stringify(data).substring(0, 100)}`);
@@ -477,7 +477,7 @@
             logEntry.textContent = `[${timestamp}] ${message}`;
             logOutput.appendChild(logEntry);
             logOutput.scrollTop = logOutput.scrollHeight;
-            
+
             // Keep only last 50 log entries
             while (logOutput.children.length > 50) {
                 logOutput.removeChild(logOutput.firstChild);
@@ -493,23 +493,23 @@
         document.addEventListener('DOMContentLoaded', function() {
             addLogEntry('🚀 Agent Dashboard initialisiert');
             refreshStatus();
-            
+
             // Auto-refresh every 30 seconds
             setInterval(refreshStatus, 30000);
         });
 
         // Specialized function handlers
-        
+
         async function executeSpecialized(action) {
             addLogEntry(`🔧 Führe spezialisierte Aktion aus: ${action}`);
-            
+
             try {
                 const payload = {
                     action: action,
                     speciality: 'email_automation',
                     timestamp: new Date().toISOString()
                 };
-                
+
                 const response = await fetch(`http://127.0.0.1:${AGENT_PORT}/specialized`, {
                     method: 'POST',
                     headers: {
@@ -518,7 +518,7 @@
                     },
                     body: JSON.stringify(payload)
                 });
-                
+
                 if (response.ok) {
                     const data = await response.json();
                     addLogEntry(`✅ Spezialisierte Aktion erfolgreich: ${action}`);
@@ -529,7 +529,7 @@
                 addLogEntry(`❌ Spezialisierte Aktion Fehler: ${error.message}`);
             }
         }
-        
+
     </script>
 </body>
 </html>

@@ -1,9 +1,8 @@
 import logging
-from typing import Optional
 
 import requests
-from open_webui.retrieval.web.main import SearchResult, get_filtered_results
 from open_webui.env import SRC_LOG_LEVELS
+from open_webui.retrieval.web.main import SearchResult, get_filtered_results
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["RAG"])
@@ -13,7 +12,7 @@ def search_searxng(
     query_url: str,
     query: str,
     count: int,
-    filter_list: Optional[list[str]] = None,
+    filter_list: list[str] | None = None,
     **kwargs,
 ) -> list[SearchResult]:
     """
@@ -84,8 +83,6 @@ def search_searxng(
     if filter_list:
         sorted_results = get_filtered_results(sorted_results, filter_list)
     return [
-        SearchResult(
-            link=result["url"], title=result.get("title"), snippet=result.get("content")
-        )
+        SearchResult(link=result["url"], title=result.get("title"), snippet=result.get("content"))
         for result in sorted_results[:count]
     ]

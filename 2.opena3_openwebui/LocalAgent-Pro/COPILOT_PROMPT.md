@@ -7,6 +7,7 @@ Dieser Prompt konfiguriert GitHub Copilot für optimale Code-Vorschläge bei der
 ## 🎯 Ziel
 
 GitHub Copilot soll **produktionsreifen Code** für LocalAgent-Pro generieren, der:
+
 - **Sicher** ist (Sandbox, Whitelisting, Input-Validation)
 - **Getestet** ist (Unit + Integration Tests)
 - **Dokumentiert** ist (Docstrings, Type Hints)
@@ -48,24 +49,24 @@ EXAMPLE CODE STYLE:
 
 def write_file(filename: str, content: str) -> dict:
     """Write content to file in sandbox.
-    
+
     Args:
         filename: User-provided filename
         content: File content
-        
+
     Returns:
         Dict with status and message
-        
+
     Raises:
         SecurityError: If path traversal detected
     """
     try:
         file_path = sanitize_filename(filename)
         file_path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         with open(file_path, 'w') as f:
             f.write(content)
-        
+
         logger.info(f"File created: {filename}")
         return {
             "status": "success",
@@ -121,6 +122,7 @@ def read_file(filename: str) -> dict:
 ### 3. Chat-Prompts
 
 **Neue Funktion hinzufügen:**
+
 ```
 @workspace Erstelle eine neue Funktion `list_files()` die:
 - Alle Dateien im Sandbox auflistet
@@ -130,6 +132,7 @@ def read_file(filename: str) -> dict:
 ```
 
 **Tests generieren:**
+
 ```
 @workspace Erstelle pytest-Tests für die `sanitize_filename()` Funktion mit:
 - Valid filename test
@@ -139,6 +142,7 @@ def read_file(filename: str) -> dict:
 ```
 
 **API-Endpoint erweitern:**
+
 ```
 @workspace Füge einen neuen API-Endpoint `/v1/files/list` hinzu der:
 - POST-Request akzeptiert
@@ -181,23 +185,23 @@ def list_sandbox_files() -> dict:
 # Copilot: Create a function that checks URL domain against whitelist
 def check_url_safety(url: str) -> bool:
     """Check if URL domain is whitelisted.
-    
+
     Args:
         url: URL to check
-        
+
     Returns:
         True if safe, raises SecurityError otherwise
-        
+
     Raises:
         SecurityError: If domain not whitelisted
     """
     from urllib.parse import urlparse
     domain = urlparse(url).netloc
-    
+
     allowed_domains = CONFIG['security']['domain_whitelist']
     if not any(domain.endswith(allowed) for allowed in allowed_domains):
         raise SecurityError(f"Domain not whitelisted: {domain}")
-    
+
     return True
 ```
 
@@ -208,26 +212,26 @@ def check_url_safety(url: str) -> bool:
 @app.route('/v1/files/delete', methods=['POST'])
 def delete_file_endpoint():
     """Delete file from sandbox via API.
-    
+
     Request:
         {"filename": "test.txt"}
-        
+
     Response:
         {"status": "success", "message": "File deleted"}
     """
     try:
         data = request.json
-        
+
         if not data or 'filename' not in data:
             return jsonify({"error": "Missing filename"}), 400
-        
+
         result = delete_file(data['filename'])
-        
+
         if result['status'] == 'error':
             return jsonify(result), 400
-        
+
         return jsonify(result)
-        
+
     except Exception as e:
         logger.error(f"Error in delete_file_endpoint: {e}")
         return jsonify({"error": str(e)}), 500
@@ -240,7 +244,7 @@ def delete_file_endpoint():
 def test_file_operations_integration():
     """Test complete file lifecycle (create, read, delete)"""
     import requests
-    
+
     # Create file
     response = requests.post(
         'http://localhost:8001/v1/chat/completions',
@@ -252,7 +256,7 @@ def test_file_operations_integration():
     )
     assert response.status_code == 200
     assert 'success' in response.text
-    
+
     # Read file
     response = requests.post(
         'http://localhost:8001/v1/chat/completions',
@@ -264,7 +268,7 @@ def test_file_operations_integration():
     )
     assert response.status_code == 200
     assert 'Hello World' in response.text
-    
+
     # Delete file
     response = requests.post(
         'http://localhost:8001/v1/chat/completions',
@@ -324,6 +328,7 @@ def test_file_operations_integration():
 ### Prompts für häufige Aufgaben
 
 #### 1. Neue Tool-Funktion
+
 ```
 Erstelle eine neue Tool-Funktion `compress_file()` die:
 - Eine Datei im Sandbox als .gz komprimiert
@@ -334,6 +339,7 @@ Erstelle eine neue Tool-Funktion `compress_file()` die:
 ```
 
 #### 2. Error Handling verbessern
+
 ```
 Verbessere das Error Handling in der `fetch_webpage()` Funktion:
 - Timeout-Exception behandeln
@@ -343,6 +349,7 @@ Verbessere das Error Handling in der `fetch_webpage()` Funktion:
 ```
 
 #### 3. Tests erweitern
+
 ```
 Erstelle comprehensive pytest tests für `check_command_safety()`:
 - Test für jeden whitelisted command
@@ -352,6 +359,7 @@ Erstelle comprehensive pytest tests für `check_command_safety()`:
 ```
 
 #### 4. API dokumentieren
+
 ```
 Erstelle API-Dokumentation für den neuen `/v1/sandbox/stats` Endpoint:
 - Description
@@ -370,6 +378,7 @@ Erstelle API-Dokumentation für den neuen `/v1/sandbox/stats` Endpoint:
 **Problem:** "Warum wirft `sanitize_filename()` keinen Error bei `../../etc/passwd`?"
 
 **Copilot Chat:**
+
 ```
 @workspace Analysiere die `sanitize_filename()` Funktion. Warum wird path traversal nicht erkannt?
 

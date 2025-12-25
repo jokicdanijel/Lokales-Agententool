@@ -56,6 +56,7 @@ grep -i "bearer\|token\|api_key" .env.example
 ### **STEP 3: Service Startup Order (Option-2-Flow)**
 
 #### **3A. opena2 (Archivator) FIRST - Port 12345**
+
 ```bash
 cd 1.opena1&2_portier
 
@@ -71,6 +72,7 @@ curl -s http://127.0.0.1:12345/health | jq .
 ```
 
 #### **3B. opena1 (Koordinator) - Port 12344**
+
 ```bash
 # Start coordinator (depends on archivator being ready)
 python3 main.py &
@@ -84,6 +86,7 @@ curl -s http://127.0.0.1:12344/health | jq .
 ```
 
 #### **3C. kordp (Gateway) - Port 12346**
+
 ```bash
 # Start gateway (routes to tools)
 python3 tool_dispatcher.py &
@@ -96,6 +99,7 @@ curl -s http://127.0.0.1:12346/health | jq .
 ```
 
 #### **3D. opena3 (OpenWebUI Terminal) - Port 12347**
+
 ```bash
 cd ../2.opena3_openwebui
 
@@ -110,6 +114,7 @@ curl -s http://127.0.0.1:12347/dashboard
 ```
 
 #### **3E. opena20 (Dashboard) - Port 12349**
+
 ```bash
 cd ../19.opena20_dashboard_agent
 
@@ -128,6 +133,7 @@ curl -s http://127.0.0.1:12349/health | jq .
 ## ✅ POST-STARTUP VERIFICATION
 
 ### **Health Check - All Services**
+
 ```bash
 echo "=== HEALTH CHECK ===" && \
 curl -s http://127.0.0.1:12344/health && echo "" && \
@@ -138,12 +144,14 @@ curl -s http://127.0.0.1:12349/health
 ```
 
 ### **Process Status**
+
 ```bash
 jobs -l
 ps aux | grep -E "opena|python" | grep -v grep
 ```
 
 ### **Port Verification**
+
 ```bash
 netstat -tlnp | grep -E "12344|12345|12346|12347|12349"
 # oder:
@@ -151,6 +159,7 @@ lsof -i -P -n | grep LISTEN
 ```
 
 ### **Safepoint Test**
+
 ```bash
 # Create test safepoint
 curl -X POST http://127.0.0.1:12345/safepoint \
@@ -172,13 +181,13 @@ find data/safepoints -name "*→*" -type f | head -5
 
 ### **Dashboards & UIs**
 
-| Service | URL | Port | Purpose |
-|---------|-----|------|---------|
-| opena1 Coordinator | http://127.0.0.1:12344 | 12344 | Request Router |
-| opena2 Archivator | http://127.0.0.1:12345 | 12345 | Safepoint Store |
-| kordp Gateway | http://127.0.0.1:12346 | 12346 | Tool Dispatcher |
-| opena3 WebUI | http://127.0.0.1:12347 | 12347 | Terminal UI |
-| opena20 Dashboard | http://127.0.0.1:12349 | 12349 | Live Monitoring |
+| Service            | URL                    | Port  | Purpose         |
+| ------------------ | ---------------------- | ----- | --------------- |
+| opena1 Coordinator | http://127.0.0.1:12344 | 12344 | Request Router  |
+| opena2 Archivator  | http://127.0.0.1:12345 | 12345 | Safepoint Store |
+| kordp Gateway      | http://127.0.0.1:12346 | 12346 | Tool Dispatcher |
+| opena3 WebUI       | http://127.0.0.1:12347 | 12347 | Terminal UI     |
+| opena20 Dashboard  | http://127.0.0.1:12349 | 12349 | Live Monitoring |
 
 ### **API Endpoints (Option-2-Flow)**
 
@@ -209,6 +218,7 @@ POST http://127.0.0.1:12346/execute_tool
 ## 🔧 TROUBLESHOOTING
 
 ### If opena1 fails to start:
+
 ```bash
 # Check if port 12344 is in use
 lsof -i :12344
@@ -221,6 +231,7 @@ python3 main.py
 ```
 
 ### If opena2 (Archivator) is not responding:
+
 ```bash
 # Check safepoint directory permissions
 ls -la data/safepoints
@@ -233,6 +244,7 @@ find data/safepoints -name "*→*"
 ```
 
 ### If opena20 Dashboard shows blank:
+
 ```bash
 # Check metrics exporter
 curl http://127.0.0.1:12349/metrics
@@ -246,6 +258,7 @@ pip list | grep prometheus
 ## 📊 MONITORING
 
 ### **Real-time Logs**
+
 ```bash
 # Follow opena1 logs
 tail -f /var/log/opena1.log
@@ -255,6 +268,7 @@ tail -f /var/log/portier/*.log 2>/dev/null || echo "No logs found"
 ```
 
 ### **Performance Metrics**
+
 ```bash
 # CPU/Memory usage per service
 ps aux | grep opena
@@ -310,4 +324,4 @@ echo "🟣 PHASE 13 PRODUCTION STARTED!"
 
 ---
 
-*Generated for JD Smart Vision EU - PHASE 13 Production Deployment*
+_Generated for JD Smart Vision EU - PHASE 13 Production Deployment_

@@ -461,7 +461,7 @@
             <h1>🧠 HYPER-DASHBOARD 3.0</h1>
             <p>PORTIER Enterprise All-in-One Solution</p>
             <div class="subtitle">
-                Version 3.0 | Der Endgegner unter allen Agents | 
+                Version 3.0 | Der Endgegner unter allen Agents |
                 <span id="current-time"></span>
             </div>
         </header>
@@ -604,25 +604,25 @@
 
         <!-- Footer -->
         <footer>
-            <p>Copyright © 2025 HYPER-DASHBOARD 3.0 PORTIER Enterprise | 
-            <a href="#docs">Dokumentation</a> | 
-            <a href="#support">Support</a> | 
+            <p>Copyright © 2025 HYPER-DASHBOARD 3.0 PORTIER Enterprise |
+            <a href="#docs">Dokumentation</a> |
+            <a href="#support">Support</a> |
             <a href="#api">API Reference</a></p>
         </footer>
     </div>
 
     <script>
         // ===== HYPER-DASHBOARD 3.0 JavaScript =====
-        
+
         // API Configuration
         const API_BASE = 'http://127.0.0.1:12349';
         const BEARER_TOKEN = localStorage.getItem('bearer_token') || 'c899b90d-faf8-485b-afa4-078357cf5313';
-        
+
         // Update current time
         function updateTime() {
             document.getElementById('current-time').textContent = new Date().toLocaleString('de-DE');
         }
-        
+
         // Show alert
         function showAlert(message, type = 'info') {
             const alertsContainer = document.getElementById('status-alerts');
@@ -630,12 +630,12 @@
             alert.className = `alert ${type} fade-in`;
             alert.innerHTML = message;
             alertsContainer.appendChild(alert);
-            
+
             setTimeout(() => {
                 alert.remove();
             }, 5000);
         }
-        
+
         // API Helper
         async function apiCall(endpoint, options = {}) {
             try {
@@ -647,11 +647,11 @@
                     },
                     ...options
                 });
-                
+
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
-                
+
                 return await response.json();
             } catch (error) {
                 console.error('API Error:', error);
@@ -659,42 +659,42 @@
                 throw error;
             }
         }
-        
+
         // Load System Metrics
         async function loadMetrics() {
             try {
                 const status = await apiCall('/api/status/all');
-                
+
                 if (status.agents) {
-                    document.getElementById('active-agents').textContent = 
+                    document.getElementById('active-agents').textContent =
                         Object.values(status.agents).filter(a => a.status === 'online').length;
                 }
-                
+
                 if (status.metrics) {
                     document.getElementById('total-requests').textContent = status.metrics.total_requests || '0';
                     document.getElementById('uptime').textContent = Math.round((status.metrics.uptime || 0) / 3600);
                     document.getElementById('response-time').textContent = Math.round(status.metrics.avg_response_time || 0);
                 }
-                
+
                 showAlert('📊 Metrics updated successfully', 'success');
             } catch (error) {
                 showAlert('❌ Failed to load metrics', 'error');
             }
         }
-        
+
         // Test Core Agents
         async function testCoreAgents() {
             showAlert('🧪 Testing core agents...', 'info');
-            
+
             try {
                 // Test opena1 (Koordinator)
                 const opena1Response = await fetch('http://127.0.0.1:12344/health');
                 const opena1Status = opena1Response.ok ? 'online' : 'offline';
-                
-                // Test opena2 (Archivator) 
+
+                // Test opena2 (Archivator)
                 const opena2Response = await fetch('http://127.0.0.1:12345/health');
                 const opena2Status = opena2Response.ok ? 'online' : 'offline';
-                
+
                 if (opena1Status === 'online' && opena2Status === 'online') {
                     document.getElementById('core-status').textContent = 'ONLINE';
                     document.getElementById('core-status').className = 'status online';
@@ -710,14 +710,14 @@
                 showAlert('❌ Core agents test failed', 'error');
             }
         }
-        
+
         // Test OpenWebUI
         async function testOpenWebUI() {
             showAlert('🌐 Testing OpenWebUI bridge...', 'info');
-            
+
             try {
                 const response = await apiCall('/api/openwebui/status');
-                
+
                 if (response.status === 'ok') {
                     document.getElementById('openwebui-status').textContent = 'CONNECTED';
                     document.getElementById('openwebui-status').className = 'status online';
@@ -731,21 +731,21 @@
                 showAlert('❌ OpenWebUI bridge test failed', 'error');
             }
         }
-        
+
         // View Agent Registry
         async function viewAgentRegistry() {
             showAlert('📋 Loading agent registry...', 'info');
-            
+
             try {
                 const agents = await apiCall('/api/agents');
-                
+
                 let agentList = '<h4>Registered Agents:</h4><ul>';
                 Object.entries(agents).forEach(([id, agent]) => {
                     const statusClass = agent.status === 'online' ? 'green' : 'red';
                     agentList += `<li><span class="status-dot ${statusClass}"></span> ${id}: ${agent.name} (${agent.port})</li>`;
                 });
                 agentList += '</ul>';
-                
+
                 showAlert(agentList, 'info');
                 document.getElementById('registry-status').textContent = 'ACTIVE';
                 document.getElementById('registry-status').className = 'status online';
@@ -755,7 +755,7 @@
                 document.getElementById('registry-status').className = 'status offline';
             }
         }
-        
+
         // Enterprise Functions
         async function checkUpdates() {
             showAlert('🔄 Checking for updates...', 'info');
@@ -764,12 +764,12 @@
                 showAlert('✅ System is up to date', 'success');
             }, 2000);
         }
-        
+
         async function openMonitoring() {
             showAlert('📊 Opening monitoring dashboard...', 'info');
             window.open('/monitoring_dashboard.html', '_blank');
         }
-        
+
         async function runMaintenance() {
             showAlert('🛠️ Running maintenance tasks...', 'info');
             // Implementation for maintenance tools
@@ -777,7 +777,7 @@
                 showAlert('✅ Maintenance completed successfully', 'success');
             }, 3000);
         }
-        
+
         async function runE2ETests() {
             showAlert('🧪 Starting E2E test suite...', 'info');
             // Implementation for E2E testing
@@ -785,7 +785,7 @@
                 showAlert('✅ All E2E tests passed', 'success');
             }, 5000);
         }
-        
+
         // Quick Actions
         async function refreshAll() {
             showAlert('🔄 Refreshing all components...', 'info');
@@ -794,19 +794,19 @@
             await testOpenWebUI();
             await viewAgentRegistry();
         }
-        
+
         async function viewLogs() {
             showAlert('📄 Opening logs viewer...', 'info');
             window.open('/logs', '_blank');
         }
-        
+
         async function systemHealth() {
             showAlert('🏥 Running system health check...', 'info');
             await testCoreAgents();
             await testOpenWebUI();
             await loadMetrics();
         }
-        
+
         async function exportData() {
             showAlert('📤 Exporting system data...', 'info');
             // Implementation for data export
@@ -814,39 +814,39 @@
                 showAlert('✅ Data export completed', 'success');
             }, 2000);
         }
-        
+
         // Navigation
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
                 this.classList.add('active');
-                
+
                 const section = this.getAttribute('href').substring(1);
                 showAlert(`📱 Navigating to ${section}...`, 'info');
             });
         });
-        
+
         // Initialize Dashboard
         document.addEventListener('DOMContentLoaded', function() {
             updateTime();
             setInterval(updateTime, 1000);
-            
+
             showAlert('🚀 HYPER-DASHBOARD 3.0 initialized successfully!', 'success');
-            
+
             // Load initial data
             setTimeout(() => {
                 loadMetrics();
                 testCoreAgents();
                 testOpenWebUI();
             }, 1000);
-            
+
             // Auto-refresh every 30 seconds
             setInterval(() => {
                 loadMetrics();
             }, 30000);
         });
-        
+
         // Handle token input
         function updateBearerToken() {
             const token = prompt('Enter Bearer Token:', BEARER_TOKEN);
@@ -856,7 +856,7 @@
                 location.reload();
             }
         }
-        
+
         // Add token update button to settings
         document.addEventListener('DOMContentLoaded', function() {
             const settingsLink = document.querySelector('a[href="#settings"]');

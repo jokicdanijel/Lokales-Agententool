@@ -113,24 +113,24 @@ open http://localhost:3000  # admin / (from .env)
 
 ### Services Overview
 
-| Service | Port | Container | Role |
-|---------|------|-----------|------|
+| Service            | Port   | Container       | Role                    |
+| ------------------ | ------ | --------------- | ----------------------- |
 | **Infrastructure** |
-| PostgreSQL | 5432 | eden-postgres | Database |
-| Redis | 6379 | eden-redis | Sessions & Cache |
-| Vault | 8200 | eden-vault | Secrets Management |
-| Nginx | 80/443 | eden-nginx | Reverse Proxy & SSL |
-| **Core Services** |
-| opena1 | 12344 | eden-opena1 | Coordinator |
-| opena2 | 12345 | eden-opena2 | Archive |
-| auth | 12370 | eden-auth | Authentication |
-| billing | 12371 | eden-billing | Subscription Management |
-| website | 12372 | eden-website | Public Landing Page |
-| dashboard | 12349 | eden-dashboard | Control Plane |
-| workflow | 12368 | eden-workflow | Orchestration Engine |
-| **Monitoring** |
-| Prometheus | 9090 | eden-prometheus | Metrics Collection |
-| Grafana | 3000 | eden-grafana | Visualization |
+| PostgreSQL         | 5432   | eden-postgres   | Database                |
+| Redis              | 6379   | eden-redis      | Sessions & Cache        |
+| Vault              | 8200   | eden-vault      | Secrets Management      |
+| Nginx              | 80/443 | eden-nginx      | Reverse Proxy & SSL     |
+| **Core Services**  |
+| opena1             | 12344  | eden-opena1     | Coordinator             |
+| opena2             | 12345  | eden-opena2     | Archive                 |
+| auth               | 12370  | eden-auth       | Authentication          |
+| billing            | 12371  | eden-billing    | Subscription Management |
+| website            | 12372  | eden-website    | Public Landing Page     |
+| dashboard          | 12349  | eden-dashboard  | Control Plane           |
+| workflow           | 12368  | eden-workflow   | Orchestration Engine    |
+| **Monitoring**     |
+| Prometheus         | 9090   | eden-prometheus | Metrics Collection      |
+| Grafana            | 3000   | eden-grafana    | Visualization           |
 
 ---
 

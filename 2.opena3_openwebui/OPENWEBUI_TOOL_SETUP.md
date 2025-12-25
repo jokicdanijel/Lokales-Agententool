@@ -32,6 +32,7 @@ Der **Browser Agent (opena6)** wurde erfolgreich als **OpenWebUI Tool** integrie
 ## 📦 Komponenten
 
 ### Tool Server (`tool_server.py`)
+
 - **Port**: 8765
 - **Status**: ✅ RUNNING
 - **Endpoints**:
@@ -41,11 +42,13 @@ Der **Browser Agent (opena6)** wurde erfolgreich als **OpenWebUI Tool** integrie
   - `GET /` → Dashboard (HTML)
 
 ### Browser Agent (`opena6`)
+
 - **Port**: 12350
 - **Status**: ✅ ONLINE
 - **Actions**: 9 (open, click, type, extract_text, extract_html, query_selector, screenshot, scroll, wait_for)
 
 ### OpenWebUI
+
 - **URL**: http://192.168.0.70:3000
 - **Status**: ✅ AVAILABLE
 - **Admin**: http://192.168.0.70:3000/admin
@@ -55,6 +58,7 @@ Der **Browser Agent (opena6)** wurde erfolgreich als **OpenWebUI Tool** integrie
 ## 🚀 Integration Steps
 
 ### 1️⃣ Tool Server starten
+
 ```bash
 cd LocalAgent-Pro/opena6
 python3 tool_server.py --host 0.0.0.0 --port 8765
@@ -63,19 +67,23 @@ python3 tool_server.py --host 0.0.0.0 --port 8765
 ✅ **Verify**: http://localhost:8765/health
 
 ### 2️⃣ OpenWebUI Admin öffnen
+
 ```
 http://192.168.0.70:3000/admin
 ```
 
 ### 3️⃣ External Tool registrieren
+
 **Pfad**: Settings → External Tools (oder Search "Tools")
 
 **Tool URL**:
+
 ```
 http://192.168.0.70:8765/manifest
 ```
 
 **Oder Manual Tool Definition** (kopieren):
+
 ```json
 {
   "type": "function",
@@ -87,13 +95,27 @@ http://192.168.0.70:8765/manifest
       "properties": {
         "action": {
           "type": "string",
-          "enum": ["open", "click", "type", "extract_text", "extract_html", "query_selector", "screenshot", "scroll", "wait_for"]
+          "enum": [
+            "open",
+            "click",
+            "type",
+            "extract_text",
+            "extract_html",
+            "query_selector",
+            "screenshot",
+            "scroll",
+            "wait_for"
+          ]
         },
-        "url": {"type": "string"},
-        "selector": {"type": "string"},
-        "text": {"type": "string"},
-        "wait_ms": {"type": "integer", "default": 500},
-        "return_format": {"type": "string", "enum": ["text", "html", "json", "raw"], "default": "text"}
+        "url": { "type": "string" },
+        "selector": { "type": "string" },
+        "text": { "type": "string" },
+        "wait_ms": { "type": "integer", "default": 500 },
+        "return_format": {
+          "type": "string",
+          "enum": ["text", "html", "json", "raw"],
+          "default": "text"
+        }
       },
       "required": ["action", "url"]
     }
@@ -102,11 +124,13 @@ http://192.168.0.70:8765/manifest
 ```
 
 ### 4️⃣ Chat testen
+
 ```
 Prompt: "Öffne https://example.com und zeige mir die Hauptüberschrift"
 ```
 
-✅ **Sollte automatisch aufrufen**: 
+✅ **Sollte automatisch aufrufen**:
+
 - action: "open", url: "https://example.com"
 - action: "extract_text", selector: "h1"
 
@@ -114,16 +138,16 @@ Prompt: "Öffne https://example.com und zeige mir die Hauptüberschrift"
 
 ## 📊 URLs & Endpoints
 
-| Service | URL | Status |
-|---------|-----|--------|
-| **Tool Server** | http://192.168.0.70:8765 | ✅ |
-| Tool Dashboard | http://192.168.0.70:8765/ | ✅ |
-| Tool Manifest | http://192.168.0.70:8765/manifest | ✅ |
-| Tool Health | http://192.168.0.70:8765/health | ✅ |
-| **Browser Agent** | http://192.168.0.70:12350 | ✅ |
-| Agent Health | http://192.168.0.70:12350/health | ✅ |
-| **OpenWebUI** | http://192.168.0.70:3000 | ✅ |
-| OpenWebUI Admin | http://192.168.0.70:3000/admin | ✅ |
+| Service           | URL                               | Status |
+| ----------------- | --------------------------------- | ------ |
+| **Tool Server**   | http://192.168.0.70:8765          | ✅     |
+| Tool Dashboard    | http://192.168.0.70:8765/         | ✅     |
+| Tool Manifest     | http://192.168.0.70:8765/manifest | ✅     |
+| Tool Health       | http://192.168.0.70:8765/health   | ✅     |
+| **Browser Agent** | http://192.168.0.70:12350         | ✅     |
+| Agent Health      | http://192.168.0.70:12350/health  | ✅     |
+| **OpenWebUI**     | http://192.168.0.70:3000          | ✅     |
+| OpenWebUI Admin   | http://192.168.0.70:3000/admin    | ✅     |
 
 ---
 
@@ -171,13 +195,13 @@ curl -X POST http://192.168.0.70:8765/execute \
 
 ## 📚 Dokumentation
 
-| Datei | Inhalt |
-|-------|--------|
-| `TOOL_SERVER_SUMMARY.md` | Diese Datei |
-| `TOOL_JSON_SPECIFICATION.md` | Vollständige API Spec |
-| `TOOL_QUICK_REFERENCE.md` | Copy & Paste Beispiele |
-| `OPENWEBUI_INTEGRATION.md` | Integration Guide |
-| `tool_server.py` | Source Code |
+| Datei                        | Inhalt                 |
+| ---------------------------- | ---------------------- |
+| `TOOL_SERVER_SUMMARY.md`     | Diese Datei            |
+| `TOOL_JSON_SPECIFICATION.md` | Vollständige API Spec  |
+| `TOOL_QUICK_REFERENCE.md`    | Copy & Paste Beispiele |
+| `OPENWEBUI_INTEGRATION.md`   | Integration Guide      |
+| `tool_server.py`             | Source Code            |
 
 ---
 
@@ -195,9 +219,8 @@ curl -X POST http://192.168.0.70:8765/execute \
 
 ## 🎉 Status: READY FOR PRODUCTION
 
-**Tool Server**: ✅ RUNNING (Port 8765)  
-**Browser Agent**: ✅ ONLINE (Port 12350)  
+**Tool Server**: ✅ RUNNING (Port 8765)
+**Browser Agent**: ✅ ONLINE (Port 12350)
 **OpenWebUI**: ✅ AVAILABLE (Port 3000)
 
 **Nächster Schritt**: Öffne http://192.168.0.70:3000/admin und registriere das Tool!
-

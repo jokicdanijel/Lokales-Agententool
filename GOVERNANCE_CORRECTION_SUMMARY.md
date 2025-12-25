@@ -10,14 +10,15 @@
 
 Basierend auf deinem Review-Feedback habe ich das **monolithische GOVERNANCE_ROLLBACK_SCRIPT.sh** in **3 sichere, einzeln reviewbare Teilskripte** aufgeteilt:
 
-| Script                              | Zweck                                    | Schweregrad | Dateien | Status        |
-| ----------------------------------- | ---------------------------------------- | ----------- | ------- | ------------- |
-| **GOVERNANCE_FIX_ARCHIV.sh**        | Safepoints zurück in ARCHIV/YYYY/MM/DD   | CRITICAL    | 42+     | ✅ Ready      |
-| **GOVERNANCE_FIX_VENV_LEAKS.sh**    | Third-Party aus src/pkg/ entfernen       | HIGH        | 4       | ✅ Ready      |
-| **GOVERNANCE_FIX_TESTS.sh**         | Tests aus _conflicts/ rescue             | HIGH        | 10+     | ✅ Ready      |
+| Script                                | Zweck                                  | Schweregrad | Dateien | Status          |
+| ------------------------------------- | -------------------------------------- | ----------- | ------- | --------------- |
+| **GOVERNANCE_FIX_ARCHIV.sh**          | Safepoints zurück in ARCHIV/YYYY/MM/DD | CRITICAL    | 42+     | ✅ Ready        |
+| **GOVERNANCE_FIX_VENV_LEAKS.sh**      | Third-Party aus src/pkg/ entfernen     | HIGH        | 4       | ✅ Ready        |
+| **GOVERNANCE_FIX_TESTS.sh**           | Tests aus \_conflicts/ rescue          | HIGH        | 10+     | ✅ Ready        |
 | **GOVERNANCE_EXECUTION_CHECKLIST.md** | Pre-Flight Checkliste (ZWINGEND)       | -           | -       | ✅ Dokumentiert |
 
 **Alle Skripte** sind:
+
 - ✅ Ausführbar (`chmod +x`)
 - ✅ DRY-RUN by default (`DRY_RUN=true`)
 - ✅ Mit Safety-Checks (Git, Backups, Konflikte)
@@ -31,12 +32,14 @@ Basierend auf deinem Review-Feedback habe ich das **monolithische GOVERNANCE_ROL
 ### **1. Datengetriebene Pfade (statt Hardcoding)**
 
 **Vorher (gefährlich):**
+
 ```bash
 mkdir -p 19.dashboard_agent/ARCHIV/2025/11/{06,08}
 mv configs/SP1762419411_kordp→opena2_CMD.json 19.dashboard_agent/ARCHIV/2025/11/06/
 ```
 
 **Jetzt (sicher):**
+
 ```bash
 # Parse rename_map.csv dynamisch
 grep -E "ARCHIV.*,configs/SP.*\.json" "$RENAME_MAP" | while IFS=',' read -r src dst; do
@@ -109,11 +112,13 @@ git branch --show-current
 ### **5. DRY-RUN by Default**
 
 **Alle Skripte:**
+
 ```bash
 DRY_RUN="${DRY_RUN:-true}"  # Default: SAFE MODE
 ```
 
 **Execution:**
+
 ```bash
 # Simulation (sicher)
 ./GOVERNANCE_FIX_ARCHIV.sh
@@ -253,6 +258,7 @@ git status  # Clean
 ## 🆘 **ROLLBACK (FALLS PROBLEME)**
 
 ### **Vor Git Commit:**
+
 ```bash
 git checkout .
 git clean -fd
@@ -262,11 +268,13 @@ cp -r tests_backup_*/* 19.dashboard_agent/tests/
 ```
 
 ### **Nach Git Commit:**
+
 ```bash
 git revert HEAD~3..HEAD  # Revert letzte 3 Commits
 ```
 
 ### **Full Disaster Recovery:**
+
 ```bash
 cd ..
 tar -xzf Gesamtprojekt_backup_$(date +%Y%m%d).tar.gz -C Gesamtprojekt_recovery/
@@ -277,35 +285,39 @@ tar -xzf Gesamtprojekt_backup_$(date +%Y%m%d).tar.gz -C Gesamtprojekt_recovery/
 
 ## 📁 **DELIVERABLES**
 
-| Datei                                   | Zweck                                      | Status  |
-| --------------------------------------- | ------------------------------------------ | ------- |
-| **GOVERNANCE_FIX_ARCHIV.sh**            | ARCHIV-Rollback (configs/ → ARCHIV/)       | ✅ Ready |
-| **GOVERNANCE_FIX_VENV_LEAKS.sh**        | venv-Cleanup (src/pkg/ → requirements.txt) | ✅ Ready |
-| **GOVERNANCE_FIX_TESTS.sh**             | Test-Rescue (_conflicts/ → tests/)        | ✅ Ready |
-| **GOVERNANCE_EXECUTION_CHECKLIST.md**   | 5-Stufen Pre-Flight Checklist              | ✅ Ready |
-| **GOVERNANCE_VIOLATIONS_REPORT.md**     | Audit-Report (84 ARCHIV, 6 venv, 30 tests) | ✅ Ready |
-| **GOVERNANCE_CORRECTION_SUMMARY.md**    | Dieses Dokument                            | ✅ Ready |
+| Datei                                 | Zweck                                      | Status   |
+| ------------------------------------- | ------------------------------------------ | -------- |
+| **GOVERNANCE_FIX_ARCHIV.sh**          | ARCHIV-Rollback (configs/ → ARCHIV/)       | ✅ Ready |
+| **GOVERNANCE_FIX_VENV_LEAKS.sh**      | venv-Cleanup (src/pkg/ → requirements.txt) | ✅ Ready |
+| **GOVERNANCE_FIX_TESTS.sh**           | Test-Rescue (\_conflicts/ → tests/)        | ✅ Ready |
+| **GOVERNANCE_EXECUTION_CHECKLIST.md** | 5-Stufen Pre-Flight Checklist              | ✅ Ready |
+| **GOVERNANCE_VIOLATIONS_REPORT.md**   | Audit-Report (84 ARCHIV, 6 venv, 30 tests) | ✅ Ready |
+| **GOVERNANCE_CORRECTION_SUMMARY.md**  | Dieses Dokument                            | ✅ Ready |
 
 ---
 
 ## 🎯 **NEXT STEPS (FÜR DICH)**
 
 1. **Checklist öffnen:**
+
    ```bash
    cat GOVERNANCE_EXECUTION_CHECKLIST.md
    ```
 
 2. **Git Branch erstellen:**
+
    ```bash
    git checkout -b governance-fix-2025-11-27
    ```
 
 3. **Backup erstellen:**
+
    ```bash
    tar -czf ../Gesamtprojekt_backup_$(date +%Y%m%d).tar.gz .
    ```
 
 4. **DRY-RUNs ausführen (ALLE 3):**
+
    ```bash
    DRY_RUN=true ./GOVERNANCE_FIX_ARCHIV.sh | tee archiv_dryrun.txt
    DRY_RUN=true ./GOVERNANCE_FIX_VENV_LEAKS.sh | tee venv_dryrun.txt
@@ -313,6 +325,7 @@ tar -xzf Gesamtprojekt_backup_$(date +%Y%m%d).tar.gz -C Gesamtprojekt_recovery/
    ```
 
 5. **Logs reviewen:**
+
    ```bash
    grep -E "ERROR|✗|Konflikt" *.txt
    ```
@@ -323,15 +336,15 @@ tar -xzf Gesamtprojekt_backup_$(date +%Y%m%d).tar.gz -C Gesamtprojekt_recovery/
 
 ## 💡 **KEY IMPROVEMENTS (BASIEREND AUF DEINEM REVIEW)**
 
-| Dein Feedback                                 | Implementiert                                      |
-| --------------------------------------------- | -------------------------------------------------- |
-| ⚠️ Monolithisches Script zu gefährlich        | ✅ 3 Teilskripte, einzeln reviewbar                 |
-| ⚠️ Pfade nicht hardcoden                      | ✅ Dynamisch aus rename_map.csv geparst             |
-| ⚠️ Overwrite-Risiko                           | ✅ mv -n + Pre-Check ob Datei existiert             |
-| ⚠️ Import-Scan vor venv-Cleanup nötig         | ✅ Automatischer Scan + WARNUNG bei Treffern        |
-| ⚠️ requirements.txt "echo" zu quick & dirty   | ✅ Prüfung ob PySocks schon vorhanden + sauber      |
-| ⚠️ Git-Safety fehlt                           | ✅ 6 Safety-Checks (Branch, Status, Backups)        |
-| ⚠️ Validierung zu eng                         | ✅ Multi-Level-Checks (Files, Imports, Architecture)|
+| Dein Feedback                               | Implementiert                                        |
+| ------------------------------------------- | ---------------------------------------------------- |
+| ⚠️ Monolithisches Script zu gefährlich      | ✅ 3 Teilskripte, einzeln reviewbar                  |
+| ⚠️ Pfade nicht hardcoden                    | ✅ Dynamisch aus rename_map.csv geparst              |
+| ⚠️ Overwrite-Risiko                         | ✅ mv -n + Pre-Check ob Datei existiert              |
+| ⚠️ Import-Scan vor venv-Cleanup nötig       | ✅ Automatischer Scan + WARNUNG bei Treffern         |
+| ⚠️ requirements.txt "echo" zu quick & dirty | ✅ Prüfung ob PySocks schon vorhanden + sauber       |
+| ⚠️ Git-Safety fehlt                         | ✅ 6 Safety-Checks (Branch, Status, Backups)         |
+| ⚠️ Validierung zu eng                       | ✅ Multi-Level-Checks (Files, Imports, Architecture) |
 
 ---
 

@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena12 Social Media
 
-**Agent-ID:** opena12  
-**Port:** 12357  
-**Status:** 🟡 Planned  
-**Kürzel:** `smp`  
+**Agent-ID:** opena12
+**Port:** 12357
+**Status:** 🟡 Planned
+**Kürzel:** `smp`
 **Domäne:** Social Media, Multi-Platform OAuth, Scheduling
 
 ---
@@ -141,5 +141,5 @@ Kopiere diesen Prompt in:
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

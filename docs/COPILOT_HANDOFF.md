@@ -21,13 +21,27 @@ Dieses Dokument enthält **alle Regeln, Constraints und Workflows**, die GitHub 
 
 ```json
 {
-  "opena1": 12344,   "opena2": 12345,   "opena3": 12347,
-  "opena4": 12346,   "opena5": 12351,   "opena6": 12352,
-  "opena7": 12350,   "opena8": 12354,   "opena9": 12355,
-  "opena10": 12356,  "opena11": 12357,  "opena12": 12358,
-  "opena13": 12359,  "opena14": 12360,  "opena15": 12361,
-  "opena16": 12362,  "opena17": 12366,  "opena18": 12363,
-  "opena19": 12367,  "opena20": 12349,  "opena21": 12368
+  "opena1": 12344,
+  "opena2": 12345,
+  "opena3": 12347,
+  "opena4": 12346,
+  "opena5": 12351,
+  "opena6": 12352,
+  "opena7": 12350,
+  "opena8": 12354,
+  "opena9": 12355,
+  "opena10": 12356,
+  "opena11": 12357,
+  "opena12": 12358,
+  "opena13": 12359,
+  "opena14": 12360,
+  "opena15": 12361,
+  "opena16": 12362,
+  "opena17": 12366,
+  "opena18": 12363,
+  "opena19": 12367,
+  "opena20": 12349,
+  "opena21": 12368
 }
 ```
 

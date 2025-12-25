@@ -1,23 +1,21 @@
 {
-    "python.defaultInterpreterPath": "/usr/bin/python3",
-    "python.linting.enabled": true,
-    "python.linting.pylintEnabled": false,
-    "python.linting.flake8Enabled": true,
-    "python.formatting.provider": "black",
-    "python.testing.pytestArgs": [
-        "tests"
-    ],
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true,
-    "[python]": {
-        "editor.defaultFormatter": "ms-python.python",
-        "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": "explicit"
-        }
-    },
-    "files.autoSave": "afterDelay",
-    "editor.defaultFormatter": "ms-python.vscode-python-envs",
-    "editor.wordWrap": "on",
-    "workbench.colorTheme": "Kimbie Dark"
+  "python.defaultInterpreterPath": "/usr/bin/python3",
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.formatting.provider": "black",
+  "python.testing.pytestArgs": ["tests"],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "files.autoSave": "afterDelay",
+  "editor.defaultFormatter": "ms-python.vscode-python-envs",
+  "editor.wordWrap": "on",
+  "workbench.colorTheme": "Kimbie Dark"
 }

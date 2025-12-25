@@ -101,14 +101,14 @@ http://192.168.0.70:3000/admin
 
 ## 📊 Verfügbare Endpoints
 
-| Endpoint | Methode | Zweck | Response |
-|----------|---------|-------|----------|
-| `/` | GET | HTML Dashboard | HTML |
-| `/health` | GET | Health Check | JSON |
-| `/status` | GET | Detaillierter Status | JSON |
-| `/manifest` | GET | Tool Definition | JSON |
-| `/execute` | POST | Browser-Aktion | JSON |
-| `/call` | POST | Tool Call (OpenWebUI) | JSON |
+| Endpoint    | Methode | Zweck                 | Response |
+| ----------- | ------- | --------------------- | -------- |
+| `/`         | GET     | HTML Dashboard        | HTML     |
+| `/health`   | GET     | Health Check          | JSON     |
+| `/status`   | GET     | Detaillierter Status  | JSON     |
+| `/manifest` | GET     | Tool Definition       | JSON     |
+| `/execute`  | POST    | Browser-Aktion        | JSON     |
+| `/call`     | POST    | Tool Call (OpenWebUI) | JSON     |
 
 ---
 
@@ -116,15 +116,15 @@ http://192.168.0.70:3000/admin
 
 ```json
 [
-  "open",           // Website öffnen
-  "click",          // Element klicken
-  "type",           // Text eingeben
-  "extract_text",   // Text extrahieren
-  "extract_html",   // HTML extrahieren
+  "open", // Website öffnen
+  "click", // Element klicken
+  "type", // Text eingeben
+  "extract_text", // Text extrahieren
+  "extract_html", // HTML extrahieren
   "query_selector", // DOM analysieren
-  "screenshot",     // Screenshot machen
-  "scroll",         // Seite scrollen
-  "wait_for"        // Auf Element warten
+  "screenshot", // Screenshot machen
+  "scroll", // Seite scrollen
+  "wait_for" // Auf Element warten
 ]
 ```
 
@@ -145,7 +145,17 @@ http://192.168.0.70:3000/admin
       "properties": {
         "action": {
           "type": "string",
-          "enum": ["open", "click", "type", "extract_text", "extract_html", "query_selector", "screenshot", "scroll", "wait_for"],
+          "enum": [
+            "open",
+            "click",
+            "type",
+            "extract_text",
+            "extract_html",
+            "query_selector",
+            "screenshot",
+            "scroll",
+            "wait_for"
+          ],
           "description": "Browser-Aktion ausführen"
         },
         "url": {
@@ -265,12 +275,12 @@ bash setup_openwebui.sh register
 
 ## 📚 Dokumentation
 
-| Datei | Inhalt |
-|-------|--------|
+| Datei                        | Inhalt                     |
+| ---------------------------- | -------------------------- |
 | `TOOL_JSON_SPECIFICATION.md` | Vollständige JSON API Spec |
-| `TOOL_QUICK_REFERENCE.md` | Copy & Paste Beispiele |
-| `OPENWEBUI_INTEGRATION.md` | Integrations-Guide |
-| `tool_server.py` | Source Code (dokumentiert) |
+| `TOOL_QUICK_REFERENCE.md`    | Copy & Paste Beispiele     |
+| `OPENWEBUI_INTEGRATION.md`   | Integrations-Guide         |
+| `tool_server.py`             | Source Code (dokumentiert) |
 
 ---
 
@@ -326,13 +336,13 @@ bash setup_openwebui.sh register
 
 ## 🚀 Performance & Skalierung
 
-| Metrik | Wert | Notiz |
-|--------|------|-------|
-| Concurrent Requests | 100+ | Thread-Pool |
-| Request Timeout | 30s | Konfigurierbar |
-| Response Time | ~500ms | Abhängig von Aktion |
-| Memory Usage | ~50MB | Minimal |
-| Port | 8765 | Konfigurierbar |
+| Metrik              | Wert   | Notiz               |
+| ------------------- | ------ | ------------------- |
+| Concurrent Requests | 100+   | Thread-Pool         |
+| Request Timeout     | 30s    | Konfigurierbar      |
+| Response Time       | ~500ms | Abhängig von Aktion |
+| Memory Usage        | ~50MB  | Minimal             |
+| Port                | 8765   | Konfigurierbar      |
 
 ---
 

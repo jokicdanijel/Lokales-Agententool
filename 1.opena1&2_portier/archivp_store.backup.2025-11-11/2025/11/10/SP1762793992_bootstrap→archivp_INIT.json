@@ -4,10 +4,7 @@
   "kind": "INIT",
   "body": {
     "msg": "System bootstrap",
-    "services": [
-      "opena1:kordp",
-      "opena2:archivp"
-    ],
+    "services": ["opena1:kordp", "opena2:archivp"],
     "port_policy": "12344-12399",
     "strict": true
   },

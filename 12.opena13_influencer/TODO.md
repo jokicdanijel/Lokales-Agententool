@@ -1,7 +1,7 @@
 # TODO – opena13 Influencer Agent
 
-**Port:** 12358  
-**Status:** 🟡 Planned  
+**Port:** 12358
+**Status:** 🟡 Planned
 **Kürzel:** `influp`
 
 ---
@@ -96,5 +96,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

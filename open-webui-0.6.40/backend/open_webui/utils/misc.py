@@ -1,18 +1,16 @@
+import collections.abc
 import hashlib
+import json
+import logging
 import re
 import threading
 import time
 import uuid
-import logging
 from datetime import timedelta
 from pathlib import Path
-from typing import Callable, Optional
-import json
+
 import aiohttp
-
-
-import collections.abc
-from open_webui.env import SRC_LOG_LEVELS, CHAT_STREAM_RESPONSE_CHUNK_MAX_BUFFER_SIZE
+from open_webui.env import CHAT_STREAM_RESPONSE_CHUNK_MAX_BUFFER_SIZE, SRC_LOG_LEVELS
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MAIN"])
@@ -43,7 +41,7 @@ def get_allow_block_lists(filter_list):
     return allow_list, block_list
 
 
-def is_string_allowed(string: str, filter_list: Optional[list[str]] = None) -> bool:
+def is_string_allowed(string: str, filter_list: list[str] | None = None) -> bool:
     """
     Checks if a string is allowed based on the provided filter list.
     :param string: The string to check (e.g., domain or hostname).
@@ -91,9 +89,7 @@ def get_message_list(messages_map, message_id):
     message_list = []
 
     while current_message:
-        message_list.insert(
-            0, current_message
-        )  # Insert the message at the beginning of the list
+        message_list.insert(0, current_message)  # Insert the message at the beginning of the list
         parent_id = current_message.get("parentId")  # Use .get() for safety
         current_message = messages_map.get(parent_id) if parent_id else None
 
@@ -101,22 +97,17 @@ def get_message_list(messages_map, message_id):
 
 
 def get_messages_content(messages: list[dict]) -> str:
-    return "\n".join(
-        [
-            f"{message['role'].upper()}: {get_content_from_message(message)}"
-            for message in messages
-        ]
-    )
+    return "\n".join([f"{message['role'].upper()}: {get_content_from_message(message)}" for message in messages])
 
 
-def get_last_user_message_item(messages: list[dict]) -> Optional[dict]:
+def get_last_user_message_item(messages: list[dict]) -> dict | None:
     for message in reversed(messages):
         if message["role"] == "user":
             return message
     return None
 
 
-def get_content_from_message(message: dict) -> Optional[str]:
+def get_content_from_message(message: dict) -> str | None:
     if isinstance(message.get("content"), list):
         for item in message["content"]:
             if item["type"] == "text":
@@ -126,28 +117,28 @@ def get_content_from_message(message: dict) -> Optional[str]:
     return None
 
 
-def get_last_user_message(messages: list[dict]) -> Optional[str]:
+def get_last_user_message(messages: list[dict]) -> str | None:
     message = get_last_user_message_item(messages)
     if message is None:
         return None
     return get_content_from_message(message)
 
 
-def get_last_assistant_message_item(messages: list[dict]) -> Optional[dict]:
+def get_last_assistant_message_item(messages: list[dict]) -> dict | None:
     for message in reversed(messages):
         if message["role"] == "assistant":
             return message
     return None
 
 
-def get_last_assistant_message(messages: list[dict]) -> Optional[str]:
+def get_last_assistant_message(messages: list[dict]) -> str | None:
     for message in reversed(messages):
         if message["role"] == "assistant":
             return get_content_from_message(message)
     return None
 
 
-def get_system_message(messages: list[dict]) -> Optional[dict]:
+def get_system_message(messages: list[dict]) -> dict | None:
     for message in messages:
         if message["role"] == "system":
             return message
@@ -158,7 +149,7 @@ def remove_system_message(messages: list[dict]) -> list[dict]:
     return [message for message in messages if message["role"] != "system"]
 
 
-def pop_system_message(messages: list[dict]) -> tuple[Optional[dict], list[dict]]:
+def pop_system_message(messages: list[dict]) -> tuple[dict | None, list[dict]]:
     return get_system_message(messages), remove_system_message(messages)
 
 
@@ -186,9 +177,7 @@ def replace_system_message_content(content: str, messages: list[dict]) -> dict:
     return messages
 
 
-def add_or_update_system_message(
-    content: str, messages: list[dict], append: bool = False
-):
+def add_or_update_system_message(content: str, messages: list[dict], append: bool = False):
     """
     Adds a new system message at the beginning of the messages list
     or updates the existing system message at the beginning.
@@ -226,9 +215,7 @@ def add_or_update_user_message(content: str, messages: list[dict], append: bool 
     return messages
 
 
-def prepend_to_first_user_message_content(
-    content: str, messages: list[dict]
-) -> list[dict]:
+def prepend_to_first_user_message_content(content: str, messages: list[dict]) -> list[dict]:
     for message in messages:
         if message["role"] == "user":
             message = update_message_content(message, content, append=False)
@@ -257,7 +244,7 @@ def append_or_update_assistant_message(content: str, messages: list[dict]):
 
 def openai_chat_message_template(model: str):
     return {
-        "id": f"{model}-{str(uuid.uuid4())}",
+        "id": f"{model}-{uuid.uuid4()!s}",
         "created": int(time.time()),
         "model": model,
         "choices": [{"index": 0, "logprobs": None, "finish_reason": None}],
@@ -266,10 +253,10 @@ def openai_chat_message_template(model: str):
 
 def openai_chat_chunk_message_template(
     model: str,
-    content: Optional[str] = None,
-    reasoning_content: Optional[str] = None,
-    tool_calls: Optional[list[dict]] = None,
-    usage: Optional[dict] = None,
+    content: str | None = None,
+    reasoning_content: str | None = None,
+    tool_calls: list[dict] | None = None,
+    usage: dict | None = None,
 ) -> dict:
     template = openai_chat_message_template(model)
     template["object"] = "chat.completion.chunk"
@@ -296,10 +283,10 @@ def openai_chat_chunk_message_template(
 
 def openai_chat_completion_message_template(
     model: str,
-    message: Optional[str] = None,
-    reasoning_content: Optional[str] = None,
-    tool_calls: Optional[list[dict]] = None,
-    usage: Optional[dict] = None,
+    message: str | None = None,
+    reasoning_content: str | None = None,
+    tool_calls: list[dict] | None = None,
+    usage: dict | None = None,
 ) -> dict:
     template = openai_chat_message_template(model)
     template["object"] = "chat.completion"
@@ -395,7 +382,7 @@ def extract_folders_after_data_docs(path):
     return tags
 
 
-def parse_duration(duration: str) -> Optional[timedelta]:
+def parse_duration(duration: str) -> timedelta | None:
     if duration == "-1" or duration == "0":
         return None
 
@@ -453,16 +440,12 @@ def parse_ollama_modelfile(model_text):
     data = {"base_model_id": None, "params": {}}
 
     # Parse base model
-    base_model_match = re.search(
-        r"^FROM\s+(\w+)", model_text, re.MULTILINE | re.IGNORECASE
-    )
+    base_model_match = re.search(r"^FROM\s+(\w+)", model_text, re.MULTILINE | re.IGNORECASE)
     if base_model_match:
         data["base_model_id"] = base_model_match.group(1)
 
     # Parse template
-    template_match = re.search(
-        r'TEMPLATE\s+"""(.+?)"""', model_text, re.DOTALL | re.IGNORECASE
-    )
+    template_match = re.search(r'TEMPLATE\s+"""(.+?)"""', model_text, re.DOTALL | re.IGNORECASE)
     if template_match:
         data["params"] = {"template": template_match.group(1).strip()}
 
@@ -496,12 +479,8 @@ def parse_ollama_modelfile(model_text):
         data["params"]["adapter"] = adapter_match.group(1)
 
     # Parse system description
-    system_desc_match = re.search(
-        r'SYSTEM\s+"""(.+?)"""', model_text, re.DOTALL | re.IGNORECASE
-    )
-    system_desc_match_single = re.search(
-        r"SYSTEM\s+([^\n]+)", model_text, re.IGNORECASE
-    )
+    system_desc_match = re.search(r'SYSTEM\s+"""(.+?)"""', model_text, re.DOTALL | re.IGNORECASE)
+    system_desc_match_single = re.search(r"SYSTEM\s+([^\n]+)", model_text, re.IGNORECASE)
 
     if system_desc_match:
         data["params"]["system"] = system_desc_match.group(1).strip()
@@ -577,9 +556,7 @@ def throttle(interval: float = 10.0):
 
 def extract_urls(text: str) -> list[str]:
     # Regex pattern to match URLs
-    url_pattern = re.compile(
-        r"(https?://[^\s]+)", re.IGNORECASE
-    )  # Matches http and https URLs
+    url_pattern = re.compile(r"(https?://[^\s]+)", re.IGNORECASE)  # Matches http and https URLs
     return url_pattern.findall(text)
 
 

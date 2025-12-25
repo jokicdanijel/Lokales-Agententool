@@ -124,6 +124,7 @@ location /telegram {
     proxy_set_header X-Real-IP $remote_addr;
 }
 ```
+
 ### Environment Variables
 
 ```bash
@@ -149,6 +150,7 @@ pytest --cov=app tests/
 ## Monitoring
 
 Logs are written to:
+
 - stdout (console)
 - `logs/telegram_multi.log` (file, rotated)
 

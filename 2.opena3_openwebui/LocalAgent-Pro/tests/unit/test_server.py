@@ -1,8 +1,5 @@
 """Unit tests for server module."""
 
-import pytest
-from src.server import openwebui_agent_server
-
 
 class TestServerHealth:
     """Health check tests."""

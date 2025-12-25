@@ -30,34 +30,41 @@ opena7 hat ein **vollautomatisches CI/CD-System** via GitHub Actions. Das Workfl
 ### ✅ Job-Beschreibungen
 
 #### 1️⃣ **LINT** — Code Quality
+
 ```yaml
 - Black formatting
 - Ruff linting
 - Pre-commit hooks (isort, trailing-whitespace, end-of-file-fixer)
 ```
+
 **Trigger:** Every push/PR
 **Timeout:** 2 min
 **Status:** Must pass before other jobs
 
 #### 2️⃣ **PYTHON-CHECK** — Syntax & Dependencies
+
 ```yaml
 - Python 3.12 syntax validation
 - Import check (from app.main import app)
 - Requirements.txt validation
 ```
+
 **Depends on:** LINT passed
 **Timeout:** 1 min
 
 #### 3️⃣ **DOCKER-BUILD** — Container Build Test
+
 ```bash
 docker-compose build --no-cache opena7
 docker run --rm opena7_opena7 python -c "from app.main import app"
 ```
+
 **Depends on:** LINT + PYTHON-CHECK
 **Build time:** ~2 min
 **Output:** Docker image size verification
 
 #### 4️⃣ **API-TEST** — Live Endpoint Testing
+
 ```yaml
 - Start opena7 container (port 12352)
 - Test GET /health
@@ -67,29 +74,35 @@ docker run --rm opena7_opena7 python -c "from app.main import app"
 - Test GET /workflows
 - Cleanup
 ```
+
 **Depends on:** DOCKER-BUILD
 **Duration:** ~30 sec
 **Critical:** All endpoints must respond 200 OK
 
 #### 5️⃣ **SECURITY** — Vulnerability Scan
+
 ```bash
 trivy scan:filesystem 6.opena7_email
 # Outputs SARIF for GitHub Security tab
 ```
+
 **Non-blocking:** Runs parallel, results in GitHub Security
 **Scanning:** Base image, Python packages
 
 #### 6️⃣ **METRICS** — Code Analysis
+
 ```bash
 wc -l 6.opena7_email/app/main.py
 wc -l 6.opena7_email/app/html/index.html
 wc -l 6.opena7_email/app/static/app.js
 wc -l 6.opena7_email/app/static/app.css
 ```
+
 **Output:** LOC (Lines of Code) report
 **Purpose:** Track codebase growth
 
 #### 7️⃣ **PUBLISH** — Docker Registry (main branch only)
+
 ```yaml
 Only runs on:
   - Branch: main
@@ -97,13 +110,14 @@ Only runs on:
 Requires: All tests passed
 
 Actions:
-- Extract version from app/main.py
-- Build production image
-- Tag: opena7:6.0.0 + opena7:latest
-- Image size check
+  - Extract version from app/main.py
+  - Build production image
+  - Tag: opena7:6.0.0 + opena7:latest
+  - Image size check
 ```
 
 #### 8️⃣ **DEPLOY-READY** — Deployment Report
+
 ```yaml
 Generates: Deployment readiness report
 Includes:
@@ -118,18 +132,19 @@ Posts comment on PR (if applicable)
 ## 📋 Workflow Trigger-Bedingungen
 
 ### Automatic Trigger
+
 ```yaml
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths:
-      - '6.opena7_email/**'
-      - 'dist/opena7/**'
-      - '.github/workflows/opena7.yml'
+      - "6.opena7_email/**"
+      - "dist/opena7/**"
+      - ".github/workflows/opena7.yml"
   pull_request:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - '6.opena7_email/**'
+      - "6.opena7_email/**"
 ```
 
 **Heißt:** Workflow lädt NUR, wenn relevante Dateien geändert werden!
@@ -139,6 +154,7 @@ on:
 ## 🔍 Überwachung & Status
 
 ### GitHub Status Checks
+
 Jeder Commit zeigt visuelle Status-Indicators:
 
 ```
@@ -152,10 +168,12 @@ Jeder Commit zeigt visuelle Status-Indicators:
 ```
 
 ### PR-Status
+
 Wenn PR offen: Workflow-Status wird in PR-Timeline angezeigt.
 Wenn Test fehlschlägt: **PR kann nicht gemergt werden** (branch protection).
 
 ### Release-Tracking
+
 - **main branch:** Automatischer Docker-Build & Publish
 - **develop branch:** Tests nur, kein Docker-Publish
 - **PRs:** Tests + Security Scan
@@ -213,6 +231,7 @@ docker-compose down
 ## ⚠️ Häufige Fehler & Lösungen
 
 ### ❌ "lint failed: Black formatting"
+
 ```bash
 # Local fix:
 black 6.opena7_email/app/main.py
@@ -222,6 +241,7 @@ git push
 ```
 
 ### ❌ "api-test failed: /health → 404"
+
 ```bash
 # Check logs:
 docker-compose logs opena7 | tail -20
@@ -232,6 +252,7 @@ python -m py_compile 6.opena7_email/app/main.py
 ```
 
 ### ❌ "docker-build failed: no such file"
+
 ```bash
 # Check file paths in Dockerfile:
 cat dist/opena7/Dockerfile | grep COPY
@@ -243,6 +264,7 @@ cat dist/opena7/Dockerfile | grep COPY
 ```
 
 ### ❌ "security: Trivy vulnerability found"
+
 ```bash
 # Review in GitHub Security tab:
 # https://github.com/YOUR_REPO/security/code-scanning
@@ -256,6 +278,7 @@ pip-compile requirements.txt
 ## 🔐 Secrets & Environment
 
 ### GitHub Secrets (optional for future)
+
 ```yaml
 # Not used in current setup, but ready for:
 DOCKER_USERNAME: <your-docker-username>
@@ -264,10 +287,11 @@ DOCKER_TOKEN: <your-docker-token>
 ```
 
 ### Environment Variables (in workflow)
+
 ```yaml
 REGISTRY: docker.io
 IMAGE_NAME: opena7
-DOCKER_BUILDKIT: 1  # Faster builds
+DOCKER_BUILDKIT: 1 # Faster builds
 ```
 
 ---
@@ -283,6 +307,7 @@ GET /api/info
 ```
 
 **Monitoring via dashboard:**
+
 1. opena20 polls `/api/info` → finds opena7
 2. opena20 polls `/health` → checks status
 3. opena20 shows status in UI
@@ -293,6 +318,7 @@ GET /api/info
 ## 🚀 Deployment aus CI/CD
 
 ### Option 1: Manual Deploy (nach PR merge)
+
 ```bash
 cd dist/opena7
 docker-compose pull  # Latest image
@@ -300,11 +326,13 @@ docker-compose up -d opena7
 ```
 
 ### Option 2: Automated Deploy (future)
+
 Add step to workflow:
+
 ```yaml
 deploy:
   needs: publish
-  runs-on: [self-hosted]  # Your server
+  runs-on: [self-hosted] # Your server
   steps:
     - run: |
         cd /app/opena7
@@ -317,12 +345,14 @@ deploy:
 ## 📞 Support & Debugging
 
 ### Workflow Logs einsehen
+
 1. Push machen
 2. GitHub → Actions tab
 3. Workflow "opena7 CI/CD Pipeline" klicken
 4. Job auswählen → Logs anschauen
 
 ### Lokal debuggen
+
 ```bash
 # Run specific test locally:
 python -m pytest tests/

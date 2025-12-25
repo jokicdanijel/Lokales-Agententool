@@ -20,6 +20,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena2
@@ -31,6 +32,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena3
@@ -42,6 +44,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena4
@@ -53,6 +56,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena5
@@ -64,6 +68,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena6
@@ -75,6 +80,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena7
@@ -86,6 +92,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena8
@@ -97,6 +104,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena9
@@ -108,6 +116,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena10
@@ -119,6 +128,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena11
@@ -130,6 +140,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena12
@@ -141,6 +152,7 @@
 - **Files with Hashes:** 1
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=1, actual=121
 
 ### ❌ opena13
@@ -152,6 +164,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena14
@@ -163,6 +176,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena15
@@ -174,6 +188,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena16
@@ -185,6 +200,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena17
@@ -196,6 +212,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena18
@@ -207,6 +224,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena19
@@ -218,6 +236,7 @@
 - **Files with Hashes:** 1
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=1, actual=121
 
 ### ❌ opena20
@@ -229,6 +248,7 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121
 
 ### ❌ opena21
@@ -240,4 +260,5 @@
 - **Files with Hashes:** 120
 
 **Violations:**
+
 - ❌ File count mismatch: inventory=120, actual=121

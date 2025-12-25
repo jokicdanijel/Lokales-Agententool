@@ -16,7 +16,7 @@ Passionate about open-source AI? [Join our team →](https://careers.openwebui.c
 
 ![Open WebUI Demo](./demo.gif)
 
-> [!TIP]  
+> [!TIP]
 > **Looking for an [Enterprise Plan](https://docs.openwebui.com/enterprise)?** – **[Speak with Our Sales Team Today!](https://docs.openwebui.com/enterprise)**
 >
 > Get **enhanced capabilities**, including **custom theming and branding**, **Service Level Agreement (SLA) support**, **Long-Term Support (LTS) versions**, and **more!**
@@ -105,13 +105,13 @@ This will start the Open WebUI server, which you can access at [http://localhost
 
 ### Quick Start with Docker 🐳
 
-> [!NOTE]  
+> [!NOTE]
 > Please note that for certain Docker environments, additional configurations might be needed. If you encounter any connection issues, our detailed guide on [Open WebUI Documentation](https://docs.openwebui.com/) is ready to assist you.
 
 > [!WARNING]
 > When using Docker to install Open WebUI, make sure to include the `-v open-webui:/app/backend/data` in your Docker command. This step is crucial as it ensures your database is properly mounted and prevents any loss of data.
 
-> [!TIP]  
+> [!TIP]
 > If you wish to utilize Open WebUI with Ollama included or CUDA acceleration, we recommend utilizing our official images tagged with either `:cuda` or `:ollama`. To enable CUDA, you must install the [Nvidia CUDA container toolkit](https://docs.nvidia.com/dgx/nvidia-container-runtime-upgrade/) on your Linux/WSL system.
 
 ### Installation with Default Configuration

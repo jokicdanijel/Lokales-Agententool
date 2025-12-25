@@ -1,7 +1,5 @@
 import os
 import subprocess
-import sys
-import time
 
 
 def test_tracing_smoke():

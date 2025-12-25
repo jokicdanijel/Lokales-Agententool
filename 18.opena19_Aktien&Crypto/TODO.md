@@ -1,7 +1,7 @@
 # TODO – opena19 Aktien & Crypto Agent
 
-**Port:** 12364  
-**Status:** 🟡 Planned  
+**Port:** 12364
+**Status:** 🟡 Planned
 **Kürzel:** `stockcryptop`
 
 ---
@@ -96,5 +96,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

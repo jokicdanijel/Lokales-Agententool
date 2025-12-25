@@ -175,6 +175,7 @@ Gesamtprojekt/
 ```
 
 **Legend:**
+
 - ⭐ = NEW (just created Nov 6)
 - 📄 = File
 - 📁 = Directory
@@ -427,6 +428,7 @@ TOTAL: 5 tasks → Target: 80%+ complete by Fri night
 ## 🎯 Success Indicators
 
 ### Week 1 (Nov 7–14) ✅
+
 ```
 [ ] Task 01 ✅ (already done)
 [ ] Task 02 implemented
@@ -440,6 +442,7 @@ TOTAL: 5 tasks → Target: 80%+ complete by Fri night
 ```
 
 ### By Dec 5 (Phase 4.1 Complete) 🚀
+
 ```
 [ ] 20/20 tasks complete
 [ ] v1.0 tagged on GitHub

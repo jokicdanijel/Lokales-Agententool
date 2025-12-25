@@ -110,6 +110,7 @@ Der Bot unterstützt folgende Befehle in Telegram:
 - `/info` - Zeigt Bot-Informationen (Chat-ID, User-ID)
 
 Zusätzlich:
+
 - Jede Text-Nachricht wird als Echo zurückgesendet
 
 ## 🔧 Konfiguration
@@ -201,6 +202,7 @@ ps aux | grep telegram_bot.py
 ## 🔐 Sicherheit
 
 ⚠️ **WICHTIG:**
+
 - Token NIEMALS in Git committen
 - Verwenden Sie `.env`-Dateien oder Umgebungsvariablen
 - Setzen Sie restrictive Dateiberechtigungen: `chmod 600 telegram_bot.py`
@@ -233,6 +235,7 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 ## 🆘 Support
 
 Bei Problemen:
+
 1. Logs prüfen (`telegram_bot.log`)
 2. Token validieren
 3. Python-Dependencies aktualisieren: `pip install -U python-telegram-bot`
@@ -240,6 +243,7 @@ Bei Problemen:
 ## 📝 Changelog
 
 ### v1.0.0 - 23.12.2025
+
 - ✅ Initiale Version
 - ✅ Basis-Befehle (/start, /help, /info)
 - ✅ Echo-Handler für Nachrichten

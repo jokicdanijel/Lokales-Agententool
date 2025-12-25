@@ -10,8 +10,9 @@ from pathlib import Path
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.speech_input import SpeechInput
 import time
+
+from src.speech_input import SpeechInput
 
 
 def print_header(title):
@@ -27,7 +28,8 @@ def demo_single_listen():
 
     speech = SpeechInput(language="de-DE")
 
-    print("""
+    print(
+        """
 This demo listens for a single speech command.
 Say something after the prompt appears.
 
@@ -35,7 +37,8 @@ Examples:
   - "Öffne die Datei report.txt"
   - "Was ist das Wetter?"
   - "Speichere diese Datei"
-    """)
+    """
+    )
 
     input("Press Enter to start listening...")
     result = speech.listen_once()
@@ -53,12 +56,14 @@ def demo_continuous_listen():
 
     speech = SpeechInput(language="de-DE")
 
-    print("""
+    print(
+        """
 This demo listens for multiple commands in sequence.
 You can say different things for each attempt.
 
 The system will attempt to listen up to 5 times or until you stop.
-    """)
+    """
+    )
 
     input("Press Enter to start listening...")
     results = speech.listen_continuous(max_iterations=3)
@@ -84,15 +89,15 @@ def demo_microphone_test():
     print(f"  Status: {result['status']}")
     print(f"  Timestamp: {result['timestamp']}")
 
-    if result['microphones']:
+    if result["microphones"]:
         print(f"  Microphones found: {len(result['microphones'])}")
-        for mic in result['microphones'][:3]:  # Show first 3
+        for mic in result["microphones"][:3]:  # Show first 3
             print(f"    - Index {mic['index']}: {mic['name']}")
 
-    if result['noise_level']:
+    if result["noise_level"]:
         print(f"  Noise Level: {result['noise_level']}")
 
-    if result['status'] == 'ERROR':
+    if result["status"] == "ERROR":
         print(f"  Error: {result.get('error', 'Unknown error')}")
 
 
@@ -114,10 +119,12 @@ def demo_language_support():
 
     print("\nYou can select a language and listen in that language.")
     print("Example usage in code:")
-    print("""
+    print(
+        """
         speech = SpeechInput(language="en-US")
         result = speech.listen_once()
-    """)
+    """
+    )
 
 
 def demo_command_interpreter():
@@ -126,7 +133,8 @@ def demo_command_interpreter():
 
     speech = SpeechInput(language="de-DE")
 
-    print("""
+    print(
+        """
 This demo shows how to use voice commands for application control.
 
 Voice command examples:
@@ -134,7 +142,8 @@ Voice command examples:
   - "Speichere die Datei"      → File operations
   - "Zeige den Status"         → Status check
   - "Beende das Programm"      → Exit command
-    """)
+    """
+    )
 
     input("Press Enter to start listening for a command...")
     command = speech.listen_once()
@@ -163,7 +172,8 @@ def demo_file_recognition():
 
     speech = SpeechInput(language="de-DE")
 
-    print("""
+    print(
+        """
 This demo shows how to process pre-recorded audio files.
 
 First, record an audio file:
@@ -172,7 +182,8 @@ First, record an audio file:
     3. The system will recognize speech from the file
 
 Supported formats: WAV, AIFF, FLAC, AU
-    """)
+    """
+    )
 
     input("Press Enter to start recording...")
 

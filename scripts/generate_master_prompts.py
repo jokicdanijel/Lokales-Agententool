@@ -4,8 +4,6 @@ Generator für 21 Agent-spezifische Master-Prompts (opena3-opena21)
 Erstellt MASTER_PROMPT.md-Dateien in den jeweiligen Agent-Ordnern
 """
 
-import json
-import os
 from pathlib import Path
 
 # Base-Verzeichnis
@@ -13,31 +11,150 @@ BASE_DIR = Path("/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt")
 
 # Agent-Konfiguration
 AGENTS = [
-    {"id": "opena5", "folder": "4.opena5_vscode", "port": 12351, "status": "🟡 Planned", "kuerzel": "vscop", "domain": "VS Code Agent, File-System-Watcher, Code-Analyse"},
-    {"id": "opena6", "folder": "5.opena6_browser", "port": 12350, "status": "🟡 Planned", "kuerzel": "browsep", "domain": "Browser Automation, Playwright, Selenium, Web-Scraping"},
-    {"id": "opena7", "folder": "6.opena7_email", "port": 12352, "status": "🟡 Planned", "kuerzel": "emailp", "domain": "E-Mail Client, IMAP/SMTP, Inbox-Monitoring"},
-    {"id": "opena8", "folder": "7.opena8_whatsapp", "port": 12353, "status": "🟡 Planned", "kuerzel": "whatsappp", "domain": "WhatsApp Business Cloud API, Webhook, Templates"},
-    {"id": "opena9", "folder": "8.opena9_telephone", "port": 12354, "status": "🟡 Planned", "kuerzel": "telphonep", "domain": "Telefonie, SIP/Twilio, Call-State-Machine"},
-    {"id": "opena10", "folder": "9.opena10_call_tracking", "port": 12355, "status": "🟡 Planned", "kuerzel": "calltrackp", "domain": "Call Tracking, SQLAlchemy-Models, Campaign-Tracking"},
-    {"id": "opena11", "folder": "10.opena11_unlock", "port": 12356, "status": "🟡 Planned", "kuerzel": "unlockp", "domain": "Unlock Master, RBAC, Permission-Store, Audit-Log"},
-    {"id": "opena12", "folder": "11.opena12_social_media", "port": 12357, "status": "🟡 Planned", "kuerzel": "smp", "domain": "Social Media, Multi-Platform OAuth, Scheduling"},
-    {"id": "opena13", "folder": "12.opena13_influencer", "port": 12358, "status": "🟡 Planned", "kuerzel": "influp", "domain": "Influencer-Matching, Kampagnen, Reichweiten-Metriken"},
-    {"id": "opena14", "folder": "13.opena14_calendar", "port": 12359, "status": "🟡 Planned", "kuerzel": "calp", "domain": "Google Calendar, iCal, Exchange-Integration"},
-    {"id": "opena15", "folder": "14.opena15_html", "port": 12360, "status": "🟡 Planned", "kuerzel": "htmlp", "domain": "HTML Creator, Jinja2, Template-Rendering, Validation"},
-    {"id": "opena16", "folder": "15.opena16_shop", "port": 12361, "status": "🟡 Planned", "kuerzel": "shopp", "domain": "Shop Agent, Shopify, WooCommerce, Product-Sync"},
-    {"id": "opena17", "folder": "16.opena17_homepagecreator", "port": 12362, "status": "🟡 Planned", "kuerzel": "hpcreatep", "domain": "Homepage Creator, Site-Generator, Deployment"},
-    {"id": "opena18", "folder": "17.opena18_CMR", "port": 12363, "status": "🟡 Planned", "kuerzel": "crmp", "domain": "CRM Agent, Contacts, Deals, DSGVO-Compliance"},
-    {"id": "opena19", "folder": "18.opena19_Aktien&Crypto", "port": 12364, "status": "🟡 Planned", "kuerzel": "stockcryptop", "domain": "Aktien & Crypto, Marktdaten, Portfolio, Alerts"},
-    {"id": "opena20", "folder": "19.opena20_dashboard_agent", "port": 12349, "status": "✅ Running", "kuerzel": "dashp", "domain": "Dashboard, FastAPI, SSE, Web-UI, Status-Aggregation"},
-    {"id": "opena21", "folder": "20.opena21_workflow", "port": 12365, "status": "🟡 Planned", "kuerzel": "workflowp", "domain": "Workflow Engine, State-Machine, Task-Queue, Multi-Agent-Orchestration"},
+    {
+        "id": "opena5",
+        "folder": "4.opena5_vscode",
+        "port": 12351,
+        "status": "🟡 Planned",
+        "kuerzel": "vscop",
+        "domain": "VS Code Agent, File-System-Watcher, Code-Analyse",
+    },
+    {
+        "id": "opena6",
+        "folder": "5.opena6_browser",
+        "port": 12350,
+        "status": "🟡 Planned",
+        "kuerzel": "browsep",
+        "domain": "Browser Automation, Playwright, Selenium, Web-Scraping",
+    },
+    {
+        "id": "opena7",
+        "folder": "6.opena7_email",
+        "port": 12352,
+        "status": "🟡 Planned",
+        "kuerzel": "emailp",
+        "domain": "E-Mail Client, IMAP/SMTP, Inbox-Monitoring",
+    },
+    {
+        "id": "opena8",
+        "folder": "7.opena8_whatsapp",
+        "port": 12353,
+        "status": "🟡 Planned",
+        "kuerzel": "whatsappp",
+        "domain": "WhatsApp Business Cloud API, Webhook, Templates",
+    },
+    {
+        "id": "opena9",
+        "folder": "8.opena9_telephone",
+        "port": 12354,
+        "status": "🟡 Planned",
+        "kuerzel": "telphonep",
+        "domain": "Telefonie, SIP/Twilio, Call-State-Machine",
+    },
+    {
+        "id": "opena10",
+        "folder": "9.opena10_call_tracking",
+        "port": 12355,
+        "status": "🟡 Planned",
+        "kuerzel": "calltrackp",
+        "domain": "Call Tracking, SQLAlchemy-Models, Campaign-Tracking",
+    },
+    {
+        "id": "opena11",
+        "folder": "10.opena11_unlock",
+        "port": 12356,
+        "status": "🟡 Planned",
+        "kuerzel": "unlockp",
+        "domain": "Unlock Master, RBAC, Permission-Store, Audit-Log",
+    },
+    {
+        "id": "opena12",
+        "folder": "11.opena12_social_media",
+        "port": 12357,
+        "status": "🟡 Planned",
+        "kuerzel": "smp",
+        "domain": "Social Media, Multi-Platform OAuth, Scheduling",
+    },
+    {
+        "id": "opena13",
+        "folder": "12.opena13_influencer",
+        "port": 12358,
+        "status": "🟡 Planned",
+        "kuerzel": "influp",
+        "domain": "Influencer-Matching, Kampagnen, Reichweiten-Metriken",
+    },
+    {
+        "id": "opena14",
+        "folder": "13.opena14_calendar",
+        "port": 12359,
+        "status": "🟡 Planned",
+        "kuerzel": "calp",
+        "domain": "Google Calendar, iCal, Exchange-Integration",
+    },
+    {
+        "id": "opena15",
+        "folder": "14.opena15_html",
+        "port": 12360,
+        "status": "🟡 Planned",
+        "kuerzel": "htmlp",
+        "domain": "HTML Creator, Jinja2, Template-Rendering, Validation",
+    },
+    {
+        "id": "opena16",
+        "folder": "15.opena16_shop",
+        "port": 12361,
+        "status": "🟡 Planned",
+        "kuerzel": "shopp",
+        "domain": "Shop Agent, Shopify, WooCommerce, Product-Sync",
+    },
+    {
+        "id": "opena17",
+        "folder": "16.opena17_homepagecreator",
+        "port": 12362,
+        "status": "🟡 Planned",
+        "kuerzel": "hpcreatep",
+        "domain": "Homepage Creator, Site-Generator, Deployment",
+    },
+    {
+        "id": "opena18",
+        "folder": "17.opena18_CMR",
+        "port": 12363,
+        "status": "🟡 Planned",
+        "kuerzel": "crmp",
+        "domain": "CRM Agent, Contacts, Deals, DSGVO-Compliance",
+    },
+    {
+        "id": "opena19",
+        "folder": "18.opena19_Aktien&Crypto",
+        "port": 12364,
+        "status": "🟡 Planned",
+        "kuerzel": "stockcryptop",
+        "domain": "Aktien & Crypto, Marktdaten, Portfolio, Alerts",
+    },
+    {
+        "id": "opena20",
+        "folder": "19.opena20_dashboard_agent",
+        "port": 12349,
+        "status": "✅ Running",
+        "kuerzel": "dashp",
+        "domain": "Dashboard, FastAPI, SSE, Web-UI, Status-Aggregation",
+    },
+    {
+        "id": "opena21",
+        "folder": "20.opena21_workflow",
+        "port": 12365,
+        "status": "🟡 Planned",
+        "kuerzel": "workflowp",
+        "domain": "Workflow Engine, State-Machine, Task-Queue, Multi-Agent-Orchestration",
+    },
 ]
 
 TEMPLATE = """# 🤖 MASTER PROMPT – {id} {name}
 
-**Agent-ID:** {id}  
-**Port:** {port}  
-**Status:** {status}  
-**Kürzel:** `{kuerzel}`  
+**Agent-ID:** {id}
+**Port:** {port}
+**Status:** {status}
+**Kürzel:** `{kuerzel}`
 **Domäne:** {domain}
 
 ---
@@ -175,22 +292,23 @@ Kopiere diesen Prompt in:
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)
 """
+
 
 def generate_prompts():
     """Generiert alle MASTER_PROMPT.md-Dateien"""
     created = []
     skipped = []
-    
+
     for agent in AGENTS:
         # Extrahiere Agent-Name aus Domain (erster Teil vor Komma)
         name = agent["domain"].split(",")[0].strip()
-        
+
         # Agent-File-Name (ohne opena)
         agent_file = agent["id"].replace("opena", "agent")
-        
+
         # Erstelle Prompt-Content
         content = TEMPLATE.format(
             id=agent["id"],
@@ -200,31 +318,32 @@ def generate_prompts():
             kuerzel=agent["kuerzel"],
             domain=agent["domain"],
             folder=agent["folder"],
-            agent_file=agent_file
+            agent_file=agent_file,
         )
-        
+
         # Zielordner und Datei
         target_dir = BASE_DIR / agent["folder"]
         target_file = target_dir / "MASTER_PROMPT.md"
-        
+
         # Prüfe ob Ordner existiert
         if not target_dir.exists():
             print(f"⚠️  Ordner nicht gefunden: {target_dir}")
             skipped.append(agent["id"])
             continue
-        
+
         # Schreibe Datei (überschreibe wenn existiert)
         target_file.write_text(content, encoding="utf-8")
         created.append(agent["id"])
         print(f"✅ Erstellt: {target_file}")
-    
+
     # Zusammenfassung
-    print(f"\n📊 Zusammenfassung:")
+    print("\n📊 Zusammenfassung:")
     print(f"   ✅ Erstellt: {len(created)} Dateien")
     print(f"   ⚠️  Übersprungen: {len(skipped)} Dateien")
     print(f"\n📝 Erstellt für: {', '.join(created)}")
     if skipped:
         print(f"⚠️  Übersprungen: {', '.join(skipped)}")
+
 
 if __name__ == "__main__":
     generate_prompts()

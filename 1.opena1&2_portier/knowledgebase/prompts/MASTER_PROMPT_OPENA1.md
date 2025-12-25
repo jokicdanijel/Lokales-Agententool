@@ -1,9 +1,9 @@
 # Master Prompt für opena1 (Koordinator)
 
-**Version:** 1.0  
-**Datum:** 27. November 2025  
-**Service:** opena1 - Koordinator  
-**Port:** 12344  
+**Version:** 1.0
+**Datum:** 27. November 2025
+**Service:** opena1 - Koordinator
+**Port:** 12344
 **Rolle:** Request71 → Decision72
 
 ---
@@ -243,6 +243,6 @@ Leitplanken gemäß README / PORTIER-Dokumentation:
 
 ---
 
-**Ende Master-Prompt opena1**  
-**Maintainer:** PORTIER 3.0 Team  
+**Ende Master-Prompt opena1**
+**Maintainer:** PORTIER 3.0 Team
 **Status:** ✅ Production-Ready

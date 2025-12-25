@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # Simple preflight archive check (optionally extendable)
-ACTION="${1:-}" 
+ACTION="${1:-}"
 
 case "$ACTION" in
   --archive-check|archive-check|""

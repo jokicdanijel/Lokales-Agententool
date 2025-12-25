@@ -20,15 +20,15 @@ Das Skript erwartet, dass eine LLM‑kompatible API unter `llm.base_url` in
 """
 
 import os
-import yaml
-from flask import Flask, request, jsonify
-from openai import OpenAI
+from typing import Any
 
-from typing import Dict, Any
+import yaml
+from flask import Flask, jsonify, request
+from openai import OpenAI
 
 # Konfiguration laden
 CONFIG_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "config", "config.yaml")
-with open(CONFIG_PATH, "r") as f:
+with open(CONFIG_PATH) as f:
     config = yaml.safe_load(f)
 
 # LLM Einstellungen
@@ -42,6 +42,7 @@ SANDBOX_PATH: str = config.get("sandbox_path", os.path.join(os.path.expanduser("
 # OpenWebUI Port
 OPENWEBUI_PORT: int = config.get("open_webui_port", 8080)  # UI-only
 
+
 # Tools definieren
 def read_file(path: str) -> str:
     rpath = path
@@ -49,8 +50,9 @@ def read_file(path: str) -> str:
         rpath = os.path.join(SANDBOX_PATH, path.lstrip("/"))
     if not os.path.exists(rpath):
         return f"File not found: {rpath}"
-    with open(rpath, "r") as f:
+    with open(rpath) as f:
         return f.read()
+
 
 def write_file(path: str, content: str) -> str:
     wpath = path
@@ -61,6 +63,7 @@ def write_file(path: str, content: str) -> str:
         f.write(content)
     return f"File written to {wpath}"
 
+
 def list_files(path: str) -> str:
     lpath = path
     if SANDBOX_ENABLED:
@@ -69,15 +72,20 @@ def list_files(path: str) -> str:
         return "Directory does not exist."
     return "\n".join(os.listdir(lpath))
 
+
 def run_shell(cmd: str) -> str:
     if SANDBOX_ENABLED:
         return "Shell disabled in SANDBOX mode."
     import subprocess
+
     return subprocess.getoutput(cmd)
+
 
 def safe_fetch(url: str) -> str:
     from urllib.parse import urlparse
+
     import requests
+
     domain = urlparse(url).netloc
     allowed = set(config.get("allowed_domains", []))
     if domain not in allowed:
@@ -86,7 +94,8 @@ def safe_fetch(url: str) -> str:
         response = requests.get(url, timeout=10)
         return response.text
     except Exception as e:
-        return f"Request failed: {str(e)}"
+        return f"Request failed: {e!s}"
+
 
 TOOLS = {
     "read_file": read_file,
@@ -100,23 +109,20 @@ app = Flask(__name__)
 
 client = OpenAI(base_url=LLM_BASE_URL, api_key="none")
 
+
 @app.route("/agent", methods=["POST"])
-def agent_route() -> Dict[str, Any]:
+def agent_route() -> dict[str, Any]:
     data = request.get_json(force=True)
     prompt = data.get("prompt", "")
     try:
-        response = client.chat.completions.create(
-            model=LLM_MODEL,
-            messages=[{"role": "user", "content": prompt}]
-        )
-        return jsonify({
-            "response": response.choices[0].message["content"]
-        })
+        response = client.chat.completions.create(model=LLM_MODEL, messages=[{"role": "user", "content": prompt}])
+        return jsonify({"response": response.choices[0].message["content"]})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 @app.route("/tool", methods=["POST"])
-def manual_tool() -> Dict[str, Any]:
+def manual_tool() -> dict[str, Any]:
     data = request.get_json(force=True)
     name = data.get("name")
     args = data.get("args", {})
@@ -128,19 +134,24 @@ def manual_tool() -> Dict[str, Any]:
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 @app.route("/v1/models", methods=["GET"])
-def list_models() -> Dict[str, Any]:
-    return jsonify({
-        "object": "list",
-        "data": [
-            {"id": LLM_MODEL, "object": "model"},
-            {"id": "localagent-pro", "object": "model"},
-        ]
-    })
+def list_models() -> dict[str, Any]:
+    return jsonify(
+        {
+            "object": "list",
+            "data": [
+                {"id": LLM_MODEL, "object": "model"},
+                {"id": "localagent-pro", "object": "model"},
+            ],
+        }
+    )
+
 
 @app.route("/health", methods=["GET"])
-def health() -> Dict[str, Any]:
+def health() -> dict[str, Any]:
     return jsonify({"status": "ok"})
+
 
 if __name__ == "__main__":
     print("🚀 LocalAgent‑Pro Server startet...")
@@ -148,7 +159,7 @@ if __name__ == "__main__":
     print(f"🔒 Sandbox: {'✅ Aktiv' if SANDBOX_ENABLED else '❌ Deaktiviert'}")
     print(f"📁 Sandbox-Pfad: {SANDBOX_PATH}")
     print(f"🌐 Erlaubte Domains: {len(config.get('allowed_domains', []))}")
-    print(f"📡 Server: http://localhost:8001")
+    print("📡 Server: http://localhost:8001")
     print(f"🎯 OpenWebUI URL: http://127.0.0.1:{OPENWEBUI_PORT}")
     print("✅ Bereit für OpenWebUI!")
     app.run(host="0.0.0.0", port=8001, debug=False)

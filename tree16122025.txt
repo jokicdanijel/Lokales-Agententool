@@ -41257,5 +41257,4 @@ danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ 
 └── workflow_completion_notification.json
 
 4054 directories, 37202 files
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$  
-
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$

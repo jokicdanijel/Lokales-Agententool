@@ -1,10 +1,10 @@
 # 📊 opena10 - Call Tracking Agent
 
-**Agent-ID:** `opena10`  
-**Port:** 12355  
-**Kürzel:** `calltrackp`  
-**Status:** ✅ RUNNING (PID: siehe logs/opena10.pid)  
-**Version:** 2.0  
+**Agent-ID:** `opena10`
+**Port:** 12355
+**Kürzel:** `calltrackp`
+**Status:** ✅ RUNNING (PID: siehe logs/opena10.pid)
+**Version:** 2.0
 **Status:** ✅ Production
 
 ---
@@ -185,5 +185,5 @@ curl http://127.0.0.1:12352/metrics
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 21. November 2025

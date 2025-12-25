@@ -1,8 +1,8 @@
 # TODO – opena3 OpenWebUI Terminal Agent
 
-**Port:** 12347  
-**Status:** ✅ Running  
-**Kürzel:** `owuip`  
+**Port:** 12347
+**Status:** ✅ Running
+**Kürzel:** `owuip`
 **Version:** 2.0.1
 
 ---
@@ -114,5 +114,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 1. Dezember 2025  
+**Letzte Aktualisierung:** 1. Dezember 2025
 **Maintainer:** Danijel Jokic (ELION Team)

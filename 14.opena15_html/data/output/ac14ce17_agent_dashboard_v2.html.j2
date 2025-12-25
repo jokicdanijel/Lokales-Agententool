@@ -123,7 +123,7 @@
             margin: 10px 0;
             border-left: 4px solid #48bb78;
         }
-        
+
         /* ===== OpenAI Key Panel Styles ===== */
         .api-key-card {
             background: linear-gradient(145deg, #fef3c7, #fde68a);
@@ -480,22 +480,22 @@
             const statusDot = document.getElementById('statusDot');
             const statusText = document.getElementById('statusText');
             const output = document.getElementById('healthOutput');
-            
+
             if (!output) return; // Generic partial might not have healthOutput
-            
+
             statusText.textContent = 'Prüfe Status...';
             output.className = 'alert alert-warning fs-5';
             output.textContent = 'Verbinde mit Agent...';
-            
+
             try {
                 const response = await fetch('http://127.0.0.1:12355/health');
-                
+
                 if (response.ok) {
                     const data = await response.json();
                     statusDot.className = 'status-dot status-online';
                     statusText.textContent = '✅ Online & Erreichbar';
                     output.className = 'alert alert-success fs-5';
-                    output.innerHTML = '<h5 class="mb-3">✅ Agent antwortet!</h5><pre class="bg-dark text-light p-3 rounded">' + 
+                    output.innerHTML = '<h5 class="mb-3">✅ Agent antwortet!</h5><pre class="bg-dark text-light p-3 rounded">' +
                                       JSON.stringify(data, null, 2) + '</pre>';
                 } else {
                     throw new Error('HTTP ' + response.status);
@@ -508,7 +508,7 @@
                                   '<p class="mt-3 mb-0"><small>Stelle sicher dass der Agent läuft: <code>./bin/start_opena9.sh</code></small></p>';
             }
         }
-        
+
         window.checkHealth = checkHealth;
 
         document.addEventListener("DOMContentLoaded", function () {

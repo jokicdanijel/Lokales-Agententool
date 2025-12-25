@@ -137,4 +137,3 @@ echo " - Code-Generator   -> http://127.0.0.1:$PORT_CODEGEN/docs"
 echo " - Koordinator      -> opena1.service (falls vorhanden)"
 echo
 echo "Hinweis: 'Unllama' wird nicht verwendet. Agenten laufen über OpenAI-API."
-

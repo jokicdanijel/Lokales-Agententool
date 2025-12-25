@@ -4,9 +4,7 @@ KEYS_TO_EXCLUDE = ["content", "pages", "tables", "paragraphs", "sections", "figu
 
 
 def filter_metadata(metadata: dict[str, any]) -> dict[str, any]:
-    metadata = {
-        key: value for key, value in metadata.items() if key not in KEYS_TO_EXCLUDE
-    }
+    metadata = {key: value for key, value in metadata.items() if key not in KEYS_TO_EXCLUDE}
     return metadata
 
 
@@ -19,10 +17,6 @@ def process_metadata(
             del metadata[key]
 
         # Convert non-serializable fields to strings
-        if (
-            isinstance(value, datetime)
-            or isinstance(value, list)
-            or isinstance(value, dict)
-        ):
+        if isinstance(value, datetime) or isinstance(value, list) or isinstance(value, dict):
             metadata[key] = str(value)
     return metadata

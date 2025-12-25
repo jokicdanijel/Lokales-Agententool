@@ -11,16 +11,16 @@
 
 ### ✅ Infrastructure Deployed
 
-| Component | Files | Status | Ports |
-|-----------|-------|--------|-------|
-| **opena4** | main_agent.py, start_agent.sh | ✅ Ready | 12347 |
-| **opena5** | main_agent.py, start_agent.sh | ✅ Ready | 12348 |
-| **opena6** | main_agent.py, start_agent.sh | ✅ Ready | 12349 |
-| **opena7** | main_agent.py, start_agent.sh | ✅ Ready | 12350 |
-| **CLI Suite** | 20 scripts in bin/ | ✅ Ready | N/A |
-| **GitHub CI** | .github/workflows/portier-ci.yml | ✅ Ready | Auto |
-| **Tool Registry** | tools_registry.json | ✅ Ready | 4 endpoints |
-| **Policy Validator** | validate_portier.sh | ✅ Ready (5 gates) | N/A |
+| Component            | Files                            | Status             | Ports       |
+| -------------------- | -------------------------------- | ------------------ | ----------- |
+| **opena4**           | main_agent.py, start_agent.sh    | ✅ Ready           | 12347       |
+| **opena5**           | main_agent.py, start_agent.sh    | ✅ Ready           | 12348       |
+| **opena6**           | main_agent.py, start_agent.sh    | ✅ Ready           | 12349       |
+| **opena7**           | main_agent.py, start_agent.sh    | ✅ Ready           | 12350       |
+| **CLI Suite**        | 20 scripts in bin/               | ✅ Ready           | N/A         |
+| **GitHub CI**        | .github/workflows/portier-ci.yml | ✅ Ready           | Auto        |
+| **Tool Registry**    | tools_registry.json              | ✅ Ready           | 4 endpoints |
+| **Policy Validator** | validate_portier.sh              | ✅ Ready (5 gates) | N/A         |
 
 ---
 
@@ -35,32 +35,32 @@
 
 ### Policy Gates (Local)
 
-| Gate | Check | Status |
-|------|-------|--------|
-| 1 | 8080 Exclusivity | ✅ PASS |
-| 2 | TODO/FIXME Sweep | ✅ PASS |
-| 3 | Agent Files Present | ✅ PASS |
-| 4 | Unicode Arrow Reference | ✅ PASS |
-| 5 | Python Syntax | ✅ PASS |
+| Gate | Check                   | Status  |
+| ---- | ----------------------- | ------- |
+| 1    | 8080 Exclusivity        | ✅ PASS |
+| 2    | TODO/FIXME Sweep        | ✅ PASS |
+| 3    | Agent Files Present     | ✅ PASS |
+| 4    | Unicode Arrow Reference | ✅ PASS |
+| 5    | Python Syntax           | ✅ PASS |
 
 ### GitHub Actions Workflow Gates
 
-| Gate | Tool | Status | Config |
-|------|------|--------|--------|
-| Linting | Ruff 0.6.8 | ✅ Configured | ruff check . |
-| Formatting | Black 24.8.0 | ✅ Configured | black --check . |
-| Type Checking | mypy 1.11.2 | ✅ Configured | --python-version 3.13, tolerant |
-| Policy | Portier | ✅ Configured | 5 sub-gates |
-| Testing | pytest 8.3.3 | ✅ Configured | Conditional (skip if no tests/) |
+| Gate          | Tool         | Status        | Config                          |
+| ------------- | ------------ | ------------- | ------------------------------- |
+| Linting       | Ruff 0.6.8   | ✅ Configured | ruff check .                    |
+| Formatting    | Black 24.8.0 | ✅ Configured | black --check .                 |
+| Type Checking | mypy 1.11.2  | ✅ Configured | --python-version 3.13, tolerant |
+| Policy        | Portier      | ✅ Configured | 5 sub-gates                     |
+| Testing       | pytest 8.3.3 | ✅ Configured | Conditional (skip if no tests/) |
 
 ### Integration Verification (New Job)
 
-| Step | Verification | Status |
-|------|--------------|--------|
-| Structure | 8 critical files present | ✅ OK |
-| Ports | 4 agents on 12347-12350 | ✅ OK (exit-code hardened) |
-| Policy | Policy validator re-run | ✅ OK |
-| Summary | Deployment metadata generated | ✅ OK |
+| Step      | Verification                  | Status                     |
+| --------- | ----------------------------- | -------------------------- |
+| Structure | 8 critical files present      | ✅ OK                      |
+| Ports     | 4 agents on 12347-12350       | ✅ OK (exit-code hardened) |
+| Policy    | Policy validator re-run       | ✅ OK                      |
+| Summary   | Deployment metadata generated | ✅ OK                      |
 
 ---
 
@@ -161,21 +161,22 @@ Documentation (2 files):
 
 ### CLI Dispatcher (`bin/ops.sh`)
 
-| Command | Purpose | Status |
-|---------|---------|--------|
-| `start` | Start all services | ✅ Ready |
-| `stop` | Stop all services | ✅ Ready |
-| `health` | Check /health endpoints | ✅ Ready |
-| `status` | Get agent registry | ✅ Ready |
-| `agents:register` | Auto-register agents | ✅ Ready |
-| `verify` | Full integration test | ✅ Ready |
-| `sse_listen` | Live event stream | ✅ Ready |
-| `write:test` | Test archivator I/O | ✅ Ready |
-| `archiv:last` | Get recent archives | ✅ Ready |
+| Command           | Purpose                 | Status   |
+| ----------------- | ----------------------- | -------- |
+| `start`           | Start all services      | ✅ Ready |
+| `stop`            | Stop all services       | ✅ Ready |
+| `health`          | Check /health endpoints | ✅ Ready |
+| `status`          | Get agent registry      | ✅ Ready |
+| `agents:register` | Auto-register agents    | ✅ Ready |
+| `verify`          | Full integration test   | ✅ Ready |
+| `sse_listen`      | Live event stream       | ✅ Ready |
+| `write:test`      | Test archivator I/O     | ✅ Ready |
+| `archiv:last`     | Get recent archives     | ✅ Ready |
 
 ### GitHub Actions Workflow
 
 **Job 1: Validate (15 min)**
+
 - Ruff (linting)
 - Black (formatting)
 - mypy (type checking)
@@ -183,6 +184,7 @@ Documentation (2 files):
 - pytest (conditional)
 
 **Job 2: Integration (20 min)** ← NEW
+
 - Project structure verification (8 critical files)
 - Port allocation validation (4 agents, with exit-code handling)
 - Policy validator re-run
@@ -270,6 +272,7 @@ git push origin main
 Visit: https://github.com/jokicdanijel/Gesamtprojekt-start/actions
 
 Expected:
+
 - Job "validate": ✅ All steps PASS (15 min)
 - Job "integration": ✅ All steps PASS (20 min)
 - Total: ~35 minutes
@@ -278,16 +281,16 @@ Expected:
 
 ## 📊 Metrics
 
-| Metric | Value | Status |
-|--------|-------|--------|
-| New Agents | 4 | ✅ opena4-7 |
-| CLI Scripts | 20 | ✅ bin/ |
-| GitHub Actions Jobs | 2 | ✅ validate + integration |
-| CI Gates | 10+ | ✅ All configured |
-| Policy Gates | 5 | ✅ All passing |
-| Port Pool Utilization | 7/56 | ✅ 12.5% (healthy) |
-| Code Lines Added | ~2000 | ✅ All validated |
-| Commits | 2 | ✅ 23706d4 + 3ab9bea + f5806a9 |
+| Metric                | Value | Status                         |
+| --------------------- | ----- | ------------------------------ |
+| New Agents            | 4     | ✅ opena4-7                    |
+| CLI Scripts           | 20    | ✅ bin/                        |
+| GitHub Actions Jobs   | 2     | ✅ validate + integration      |
+| CI Gates              | 10+   | ✅ All configured              |
+| Policy Gates          | 5     | ✅ All passing                 |
+| Port Pool Utilization | 7/56  | ✅ 12.5% (healthy)             |
+| Code Lines Added      | ~2000 | ✅ All validated               |
+| Commits               | 2     | ✅ 23706d4 + 3ab9bea + f5806a9 |
 
 ---
 
@@ -296,6 +299,7 @@ Expected:
 **Phase 4 Status**: **✅ PRODUCTION READY**
 
 All objectives completed:
+
 - ✅ 4 new agents (opena4-opena7) with identical FastAPI pattern
 - ✅ 20 unified CLI scripts for orchestration
 - ✅ GitHub Actions CI/CD pipeline (2 jobs, 10+ gates)

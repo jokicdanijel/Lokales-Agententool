@@ -3,10 +3,12 @@
 ## ✅ Alle 20 Aufgaben abgeschlossen
 
 ### VS Code Integration
+
 - ✅ `.vscode/launch.json` - Debug/Start aller 4 Services einzeln oder zusammen
 - ✅ `.vscode/tasks.json` - 8 Tasks für ops.sh Befehle (start, stop, health, status, etc.)
 
 ### Zentrale Orchestrierung
+
 - ✅ `bin/ops.sh` - Hauptskript mit allen Befehlen
 - ✅ `bin/start_all.sh` - Startet alle Services
 - ✅ `bin/stop_all.sh` - Stoppt alle Services
@@ -14,19 +16,22 @@
 - ✅ `bin/agents_register.sh` - Registriert Agenten
 
 ### Entwickler-Tools
+
 - ✅ `bin/print_token.sh` - Zeigt .env Token
 - ✅ `bin/check_ports.sh` - Prüft Ports 12344/45/46/49/8080
 - ✅ `bin/log_tail.sh` - Folgt allen Log-Dateien
 - ✅ `bin/reset_today.sh` - Zeigt heutige Archiv-Dateien
-- ✅ `bin/clean_pycache.sh` - Bereinigt __pycache__
+- ✅ `bin/clean_pycache.sh` - Bereinigt **pycache**
 - ✅ `bin/env_bootstrap.sh` - Erzeugt .env falls fehlend
 
 ### Python-Tools & Tests
+
 - ✅ `scripts/register_agents.py` - Python-Alternative zu curl
 - ✅ `scripts/curl_examples.sh` - Goldene cURL-Befehle
 - ✅ `tests/test_archivator.py` - Pytest für opena2
 
 ### Dokumentation
+
 - ✅ `docs/OPERATIONS.md` - Operator-Leitfaden
 - ✅ `docs/OPENWEBUI_INTEGRATION.md` - OpenWebUI (opena3) Anbindung
 - ✅ `README_STACK_START.md` - QuickStart Guide
@@ -59,11 +64,13 @@ cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agen
 ## 🎯 VS Code Features
 
 ### Debug & Run
+
 - Öffne "Run and Debug" (Ctrl+Shift+D)
 - Wähle "Start: Alle Services" für kompletten Stack
 - Oder starte Services einzeln
 
 ### Tasks
+
 - Terminal → Run Task (Ctrl+Shift+P → "Tasks: Run Task")
 - Wähle z.B. "ops: verify" für kompletten Test
 
@@ -95,13 +102,13 @@ python3 scripts/register_agents.py  # Python-Registrierung
 
 ## 📁 Ports
 
-| Service   | Port  | Beschreibung        |
-|-----------|-------|---------------------|
-| Dashboard | 12349 | Hauptdashboard      |
-| opena1    | 12344 | Agent 1             |
-| opena2    | 12345 | Archivator          |
-| kordp     | 12346 | Koordinator         |
-| opena3    | 8080  | OpenWebUI (optional)|
+| Service   | Port  | Beschreibung         |
+| --------- | ----- | -------------------- |
+| Dashboard | 12349 | Hauptdashboard       |
+| opena1    | 12344 | Agent 1              |
+| opena2    | 12345 | Archivator           |
+| kordp     | 12346 | Koordinator          |
+| opena3    | 8080  | OpenWebUI (optional) |
 
 ## 🧪 Tests
 

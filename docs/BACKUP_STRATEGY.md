@@ -34,6 +34,7 @@ ELION Backup System (3-Tier Strategy)
 **Kritikalität:** 🔴 **CRITICAL** - Secrets Management
 
 ### Backup-Typ
+
 ```
 Raft Storage Snapshots (Point-in-Time)
 + Seal Key Metadaten
@@ -41,6 +42,7 @@ Raft Storage Snapshots (Point-in-Time)
 ```
 
 ### Backup-Strategie
+
 ```
 Häufigkeit:  Täglich (2 AM)
 Retention:   90 Tage (lokal: 7 Tage, cloud: 90 Tage)
@@ -50,6 +52,7 @@ Typ:         Raft-binary, komprimiert
 ```
 
 ### Recovery-Prozess
+
 ```
 1. Abrufen des letzten gültigen Snapshots
 2. Stop Vault Service
@@ -83,6 +86,7 @@ bash scripts/backup_vault.sh --restore /path/to/snapshot.snap
 ### Backup-Typen
 
 #### 1. Full Backup
+
 ```
 Typ:        pg_dump (Custom Format, komprimiert)
 Häufigkeit: Täglich (2:30 AM)
@@ -92,6 +96,7 @@ Kompression: gzip-9 (90% Ratio)
 ```
 
 #### 2. WAL Archive (Write-Ahead Logs)
+
 ```
 Typ:        Continuous WAL Archivierung
 Häufigkeit: Real-time (alle ~16MB WAL)
@@ -142,6 +147,7 @@ bash scripts/backup_postgres.sh --restore "2025-12-24 10:30:00"
 ### Backup-Strategie
 
 #### 1. Datei-Snapshots
+
 ```
 Dateien:    system_baseline.yaml, entitlements.json, .env.*, docker-compose.yml
 Häufigkeit: Bei jedem Deployment (oder manuell)
@@ -151,6 +157,7 @@ Checksum:   SHA256 für Integrität
 ```
 
 #### 2. Git-basiert
+
 ```
 Commits:    Automatische Config-Commits
 Tags:       Release-Tags mit Snapshots
@@ -209,6 +216,7 @@ bash scripts/backup_orchestrator.sh --full
 ```
 
 **Ablauf:**
+
 1. ✅ Vault Backup (opena11)
 2. ✅ PostgreSQL Backup (PITR-ready)
 3. ✅ Config Versioning (Git + Snapshots)
@@ -225,6 +233,7 @@ bash scripts/backup_orchestrator.sh --daily
 ```
 
 **Leichtere Version für tägliche Backups:**
+
 - PostgreSQL Full Dump
 - Config Versioning
 - Keine Cloud Upload (nur wöchentlich)
@@ -241,13 +250,14 @@ bash scripts/backup_orchestrator.sh --status
 
 ## 📊 RETENTION & STORAGE POLICY
 
-| Komponente | Local | Cloud | Total | Strategy |
-|------------|-------|-------|-------|----------|
-| **Vault** | 7 Tage | 90 Tage | ~150GB | Daily Snapshots |
-| **PostgreSQL** | 7 Tage | 90 Tage | ~20-50GB | Full + WAL |
-| **Configs** | 90 Tage | 365 Tage | ~5GB | Git + Snapshots |
+| Komponente     | Local   | Cloud    | Total    | Strategy        |
+| -------------- | ------- | -------- | -------- | --------------- |
+| **Vault**      | 7 Tage  | 90 Tage  | ~150GB   | Daily Snapshots |
+| **PostgreSQL** | 7 Tage  | 90 Tage  | ~20-50GB | Full + WAL      |
+| **Configs**    | 90 Tage | 365 Tage | ~5GB     | Git + Snapshots |
 
 ### Cloud Storage (S3)
+
 ```
 Vault:      GLACIER (cold storage, minimal cost)
 PostgreSQL: GLACIER (after 30 days)
@@ -270,6 +280,7 @@ bash scripts/backup_orchestrator.sh --verify
 ```
 
 **Prüft:**
+
 - ✅ Vault Snapshot Integrität
 - ✅ PostgreSQL Backup Checksums
 - ✅ Config Snapshot Validity
@@ -391,6 +402,7 @@ cat backups/.backup_status.json | jq '.'
 ## 📚 BEST PRACTICES
 
 1. **Regelmäßige Recovery-Tests**
+
    ```bash
    # Monatlich PITR testen (in Staging!)
    bash scripts/backup_postgres.sh --restore "before 1 day"
@@ -467,6 +479,7 @@ backup_status{component="all", status="success"}
 ## 📞 SUPPORT & TROUBLESHOOTING
 
 **Problem:** Vault Backup schlägt fehl
+
 ```bash
 # 1. Prüfe Vault Health
 curl http://localhost:8200/v1/sys/health | jq '.'
@@ -479,6 +492,7 @@ tail -100 backups/logs/vault_*.log
 ```
 
 **Problem:** PostgreSQL Backup zu langsam
+
 ```bash
 # 1. Prüfe DB Size
 psql -c "SELECT pg_size_pretty(pg_database_size('postgres'));"
@@ -491,6 +505,7 @@ bash scripts/backup_postgres.sh --incremental
 ```
 
 **Problem:** Disk-Space voll
+
 ```bash
 # Cleanup alte Backups
 find backups/ -mtime +90 -delete

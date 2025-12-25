@@ -28,17 +28,17 @@ declare -A AGENTS=(
     ["opena_finance"]="12347|Finance"
     ["opena4_telegram"]="12348|Telegram"
     ["opena19"]="12349|Dashboard"
-    
+
     # Phase 2
     ["opena5"]="12353|Browser"
     ["opena6"]="12354|Email"
     ["opena7"]="12355|WhatsApp"
-    
+
     # Phase 3
     ["opena8"]="12356|Telephone"
     ["opena9"]="12357|CallTracking"
     ["opena10"]="12358|Unlock"
-    
+
     # Phase 4
     ["opena11"]="12359|SocialMedia"
     ["opena12"]="12360|Influencer"
@@ -57,7 +57,7 @@ echo ""
 for agent in "${!AGENTS[@]}"; do
     IFS='|' read -r port desc <<< "${AGENTS[$agent]}"
     TOTAL_AGENTS=$((TOTAL_AGENTS + 1))
-    
+
     # Attempt health check
     if response=$(curl -s -H "Authorization: Bearer $TOKEN" http://127.0.0.1:$port/health 2>/dev/null); then
         if echo "$response" | grep -q "healthy"; then
@@ -131,7 +131,7 @@ if [ $PHASE4_UP -eq 5 ]; then
     echo "║         PHASE 4 INTEGRATION TEST (SAMPLE)             ║"
     echo "╚════════════════════════════════════════════════════════╝"
     echo ""
-    
+
     # Test Agent 11: Create a social post
     echo -n "Testing Agent 11 (Social Media)... "
     if curl -s -X POST -H "Authorization: Bearer $TOKEN" \
@@ -142,7 +142,7 @@ if [ $PHASE4_UP -eq 5 ]; then
     else
         echo "❌"
     fi
-    
+
     # Test Agent 15: List products
     echo -n "Testing Agent 15 (Shop)... "
     if curl -s -H "Authorization: Bearer $TOKEN" \
@@ -151,7 +151,7 @@ if [ $PHASE4_UP -eq 5 ]; then
     else
         echo "❌"
     fi
-    
+
     echo ""
 fi
 

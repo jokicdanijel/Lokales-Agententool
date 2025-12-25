@@ -20,4 +20,4 @@
             "msg": "Value error, request_id must be UUID4 or numeric timestamp",
             "input": "1_1762721075",
             "ctx": {
-              "error": 
+              "error":

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Browser Agent 6.0 – PORTIER Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <link rel="stylesheet" href="style.css">
     <script defer src="config.js"></script>
     <script defer src="app.js"></script>
@@ -16,48 +16,48 @@
             --agent-color: #FFEAA7;
             --agent-color-light: #FFEAA720;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, var(--agent-color-light), #f8f9fa);
             min-height: 100vh;
         }
-        
+
         .agent-header {
             background: linear-gradient(45deg, var(--agent-color), #FFEAA7CC);
             color: white;
             padding: 2rem 0;
             margin-bottom: 2rem;
         }
-        
+
         .status-card {
             border-left: 4px solid var(--agent-color);
             transition: transform 0.2s;
         }
-        
+
         .status-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-        
+
         .metric-value {
             font-size: 2rem;
             font-weight: bold;
             color: var(--agent-color);
         }
-        
+
         .btn-agent {
             background-color: var(--agent-color);
             border-color: var(--agent-color);
             color: white;
         }
-        
+
         .btn-agent:hover {
             background-color: #FFEAA7DD;
             border-color: #FFEAA7DD;
             color: white;
         }
-        
+
         .log-container {
             max-height: 300px;
             overflow-y: auto;
@@ -67,7 +67,7 @@
             padding: 1rem;
             border-radius: 0.375rem;
         }
-        
+
         .agent-icon {
             width: 80px;
             height: 80px;
@@ -80,7 +80,7 @@
             color: var(--agent-color);
             margin: 0 auto 1rem;
         }
-        
+
         .feature-card {
             border: 1px solid #dee2e6;
             border-radius: 0.5rem;
@@ -251,7 +251,7 @@
         </div>
         <textarea id="cmd_payload" rows="8" placeholder="Enter command JSON...">{
   "command": "goto",
-  "args": { 
+  "args": {
     "url": "https://example.com",
     "waitFor": "networkidle"
   }
@@ -354,7 +354,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
@@ -362,14 +362,14 @@
                     </div>
                     <div class="card-body">
                         <div id="specialized-functions">
-                            
+
                 <button class="btn btn-outline-primary btn-sm mb-2 w-100" onclick="executeSpecialized('scrape')">
                     <i class="fas fa-spider me-2"></i>Web Scraping
                 </button>
                 <button class="btn btn-outline-primary btn-sm mb-2 w-100" onclick="executeSpecialized('automate')">
                     <i class="fas fa-robot me-2"></i>Browser Automation
                 </button>
-            
+
                         </div>
                     </div>
                 </div>
@@ -380,27 +380,27 @@
         <div class="row mb-4">
             <div class="col-12">
                 <h3><i class="fas fa-star me-2"></i>Agent Features</h3>
-                
+
                 <div class="feature-card">
                     <h6><i class="fas fa-check-circle me-2 text-success"></i>Enterprise Ready</h6>
                     <p class="text-muted mb-0">Production-ready Implementation</p>
                 </div>
-            
+
                 <div class="feature-card">
                     <h6><i class="fas fa-check-circle me-2 text-success"></i>Real-time Processing</h6>
                     <p class="text-muted mb-0">Sofortige Anfragen-Bearbeitung</p>
                 </div>
-            
+
                 <div class="feature-card">
                     <h6><i class="fas fa-check-circle me-2 text-success"></i>API Integration</h6>
                     <p class="text-muted mb-0">RESTful API Endpoints</p>
                 </div>
-            
+
                 <div class="feature-card">
                     <h6><i class="fas fa-check-circle me-2 text-success"></i>Monitoring & Logging</h6>
                     <p class="text-muted mb-0">Umfassende Überwachung</p>
                 </div>
-            
+
             </div>
         </div>
 
@@ -437,7 +437,7 @@
                 const response = await fetch(`http://127.0.0.1:${AGENT_PORT}/health`, {
                     headers: { 'Authorization': `Bearer ${BEARER_TOKEN}` }
                 });
-                
+
                 if (response.ok) {
                     const data = await response.json();
                     updateStatusDisplay(data);
@@ -458,15 +458,15 @@
             const statusEl = document.getElementById('status-indicator');
             statusEl.textContent = '●';
             statusEl.style.color = data.status === 'ok' ? '#28a745' : '#dc3545';
-            
+
             if (data.uptime_seconds) {
                 document.getElementById('uptime').textContent = Math.floor(data.uptime_seconds / 60) + 'm';
             }
-            
+
             if (data.requests_total) {
                 document.getElementById('requests').textContent = data.requests_total;
             }
-            
+
             if (data.performance_score) {
                 document.getElementById('performance').textContent = data.performance_score + '%';
             }
@@ -474,7 +474,7 @@
 
         async function executeAgentFunction(functionType) {
             addLogEntry(`🔄 Führe ${functionType} aus...`);
-            
+
             try {
                 let endpoint = '';
                 switch (functionType) {
@@ -488,12 +488,12 @@
                         endpoint = '/command';
                         break;
                 }
-                
+
                 const response = await fetch(`http://127.0.0.1:${AGENT_PORT}${endpoint}`, {
                     method: 'GET',
                     headers: { 'Authorization': `Bearer ${BEARER_TOKEN}` }
                 });
-                
+
                 if (response.ok) {
                     const data = await response.json();
                     addLogEntry(`✅ ${functionType} erfolgreich: ${JSON.stringify(data).substring(0, 100)}`);
@@ -512,7 +512,7 @@
             logEntry.textContent = `[${timestamp}] ${message}`;
             logOutput.appendChild(logEntry);
             logOutput.scrollTop = logOutput.scrollHeight;
-            
+
             // Keep only last 50 log entries
             while (logOutput.children.length > 50) {
                 logOutput.removeChild(logOutput.firstChild);
@@ -528,23 +528,23 @@
         document.addEventListener('DOMContentLoaded', function() {
             addLogEntry('🚀 Agent Dashboard initialisiert');
             refreshStatus();
-            
+
             // Auto-refresh every 30 seconds
             setInterval(refreshStatus, 30000);
         });
 
         // Specialized function handlers
-        
+
         async function executeSpecialized(action) {
             addLogEntry(`🔧 Führe spezialisierte Aktion aus: ${action}`);
-            
+
             try {
                 const payload = {
                     action: action,
                     speciality: 'browser_automation',
                     timestamp: new Date().toISOString()
                 };
-                
+
                 const response = await fetch(`http://127.0.0.1:${AGENT_PORT}/specialized`, {
                     method: 'POST',
                     headers: {
@@ -553,7 +553,7 @@
                     },
                     body: JSON.stringify(payload)
                 });
-                
+
                 if (response.ok) {
                     const data = await response.json();
                     addLogEntry(`✅ Spezialisierte Aktion erfolgreich: ${action}`);
@@ -564,7 +564,7 @@
                 addLogEntry(`❌ Spezialisierte Aktion Fehler: ${error.message}`);
             }
         }
-        
+
     </script>
 </body>
 </html>

@@ -1,31 +1,23 @@
-import os
-import re
-
 import logging
-import aiohttp
-from pathlib import Path
+import re
 from typing import Optional
 
+import aiohttp
+from fastapi import APIRouter, Depends, HTTPException, Request, status
+from open_webui.config import CACHE_DIR
+from open_webui.constants import ERROR_MESSAGES
+from open_webui.env import SRC_LOG_LEVELS
 from open_webui.models.functions import (
     FunctionForm,
     FunctionModel,
     FunctionResponse,
+    Functions,
     FunctionUserResponse,
     FunctionWithValvesModel,
-    Functions,
 )
-from open_webui.utils.plugin import (
-    load_function_module_by_id,
-    replace_imports,
-    get_function_module_from_cache,
-)
-from open_webui.config import CACHE_DIR
-from open_webui.constants import ERROR_MESSAGES
-from fastapi import APIRouter, Depends, HTTPException, Request, status
 from open_webui.utils.auth import get_admin_user, get_verified_user
-from open_webui.env import SRC_LOG_LEVELS
+from open_webui.utils.plugin import get_function_module_from_cache, load_function_module_by_id, replace_imports
 from pydantic import BaseModel, HttpUrl
-
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MAIN"])
@@ -78,18 +70,14 @@ def github_url_to_raw_url(url: str) -> str:
     m2 = re.match(r"https://github\.com/([^/]+)/([^/]+)/blob/([^/]+)/(.*)", url)
     if m2:
         org, repo, branch, path = m2.groups()
-        return (
-            f"https://raw.githubusercontent.com/{org}/{repo}/refs/heads/{branch}/{path}"
-        )
+        return f"https://raw.githubusercontent.com/{org}/{repo}/refs/heads/{branch}/{path}"
 
     # No match; return as-is
     return url
 
 
 @router.post("/load/url", response_model=Optional[dict])
-async def load_function_from_url(
-    request: Request, form_data: LoadUrlForm, user=Depends(get_admin_user)
-):
+async def load_function_from_url(request: Request, form_data: LoadUrlForm, user=Depends(get_admin_user)):
     # NOTE: This is NOT a SSRF vulnerability:
     # This endpoint is admin-only (see get_admin_user), meant for *trusted* internal use,
     # and does NOT accept untrusted user input. Access is enforced by authentication.
@@ -104,27 +92,20 @@ async def load_function_from_url(
     file_name = url_parts[-1]
     function_name = (
         file_name[:-3]
-        if (
-            file_name.endswith(".py")
-            and (not file_name.startswith(("main.py", "index.py", "__init__.py")))
-        )
-        else url_parts[-2] if len(url_parts) > 1 else "function"
+        if (file_name.endswith(".py") and (not file_name.startswith(("main.py", "index.py", "__init__.py"))))
+        else url_parts[-2]
+        if len(url_parts) > 1
+        else "function"
     )
 
     try:
         async with aiohttp.ClientSession(trust_env=True) as session:
-            async with session.get(
-                url, headers={"Content-Type": "application/json"}
-            ) as resp:
+            async with session.get(url, headers={"Content-Type": "application/json"}) as resp:
                 if resp.status != 200:
-                    raise HTTPException(
-                        status_code=resp.status, detail="Failed to fetch the function"
-                    )
+                    raise HTTPException(status_code=resp.status, detail="Failed to fetch the function")
                 data = await resp.text()
                 if not data:
-                    raise HTTPException(
-                        status_code=400, detail="No data received from the URL"
-                    )
+                    raise HTTPException(status_code=400, detail="No data received from the URL")
         return {
             "name": function_name,
             "content": data,
@@ -143,9 +124,7 @@ class SyncFunctionsForm(BaseModel):
 
 
 @router.post("/sync", response_model=list[FunctionWithValvesModel])
-async def sync_functions(
-    request: Request, form_data: SyncFunctionsForm, user=Depends(get_admin_user)
-):
+async def sync_functions(request: Request, form_data: SyncFunctionsForm, user=Depends(get_admin_user)):
     try:
         for function in form_data.functions:
             function.content = replace_imports(function.content)
@@ -157,13 +136,9 @@ async def sync_functions(
             if hasattr(function_module, "Valves") and function.valves:
                 Valves = function_module.Valves
                 try:
-                    Valves(
-                        **{k: v for k, v in function.valves.items() if v is not None}
-                    )
+                    Valves(**{k: v for k, v in function.valves.items() if v is not None})
                 except Exception as e:
-                    log.exception(
-                        f"Error validating valves for function {function.id}: {e}"
-                    )
+                    log.exception(f"Error validating valves for function {function.id}: {e}")
                     raise e
 
         return Functions.sync_functions(user.id, form_data.functions)
@@ -181,9 +156,7 @@ async def sync_functions(
 
 
 @router.post("/create", response_model=Optional[FunctionResponse])
-async def create_new_function(
-    request: Request, form_data: FunctionForm, user=Depends(get_admin_user)
-):
+async def create_new_function(request: Request, form_data: FunctionForm, user=Depends(get_admin_user)):
     if not form_data.id.isidentifier():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -260,9 +233,7 @@ async def get_function_by_id(id: str, user=Depends(get_admin_user)):
 async def toggle_function_by_id(id: str, user=Depends(get_admin_user)):
     function = Functions.get_function_by_id(id)
     if function:
-        function = Functions.update_function_by_id(
-            id, {"is_active": not function.is_active}
-        )
+        function = Functions.update_function_by_id(id, {"is_active": not function.is_active})
 
         if function:
             return function
@@ -287,9 +258,7 @@ async def toggle_function_by_id(id: str, user=Depends(get_admin_user)):
 async def toggle_global_by_id(id: str, user=Depends(get_admin_user)):
     function = Functions.get_function_by_id(id)
     if function:
-        function = Functions.update_function_by_id(
-            id, {"is_global": not function.is_global}
-        )
+        function = Functions.update_function_by_id(id, {"is_global": not function.is_global})
 
         if function:
             return function
@@ -311,14 +280,10 @@ async def toggle_global_by_id(id: str, user=Depends(get_admin_user)):
 
 
 @router.post("/id/{id}/update", response_model=Optional[FunctionModel])
-async def update_function_by_id(
-    request: Request, id: str, form_data: FunctionForm, user=Depends(get_admin_user)
-):
+async def update_function_by_id(request: Request, id: str, form_data: FunctionForm, user=Depends(get_admin_user)):
     try:
         form_data.content = replace_imports(form_data.content)
-        function_module, function_type, frontmatter = load_function_module_by_id(
-            id, content=form_data.content
-        )
+        function_module, function_type, frontmatter = load_function_module_by_id(id, content=form_data.content)
         form_data.meta.manifest = frontmatter
 
         FUNCTIONS = request.app.state.FUNCTIONS
@@ -353,9 +318,7 @@ async def update_function_by_id(
 
 
 @router.delete("/id/{id}/delete", response_model=bool)
-async def delete_function_by_id(
-    request: Request, id: str, user=Depends(get_admin_user)
-):
+async def delete_function_by_id(request: Request, id: str, user=Depends(get_admin_user)):
     result = Functions.delete_function_by_id(id)
 
     if result:
@@ -396,14 +359,10 @@ async def get_function_valves_by_id(id: str, user=Depends(get_admin_user)):
 
 
 @router.get("/id/{id}/valves/spec", response_model=Optional[dict])
-async def get_function_valves_spec_by_id(
-    request: Request, id: str, user=Depends(get_admin_user)
-):
+async def get_function_valves_spec_by_id(request: Request, id: str, user=Depends(get_admin_user)):
     function = Functions.get_function_by_id(id)
     if function:
-        function_module, function_type, frontmatter = get_function_module_from_cache(
-            request, id
-        )
+        function_module, function_type, frontmatter = get_function_module_from_cache(request, id)
 
         if hasattr(function_module, "Valves"):
             Valves = function_module.Valves
@@ -422,14 +381,10 @@ async def get_function_valves_spec_by_id(
 
 
 @router.post("/id/{id}/valves/update", response_model=Optional[dict])
-async def update_function_valves_by_id(
-    request: Request, id: str, form_data: dict, user=Depends(get_admin_user)
-):
+async def update_function_valves_by_id(request: Request, id: str, form_data: dict, user=Depends(get_admin_user)):
     function = Functions.get_function_by_id(id)
     if function:
-        function_module, function_type, frontmatter = get_function_module_from_cache(
-            request, id
-        )
+        function_module, function_type, frontmatter = get_function_module_from_cache(request, id)
 
         if hasattr(function_module, "Valves"):
             Valves = function_module.Valves
@@ -485,14 +440,10 @@ async def get_function_user_valves_by_id(id: str, user=Depends(get_verified_user
 
 
 @router.get("/id/{id}/valves/user/spec", response_model=Optional[dict])
-async def get_function_user_valves_spec_by_id(
-    request: Request, id: str, user=Depends(get_verified_user)
-):
+async def get_function_user_valves_spec_by_id(request: Request, id: str, user=Depends(get_verified_user)):
     function = Functions.get_function_by_id(id)
     if function:
-        function_module, function_type, frontmatter = get_function_module_from_cache(
-            request, id
-        )
+        function_module, function_type, frontmatter = get_function_module_from_cache(request, id)
 
         if hasattr(function_module, "UserValves"):
             UserValves = function_module.UserValves
@@ -512,9 +463,7 @@ async def update_function_user_valves_by_id(
     function = Functions.get_function_by_id(id)
 
     if function:
-        function_module, function_type, frontmatter = get_function_module_from_cache(
-            request, id
-        )
+        function_module, function_type, frontmatter = get_function_module_from_cache(request, id)
 
         if hasattr(function_module, "UserValves"):
             UserValves = function_module.UserValves
@@ -523,9 +472,7 @@ async def update_function_user_valves_by_id(
                 form_data = {k: v for k, v in form_data.items() if v is not None}
                 user_valves = UserValves(**form_data)
                 user_valves_dict = user_valves.model_dump(exclude_unset=True)
-                Functions.update_user_valves_by_id_and_user_id(
-                    id, user.id, user_valves_dict
-                )
+                Functions.update_user_valves_by_id_and_user_id(id, user.id, user_valves_dict)
                 return user_valves_dict
             except Exception as e:
                 log.exception(f"Error updating function user valves by id {id}: {e}")

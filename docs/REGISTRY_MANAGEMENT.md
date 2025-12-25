@@ -3,6 +3,7 @@
 ## Überblick
 
 Das **Self-Healing Registry System** registriert automatisch alle laufenden Agenten, indem es echte `/health`-Endpoints abfragt. Dadurch wird vermieden:
+
 - Tippfehler bei agent_id/Port-Kombinationen
 - Registrierung von nicht-laufenden Services
 - Manuelle Port-Verwaltung
@@ -48,6 +49,7 @@ Das **Self-Healing Registry System** registriert automatisch alle laufenden Agen
 **Zweck:** Findet alle laufenden Agenten und registriert sie sauber beim Dashboard.
 
 **Ausführung:**
+
 ```bash
 # Option A: Mit Token aus .env
 cd /path/to/Gesamtprojekt
@@ -61,6 +63,7 @@ DASHBOARD_URL="http://127.0.0.1:12349" TOKEN="xyz" bash bin/agents_auto_register
 ```
 
 **Output-Beispiel:**
+
 ```
 ════════════════════════════════════════════════════════════════
    Auto-Discovery & Registration – 2025-11-09 14:23:45
@@ -112,6 +115,7 @@ Summary:
    - Silent: Fehler werden geloggt, nicht als Fehler behandelt
 
 2. **Normalisierung**: Extrahiert `service` aus `/health`
+
    ```json
    {"service": "opena1_Agent", "status": "healthy", ...}
    ↓
@@ -123,6 +127,7 @@ Summary:
    - Skipped ungültige Responses
 
 4. **Registration**: POST an `/api/agent/register`
+
    ```bash
    curl -X POST http://127.0.0.1:12349/api/agent/register \
      -H "Authorization: Bearer TOKEN" \
@@ -141,6 +146,7 @@ Summary:
 **Zweck:** Lädt im Dashboard-Startup und pollts alle Agenten im Hintergrund.
 
 **Lifecycle:**
+
 ```
 @app.on_event("startup")
   └─ background_poller.on_startup()
@@ -155,26 +161,29 @@ Summary:
 ### 2.2 Funktionsweise
 
 **Poll-Zyklus (alle 5 Sekunden):**
+
 ```python
 async def _poll_loop():
     while True:
         # Probe alle registrierten Agenten
         status = await registry.get_all_status()
-        
+
         # Registry aktualisiert:
         # - agents["opena1_agent"].status = "up" oder "down"
         # - agents["opena1_agent"].last_health = "2025-11-09T14:23:45.123Z"
-        
+
         await asyncio.sleep(5)  # Nächste Runde
 ```
 
 **Ergebnis:**
+
 - `GET /api/status/all` zeigt immer aktuelle `last_health` (nicht null)
 - `GET /api/status/all?probe=true` kann auch on-demand triggern
 
 ### 2.3 Konfiguration
 
 In `main_dashboard.py`:
+
 ```python
 from background_poller import on_startup as poller_startup, on_shutdown as poller_shutdown
 
@@ -191,6 +200,7 @@ async def shutdown_event():
 ### 2.4 Diagnostics
 
 **Endpoint:** `GET /api/diagnostics/poller`
+
 ```bash
 curl -s -H "Authorization: Bearer TOKEN" \
   http://127.0.0.1:12349/api/diagnostics/poller | jq .
@@ -257,6 +267,7 @@ curl -s -H "Authorization: Bearer TOKEN" \
 ### 3.3 JWT Token Management
 
 **Generate for Single Agent:**
+
 ```bash
 curl -s -X POST \
   -H "Authorization: Bearer TOKEN" \
@@ -274,6 +285,7 @@ curl -s -X POST \
 ```
 
 **Generate for ALL Agents:**
+
 ```bash
 curl -s -X GET \
   -H "Authorization: Bearer TOKEN" \
@@ -292,6 +304,7 @@ curl -s -X GET \
 ```
 
 **Verify Token:**
+
 ```bash
 curl -s -X POST \
   -H "Authorization: Bearer ADMIN_TOKEN" \
@@ -336,11 +349,13 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 ### 4.2 Continuous Operation
 
 **Dashboard lauft:**
+
 - Poll-Zyklus startet automatisch in Startup
 - Alle 5 Sekunden: Probe alle Agenten
 - `last_health` immer aktuell
 
 **Nach neuen Agent starten:**
+
 ```bash
 # Option A: Auto-Register erneut laufen
 bash bin/agents_auto_register.sh
@@ -356,6 +371,7 @@ curl -s -X POST \
 ### 4.3 Troubleshooting
 
 **Nur 3 Agents registriert?**
+
 ```bash
 # Prüfe laufende Services
 bash bin/check_ports.sh
@@ -368,6 +384,7 @@ tail -50 logs/dashboard_runtime.log
 ```
 
 **last_health bleibt null?**
+
 ```bash
 # Prüfe Poller
 curl -s -H "Authorization: Bearer $(cat .env)" \
@@ -377,6 +394,7 @@ curl -s -H "Authorization: Bearer $(cat .env)" \
 ```
 
 **Agent zeigt "down" obwohl online?**
+
 ```bash
 # Prüfe Agent selbst
 curl -s http://127.0.0.1:12344/health | jq .
@@ -477,13 +495,13 @@ async def get_all_status():
 
 ## 7. Fehlerbehandlung
 
-| Fehler | Ursache | Lösung |
-|--------|--------|--------|
-| `jq parse error` | Ungültige JSON-Response | Prüfe Agent `/health` Response |
-| `403 Forbidden` | Falscher Token | Regeneriere `.env`: `bash bin/env_bootstrap.sh` |
-| `Agent not responding` | Service nicht online | `bash bin/ops.sh start` |
-| `last_health: null` | Poller läuft nicht | Prüfe Dashboard `/api/diagnostics/poller` |
-| `Registry empty` | Keine Auto-Registration laufen | Führe `bash bin/agents_auto_register.sh` aus |
+| Fehler                 | Ursache                        | Lösung                                          |
+| ---------------------- | ------------------------------ | ----------------------------------------------- |
+| `jq parse error`       | Ungültige JSON-Response        | Prüfe Agent `/health` Response                  |
+| `403 Forbidden`        | Falscher Token                 | Regeneriere `.env`: `bash bin/env_bootstrap.sh` |
+| `Agent not responding` | Service nicht online           | `bash bin/ops.sh start`                         |
+| `last_health: null`    | Poller läuft nicht             | Prüfe Dashboard `/api/diagnostics/poller`       |
+| `Registry empty`       | Keine Auto-Registration laufen | Führe `bash bin/agents_auto_register.sh` aus    |
 
 ---
 
@@ -515,12 +533,12 @@ jobs:
 
 ## Summary
 
-| Komponente | Zweck | Trigger |
-|-----------|--------|---------|
-| `agents_auto_register.sh` | Findet + registriert alle Agenten | Manual oder CI/CD |
-| `background_poller.py` | Lädt im Hintergrund, Updates `last_health` | Automatic @ startup |
-| `/api/agent/list` | Zeigt alle registrierten Agenten | GET mit Token |
-| `/api/status/all` | Health-Snapshot (mit poller data) | GET mit Token |
-| `/api/agents/{id}/token` | Generiere JWT für Agent | POST mit Admin Token |
+| Komponente                | Zweck                                      | Trigger              |
+| ------------------------- | ------------------------------------------ | -------------------- |
+| `agents_auto_register.sh` | Findet + registriert alle Agenten          | Manual oder CI/CD    |
+| `background_poller.py`    | Lädt im Hintergrund, Updates `last_health` | Automatic @ startup  |
+| `/api/agent/list`         | Zeigt alle registrierten Agenten           | GET mit Token        |
+| `/api/status/all`         | Health-Snapshot (mit poller data)          | GET mit Token        |
+| `/api/agents/{id}/token`  | Generiere JWT für Agent                    | POST mit Admin Token |
 
 **Ergebnis:** Registry ist immer aktuell, kein `last_health: null`, alle Agenten laufen.

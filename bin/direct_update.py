@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-import os
 from pathlib import Path
 
 project_root = Path("/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt")
 
 print("🔍 Safepoint-Client Status Check")
-print("="*40)
+print("=" * 40)
 
 # Template für neue Spezifikation
 TEMPLATE = '''import os
@@ -73,23 +72,23 @@ print(f"Gefunden: {len(agent_dirs)} Agent-Verzeichnisse")
 
 updated = 0
 for agent_dir in sorted(agent_dirs):
-    safepoint_file = agent_dir / "safepoint_client.py" 
-    
+    safepoint_file = agent_dir / "safepoint_client.py"
+
     print(f"Aktualisiere: {agent_dir.name}")
-    
+
     try:
         # Backup erstellen wenn Datei existiert
         if safepoint_file.exists():
-            backup = safepoint_file.with_suffix('.py.old')
+            backup = safepoint_file.with_suffix(".py.old")
             safepoint_file.rename(backup)
-        
-        # Neue Version schreiben  
-        with open(safepoint_file, 'w', encoding='utf-8') as f:
+
+        # Neue Version schreiben
+        with open(safepoint_file, "w", encoding="utf-8") as f:
             f.write(TEMPLATE)
-            
+
         updated += 1
         print(f"  ✅ {agent_dir.name} - Erfolgreich aktualisiert")
-        
+
     except Exception as e:
         print(f"  ❌ {agent_dir.name} - Fehler: {e}")
 

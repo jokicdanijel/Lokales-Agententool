@@ -36,7 +36,7 @@ if ! curl -s "http://127.0.0.1:$AGENT_PORT/health" > /dev/null 2>&1; then
     OPENA8_PID=$!
     echo "    Started (PID: $OPENA8_PID). Waiting for health..."
     sleep 3
-    
+
     if ! curl -s "http://127.0.0.1:$AGENT_PORT/health" > /dev/null 2>&1; then
         echo "❌ opena8 failed to start. Check logs/opena8.nohup.log"
         exit 1

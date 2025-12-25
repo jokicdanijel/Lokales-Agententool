@@ -369,7 +369,7 @@ python /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_po
 
 
 ### USER
-  
+
 1 Verweis verwendet
 ✅ PATH-LOCK aktiv. Preflight-Check durchführen:
 BASE_ROOT: Gesamtprojekt ✅

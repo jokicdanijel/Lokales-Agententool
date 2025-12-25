@@ -76,15 +76,15 @@ python3.12 scripts/generate_all_agents.py
 
 ## 📋 Agent-Liste (Ports aus system_baseline.yaml)
 
-| ID | Name | Port | Status |
-|----|------|------|--------|
-| 1 | Portier (Koordinator) | 12344 | ⚪ Bereit |
-| 2 | Archivar | 12345 | ⚪ Bereit |
-| 3 | Agent 3 | 12347 | ⚪ Bereit |
-| ... | ... | ... | ... |
-| 12 | Social Media | 12357 | ✅ Läuft |
-| ... | ... | ... | ... |
-| 21 | Agent 21 | ? | ⚪ Bereit |
+| ID  | Name                  | Port  | Status    |
+| --- | --------------------- | ----- | --------- |
+| 1   | Portier (Koordinator) | 12344 | ⚪ Bereit |
+| 2   | Archivar              | 12345 | ⚪ Bereit |
+| 3   | Agent 3               | 12347 | ⚪ Bereit |
+| ... | ...                   | ...   | ...       |
+| 12  | Social Media          | 12357 | ✅ Läuft  |
+| ... | ...                   | ...   | ...       |
+| 21  | Agent 21              | ?     | ⚪ Bereit |
 
 ## 🛠️ Wichtige Fixes in v1.0.0
 

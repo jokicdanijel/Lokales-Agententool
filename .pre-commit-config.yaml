@@ -6,7 +6,7 @@ default_stages: [pre-commit]
 fail_fast: true
 
 exclude: |
-  (?x)^(archivp_store/|\.venv/|\.venv-precommit/|venv/|dist/|build/|open-webui-0\.6\.40/|.*\.min\.(js|css)$)
+  (?x)^(archivp_store/|\.venv/|\.venv-precommit/|venv/|dist/|build/|open-webui-0\.6\.40/|^start/|^1\.opena1&2_portier/knowledgebase/|^3\.opena4_telegram/archivp/|^artifacts/|^build/|(.*/)?artifacts/|(.*/)?\.vscode/|(.*/)?knowledgebase/|(.*/)?archivp/|.*\.min\.(js|css)$)
 
 repos:
   # Basic hygiene (fast, staged files only)

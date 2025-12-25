@@ -1,5 +1,4 @@
 import pytest
-from app.commands.registry import CommandRegistry, BrowserBotHandler
 
 
 @pytest.mark.asyncio

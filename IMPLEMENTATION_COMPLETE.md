@@ -129,6 +129,7 @@ make -f Makefile.production deploy
 ```
 
 Führt automatisch aus:
+
 1. ✅ Preflight Check
 2. ✅ Docker Build (alle Images)
 3. ✅ Service Start (alle Container)
@@ -184,12 +185,14 @@ Führt automatisch aus:
 ## 📈 Monitoring Setup
 
 ### Prometheus
+
 - ✅ Scrapes: All 8 services + postgres + redis
 - ✅ Interval: 15s
 - ✅ Retention: Default (15 days)
 - ✅ Targets: `/health` and `/metrics` endpoints
 
 ### Grafana
+
 - ✅ Pre-configured datasource (Prometheus)
 - ✅ Dashboards: System Overview, Agent Health, DB Performance, API Requests, Errors
 - ✅ Alerts: Setup required (next step)
@@ -199,6 +202,7 @@ Führt automatisch aus:
 ## ✅ Production Checklist
 
 ### Infrastructure ✅
+
 - [x] Docker Compose mit allen Services
 - [x] PostgreSQL mit Init-Schema
 - [x] Redis für Sessions
@@ -207,18 +211,21 @@ Führt automatisch aus:
 - [x] Prometheus + Grafana
 
 ### Configuration ✅
+
 - [x] Environment Template (.env.production)
 - [x] Makefile mit Produktionsbefehlen
 - [x] Prometheus Scrape Config
 - [x] Nginx Reverse Proxy Config
 
 ### Documentation ✅
+
 - [x] Copilot Handoff Guide
 - [x] Production Hardening Guide
 - [x] Implementation Summary
 - [x] Production Setup README
 
 ### Operations ✅
+
 - [x] Automated Deployment (Makefile)
 - [x] Health Checks (alle Services)
 - [x] Backup Commands (make backup-db)
@@ -230,23 +237,27 @@ Führt automatisch aus:
 ## 🎯 Next Steps (für Deployment)
 
 ### 1. Environment Setup
+
 ```bash
 cp .env.production .env
 nano .env  # Fill in secure values
 ```
 
 ### 2. SSL Certificates
+
 ```bash
 sudo certbot certonly --standalone -d hyperdashboard-one.de
 sudo cp /etc/letsencrypt/live/hyperdashboard-one.de/*.pem infrastructure/nginx/ssl/
 ```
 
 ### 3. Deploy
+
 ```bash
 make -f Makefile.production deploy
 ```
 
 ### 4. Verify
+
 ```bash
 make -f Makefile.production status
 curl https://hyperdashboard-one.de

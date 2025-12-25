@@ -3,17 +3,15 @@ opena5_Browser: Web Automation Agent
 Orchestrates browser automation via Selenium
 """
 
-from fastapi import FastAPI, HTTPException, Header
-from pydantic import BaseModel
-import logging
-import asyncio
 import json
-import urllib.request
-from datetime import datetime
-from typing import Optional, Dict, List
+import logging
 import os
 import sys
-import base64
+import urllib.request
+from datetime import datetime
+
+from fastapi import FastAPI, Header, HTTPException
+from pydantic import BaseModel
 
 sys.path.insert(0, os.path.dirname(__file__))
 
@@ -23,11 +21,7 @@ from browser_selenium import BrowserAutomation, init_browser
 # CONFIGURATION
 # ============================================================================
 
-app = FastAPI(
-    title="opena5_Browser",
-    version="1.0.0",
-    description="Web Automation Browser Agent"
-)
+app = FastAPI(title="opena5_Browser", version="1.0.0", description="Web Automation Browser Agent")
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -37,7 +31,7 @@ TOKEN = "MEIN_SUPER_TOKEN_123"
 ARCHIVE_PORT = 12345
 
 # Global browser instance
-browser: Optional[BrowserAutomation] = None
+browser: BrowserAutomation | None = None
 
 # ============================================================================
 # DATA MODELS
@@ -55,7 +49,7 @@ class ClickRequest(BaseModel):
 
 
 class FormFillRequest(BaseModel):
-    fields: Dict[str, str]
+    fields: dict[str, str]
 
 
 class WaitElementRequest(BaseModel):
@@ -103,11 +97,11 @@ async def shutdown():
 # ============================================================================
 
 
-def _validate_token(auth_header: Optional[str]):
+def _validate_token(auth_header: str | None):
     """Validate Bearer token"""
     if not auth_header or not auth_header.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing or invalid authorization header")
-    
+
     token = auth_header.replace("Bearer ", "").strip()
     if token != TOKEN:
         raise HTTPException(status_code=403, detail="Invalid token")
@@ -120,19 +114,16 @@ async def _archive(payload: dict) -> dict:
             "src": "opena5_browser",
             "dst": "opena2",
             "kind": "BROWSER_OP",
-            "payload": {
-                **payload,
-                "ts": datetime.utcnow().isoformat() + "Z"
-            }
+            "payload": {**payload, "ts": datetime.utcnow().isoformat() + "Z"},
         }
-        
+
         req = urllib.request.Request(
             f"http://127.0.0.1:{ARCHIVE_PORT}/store/archivp",
-            data=json.dumps(data).encode('utf-8'),
+            data=json.dumps(data).encode("utf-8"),
             headers={"Content-Type": "application/json"},
-            method="POST"
+            method="POST",
         )
-        
+
         with urllib.request.urlopen(req, timeout=5) as r:
             result = json.loads(r.read().decode())
             return result
@@ -154,7 +145,7 @@ async def health():
         "service": "opena5_Browser",
         "port": PORT,
         "browser_initialized": browser.is_initialized() if browser else False,
-        "ts": datetime.utcnow().isoformat() + "Z"
+        "ts": datetime.utcnow().isoformat() + "Z",
     }
 
 
@@ -162,26 +153,16 @@ async def health():
 async def navigate(req: NavigateRequest, authorization: str = Header(None)):
     """Navigate to URL"""
     _validate_token(authorization)
-    
+
     if not browser or not browser.is_initialized():
         raise HTTPException(status_code=503, detail="Browser not available")
-    
+
     try:
         success = await browser.navigate(req.url, req.wait_time)
-        
-        await _archive({
-            "op": "NAVIGATE",
-            "url": req.url,
-            "success": success,
-            "wait_time": req.wait_time
-        })
-        
-        return {
-            "strict": True,
-            "navigated": success,
-            "url": req.url,
-            "ts": datetime.utcnow().isoformat() + "Z"
-        }
+
+        await _archive({"op": "NAVIGATE", "url": req.url, "success": success, "wait_time": req.wait_time})
+
+        return {"strict": True, "navigated": success, "url": req.url, "ts": datetime.utcnow().isoformat() + "Z"}
     except Exception as e:
         logger.error(f"❌ Navigation failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -191,25 +172,16 @@ async def navigate(req: NavigateRequest, authorization: str = Header(None)):
 async def click(req: ClickRequest, authorization: str = Header(None)):
     """Click element"""
     _validate_token(authorization)
-    
+
     if not browser or not browser.is_initialized():
         raise HTTPException(status_code=503, detail="Browser not available")
-    
+
     try:
         success = await browser.click_element(req.selector)
-        
-        await _archive({
-            "op": "CLICK",
-            "selector": req.selector,
-            "success": success
-        })
-        
-        return {
-            "strict": True,
-            "clicked": success,
-            "selector": req.selector,
-            "ts": datetime.utcnow().isoformat() + "Z"
-        }
+
+        await _archive({"op": "CLICK", "selector": req.selector, "success": success})
+
+        return {"strict": True, "clicked": success, "selector": req.selector, "ts": datetime.utcnow().isoformat() + "Z"}
     except Exception as e:
         logger.error(f"❌ Click failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -219,25 +191,16 @@ async def click(req: ClickRequest, authorization: str = Header(None)):
 async def fill_form(req: FormFillRequest, authorization: str = Header(None)):
     """Fill form fields"""
     _validate_token(authorization)
-    
+
     if not browser or not browser.is_initialized():
         raise HTTPException(status_code=503, detail="Browser not available")
-    
+
     try:
         success = await browser.fill_form(req.fields)
-        
-        await _archive({
-            "op": "FORM_FILL",
-            "field_count": len(req.fields),
-            "success": success
-        })
-        
-        return {
-            "strict": True,
-            "filled": success,
-            "fields": len(req.fields),
-            "ts": datetime.utcnow().isoformat() + "Z"
-        }
+
+        await _archive({"op": "FORM_FILL", "field_count": len(req.fields), "success": success})
+
+        return {"strict": True, "filled": success, "fields": len(req.fields), "ts": datetime.utcnow().isoformat() + "Z"}
     except Exception as e:
         logger.error(f"❌ Form fill failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -247,26 +210,21 @@ async def fill_form(req: FormFillRequest, authorization: str = Header(None)):
 async def wait_element(req: WaitElementRequest, authorization: str = Header(None)):
     """Wait for element to appear"""
     _validate_token(authorization)
-    
+
     if not browser or not browser.is_initialized():
         raise HTTPException(status_code=503, detail="Browser not available")
-    
+
     try:
         success = await browser.wait_for_element(req.selector, timeout=req.timeout)
-        
-        await _archive({
-            "op": "WAIT_ELEMENT",
-            "selector": req.selector,
-            "timeout": req.timeout,
-            "found": success
-        })
-        
+
+        await _archive({"op": "WAIT_ELEMENT", "selector": req.selector, "timeout": req.timeout, "found": success})
+
         return {
             "strict": True,
             "found": success,
             "selector": req.selector,
             "timeout": req.timeout,
-            "ts": datetime.utcnow().isoformat() + "Z"
+            "ts": datetime.utcnow().isoformat() + "Z",
         }
     except Exception as e:
         logger.error(f"❌ Wait failed: {e}")
@@ -277,24 +235,22 @@ async def wait_element(req: WaitElementRequest, authorization: str = Header(None
 async def screenshot(req: ScreenshotRequest, authorization: str = Header(None)):
     """Take screenshot"""
     _validate_token(authorization)
-    
+
     if not browser or not browser.is_initialized():
         raise HTTPException(status_code=503, detail="Browser not available")
-    
+
     try:
         screenshot_data = await browser.get_screenshot()
-        
-        await _archive({
-            "op": "SCREENSHOT",
-            "format": req.format,
-            "size": len(screenshot_data) if screenshot_data else 0
-        })
-        
+
+        await _archive(
+            {"op": "SCREENSHOT", "format": req.format, "size": len(screenshot_data) if screenshot_data else 0}
+        )
+
         return {
             "strict": True,
             "screenshot": screenshot_data[:100] + "..." if screenshot_data else None,
             "format": req.format,
-            "ts": datetime.utcnow().isoformat() + "Z"
+            "ts": datetime.utcnow().isoformat() + "Z",
         }
     except Exception as e:
         logger.error(f"❌ Screenshot failed: {e}")
@@ -305,24 +261,16 @@ async def screenshot(req: ScreenshotRequest, authorization: str = Header(None)):
 async def execute(req: ExecuteScriptRequest, authorization: str = Header(None)):
     """Execute JavaScript"""
     _validate_token(authorization)
-    
+
     if not browser or not browser.is_initialized():
         raise HTTPException(status_code=503, detail="Browser not available")
-    
+
     try:
         result = await browser.execute_script(req.script)
-        
-        await _archive({
-            "op": "EXECUTE_SCRIPT",
-            "script_length": len(req.script),
-            "result_type": type(result).__name__
-        })
-        
-        return {
-            "strict": True,
-            "result": str(result)[:500],
-            "ts": datetime.utcnow().isoformat() + "Z"
-        }
+
+        await _archive({"op": "EXECUTE_SCRIPT", "script_length": len(req.script), "result_type": type(result).__name__})
+
+        return {"strict": True, "result": str(result)[:500], "ts": datetime.utcnow().isoformat() + "Z"}
     except Exception as e:
         logger.error(f"❌ Script execution failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -332,24 +280,16 @@ async def execute(req: ExecuteScriptRequest, authorization: str = Header(None)):
 async def get_cookies(authorization: str = Header(None)):
     """Get current cookies"""
     _validate_token(authorization)
-    
+
     if not browser or not browser.is_initialized():
         raise HTTPException(status_code=503, detail="Browser not available")
-    
+
     try:
         cookies = await browser.get_cookies()
-        
-        await _archive({
-            "op": "GET_COOKIES",
-            "count": len(cookies)
-        })
-        
-        return {
-            "strict": True,
-            "cookies": cookies,
-            "count": len(cookies),
-            "ts": datetime.utcnow().isoformat() + "Z"
-        }
+
+        await _archive({"op": "GET_COOKIES", "count": len(cookies)})
+
+        return {"strict": True, "cookies": cookies, "count": len(cookies), "ts": datetime.utcnow().isoformat() + "Z"}
     except Exception as e:
         logger.error(f"❌ Failed to get cookies: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -359,14 +299,14 @@ async def get_cookies(authorization: str = Header(None)):
 async def status(authorization: str = Header(None)):
     """Get agent status"""
     _validate_token(authorization)
-    
+
     return {
         "service": "opena5_Browser",
         "version": "1.0.0",
         "port": PORT,
         "browser_initialized": browser.is_initialized() if browser else False,
         "endpoints": 8,
-        "ts": datetime.utcnow().isoformat() + "Z"
+        "ts": datetime.utcnow().isoformat() + "Z",
     }
 
 
@@ -377,12 +317,7 @@ async def status(authorization: str = Header(None)):
 
 if __name__ == "__main__":
     import uvicorn
-    
+
     logger.info(f"🚀 Starting opena5_Browser on port {PORT}")
-    
-    uvicorn.run(
-        app,
-        host="127.0.0.1",
-        port=PORT,
-        log_level="info"
-    )
+
+    uvicorn.run(app, host="127.0.0.1", port=PORT, log_level="info")

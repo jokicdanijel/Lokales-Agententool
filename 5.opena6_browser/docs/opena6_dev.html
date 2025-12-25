@@ -190,7 +190,7 @@ ARCHIVP_ROOT=../1.opena1&2_portier/archivp_store</pre>
 
         <section class="card">
             <h2>📐 API-Design – Request/Response Schemas</h2>
-            
+
             <div class="grid-2">
                 <div class="schema-block">
                     <h4>NavigateRequest</h4>
@@ -263,7 +263,7 @@ ARCHIVP_ROOT=../1.opena1&2_portier/archivp_store</pre>
 
         <section class="card">
             <h2>📦 Safepoints & Logging</h2>
-            
+
             <h3>JSON-Logging für Browser-Events</h3>
             <pre>
 {
@@ -298,7 +298,7 @@ ARCHIVP_ROOT=../1.opena1&2_portier/archivp_store</pre>
 
         <section class="card">
             <h2>🧪 Tests & Coverage</h2>
-            
+
             <table>
                 <tr><th>Test-Datei</th><th>Beschreibung</th><th>Status</th></tr>
                 <tr>
@@ -342,7 +342,7 @@ python -m pytest tests/ --cov=. --cov-report=html</pre>
 
         <section class="card">
             <h2>💻 cURL-Beispiele</h2>
-            
+
             <h3>Health-Check (ohne Auth)</h3>
             <pre>curl -s http://127.0.0.1:12350/health | jq .</pre>
 
@@ -445,7 +445,7 @@ lsof -i :12350</pre>
 
         <section class="card">
             <h2>🔐 Security-Hinweise</h2>
-            
+
             <h3>Bearer-Token-Handling</h3>
             <ul>
                 <li><strong>ENV-Only:</strong> Bearer-Token ausschließlich via <code>BEARER_TOKEN</code> Umgebungsvariable</li>

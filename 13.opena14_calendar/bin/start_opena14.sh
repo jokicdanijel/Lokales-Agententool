@@ -47,25 +47,25 @@ log_error() {
 
 check_dependencies() {
     log_info "Prüfe Python-Dependencies..."
-    
+
     # Check if imports work (no installation needed if already present)
     python3 -c "import fastapi, uvicorn, pydantic" 2>/dev/null && {
         log_info "✅ Core-Dependencies vorhanden"
     } || {
         log_info "⚠️  Core-Dependencies fehlen, versuche Installation..."
-        
+
         pip3 install --break-system-packages fastapi uvicorn pydantic 2>/dev/null || {
             log_error "❌ pip install fehlgeschlagen (PEP 668)"
-            
+
             python3 -c "import fastapi, uvicorn, pydantic" 2>/dev/null || {
                 log_error "❌ Kritisch: FastAPI/uvicorn/pydantic nicht verfügbar"
                 exit 1
             }
-            
+
             log_info "✅ System-Pakete gefunden"
         }
     }
-    
+
     # Check optional dependencies (icalendar, pytz)
     python3 -c "import icalendar, pytz" 2>/dev/null && {
         log_info "✅ iCalendar-Support verfügbar"
@@ -76,13 +76,13 @@ check_dependencies() {
 
 check_port() {
     log_info "Prüfe Port $PORT Verfügbarkeit..."
-    
+
     if lsof -i :$PORT >/dev/null 2>&1; then
         log_error "❌ Port $PORT bereits belegt!"
         lsof -i :$PORT
         exit 1
     fi
-    
+
     log_info "✅ Port $PORT ist frei"
 }
 
@@ -101,13 +101,13 @@ check_running() {
 
 start_service() {
     log_info "Starte opena14 (Port $PORT)..."
-    
+
     mkdir -p "$LOGS_DIR"
-    
+
     # Start in background with nohup
     nohup python3 "$MAIN_SCRIPT" > "$NOHUP_LOG" 2>&1 &
     SERVICE_PID=$!
-    
+
     echo "$SERVICE_PID" > "$PID_FILE"
     log_info "✅ Service gestartet (PID: $SERVICE_PID)"
     log_info "📋 Logs: $NOHUP_LOG"
@@ -116,11 +116,11 @@ start_service() {
 verify_health() {
     log_info "Warte auf Service-Start (5 Sekunden)..."
     sleep 5
-    
+
     log_info "Prüfe Health-Endpoint..."
-    
+
     HEALTH_URL="http://127.0.0.1:$PORT/health"
-    
+
     if curl -s -f "$HEALTH_URL" >/dev/null 2>&1; then
         log_info "✅ Health-Check erfolgreich"
         curl -s "$HEALTH_URL" | python3 -m json.tool 2>/dev/null || true
@@ -136,13 +136,13 @@ verify_health() {
 
 main() {
     log_info "=== opena14 (Calendar) START ==="
-    
+
     check_running
     check_dependencies
     check_port
     start_service
     verify_health
-    
+
     log_info "=== opena14 START ABGESCHLOSSEN ==="
     log_info ""
     log_info "Befehle:"

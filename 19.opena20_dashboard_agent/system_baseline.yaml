@@ -16,8 +16,8 @@ system:
 port_policy:
   allowed_range: [12344, 12399]
   forbidden_ports:
-    - 8080    # Reserved for external OpenWebUI
-    - 3000    # Reserved for Node.js dev servers
+    - 8080 # Reserved for external OpenWebUI
+    - 3000 # Reserved for Node.js dev servers
   rule: "Ports sind unveränderlich. Abweichungen führen zu Build-Abbruch."
   enforcement: "Preflight Check + CI Validation"
 

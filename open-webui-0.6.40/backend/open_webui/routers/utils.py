@@ -1,21 +1,18 @@
-import black
 import logging
+
+import black
 import markdown
-
-from open_webui.models.chats import ChatTitleMessagesForm
-from open_webui.config import DATA_DIR, ENABLE_ADMIN_EXPORT
-from open_webui.constants import ERROR_MESSAGES
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
-from pydantic import BaseModel
-from starlette.responses import FileResponse
-
-
-from open_webui.utils.misc import get_gravatar_url
-from open_webui.utils.pdf_generator import PDFGenerator
+from open_webui.config import ENABLE_ADMIN_EXPORT
+from open_webui.constants import ERROR_MESSAGES
+from open_webui.env import SRC_LOG_LEVELS
+from open_webui.models.chats import ChatTitleMessagesForm
 from open_webui.utils.auth import get_admin_user, get_verified_user
 from open_webui.utils.code_interpreter import execute_code_jupyter
-from open_webui.env import SRC_LOG_LEVELS
-
+from open_webui.utils.misc import get_gravatar_url
+from open_webui.utils.pdf_generator import PDFGenerator
+from pydantic import BaseModel
+from starlette.responses import FileResponse
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MAIN"])
@@ -44,9 +41,7 @@ async def format_code(form_data: CodeForm, user=Depends(get_admin_user)):
 
 
 @router.post("/code/execute")
-async def execute_code(
-    request: Request, form_data: CodeForm, user=Depends(get_verified_user)
-):
+async def execute_code(request: Request, form_data: CodeForm, user=Depends(get_verified_user)):
     if request.app.state.config.CODE_EXECUTION_ENGINE == "jupyter":
         output = await execute_code_jupyter(
             request.app.state.config.CODE_EXECUTION_JUPYTER_URL,
@@ -77,9 +72,7 @@ class MarkdownForm(BaseModel):
 
 
 @router.post("/markdown")
-async def get_html_from_markdown(
-    form_data: MarkdownForm, user=Depends(get_verified_user)
-):
+async def get_html_from_markdown(form_data: MarkdownForm, user=Depends(get_verified_user)):
     return {"html": markdown.markdown(form_data.md)}
 
 
@@ -89,9 +82,7 @@ class ChatForm(BaseModel):
 
 
 @router.post("/pdf")
-async def download_chat_as_pdf(
-    form_data: ChatTitleMessagesForm, user=Depends(get_verified_user)
-):
+async def download_chat_as_pdf(form_data: ChatTitleMessagesForm, user=Depends(get_verified_user)):
     try:
         pdf_bytes = PDFGenerator(form_data).generate_chat_pdf()
 

@@ -9,15 +9,18 @@ This package contains shared libraries that eliminate code duplication across 19
 ## Modules
 
 ### 1. `safepoint_client.py`
+
 **Purpose**: Client for writing safepoints to opena2 archivator
 
 **Key Features**:
+
 - Async HTTP client using httpx
 - Recursive secret masking
 - Category validation (CMD, RESP, ROUTE, DISPATCH)
 - Environment variable configuration
 
 **Usage**:
+
 ```python
 from src.pkg.shared.safepoint_client import SafepointClient
 
@@ -32,15 +35,18 @@ await client.write(
 ```
 
 ### 2. `sse_client.py`
+
 **Purpose**: SSE event streaming and safepoint archiving
 
 **Key Features**:
+
 - SSEClient for subscribing to dashboard events
 - SafepointClient for async archiving (alternate implementation)
 - Factory functions for agent-specific instances
 - Singleton pattern support
 
 **Usage**:
+
 ```python
 from src.pkg.shared.sse_client import create_sse_client, create_safepoint_client
 
@@ -51,7 +57,7 @@ safepoint = create_safepoint_client(source_agent="opena4")
 # Subscribe to events
 async for event in sse.subscribe():
     print(f"Event: {event['event_type']}")
-    
+
 # Write safepoint
 await safepoint.write_safepoint(
     category="RESP",
@@ -61,9 +67,11 @@ await safepoint.write_safepoint(
 ```
 
 ### 3. `security.py`
+
 **Purpose**: Authentication, authorization, and security utilities
 
 **Key Features**:
+
 - Bearer token verification (FastAPI Depends compatible)
 - Optional token verification for public endpoints
 - Sliding window rate limiter
@@ -72,6 +80,7 @@ await safepoint.write_safepoint(
 - Development mode support
 
 **Usage**:
+
 ```python
 from fastapi import Depends, FastAPI
 from src.pkg.shared.security import verify_token, mask_secrets, RateLimiter
@@ -94,9 +103,11 @@ async def get_data(request: Request):
 ```
 
 ### 4. `config_base.py`
+
 **Purpose**: Base configuration classes for all agents
 
 **Key Features**:
+
 - PortPolicy class for port range validation
 - BaseAgentConfig with common fields:
   - Service identification (name, kürzel, host, port)
@@ -108,6 +119,7 @@ async def get_data(request: Request):
 - Pydantic-based validation with environment variable support
 
 **Usage**:
+
 ```python
 from pydantic import Field
 from src.pkg.shared.config_base import BaseAgentConfig, PortPolicy
@@ -117,7 +129,7 @@ class MyAgentConfig(BaseAgentConfig):
     service_name: str = "opena4"
     kuerzel: str = "tgap"
     port: int = 12346
-    
+
     # Add agent-specific fields
     telegram_bot_token: str = Field(default="", alias="TELEGRAM_BOT_TOKEN")
 
@@ -129,12 +141,15 @@ logging_config = config.get_logging_config()
 ## Installation & Setup
 
 ### 1. Add to PYTHONPATH (if needed)
+
 ```bash
 export PYTHONPATH=/path/to/Gesamtprojekt-start:$PYTHONPATH
 ```
 
 ### 2. Environment Variables
+
 All modules respect standard PORTIER environment variables:
+
 ```bash
 BEARER_TOKEN=your-token-here
 OPENA1_URL=http://127.0.0.1:12344
@@ -145,7 +160,9 @@ LOG_LEVEL=INFO
 ```
 
 ### 3. Quick Import (Backward Compatibility)
+
 For easy migration, use the compatibility wrapper:
+
 ```python
 # Single import for everything
 from src.pkg.portier_common import (
@@ -161,6 +178,7 @@ from src.pkg.portier_common import (
 ## Testing
 
 Run the test suite:
+
 ```bash
 # With pytest installed
 pytest src/pkg/shared/test_*.py -v
@@ -173,6 +191,7 @@ pytest src/pkg/shared/test_sse_client.py -v
 ## Migration Guide
 
 See [MIGRATION_GUIDE_SHARED_LIBRARIES.md](../../docs/MIGRATION_GUIDE_SHARED_LIBRARIES.md) for:
+
 - Step-by-step migration instructions
 - Code examples (before/after)
 - Testing procedures
@@ -181,15 +200,18 @@ See [MIGRATION_GUIDE_SHARED_LIBRARIES.md](../../docs/MIGRATION_GUIDE_SHARED_LIBR
 ## Impact
 
 **Code Reduction**:
+
 - Before: 78 files, ~9,505 lines
 - After: 4 modules, ~850 lines
 - **Reduction: 91%** (~8,654 lines)
 
 **Maintenance**:
+
 - Before: Fix bugs in 19-21 places
 - After: Fix bugs in 1 place
 
 **Benefits**:
+
 - ✅ Single source of truth
 - ✅ Consistent behavior across agents
 - ✅ Easier testing and debugging
@@ -199,6 +221,7 @@ See [MIGRATION_GUIDE_SHARED_LIBRARIES.md](../../docs/MIGRATION_GUIDE_SHARED_LIBR
 ## API Compatibility
 
 All modules maintain **backward compatibility** with existing agent code:
+
 - Same function signatures
 - Same return types
 - Same error handling
@@ -217,6 +240,7 @@ When adding new common functionality:
 ## Support
 
 For questions or issues:
+
 - Check [MIGRATION_GUIDE_SHARED_LIBRARIES.md](../../docs/MIGRATION_GUIDE_SHARED_LIBRARIES.md)
 - Review [CODE_DUPLICATION_REFACTORING_IMPACT.md](../../docs/CODE_DUPLICATION_REFACTORING_IMPACT.md)
 - Check inline documentation and docstrings
@@ -227,6 +251,6 @@ Internal use only - Part of PORTIER 3.0 system.
 
 ---
 
-**Created**: 2025-12-18  
-**Status**: Production Ready  
+**Created**: 2025-12-18
+**Status**: Production Ready
 **Version**: 1.0.0

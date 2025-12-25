@@ -8,14 +8,14 @@
 
 ## 📊 Error-Status-Zusammenfassung
 
-| Kategorie | Fehler | Kritikalität | Status |
-|-----------|--------|--------------|--------|
-| **Plattform-Checks** | 0/3 | N/A | ✅ OK |
-| **Service-Startup** | 0/2 | N/A | ✅ OK |
-| **Verbindungen** | 0/2 | N/A | ✅ OK |
-| **Tool-Registrierung** | 0/49 | N/A | ✅ OK |
-| **Konfiguration** | 0/1 | N/A | ✅ OK |
-| **GESAMT** | **0/57** | **N/A** | **✅ PERFEKT** |
+| Kategorie              | Fehler   | Kritikalität | Status         |
+| ---------------------- | -------- | ------------ | -------------- |
+| **Plattform-Checks**   | 0/3      | N/A          | ✅ OK          |
+| **Service-Startup**    | 0/2      | N/A          | ✅ OK          |
+| **Verbindungen**       | 0/2      | N/A          | ✅ OK          |
+| **Tool-Registrierung** | 0/49     | N/A          | ✅ OK          |
+| **Konfiguration**      | 0/1      | N/A          | ✅ OK          |
+| **GESAMT**             | **0/57** | **N/A**      | **✅ PERFEKT** |
 
 ---
 
@@ -24,6 +24,7 @@
 ### 1. **Platform-Inkompatibilität**
 
 **Fehler-Symptom:**
+
 ```
 ❌ Linux is not currently supported. Only Linux is supported.
 SHOULD_CONTINUE=false
@@ -31,15 +32,17 @@ exit 1
 ```
 
 **Ursachen:**
+
 - Runner läuft auf Windows/macOS
 - RUNNER_OS != "Linux"
 
 **Prevention:**
+
 ```yaml
 # In GitHub Actions Workflow:
 jobs:
   mcp-setup:
-    runs-on: ubuntu-latest  # ← Explizit Linux
+    runs-on: ubuntu-latest # ← Explizit Linux
     steps:
       - run: |
           if [[ "$RUNNER_OS" != "Linux" ]]; then
@@ -50,6 +53,7 @@ jobs:
 ```
 
 **Lösung (Falls Fehler auftritt):**
+
 ```bash
 # GitHub Actions Settings prüfen:
 Settings → Actions → Runners
@@ -61,17 +65,20 @@ Settings → Actions → Runners
 ### 2. **Playwright Installation Fehler**
 
 **Fehler-Symptom:**
+
 ```
 Error: Failed to install chromium
 Error: ENOSPC: no space left on device
 ```
 
 **Ursachen:**
+
 - Zu wenig Speicherplatz auf Runner
 - npm-Pakete kaputt
 - Network-Fehler beim Download
 
 **Prevention:**
+
 ```bash
 # Disk-Space vorher prüfen
 df -h / | awk 'NR==2 {
@@ -90,6 +97,7 @@ npx @playwright/mcp --use-installed-browsers
 ```
 
 **Lösung (Falls Fehler auftritt):**
+
 ```bash
 # Runner-Storage aufräumen
 rm -rf ~/.npm
@@ -104,17 +112,20 @@ npm install -g @playwright/mcp@0.0.40
 ### 3. **Copilot Runtime Download-Fehler**
 
 **Fehler-Symptom:**
+
 ```
 Error: curl: (7) Failed to connect to api.github.com
 Error: Failed to download runtime artifact
 ```
 
 **Ursachen:**
+
 - Network-Fehler
 - Authentifizierung fehlgeschlagen
 - Download-URL ungültig
 
 **Prevention:**
+
 ```bash
 # Retry-Mechanismus (wird bereits verwendet ✅)
 MAX_RETRIES=3
@@ -134,6 +145,7 @@ curl --max-time 300 "$DOWNLOAD_URL" -o runtime.tar.gz
 ```
 
 **Lösung (Falls Fehler auftritt):**
+
 ```bash
 # Token-Validität prüfen
 curl -H "Authorization: Bearer $GITHUB_COPILOT_ACTION_OVERRIDE_DOWNLOAD_URL" \
@@ -148,18 +160,21 @@ GITHUB_COPILOT_ACTION_DOWNLOAD_URL="https://backup-mirror.example.com/runtime.ta
 ### 4. **MCP Server Connection Timeout**
 
 **Fehler-Symptom:**
+
 ```
 ❌ MCP servers not ready yet. Retrying in 5 seconds... (60/60)
 Error: Timeout waiting for MCP servers
 ```
 
 **Ursachen:**
+
 - Server startet nicht
 - Port-Konflikt
 - Nicht genug Systemressourcen
 - Abhängigkeiten nicht installiert
 
 **Prevention:**
+
 ```bash
 # Pre-fligh Checks
 echo "Checking prerequisites..."
@@ -189,6 +204,7 @@ node --version | grep -q "v20\|v21\|v22" || {
 ```
 
 **Lösung (Falls Fehler auftritt):**
+
 ```bash
 # Server manuell debuggen
 DEBUG=mcp:* npx @playwright/mcp --verbose
@@ -211,6 +227,7 @@ timeout 60 npx @playwright/mcp --startup-timeout 30000
 ### 5. **Tool Registration Fehler**
 
 **Fehler-Symptom:**
+
 ```
 ❌ Failed to fetch tools from github-mcp-server
 Error: Connection refused
@@ -218,11 +235,13 @@ Error: API token invalid
 ```
 
 **Ursachen:**
+
 - Authentifizierungs-Token abgelaufen
 - GitHub API nicht erreichbar
 - MCP-Server-Konfiguration falsch
 
 **Prevention:**
+
 ```bash
 # Token validieren
 curl -H "Authorization: token $GITHUB_PERSONAL_ACCESS_TOKEN" \
@@ -240,6 +259,7 @@ jq '.mcp_servers' /home/runner/work/_temp/mcp-server/mcp-config.json
 ```
 
 **Lösung (Falls Fehler auftritt):**
+
 ```bash
 # Token erneuern
 # GitHub Settings → Developer settings → Personal access tokens
@@ -259,17 +279,20 @@ pkill -f "mcp"
 ### 6. **Out of Memory (OOM) Fehler**
 
 **Fehler-Symptom:**
+
 ```
 JavaScript heap out of memory
 Error: ENOMEM: Cannot allocate memory
 ```
 
 **Ursachen:**
+
 - Browser-Prozess verbraucht zu viel RAM
 - Zu viele parallele Tool-Aufrufe
 - Memory-Leak im Tool-Code
 
 **Prevention:**
+
 ```bash
 # Node.js Memory-Limit setzen
 export NODE_OPTIONS="--max-old-space-size=2048"
@@ -289,6 +312,7 @@ done
 ```
 
 **Lösung (Falls Fehler auftritt):**
+
 ```bash
 # Prozesse beenden
 killall node
@@ -308,17 +332,20 @@ node --inspect app.js
 ### 7. **Firewall/Network Blocking**
 
 **Fehler-Symptom:**
+
 ```
 Error: ECONNREFUSED 127.0.0.1:2301
 Error: getaddrinfo ENOTFOUND api.github.com
 ```
 
 **Ursachen:**
+
 - GitHub-Firewall-Regeln
 - Runner-Netzwerk-Isolation
 - Proxy-Konfiguration fehlt
 
 **Prevention:**
+
 ```bash
 # Firewall-Whitelist prüfen
 # GitHub Actions Documentation:
@@ -338,6 +365,7 @@ nslookup api.github.com
 ```
 
 **Lösung (Falls Fehler auftritt):**
+
 ```bash
 # Firewall-Regel hinzufügen (Linux)
 sudo ufw allow 443/tcp
@@ -357,6 +385,7 @@ ssh -L 443:api.github.com:443 bastion-host
 ### 8. **Configuration File Fehler**
 
 **Fehler-Symptom:**
+
 ```
 Error: mcp-config.json not found
 Error: Invalid JSON in configuration
@@ -364,11 +393,13 @@ Error: Required field 'tools' missing
 ```
 
 **Ursachen:**
+
 - Config-Datei nicht erstellt
 - JSON-Syntax-Fehler
 - Unvollständige Konfiguration
 
 **Prevention:**
+
 ```bash
 # Config-Datei validieren
 if [ ! -f "/tmp/mcp-config.json" ]; then
@@ -402,6 +433,7 @@ fi
 ```
 
 **Lösung (Falls Fehler auftritt):**
+
 ```bash
 # Config neu generieren
 ./start-mcp-servers.sh --force --reconfigure
@@ -419,6 +451,7 @@ mv /tmp/mcp-config-formatted.json /tmp/mcp-config.json
 ## 🛡️ Error Handling Best Practices
 
 ### 1. **Comprehensive Logging**
+
 ```bash
 # Alle Fehler mit Kontext loggen
 set -o pipefail
@@ -429,6 +462,7 @@ exec 2>&1
 ```
 
 ### 2. **Graceful Degradation**
+
 ```bash
 # Fallback wenn Tool nicht verfügbar
 if ! command -v npm &> /dev/null; then
@@ -438,6 +472,7 @@ fi
 ```
 
 ### 3. **Health Checks**
+
 ```bash
 # Regelmäßig System-Status prüfen
 while true; do
@@ -450,6 +485,7 @@ done
 ```
 
 ### 4. **Alerting**
+
 ```bash
 # Kritische Fehler benachrichtigen
 if [ $ERROR_COUNT -gt 5 ]; then
@@ -468,23 +504,23 @@ fi
 ```javascript
 const ERROR_METRICS = {
   // Fehlerquoten
-  "platform_check_failure_rate": "< 0.1%",
-  "playwright_startup_failure_rate": "< 1%",
-  "github_connection_failure_rate": "< 0.5%",
-  "tool_registration_failure_rate": "< 1%",
+  platform_check_failure_rate: "< 0.1%",
+  playwright_startup_failure_rate: "< 1%",
+  github_connection_failure_rate: "< 0.5%",
+  tool_registration_failure_rate: "< 1%",
 
   // Response Times
-  "github_mcp_p95_response_time": "< 1000ms",
-  "playwright_p95_response_time": "< 5000ms",
+  github_mcp_p95_response_time: "< 1000ms",
+  playwright_p95_response_time: "< 5000ms",
 
   // Availability
-  "mcp_server_uptime": "> 99.5%",
-  "github_api_availability": "> 99.9%",
+  mcp_server_uptime: "> 99.5%",
+  github_api_availability: "> 99.9%",
 
   // Resource Usage
-  "peak_memory_usage": "< 2GB",
-  "average_cpu_usage": "< 50%",
-  "disk_space_free": "> 10GB"
+  peak_memory_usage: "< 2GB",
+  average_cpu_usage: "< 50%",
+  disk_space_free: "> 10GB",
 };
 ```
 

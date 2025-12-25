@@ -11,18 +11,19 @@
 
 ### Vorhandene KB-Dateien (Stand Nov 8)
 
-| Datei | Größe Est. | Alter | Status | Relevanz |
-|-------|-----------|------|--------|----------|
-| Portier_wissensdatenbank_t1.txt | 978L | Alt | 📖 Grundlage | Hoch |
-| MASTER-PROMPT_Textfassung_zweischichtig.txt | 512L | Alt | 📖 PDI-Basis | Hoch |
-| lokaler_agent_wissensdatenbank.txt | ? | Alt | 📖 Agent-Patterns | Mittel |
-| openwebui_expert.txt | ? | Alt | 📖 UI-Wissen | Niedrig |
-| main_dashboardkonfiguration und aufzeichnung 5nov202516:00.txt | ? | Neu | 📋 Config | Hoch |
-| CHATVERLAUF26102025.txt | ? | Alt | 📋 Chat-Log | Niedrig |
-| githubmcp.txt | ? | Mittel | 📖 Tools | Mittel |
-| Sonstige (7 weitere Dateien) | ? | Mixed | 📋 Referenz | Variabel |
+| Datei                                                          | Größe Est. | Alter  | Status            | Relevanz |
+| -------------------------------------------------------------- | ---------- | ------ | ----------------- | -------- |
+| Portier_wissensdatenbank_t1.txt                                | 978L       | Alt    | 📖 Grundlage      | Hoch     |
+| MASTER-PROMPT_Textfassung_zweischichtig.txt                    | 512L       | Alt    | 📖 PDI-Basis      | Hoch     |
+| lokaler_agent_wissensdatenbank.txt                             | ?          | Alt    | 📖 Agent-Patterns | Mittel   |
+| openwebui_expert.txt                                           | ?          | Alt    | 📖 UI-Wissen      | Niedrig  |
+| main_dashboardkonfiguration und aufzeichnung 5nov202516:00.txt | ?          | Neu    | 📋 Config         | Hoch     |
+| CHATVERLAUF26102025.txt                                        | ?          | Alt    | 📋 Chat-Log       | Niedrig  |
+| githubmcp.txt                                                  | ?          | Mittel | 📖 Tools          | Mittel   |
+| Sonstige (7 weitere Dateien)                                   | ?          | Mixed  | 📋 Referenz       | Variabel |
 
 **Bewertung:**
+
 - ✅ **Starke Basis** – PDI-Prompt existiert, Governance-Grundlagen dokumentiert
 - ❌ **Lücken** – Finance DB, Telegram-Bridge, aktuelle opena1 Service-Definition fehlen
 - ⚠️ **Veraltung** – Letzte Einträge Oktober/Anfang November
@@ -65,7 +66,7 @@
    - **Größe:** ~3-5 KB Text
 
 5. **Archive-Integration Deep Dive** (opena2 Erweiterte Patterns)
-   - [ ] Safepoint Format (SP<ts>_src→dst_KIND.json)
+   - [ ] Safepoint Format (SP<ts>\_src→dst_KIND.json)
    - [ ] Append-Only Semantik
    - [ ] Query Pattern (/archiv/last?n=N)
    - [ ] Audit-Verifizierung
@@ -85,12 +86,14 @@
 ### Phase 1: KB-Strukturierung (1-2 Stunden)
 
 **Aufgaben:**
+
 - [ ] Alten KB-Index (Portier_wissensdatenbank_t1.txt) auditieren
 - [ ] Tag-System definieren (finance, telegram, coordinator, integration, testing)
 - [ ] Glossar aktualisieren
 - [ ] Internal Linking etablieren
 
 **Output:**
+
 - Neue KB-Index-Datei: `KB_INDEX_CURRENT_2025-11-08.md`
 - Tag-Registry: `.tags.json` (für Suchbarkeit)
 
@@ -101,41 +104,49 @@
 **Datei:** `KB_FINANCE_MODULE_2025-11-08.md`
 
 **Inhalte:**
+
 ```markdown
 # 💰 Finance Module KB
 
 ## 1. Schema Overview
+
 - Accounts Table: Definition, Indizes, Constraints
 - Transactions Table: Structure, Query Patterns
 - Statements Table: Generation Logic
 
 ## 2. REST API Reference
+
 - POST /account/create – Payload, Response, Examples
 - GET /accounts – Filter Pattern, Output Format
 - POST /transaction/add – Error Codes, Validation
 - ... (9 endpoints)
 
 ## 3. Archive Integration
+
 - Each operation → opena2 log entry
 - Example: SP1762622898_opena_finance→opena2_TRANSACTION.json
 - Query: GET /archiv/last?n=5
 
 ## 4. Test Matrix
+
 - 9 Test Cases (all passing ✅)
 - Mock Data: 2 Accounts, 3 Transactions, €6,050
 
 ## 5. Troubleshooting
+
 - Port 12347 not responding
 - Database lock errors
 - Archive write failures
 
 ## 6. Performance Notes
+
 - SQLite limits: ~10k rows before optimization
 - Append-only keeps full history
 - Index on transaction.date recommended
 ```
 
 **Output:**
+
 - `KB_FINANCE_MODULE_2025-11-08.md` (6-8 KB)
 - `finance_api_reference.json` (structured API schema)
 
@@ -146,47 +157,56 @@
 **Datei:** `KB_TELEGRAM_BRIDGE_2025-11-08.md`
 
 **Inhalte:**
+
 ```markdown
 # 📱 Telegram Bridge Module KB
 
 ## 1. Architecture
+
 - Webhook Handler (/webhook/telegram)
 - Command Router (Finance Commands)
 - Message Logger (Archive)
 
 ## 2. Security Model
+
 - Webhook Secret: 31-char validation
 - User Whitelist: IDs from .env
 - Bearer Token: Finance API auth
 
 ## 3. Command Pattern
+
 - /balance → Finance /dashboard
 - /accounts → Finance /accounts
 - /transactions → Finance /transactions
 - /help → Internal help text
 
 ## 4. Archive Format
-- Incoming: SP<ts>_opena4_telegram→opena2_MESSAGE (incoming)
-- Outgoing: SP<ts>_opena4_telegram→opena2_MESSAGE (outgoing)
+
+- Incoming: SP<ts>\_opena4_telegram→opena2_MESSAGE (incoming)
+- Outgoing: SP<ts>\_opena4_telegram→opena2_MESSAGE (outgoing)
 
 ## 5. Test Coverage
+
 - 8 Test Cases (all passing ✅)
 - Webhook validation tests
 - Routing tests
 - Archive retrieval
 
 ## 6. Integration Points
+
 - opena_finance (API calls)
 - opena2 (Archive writes)
 - .env (Token storage)
 
 ## 7. Failure Modes
+
 - Invalid webhook secret → 401
 - Rate limit exceeded → Queue
 - Finance API down → Fallback message
 ```
 
 **Output:**
+
 - `KB_TELEGRAM_BRIDGE_2025-11-08.md` (6-8 KB)
 - `telegram_command_matrix.json` (routing table)
 
@@ -197,42 +217,50 @@
 **Datei:** `KB_DASHBOARD_INTEGRATION_2025-11-08.md`
 
 **Inhalte:**
+
 ```markdown
 # 🎛️ Dashboard (opena19) KB
 
 ## 1. Agent Registry
+
 - Registration Pattern: POST /api/agent/register
 - Service Discovery: GET /api/agent/status
 - Health Check: GET /health
 
 ## 2. Python Fixes Applied (Nov 8)
+
 - security.py: Function ordering fixed ✅
 - sse_bus.py: Async generator syntax fixed ✅
 - main_dashboard.py: AgentRegistry init fixed ✅
 
 ## 3. Service Lifecycle
+
 - Bootstrap: Load .env, create auth token
 - Registration: Register opena1, 2, finance, telegram, kordp
 - Monitoring: Poll all services every 5s
 - Failover: Archive on service death
 
 ## 4. HTTP Endpoints
+
 - GET /health – Service health
 - POST /api/agent/register – Register new agent
 - GET /api/agent/status – All agents status
 - GET /api/dashboard – Unified view
 
 ## 5. Event Bus (SSE)
+
 - Real-time updates via /events (Server-Sent Events)
 - Queue-based (asyncio.Queue)
 - Non-blocking publish
 
 ## 6. Port 12349 Binding
+
 - FastAPI/Uvicorn on 127.0.0.1:12349
 - No external access (localhost only)
-- Token-required for /api/* endpoints
+- Token-required for /api/\* endpoints
 
 ## 7. Nov 9 Debug Checklist
+
 - [ ] Start: python main_dashboard.py
 - [ ] Health: curl http://127.0.0.1:12349/health
 - [ ] Register opena_finance: curl -X POST /api/agent/register
@@ -240,6 +268,7 @@
 ```
 
 **Output:**
+
 - `KB_DASHBOARD_INTEGRATION_2025-11-08.md` (5-7 KB)
 - `dashboard_endpoints.json` (API spec)
 
@@ -250,10 +279,12 @@
 **Datei:** `KB_OPENA1_COORDINATOR_2025-11-08.md`
 
 **Inhalte:**
+
 ```markdown
 # 🧭 opena1 – Coordinator Self-Knowledge
 
 ## 1. Mission
+
 - Central coordinator for agent orchestration
 - Maintains agent registry
 - Routes inter-agent communication
@@ -262,39 +293,46 @@
 ## 2. Port: 12344
 
 ## 3. Responsibilities
+
 - Start/Stop agents
 - Health monitoring
 - Event forwarding
 - Registry persistence
 
 ## 4. Input Sources
+
 - opena2 (Archive queries)
 - Dashboard (opena19 registration requests)
 - External APIs (Telegram, Finance requests)
 
 ## 5. Output Targets
+
 - opena2 (Event archive)
 - All agents (Command/Status updates)
 - Dashboard (Registry state)
 
 ## 6. Key Endpoints
+
 - GET /agent/registry – Current registry state
 - POST /agent/register – New agent registration
 - GET /agent/status – Health of all agents
 - POST /agent/unregister – Remove dead agent
 
 ## 7. Error Handling
+
 - Dead agent detected → retry 3x, then archive failure
 - Archive write failure → log to local file + retry
 - Port conflict → alert + shutdown gracefully
 
 ## 8. Integration with Nov 8 System
+
 - Monitors: opena1 (self), 2, 4, 19, finance, kordp
 - Coordinates: Telegram→Finance→Archive flow
 - Hosts: Main event bus
 ```
 
 **Output:**
+
 - `KB_OPENA1_COORDINATOR_2025-11-08.md` (4-6 KB)
 
 ---
@@ -304,15 +342,18 @@
 **Datei:** `KB_ARCHIVE_PATTERNS_2025-11-08.md`
 
 **Inhalte:**
-```markdown
+
+````markdown
 # 📦 Archive (opena2) Patterns
 
 ## 1. Safepoint Format
-- Name: SP<UNIX_TS>_<SRC>→<DST>_<KIND>.json
+
+- Name: SP<UNIX*TS>*<SRC>→<DST>\_<KIND>.json
 - Example: SP1762622898_opena_finance→opena2_TRANSACTION.json
 - Read-Only: Files never modified after creation
 
 ## 2. File Structure
+
 ```json
 {
   "safepoint": {
@@ -325,34 +366,40 @@
   },
   "payload": {
     "account_id": "d62d3fb6-...",
-    "amount": -50.00,
+    "amount": -50.0,
     "currency": "EUR"
   }
 }
 ```
+````
 
 ## 3. Query Patterns
+
 - GET /archiv/last?n=5 – Last 5 entries
 - GET /archiv/date/2025-11-08 – Today's entries
 - GET /archiv/source/opena_finance – Finance ops
 
 ## 4. Index Structure
+
 - File: archivp/index.jsonl
 - Format: 1 JSON per line (JSONL)
 - Entry: {ts, path, src, dst, kind, hash}
 - Append-only: Never rewritten
 
 ## 5. Deduplication
+
 - Hash each payload before write
 - If hash matches existing: skip write, log as "duplicate"
 - Prevents blob bloat
 
 ## 6. Audit Trail
+
 - Every read/write logged to local syslog
 - Archive integrity verified on startup
 - Checksum verification available
 
 ## 7. Usage Examples
+
 ```bash
 # Query last 5 entries
 curl http://127.0.0.1:12345/archiv/last?n=5 | jq .
@@ -364,7 +411,8 @@ curl -X POST http://127.0.0.1:12345/store/archivp \
 # Verify integrity
 bash bin/verify_archive.sh
 ```
-```
+
+````
 
 **Output:**
 - `KB_ARCHIVE_PATTERNS_2025-11-08.md` (5-7 KB)
@@ -381,27 +429,29 @@ bash bin/verify_archive.sh
 
 ## 1. Full Data Flow: Telegram→Finance→Archive
 
-```
+````
+
 User (Telegram)
-  ↓ /balance command
+↓ /balance command
 opena4_telegram (Port 12348)
-  ↓ Webhook Handler validates secret
+↓ Webhook Handler validates secret
 Parse command, extract /balance
-  ↓
+↓
 Call opena_finance (Port 12347)
-  ↓ GET /dashboard
+↓ GET /dashboard
 Fetch Portfolio Summary
-  ↓ {accounts: 2, balance: €6,050}
+↓ {accounts: 2, balance: €6,050}
 Archive Message
-  ↓ POST http://127.0.0.1:12345/store/archivp
+↓ POST http://127.0.0.1:12345/store/archivp
 opena2 (Port 12345)
-  ↓
+↓
 Append to archivp/2025/11/08/SP1762625396_opena4_telegram→opena2_MESSAGE.json
-  ↓ Update index.jsonl
+↓ Update index.jsonl
 Return Response
-  ↓
+↓
 User (Telegram) receives: "💰 Your Portfolio: 2 Accounts, €6,050.00"
-```
+
+````
 
 ## 2. Service Boot Sequence (Nov 9)
 
@@ -464,9 +514,10 @@ curl -s http://127.0.0.1:12346/health
 curl -s http://127.0.0.1:12347/health
 curl -s http://127.0.0.1:12348/health
 curl -s http://127.0.0.1:12349/health
-```
+````
 
 Response format:
+
 ```json
 {
   "status": "healthy",
@@ -479,12 +530,12 @@ Response format:
 
 ## 5. Performance Metrics (Nov 8 Measured)
 
-| Operation | Avg Latency | P99 | Throughput |
-|-----------|-----------|-----|-----------|
-| Account Create | 5ms | 50ms | 100/sec |
-| Transaction Add | 3ms | 30ms | 200/sec |
-| Archive Write | 10ms | 100ms | 50/sec |
-| Telegram Webhook | 20ms | 200ms | 30/sec |
+| Operation        | Avg Latency | P99   | Throughput |
+| ---------------- | ----------- | ----- | ---------- |
+| Account Create   | 5ms         | 50ms  | 100/sec    |
+| Transaction Add  | 3ms         | 30ms  | 200/sec    |
+| Archive Write    | 10ms        | 100ms | 50/sec     |
+| Telegram Webhook | 20ms        | 200ms | 30/sec     |
 
 ## 6. Scaling Considerations
 
@@ -502,6 +553,7 @@ Response format:
 - [ ] All operations logged to archive
 - [ ] opena1 registry shows 5 agents registered
 - [ ] No Python import errors in logs
+
 ```
 
 **Output:**
@@ -531,18 +583,20 @@ Response format:
 ### New KB Files (to be created)
 
 ```
+
 1.opena1&2_portier/knowledgebase/opena1/
-├── KB_INDEX_CURRENT_2025-11-08.md          (New)
-├── KB_FINANCE_MODULE_2025-11-08.md         (New)
-├── KB_TELEGRAM_BRIDGE_2025-11-08.md        (New)
-├── KB_DASHBOARD_INTEGRATION_2025-11-08.md  (New)
-├── KB_OPENA1_COORDINATOR_2025-11-08.md     (New)
-├── KB_ARCHIVE_PATTERNS_2025-11-08.md       (New)
+├── KB_INDEX_CURRENT_2025-11-08.md (New)
+├── KB_FINANCE_MODULE_2025-11-08.md (New)
+├── KB_TELEGRAM_BRIDGE_2025-11-08.md (New)
+├── KB_DASHBOARD_INTEGRATION_2025-11-08.md (New)
+├── KB_OPENA1_COORDINATOR_2025-11-08.md (New)
+├── KB_ARCHIVE_PATTERNS_2025-11-08.md (New)
 ├── KB_SYSTEM_INTEGRATION_FLOWS_2025-11-08.md (New)
 └── (Existing files – unchanged)
-    ├── Portier_wissensdatenbank_t1.txt
-    ├── MASTER-PROMPT_Textfassung_zweischichtig.txt
-    └── ... (13 more)
+├── Portier_wissensdatenbank_t1.txt
+├── MASTER-PROMPT_Textfassung_zweischichtig.txt
+└── ... (13 more)
+
 ```
 
 ### Supporting JSON Files
@@ -609,3 +663,4 @@ Response format:
 **Generated:** 2025-11-08 18:40 UTC
 **Revision:** 1.0
 **Maintained by:** ELION Sprint Team
+```

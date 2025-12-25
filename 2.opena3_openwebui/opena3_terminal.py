@@ -14,15 +14,14 @@ Port: 12347
 Version: 1.1 (clean, portier-konform)
 """
 
-import os
 import logging
-from datetime import datetime, timezone
-from typing import Any, Dict, Optional
+import os
+from datetime import UTC, datetime
+from typing import Any
 
 import httpx
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, ConfigDict
-
 
 # ============================================================================
 # KONFIGURATION
@@ -37,10 +36,7 @@ TIMEOUT = float(os.getenv("OPENWEBUI_TIMEOUT", "15.0"))
 # ============================================================================
 # LOGGING
 # ============================================================================
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(AGENT_ID)
 
 
@@ -51,7 +47,7 @@ class ChatRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     prompt: str
-    model: Optional[str] = None
+    model: str | None = None
     temperature: float = 0.7
     max_tokens: int = 800
 
@@ -60,9 +56,9 @@ class ChatResponse(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     response: str
-    model: Optional[str]
+    model: str | None
     timestamp: str
-    usage: Dict[str, int]
+    usage: dict[str, int]
 
 
 class HealthResponse(BaseModel):
@@ -79,7 +75,7 @@ class HealthResponse(BaseModel):
 app = FastAPI(
     title="OpenWebUI Terminal Agent (opena3)",
     version="1.1",
-    description="Portier 3.0 – direkter OpenWebUI-Terminaladapter"
+    description="Portier 3.0 – direkter OpenWebUI-Terminaladapter",
 )
 
 
@@ -96,20 +92,13 @@ async def openwebui_health() -> bool:
         return False
 
 
-async def call_openwebui(payload: Dict[str, Any]) -> Dict[str, Any]:
+async def call_openwebui(payload: dict[str, Any]) -> dict[str, Any]:
     """Sendet Chat-Prompt an OpenWebUI."""
     try:
         async with httpx.AsyncClient() as client:
-            res = await client.post(
-                f"{OPENWEBUI_URL}/api/chat/completions",
-                json=payload,
-                timeout=TIMEOUT
-            )
+            res = await client.post(f"{OPENWEBUI_URL}/api/chat/completions", json=payload, timeout=TIMEOUT)
         if res.status_code != 200:
-            raise HTTPException(
-                status_code=502,
-                detail=f"OpenWebUI Error {res.status_code}"
-            )
+            raise HTTPException(status_code=502, detail=f"OpenWebUI Error {res.status_code}")
         return res.json()
 
     except Exception as e:
@@ -121,14 +110,11 @@ async def call_openwebui(payload: Dict[str, Any]) -> Dict[str, Any]:
 # ENDPOINTS
 # ============================================================================
 
+
 @app.get("/health", response_model=HealthResponse)
 async def health():
     """Health-Endpoint für Dashboard & Supervisor."""
-    return HealthResponse(
-        service=AGENT_ID,
-        status="ok",
-        timestamp=datetime.now(timezone.utc).isoformat()
-    )
+    return HealthResponse(service=AGENT_ID, status="ok", timestamp=datetime.now(UTC).isoformat())
 
 
 @app.post("/chat", response_model=ChatResponse)
@@ -137,25 +123,20 @@ async def chat(req: ChatRequest):
     if not await openwebui_health():
         raise HTTPException(status_code=503, detail="OpenWebUI offline")
 
-    payload = {
-        "message": req.prompt,
-        "model": req.model,
-        "temperature": req.temperature,
-        "max_tokens": req.max_tokens
-    }
+    payload = {"message": req.prompt, "model": req.model, "temperature": req.temperature, "max_tokens": req.max_tokens}
 
     data = await call_openwebui(payload)
 
     return ChatResponse(
         response=data.get("message", ""),
         model=data.get("model"),
-        timestamp=datetime.now(timezone.utc).isoformat(),
-        usage=data.get("usage", {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0})
+        timestamp=datetime.now(UTC).isoformat(),
+        usage=data.get("usage", {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}),
     )
 
 
-@app.post("/command", response_model=Dict[str, Any])
-async def command(payload: Dict[str, Any]):
+@app.post("/command", response_model=dict[str, Any])
+async def command(payload: dict[str, Any]):
     """
     Portier-kompatibles Command-Interface:
     {
@@ -176,7 +157,7 @@ async def command(payload: Dict[str, Any]):
     return {
         "error": f"Unknown command: {cmd}",
         "available": ["chat", "health"],
-        "timestamp": datetime.now(timezone.utc).isoformat()
+        "timestamp": datetime.now(UTC).isoformat(),
     }
 
 

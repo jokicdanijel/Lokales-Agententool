@@ -3,25 +3,26 @@ Tool Dispatcher – Routes commands to correct agent and manages safepoint lifec
 Part of Schritt 2 (Tool-Registry & Mapping)
 """
 
-import json
 import asyncio
+import json
+import logging
+import urllib.error
+import urllib.request
 import uuid
 from datetime import datetime
-from typing import Dict, Any, Optional, Tuple
-from pathlib import Path
-import logging
 from enum import Enum
-import urllib.request
-import urllib.error
-import httpx
+from pathlib import Path
+from typing import Any
 
-from tool_registry import get_registry, Tool, Agent
+import httpx
+from tool_registry import get_registry
 
 logger = logging.getLogger(__name__)
 
 
 class DispatcherEvent(str, Enum):
     """Event types for dispatcher"""
+
     CMD = "CMD"  # Command dispatched
     RESP = "RESP"  # Response received
     ERR = "ERR"  # Error occurred
@@ -50,16 +51,11 @@ class SafepointWriter:
         return f"SP{ts}_{src}→{dst}_{kind.value}.json"
 
     def write_safepoint(
-        self,
-        src: str,
-        dst: str,
-        kind: DispatcherEvent,
-        payload: Dict[str, Any],
-        request_id: Optional[str] = None
-    ) -> Tuple[bool, str, Optional[Path]]:
+        self, src: str, dst: str, kind: DispatcherEvent, payload: dict[str, Any], request_id: str | None = None
+    ) -> tuple[bool, str, Path | None]:
         """
         Write safepoint to disk with atomic rename
-        
+
         Returns: (success, filename, full_path)
         """
         try:
@@ -74,7 +70,7 @@ class SafepointWriter:
                 "dst": dst,
                 "kind": kind.value,
                 "request_id": request_id or str(uuid.uuid4()),
-                "payload": payload
+                "payload": payload,
             }
 
             # Write to temp file first
@@ -95,13 +91,7 @@ class SafepointWriter:
             return False, "", None
 
     def _append_to_index(
-        self,
-        folder: Path,
-        filename: str,
-        src: str,
-        dst: str,
-        kind: DispatcherEvent,
-        request_id: Optional[str]
+        self, folder: Path, filename: str, src: str, dst: str, kind: DispatcherEvent, request_id: str | None
     ) -> None:
         """Append entry to index.jsonl (append-only log)"""
         try:
@@ -112,7 +102,7 @@ class SafepointWriter:
                 "dst": dst,
                 "kind": kind.value,
                 "ts": datetime.utcnow().isoformat() + "Z",
-                "request_id": request_id
+                "request_id": request_id,
             }
             with open(index_path, "a", encoding="utf-8") as f:
                 f.write(json.dumps(index_entry, ensure_ascii=False) + "\n")
@@ -128,7 +118,7 @@ class ToolDispatcher:
         self.registry = get_registry()
         self.safepoint_writer = SafepointWriter(archive_path)
         self.default_timeout = 30  # seconds
-        self.auth_token: Optional[str] = None
+        self.auth_token: str | None = None
 
     def set_auth_token(self, token: str) -> None:
         """Set authentication token for API calls"""
@@ -138,10 +128,12 @@ class ToolDispatcher:
     # Tool Resolution & Validation
     # ──────────────────────────────────────────────────────────────────────────
 
-    def validate_tool_request(self, tool_id: str, agent_id: Optional[str] = None) -> Tuple[bool, str, Optional[Dict[str, Any]]]:
+    def validate_tool_request(
+        self, tool_id: str, agent_id: str | None = None
+    ) -> tuple[bool, str, dict[str, Any] | None]:
         """
         Validate that tool exists and can be dispatched
-        
+
         Returns: (is_valid, error_message, tool_info)
         """
         # Check if tool exists
@@ -173,15 +165,11 @@ class ToolDispatcher:
     # ──────────────────────────────────────────────────────────────────────────
 
     async def dispatch(
-        self,
-        tool_id: str,
-        params: Dict[str, Any],
-        source_agent: str = "dashboard",
-        request_id: Optional[str] = None
-    ) -> Tuple[bool, Dict[str, Any]]:
+        self, tool_id: str, params: dict[str, Any], source_agent: str = "dashboard", request_id: str | None = None
+    ) -> tuple[bool, dict[str, Any]]:
         """
         Dispatch tool command to target agent
-        
+
         Returns: (success, response_dict)
         """
         request_id = request_id or str(uuid.uuid4())
@@ -189,9 +177,7 @@ class ToolDispatcher:
         # Validate request
         is_valid, error_msg, tool_info = self.validate_tool_request(tool_id)
         if not is_valid or tool_info is None:
-            await self._write_error_safepoint(
-                source_agent, "dispatcher", error_msg, request_id
-            )
+            await self._write_error_safepoint(source_agent, "dispatcher", error_msg, request_id)
             return False, self._error_response(error_msg, request_id)
 
         target_agent = tool_info["agent_id"]
@@ -205,31 +191,19 @@ class ToolDispatcher:
                     "request_id": request_id,
                     "timestamp": datetime.utcnow().isoformat() + "Z",
                     "source": source_agent,
-                    "cmd": {
-                        "tool": tool_id,
-                        "params": params,
-                        "target_agent": target_agent
-                    },
-                    "strict": True
+                    "cmd": {"tool": tool_id, "params": params, "target_agent": target_agent},
+                    "strict": True,
                 }
                 resp = await client.post("http://127.0.0.1:12345/finalize/opena2", json=cmd_payload)
                 resp.raise_for_status()
-                logger.info(f"📤 CMD safepoint forwarded to opena2")
+                logger.info("📤 CMD safepoint forwarded to opena2")
         except Exception as e:
             logger.error(f"Failed to forward CMD to opena2: {e}")
-            return False, self._error_response(
-                f"Archivator forwarding failed: {e}",
-                request_id
-            )
+            return False, self._error_response(f"Archivator forwarding failed: {e}", request_id)
 
         # Dispatch to agent
         try:
-            response = await self._send_request(
-                url=url,
-                method="POST",
-                payload=params,
-                timeout=timeout
-            )
+            response = await self._send_request(url=url, method="POST", payload=params, timeout=timeout)
 
             # Forward RESP to opena2 for safepoint
             try:
@@ -239,10 +213,10 @@ class ToolDispatcher:
                         "timestamp": datetime.utcnow().isoformat() + "Z",
                         "source": target_agent,
                         "result": response,
-                        "strict": True
+                        "strict": True,
                     }
                     await client.post("http://127.0.0.1:12345/store/resp", json=resp_payload)
-                    logger.info(f"📥 RESP safepoint forwarded to opena2")
+                    logger.info("📥 RESP safepoint forwarded to opena2")
             except Exception as e:
                 logger.warning(f"Failed to forward RESP to opena2: {e}")
 
@@ -253,24 +227,21 @@ class ToolDispatcher:
                 "request_id": request_id,
                 "result": response,
                 "archivator_status": "stored",
-                "strict": True
+                "strict": True,
             }
 
-        except asyncio.TimeoutError:
+        except TimeoutError:
             # Write TIMEOUT safepoint
             self.safepoint_writer.write_safepoint(
                 src=target_agent,
                 dst=source_agent,
                 kind=DispatcherEvent.TIMEOUT,
                 payload={"error": f"Tool execution timeout after {timeout}s"},
-                request_id=request_id
+                request_id=request_id,
             )
 
-            logger.error(f"⏱️ TIMEOUT safepoint created")
-            return False, self._error_response(
-                f"Tool execution timeout after {timeout}s",
-                request_id
-            )
+            logger.error("⏱️ TIMEOUT safepoint created")
+            return False, self._error_response(f"Tool execution timeout after {timeout}s", request_id)
 
         except Exception as e:
             # Write ERR safepoint
@@ -279,60 +250,35 @@ class ToolDispatcher:
                 dst=source_agent,
                 kind=DispatcherEvent.ERR,
                 payload={"error": str(e), "exception_type": type(e).__name__},
-                request_id=request_id
+                request_id=request_id,
             )
 
             logger.error(f"❌ ERR safepoint created: {e}")
             return False, self._error_response(str(e), request_id)
 
-    async def _send_request(
-        self,
-        url: str,
-        method: str,
-        payload: Dict[str, Any],
-        timeout: int
-    ) -> Dict[str, Any]:
+    async def _send_request(self, url: str, method: str, payload: dict[str, Any], timeout: int) -> dict[str, Any]:
         """Send HTTP request to agent (using urllib)"""
         return await asyncio.get_event_loop().run_in_executor(
-            None,
-            self._send_request_sync,
-            url,
-            method,
-            payload,
-            timeout
+            None, self._send_request_sync, url, method, payload, timeout
         )
 
-    def _send_request_sync(
-        self,
-        url: str,
-        method: str,
-        payload: Dict[str, Any],
-        timeout: int
-    ) -> Dict[str, Any]:
+    def _send_request_sync(self, url: str, method: str, payload: dict[str, Any], timeout: int) -> dict[str, Any]:
         """Synchronous HTTP request using urllib"""
         import json as json_lib
-        
-        headers = {
-            "Content-Type": "application/json",
-            "User-Agent": "ToolDispatcher/1.0"
-        }
+
+        headers = {"Content-Type": "application/json", "User-Agent": "ToolDispatcher/1.0"}
 
         if self.auth_token:
             headers["Authorization"] = f"Bearer {self.auth_token}"
 
         try:
             data = json_lib.dumps(payload).encode("utf-8")
-            req = urllib.request.Request(
-                url,
-                data=data,
-                headers=headers,
-                method=method.upper()
-            )
-            
+            req = urllib.request.Request(url, data=data, headers=headers, method=method.upper())
+
             with urllib.request.urlopen(req, timeout=timeout) as response:
                 response_data = response.read().decode("utf-8")
                 return json_lib.loads(response_data)
-                
+
         except urllib.error.URLError as e:
             raise Exception(f"Request failed: {e}")
         except Exception as e:
@@ -342,39 +288,25 @@ class ToolDispatcher:
     # Error Handling & Safepoints
     # ──────────────────────────────────────────────────────────────────────────
 
-    async def _write_error_safepoint(
-        self,
-        src: str,
-        dst: str,
-        error: str,
-        request_id: str
-    ) -> None:
+    async def _write_error_safepoint(self, src: str, dst: str, error: str, request_id: str) -> None:
         """Write error safepoint"""
         self.safepoint_writer.write_safepoint(
-            src=src,
-            dst=dst,
-            kind=DispatcherEvent.ERR,
-            payload={"error": error},
-            request_id=request_id
+            src=src, dst=dst, kind=DispatcherEvent.ERR, payload={"error": error}, request_id=request_id
         )
 
-    def _error_response(self, error_msg: str, request_id: str) -> Dict[str, Any]:
+    def _error_response(self, error_msg: str, request_id: str) -> dict[str, Any]:
         """Create error response in schema 8.3 format"""
         return {
             "ok": False,
             "request_id": request_id,
-            "error": {
-                "code": "DISPATCH_ERROR",
-                "message": error_msg,
-                "timestamp": datetime.utcnow().isoformat() + "Z"
-            }
+            "error": {"code": "DISPATCH_ERROR", "message": error_msg, "timestamp": datetime.utcnow().isoformat() + "Z"},
         }
 
     # ──────────────────────────────────────────────────────────────────────────
     # Registry Queries
     # ──────────────────────────────────────────────────────────────────────────
 
-    def get_available_tools(self) -> Dict[str, Any]:
+    def get_available_tools(self) -> dict[str, Any]:
         """Get all available tools organized by agent"""
         result = {}
         for agent in self.registry.list_agents(enabled_only=True):
@@ -384,18 +316,13 @@ class ToolDispatcher:
                     "agent_name": agent.name,
                     "port": agent.port,
                     "tools": [
-                        {
-                            "id": t.id,
-                            "name": t.name,
-                            "category": t.category.value,
-                            "description": t.description
-                        }
+                        {"id": t.id, "name": t.name, "category": t.category.value, "description": t.description}
                         for t in tools
-                    ]
+                    ],
                 }
         return result
 
-    def get_tool_info(self, tool_id: str) -> Optional[Dict[str, Any]]:
+    def get_tool_info(self, tool_id: str) -> dict[str, Any] | None:
         """Get detailed tool information"""
         tool = self.registry.get_tool(tool_id)
         if not tool:
@@ -410,20 +337,15 @@ class ToolDispatcher:
             "name": tool.name,
             "description": tool.description,
             "category": tool.category.value,
-            "agent": {
-                "id": agent.id,
-                "name": agent.name,
-                "port": agent.port,
-                "url": agent.get_url(tool.endpoint)
-            },
+            "agent": {"id": agent.id, "name": agent.name, "port": agent.port, "url": agent.get_url(tool.endpoint)},
             "timeout": tool.timeout_seconds,
             "requires_auth": tool.requires_auth,
             "params": tool.params,
             "version": tool.version,
-            "deprecated": tool.deprecated
+            "deprecated": tool.deprecated,
         }
 
-    def list_agent_tools(self, agent_id: str) -> Dict[str, Any]:
+    def list_agent_tools(self, agent_id: str) -> dict[str, Any]:
         """Get all tools available for an agent"""
         agent = self.registry.get_agent(agent_id)
         if not agent:
@@ -435,12 +357,6 @@ class ToolDispatcher:
             "agent_name": agent.name,
             "enabled": agent.enabled,
             "tools": [
-                {
-                    "id": t.id,
-                    "name": t.name,
-                    "description": t.description,
-                    "endpoint": t.endpoint
-                }
-                for t in tools
-            ]
+                {"id": t.id, "name": t.name, "description": t.description, "endpoint": t.endpoint} for t in tools
+            ],
         }

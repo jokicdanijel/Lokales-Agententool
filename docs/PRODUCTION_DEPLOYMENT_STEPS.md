@@ -3,6 +3,7 @@
 **Target:** Deploy ELION Stack to `https://hyperdashboard-one.de` with Nginx Reverse Proxy + SSL/TLS
 
 **Prerequisites Completed:**
+
 - ✅ Local stack tested and working (`bin/ops.sh start`)
 - ✅ 18 Agenten registriert
 - ✅ Dashboard UI erreichbar auf `http://127.0.0.1:12349/static/index.html`
@@ -29,6 +30,7 @@ sudo systemctl start docker
 ```
 
 ✅ **Check:**
+
 ```bash
 docker --version    # Should be v20+
 docker ps           # Should return empty list
@@ -39,6 +41,7 @@ docker ps           # Should return empty list
 ## Step 2: DNS Configuration
 
 **In your DNS provider (e.g., Namecheap, Google Domains, Route53):**
+
 1. Go to DNS Settings for `hyperdashboard-one.de`
 2. Add/Update A Record:
    - **Type:** A
@@ -49,6 +52,7 @@ docker ps           # Should return empty list
 3. Wait 5-15 minutes for DNS propagation
 
 ✅ **Verify DNS:**
+
 ```bash
 nslookup hyperdashboard-one.de
 # Should show: Name: hyperdashboard-one.de, Address: <SERVER_IP>
@@ -92,6 +96,7 @@ REDIS_URL=redis://localhost:6379/0
 ```
 
 ✅ **Verify .env:**
+
 ```bash
 grep -E "^(DASHBOARD_ADMIN_TOKEN|OPENAI_API_KEY)" .env | head -5
 ```
@@ -115,6 +120,7 @@ bash bin/ops.sh health
 ```
 
 ✅ **Expected Output:**
+
 ```
 ✅ opena1 Health: ok
 ✅ opena2 Health: ok
@@ -204,6 +210,7 @@ server {
 ```
 
 ✅ **Enable site:**
+
 ```bash
 sudo ln -s /etc/nginx/sites-available/hyperdashboard-one.de /etc/nginx/sites-enabled/
 sudo nginx -t
@@ -226,12 +233,14 @@ sudo certbot --nginx -d hyperdashboard-one.de
 ```
 
 ✅ **Verify certificate:**
+
 ```bash
 sudo ls -la /etc/letsencrypt/live/hyperdashboard-one.de/
 # Should show: fullchain.pem, privkey.pem, etc.
 ```
 
 ✅ **Auto-renewal:**
+
 ```bash
 sudo certbot renew --dry-run
 sudo systemctl enable certbot.timer
@@ -254,6 +263,7 @@ sudo systemctl status nginx
 ## Step 9: Test External Access
 
 ### Local tests (from server):
+
 ```bash
 # Test HTTPS locally
 curl -k https://localhost/health | jq .
@@ -261,6 +271,7 @@ curl -k https://localhost/api/agents | jq '.agents | length'
 ```
 
 ### Remote tests (from any internet-connected device):
+
 ```bash
 # Test HTTPS external
 curl https://hyperdashboard-one.de/health | jq .
@@ -273,6 +284,7 @@ curl https://hyperdashboard-one.de/opena4/docs
 ```
 
 ### Browser test:
+
 ```
 https://hyperdashboard-one.de/static/index.html
 ```
@@ -308,6 +320,7 @@ sudo nano /etc/cron.d/elion-health
 ```
 
 **Add:**
+
 ```bash
 # Health check every 5 minutes
 */5 * * * * curl -s https://hyperdashboard-one.de/health >> /var/log/elion-health.log 2>&1
@@ -346,13 +359,13 @@ sudo ufw status
 
 ## 🎯 Production URLs
 
-| Endpoint | URL | Purpose |
-|----------|-----|---------|
-| Main Dashboard | `https://hyperdashboard-one.de/static/index.html` | Web UI |
-| API Agents | `https://hyperdashboard-one.de/api/agents` | Agent Registry |
-| API Status | `https://hyperdashboard-one.de/api/status/all` | System Status |
-| Health | `https://hyperdashboard-one.de/health` | Health Check |
-| opena4 Swagger | `https://hyperdashboard-one.de/opena4/docs` | Telegram API |
+| Endpoint         | URL                                                        | Purpose          |
+| ---------------- | ---------------------------------------------------------- | ---------------- |
+| Main Dashboard   | `https://hyperdashboard-one.de/static/index.html`          | Web UI           |
+| API Agents       | `https://hyperdashboard-one.de/api/agents`                 | Agent Registry   |
+| API Status       | `https://hyperdashboard-one.de/api/status/all`             | System Status    |
+| Health           | `https://hyperdashboard-one.de/health`                     | Health Check     |
+| opena4 Swagger   | `https://hyperdashboard-one.de/opena4/docs`                | Telegram API     |
 | Telegram Webhook | `https://hyperdashboard-one.de/telegram/webhook/{bot_key}` | Webhook Endpoint |
 
 ---
@@ -360,6 +373,7 @@ sudo ufw status
 ## 🔧 Troubleshooting
 
 **HTTPS Not Working:**
+
 ```bash
 # Check SSL certificate
 sudo certbot certificates
@@ -372,6 +386,7 @@ sudo tail -50 /var/log/nginx/error.log
 ```
 
 **Services Not Responding:**
+
 ```bash
 # Check if services running
 curl http://127.0.0.1:12349/health
@@ -382,6 +397,7 @@ tail -50 /var/www/hyperdashboard/logs/dashboard.nohup.log
 ```
 
 **DNS Not Resolving:**
+
 ```bash
 # Clear DNS cache
 sudo systemctl restart systemd-resolved
@@ -400,7 +416,6 @@ nslookup hyperdashboard-one.de +nocmd
 
 ---
 
-**Status:** ✅ Ready for Production  
-**Date:** 2025-12-17  
+**Status:** ✅ Ready for Production
+**Date:** 2025-12-17
 **Last Updated:** 2025-12-17
-

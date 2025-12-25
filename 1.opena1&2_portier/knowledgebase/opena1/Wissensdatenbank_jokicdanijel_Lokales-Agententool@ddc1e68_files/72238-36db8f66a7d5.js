@@ -1,2 +1,1689 @@
-"use strict";(globalThis.webpackChunk_github_ui_github_ui=globalThis.webpackChunk_github_ui_github_ui||[]).push([[72238],{2970:(e,t,r)=>{r.d(t,{c:()=>w});var i=r(74848),a=r(73189),l=r(34164),n=r(96540),s=r(75986),o=r(18377),c=r(24347),d=r(35220),u=r(9214);let m=(0,n.createContext)({actionsOpen:!1,setActionsOpen:a.l}),h=({children:e})=>{let[t,r]=(0,n.useState)(!1),a=(0,n.useMemo)(()=>({actionsOpen:t,setActionsOpen:r}),[t]);return(0,i.jsx)(m.Provider,{value:a,children:e})};h.displayName="ListItemActionsProvider";try{m.displayName||(m.displayName="ActionsContext")}catch{}var f=r(77177),y=r(29731);function v({style:e,className:t,children:r}){return(0,i.jsx)("div",{className:(0,l.$)("MetadataContainer-module__container--nU0s9",t),style:e,...(0,y.G)("list-view-item-metadata"),children:r})}try{v.displayName||(v.displayName="ListItemMetadataContainer")}catch{}var p=r(49744),x=r(60257),N=r(27603),g=r(74501);let b=(0,n.forwardRef)(({children:e,isActive:t=!1,title:r,metadata:a,secondaryActions:m,style:h,className:y,metadataContainerStyle:b,metadataContainerClassName:w,as:C,...j},S)=>{let{idPrefix:_}=(0,s.If)(),{isSelectable:L}=(0,c.v)(),{variant:A}=(0,d.e)(),{anyItemsWithActionBar:I,hasResizableActionsWithActionBar:M}=(0,o.Z)(),E=(0,n.useId)(),{isSelected:T,onSelect:P}=(0,x.r)(),{status:R}=(0,N.x)(),{title:B,titleAction:O,headingRef:k}=(0,g.J)(),{description:H}=(0,f.L)(),{hasNewActivity:V}=(0,p.I)(),$=(0,n.useRef)(null);(0,n.useEffect)(()=>{"function"==typeof S?S($.current):S&&(S.current=$.current)},[S]),(0,n.useEffect)(()=>{$.current&&t&&document.activeElement?.tagName==="BODY"&&$.current.focus()});let D=(0,n.useCallback)(e=>{switch(e.key){case"Enter":if(O){let t=document.activeElement,r=$.current===t,i=k.current&&(k.current===t||k.current.contains(t));(r||i)&&O(e)}break;case" ":if(!L||$?.current!==document.activeElement)break;e.preventDefault(),P(!T);break;case"Escape":$?.current?.focus()}},[O,L,P,T,k]),W=(0,n.useCallback)(()=>{let e=T?"Selected":"",t=V?"New activity":"",r=!!m,i=Array.isArray(a)&&a.length>0||a&&!Array.isArray(a),l="";(i||r)&&(l="More information available below");let n=[B,R].filter(e=>e.trim()).join(": ");try{n=n.replace(/(?<!\.)\.+$/,"")}catch{for(;n.endsWith(".");)n=n.substring(0,n.length-1)}let s=[e,n,H,t,l].filter(e=>e.trim()).join(". ");return s.endsWith(".")?s:`${s}.`},[m,a,T,V,B,R,H]);return(0,i.jsxs)(C||"li",{ref:$,id:`${_}-list-view-node-${E}`,className:(0,l.$)("ListItem-module__listItem--k4eMk",T&&"ListItem-module__selected--WTEJT","compact"===A&&"ListItem-module__compact--f4FSR",I&&M&&"ListItem-module__hasActionBar--t14sR",y),tabIndex:-1,"aria-label":W(),style:h,onKeyDown:D,...j,children:[r,e,Array.isArray(a)&&a.length>0?(0,i.jsx)(v,{style:b,className:w,children:a.map((e,t)=>(0,i.jsx)(n.Fragment,{children:e},t))}):!!(a&&!Array.isArray(a))&&(0,i.jsx)(v,{style:b,className:w,children:a}),m??(I&&(0,i.jsx)(u.L,{}))]})});b.displayName="ListItemBase";let w=(0,n.forwardRef)(({children:e,isSelected:t=!1,onSelect:r=a.l,...l},s)=>{let{setSelectedCount:o}=(0,c.v)(),d=(0,n.useRef)(t);d.current=t,(0,n.useEffect)(()=>{o(e=>t?e+1:Math.max(0,e-1))},[t,o]),(0,n.useEffect)(()=>()=>{d.current&&o(e=>Math.max(0,e-1))},[o]);let u=(0,n.useMemo)(()=>({isSelected:t,onSelect:r}),[t,r]);return(0,i.jsx)(h,{children:(0,i.jsx)(g.y,{children:(0,i.jsx)(x.W,{value:u,children:(0,i.jsx)(p.t,{children:(0,i.jsx)(f.O,{children:(0,i.jsx)(N.u,{children:(0,i.jsx)(b,{...l,ref:s,children:e})})})})})})})});w.displayName="ListItem"},9214:(e,t,r)=>{r.d(t,{L:()=>c});var i=r(74848),a=r(91230),l=r(29731),n=r(34164),s=r(96540),o=r(18377);let c=({anchorIcon:e,style:t,className:r,label:c="list item action bar",...d})=>{let{setAnyItemsWithActionBar:u,setHasResizableActionsWithActionBar:m}=(0,o.Z)();return(0,s.useEffect)(()=>u(!0),[u]),(0,s.useEffect)(()=>{d.actions&&m(!0)},[d.actions,m]),(0,i.jsx)("div",{className:(0,n.$)("ActionBar-module__container--8I2RB",d.actions&&"ActionBar-module__hasActions--HH0uB",r),style:t,...(0,l.G)("list-view-item-action-bar-container"),children:(0,i.jsx)(a.E7,{...d,label:c,variant:"menu",overflowMenuToggleProps:e?{icon:e}:void 0})})};try{c.displayName||(c.displayName="ListItemActionBar")}catch{}},18377:(e,t,r)=>{r.d(t,{Z:()=>o,w:()=>s});var i=r(74848),a=r(73189),l=r(96540);let n=(0,l.createContext)({anyItemsWithActionBar:!1,setAnyItemsWithActionBar:a.l,hasResizableActionsWithActionBar:!1,setHasResizableActionsWithActionBar:a.l}),s=({children:e})=>{let[t,r]=(0,l.useState)(!1),[a,s]=(0,l.useState)(!1),o=(0,l.useMemo)(()=>({anyItemsWithActionBar:t,setAnyItemsWithActionBar:r,hasResizableActionsWithActionBar:a,setHasResizableActionsWithActionBar:s}),[t,a]);return(0,i.jsx)(n.Provider,{value:o,children:e})};s.displayName="ListViewItemsProvider";let o=()=>(0,l.useContext)(n);try{n.displayName||(n.displayName="ItemsContext")}catch{}},20263:(e,t,r)=>{r.d(t,{BC:()=>o,JU:()=>d,Pk:()=>s});var i=r(74848),a=r(35811),l=r(99418),n=r(96540);let s=u(a.az),o=u(a.EY),c=(0,n.forwardRef)((e,t)=>(0,i.jsx)("div",{...e,ref:t}));c.displayName="Div";let d=u(c);function u(e){let t=(0,n.forwardRef)((t,r)=>{let{sanitizedHTML:a,props:n}=function(e){let{html:t,domPurifyConfig:r,...i}=e,a={...r,RETURN_DOM:!1,RETURN_DOM_FRAGMENT:!1};return{sanitizedHTML:l.default.sanitize(t,a),props:i}}(t);return(0,i.jsx)(e,{...n,dangerouslySetInnerHTML:{__html:a},ref:r})});return t.displayName=`UnsafeHTML${e.displayName||e.name}`,t}try{d.displayName||(d.displayName="UnsafeHTMLDiv")}catch{}},24347:(e,t,r)=>{r.d(t,{W:()=>d,v:()=>u});var i=r(74848),a=r(73189),l=r(96540),n=r(50205);let s="list item",o="list items",c=(0,l.createContext)({selectedCount:0,setSelectedCount:a.l,countOnPage:0,isSelectAllChecked:!1,anyItemsSelected:!1,singularUnits:s,pluralUnits:o,isSelectable:n.eX,hasDragHandle:n.os}),d=({children:e,countOnPage:t=0,singularUnits:r=s,pluralUnits:a=o,totalCount:d,selectedCount:u=0,isSelectable:m=n.eX,hasDragHandle:h=n.os}={singularUnits:s,pluralUnits:o,selectedCount:0,countOnPage:0,isSelectable:n.eX,hasDragHandle:n.os})=>{let[f,y]=(0,l.useState)(u);(0,l.useEffect)(()=>y(u),[u]);let v=f>0&&f>=t,p=f>0,x=(0,l.useMemo)(()=>({totalCount:d,countOnPage:t,selectedCount:f,setSelectedCount:y,isSelectAllChecked:v,anyItemsSelected:p,singularUnits:r,pluralUnits:a,isSelectable:m,hasDragHandle:h}),[d,t,f,y,v,p,r,a,m,h]);return(0,i.jsx)(c.Provider,{value:x,children:e})};d.displayName="ListViewSelectionProvider";let u=()=>(0,l.useContext)(c);try{c.displayName||(c.displayName="SelectionContext")}catch{}},27603:(e,t,r)=>{r.d(t,{u:()=>n,x:()=>s});var i=r(74848),a=r(96540);let l=(0,a.createContext)(void 0),n=({children:e})=>{let[t,r]=(0,a.useState)(""),n=(0,a.useMemo)(()=>({status:t,setStatus:r}),[t]);return(0,i.jsx)(l.Provider,{value:n,children:e})};n.displayName="ListItemStatusProvider";let s=()=>{let e=(0,a.useContext)(l);if(!e)throw Error("useListItemStatus must be used with StatusProvider.");return e};try{l.displayName||(l.displayName="StatusContext")}catch{}},35220:(e,t,r)=>{r.d(t,{H:()=>o,e:()=>c});var i=r(74848),a=r(73189),l=r(96540),n=r(50205);let s=(0,l.createContext)(void 0),o=({children:e,variant:t=n.tp,setVariant:r=a.l})=>{let o=(0,l.useMemo)(()=>({variant:t,setVariant:r}),[r,t]);return(0,i.jsx)(s.Provider,{value:o,children:e})};o.displayName="ListViewVariantProvider";let c=()=>{let e=(0,l.useContext)(s);if(!e)throw Error("useListViewVariant must be used with VariantProvider.");return e};try{s.displayName||(s.displayName="VariantContext")}catch{}},49744:(e,t,r)=>{r.d(t,{I:()=>s,t:()=>n});var i=r(74848),a=r(96540);let l=(0,a.createContext)(void 0),n=({children:e})=>{let[t,r]=(0,a.useState)(!1),n=(0,a.useMemo)(()=>({hasNewActivity:t,setHasNewActivity:r}),[t]);return(0,i.jsx)(l.Provider,{value:n,children:e})};n.displayName="ListItemNewActivityProvider";let s=()=>{let e=(0,a.useContext)(l);if(!e)throw Error("useListItemNewActivity must be used with NewActivityProvider.");return e};try{l.displayName||(l.displayName="NewActivityContext")}catch{}},50205:(e,t,r)=>{r.d(t,{Dy:()=>a,O1:()=>n,QL:()=>d,eX:()=>o,n1:()=>i,os:()=>c,tD:()=>l,tp:()=>s});let i=["h1","h2","h3","h4","h5","h6"],a=["list-view","list-view-metadata","listitem"],l="h2",n={"list-view":l,"list-view-metadata":"h3",listitem:"h3"},s="default",o=!1,c=!1,d="List view"},53419:(e,t,r)=>{let i;r.d(t,{BI:()=>f,Ti:()=>y,lA:()=>m,sX:()=>h});var a=r(70837),l=r(18679),n=r(82075),s=r(11083);let{getItem:o}=(0,n.A)("localStorage"),c="dimension_",d=["utm_source","utm_medium","utm_campaign","utm_term","utm_content","scid"];try{let e=(0,a.O)("octolytics");delete e.baseContext,i=new l.s(e)}catch{}function u(e){let t=(0,a.O)("octolytics").baseContext||{};if(t)for(let[e,r]of(delete t.app_id,delete t.event_url,delete t.host,Object.entries(t)))e.startsWith(c)&&(t[e.replace(c,"")]=r,delete t[e]);let r=document.querySelector("meta[name=visitor-payload]");for(let[e,i]of(r&&Object.assign(t,JSON.parse(atob(r.content))),new URLSearchParams(window.location.search)))d.includes(e.toLowerCase())&&(t[e]=i);return t.staff=(0,s.X)().toString(),Object.assign(t,e)}function m(e){i?.sendPageView(u(e))}function h(){return document.head?.querySelector('meta[name="current-catalog-service"]')?.content}function f(e,t={}){let r=h(),a=r?{service:r}:{};for(let[e,r]of Object.entries(t))null!=r&&(a[e]=`${r}`);i&&(u(a),i.sendEvent(e||"unknown",u(a)))}function y(e){return Object.fromEntries(Object.entries(e).map(([e,t])=>[e,JSON.stringify(t)]))}},53687:(e,t,r)=>{r.d(t,{P:()=>s,e:()=>n});var i=r(74848),a=r(96540);let l=(0,a.createContext)({multiPageSelectionAllowed:!1}),n=({children:e,multiPageSelectionAllowed:t=!1})=>{let[r,n]=(0,a.useState)(t),s=(0,a.useMemo)(()=>({multiPageSelectionAllowed:r,setMultiPageSelectionAllowed:n}),[r]);return(0,i.jsx)(l.Provider,{value:s,children:e})};n.displayName="ListViewMultiPageSelectionProvider";let s=()=>(0,a.useContext)(l);try{l.displayName||(l.displayName="MultiPageSelectionContext")}catch{}},56825:(e,t,r)=>{r.d(t,{m:()=>n});var i=r(96540),a=r(50205),l=r(61015);function n(e){let{titleHeaderTag:t,hasMetadataTitle:r}=(0,l.t)();return(0,i.useMemo)(()=>{let i=a.Dy.findIndex(t=>t===e),l=a.n1.indexOf(t)+(r?i:i-1);return l>a.n1.length-1?"h6":a.n1[l]||a.O1[e]},[t,r,e])}},60257:(e,t,r)=>{r.d(t,{W:()=>c,r:()=>d});var i=r(74848),a=r(4559),l=r(73189),n=r(96540),s=r(74501);let o=(0,n.createContext)({isSelected:!1,onSelect:l.l}),c=({children:e,value:{isSelected:t,onSelect:r}})=>{let{title:l}=(0,s.J)(),c=(0,n.useMemo)(()=>({isSelected:t,onSelect:e=>{(0,a.i)(e?`Selected. ${l}.`:`Unselected. ${l}.`),r(e)}}),[t,r,l]);return(0,i.jsx)(o.Provider,{value:c,children:e})};c.displayName="ListItemSelectionProvider";let d=()=>(0,n.useContext)(o);try{o.displayName||(o.displayName="SelectionContext")}catch{}},61015:(e,t,r)=>{r.d(t,{t:()=>o,y:()=>s});var i=r(74848),a=r(96540),l=r(50205);let n=(0,a.createContext)(void 0),s=({children:e,title:t,titleHeaderTag:r=l.tD})=>{let[s,o]=(0,a.useState)(!1),c=(0,a.useMemo)(()=>({title:t.trim()||l.QL,titleHeaderTag:r,hasMetadataTitle:s,setHasMetadataTitle:o}),[s,t,r]);return(0,i.jsx)(n.Provider,{value:c,children:e})};s.displayName="ListViewTitleProvider";let o=()=>{let e=(0,a.useContext)(n);if(!e)throw Error("useListViewTitle must be used with TitleProvider.");return e};try{n.displayName||(n.displayName="TitleContext")}catch{}},73017:(e,t,r)=>{r.d(t,{$6:()=>c,JR:()=>s,vb:()=>n});var i=r(74848),a=r(35811),l=r(96540);let n=d(a.az),s=d(a.EY),o=(0,l.forwardRef)((e,t)=>(0,i.jsx)("div",{...e,ref:t}));o.displayName="Div";let c=d(o);function d(e){let t=(0,l.forwardRef)((t,r)=>{let{html:a,...l}=t;return(0,i.jsx)(e,{ref:r,...l,dangerouslySetInnerHTML:a?{__html:a}:void 0})});return t.displayName=`SafeHTML${e.displayName||e.name}`,t}try{n.displayName||(n.displayName="VerifiedHTMLBox")}catch{}try{s.displayName||(s.displayName="VerifiedHTMLText")}catch{}try{c.displayName||(c.displayName="VerifiedHTMLDiv")}catch{}},74501:(e,t,r)=>{r.d(t,{J:()=>s,y:()=>n});var i=r(74848),a=r(96540);let l=(0,a.createContext)(void 0),n=({children:e})=>{let[t,r]=(0,a.useState)(""),[n,s]=(0,a.useState)(null),o=(0,a.useRef)(null);(0,a.useEffect)(()=>{o?.current?.textContent&&r(o.current.textContent.trim())},[o,r]);let c=(0,a.useMemo)(()=>({title:t,titleAction:n,setTitleAction:s,headingRef:o}),[t,n]);return(0,i.jsx)(l.Provider,{value:c,children:e})};n.displayName="ListItemTitleProvider";let s=()=>{let e=(0,a.useContext)(l);if(!e)throw Error("useListItemTitle must be used with TitleProvider.");return e};try{l.displayName||(l.displayName="TitleContext")}catch{}},75986:(e,t,r)=>{r.d(t,{If:()=>s,JE:()=>n});var i=r(74848),a=r(96540);let l=(0,a.createContext)(void 0),n=({children:e})=>{let t=(0,a.useId)(),r=(0,a.useMemo)(()=>({idPrefix:t}),[t]);return(0,i.jsx)(l.Provider,{value:r,children:e})};n.displayName="ListViewIdProvider";let s=()=>{let e=(0,a.useContext)(l);if(!e)throw Error("useListViewId must be used with IdProvider.");return e};try{l.displayName||(l.displayName="IdContext")}catch{}},77177:(e,t,r)=>{r.d(t,{L:()=>s,O:()=>n});var i=r(74848),a=r(96540);let l=(0,a.createContext)(void 0),n=({children:e})=>{let[t,r]=(0,a.useState)(""),n=(0,a.useMemo)(()=>({description:t,setDescription:r}),[t]);return(0,i.jsx)(l.Provider,{value:n,children:e})};n.displayName="ListItemDescriptionProvider";let s=()=>{let e=(0,a.useContext)(l);if(!e)throw Error("useListItemDescription must be used with DescriptionProvider.");return e};try{l.displayName||(l.displayName="DescriptionContext")}catch{}},80293:(e,t,r)=>{r.d(t,{N:()=>a});var i=r(96540);function a(e,{isPropUpdateDisabled:t=!1,isEqual:r=Object.is}={}){let[l,n]=(0,i.useState)(e),[s,o]=(0,i.useState)(e),c=e instanceof Function?e():e;return t||r(s,c)||(o(c),n(c)),[l,n]}},91230:(e,t,r)=>{r.d(t,{E7:()=>H});var i=r(74848),a=r(96540);let l=(0,a.createContext)({actions:[],staticMenuActions:[],label:"Actions",gap:0}),n=({children:e,value:{actions:t=[],staticMenuActions:r,variant:n="toolbar",label:s,gap:o}})=>{let c=(0,a.useMemo)(()=>({actions:t,staticMenuActions:r,variant:n,label:s,gap:o}),[t,r,n,s,o]);return(0,i.jsx)(l.Provider,{value:c,children:e})},s=()=>{let e=(0,a.useContext)(l);if(!e)throw Error("useActionBarContent must be used with ActionBarContentProvider.");return e};try{l.displayName||(l.displayName="ActionBarContentContext")}catch{}try{n.displayName||(n.displayName="ActionBarContentProvider")}catch{}let o=(0,a.createContext)({outerContainerRef:(0,a.createRef)(),itemContainerRef:(0,a.createRef)()}),c=({value:{anchorRef:e},children:t})=>{let r=(0,a.useRef)(null),l=(0,a.useRef)(null),n=(0,a.useMemo)(()=>({outerContainerRef:r,itemContainerRef:l,anchorRef:e}),[e]);return(0,i.jsx)(o.Provider,{value:n,children:t})},d=()=>{let e=(0,a.useContext)(o);if(!e)throw Error("useActionBarRef must be used with ActionBarRefProvider.");return e};try{o.displayName||(o.displayName="ActionBarRefContext")}catch{}try{c.displayName||(c.displayName="ActionBarRefProvider")}catch{}var u=r(73189),m=r(80293),h=r(50463),f=r(93330);let y=(e,t)=>{let r=2*(e=>{if(!e)return 0;let t=window.getComputedStyle(e);return t?.columnGap?parseInt(t.columnGap,10):0})(t),i=e.getBoundingClientRect().width,a=window.getComputedStyle(e);return i+(a?.marginLeft?parseInt(a.marginLeft,10):0)+(a?.marginRight?parseInt(a.marginRight,10):0)+r},v=(e,t)=>{let r=p(e,t);if(void 0===r)return;let i=r;return t&&(i-=t.offsetLeft),i},p=(e,t)=>{if(!e)return;let r=e.offsetWidth;return t&&(r-=t.offsetWidth),r},x=(0,a.createContext)({visibleChildEndIndex:0,justifySpaceBetween:!1,recalculateItemSize:u.l}),N=({children:e,value:{actionKeys:t}})=>{let r=t.length,[l,n]=(0,m.N)(r),{outerContainerRef:s,itemContainerRef:o}=d(),[c,u]=(0,a.useState)(),[N,g]=(0,a.useState)(),[b,w]=(0,a.useState)(new Map(t.map(e=>[e,void 0]))),[C,j]=(0,a.useState)(!1),S=(0,a.useMemo)(()=>t.slice(0,l).every(e=>b.has(e)&&"number"==typeof b.get(e)),[t,b,l]),_=(0,a.useCallback)(e=>{let r=t[e];if(r)return b.get(r)},[t,b]),L=(0,a.useCallback)((e,t)=>{let r=o.current;if(!r)return;let i=y(t,r);w(t=>{if(i===t.get(e)||isNaN(i))return t;let r=new Map(Array.from(t.entries()));return r.set(e,i),r})},[o]),A=(0,a.useCallback)(()=>{if(!S)return;let e=s.current,t=o.current,r=p(e,t);if(void 0===r)return;let i=v(e,t);void 0!==i&&r<=i&&n(Math.max(0,l-1))},[S,s,o,n,l]),I=(0,a.useCallback)(()=>{let e=s.current,t=o.current,i=p(e,t);if(void 0===i)return;let a=_(l);if(void 0===a)return;let c=v(e,t);void 0!==c&&i>c+a&&n(Math.min(r,l+1))},[s,o,_,l,n,r]),M=(0,a.useCallback)(()=>{let e=s.current,t=o.current;if(!e||!t)return;let r=e.offsetWidth;r&&(void 0===c||r<=c?A():r>c&&I(),u(r),j(r<=(N??t.offsetWidth)))},[I,A,N,c,s,o]);(0,h.A)(()=>{let e=o.current;if(!e)return;let r=new Map;for(let i of t){let t=e.querySelector(`[data-action-bar-item="${i}"]`);t&&r.set(i,y(t,e))}w(r)},[t,o]),(0,h.A)(()=>{let e=o.current;e&&g(e.offsetWidth)},[o]),(0,h.A)(()=>{M()},[M]),(0,f.w)(M,s);let E=(0,a.useMemo)(()=>({visibleChildEndIndex:l,justifySpaceBetween:C,recalculateItemSize:L}),[l,C,L]);return(0,i.jsx)(x.Provider,{value:E,children:e})},g=()=>{let e=(0,a.useContext)(x);return e||{justifySpaceBetween:!1,visibleChildEndIndex:0,recalculateItemSize:u.l}};try{x.displayName||(x.displayName="ActionBarResizeContext")}catch{}try{N.displayName||(N.displayName="ActionBarResizeProvider")}catch{}var b=r(29731),w=r(11683),C=r(45800),j=r(34164),S=r(38621),_=r(94236),L=r(26108),A=r(5524),I=r(35811);let M=S.KebabHorizontalIcon,E="invisible",T=({anchorProps:{"aria-label":e,icon:t=M,variant:r=E,...l}={icon:M,variant:E},open:n,onOpenChange:o})=>{let{anchorRef:c}=d(),{actions:u,staticMenuActions:m,label:h}=s(),{visibleChildEndIndex:f}=g(),y=(0,a.useMemo)(()=>(0,I.h1)(l,{"aria-label":e?.trim()||`More ${h}`,icon:t,className:"OverflowMenu-module__IconButton_0--cxtvS",variant:r}),[e,t,h,r,l]),v=(0,a.useMemo)(()=>u?.slice(f),[u,f]),p=v&&v.length>0,x=m&&m.length>0;return p||x?(0,i.jsxs)(_.W,{anchorRef:c,open:n,onOpenChange:o,children:[(0,i.jsx)(_.W.Anchor,{children:(0,i.jsx)(L.K,{...(0,b.G)("overflow-menu-anchor"),...y})}),(0,i.jsx)(_.W.Overlay,{align:"end","data-overflow-menu-overlay":!0,children:(0,i.jsxs)(A.l,{children:[x&&m.map(e=>(0,i.jsx)(a.Fragment,{children:e.render()},e.key)),v?.map(e=>(0,i.jsx)(a.Fragment,{children:e.render(!0)},e.key))]})})]}):null};try{T.displayName||(T.displayName="OverflowMenu")}catch{}let P=({children:e,actionKey:t})=>{let r=(0,a.useRef)(null),{recalculateItemSize:l}=g();return(0,h.A)(()=>{r.current&&l(t,r.current)},[r,l,t]),(0,i.jsx)("div",{...(0,b.G)(`action-bar-item-${t}`),"data-action-bar-item":t,ref:r,className:"VisibleItem-module__Box_0--BsJkb",children:e})};try{P.displayName||(P.displayName="VisibleItem")}catch{}let R=({className:e,style:t})=>{let{itemContainerRef:r}=d(),{actions:a,gap:l}=s(),{visibleChildEndIndex:n}=g(),o=a?.slice(0,n);return(0,i.jsx)("div",{...(0,b.G)("action-bar"),ref:r,className:(0,j.$)(e,"VisibleItems-module__Box_1--LOtDr"),style:{gap:l,...t},children:o?.map(({key:e,render:t})=>(0,i.jsx)(P,{actionKey:e,children:t(!1)},e))})};try{R.displayName||(R.displayName="VisibleItems")}catch{}let B=({overflowMenuToggleProps:e,overflowMenuProps:t,children:r,...a})=>{let{outerContainerRef:l}=d(),{label:n,variant:o,gap:c}=s(),{justifySpaceBetween:u}=g();return(0,C.G)({containerRef:l,bindKeys:w.z0.ArrowHorizontal|w.z0.HomeAndEnd,focusOutBehavior:"wrap",disabled:"toolbar"!==o},[l]),(0,i.jsxs)("div",{ref:l,...(0,b.G)("action-bar-container"),role:"toolbar"===o?"toolbar":void 0,"aria-label":"toolbar"===o?n:void 0,style:{gap:c},className:(0,j.$)("VisibleAndOverflowContainer-module__Box_0--KyT2b",u&&"VisibleAndOverflowContainer-module__space--fVHr3"),children:[(0,i.jsx)(R,{...a}),r,(0,i.jsx)(T,{anchorProps:e,...t})]})};try{B.displayName||(B.displayName="VisibleAndOverflowContainer")}catch{}let O="normal",k=({children:e,...t})=>(0,i.jsx)(B,{...t,children:e}),H=({actions:e=[],staticMenuActions:t,overflowMenuToggleProps:r,overflowMenuProps:l,children:s,label:o,variant:d,density:u=O,anchorRef:m,className:h,style:f})=>{let y=(0,a.useMemo)(()=>({actions:e,staticMenuActions:t,variant:d,label:o,gap:"condensed"===u?"var(--base-size-4)":"spacious"===u?"var(--base-size-16)":"none"===u?0:"var(--base-size-8)"}),[e,t,d,o,u]),v=(0,a.useMemo)(()=>({actionKeys:e.map(e=>e.key)}),[e]),p=t&&t.length>0,x=e&&e.length>0;if(!x&&!p)return null;let g={overflowMenuToggleProps:r,overflowMenuProps:l,className:h,style:f};return(0,i.jsx)(c,{value:{anchorRef:m},children:(0,i.jsx)(n,{value:y,children:x?(0,i.jsx)(N,{value:v,children:(0,i.jsx)(k,{...g,children:s})}):(0,i.jsx)(k,{...g,children:s})})})};try{k.displayName||(k.displayName="InternalActionBar")}catch{}try{H.displayName||(H.displayName="ActionBar")}catch{}},95378:(e,t,r)=>{r.d(t,{kx:()=>w,ao:()=>b});var i,a,l=r(74848),n=r(20263),s=r(73017),o=r(29731),c=r(34164),d=r(96540),u=r(56825),m=r(35220),h=r(87670),f=r(46720),y=r(24347),v=r(60257),p=r(74501);let x=()=>{let{variant:e}=(0,m.e)(),{isSelectable:t,hasDragHandle:r}=(0,y.v)(),{isSelected:i,onSelect:a}=(0,v.r)(),{title:n}=(0,p.J)();return t?(0,l.jsxs)("div",{className:r?"Selection-module__containerWithDragHandle--mLWh4":"Selection-module__container--OQE4d",...(0,o.G)("list-view-item-selection"),children:[r&&(0,l.jsx)(h.BS.DragTrigger,{className:(0,c.$)("Selection-module__dragTrigger--SM4bZ","compact"===e&&"Selection-module__compact--azMKM")}),(0,l.jsx)(f.A,{className:"compact"===e?"Selection-module__checkboxCompact--zfQtx":"Selection-module__checkbox--X3ras",checked:i,onChange:()=>a(!i),"aria-label":`Select: ${n}`,"data-listview-component":"selection-input",...(0,o.G)("list-view-item-selection-input")})]}):null};try{x.displayName||(x.displayName="ListItemSelection")}catch{}let N="Title-module__compact--eK6hD";function g({children:e,containerStyle:t,containerClassName:r,headerContainerRef:i,headingStyle:a,headingClassName:n,headingRef:s,leadingBadge:d,trailingBadges:h,header:f}){let{variant:y}=(0,m.e)(),{headingRef:v}=(0,p.J)(),g=(0,u.m)("listitem");return(0,l.jsxs)(l.Fragment,{children:[(0,l.jsxs)("div",{...(0,o.G)("list-view-item-title-container"),style:t,className:(0,c.$)("Title-module__container--XD9YG","compact"===y&&N,r),ref:i,"data-listview-item-title-container":!0,children:[(0,l.jsxs)(g,{className:(0,c.$)("Title-module__heading--s7YnL","compact"===y&&N,n),style:a,ref:e=>{if(v&&(v.current=e),s&&"current"in s)try{s.current=e}catch{}},...(0,o.G)("list-view-item-title"),children:[d,f]}),h&&(0,l.jsx)("span",{className:"Title-module__trailingBadgesSpacer--Son9W"}),(0,l.jsx)("span",{className:"Title-module__trailingBadgesContainer--mijcn",children:h}),e]}),(0,l.jsx)(x,{})]})}function b({children:e,value:t,containerStyle:r,containerClassName:i,headerContainerRef:a,headingStyle:n,headingClassName:s,headingRef:o,leadingBadge:c,trailingBadges:u,anchorRef:m,...h}){let f=(0,d.useRef)(null),y=m||f;return j({anchorRef:y,...h}),(0,l.jsx)(g,{header:h.href||h.onClick?(0,l.jsx)(C,{anchorRef:y,...h,children:(0,l.jsx)("span",{children:t})}):(0,l.jsx)("span",{children:t}),containerStyle:r,containerClassName:i,headerContainerRef:a,headingStyle:n,headingClassName:s,headingRef:o,leadingBadge:c,trailingBadges:u,children:e})}function w({children:e,html:t,containerStyle:r,containerClassName:i,headerContainerRef:a,headingStyle:s,headingClassName:o,headingRef:c,leadingBadge:d,trailingBadges:u,...m}){return j(m),(0,l.jsx)(g,{header:(0,l.jsx)(n.BC,{html:t,...m}),containerStyle:r,containerClassName:i,headerContainerRef:a,headingStyle:s,headingClassName:o,headingRef:c,leadingBadge:d,trailingBadges:u,children:e})}function C({anchorStyle:e,anchorClassName:t,anchorRef:r,linkProps:i,children:a,...n}){let{as:s="a",...u}=i??{},m=(0,d.useRef)(null);return(0,l.jsx)(s,{...(0,o.G)("listitem-title-link"),style:e,ref:r||m,className:(0,c.$)("Title-module__anchor--GmXUE","Title-module__inline--oM0P7",t),...n,...u,children:a})}let j=({href:e,onClick:t,anchorRef:r})=>{let{setTitleAction:i,headingRef:a}=(0,p.J)();return(0,d.useEffect)(()=>{(e||t)&&i(()=>t=>{if(e&&(t.metaKey||t.ctrlKey))window.open(e,"_blank");else if(r?.current)r.current.click();else if(a?.current){let e=a.current.querySelector("a, button");e&&e.click()}})},[r,a,e,t,i]),null};try{g.displayName||(g.displayName="InternalTitle")}catch{}try{(i=TitleTag).displayName||(i.displayName="TitleTag")}catch{}try{b.displayName||(b.displayName="ListItemTitle")}catch{}try{w.displayName||(w.displayName="ListItemSafeHTMLTitle")}catch{}try{(a=function({children:e,html:t,containerStyle:r,containerClassName:i,headerContainerRef:a,headingStyle:n,headingClassName:o,headingRef:c,leadingBadge:d,trailingBadges:u,...m}){return j(m),(0,l.jsx)(g,{header:(0,l.jsx)(s.JR,{html:t,...m}),containerStyle:r,containerClassName:i,headerContainerRef:a,headingStyle:n,headingClassName:o,headingRef:c,leadingBadge:d,trailingBadges:u,children:e})}).displayName||(a.displayName="ListItemUnsafeHTMLTitle")}catch{}try{C.displayName||(C.displayName="HeadingLink")}catch{}},97174:(e,t,r)=>{r.d(t,{u:()=>_});var i=r(74848),a=r(73189),l=r(29731),n=r(88431),s=r(80293),o=r(81960),c=r(34164),d=r(96540),u=r(50205),m=r(44569),h=r(11683),f=r(55966),y=r(45800);function v(e,t){let r=e,i=e.closest("[role=list] li");i&&(r=i);let a=r.closest("[role=list]");if(!a)return;let l=document.createTreeWalker(a,NodeFilter.SHOW_ELEMENT,e=>{if(!(e instanceof HTMLElement)||!e.id.includes("list-view-node"))return NodeFilter.FILTER_SKIP;let t=e.parentElement;for(;t&&t!==a;){if(t.id.includes("list-view-node"))return NodeFilter.FILTER_SKIP;t=t.parentElement}return NodeFilter.FILTER_ACCEPT}),n=l.firstChild(),s=0;for(;n!==r&&(n=l.nextNode(),!(++s>500)););let o="next"===t?l.nextNode():l.previousNode();for(;o instanceof HTMLElement&&o.parentElement?.closest("[role=list] li[aria-expanded=false]");)o="next"===t?l.nextNode():l.previousNode();return o instanceof HTMLElement?o:void 0}function p(e){let t=e.closest("[role=list]"),r=t?.querySelector("[role=list] li");return r instanceof HTMLElement?r:void 0}function x(e){let t=e.closest("[role=list]"),r=t?.querySelectorAll("[role=list] li");if(!r||r.length<1)return;let i=r[r.length-1];if(i instanceof HTMLElement)return i}function N(e,t){let r=[...(0,f.K1)(document.documentElement,{strict:!0,onlyTabbable:!0})],i=r.indexOf(e);return"next"===t?r[i+1]:r[i-1]}var g=r(75986),b=r(18377),w=r(53687),C=r(24347),j=r(61015),S=r(35220);let _=({children:e,hasDragHandle:t,isSelectable:r,onVariantChange:l=a.l,pluralUnits:n,selectedCount:o=0,singularUnits:c,title:m,titleHeaderTag:h,totalCount:f,variant:y=u.tp,...v})=>{let[p,x]=(0,s.N)(y);(0,d.useEffect)(()=>{l?.(p)},[l,p]);let N=(0,d.useMemo)(()=>d.Children.toArray(e).length,[e]);return(0,i.jsx)(g.JE,{children:(0,i.jsx)(j.y,{title:m,titleHeaderTag:h,children:(0,i.jsx)(S.H,{variant:p,setVariant:x,children:(0,i.jsx)(C.W,{countOnPage:N,selectedCount:o,totalCount:f,singularUnits:c,pluralUnits:n,isSelectable:r,hasDragHandle:t,children:(0,i.jsx)(w.e,{children:(0,i.jsx)(b.w,{children:(0,i.jsx)(L,{...v,children:e})})})})})})})},L=({ariaLabelledBy:e,as:t,children:r,className:a,itemsListClassName:s,itemsListStyle:u,listRef:b,metadata:w,role:C,strictFocusZone:_,...L})=>{let{idPrefix:A}=(0,g.If)(),{title:I,titleHeaderTag:M}=(0,j.t)(),{variant:E}=(0,S.e)(),{containerRef:T}=function(e=!0){let t=void 0===e||e,r=h.z0.ArrowVertical|h.z0.HomeAndEnd|h.z0.PageUpDown|h.z0.Tab,i=(0,m.zw)()?r|h.z0.JK:r,{containerRef:a}=(0,y.G)({strict:t,bindKeys:i,focusInStrategy:()=>{if(!a.current)return;let e=a.current.querySelector('[tabindex="0"]');return e?.closest("[role=list] li")||e},focusableElementFilter:e=>"list"!==e.getAttribute("role"),getNextFocusable:(e,r,i)=>{if(r instanceof HTMLElement){if("Tab"===i.key||"Tab"===i.code){if(i.shiftKey&&r.id.includes("list-view-node"))return N(r,"previous");let e=r.closest("[role=list] li");if(!e)return;let a=[...(0,f.K1)(e,{strict:t})],l=a.findIndex(e=>e.parentElement?.getAttribute("data-listview-component")==="trailing-badge"),n=a.findIndex(e=>"selection-input"===e.getAttribute("data-listview-component"));l>=0&&n>=0&&(a.splice(l,0,a[n]),a.splice(n+1,1));let s=a.indexOf(i.target);return s!==a.length-1||i.shiftKey?s>0?i.shiftKey?a[s-1]:a[s+1]:void 0:N(r,"next")}if("previous"===e)return v(r,e)||p(r);if("next"===e)return v(r,e)||x(r);if("start"===e)return p(r);if("end"===e)return x(r)}}});return{containerRef:a}}(_),[P,R]=(0,d.useState)(!0);(0,d.useEffect)(()=>{b&&(b.current=T.current)},[T,b]),(0,n.N)(()=>{T.current&&R(Array.from(T.current.querySelectorAll("li")).some(e=>{let t=e.parentElement;for(;t&&t!==T.current;){if("UL"===t.tagName||"OL"===t.tagName)return!1;t=t.parentElement}return!0}))},[T,r]);let B=e??`${A}-list-view-container-title`;return(0,i.jsxs)("div",{id:`${A}-list-view-container`,className:(0,c.$)("ListView-module__container--rxCWy",a),children:[!e&&(0,i.jsx)(o.A,{className:"sr-only",as:M,id:B,...(0,l.G)("list-view-title"),children:I}),w,(0,i.jsx)(t||(P?"ul":"div"),{className:(0,c.$)("ListView-module__ul--A_8jF",s),style:u,ref:T,"aria-labelledby":P?B:void 0,tabIndex:-1,role:C??P?"list":void 0,"data-listview-component":"items-list","data-density":E,...(0,l.G)("list-view-items"),...L,children:r})]})};try{_.displayName||(_.displayName="ListView")}catch{}try{L.displayName||(L.displayName="ListViewContainer")}catch{}}}]);
+"use strict";
+(globalThis.webpackChunk_github_ui_github_ui =
+  globalThis.webpackChunk_github_ui_github_ui || []).push([
+  [72238],
+  {
+    2970: (e, t, r) => {
+      r.d(t, { c: () => w });
+      var i = r(74848),
+        a = r(73189),
+        l = r(34164),
+        n = r(96540),
+        s = r(75986),
+        o = r(18377),
+        c = r(24347),
+        d = r(35220),
+        u = r(9214);
+      let m = (0, n.createContext)({ actionsOpen: !1, setActionsOpen: a.l }),
+        h = ({ children: e }) => {
+          let [t, r] = (0, n.useState)(!1),
+            a = (0, n.useMemo)(
+              () => ({ actionsOpen: t, setActionsOpen: r }),
+              [t],
+            );
+          return (0, i.jsx)(m.Provider, { value: a, children: e });
+        };
+      h.displayName = "ListItemActionsProvider";
+      try {
+        m.displayName || (m.displayName = "ActionsContext");
+      } catch {}
+      var f = r(77177),
+        y = r(29731);
+      function v({ style: e, className: t, children: r }) {
+        return (0, i.jsx)("div", {
+          className: (0, l.$)("MetadataContainer-module__container--nU0s9", t),
+          style: e,
+          ...(0, y.G)("list-view-item-metadata"),
+          children: r,
+        });
+      }
+      try {
+        v.displayName || (v.displayName = "ListItemMetadataContainer");
+      } catch {}
+      var p = r(49744),
+        x = r(60257),
+        N = r(27603),
+        g = r(74501);
+      let b = (0, n.forwardRef)(
+        (
+          {
+            children: e,
+            isActive: t = !1,
+            title: r,
+            metadata: a,
+            secondaryActions: m,
+            style: h,
+            className: y,
+            metadataContainerStyle: b,
+            metadataContainerClassName: w,
+            as: C,
+            ...j
+          },
+          S,
+        ) => {
+          let { idPrefix: _ } = (0, s.If)(),
+            { isSelectable: L } = (0, c.v)(),
+            { variant: A } = (0, d.e)(),
+            { anyItemsWithActionBar: I, hasResizableActionsWithActionBar: M } =
+              (0, o.Z)(),
+            E = (0, n.useId)(),
+            { isSelected: T, onSelect: P } = (0, x.r)(),
+            { status: R } = (0, N.x)(),
+            { title: B, titleAction: O, headingRef: k } = (0, g.J)(),
+            { description: H } = (0, f.L)(),
+            { hasNewActivity: V } = (0, p.I)(),
+            $ = (0, n.useRef)(null);
+          ((0, n.useEffect)(() => {
+            "function" == typeof S
+              ? S($.current)
+              : S && (S.current = $.current);
+          }, [S]),
+            (0, n.useEffect)(() => {
+              $.current &&
+                t &&
+                document.activeElement?.tagName === "BODY" &&
+                $.current.focus();
+            }));
+          let D = (0, n.useCallback)(
+              (e) => {
+                switch (e.key) {
+                  case "Enter":
+                    if (O) {
+                      let t = document.activeElement,
+                        r = $.current === t,
+                        i =
+                          k.current &&
+                          (k.current === t || k.current.contains(t));
+                      (r || i) && O(e);
+                    }
+                    break;
+                  case " ":
+                    if (!L || $?.current !== document.activeElement) break;
+                    (e.preventDefault(), P(!T));
+                    break;
+                  case "Escape":
+                    $?.current?.focus();
+                }
+              },
+              [O, L, P, T, k],
+            ),
+            W = (0, n.useCallback)(() => {
+              let e = T ? "Selected" : "",
+                t = V ? "New activity" : "",
+                r = !!m,
+                i =
+                  (Array.isArray(a) && a.length > 0) ||
+                  (a && !Array.isArray(a)),
+                l = "";
+              (i || r) && (l = "More information available below");
+              let n = [B, R].filter((e) => e.trim()).join(": ");
+              try {
+                n = n.replace(/(?<!\.)\.+$/, "");
+              } catch {
+                for (; n.endsWith("."); ) n = n.substring(0, n.length - 1);
+              }
+              let s = [e, n, H, t, l].filter((e) => e.trim()).join(". ");
+              return s.endsWith(".") ? s : `${s}.`;
+            }, [m, a, T, V, B, R, H]);
+          return (0, i.jsxs)(C || "li", {
+            ref: $,
+            id: `${_}-list-view-node-${E}`,
+            className: (0, l.$)(
+              "ListItem-module__listItem--k4eMk",
+              T && "ListItem-module__selected--WTEJT",
+              "compact" === A && "ListItem-module__compact--f4FSR",
+              I && M && "ListItem-module__hasActionBar--t14sR",
+              y,
+            ),
+            tabIndex: -1,
+            "aria-label": W(),
+            style: h,
+            onKeyDown: D,
+            ...j,
+            children: [
+              r,
+              e,
+              Array.isArray(a) && a.length > 0
+                ? (0, i.jsx)(v, {
+                    style: b,
+                    className: w,
+                    children: a.map((e, t) =>
+                      (0, i.jsx)(n.Fragment, { children: e }, t),
+                    ),
+                  })
+                : !!(a && !Array.isArray(a)) &&
+                  (0, i.jsx)(v, { style: b, className: w, children: a }),
+              m ?? (I && (0, i.jsx)(u.L, {})),
+            ],
+          });
+        },
+      );
+      b.displayName = "ListItemBase";
+      let w = (0, n.forwardRef)(
+        ({ children: e, isSelected: t = !1, onSelect: r = a.l, ...l }, s) => {
+          let { setSelectedCount: o } = (0, c.v)(),
+            d = (0, n.useRef)(t);
+          ((d.current = t),
+            (0, n.useEffect)(() => {
+              o((e) => (t ? e + 1 : Math.max(0, e - 1)));
+            }, [t, o]),
+            (0, n.useEffect)(
+              () => () => {
+                d.current && o((e) => Math.max(0, e - 1));
+              },
+              [o],
+            ));
+          let u = (0, n.useMemo)(
+            () => ({ isSelected: t, onSelect: r }),
+            [t, r],
+          );
+          return (0, i.jsx)(h, {
+            children: (0, i.jsx)(g.y, {
+              children: (0, i.jsx)(x.W, {
+                value: u,
+                children: (0, i.jsx)(p.t, {
+                  children: (0, i.jsx)(f.O, {
+                    children: (0, i.jsx)(N.u, {
+                      children: (0, i.jsx)(b, { ...l, ref: s, children: e }),
+                    }),
+                  }),
+                }),
+              }),
+            }),
+          });
+        },
+      );
+      w.displayName = "ListItem";
+    },
+    9214: (e, t, r) => {
+      r.d(t, { L: () => c });
+      var i = r(74848),
+        a = r(91230),
+        l = r(29731),
+        n = r(34164),
+        s = r(96540),
+        o = r(18377);
+      let c = ({
+        anchorIcon: e,
+        style: t,
+        className: r,
+        label: c = "list item action bar",
+        ...d
+      }) => {
+        let {
+          setAnyItemsWithActionBar: u,
+          setHasResizableActionsWithActionBar: m,
+        } = (0, o.Z)();
+        return (
+          (0, s.useEffect)(() => u(!0), [u]),
+          (0, s.useEffect)(() => {
+            d.actions && m(!0);
+          }, [d.actions, m]),
+          (0, i.jsx)("div", {
+            className: (0, n.$)(
+              "ActionBar-module__container--8I2RB",
+              d.actions && "ActionBar-module__hasActions--HH0uB",
+              r,
+            ),
+            style: t,
+            ...(0, l.G)("list-view-item-action-bar-container"),
+            children: (0, i.jsx)(a.E7, {
+              ...d,
+              label: c,
+              variant: "menu",
+              overflowMenuToggleProps: e ? { icon: e } : void 0,
+            }),
+          })
+        );
+      };
+      try {
+        c.displayName || (c.displayName = "ListItemActionBar");
+      } catch {}
+    },
+    18377: (e, t, r) => {
+      r.d(t, { Z: () => o, w: () => s });
+      var i = r(74848),
+        a = r(73189),
+        l = r(96540);
+      let n = (0, l.createContext)({
+          anyItemsWithActionBar: !1,
+          setAnyItemsWithActionBar: a.l,
+          hasResizableActionsWithActionBar: !1,
+          setHasResizableActionsWithActionBar: a.l,
+        }),
+        s = ({ children: e }) => {
+          let [t, r] = (0, l.useState)(!1),
+            [a, s] = (0, l.useState)(!1),
+            o = (0, l.useMemo)(
+              () => ({
+                anyItemsWithActionBar: t,
+                setAnyItemsWithActionBar: r,
+                hasResizableActionsWithActionBar: a,
+                setHasResizableActionsWithActionBar: s,
+              }),
+              [t, a],
+            );
+          return (0, i.jsx)(n.Provider, { value: o, children: e });
+        };
+      s.displayName = "ListViewItemsProvider";
+      let o = () => (0, l.useContext)(n);
+      try {
+        n.displayName || (n.displayName = "ItemsContext");
+      } catch {}
+    },
+    20263: (e, t, r) => {
+      r.d(t, { BC: () => o, JU: () => d, Pk: () => s });
+      var i = r(74848),
+        a = r(35811),
+        l = r(99418),
+        n = r(96540);
+      let s = u(a.az),
+        o = u(a.EY),
+        c = (0, n.forwardRef)((e, t) => (0, i.jsx)("div", { ...e, ref: t }));
+      c.displayName = "Div";
+      let d = u(c);
+      function u(e) {
+        let t = (0, n.forwardRef)((t, r) => {
+          let { sanitizedHTML: a, props: n } = (function (e) {
+            let { html: t, domPurifyConfig: r, ...i } = e,
+              a = { ...r, RETURN_DOM: !1, RETURN_DOM_FRAGMENT: !1 };
+            return { sanitizedHTML: l.default.sanitize(t, a), props: i };
+          })(t);
+          return (0, i.jsx)(e, {
+            ...n,
+            dangerouslySetInnerHTML: { __html: a },
+            ref: r,
+          });
+        });
+        return ((t.displayName = `UnsafeHTML${e.displayName || e.name}`), t);
+      }
+      try {
+        d.displayName || (d.displayName = "UnsafeHTMLDiv");
+      } catch {}
+    },
+    24347: (e, t, r) => {
+      r.d(t, { W: () => d, v: () => u });
+      var i = r(74848),
+        a = r(73189),
+        l = r(96540),
+        n = r(50205);
+      let s = "list item",
+        o = "list items",
+        c = (0, l.createContext)({
+          selectedCount: 0,
+          setSelectedCount: a.l,
+          countOnPage: 0,
+          isSelectAllChecked: !1,
+          anyItemsSelected: !1,
+          singularUnits: s,
+          pluralUnits: o,
+          isSelectable: n.eX,
+          hasDragHandle: n.os,
+        }),
+        d = (
+          {
+            children: e,
+            countOnPage: t = 0,
+            singularUnits: r = s,
+            pluralUnits: a = o,
+            totalCount: d,
+            selectedCount: u = 0,
+            isSelectable: m = n.eX,
+            hasDragHandle: h = n.os,
+          } = {
+            singularUnits: s,
+            pluralUnits: o,
+            selectedCount: 0,
+            countOnPage: 0,
+            isSelectable: n.eX,
+            hasDragHandle: n.os,
+          },
+        ) => {
+          let [f, y] = (0, l.useState)(u);
+          (0, l.useEffect)(() => y(u), [u]);
+          let v = f > 0 && f >= t,
+            p = f > 0,
+            x = (0, l.useMemo)(
+              () => ({
+                totalCount: d,
+                countOnPage: t,
+                selectedCount: f,
+                setSelectedCount: y,
+                isSelectAllChecked: v,
+                anyItemsSelected: p,
+                singularUnits: r,
+                pluralUnits: a,
+                isSelectable: m,
+                hasDragHandle: h,
+              }),
+              [d, t, f, y, v, p, r, a, m, h],
+            );
+          return (0, i.jsx)(c.Provider, { value: x, children: e });
+        };
+      d.displayName = "ListViewSelectionProvider";
+      let u = () => (0, l.useContext)(c);
+      try {
+        c.displayName || (c.displayName = "SelectionContext");
+      } catch {}
+    },
+    27603: (e, t, r) => {
+      r.d(t, { u: () => n, x: () => s });
+      var i = r(74848),
+        a = r(96540);
+      let l = (0, a.createContext)(void 0),
+        n = ({ children: e }) => {
+          let [t, r] = (0, a.useState)(""),
+            n = (0, a.useMemo)(() => ({ status: t, setStatus: r }), [t]);
+          return (0, i.jsx)(l.Provider, { value: n, children: e });
+        };
+      n.displayName = "ListItemStatusProvider";
+      let s = () => {
+        let e = (0, a.useContext)(l);
+        if (!e)
+          throw Error("useListItemStatus must be used with StatusProvider.");
+        return e;
+      };
+      try {
+        l.displayName || (l.displayName = "StatusContext");
+      } catch {}
+    },
+    35220: (e, t, r) => {
+      r.d(t, { H: () => o, e: () => c });
+      var i = r(74848),
+        a = r(73189),
+        l = r(96540),
+        n = r(50205);
+      let s = (0, l.createContext)(void 0),
+        o = ({ children: e, variant: t = n.tp, setVariant: r = a.l }) => {
+          let o = (0, l.useMemo)(() => ({ variant: t, setVariant: r }), [r, t]);
+          return (0, i.jsx)(s.Provider, { value: o, children: e });
+        };
+      o.displayName = "ListViewVariantProvider";
+      let c = () => {
+        let e = (0, l.useContext)(s);
+        if (!e)
+          throw Error("useListViewVariant must be used with VariantProvider.");
+        return e;
+      };
+      try {
+        s.displayName || (s.displayName = "VariantContext");
+      } catch {}
+    },
+    49744: (e, t, r) => {
+      r.d(t, { I: () => s, t: () => n });
+      var i = r(74848),
+        a = r(96540);
+      let l = (0, a.createContext)(void 0),
+        n = ({ children: e }) => {
+          let [t, r] = (0, a.useState)(!1),
+            n = (0, a.useMemo)(
+              () => ({ hasNewActivity: t, setHasNewActivity: r }),
+              [t],
+            );
+          return (0, i.jsx)(l.Provider, { value: n, children: e });
+        };
+      n.displayName = "ListItemNewActivityProvider";
+      let s = () => {
+        let e = (0, a.useContext)(l);
+        if (!e)
+          throw Error(
+            "useListItemNewActivity must be used with NewActivityProvider.",
+          );
+        return e;
+      };
+      try {
+        l.displayName || (l.displayName = "NewActivityContext");
+      } catch {}
+    },
+    50205: (e, t, r) => {
+      r.d(t, {
+        Dy: () => a,
+        O1: () => n,
+        QL: () => d,
+        eX: () => o,
+        n1: () => i,
+        os: () => c,
+        tD: () => l,
+        tp: () => s,
+      });
+      let i = ["h1", "h2", "h3", "h4", "h5", "h6"],
+        a = ["list-view", "list-view-metadata", "listitem"],
+        l = "h2",
+        n = { "list-view": l, "list-view-metadata": "h3", listitem: "h3" },
+        s = "default",
+        o = !1,
+        c = !1,
+        d = "List view";
+    },
+    53419: (e, t, r) => {
+      let i;
+      r.d(t, { BI: () => f, Ti: () => y, lA: () => m, sX: () => h });
+      var a = r(70837),
+        l = r(18679),
+        n = r(82075),
+        s = r(11083);
+      let { getItem: o } = (0, n.A)("localStorage"),
+        c = "dimension_",
+        d = [
+          "utm_source",
+          "utm_medium",
+          "utm_campaign",
+          "utm_term",
+          "utm_content",
+          "scid",
+        ];
+      try {
+        let e = (0, a.O)("octolytics");
+        (delete e.baseContext, (i = new l.s(e)));
+      } catch {}
+      function u(e) {
+        let t = (0, a.O)("octolytics").baseContext || {};
+        if (t)
+          for (let [e, r] of (delete t.app_id,
+          delete t.event_url,
+          delete t.host,
+          Object.entries(t)))
+            e.startsWith(c) && ((t[e.replace(c, "")] = r), delete t[e]);
+        let r = document.querySelector("meta[name=visitor-payload]");
+        for (let [e, i] of (r && Object.assign(t, JSON.parse(atob(r.content))),
+        new URLSearchParams(window.location.search)))
+          d.includes(e.toLowerCase()) && (t[e] = i);
+        return ((t.staff = (0, s.X)().toString()), Object.assign(t, e));
+      }
+      function m(e) {
+        i?.sendPageView(u(e));
+      }
+      function h() {
+        return document.head?.querySelector(
+          'meta[name="current-catalog-service"]',
+        )?.content;
+      }
+      function f(e, t = {}) {
+        let r = h(),
+          a = r ? { service: r } : {};
+        for (let [e, r] of Object.entries(t)) null != r && (a[e] = `${r}`);
+        i && (u(a), i.sendEvent(e || "unknown", u(a)));
+      }
+      function y(e) {
+        return Object.fromEntries(
+          Object.entries(e).map(([e, t]) => [e, JSON.stringify(t)]),
+        );
+      }
+    },
+    53687: (e, t, r) => {
+      r.d(t, { P: () => s, e: () => n });
+      var i = r(74848),
+        a = r(96540);
+      let l = (0, a.createContext)({ multiPageSelectionAllowed: !1 }),
+        n = ({ children: e, multiPageSelectionAllowed: t = !1 }) => {
+          let [r, n] = (0, a.useState)(t),
+            s = (0, a.useMemo)(
+              () => ({
+                multiPageSelectionAllowed: r,
+                setMultiPageSelectionAllowed: n,
+              }),
+              [r],
+            );
+          return (0, i.jsx)(l.Provider, { value: s, children: e });
+        };
+      n.displayName = "ListViewMultiPageSelectionProvider";
+      let s = () => (0, a.useContext)(l);
+      try {
+        l.displayName || (l.displayName = "MultiPageSelectionContext");
+      } catch {}
+    },
+    56825: (e, t, r) => {
+      r.d(t, { m: () => n });
+      var i = r(96540),
+        a = r(50205),
+        l = r(61015);
+      function n(e) {
+        let { titleHeaderTag: t, hasMetadataTitle: r } = (0, l.t)();
+        return (0, i.useMemo)(() => {
+          let i = a.Dy.findIndex((t) => t === e),
+            l = a.n1.indexOf(t) + (r ? i : i - 1);
+          return l > a.n1.length - 1 ? "h6" : a.n1[l] || a.O1[e];
+        }, [t, r, e]);
+      }
+    },
+    60257: (e, t, r) => {
+      r.d(t, { W: () => c, r: () => d });
+      var i = r(74848),
+        a = r(4559),
+        l = r(73189),
+        n = r(96540),
+        s = r(74501);
+      let o = (0, n.createContext)({ isSelected: !1, onSelect: l.l }),
+        c = ({ children: e, value: { isSelected: t, onSelect: r } }) => {
+          let { title: l } = (0, s.J)(),
+            c = (0, n.useMemo)(
+              () => ({
+                isSelected: t,
+                onSelect: (e) => {
+                  ((0, a.i)(e ? `Selected. ${l}.` : `Unselected. ${l}.`), r(e));
+                },
+              }),
+              [t, r, l],
+            );
+          return (0, i.jsx)(o.Provider, { value: c, children: e });
+        };
+      c.displayName = "ListItemSelectionProvider";
+      let d = () => (0, n.useContext)(o);
+      try {
+        o.displayName || (o.displayName = "SelectionContext");
+      } catch {}
+    },
+    61015: (e, t, r) => {
+      r.d(t, { t: () => o, y: () => s });
+      var i = r(74848),
+        a = r(96540),
+        l = r(50205);
+      let n = (0, a.createContext)(void 0),
+        s = ({ children: e, title: t, titleHeaderTag: r = l.tD }) => {
+          let [s, o] = (0, a.useState)(!1),
+            c = (0, a.useMemo)(
+              () => ({
+                title: t.trim() || l.QL,
+                titleHeaderTag: r,
+                hasMetadataTitle: s,
+                setHasMetadataTitle: o,
+              }),
+              [s, t, r],
+            );
+          return (0, i.jsx)(n.Provider, { value: c, children: e });
+        };
+      s.displayName = "ListViewTitleProvider";
+      let o = () => {
+        let e = (0, a.useContext)(n);
+        if (!e)
+          throw Error("useListViewTitle must be used with TitleProvider.");
+        return e;
+      };
+      try {
+        n.displayName || (n.displayName = "TitleContext");
+      } catch {}
+    },
+    73017: (e, t, r) => {
+      r.d(t, { $6: () => c, JR: () => s, vb: () => n });
+      var i = r(74848),
+        a = r(35811),
+        l = r(96540);
+      let n = d(a.az),
+        s = d(a.EY),
+        o = (0, l.forwardRef)((e, t) => (0, i.jsx)("div", { ...e, ref: t }));
+      o.displayName = "Div";
+      let c = d(o);
+      function d(e) {
+        let t = (0, l.forwardRef)((t, r) => {
+          let { html: a, ...l } = t;
+          return (0, i.jsx)(e, {
+            ref: r,
+            ...l,
+            dangerouslySetInnerHTML: a ? { __html: a } : void 0,
+          });
+        });
+        return ((t.displayName = `SafeHTML${e.displayName || e.name}`), t);
+      }
+      try {
+        n.displayName || (n.displayName = "VerifiedHTMLBox");
+      } catch {}
+      try {
+        s.displayName || (s.displayName = "VerifiedHTMLText");
+      } catch {}
+      try {
+        c.displayName || (c.displayName = "VerifiedHTMLDiv");
+      } catch {}
+    },
+    74501: (e, t, r) => {
+      r.d(t, { J: () => s, y: () => n });
+      var i = r(74848),
+        a = r(96540);
+      let l = (0, a.createContext)(void 0),
+        n = ({ children: e }) => {
+          let [t, r] = (0, a.useState)(""),
+            [n, s] = (0, a.useState)(null),
+            o = (0, a.useRef)(null);
+          (0, a.useEffect)(() => {
+            o?.current?.textContent && r(o.current.textContent.trim());
+          }, [o, r]);
+          let c = (0, a.useMemo)(
+            () => ({
+              title: t,
+              titleAction: n,
+              setTitleAction: s,
+              headingRef: o,
+            }),
+            [t, n],
+          );
+          return (0, i.jsx)(l.Provider, { value: c, children: e });
+        };
+      n.displayName = "ListItemTitleProvider";
+      let s = () => {
+        let e = (0, a.useContext)(l);
+        if (!e)
+          throw Error("useListItemTitle must be used with TitleProvider.");
+        return e;
+      };
+      try {
+        l.displayName || (l.displayName = "TitleContext");
+      } catch {}
+    },
+    75986: (e, t, r) => {
+      r.d(t, { If: () => s, JE: () => n });
+      var i = r(74848),
+        a = r(96540);
+      let l = (0, a.createContext)(void 0),
+        n = ({ children: e }) => {
+          let t = (0, a.useId)(),
+            r = (0, a.useMemo)(() => ({ idPrefix: t }), [t]);
+          return (0, i.jsx)(l.Provider, { value: r, children: e });
+        };
+      n.displayName = "ListViewIdProvider";
+      let s = () => {
+        let e = (0, a.useContext)(l);
+        if (!e) throw Error("useListViewId must be used with IdProvider.");
+        return e;
+      };
+      try {
+        l.displayName || (l.displayName = "IdContext");
+      } catch {}
+    },
+    77177: (e, t, r) => {
+      r.d(t, { L: () => s, O: () => n });
+      var i = r(74848),
+        a = r(96540);
+      let l = (0, a.createContext)(void 0),
+        n = ({ children: e }) => {
+          let [t, r] = (0, a.useState)(""),
+            n = (0, a.useMemo)(
+              () => ({ description: t, setDescription: r }),
+              [t],
+            );
+          return (0, i.jsx)(l.Provider, { value: n, children: e });
+        };
+      n.displayName = "ListItemDescriptionProvider";
+      let s = () => {
+        let e = (0, a.useContext)(l);
+        if (!e)
+          throw Error(
+            "useListItemDescription must be used with DescriptionProvider.",
+          );
+        return e;
+      };
+      try {
+        l.displayName || (l.displayName = "DescriptionContext");
+      } catch {}
+    },
+    80293: (e, t, r) => {
+      r.d(t, { N: () => a });
+      var i = r(96540);
+      function a(
+        e,
+        { isPropUpdateDisabled: t = !1, isEqual: r = Object.is } = {},
+      ) {
+        let [l, n] = (0, i.useState)(e),
+          [s, o] = (0, i.useState)(e),
+          c = e instanceof Function ? e() : e;
+        return (t || r(s, c) || (o(c), n(c)), [l, n]);
+      }
+    },
+    91230: (e, t, r) => {
+      r.d(t, { E7: () => H });
+      var i = r(74848),
+        a = r(96540);
+      let l = (0, a.createContext)({
+          actions: [],
+          staticMenuActions: [],
+          label: "Actions",
+          gap: 0,
+        }),
+        n = ({
+          children: e,
+          value: {
+            actions: t = [],
+            staticMenuActions: r,
+            variant: n = "toolbar",
+            label: s,
+            gap: o,
+          },
+        }) => {
+          let c = (0, a.useMemo)(
+            () => ({
+              actions: t,
+              staticMenuActions: r,
+              variant: n,
+              label: s,
+              gap: o,
+            }),
+            [t, r, n, s, o],
+          );
+          return (0, i.jsx)(l.Provider, { value: c, children: e });
+        },
+        s = () => {
+          let e = (0, a.useContext)(l);
+          if (!e)
+            throw Error(
+              "useActionBarContent must be used with ActionBarContentProvider.",
+            );
+          return e;
+        };
+      try {
+        l.displayName || (l.displayName = "ActionBarContentContext");
+      } catch {}
+      try {
+        n.displayName || (n.displayName = "ActionBarContentProvider");
+      } catch {}
+      let o = (0, a.createContext)({
+          outerContainerRef: (0, a.createRef)(),
+          itemContainerRef: (0, a.createRef)(),
+        }),
+        c = ({ value: { anchorRef: e }, children: t }) => {
+          let r = (0, a.useRef)(null),
+            l = (0, a.useRef)(null),
+            n = (0, a.useMemo)(
+              () => ({
+                outerContainerRef: r,
+                itemContainerRef: l,
+                anchorRef: e,
+              }),
+              [e],
+            );
+          return (0, i.jsx)(o.Provider, { value: n, children: t });
+        },
+        d = () => {
+          let e = (0, a.useContext)(o);
+          if (!e)
+            throw Error(
+              "useActionBarRef must be used with ActionBarRefProvider.",
+            );
+          return e;
+        };
+      try {
+        o.displayName || (o.displayName = "ActionBarRefContext");
+      } catch {}
+      try {
+        c.displayName || (c.displayName = "ActionBarRefProvider");
+      } catch {}
+      var u = r(73189),
+        m = r(80293),
+        h = r(50463),
+        f = r(93330);
+      let y = (e, t) => {
+          let r =
+              2 *
+              ((e) => {
+                if (!e) return 0;
+                let t = window.getComputedStyle(e);
+                return t?.columnGap ? parseInt(t.columnGap, 10) : 0;
+              })(t),
+            i = e.getBoundingClientRect().width,
+            a = window.getComputedStyle(e);
+          return (
+            i +
+            (a?.marginLeft ? parseInt(a.marginLeft, 10) : 0) +
+            (a?.marginRight ? parseInt(a.marginRight, 10) : 0) +
+            r
+          );
+        },
+        v = (e, t) => {
+          let r = p(e, t);
+          if (void 0 === r) return;
+          let i = r;
+          return (t && (i -= t.offsetLeft), i);
+        },
+        p = (e, t) => {
+          if (!e) return;
+          let r = e.offsetWidth;
+          return (t && (r -= t.offsetWidth), r);
+        },
+        x = (0, a.createContext)({
+          visibleChildEndIndex: 0,
+          justifySpaceBetween: !1,
+          recalculateItemSize: u.l,
+        }),
+        N = ({ children: e, value: { actionKeys: t } }) => {
+          let r = t.length,
+            [l, n] = (0, m.N)(r),
+            { outerContainerRef: s, itemContainerRef: o } = d(),
+            [c, u] = (0, a.useState)(),
+            [N, g] = (0, a.useState)(),
+            [b, w] = (0, a.useState)(new Map(t.map((e) => [e, void 0]))),
+            [C, j] = (0, a.useState)(!1),
+            S = (0, a.useMemo)(
+              () =>
+                t
+                  .slice(0, l)
+                  .every((e) => b.has(e) && "number" == typeof b.get(e)),
+              [t, b, l],
+            ),
+            _ = (0, a.useCallback)(
+              (e) => {
+                let r = t[e];
+                if (r) return b.get(r);
+              },
+              [t, b],
+            ),
+            L = (0, a.useCallback)(
+              (e, t) => {
+                let r = o.current;
+                if (!r) return;
+                let i = y(t, r);
+                w((t) => {
+                  if (i === t.get(e) || isNaN(i)) return t;
+                  let r = new Map(Array.from(t.entries()));
+                  return (r.set(e, i), r);
+                });
+              },
+              [o],
+            ),
+            A = (0, a.useCallback)(() => {
+              if (!S) return;
+              let e = s.current,
+                t = o.current,
+                r = p(e, t);
+              if (void 0 === r) return;
+              let i = v(e, t);
+              void 0 !== i && r <= i && n(Math.max(0, l - 1));
+            }, [S, s, o, n, l]),
+            I = (0, a.useCallback)(() => {
+              let e = s.current,
+                t = o.current,
+                i = p(e, t);
+              if (void 0 === i) return;
+              let a = _(l);
+              if (void 0 === a) return;
+              let c = v(e, t);
+              void 0 !== c && i > c + a && n(Math.min(r, l + 1));
+            }, [s, o, _, l, n, r]),
+            M = (0, a.useCallback)(() => {
+              let e = s.current,
+                t = o.current;
+              if (!e || !t) return;
+              let r = e.offsetWidth;
+              r &&
+                (void 0 === c || r <= c ? A() : r > c && I(),
+                u(r),
+                j(r <= (N ?? t.offsetWidth)));
+            }, [I, A, N, c, s, o]);
+          ((0, h.A)(() => {
+            let e = o.current;
+            if (!e) return;
+            let r = new Map();
+            for (let i of t) {
+              let t = e.querySelector(`[data-action-bar-item="${i}"]`);
+              t && r.set(i, y(t, e));
+            }
+            w(r);
+          }, [t, o]),
+            (0, h.A)(() => {
+              let e = o.current;
+              e && g(e.offsetWidth);
+            }, [o]),
+            (0, h.A)(() => {
+              M();
+            }, [M]),
+            (0, f.w)(M, s));
+          let E = (0, a.useMemo)(
+            () => ({
+              visibleChildEndIndex: l,
+              justifySpaceBetween: C,
+              recalculateItemSize: L,
+            }),
+            [l, C, L],
+          );
+          return (0, i.jsx)(x.Provider, { value: E, children: e });
+        },
+        g = () => {
+          let e = (0, a.useContext)(x);
+          return (
+            e || {
+              justifySpaceBetween: !1,
+              visibleChildEndIndex: 0,
+              recalculateItemSize: u.l,
+            }
+          );
+        };
+      try {
+        x.displayName || (x.displayName = "ActionBarResizeContext");
+      } catch {}
+      try {
+        N.displayName || (N.displayName = "ActionBarResizeProvider");
+      } catch {}
+      var b = r(29731),
+        w = r(11683),
+        C = r(45800),
+        j = r(34164),
+        S = r(38621),
+        _ = r(94236),
+        L = r(26108),
+        A = r(5524),
+        I = r(35811);
+      let M = S.KebabHorizontalIcon,
+        E = "invisible",
+        T = ({
+          anchorProps: {
+            "aria-label": e,
+            icon: t = M,
+            variant: r = E,
+            ...l
+          } = { icon: M, variant: E },
+          open: n,
+          onOpenChange: o,
+        }) => {
+          let { anchorRef: c } = d(),
+            { actions: u, staticMenuActions: m, label: h } = s(),
+            { visibleChildEndIndex: f } = g(),
+            y = (0, a.useMemo)(
+              () =>
+                (0, I.h1)(l, {
+                  "aria-label": e?.trim() || `More ${h}`,
+                  icon: t,
+                  className: "OverflowMenu-module__IconButton_0--cxtvS",
+                  variant: r,
+                }),
+              [e, t, h, r, l],
+            ),
+            v = (0, a.useMemo)(() => u?.slice(f), [u, f]),
+            p = v && v.length > 0,
+            x = m && m.length > 0;
+          return p || x
+            ? (0, i.jsxs)(_.W, {
+                anchorRef: c,
+                open: n,
+                onOpenChange: o,
+                children: [
+                  (0, i.jsx)(_.W.Anchor, {
+                    children: (0, i.jsx)(L.K, {
+                      ...(0, b.G)("overflow-menu-anchor"),
+                      ...y,
+                    }),
+                  }),
+                  (0, i.jsx)(_.W.Overlay, {
+                    align: "end",
+                    "data-overflow-menu-overlay": !0,
+                    children: (0, i.jsxs)(A.l, {
+                      children: [
+                        x &&
+                          m.map((e) =>
+                            (0, i.jsx)(
+                              a.Fragment,
+                              { children: e.render() },
+                              e.key,
+                            ),
+                          ),
+                        v?.map((e) =>
+                          (0, i.jsx)(
+                            a.Fragment,
+                            { children: e.render(!0) },
+                            e.key,
+                          ),
+                        ),
+                      ],
+                    }),
+                  }),
+                ],
+              })
+            : null;
+        };
+      try {
+        T.displayName || (T.displayName = "OverflowMenu");
+      } catch {}
+      let P = ({ children: e, actionKey: t }) => {
+        let r = (0, a.useRef)(null),
+          { recalculateItemSize: l } = g();
+        return (
+          (0, h.A)(() => {
+            r.current && l(t, r.current);
+          }, [r, l, t]),
+          (0, i.jsx)("div", {
+            ...(0, b.G)(`action-bar-item-${t}`),
+            "data-action-bar-item": t,
+            ref: r,
+            className: "VisibleItem-module__Box_0--BsJkb",
+            children: e,
+          })
+        );
+      };
+      try {
+        P.displayName || (P.displayName = "VisibleItem");
+      } catch {}
+      let R = ({ className: e, style: t }) => {
+        let { itemContainerRef: r } = d(),
+          { actions: a, gap: l } = s(),
+          { visibleChildEndIndex: n } = g(),
+          o = a?.slice(0, n);
+        return (0, i.jsx)("div", {
+          ...(0, b.G)("action-bar"),
+          ref: r,
+          className: (0, j.$)(e, "VisibleItems-module__Box_1--LOtDr"),
+          style: { gap: l, ...t },
+          children: o?.map(({ key: e, render: t }) =>
+            (0, i.jsx)(P, { actionKey: e, children: t(!1) }, e),
+          ),
+        });
+      };
+      try {
+        R.displayName || (R.displayName = "VisibleItems");
+      } catch {}
+      let B = ({
+        overflowMenuToggleProps: e,
+        overflowMenuProps: t,
+        children: r,
+        ...a
+      }) => {
+        let { outerContainerRef: l } = d(),
+          { label: n, variant: o, gap: c } = s(),
+          { justifySpaceBetween: u } = g();
+        return (
+          (0, C.G)(
+            {
+              containerRef: l,
+              bindKeys: w.z0.ArrowHorizontal | w.z0.HomeAndEnd,
+              focusOutBehavior: "wrap",
+              disabled: "toolbar" !== o,
+            },
+            [l],
+          ),
+          (0, i.jsxs)("div", {
+            ref: l,
+            ...(0, b.G)("action-bar-container"),
+            role: "toolbar" === o ? "toolbar" : void 0,
+            "aria-label": "toolbar" === o ? n : void 0,
+            style: { gap: c },
+            className: (0, j.$)(
+              "VisibleAndOverflowContainer-module__Box_0--KyT2b",
+              u && "VisibleAndOverflowContainer-module__space--fVHr3",
+            ),
+            children: [
+              (0, i.jsx)(R, { ...a }),
+              r,
+              (0, i.jsx)(T, { anchorProps: e, ...t }),
+            ],
+          })
+        );
+      };
+      try {
+        B.displayName || (B.displayName = "VisibleAndOverflowContainer");
+      } catch {}
+      let O = "normal",
+        k = ({ children: e, ...t }) => (0, i.jsx)(B, { ...t, children: e }),
+        H = ({
+          actions: e = [],
+          staticMenuActions: t,
+          overflowMenuToggleProps: r,
+          overflowMenuProps: l,
+          children: s,
+          label: o,
+          variant: d,
+          density: u = O,
+          anchorRef: m,
+          className: h,
+          style: f,
+        }) => {
+          let y = (0, a.useMemo)(
+              () => ({
+                actions: e,
+                staticMenuActions: t,
+                variant: d,
+                label: o,
+                gap:
+                  "condensed" === u
+                    ? "var(--base-size-4)"
+                    : "spacious" === u
+                      ? "var(--base-size-16)"
+                      : "none" === u
+                        ? 0
+                        : "var(--base-size-8)",
+              }),
+              [e, t, d, o, u],
+            ),
+            v = (0, a.useMemo)(
+              () => ({ actionKeys: e.map((e) => e.key) }),
+              [e],
+            ),
+            p = t && t.length > 0,
+            x = e && e.length > 0;
+          if (!x && !p) return null;
+          let g = {
+            overflowMenuToggleProps: r,
+            overflowMenuProps: l,
+            className: h,
+            style: f,
+          };
+          return (0, i.jsx)(c, {
+            value: { anchorRef: m },
+            children: (0, i.jsx)(n, {
+              value: y,
+              children: x
+                ? (0, i.jsx)(N, {
+                    value: v,
+                    children: (0, i.jsx)(k, { ...g, children: s }),
+                  })
+                : (0, i.jsx)(k, { ...g, children: s }),
+            }),
+          });
+        };
+      try {
+        k.displayName || (k.displayName = "InternalActionBar");
+      } catch {}
+      try {
+        H.displayName || (H.displayName = "ActionBar");
+      } catch {}
+    },
+    95378: (e, t, r) => {
+      r.d(t, { kx: () => w, ao: () => b });
+      var i,
+        a,
+        l = r(74848),
+        n = r(20263),
+        s = r(73017),
+        o = r(29731),
+        c = r(34164),
+        d = r(96540),
+        u = r(56825),
+        m = r(35220),
+        h = r(87670),
+        f = r(46720),
+        y = r(24347),
+        v = r(60257),
+        p = r(74501);
+      let x = () => {
+        let { variant: e } = (0, m.e)(),
+          { isSelectable: t, hasDragHandle: r } = (0, y.v)(),
+          { isSelected: i, onSelect: a } = (0, v.r)(),
+          { title: n } = (0, p.J)();
+        return t
+          ? (0, l.jsxs)("div", {
+              className: r
+                ? "Selection-module__containerWithDragHandle--mLWh4"
+                : "Selection-module__container--OQE4d",
+              ...(0, o.G)("list-view-item-selection"),
+              children: [
+                r &&
+                  (0, l.jsx)(h.BS.DragTrigger, {
+                    className: (0, c.$)(
+                      "Selection-module__dragTrigger--SM4bZ",
+                      "compact" === e && "Selection-module__compact--azMKM",
+                    ),
+                  }),
+                (0, l.jsx)(f.A, {
+                  className:
+                    "compact" === e
+                      ? "Selection-module__checkboxCompact--zfQtx"
+                      : "Selection-module__checkbox--X3ras",
+                  checked: i,
+                  onChange: () => a(!i),
+                  "aria-label": `Select: ${n}`,
+                  "data-listview-component": "selection-input",
+                  ...(0, o.G)("list-view-item-selection-input"),
+                }),
+              ],
+            })
+          : null;
+      };
+      try {
+        x.displayName || (x.displayName = "ListItemSelection");
+      } catch {}
+      let N = "Title-module__compact--eK6hD";
+      function g({
+        children: e,
+        containerStyle: t,
+        containerClassName: r,
+        headerContainerRef: i,
+        headingStyle: a,
+        headingClassName: n,
+        headingRef: s,
+        leadingBadge: d,
+        trailingBadges: h,
+        header: f,
+      }) {
+        let { variant: y } = (0, m.e)(),
+          { headingRef: v } = (0, p.J)(),
+          g = (0, u.m)("listitem");
+        return (0, l.jsxs)(l.Fragment, {
+          children: [
+            (0, l.jsxs)("div", {
+              ...(0, o.G)("list-view-item-title-container"),
+              style: t,
+              className: (0, c.$)(
+                "Title-module__container--XD9YG",
+                "compact" === y && N,
+                r,
+              ),
+              ref: i,
+              "data-listview-item-title-container": !0,
+              children: [
+                (0, l.jsxs)(g, {
+                  className: (0, c.$)(
+                    "Title-module__heading--s7YnL",
+                    "compact" === y && N,
+                    n,
+                  ),
+                  style: a,
+                  ref: (e) => {
+                    if ((v && (v.current = e), s && "current" in s))
+                      try {
+                        s.current = e;
+                      } catch {}
+                  },
+                  ...(0, o.G)("list-view-item-title"),
+                  children: [d, f],
+                }),
+                h &&
+                  (0, l.jsx)("span", {
+                    className: "Title-module__trailingBadgesSpacer--Son9W",
+                  }),
+                (0, l.jsx)("span", {
+                  className: "Title-module__trailingBadgesContainer--mijcn",
+                  children: h,
+                }),
+                e,
+              ],
+            }),
+            (0, l.jsx)(x, {}),
+          ],
+        });
+      }
+      function b({
+        children: e,
+        value: t,
+        containerStyle: r,
+        containerClassName: i,
+        headerContainerRef: a,
+        headingStyle: n,
+        headingClassName: s,
+        headingRef: o,
+        leadingBadge: c,
+        trailingBadges: u,
+        anchorRef: m,
+        ...h
+      }) {
+        let f = (0, d.useRef)(null),
+          y = m || f;
+        return (
+          j({ anchorRef: y, ...h }),
+          (0, l.jsx)(g, {
+            header:
+              h.href || h.onClick
+                ? (0, l.jsx)(C, {
+                    anchorRef: y,
+                    ...h,
+                    children: (0, l.jsx)("span", { children: t }),
+                  })
+                : (0, l.jsx)("span", { children: t }),
+            containerStyle: r,
+            containerClassName: i,
+            headerContainerRef: a,
+            headingStyle: n,
+            headingClassName: s,
+            headingRef: o,
+            leadingBadge: c,
+            trailingBadges: u,
+            children: e,
+          })
+        );
+      }
+      function w({
+        children: e,
+        html: t,
+        containerStyle: r,
+        containerClassName: i,
+        headerContainerRef: a,
+        headingStyle: s,
+        headingClassName: o,
+        headingRef: c,
+        leadingBadge: d,
+        trailingBadges: u,
+        ...m
+      }) {
+        return (
+          j(m),
+          (0, l.jsx)(g, {
+            header: (0, l.jsx)(n.BC, { html: t, ...m }),
+            containerStyle: r,
+            containerClassName: i,
+            headerContainerRef: a,
+            headingStyle: s,
+            headingClassName: o,
+            headingRef: c,
+            leadingBadge: d,
+            trailingBadges: u,
+            children: e,
+          })
+        );
+      }
+      function C({
+        anchorStyle: e,
+        anchorClassName: t,
+        anchorRef: r,
+        linkProps: i,
+        children: a,
+        ...n
+      }) {
+        let { as: s = "a", ...u } = i ?? {},
+          m = (0, d.useRef)(null);
+        return (0, l.jsx)(s, {
+          ...(0, o.G)("listitem-title-link"),
+          style: e,
+          ref: r || m,
+          className: (0, c.$)(
+            "Title-module__anchor--GmXUE",
+            "Title-module__inline--oM0P7",
+            t,
+          ),
+          ...n,
+          ...u,
+          children: a,
+        });
+      }
+      let j = ({ href: e, onClick: t, anchorRef: r }) => {
+        let { setTitleAction: i, headingRef: a } = (0, p.J)();
+        return (
+          (0, d.useEffect)(() => {
+            (e || t) &&
+              i(() => (t) => {
+                if (e && (t.metaKey || t.ctrlKey)) window.open(e, "_blank");
+                else if (r?.current) r.current.click();
+                else if (a?.current) {
+                  let e = a.current.querySelector("a, button");
+                  e && e.click();
+                }
+              });
+          }, [r, a, e, t, i]),
+          null
+        );
+      };
+      try {
+        g.displayName || (g.displayName = "InternalTitle");
+      } catch {}
+      try {
+        (i = TitleTag).displayName || (i.displayName = "TitleTag");
+      } catch {}
+      try {
+        b.displayName || (b.displayName = "ListItemTitle");
+      } catch {}
+      try {
+        w.displayName || (w.displayName = "ListItemSafeHTMLTitle");
+      } catch {}
+      try {
+        (a = function ({
+          children: e,
+          html: t,
+          containerStyle: r,
+          containerClassName: i,
+          headerContainerRef: a,
+          headingStyle: n,
+          headingClassName: o,
+          headingRef: c,
+          leadingBadge: d,
+          trailingBadges: u,
+          ...m
+        }) {
+          return (
+            j(m),
+            (0, l.jsx)(g, {
+              header: (0, l.jsx)(s.JR, { html: t, ...m }),
+              containerStyle: r,
+              containerClassName: i,
+              headerContainerRef: a,
+              headingStyle: n,
+              headingClassName: o,
+              headingRef: c,
+              leadingBadge: d,
+              trailingBadges: u,
+              children: e,
+            })
+          );
+        }).displayName || (a.displayName = "ListItemUnsafeHTMLTitle");
+      } catch {}
+      try {
+        C.displayName || (C.displayName = "HeadingLink");
+      } catch {}
+    },
+    97174: (e, t, r) => {
+      r.d(t, { u: () => _ });
+      var i = r(74848),
+        a = r(73189),
+        l = r(29731),
+        n = r(88431),
+        s = r(80293),
+        o = r(81960),
+        c = r(34164),
+        d = r(96540),
+        u = r(50205),
+        m = r(44569),
+        h = r(11683),
+        f = r(55966),
+        y = r(45800);
+      function v(e, t) {
+        let r = e,
+          i = e.closest("[role=list] li");
+        i && (r = i);
+        let a = r.closest("[role=list]");
+        if (!a) return;
+        let l = document.createTreeWalker(a, NodeFilter.SHOW_ELEMENT, (e) => {
+            if (!(e instanceof HTMLElement) || !e.id.includes("list-view-node"))
+              return NodeFilter.FILTER_SKIP;
+            let t = e.parentElement;
+            for (; t && t !== a; ) {
+              if (t.id.includes("list-view-node"))
+                return NodeFilter.FILTER_SKIP;
+              t = t.parentElement;
+            }
+            return NodeFilter.FILTER_ACCEPT;
+          }),
+          n = l.firstChild(),
+          s = 0;
+        for (; n !== r && ((n = l.nextNode()), !(++s > 500)); );
+        let o = "next" === t ? l.nextNode() : l.previousNode();
+        for (
+          ;
+          o instanceof HTMLElement &&
+          o.parentElement?.closest("[role=list] li[aria-expanded=false]");
+        )
+          o = "next" === t ? l.nextNode() : l.previousNode();
+        return o instanceof HTMLElement ? o : void 0;
+      }
+      function p(e) {
+        let t = e.closest("[role=list]"),
+          r = t?.querySelector("[role=list] li");
+        return r instanceof HTMLElement ? r : void 0;
+      }
+      function x(e) {
+        let t = e.closest("[role=list]"),
+          r = t?.querySelectorAll("[role=list] li");
+        if (!r || r.length < 1) return;
+        let i = r[r.length - 1];
+        if (i instanceof HTMLElement) return i;
+      }
+      function N(e, t) {
+        let r = [
+            ...(0, f.K1)(document.documentElement, {
+              strict: !0,
+              onlyTabbable: !0,
+            }),
+          ],
+          i = r.indexOf(e);
+        return "next" === t ? r[i + 1] : r[i - 1];
+      }
+      var g = r(75986),
+        b = r(18377),
+        w = r(53687),
+        C = r(24347),
+        j = r(61015),
+        S = r(35220);
+      let _ = ({
+          children: e,
+          hasDragHandle: t,
+          isSelectable: r,
+          onVariantChange: l = a.l,
+          pluralUnits: n,
+          selectedCount: o = 0,
+          singularUnits: c,
+          title: m,
+          titleHeaderTag: h,
+          totalCount: f,
+          variant: y = u.tp,
+          ...v
+        }) => {
+          let [p, x] = (0, s.N)(y);
+          (0, d.useEffect)(() => {
+            l?.(p);
+          }, [l, p]);
+          let N = (0, d.useMemo)(() => d.Children.toArray(e).length, [e]);
+          return (0, i.jsx)(g.JE, {
+            children: (0, i.jsx)(j.y, {
+              title: m,
+              titleHeaderTag: h,
+              children: (0, i.jsx)(S.H, {
+                variant: p,
+                setVariant: x,
+                children: (0, i.jsx)(C.W, {
+                  countOnPage: N,
+                  selectedCount: o,
+                  totalCount: f,
+                  singularUnits: c,
+                  pluralUnits: n,
+                  isSelectable: r,
+                  hasDragHandle: t,
+                  children: (0, i.jsx)(w.e, {
+                    children: (0, i.jsx)(b.w, {
+                      children: (0, i.jsx)(L, { ...v, children: e }),
+                    }),
+                  }),
+                }),
+              }),
+            }),
+          });
+        },
+        L = ({
+          ariaLabelledBy: e,
+          as: t,
+          children: r,
+          className: a,
+          itemsListClassName: s,
+          itemsListStyle: u,
+          listRef: b,
+          metadata: w,
+          role: C,
+          strictFocusZone: _,
+          ...L
+        }) => {
+          let { idPrefix: A } = (0, g.If)(),
+            { title: I, titleHeaderTag: M } = (0, j.t)(),
+            { variant: E } = (0, S.e)(),
+            { containerRef: T } = (function (e = !0) {
+              let t = void 0 === e || e,
+                r =
+                  h.z0.ArrowVertical |
+                  h.z0.HomeAndEnd |
+                  h.z0.PageUpDown |
+                  h.z0.Tab,
+                i = (0, m.zw)() ? r | h.z0.JK : r,
+                { containerRef: a } = (0, y.G)({
+                  strict: t,
+                  bindKeys: i,
+                  focusInStrategy: () => {
+                    if (!a.current) return;
+                    let e = a.current.querySelector('[tabindex="0"]');
+                    return e?.closest("[role=list] li") || e;
+                  },
+                  focusableElementFilter: (e) =>
+                    "list" !== e.getAttribute("role"),
+                  getNextFocusable: (e, r, i) => {
+                    if (r instanceof HTMLElement) {
+                      if ("Tab" === i.key || "Tab" === i.code) {
+                        if (i.shiftKey && r.id.includes("list-view-node"))
+                          return N(r, "previous");
+                        let e = r.closest("[role=list] li");
+                        if (!e) return;
+                        let a = [...(0, f.K1)(e, { strict: t })],
+                          l = a.findIndex(
+                            (e) =>
+                              e.parentElement?.getAttribute(
+                                "data-listview-component",
+                              ) === "trailing-badge",
+                          ),
+                          n = a.findIndex(
+                            (e) =>
+                              "selection-input" ===
+                              e.getAttribute("data-listview-component"),
+                          );
+                        l >= 0 &&
+                          n >= 0 &&
+                          (a.splice(l, 0, a[n]), a.splice(n + 1, 1));
+                        let s = a.indexOf(i.target);
+                        return s !== a.length - 1 || i.shiftKey
+                          ? s > 0
+                            ? i.shiftKey
+                              ? a[s - 1]
+                              : a[s + 1]
+                            : void 0
+                          : N(r, "next");
+                      }
+                      if ("previous" === e) return v(r, e) || p(r);
+                      if ("next" === e) return v(r, e) || x(r);
+                      if ("start" === e) return p(r);
+                      if ("end" === e) return x(r);
+                    }
+                  },
+                });
+              return { containerRef: a };
+            })(_),
+            [P, R] = (0, d.useState)(!0);
+          ((0, d.useEffect)(() => {
+            b && (b.current = T.current);
+          }, [T, b]),
+            (0, n.N)(() => {
+              T.current &&
+                R(
+                  Array.from(T.current.querySelectorAll("li")).some((e) => {
+                    let t = e.parentElement;
+                    for (; t && t !== T.current; ) {
+                      if ("UL" === t.tagName || "OL" === t.tagName) return !1;
+                      t = t.parentElement;
+                    }
+                    return !0;
+                  }),
+                );
+            }, [T, r]));
+          let B = e ?? `${A}-list-view-container-title`;
+          return (0, i.jsxs)("div", {
+            id: `${A}-list-view-container`,
+            className: (0, c.$)("ListView-module__container--rxCWy", a),
+            children: [
+              !e &&
+                (0, i.jsx)(o.A, {
+                  className: "sr-only",
+                  as: M,
+                  id: B,
+                  ...(0, l.G)("list-view-title"),
+                  children: I,
+                }),
+              w,
+              (0, i.jsx)(t || (P ? "ul" : "div"), {
+                className: (0, c.$)("ListView-module__ul--A_8jF", s),
+                style: u,
+                ref: T,
+                "aria-labelledby": P ? B : void 0,
+                tabIndex: -1,
+                role: (C ?? P) ? "list" : void 0,
+                "data-listview-component": "items-list",
+                "data-density": E,
+                ...(0, l.G)("list-view-items"),
+                ...L,
+                children: r,
+              }),
+            ],
+          });
+        };
+      try {
+        _.displayName || (_.displayName = "ListView");
+      } catch {}
+      try {
+        L.displayName || (L.displayName = "ListViewContainer");
+      } catch {}
+    },
+  },
+]);
 //# sourceMappingURL=72238-559966278aca.js.map

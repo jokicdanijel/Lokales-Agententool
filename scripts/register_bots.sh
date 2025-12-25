@@ -52,16 +52,16 @@ echo ""
 echo "🔐 Registering bots..."
 while IFS='=' read -r bot_key token; do
     [ -z "$bot_key" ] && continue
-    
+
     echo ""
     echo "  📌 $bot_key"
-    
+
     # URL-encode
     BOT_KEY_ENC=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$bot_key'))" 2>/dev/null || echo "$bot_key")
     TOKEN_ENC=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$token'))" 2>/dev/null || echo "$token")
-    
+
     RESP=$(curl -s -X POST "$API_URL/admin/register-bot?bot_key=$BOT_KEY_ENC&token=$TOKEN_ENC" -H "X-Admin-Key: $ADMIN_KEY" 2>/dev/null || echo '{}')
-    
+
     if echo "$RESP" | grep -q '"bot_id"'; then
         echo "    ✅ Registered"
     else

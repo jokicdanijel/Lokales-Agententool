@@ -1,4 +1,5 @@
 # 📞 OPENA9 Telephone Agent
+
 ## PORTIER PAS-6.0 Standard
 
 [![Version](https://img.shields.io/badge/version-6.0.0-blue.svg)](https://github.com/elion)
@@ -92,20 +93,21 @@ http://127.0.0.1:12355/html/index.html
 
 ### Health & Status
 
-| Endpoint | Methode | Beschreibung |
-|----------|---------|--------------|
-| `/health` | GET | Health Check |
-| `/status` | GET | Detaillierter Status |
-| `/metrics` | GET | Prometheus Metriken |
-| `/config` | GET | Konfiguration |
+| Endpoint   | Methode | Beschreibung         |
+| ---------- | ------- | -------------------- |
+| `/health`  | GET     | Health Check         |
+| `/status`  | GET     | Detaillierter Status |
+| `/metrics` | GET     | Prometheus Metriken  |
+| `/config`  | GET     | Konfiguration        |
 
 ### Commands
 
-| Endpoint | Methode | Beschreibung |
-|----------|---------|--------------|
-| `/command` | POST | Befehle ausführen |
+| Endpoint   | Methode | Beschreibung      |
+| ---------- | ------- | ----------------- |
+| `/command` | POST    | Befehle ausführen |
 
 **Verfügbare Commands:**
+
 - `make_call` - Anruf starten
 - `answer_call` - Anruf annehmen
 - `hangup` - Auflegen
@@ -116,12 +118,12 @@ http://127.0.0.1:12355/html/index.html
 
 ### Specialized Endpoints
 
-| Endpoint | Methode | Beschreibung |
-|----------|---------|--------------|
-| `/specialized/make_call` | POST | Anruf starten |
-| `/specialized/voice_generate` | POST | Voice generieren |
-| `/specialized/transcribe` | POST | Audio transkribieren |
-| `/specialized/ivr_flow` | POST | IVR Flow erstellen |
+| Endpoint                      | Methode | Beschreibung         |
+| ----------------------------- | ------- | -------------------- |
+| `/specialized/make_call`      | POST    | Anruf starten        |
+| `/specialized/voice_generate` | POST    | Voice generieren     |
+| `/specialized/transcribe`     | POST    | Audio transkribieren |
+| `/specialized/ivr_flow`       | POST    | IVR Flow erstellen   |
 
 ---
 
@@ -129,13 +131,13 @@ http://127.0.0.1:12355/html/index.html
 
 ### Umgebungsvariablen
 
-| Variable | Beschreibung | Default |
-|----------|--------------|---------|
-| `OPENA9_PORT` | Agent Port | 12355 |
-| `OPENAI_API_KEY_OPENA9` | OpenAI API Key | - |
-| `TWILIO_ACCOUNT_SID` | Twilio Account | - |
-| `TWILIO_AUTH_TOKEN` | Twilio Token | - |
-| `TWILIO_PHONE_NUMBER` | Caller ID | - |
+| Variable                | Beschreibung   | Default |
+| ----------------------- | -------------- | ------- |
+| `OPENA9_PORT`           | Agent Port     | 12355   |
+| `OPENAI_API_KEY_OPENA9` | OpenAI API Key | -       |
+| `TWILIO_ACCOUNT_SID`    | Twilio Account | -       |
+| `TWILIO_AUTH_TOKEN`     | Twilio Token   | -       |
+| `TWILIO_PHONE_NUMBER`   | Caller ID      | -       |
 
 ---
 
@@ -209,6 +211,7 @@ pytest tests/ --cov=modules --cov-report=html
 ## 📜 Changelog
 
 ### v6.0.0 (2025-01)
+
 - ✅ PORTIER PAS-6.0 Standard implementiert
 - ✅ OpenAI TTS/Whisper Integration
 - ✅ Twilio Voice API

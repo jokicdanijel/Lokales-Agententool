@@ -13,7 +13,9 @@
 ## 🎯 Day 1: Setup & Foundation
 
 ### Morning
+
 1. **Review Documentation** (30 min)
+
    ```bash
    cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
    cat 19.dashboard_agent/docs/PDI/project_manifest.md
@@ -21,6 +23,7 @@
    ```
 
 2. **Verify Phase 3 Status** (10 min)
+
    ```bash
    bin/ops.sh start
    bin/ops.sh verify
@@ -36,6 +39,7 @@
    ```
 
 ### Afternoon
+
 1. **Position 01: Bridge Auth** (4 hours)
    - Create `bridge_auth.py` (100 lines)
    - Implement token validation middleware
@@ -49,6 +53,7 @@
    - Test: `curl http://127.0.0.1:12351/health`
 
 ### Day 1 Completion Checklist
+
 - [ ] Project manifest reviewed
 - [ ] Phase 3 verified (all services running)
 - [ ] Branch created + pushed
@@ -62,6 +67,7 @@
 ## 🎯 Day 2–3: Bridge Core (Positions 02–03)
 
 ### Position 02: OpenAPI Schema (4 hours)
+
 ```bash
 # 1. Add FastAPI auto-docs to bridge
 # 2. Generate bridge_schema.json via GET /openapi.json
@@ -75,6 +81,7 @@
 ```
 
 ### Position 03: Dashboard Monitor (4 hours)
+
 ```bash
 # 1. Add endpoint to main_dashboard.py: GET /api/bridge/status
 # 2. Create response: { queue_length, pending, completed, last_sync }
@@ -86,6 +93,7 @@
 ```
 
 ### Day 2–3 Deliverables
+
 - [ ] OpenAPI schema generated + documented
 - [ ] Dashboard bridge status endpoint
 - [ ] UI queue monitor widget
@@ -97,18 +105,20 @@
 ## 🎯 Week 1 Summary (Day 4–5): Positions 04–05
 
 ### Position 04: Retry & Backoff (4 hours)
+
 Create in extension skeleton (TypeScript):
+
 ```typescript
 // extension/src/retry.ts
 export class RetryManager {
-  async retryWithBackoff(fn, maxRetries=5) {
+  async retryWithBackoff(fn, maxRetries = 5) {
     for (let i = 0; i < maxRetries; i++) {
       try {
         return await fn();
       } catch (e) {
         const delay = Math.pow(2, i) * 1000; // 1s, 2s, 4s, 8s, 16s
-        console.log(`Retry ${i+1}/${maxRetries} after ${delay}ms`);
-        await new Promise(r => setTimeout(r, delay));
+        console.log(`Retry ${i + 1}/${maxRetries} after ${delay}ms`);
+        await new Promise((r) => setTimeout(r, delay));
       }
     }
     throw new Error(`Failed after ${maxRetries} retries`);
@@ -117,7 +127,9 @@ export class RetryManager {
 ```
 
 ### Position 05: Merge Strategy (4 hours)
+
 Create in `merge.py`:
+
 ```python
 # merge.py: 3-Way merge algorithm
 def three_way_merge(base, local, remote):
@@ -127,6 +139,7 @@ def three_way_merge(base, local, remote):
 ```
 
 ### Week 1 Completion Checklist
+
 - [ ] Retry manager implemented + tested
 - [ ] Merge algorithm implemented + tested
 - [ ] All 5 positions in progress or complete
@@ -164,6 +177,7 @@ def three_way_merge(base, local, remote):
 ## 🔧 Development Workflow (Daily)
 
 ### Morning (30 min)
+
 ```bash
 # 1. Sync latest
 git pull origin feature/phase-4-bridge
@@ -184,11 +198,13 @@ bin/ops.sh start && sleep 2 && bin/ops.sh health && bin/ops.sh stop
 ```
 
 ### Development (6 hours)
+
 - Focus on 1–2 positions
 - Write code + tests
 - Document endpoints + examples
 
 ### Evening (30 min)
+
 ```bash
 # 1. Final tests
 pytest tests/ -q
@@ -209,11 +225,14 @@ git push origin feature/phase-4-bridge
 ## 📋 Position 01–05 Details (Week 1)
 
 ### Position 01: Bridge Auth & RBAC
+
 **Files to Create:**
+
 - `bridge_auth.py` (100 lines)
 - `tests/test_auth.py` (50 lines)
 
 **Endpoint:**
+
 ```python
 @app.post("/api/auth/token")
 async def get_token(credentials: TokenRequest):
@@ -226,6 +245,7 @@ async def get_token(credentials: TokenRequest):
 ```
 
 **Middleware:**
+
 ```python
 @app.middleware("http")
 async def auth_middleware(request, call_next):
@@ -245,6 +265,7 @@ async def auth_middleware(request, call_next):
 ```
 
 **Test:**
+
 ```python
 def test_auth_required():
     response = client.post("/api/enqueue", json={...})
@@ -261,11 +282,14 @@ def test_auth_valid():
 ```
 
 ### Position 02: OpenAPI Schema
+
 **Files to Create:**
+
 - `docs/bridge_api.md` (200 lines)
 - `tests/test_openapi.py` (30 lines)
 
 **Schema Generation:**
+
 ```bash
 # FastAPI auto-generates at /openapi.json
 # Starlette middleware serves it
@@ -273,10 +297,12 @@ curl http://127.0.0.1:12351/openapi.json | jq . > bridge_schema.json
 ```
 
 **Markdown Reference (Sample):**
+
 ```markdown
 ## Bridge API Reference
 
 ### POST /api/enqueue
+
 Enqueue a task.
 
 **Authorization:** Bearer token (writer or admin role)
@@ -284,18 +310,18 @@ Enqueue a task.
 **Request:**
 \`\`\`json
 {
-  "prompt": "Summarize this file",
-  "file_path": "src/main.py",
-  "mode": "merge"
+"prompt": "Summarize this file",
+"file_path": "src/main.py",
+"mode": "merge"
 }
 \`\`\`
 
 **Response (200):**
 \`\`\`json
 {
-  "task_id": "task_12345",
-  "status": "queued",
-  "created_at": "2025-11-07T08:00:00Z"
+"task_id": "task_12345",
+"status": "queued",
+"created_at": "2025-11-07T08:00:00Z"
 }
 \`\`\`
 
@@ -306,12 +332,15 @@ Enqueue a task.
 ```
 
 ### Position 03: Dashboard Monitor
+
 **Files to Update:**
+
 - `main_dashboard.py` (add 30 lines)
 - `ui_index.html` (add 50 lines)
 - `tests/test_bridge_status.py` (new, 40 lines)
 
 **Endpoint:**
+
 ```python
 @app.get("/api/bridge/status")
 async def get_bridge_status(token: HTTPAuthorizationCredentials = Security(security)):
@@ -325,14 +354,15 @@ async def get_bridge_status(token: HTTPAuthorizationCredentials = Security(secur
 ```
 
 **UI Widget (JavaScript):**
+
 ```javascript
 async function updateQueueStatus() {
-    const tok = localStorage.getItem('token');
-    const r = await fetch('http://127.0.0.1:12349/api/bridge/status', {
-        headers: { 'Authorization': `Bearer ${tok}` }
-    });
-    const data = await r.json();
-    document.getElementById('queue-stats').innerHTML = `
+  const tok = localStorage.getItem("token");
+  const r = await fetch("http://127.0.0.1:12349/api/bridge/status", {
+    headers: { Authorization: `Bearer ${tok}` },
+  });
+  const data = await r.json();
+  document.getElementById("queue-stats").innerHTML = `
         <p>Pending: ${data.pending}</p>
         <p>Completed: ${data.completed}</p>
         <p>Last Sync: ${data.last_sync}</p>
@@ -342,36 +372,42 @@ setInterval(updateQueueStatus, 5000);
 ```
 
 ### Position 04: Retry & Backoff
+
 **Files to Create:**
+
 - `extension/src/retry.ts` (100 lines)
 - `extension/test/retry.test.ts` (50 lines)
 
 **Implementation:**
+
 ```typescript
 export async function retryWithBackoff<T>(
-    fn: () => Promise<T>,
-    maxRetries = 5
+  fn: () => Promise<T>,
+  maxRetries = 5,
 ): Promise<T> {
-    for (let i = 0; i < maxRetries; i++) {
-        try {
-            return await fn();
-        } catch (error) {
-            if (i === maxRetries - 1) throw error;
-            const delay = Math.pow(2, i) * 1000; // 1s, 2s, 4s, 8s, 16s
-            console.log(`Retry ${i + 1}/${maxRetries} after ${delay}ms`);
-            await new Promise(r => setTimeout(r, delay));
-        }
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await fn();
+    } catch (error) {
+      if (i === maxRetries - 1) throw error;
+      const delay = Math.pow(2, i) * 1000; // 1s, 2s, 4s, 8s, 16s
+      console.log(`Retry ${i + 1}/${maxRetries} after ${delay}ms`);
+      await new Promise((r) => setTimeout(r, delay));
     }
-    throw new Error(`Failed after ${maxRetries} retries`);
+  }
+  throw new Error(`Failed after ${maxRetries} retries`);
 }
 ```
 
 ### Position 05: Merge Strategy
+
 **Files to Create:**
+
 - `merge.py` (150 lines)
 - `tests/test_merge.py` (100 lines)
 
 **Implementation Skeleton:**
+
 ```python
 def three_way_merge(base: str, local: str, remote: str) -> tuple:
     """
@@ -409,12 +445,14 @@ def mark_conflicts(base, local, remote, conflicts):
 ## 🧪 Week 1 Testing Plan
 
 ### Daily Smoke Tests
+
 ```bash
 # Each morning, verify nothing broke
 pytest tests/test_auth.py tests/test_openapi.py tests/test_merge.py -q
 ```
 
 ### Integration Test (Friday)
+
 ```bash
 # Full bridge startup + dashboard access
 bin/ops.sh start
@@ -424,6 +462,7 @@ bin/ops.sh stop
 ```
 
 ### Lint Check
+
 ```bash
 pylint 19.dashboard_agent/bridge_auth.py
 pylint 19.dashboard_agent/copilot_bridge.py
@@ -435,6 +474,7 @@ pylint 19.dashboard_agent/merge.py
 ## 📊 Week 1 Metrics
 
 **Target:**
+
 - ✅ 5/20 positions started
 - ✅ ~500 lines of code
 - ✅ ~200 lines of tests
@@ -442,14 +482,17 @@ pylint 19.dashboard_agent/merge.py
 - ✅ 1 PR merged (or in review)
 
 **Daily Log Template:**
+
 ```markdown
 ## Day 1 (Mon 2025-11-07)
+
 - [ ] Position 01 auth implementation (4h)
 - [ ] Position 01 tests (1h)
 - [ ] Bridge skeleton (1h)
 - Commit: "feat(bridge): auth & skeleton"
 
 ## Day 2 (Tue 2025-11-08)
+
 - [ ] Position 02 OpenAPI schema (3h)
 - [ ] Position 02 tests (1h)
 - [ ] Dashboard bridge endpoint (2h)

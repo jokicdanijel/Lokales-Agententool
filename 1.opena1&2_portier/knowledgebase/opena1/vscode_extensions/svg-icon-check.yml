@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - 'icons/*.svg'
+      - "icons/*.svg"
 
 permissions:
   contents: read
@@ -23,7 +23,7 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           path: fork
           sparse-checkout-cone-mode: false
-          sparse-checkout: 'icons/'
+          sparse-checkout: "icons/"
 
       - name: Checkout Base
         uses: actions/checkout@v4
@@ -31,7 +31,7 @@ jobs:
           fetch-depth: 0
           path: base
           sparse-checkout-cone-mode: false
-          sparse-checkout: 'icons/'
+          sparse-checkout: "icons/"
 
       - name: Ensure Base is Up-to-Date
         working-directory: base
@@ -78,11 +78,11 @@ jobs:
           done
 
           # If files were found, set the output
-          if [ "$filesCount" -gt 0 ]; then 
+          if [ "$filesCount" -gt 0 ]; then
             echo "SVG_CHANGED=true" >> $GITHUB_OUTPUT
             echo "files=$(echo "$FILTERED_FILES" | tr '\n' ' ')" >> $GITHUB_OUTPUT
             echo "files=$FILTERED_FILES"
-            echo "sizes=$(echo "$SIZES" | tr '\n' ' ')" >> $GITHUB_OUTPUT 
+            echo "sizes=$(echo "$SIZES" | tr '\n' ' ')" >> $GITHUB_OUTPUT
             echo "sizes=$SIZES"
           else
             echo "SVG_CHANGED=false" >> $GITHUB_OUTPUT
@@ -124,17 +124,17 @@ jobs:
             filename=$(basename "${file_list[$index]}" .svg)
             size="${size_list[$index]}"
             png_file="previews/${filename}-preview.png"
-            
+
             # Upload to image host
             response=$(curl -s --location 'https://freeimage.host/json' \
               --form "source=@$png_file" \
               --form "type=file" \
               --form "action=upload" \
               --form "auth_token=$IMAGE_UPLOAD")
-            
+
             image_url=$(echo "$response" | jq -r '.image.url')
             echo "Uploaded: $image_url"
-            
+
             # Build comment body
             COMMENT_BODY+="#### ${filename} (${size} bytes)\n"
             COMMENT_BODY+="![Preview]($image_url)\n\n"
@@ -152,7 +152,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
-          comment-author: 'github-actions[bot]'
+          comment-author: "github-actions[bot]"
           body-includes: <!-- svg-preview-comment -->
 
       - name: Post/Update Comment

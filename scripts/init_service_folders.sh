@@ -40,7 +40,7 @@ for svc in "${!MAP[@]}"; do
   ptarget="${MAP[$svc]}"
   svc_dir="$BASE/$svc"
   mkdir -p "$svc_dir"
-  
+
   readme="$svc_dir/README.md"
   if [ ! -f "$readme" ]; then
     cat > "$readme" <<EOF

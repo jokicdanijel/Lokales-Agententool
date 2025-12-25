@@ -39,4 +39,3 @@ curl -s -X POST http://127.0.0.1:$OPENA2/store/archivp \
 
 echo "# 6) Letzte Safepoints im Archiv"
 curl -s "http://127.0.0.1:$OPENA2/archiv/last?n=5" | jq .
-

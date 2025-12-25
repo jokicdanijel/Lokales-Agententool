@@ -4,7 +4,6 @@ generate_scalable_services.py — Bulk Service Generation
 Creates 16 services (12349-12364) from template
 """
 
-import os
 import shutil
 from pathlib import Path
 
@@ -39,39 +38,43 @@ print()
 count = 0
 for port, target, service_name in SERVICES:
     service_dir = SERVICES_DIR / service_name
-    
+
     # Skip if already exists
     if service_dir.exists():
         print(f"✅ {service_name:20} ({port}) — Already exists")
         continue
-    
+
     # Create directory
     service_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Copy template
     main_py = service_dir / "main.py"
     shutil.copy(TEMPLATE_FILE, main_py)
-    
+
     # Create wrapper script
     run_sh = service_dir / "run.sh"
-    run_sh.write_text(f"""#!/usr/bin/env bash
+    run_sh.write_text(
+        f"""#!/usr/bin/env bash
 export SERVICE_NAME="{service_name}"
 export PROGRAM_TARGET="{target}"
 export PORT="{port}"
 exec python3 "$(dirname "${{BASH_SOURCE[0]}}")/main.py" "$@"
-""")
+"""
+    )
     run_sh.chmod(0o755)
-    
+
     # Create requirements.txt
     req_txt = service_dir / "requirements.txt"
-    req_txt.write_text("""fastapi==0.121.0
+    req_txt.write_text(
+        """fastapi==0.121.0
 uvicorn==0.30.0
 pydantic==2.12.4
 pydantic-settings==2.12.0
 httpx==0.27.2
 python-multipart==0.0.7
-""")
-    
+"""
+    )
+
     print(f"✨ {service_name:20} ({port}, {target:8})")
     count += 1
 

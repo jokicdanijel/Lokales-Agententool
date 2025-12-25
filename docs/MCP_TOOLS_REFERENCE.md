@@ -21,6 +21,7 @@ Model Context Protocol (MCP) stellt umfangreiche Tools für Automation und Integ
 ### Workflow & Actions Management
 
 #### `get_workflow_runs`
+
 **Beschreibung:** Ruft GitHub Actions Workflow-Läufe ab
 **Verwendung:** Workflow-Status monitoren, Fehler analysieren
 
@@ -34,6 +35,7 @@ github-mcp-server/get_workflow_runs:
 ```
 
 **Rückgabewerte:**
+
 - `id`: Eindeutige Run-ID
 - `status`: queued, in_progress, completed, requested, waiting
 - `conclusion`: success, failure, neutral, cancelled, skipped, timed_out
@@ -42,6 +44,7 @@ github-mcp-server/get_workflow_runs:
 - `head_commit`: Commit SHA
 
 **Filtern:**
+
 ```
 status:
   - queued
@@ -58,6 +61,7 @@ event:
 ---
 
 #### `get_job_logs`
+
 **Beschreibung:** Ruft Logs von GitHub Actions Jobs ab
 **Verwendung:** Debugging von fehlgeschlagenen Workflows
 
@@ -80,6 +84,7 @@ github-mcp-server/get_job_logs:
 ```
 
 **Rückgabewerte:**
+
 - `logs[]`: Array mit Log-Einträgen
 - `url`: URL zum Log im GitHub UI
 - `status`: Job-Status
@@ -90,6 +95,7 @@ github-mcp-server/get_job_logs:
 ### Commit & Version Management
 
 #### `get_commit`
+
 **Beschreibung:** Ruft Commit-Details mit optionalen Diffs ab
 **Verwendung:** Code-Review, Change-Tracking
 
@@ -103,6 +109,7 @@ github-mcp-server/get_commit:
 ```
 
 **Rückgabewerte:**
+
 - `sha`: Commit-Hash
 - `message`: Commit-Nachricht
 - `author`, `committer`: Name, Email, Datum
@@ -115,6 +122,7 @@ github-mcp-server/get_commit:
 ---
 
 #### `list_commits`
+
 **Beschreibung:** Listet Commits eines Branches auf
 **Verwendung:** Commit-Historie durchsuchen
 
@@ -133,6 +141,7 @@ github-mcp-server/list_commits:
 ### Release & Tag Management
 
 #### `get_latest_release`
+
 **Beschreibung:** Ruft die neueste Release ab
 **Verwendung:** Versions-Tracking, Deployment-Validierung
 
@@ -143,6 +152,7 @@ github-mcp-server/get_latest_release:
 ```
 
 **Rückgabewerte:**
+
 - `tag_name`: z.B. "v1.0.0"
 - `name`: Release-Name
 - `draft`, `prerelease`: Status-Flags
@@ -152,6 +162,7 @@ github-mcp-server/get_latest_release:
 ---
 
 #### `get_release_by_tag`
+
 **Beschreibung:** Ruft Release zu spezifischem Tag ab
 
 ```bash
@@ -164,6 +175,7 @@ github-mcp-server/get_release_by_tag:
 ---
 
 #### `get_tag`
+
 **Beschreibung:** Git-Tag Details abrufen
 
 ```bash
@@ -176,6 +188,7 @@ github-mcp-server/get_tag:
 ---
 
 #### `list_tags`
+
 **Beschreibung:** Alle Tags eines Repos auflisten
 
 ```bash
@@ -191,6 +204,7 @@ github-mcp-server/list_tags:
 ### Issue & Pull Request Management
 
 #### `issue_read`
+
 **Beschreibung:** Issue-Details abrufen mit verschiedenen Methoden
 **Methoden:**
 
@@ -228,6 +242,7 @@ github-mcp-server/issue_read:
 ---
 
 #### `list_issues`
+
 **Beschreibung:** Alle Issues mit Filterung
 
 ```bash
@@ -244,6 +259,7 @@ github-mcp-server/list_issues:
 ---
 
 #### `pull_request_read`
+
 **Beschreibung:** Pull Request Details mit Methoden
 
 ```bash
@@ -302,6 +318,7 @@ github-mcp-server/pull_request_read:
 ---
 
 #### `list_pull_requests`
+
 **Beschreibung:** Alle PRs mit Filterung
 
 ```bash
@@ -320,6 +337,7 @@ github-mcp-server/list_pull_requests:
 ### Security & Code Quality
 
 #### `list_code_scanning_alerts`
+
 **Beschreibung:** Code-Scanning Alerts (z.B. CodeQL)
 
 ```bash
@@ -334,6 +352,7 @@ github-mcp-server/list_code_scanning_alerts:
 ---
 
 #### `get_code_scanning_alert`
+
 **Beschreibung:** Einzelnes Code-Scanning Alert
 
 ```bash
@@ -346,6 +365,7 @@ github-mcp-server/get_code_scanning_alert:
 ---
 
 #### `list_secret_scanning_alerts`
+
 **Beschreibung:** Secret-Scanning Alerts (exposed tokens, keys, etc.)
 
 ```bash
@@ -359,6 +379,7 @@ github-mcp-server/list_secret_scanning_alerts:
 ---
 
 #### `get_secret_scanning_alert`
+
 **Beschreibung:** Einzelnes Secret Alert
 
 ```bash
@@ -373,6 +394,7 @@ github-mcp-server/get_secret_scanning_alert:
 ### Repository & Branch Management
 
 #### `get_file_contents`
+
 **Beschreibung:** Datei- oder Verzeichnis-Inhalte abrufen
 
 ```bash
@@ -394,6 +416,7 @@ github-mcp-server/get_file_contents:
 ---
 
 #### `list_branches`
+
 **Beschreibung:** Branches auflisten
 
 ```bash
@@ -407,6 +430,7 @@ github-mcp-server/list_branches:
 ---
 
 #### `list_releases`
+
 **Beschreibung:** Alle Releases auflisten
 
 ```bash
@@ -422,6 +446,7 @@ github-mcp-server/list_releases:
 ### Search & Discovery
 
 #### `search_code`
+
 **Beschreibung:** Quellcode durchsuchen (GitHub-Syntax)
 
 ```bash
@@ -439,6 +464,7 @@ github-mcp-server/search_code:
 ```
 
 **Syntax-Beispiele:**
+
 ```
 - language:python
 - language:javascript
@@ -451,6 +477,7 @@ github-mcp-server/search_code:
 ---
 
 #### `search_issues`
+
 **Beschreibung:** Issues durchsuchen
 
 ```bash
@@ -463,6 +490,7 @@ github-mcp-server/search_issues:
 ---
 
 #### `search_pull_requests`
+
 **Beschreibung:** PRs durchsuchen
 
 ```bash
@@ -474,6 +502,7 @@ github-mcp-server/search_pull_requests:
 ---
 
 #### `search_repositories`
+
 **Beschreibung:** Repositories suchen
 
 ```bash
@@ -487,6 +516,7 @@ github-mcp-server/search_repositories:
 ---
 
 #### `search_users`
+
 **Beschreibung:** GitHub-Benutzer suchen
 
 ```bash
@@ -500,6 +530,7 @@ github-mcp-server/search_users:
 ### Label & Metadata
 
 #### `get_label`
+
 **Beschreibung:** Label-Details abrufen
 
 ```bash
@@ -512,6 +543,7 @@ github-mcp-server/get_label:
 ---
 
 #### `list_issue_types`
+
 **Beschreibung:** Verfügbare Issue-Typen der Organisation
 
 ```bash
@@ -526,6 +558,7 @@ github-mcp-server/list_issue_types:
 ### Navigation & Page Management
 
 #### `browser_navigate`
+
 **Beschreibung:** Zu URL navigieren
 
 ```bash
@@ -536,6 +569,7 @@ playwright/browser_navigate:
 ---
 
 #### `browser_navigate_back`
+
 **Beschreibung:** Zurück-Navigation
 
 ```bash
@@ -547,6 +581,7 @@ playwright/browser_navigate_back
 ### Snapshots & Screenshots
 
 #### `browser_snapshot`
+
 **Beschreibung:** Accessibility Snapshot der Seite (besser als Screenshot)
 
 ```bash
@@ -557,6 +592,7 @@ playwright/browser_snapshot
 ---
 
 #### `browser_take_screenshot`
+
 **Beschreibung:** Screenshot aufnehmen
 
 ```bash
@@ -571,6 +607,7 @@ playwright/browser_take_screenshot:
 ### Element Interaction
 
 #### `browser_click`
+
 **Beschreibung:** Element anklicken
 
 ```bash
@@ -584,6 +621,7 @@ playwright/browser_click:
 ---
 
 #### `browser_type`
+
 **Beschreibung:** Text in Element eingeben
 
 ```bash
@@ -597,6 +635,7 @@ playwright/browser_type:
 ---
 
 #### `browser_fill_form`
+
 **Beschreibung:** Mehrere Formular-Felder ausfüllen
 
 ```bash
@@ -619,6 +658,7 @@ playwright/browser_fill_form:
 ---
 
 #### `browser_select_option`
+
 **Beschreibung:** Dropdown-Option wählen
 
 ```bash
@@ -631,6 +671,7 @@ playwright/browser_select_option:
 ---
 
 #### `browser_hover`
+
 **Beschreibung:** Über Element hovern (ohne Klick)
 
 ```bash
@@ -642,6 +683,7 @@ playwright/browser_hover:
 ---
 
 #### `browser_drag`
+
 **Beschreibung:** Drag & Drop zwischen Elementen
 
 ```bash
@@ -657,6 +699,7 @@ playwright/browser_drag:
 ### Form & Input Management
 
 #### `browser_press_key`
+
 **Beschreibung:** Taste drücken
 
 ```bash
@@ -669,6 +712,7 @@ playwright/browser_press_key:
 ---
 
 #### `browser_file_upload`
+
 **Beschreibung:** Dateien hochladen
 
 ```bash
@@ -683,6 +727,7 @@ playwright/browser_file_upload:
 ### Page State & Information
 
 #### `browser_console_messages`
+
 **Beschreibung:** Alle Console-Meldungen abrufen
 
 ```bash
@@ -693,6 +738,7 @@ playwright/browser_console_messages
 ---
 
 #### `browser_network_requests`
+
 **Beschreibung:** Alle Network-Requests seit Page-Load
 
 ```bash
@@ -705,6 +751,7 @@ playwright/browser_network_requests
 ### Dialog & Tab Management
 
 #### `browser_handle_dialog`
+
 **Beschreibung:** Dialog (Alert, Confirm, Prompt) handhaben
 
 ```bash
@@ -716,6 +763,7 @@ playwright/browser_handle_dialog:
 ---
 
 #### `browser_tabs`
+
 **Beschreibung:** Tabs verwalten
 
 ```bash
@@ -743,6 +791,7 @@ playwright/browser_tabs:
 ### Advanced JavaScript Execution
 
 #### `browser_evaluate`
+
 **Beschreibung:** JavaScript im Browser ausführen
 
 ```bash
@@ -761,6 +810,7 @@ playwright/browser_evaluate:
 ### Page Waiting
 
 #### `browser_wait_for`
+
 **Beschreibung:** Auf Text warten oder Zeit verstreichen
 
 ```bash
@@ -782,6 +832,7 @@ playwright/browser_wait_for:
 ### Browser Configuration
 
 #### `browser_resize`
+
 **Beschreibung:** Browser-Fenster resizen
 
 ```bash
@@ -793,6 +844,7 @@ playwright/browser_resize:
 ---
 
 #### `browser_close`
+
 **Beschreibung:** Browser/Tab schließen
 
 ```bash
@@ -802,6 +854,7 @@ playwright/browser_close
 ---
 
 #### `browser_install`
+
 **Beschreibung:** Browser aus Konfiguration installieren
 
 ```bash
@@ -814,6 +867,7 @@ playwright/browser_install
 ## 🔍 Web Search & Analysis
 
 #### `web_search`
+
 **Beschreibung:** AI-gesteuerte Web-Suche mit Citations
 
 ```bash
@@ -827,6 +881,7 @@ github-mcp-server/web_search:
 ```
 
 **Rückgabewerte:**
+
 - `response`: AI-generierte Antwort mit Inline-Citations
 - `sources[]`: Array von Quellen mit URLs
 
@@ -908,18 +963,22 @@ list_commits(sha="<tag1>..<tag2>")
 ## ⚠️ Häufige Fehler & Lösungen
 
 ### "Tool nicht gefunden"
+
 **Problem:** Tool-Name falsch geschrieben
 **Lösung:** Nutze Namespace: `github-mcp-server/get_commit`, nicht `get_commit`
 
 ### "Authentifizierung fehlgeschlagen"
+
 **Problem:** Keine GitHub-Credentials
 **Lösung:** Stelle sicher, dass GitHub CLI konfiguriert ist: `gh auth login`
 
 ### "Rate Limit exceeded"
+
 **Problem:** Zu viele API-Requests
 **Lösung:** Nutze Pagination, warte 1 Stunde, oder upgrade GitHub Plan
 
 ### Browser-Tool schlägt fehl
+
 **Problem:** Playwright nicht installiert
 **Lösung:** Führe `playwright/browser_install` aus
 

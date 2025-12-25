@@ -1,6 +1,6 @@
-import json
 import tempfile
-from evaluation.reporting import write_summary_csv, write_markdown_summary
+
+from evaluation.reporting import write_markdown_summary, write_summary_csv
 
 
 def test_reporting_roundtrip():

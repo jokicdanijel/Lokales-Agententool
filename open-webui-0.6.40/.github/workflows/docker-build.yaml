@@ -35,7 +35,7 @@ jobs:
           echo "IMAGE_NAME=${IMAGE_NAME,,}" >>${GITHUB_ENV}
           echo "FULL_IMAGE_NAME=ghcr.io/${IMAGE_NAME,,}" >>${GITHUB_ENV}
         env:
-          IMAGE_NAME: '${{ github.repository }}'
+          IMAGE_NAME: "${{ github.repository }}"
 
       - name: Prepare
         run: |
@@ -134,7 +134,7 @@ jobs:
           echo "IMAGE_NAME=${IMAGE_NAME,,}" >>${GITHUB_ENV}
           echo "FULL_IMAGE_NAME=ghcr.io/${IMAGE_NAME,,}" >>${GITHUB_ENV}
         env:
-          IMAGE_NAME: '${{ github.repository }}'
+          IMAGE_NAME: "${{ github.repository }}"
 
       - name: Prepare
         run: |
@@ -239,7 +239,7 @@ jobs:
           echo "IMAGE_NAME=${IMAGE_NAME,,}" >>${GITHUB_ENV}
           echo "FULL_IMAGE_NAME=ghcr.io/${IMAGE_NAME,,}" >>${GITHUB_ENV}
         env:
-          IMAGE_NAME: '${{ github.repository }}'
+          IMAGE_NAME: "${{ github.repository }}"
 
       - name: Prepare
         run: |
@@ -345,7 +345,7 @@ jobs:
           echo "IMAGE_NAME=${IMAGE_NAME,,}" >>${GITHUB_ENV}
           echo "FULL_IMAGE_NAME=ghcr.io/${IMAGE_NAME,,}" >>${GITHUB_ENV}
         env:
-          IMAGE_NAME: '${{ github.repository }}'
+          IMAGE_NAME: "${{ github.repository }}"
 
       - name: Prepare
         run: |
@@ -447,7 +447,7 @@ jobs:
           echo "IMAGE_NAME=${IMAGE_NAME,,}" >>${GITHUB_ENV}
           echo "FULL_IMAGE_NAME=ghcr.io/${IMAGE_NAME,,}" >>${GITHUB_ENV}
         env:
-          IMAGE_NAME: '${{ github.repository }}'
+          IMAGE_NAME: "${{ github.repository }}"
 
       - name: Prepare
         run: |
@@ -538,7 +538,7 @@ jobs:
           echo "IMAGE_NAME=${IMAGE_NAME,,}" >>${GITHUB_ENV}
           echo "FULL_IMAGE_NAME=ghcr.io/${IMAGE_NAME,,}" >>${GITHUB_ENV}
         env:
-          IMAGE_NAME: '${{ github.repository }}'
+          IMAGE_NAME: "${{ github.repository }}"
 
       - name: Download digests
         uses: actions/download-artifact@v5
@@ -592,7 +592,7 @@ jobs:
           echo "IMAGE_NAME=${IMAGE_NAME,,}" >>${GITHUB_ENV}
           echo "FULL_IMAGE_NAME=ghcr.io/${IMAGE_NAME,,}" >>${GITHUB_ENV}
         env:
-          IMAGE_NAME: '${{ github.repository }}'
+          IMAGE_NAME: "${{ github.repository }}"
 
       - name: Download digests
         uses: actions/download-artifact@v5
@@ -648,7 +648,7 @@ jobs:
           echo "IMAGE_NAME=${IMAGE_NAME,,}" >>${GITHUB_ENV}
           echo "FULL_IMAGE_NAME=ghcr.io/${IMAGE_NAME,,}" >>${GITHUB_ENV}
         env:
-          IMAGE_NAME: '${{ github.repository }}'
+          IMAGE_NAME: "${{ github.repository }}"
 
       - name: Download digests
         uses: actions/download-artifact@v5
@@ -704,7 +704,7 @@ jobs:
           echo "IMAGE_NAME=${IMAGE_NAME,,}" >>${GITHUB_ENV}
           echo "FULL_IMAGE_NAME=ghcr.io/${IMAGE_NAME,,}" >>${GITHUB_ENV}
         env:
-          IMAGE_NAME: '${{ github.repository }}'
+          IMAGE_NAME: "${{ github.repository }}"
 
       - name: Download digests
         uses: actions/download-artifact@v5
@@ -760,7 +760,7 @@ jobs:
           echo "IMAGE_NAME=${IMAGE_NAME,,}" >>${GITHUB_ENV}
           echo "FULL_IMAGE_NAME=ghcr.io/${IMAGE_NAME,,}" >>${GITHUB_ENV}
         env:
-          IMAGE_NAME: '${{ github.repository }}'
+          IMAGE_NAME: "${{ github.repository }}"
 
       - name: Download digests
         uses: actions/download-artifact@v5

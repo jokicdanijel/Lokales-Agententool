@@ -1,9 +1,9 @@
 import logging
-from typing import Optional, Literal
-import requests
+from typing import Literal
 
-from open_webui.retrieval.web.main import SearchResult, get_filtered_results
+import requests
 from open_webui.env import SRC_LOG_LEVELS
+from open_webui.retrieval.web.main import SearchResult, get_filtered_results
 
 MODELS = Literal[
     "sonar",
@@ -23,7 +23,7 @@ def search_perplexity(
     api_key: str,
     query: str,
     count: int,
-    filter_list: Optional[list[str]] = None,
+    filter_list: list[str] | None = None,
     model: MODELS = "sonar",
     search_context_usage: SEARCH_CONTEXT_USAGE_LEVELS = "medium",
 ) -> list[SearchResult]:
@@ -82,7 +82,7 @@ def search_perplexity(
         for i, citation in enumerate(citations[:count]):
             # Extract content from the response to use as snippet
             content = ""
-            if "choices" in json_response and json_response["choices"]:
+            if json_response.get("choices"):
                 if i == 0:
                     content = json_response["choices"][0]["message"]["content"]
 
@@ -90,13 +90,10 @@ def search_perplexity(
             results.append(result)
 
         if filter_list:
-
             results = get_filtered_results(results, filter_list)
 
         return [
-            SearchResult(
-                link=result["link"], title=result["title"], snippet=result["snippet"]
-            )
+            SearchResult(link=result["link"], title=result["title"], snippet=result["snippet"])
             for result in results[:count]
         ]
 

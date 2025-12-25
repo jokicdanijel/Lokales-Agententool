@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena19 Aktien & Crypto
 
-**Agent-ID:** opena19  
-**Port:** 12364  
-**Status:** 🟡 Planned  
-**Kürzel:** `stockcryptop`  
+**Agent-ID:** opena19
+**Port:** 12364
+**Status:** 🟡 Planned
+**Kürzel:** `stockcryptop`
 **Domäne:** Aktien & Crypto, Marktdaten, Portfolio, Alerts
 
 ---
@@ -141,5 +141,5 @@ Kopiere diesen Prompt in:
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

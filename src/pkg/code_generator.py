@@ -1,8 +1,8 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
-from typing import List, Optional
-from openai import OpenAI
 import os
+
+from fastapi import FastAPI, HTTPException
+from openai import OpenAI
+from pydantic import BaseModel, Field
 
 # Konfiguration
 MODEL_DEFAULT = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
@@ -20,18 +20,23 @@ app = FastAPI(
     version="1.0.0",
 )
 
+
 class GenReq(BaseModel):
     language: str = Field(..., description="Zielsprache, z.B. 'python', 'typescript', 'bash'")
     task: str = Field(..., description="Klare Aufgabenbeschreibung: Input/Output, Nebenbedingungen")
-    files: Optional[List[str]] = Field(default=None, description="Optionale Dateinamen, wenn mehrere Artefakte gewünscht sind")
-    style_notes: Optional[str] = Field(default=None, description="Optionale Stilvorgaben (Architektur, Patterns, Format)")
-    constraints: Optional[str] = Field(default=None, description="Harte Constraints (Ports, Pfade, Abhängigkeiten)")
+    files: list[str] | None = Field(
+        default=None, description="Optionale Dateinamen, wenn mehrere Artefakte gewünscht sind"
+    )
+    style_notes: str | None = Field(default=None, description="Optionale Stilvorgaben (Architektur, Patterns, Format)")
+    constraints: str | None = Field(default=None, description="Harte Constraints (Ports, Pfade, Abhängigkeiten)")
     unit_tests: bool = Field(default=False, description="Falls True, Unit-Tests zusätzlich generieren")
+
 
 class GenResp(BaseModel):
     code: str
-    notes: Optional[str] = None
+    notes: str | None = None
     model: str = MODEL_DEFAULT
+
 
 @app.post("/generate", response_model=GenResp)
 def generate(req: GenReq):
@@ -72,7 +77,7 @@ ANFORDERUNGEN:
     # Schlankes Protokoll
     return GenResp(code=content, notes="Generiert über OpenAI Chat Completions API", model=MODEL_DEFAULT)
 
+
 @app.get("/health")
 def health():
     return {"service": "portier-codegen", "status": "ok"}
-

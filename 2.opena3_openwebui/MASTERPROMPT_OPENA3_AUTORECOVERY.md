@@ -22,14 +22,14 @@
 
 Dieser Masterprompt stellt sicher, dass:
 
-| Anforderung | Lösung |
-|-------------|--------|
-| **Auto-Recovery** | Letzte Context/Prompt/Safepoint laden |
-| **Docker-Prüfung** | Docker & Docker Compose vorhanden (oder installieren) |
-| **Portier-Kopplung** | Agent im zentralen Registry registriert |
-| **API-Endpoints** | Alle Portier-APIs verfügbar |
-| **Knowledgebase** | System-Knowledge automatisch geladen |
-| **Persistierung** | Alle States werden gespeichert |
+| Anforderung          | Lösung                                                |
+| -------------------- | ----------------------------------------------------- |
+| **Auto-Recovery**    | Letzte Context/Prompt/Safepoint laden                 |
+| **Docker-Prüfung**   | Docker & Docker Compose vorhanden (oder installieren) |
+| **Portier-Kopplung** | Agent im zentralen Registry registriert               |
+| **API-Endpoints**    | Alle Portier-APIs verfügbar                           |
+| **Knowledgebase**    | System-Knowledge automatisch geladen                  |
+| **Persistierung**    | Alle States werden gespeichert                        |
 
 ---
 

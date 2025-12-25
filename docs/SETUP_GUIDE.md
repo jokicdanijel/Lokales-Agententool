@@ -18,16 +18,19 @@ This guide shows you how to set up and start the ELION Hyper-Dashboard system wi
 The OPENAI_API_KEY is required for AI-powered features in the dashboard.
 
 **Check if it exists:**
+
 ```bash
 grep "^OPENAI_API_KEY=" .env
 ```
 
 **Add it if missing:**
+
 ```bash
 echo "OPENAI_API_KEY=your_key_here" >> .env
 ```
 
 **Alternative:** Copy from template
+
 ```bash
 # If .env doesn't exist, create from template
 cp .env.example .env
@@ -43,6 +46,7 @@ bin/ops.sh start
 ```
 
 This command will:
+
 - ✅ Check for OPENAI_API_KEY in .env
 - ✅ Start the Dashboard (Port 12349)
 - ✅ Start Portier/Coordinator (Port 12344)
@@ -58,11 +62,13 @@ python3 scripts/register_agents.py
 ```
 
 **Alternative:** Use the ops.sh shortcut:
+
 ```bash
 bin/ops.sh agents:register
 ```
 
 This will register:
+
 - **opena1** (Portier/Coordinator) → http://127.0.0.1:12344
 - **opena2** (Archivator) → http://127.0.0.1:12345
 
@@ -75,6 +81,7 @@ bin/ops.sh health
 ```
 
 Expected output:
+
 ```json
 {
   "status": "ok",
@@ -90,6 +97,7 @@ bin/ops.sh status
 ```
 
 Expected output:
+
 ```json
 {
   "agents": {
@@ -109,16 +117,16 @@ Expected output:
 
 The `bin/ops.sh` script provides the following commands:
 
-| Command | Description |
-|---------|-------------|
-| `start` | Start all services |
-| `stop` | Stop all services |
-| `health` | Check Dashboard health (no token required) |
-| `status` | Check all agents status (requires token) |
-| `agents:register` | Register agents with dashboard |
-| `verify` | Run integration verification |
-| `logs` | Show service logs |
-| `help` | Show help message |
+| Command           | Description                                |
+| ----------------- | ------------------------------------------ |
+| `start`           | Start all services                         |
+| `stop`            | Stop all services                          |
+| `health`          | Check Dashboard health (no token required) |
+| `status`          | Check all agents status (requires token)   |
+| `agents:register` | Register agents with dashboard             |
+| `verify`          | Run integration verification               |
+| `logs`            | Show service logs                          |
+| `help`            | Show help message                          |
 
 ## Configuration Files
 
@@ -152,6 +160,7 @@ OPENAI_ORG=org-...
 ### "DASHBOARD_ADMIN_TOKEN not found in .env"
 
 **Solution:** Add the token to your .env file:
+
 ```bash
 echo "DASHBOARD_ADMIN_TOKEN=your_token_here" >> .env
 ```
@@ -159,6 +168,7 @@ echo "DASHBOARD_ADMIN_TOKEN=your_token_here" >> .env
 ### "OPENAI_API_KEY not found in .env"
 
 **Solution:** Add your OpenAI API key:
+
 ```bash
 echo "OPENAI_API_KEY=sk-proj-your_key_here" >> .env
 ```
@@ -166,12 +176,14 @@ echo "OPENAI_API_KEY=sk-proj-your_key_here" >> .env
 ### Services fail to start
 
 **Check ports:**
+
 ```bash
 # Ensure ports 12344, 12345, 12349 are available
 netstat -tuln | grep -E "12344|12345|12349"
 ```
 
 **Check logs:**
+
 ```bash
 bin/ops.sh logs
 ```
@@ -179,16 +191,19 @@ bin/ops.sh logs
 ### Agent registration fails
 
 **Ensure services are running:**
+
 ```bash
 bin/ops.sh health
 ```
 
 **Check dashboard is accessible:**
+
 ```bash
 curl -s http://127.0.0.1:12349/health
 ```
 
 **Verify token is correct:**
+
 ```bash
 grep "^DASHBOARD_ADMIN_TOKEN=" .env
 ```
@@ -258,6 +273,7 @@ Expected: 19 tests passing ✅
 ## Support
 
 For issues or questions:
+
 1. Check this README
 2. Run the demo: `./scripts/demo_workflow.sh`
 3. Review the logs: `bin/ops.sh logs`

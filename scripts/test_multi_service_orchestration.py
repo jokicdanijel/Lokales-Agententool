@@ -9,8 +9,8 @@ Phase 15d: Multi-Service Orchestration Test
 import asyncio
 import json
 import random
-import time
-from typing import Any, Dict, List
+from typing import Any
+
 import httpx
 
 COORDINATOR_URL = "http://127.0.0.1:12344"
@@ -110,12 +110,12 @@ async def dispatch_action(target: str, action: str, name: str) -> bool:
     return False
 
 
-async def get_archive_stats() -> Dict[str, Any]:
+async def get_archive_stats() -> dict[str, Any]:
     """Get archive statistics."""
     try:
-        with open("1.opena1&2_portier/archivp_store/index.jsonl", "r") as f:
+        with open("1.opena1&2_portier/archivp_store/index.jsonl") as f:
             lines = f.readlines()
-        
+
         total = len(lines)
         kinds = {}
         for line in lines[-100:]:
@@ -125,7 +125,7 @@ async def get_archive_stats() -> Dict[str, Any]:
                 kinds[kind] = kinds.get(kind, 0) + 1
             except json.JSONDecodeError:
                 pass
-        
+
         return {
             "total_entries": total,
             "recent_kinds": kinds,
@@ -141,46 +141,40 @@ async def main():
     print("🔗 Phase 15d: Multi-Service Orchestration Test (20 Services)")
     print("=" * 80)
     print()
-    
+
     # Step 1: Health check all services
     print("📊 Step 1: Health Check (20 Services)")
     print("-" * 80)
-    health_tasks = [
-        check_service_health(port, name)
-        for port, target, name in SERVICES
-    ]
+    health_tasks = [check_service_health(port, name) for port, target, name in SERVICES]
     health_results = await asyncio.gather(*health_tasks)
     online_count = sum(1 for r in health_results if r)
     print(f"  ✅ Online: {online_count}/{len(SERVICES)}")
     print()
-    
+
     # Step 2: Register all services
     print("📋 Step 2: Register Services with Portier (Route Registry)")
     print("-" * 80)
-    registration_tasks = [
-        register_service(port, target, name)
-        for port, target, name in SERVICES
-    ]
+    registration_tasks = [register_service(port, target, name) for port, target, name in SERVICES]
     registration_results = await asyncio.gather(*registration_tasks)
     registered_count = sum(1 for r in registration_results if r)
     print(f"  ✅ Registered: {registered_count}/{len(SERVICES)}")
     print()
-    
+
     # Step 3: Dispatch to random services
     print("🚀 Step 3: Dispatch Actions to 5 Random Services")
     print("-" * 80)
     selected_services = random.sample(
         [(port, target, name) for port, target, name in SERVICES if port >= 12346],
-        min(5, len([s for s in SERVICES if s[0] >= 12346]))
+        min(5, len([s for s in SERVICES if s[0] >= 12346])),
     )
-    
+
     for port, target, name in selected_services:
         result = await dispatch_action(target, "echo", name)
         status = "✅" if result else "❌"
         print(f"  {status} Dispatch to {name:20} ({target:8}) — {'OK' if result else 'FAILED'}")
-    
+
     print()
-    
+
     # Step 4: Archive verification
     print("📁 Step 4: Archive Verification")
     print("-" * 80)
@@ -189,7 +183,7 @@ async def main():
     print(f"  Recent kinds: {archive_stats.get('recent_kinds', {})}")
     print(f"  Status: {archive_stats.get('status', '?')}")
     print()
-    
+
     # Summary
     print("=" * 80)
     print("📊 SUMMARY")

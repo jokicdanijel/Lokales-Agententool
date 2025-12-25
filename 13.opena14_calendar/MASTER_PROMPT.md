@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena14 Google Calendar
 
-**Agent-ID:** opena14  
-**Port:** 12359  
-**Status:** 🟡 Planned  
-**Kürzel:** `calp`  
+**Agent-ID:** opena14
+**Port:** 12359
+**Status:** 🟡 Planned
+**Kürzel:** `calp`
 **Domäne:** Google Calendar, iCal, Exchange-Integration
 
 ---
@@ -141,5 +141,5 @@ Kopiere diesen Prompt in:
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

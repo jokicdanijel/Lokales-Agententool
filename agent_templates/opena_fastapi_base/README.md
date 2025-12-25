@@ -11,17 +11,20 @@ Dieses Template enthält funktionierende, getestete Basis-Komponenten für OPENA
 ## ✅ Getestete Fixes
 
 ### 1. agent_start.py
+
 - ✅ Lädt `.env` mit `python-dotenv`
 - ✅ Startet Uvicorn programmatisch
 - ✅ Zeigt Konfiguration beim Start
 - ✅ Verwendet agent-spezifische Port-Variable
 
 ### 2. modules/media_handler.py
+
 - ✅ Kompletter Syntax-Fix (try/except Struktur)
 - ✅ Korrekte platform_posts Initialisierung als Dict
 - ✅ Alle Methoden funktional
 
 ### 3. modules/metrics.py
+
 - ✅ Vollständige Counter (posts_sent, api_errors)
 - ✅ Korrekte platform_posts Struktur: `{"sent": 0, "failed": 0}`
 - ✅ get_detailed() funktioniert ohne Fehler
@@ -54,6 +57,7 @@ python3.12 agent_start.py
 ## 📦 Wichtige Änderungen gegenüber Original
 
 ### main.py Root-Endpoint:
+
 ```python
 @app.get("/")
 async def root():
@@ -67,6 +71,7 @@ async def root():
 ```
 
 ### metrics.py Initialisierung:
+
 ```python
 self.counters = {
     "posts_created": 0,
@@ -90,6 +95,7 @@ self.platform_posts = {
 ```
 
 ### main.py metrics Endpoint:
+
 ```python
 @app.get("/metrics")
 async def get_metrics_endpoint():

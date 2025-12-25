@@ -6,8 +6,9 @@ Port: 12350 | Kürzel: browsep
 
 import os
 import sys
-import requests
 import time
+
+import requests
 
 # ============================================================================
 # CONFIG
@@ -21,10 +22,7 @@ if not BEARER_TOKEN:
     print("   export BEARER_TOKEN=$(grep BEARER_TOKEN ../.env | cut -d= -f2)")
     sys.exit(1)
 
-HEADERS = {
-    "Authorization": f"Bearer {BEARER_TOKEN}",
-    "Content-Type": "application/json"
-}
+HEADERS = {"Authorization": f"Bearer {BEARER_TOKEN}", "Content-Type": "application/json"}
 
 # ============================================================================
 # COLORS
@@ -42,20 +40,25 @@ RESET = "\033[0m"
 
 results = {}
 
+
 def test(name):
     print(f"\n{BLUE}TEST:{RESET} {name}")
+
 
 def success(name):
     results[name] = "✅ PASS"
     print(f"{GREEN}✅ {name} OK{RESET}")
 
+
 def fail(name, reason):
     results[name] = "❌ FAIL"
     print(f"{RED}❌ {name} FAILED: {reason}{RESET}")
 
+
 # ============================================================================
 # TESTS
 # ============================================================================
+
 
 def test_health():
     test("Health-Check")
@@ -73,6 +76,7 @@ def test_health():
     except Exception as e:
         fail("Health", str(e))
 
+
 def test_root():
     test("Root-Endpoint")
     try:
@@ -89,13 +93,11 @@ def test_root():
     except Exception as e:
         fail("Root", str(e))
 
+
 def test_command():
     test("Command-Endpoint")
     try:
-        payload = {
-            "command": "test_command",
-            "params": {"test": "data"}
-        }
+        payload = {"command": "test_command", "params": {"test": "data"}}
         resp = requests.post(f"{BASE_URL}/command", json=payload, headers=HEADERS, timeout=5)
         if resp.status_code == 200:
             data = resp.json()
@@ -109,16 +111,13 @@ def test_command():
     except Exception as e:
         fail("Command", str(e))
 
+
 def test_navigate():
     test("Navigate (Playwright erforderlich)")
     try:
-        payload = {
-            "url": "https://example.com",
-            "wait_until": "load",
-            "timeout": 10000
-        }
+        payload = {"url": "https://example.com", "wait_until": "load", "timeout": 10000}
         resp = requests.post(f"{BASE_URL}/navigate", json=payload, headers=HEADERS, timeout=15)
-        
+
         if resp.status_code == 503:
             # Playwright nicht installiert
             print(f"   {YELLOW}⚠️  Playwright nicht installiert (erwartet){RESET}")
@@ -137,17 +136,13 @@ def test_navigate():
     except Exception as e:
         fail("Navigate", str(e))
 
+
 def test_screenshot():
     test("Screenshot (Playwright erforderlich)")
     try:
-        payload = {
-            "url": "https://example.com",
-            "full_page": False,
-            "format": "png",
-            "timeout": 10000
-        }
+        payload = {"url": "https://example.com", "full_page": False, "format": "png", "timeout": 10000}
         resp = requests.post(f"{BASE_URL}/screenshot", json=payload, headers=HEADERS, timeout=15)
-        
+
         if resp.status_code == 503:
             # Playwright nicht installiert
             print(f"   {YELLOW}⚠️  Playwright nicht installiert (erwartet){RESET}")
@@ -166,15 +161,12 @@ def test_screenshot():
     except Exception as e:
         fail("Screenshot", str(e))
 
+
 def test_strict_json():
     test("Strict JSON Validation")
     try:
         # Extra field sollte rejected werden
-        payload = {
-            "command": "test",
-            "params": {},
-            "extra_field": "not_allowed"
-        }
+        payload = {"command": "test", "params": {}, "extra_field": "not_allowed"}
         resp = requests.post(f"{BASE_URL}/command", json=payload, headers=HEADERS, timeout=5)
         if resp.status_code == 422:
             print(f"   {YELLOW}Strict JSON:{RESET} Extra fields korrekt rejected (422)")
@@ -184,6 +176,7 @@ def test_strict_json():
     except Exception as e:
         fail("Strict JSON", str(e))
 
+
 # ============================================================================
 # MAIN
 # ============================================================================
@@ -192,34 +185,34 @@ if __name__ == "__main__":
     print("=" * 60)
     print("  opena6 Test Suite")
     print("=" * 60)
-    
+
     # Warte kurz falls Service gerade gestartet wurde
     time.sleep(1)
-    
+
     test_health()
     test_root()
     test_command()
     test_navigate()
     test_screenshot()
     test_strict_json()
-    
+
     # ========================================================================
     # RESULTS
     # ========================================================================
-    
+
     print("\n" + "=" * 60)
     print("ERGEBNISSE")
     print("=" * 60)
-    
+
     for name, status in results.items():
         print(f"{name:20} {status}")
-    
+
     passed = sum(1 for v in results.values() if "PASS" in v)
     total = len(results)
-    
+
     print("")
     print(f"Tests bestanden: {passed}/{total}")
-    
+
     if passed == total:
         print(f"{GREEN}✅ Alle Tests erfolgreich!{RESET}")
         sys.exit(0)

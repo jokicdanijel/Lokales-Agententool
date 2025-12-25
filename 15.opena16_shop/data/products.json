@@ -8,10 +8,7 @@
     "currency": "EUR",
     "category_id": null,
     "status": "active",
-    "tags": [
-      "test",
-      "updated"
-    ],
+    "tags": ["test", "updated"],
     "created_at": "2025-11-27T13:02:44.581485+00:00",
     "updated_at": "2025-11-27T13:02:44.587133+00:00"
   }

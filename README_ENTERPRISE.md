@@ -30,14 +30,14 @@ Das System folgt der **Option-2-Flow Architekturprinzip**, bei dem Anfragen stet
 
 ### Kern-Services (PORTIER 3.0 Core)
 
-| Service | Port | Funktion | Status |
-|---------|------|----------|--------|
-| **opena1** | 12344 | Koordinator (Anfrage→Entscheidung) | ✅ Laufend |
-| **opena2** | 12345 | Archivator (CMD/RESP Safepoints) | ✅ Laufend |
-| **kordp** | 12346 | Gateway (Tool-Dispatch) | ✅ Laufend |
-| **opena3** | 12347 | OpenWebUI Terminal Agent | ✅ Laufend |
-| **opena20** | 12349 | Dashboard (Live-Monitoring UI) | ✅ Laufend |
-| **Archivierung** | Dateisystem | Safepoint Storage (YYYY/MM/DD) | ✅ Aktiv |
+| Service          | Port        | Funktion                           | Status     |
+| ---------------- | ----------- | ---------------------------------- | ---------- |
+| **opena1**       | 12344       | Koordinator (Anfrage→Entscheidung) | ✅ Laufend |
+| **opena2**       | 12345       | Archivator (CMD/RESP Safepoints)   | ✅ Laufend |
+| **kordp**        | 12346       | Gateway (Tool-Dispatch)            | ✅ Laufend |
+| **opena3**       | 12347       | OpenWebUI Terminal Agent           | ✅ Laufend |
+| **opena20**      | 12349       | Dashboard (Live-Monitoring UI)     | ✅ Laufend |
+| **Archivierung** | Dateisystem | Safepoint Storage (YYYY/MM/DD)     | ✅ Aktiv   |
 
 ### Kernmerkmale
 
@@ -153,14 +153,14 @@ curl -X POST http://127.0.0.1:12344/log/opena1 \
 
 ### Hafenpolitik
 
-| Port | Service | Rolle | Status |
-|------|---------|-------|--------|
-| 12344 | Portier | Koordinator/Dispatcher | ✅ Online |
-| 12345 | OpenA2 | Archiv (JSONL-Speicher) | ✅ Online |
-| 12346 | Kordp | Messaging-Agent | ✅ Online |
-| 12348 | Inferenz | Llama-Stack + Ollama | ✅ Online |
-| 12349-12364 | Skalierbare Services | Agent Pool | ⏳ Template-Ready |
-| 12365-12399 | Reserviert | Zukünftige Expansion | 📅 Verfügbar |
+| Port        | Service              | Rolle                   | Status            |
+| ----------- | -------------------- | ----------------------- | ----------------- |
+| 12344       | Portier              | Koordinator/Dispatcher  | ✅ Online         |
+| 12345       | OpenA2               | Archiv (JSONL-Speicher) | ✅ Online         |
+| 12346       | Kordp                | Messaging-Agent         | ✅ Online         |
+| 12348       | Inferenz             | Llama-Stack + Ollama    | ✅ Online         |
+| 12349-12364 | Skalierbare Services | Agent Pool              | ⏳ Template-Ready |
+| 12365-12399 | Reserviert           | Zukünftige Expansion    | 📅 Verfügbar      |
 
 ---
 
@@ -168,20 +168,20 @@ curl -X POST http://127.0.0.1:12344/log/opena1 \
 
 ### ✅ Abgeschlossene Phasen (7-18)
 
-| Phase | Feature | Details |
-|-------|---------|---------|
-| 7b | Laufzeitvalidierung | OpenA1/OpenA2 Gesundheitsprüfungen ✓ |
-| 8 | Service Architektur | 20 Service-Ordner + CI/CD-Gate ✓ |
-| 9 | Portier-Service | Koordinator + Route-Registrierung ✓ |
-| 10 | Telegram + OpenWebUI | Messaging + Inferenz-Integration ✓ |
-| 11 | Multi-Service-Test | 4 Services, Route-Registrierung ✓ |
-| 12 | Git Sync | Alle Änderungen committed & pushed ✓ |
-| 13 | Load Test Phase 1 | 100 Requests, 30.33 req/s, 100% Success ✓ |
-| 14 | llama-stack Integration | Inferenz-Service, Bridge, 0.87 req/s ✓ |
-| 15 | Scale zu 20 Services | Template, Bulk-Generierung, 27.74 req/s ✓ |
-| 16 | CI/CD-Härtung | GitHub Actions, Pre-Commit, Deployment-Validierung ✓ |
-| 17 | Monitoring & Observability | Prometheus, Grafana, Health-Checks ✓ |
-| 18 | Production Hardening | Docker, Security, Enterprise-Ready ✓ |
+| Phase | Feature                    | Details                                              |
+| ----- | -------------------------- | ---------------------------------------------------- |
+| 7b    | Laufzeitvalidierung        | OpenA1/OpenA2 Gesundheitsprüfungen ✓                 |
+| 8     | Service Architektur        | 20 Service-Ordner + CI/CD-Gate ✓                     |
+| 9     | Portier-Service            | Koordinator + Route-Registrierung ✓                  |
+| 10    | Telegram + OpenWebUI       | Messaging + Inferenz-Integration ✓                   |
+| 11    | Multi-Service-Test         | 4 Services, Route-Registrierung ✓                    |
+| 12    | Git Sync                   | Alle Änderungen committed & pushed ✓                 |
+| 13    | Load Test Phase 1          | 100 Requests, 30.33 req/s, 100% Success ✓            |
+| 14    | llama-stack Integration    | Inferenz-Service, Bridge, 0.87 req/s ✓               |
+| 15    | Scale zu 20 Services       | Template, Bulk-Generierung, 27.74 req/s ✓            |
+| 16    | CI/CD-Härtung              | GitHub Actions, Pre-Commit, Deployment-Validierung ✓ |
+| 17    | Monitoring & Observability | Prometheus, Grafana, Health-Checks ✓                 |
+| 18    | Production Hardening       | Docker, Security, Enterprise-Ready ✓                 |
 
 ---
 
@@ -558,29 +558,29 @@ find . -name "*.pyc" -delete
 
 ## 📚 Dokumentation
 
-| Dokumentation | Link | Status |
-|---|---|---|
-| Architektur Runbook | docs/OPERATIONS.md | ✅ |
-| Portier API | src/services/portier/main.py | ✅ |
-| Service Template | src/services/template/main.py | ✅ |
-| Routing-Matrix | configs/routing_matrix.yaml | ✅ |
-| CI/CD-Konfiguration | .github/workflows/ci.yml | ✅ |
-| Load-Test Docs | scripts/load_test*.py | ✅ |
+| Dokumentation       | Link                          | Status |
+| ------------------- | ----------------------------- | ------ |
+| Architektur Runbook | docs/OPERATIONS.md            | ✅     |
+| Portier API         | src/services/portier/main.py  | ✅     |
+| Service Template    | src/services/template/main.py | ✅     |
+| Routing-Matrix      | configs/routing_matrix.yaml   | ✅     |
+| CI/CD-Konfiguration | .github/workflows/ci.yml      | ✅     |
+| Load-Test Docs      | scripts/load_test\*.py        | ✅     |
 
 ---
 
 ## 🚦 Aktueller Status (24. November 2025)
 
-| Komponente | Status | Details |
-|---|---|---|
-| Kernarchitektur | ✅ Komplett | 20 Services, 4 Laufend |
-| Koordinator | ✅ Komplett | Portier + Route-Registrierung |
-| Archiv | ✅ Komplett | JSONL + Tägliche Partitionen |
-| Inferenz | ✅ Komplett | llama2 via Ollama |
-| OpenWebUI | ✅ Komplett | Port 3000, Bridge aktiv |
-| Last-Prüfung | ✅ Komplett | 27.74 req/s validiert |
-| CI/CD | ✅ Komplett | GitHub Actions, Pre-Commit |
-| Produktionsbereit | ✅ LIVE | Monitoring + Enterprise Features |
+| Komponente        | Status      | Details                          |
+| ----------------- | ----------- | -------------------------------- |
+| Kernarchitektur   | ✅ Komplett | 20 Services, 4 Laufend           |
+| Koordinator       | ✅ Komplett | Portier + Route-Registrierung    |
+| Archiv            | ✅ Komplett | JSONL + Tägliche Partitionen     |
+| Inferenz          | ✅ Komplett | llama2 via Ollama                |
+| OpenWebUI         | ✅ Komplett | Port 3000, Bridge aktiv          |
+| Last-Prüfung      | ✅ Komplett | 27.74 req/s validiert            |
+| CI/CD             | ✅ Komplett | GitHub Actions, Pre-Commit       |
+| Produktionsbereit | ✅ LIVE     | Monitoring + Enterprise Features |
 
 ---
 
@@ -693,10 +693,9 @@ copies of the Software...
 📊 **Status API:** <http://127.0.0.1:12349/api/status>
 💚 **Gesundheitscheck:** <http://127.0.0.1:12349/health>
 
-
 # 📚 README-Struktur des Gesamtprojekts
 
-**Letzte Aktualisierung:** 28. November 2025  
+**Letzte Aktualisierung:** 28. November 2025
 **Status:** ✅ Konsolidiert
 
 ---
@@ -713,29 +712,29 @@ Dieses Dokument zeigt die **offizielle README-Struktur** für alle Agent-Module 
 
 ### Kern-Infrastructure
 
-| Verzeichnis | Gültige README | Beschreibung |
-|-------------|----------------|--------------|
-| **`/`** (Root) | [`README.md`](./README.md) | Haupt-Projektübersicht (PORTIER 3.0) |
-| **`1.opena1&2_portier/`** | [`README.md`](./1.opena1&2_portier/README.md) | opena1 (Koordinator) + opena2 (Archivator) |
-| **`2.opena3_openwebui/`** | [`README.md`](./2.opena3_openwebui/README.md) | OpenWebUI Terminal Agent (✅ Production) |
-| **`3.opena4_telegram/`** | [`README.md`](./3.opena4_telegram/README.md) | Telegram Bot Agent |
-| **`4.opena5_vscode/`** | [`README.md`](./4.opena5_vscode/README.md) | VS Code Integration |
-| **`5.opena6_browser/`** | [`README.md`](./5.opena6_browser/README.md) | Browser Automation |
-| **`6.opena7_email/`** | [`README.md`](./6.opena7_email/README.md) | E-Mail Client |
-| **`7.opena8_whatsapp/`** | [`README.md`](./7.opena8_whatsapp/README.md) | WhatsApp API |
-| **`8.opena9_telephone/`** | [`README.md`](./8.opena9_telephone/README.md) | Telefonie Agent |
-| **`9.opena10_call_tracking/`** | [`README.md`](./9.opena10_call_tracking/README.md) | Call Tracking |
-| **`10.opena11_unlock/`** | [`README.md`](./10.opena11_unlock/README.md) | Unlock Master |
-| **`11.opena12_social_media/`** | [`README.md`](./11.opena12_social_media/README.md) | Social Media |
-| **`12.opena13_influencer/`** | [`README.md`](./12.opena13_influencer/README.md) | Influencer |
-| **`13.opena14_calendar/`** | [`README.md`](./13.opena14_calendar/README.md) | Calendar Agent |
-| **`14.opena15_html/`** | [`README.md`](./14.opena15_html/README.md) | HTML Creator |
-| **`15.opena16_shop/`** | [`README.md`](./15.opena16_shop/README.md) | Shop Creator |
-| **`16.opena17_homepagecreator/`** | [`README.md`](./16.opena17_homepagecreator/README.md) | Homepage Creator |
-| **`17.opena18_CMR/`** | [`README.md`](./17.opena18_CMR/README.md) | CRM Agent |
-| **`18.opena19_Aktien&Crypto/`** | [`README.md`](./18.opena19_Aktien&Crypto/README.md) | Aktien & Crypto |
-| **`19.opena20_dashboard_agent/`** | [`README.md`](./19.opena20_dashboard_agent/README.md) | Dashboard Agent |
-| **`20.opena21_workflow/`** | [`README.md`](./20.opena21_workflow/README.md) | Workflow Engine (✅ Production) |
+| Verzeichnis                       | Gültige README                                        | Beschreibung                               |
+| --------------------------------- | ----------------------------------------------------- | ------------------------------------------ |
+| **`/`** (Root)                    | [`README.md`](./README.md)                            | Haupt-Projektübersicht (PORTIER 3.0)       |
+| **`1.opena1&2_portier/`**         | [`README.md`](./1.opena1&2_portier/README.md)         | opena1 (Koordinator) + opena2 (Archivator) |
+| **`2.opena3_openwebui/`**         | [`README.md`](./2.opena3_openwebui/README.md)         | OpenWebUI Terminal Agent (✅ Production)   |
+| **`3.opena4_telegram/`**          | [`README.md`](./3.opena4_telegram/README.md)          | Telegram Bot Agent                         |
+| **`4.opena5_vscode/`**            | [`README.md`](./4.opena5_vscode/README.md)            | VS Code Integration                        |
+| **`5.opena6_browser/`**           | [`README.md`](./5.opena6_browser/README.md)           | Browser Automation                         |
+| **`6.opena7_email/`**             | [`README.md`](./6.opena7_email/README.md)             | E-Mail Client                              |
+| **`7.opena8_whatsapp/`**          | [`README.md`](./7.opena8_whatsapp/README.md)          | WhatsApp API                               |
+| **`8.opena9_telephone/`**         | [`README.md`](./8.opena9_telephone/README.md)         | Telefonie Agent                            |
+| **`9.opena10_call_tracking/`**    | [`README.md`](./9.opena10_call_tracking/README.md)    | Call Tracking                              |
+| **`10.opena11_unlock/`**          | [`README.md`](./10.opena11_unlock/README.md)          | Unlock Master                              |
+| **`11.opena12_social_media/`**    | [`README.md`](./11.opena12_social_media/README.md)    | Social Media                               |
+| **`12.opena13_influencer/`**      | [`README.md`](./12.opena13_influencer/README.md)      | Influencer                                 |
+| **`13.opena14_calendar/`**        | [`README.md`](./13.opena14_calendar/README.md)        | Calendar Agent                             |
+| **`14.opena15_html/`**            | [`README.md`](./14.opena15_html/README.md)            | HTML Creator                               |
+| **`15.opena16_shop/`**            | [`README.md`](./15.opena16_shop/README.md)            | Shop Creator                               |
+| **`16.opena17_homepagecreator/`** | [`README.md`](./16.opena17_homepagecreator/README.md) | Homepage Creator                           |
+| **`17.opena18_CMR/`**             | [`README.md`](./17.opena18_CMR/README.md)             | CRM Agent                                  |
+| **`18.opena19_Aktien&Crypto/`**   | [`README.md`](./18.opena19_Aktien&Crypto/README.md)   | Aktien & Crypto                            |
+| **`19.opena20_dashboard_agent/`** | [`README.md`](./19.opena20_dashboard_agent/README.md) | Dashboard Agent                            |
+| **`20.opena21_workflow/`**        | [`README.md`](./20.opena21_workflow/README.md)        | Workflow Engine (✅ Production)            |
 
 ---
 
@@ -743,9 +742,9 @@ Dieses Dokument zeigt die **offizielle README-Struktur** für alle Agent-Module 
 
 Diese Dateien sind **nicht mehr aktuell** und wurden umbenannt:
 
-| Veraltete Datei | Status | Verweis auf |
-|-----------------|--------|-------------|
-| `1.opena1&2_portier/README_APIS_DEPRECATED.md` | ❌ Veraltet | [`README.md`](./1.opena1&2_portier/README.md) |
+| Veraltete Datei                                    | Status      | Verweis auf                                   |
+| -------------------------------------------------- | ----------- | --------------------------------------------- |
+| `1.opena1&2_portier/README_APIS_DEPRECATED.md`     | ❌ Veraltet | [`README.md`](./1.opena1&2_portier/README.md) |
 | `2.opena3_openwebui/README_COMPLETE_DEPRECATED.md` | ❌ Veraltet | [`README.md`](./2.opena3_openwebui/README.md) |
 
 **Hinweis:** Alle `_DEPRECATED.md` Dateien enthalten einen Header mit Verweis auf die aktuelle README.
@@ -756,20 +755,20 @@ Diese Dateien sind **nicht mehr aktuell** und wurden umbenannt:
 
 ### Root-Level Dokumente
 
-| Datei | Zweck |
-|-------|-------|
-| [`README.md`](./README.md) | Haupt-Projektübersicht (PORTIER 3.0) |
-| [`README_ENTERPRISE.md`](./README_ENTERPRISE.md) | Enterprise-Dokumentation (vollständig) |
-| [`README_STRUCTURE.md`](./README_STRUCTURE.md) | Diese Datei (README-Übersicht) |
-| [`.github/copilot-master-prompt.md`](./.github/copilot-master-prompt.md) | Vollständiges System-Wissen |
-| [`.github/copilot-instructions.md`](./.github/copilot-instructions.md) | AI Integration Guide |
+| Datei                                                                    | Zweck                                  |
+| ------------------------------------------------------------------------ | -------------------------------------- |
+| [`README.md`](./README.md)                                               | Haupt-Projektübersicht (PORTIER 3.0)   |
+| [`README_ENTERPRISE.md`](./README_ENTERPRISE.md)                         | Enterprise-Dokumentation (vollständig) |
+| [`README_STRUCTURE.md`](./README_STRUCTURE.md)                           | Diese Datei (README-Übersicht)         |
+| [`.github/copilot-master-prompt.md`](./.github/copilot-master-prompt.md) | Vollständiges System-Wissen            |
+| [`.github/copilot-instructions.md`](./.github/copilot-instructions.md)   | AI Integration Guide                   |
 
 ### Dokumentationsordner
 
-| Verzeichnis | Inhalt |
-|-------------|--------|
-| **`docs/`** | Operations, API-Docs, Troubleshooting |
-| **`reports/`** | Security Audits, GitHub Reviews |
+| Verzeichnis    | Inhalt                                |
+| -------------- | ------------------------------------- |
+| **`docs/`**    | Operations, API-Docs, Troubleshooting |
+| **`reports/`** | Security Audits, GitHub Reviews       |
 | **`configs/`** | Konfigurationsdateien (Agenda, Tools) |
 
 ---
@@ -784,6 +783,7 @@ Diese Dateien sind **nicht mehr aktuell** und wurden umbenannt:
 
    ```markdown
    # ⚠️ VERALTET / DEPRECATED
+
    **Diese Datei ist veraltet und wird nicht mehr aktualisiert.**
    **Bitte verwende stattdessen:** [`README.md`](./README.md)
    ```
@@ -821,12 +821,12 @@ Wenn du eine README aktualisieren willst:
 
 ## 📊 Statistik
 
-| Kategorie | Anzahl |
-|-----------|--------|
-| **Gültige READMEs** | 22 (1 Root + 21 Agents) |
-| **Deprecated READMEs** | 2 |
-| **Zusätzliche Docs** | 5+ (docs/, reports/, configs/) |
-| **Gesamt Markdown-Dateien** | 100+ |
+| Kategorie                   | Anzahl                         |
+| --------------------------- | ------------------------------ |
+| **Gültige READMEs**         | 22 (1 Root + 21 Agents)        |
+| **Deprecated READMEs**      | 2                              |
+| **Zusätzliche Docs**        | 5+ (docs/, reports/, configs/) |
+| **Gesamt Markdown-Dateien** | 100+                           |
 
 ---
 
@@ -850,61 +850,61 @@ find . -maxdepth 2 -name "*_DEPRECATED.md" -type f
 
 # 🏢 PORTIER 3.0 — Enterprise Multi-Agent Intelligence Platform
 
-**Version:** 3.0.0  
-**Status:** ✅ **PRODUCTION-READY**  
-**Release Date:** 21. November 2025  
-**Last Updated:** 29. November 2025 12:00 UTC  
-**Lead Developer:** Danijel Jokic  
-**Repository:** [jokicdanijel/Gesamtprojekt-start](https://github.com/jokicdanijel/Gesamtprojekt-start)  
+**Version:** 3.0.0
+**Status:** ✅ **PRODUCTION-READY**
+**Release Date:** 21. November 2025
+**Last Updated:** 29. November 2025 12:00 UTC
+**Lead Developer:** Danijel Jokic
+**Repository:** [jokicdanijel/Gesamtprojekt-start](https://github.com/jokicdanijel/Gesamtprojekt-start)
 **License:** MIT + Internal Use Only (Enterprise Components)
 
 ---
+
 # 🚀 ELION Enterprise Agent System
 
 ## 📊 System Overview
 
-**Agents Deployed:** 21  
-**Enterprise Level:** Production Ready  
-**Deployment:** 29.11.2025 12:00:00  
+**Agents Deployed:** 21
+**Enterprise Level:** Production Ready
+**Deployment:** 29.11.2025 12:00:00
 **Status:** ✅ All Systems Operational
 
 ## 🏆 Enterprise Features Activated
 
 - ✅ **21 Specialized Agents** fully deployed
-- ✅ **HTML Dashboards** for all agents  
+- ✅ **HTML Dashboards** for all agents
 - ✅ **Real-time Monitoring** & logging
 - ✅ **Enterprise Security** & authentication
-- ✅ **Scalable Architecture** 
+- ✅ **Scalable Architecture**
 - ✅ **Comprehensive Documentation**
 - ✅ **Automated Testing** & validation
 - ✅ **Production Deployment** ready
 
 ## 🎯 Agent Portfolio
 
-| Agent | Port | Spezialisierung | Status |
-|-------|------|----------------|--------|
-| **Koordinator & Archivator** | 12344 | workflow_coordination | ✅ Ready |
-| **OpenWebUI Terminal** | 12347 | ui_integration | ✅ Ready |
-| **Telegram Mobile** | 12348 | mobile_communication | ✅ Ready |
-| **VSCode Programmierung** | 12349 | development_tools | ✅ Ready |
-| **Browser Bedienung** | 12350 | browser_automation | ✅ Ready |
-| **Email Chatbot** | 12351 | email_automation | ✅ Ready |
-| **WhatsApp Chatbot** | 12352 | messaging_automation | ✅ Ready |
-| **Telefon Antwort** | 12353 | voice_automation | ✅ Ready |
-| **Telefon Anruf** | 12354 | outbound_calling | ✅ Ready |
-| **Security & Decode** | 12355 | security_systems | ✅ Ready |
-| **Social Media Automation** | 12356 | social_automation | ✅ Ready |
-| **Social Media Influencer** | 12357 | influencer_marketing | ✅ Ready |
-| **Kalender Agent** | 12358 | calendar_management | ✅ Ready |
-| **Documentation Agent** | 12359 | documentation_generation | ✅ Ready |
-| **Shop Creator** | 12360 | ecommerce_solutions | ✅ Ready |
-| **Homepage Creator** | 12361 | web_development | ✅ Ready |
-| **Lokaler Speicher** | 12362 | data_storage | ✅ Ready |
-| **Trading Agent** | 12363 | financial_automation | ✅ Ready |
-| **Kunden Dashboard** | 12349 | dashboard_management | ✅ Ready |
-| **Workflow Engine** | 12364 | workflow_orchestration | ✅ Ready |
-| **System Monitoring** | 12365 | system_monitoring | ✅ Ready |
-
+| Agent                        | Port  | Spezialisierung          | Status   |
+| ---------------------------- | ----- | ------------------------ | -------- |
+| **Koordinator & Archivator** | 12344 | workflow_coordination    | ✅ Ready |
+| **OpenWebUI Terminal**       | 12347 | ui_integration           | ✅ Ready |
+| **Telegram Mobile**          | 12348 | mobile_communication     | ✅ Ready |
+| **VSCode Programmierung**    | 12349 | development_tools        | ✅ Ready |
+| **Browser Bedienung**        | 12350 | browser_automation       | ✅ Ready |
+| **Email Chatbot**            | 12351 | email_automation         | ✅ Ready |
+| **WhatsApp Chatbot**         | 12352 | messaging_automation     | ✅ Ready |
+| **Telefon Antwort**          | 12353 | voice_automation         | ✅ Ready |
+| **Telefon Anruf**            | 12354 | outbound_calling         | ✅ Ready |
+| **Security & Decode**        | 12355 | security_systems         | ✅ Ready |
+| **Social Media Automation**  | 12356 | social_automation        | ✅ Ready |
+| **Social Media Influencer**  | 12357 | influencer_marketing     | ✅ Ready |
+| **Kalender Agent**           | 12358 | calendar_management      | ✅ Ready |
+| **Documentation Agent**      | 12359 | documentation_generation | ✅ Ready |
+| **Shop Creator**             | 12360 | ecommerce_solutions      | ✅ Ready |
+| **Homepage Creator**         | 12361 | web_development          | ✅ Ready |
+| **Lokaler Speicher**         | 12362 | data_storage             | ✅ Ready |
+| **Trading Agent**            | 12363 | financial_automation     | ✅ Ready |
+| **Kunden Dashboard**         | 12349 | dashboard_management     | ✅ Ready |
+| **Workflow Engine**          | 12364 | workflow_orchestration   | ✅ Ready |
+| **System Monitoring**        | 12365 | system_monitoring        | ✅ Ready |
 
 ## 🖥️ Access Points
 
@@ -916,7 +916,7 @@ find . -maxdepth 2 -name "*_DEPRECATED.md" -type f
 
 - **System Uptime:** 99.9%+
 - **Response Time:** < 100ms average
-- **Throughput:** 10,000+ requests/sec system-wide  
+- **Throughput:** 10,000+ requests/sec system-wide
 - **Memory Usage:** < 4GB total system
 - **Error Rate:** < 0.1%
 
@@ -926,7 +926,7 @@ find . -maxdepth 2 -name "*_DEPRECATED.md" -type f
 # Start all services
 bin/ops.sh start
 
-# Verify deployment  
+# Verify deployment
 bin/ops.sh verify
 
 # Access master dashboard
@@ -939,8 +939,8 @@ Full enterprise-level support activated for all agents and services.
 
 ---
 
-**Enterprise Deployment Complete** ✅  
-**All Agents Operational** ✅  
+**Enterprise Deployment Complete** ✅
+**All Agents Operational** ✅
 **Production Ready** ✅
 
 ## 🔄 **Recent Updates (29. Nov 2025)**
@@ -991,30 +991,30 @@ Das System folgt dem **Option-2-Flow** Architekturprinzip, bei dem jede Anfrage 
 
 **Kern-Services (PORTIER 3.0 Core):**
 
-| Service | Port | Kürzel | Funktion | Status |
-|---------|------|--------|----------|--------|
-| **opena1** | 12344 | - | Coordinator (Request71→Decision72) | ✅ Running |
-| **opena2** | 12345 | - | Archivator (CMD/RESP Safepoints) | ✅ Running |
-| **kordp** | 12346 | - | Gateway (Tool Dispatch) | ✅ Running |
-| **opena3** | 12347 | owuip | OpenWebUI Terminal Agent | ✅ **Online** |
-| **opena4** | 12348 | telep | Telegram Bot | ❌ **Offline** |
-| **opena5** | 12351 | vscop | VS Code Agent | ✅ Online |
-| **opena6** | 12352 | browsep | Browser Automation | ✅ Online |
-| **opena7** | 12353 | emailp | E-Mail Client | ✅ Online |
-| **opena8** | 12354 | whatsappp | WhatsApp API | ✅ Online |
-| **opena9** | 12355 | telphonep | Telefonie Agent | ✅ Online |
-| **opena10** | 12356 | calltrackp | Call Tracking | ✅ Online |
-| **opena11** | 12357 | unlockp | Unlock Master | ✅ Online |
-| **opena12** | 12358 | smp | Social Media | ✅ Online |
-| **opena13** | 12359 | influp | Influencer Agent | ✅ Online |
-| **opena14** | 12360 | calp | Calendar Agent | ✅ Online |
-| **opena15** | 12361 | htmlp | HTML Creator | ✅ Online |
-| **opena16** | 12362 | shopp | Shop Creator | ✅ Online |
-| **opena17** | 12363 | hpcreatep | Homepage Creator | ✅ Online |
-| **opena18** | 12364 | crmp | CRM / Local Archiv | ✅ Online |
-| **opena19** | 12365 | stockcryptop | Aktien & Crypto | ✅ Online |
-| **opena20** | 12349 | - | Dashboard (Live Monitoring UI) | ✅ Running |
-| **archivp** | Filesystem | - | Safepoint Storage (YYYY/MM/DD) | ✅ Active |
+| Service     | Port       | Kürzel       | Funktion                           | Status         |
+| ----------- | ---------- | ------------ | ---------------------------------- | -------------- |
+| **opena1**  | 12344      | -            | Coordinator (Request71→Decision72) | ✅ Running     |
+| **opena2**  | 12345      | -            | Archivator (CMD/RESP Safepoints)   | ✅ Running     |
+| **kordp**   | 12346      | -            | Gateway (Tool Dispatch)            | ✅ Running     |
+| **opena3**  | 12347      | owuip        | OpenWebUI Terminal Agent           | ✅ **Online**  |
+| **opena4**  | 12348      | telep        | Telegram Bot                       | ❌ **Offline** |
+| **opena5**  | 12351      | vscop        | VS Code Agent                      | ✅ Online      |
+| **opena6**  | 12352      | browsep      | Browser Automation                 | ✅ Online      |
+| **opena7**  | 12353      | emailp       | E-Mail Client                      | ✅ Online      |
+| **opena8**  | 12354      | whatsappp    | WhatsApp API                       | ✅ Online      |
+| **opena9**  | 12355      | telphonep    | Telefonie Agent                    | ✅ Online      |
+| **opena10** | 12356      | calltrackp   | Call Tracking                      | ✅ Online      |
+| **opena11** | 12357      | unlockp      | Unlock Master                      | ✅ Online      |
+| **opena12** | 12358      | smp          | Social Media                       | ✅ Online      |
+| **opena13** | 12359      | influp       | Influencer Agent                   | ✅ Online      |
+| **opena14** | 12360      | calp         | Calendar Agent                     | ✅ Online      |
+| **opena15** | 12361      | htmlp        | HTML Creator                       | ✅ Online      |
+| **opena16** | 12362      | shopp        | Shop Creator                       | ✅ Online      |
+| **opena17** | 12363      | hpcreatep    | Homepage Creator                   | ✅ Online      |
+| **opena18** | 12364      | crmp         | CRM / Local Archiv                 | ✅ Online      |
+| **opena19** | 12365      | stockcryptop | Aktien & Crypto                    | ✅ Online      |
+| **opena20** | 12349      | -            | Dashboard (Live Monitoring UI)     | ✅ Running     |
+| **archivp** | Filesystem | -            | Safepoint Storage (YYYY/MM/DD)     | ✅ Active      |
 
 **Live-Status (28.11.2025 03:30:00):** 🟢 **16 von 17 Agenten online** (nur opena4 Telegram offline)
 
@@ -1187,7 +1187,7 @@ flowchart TB
         OpenAI["OpenAI API<br>(External)"]
         UserUI["User Interfaces<br>(Web, CLI, API)"]
     end
-    
+
     %% =====================
     %% CORE SERVICES
     %% =====================
@@ -1197,14 +1197,14 @@ flowchart TB
         kordp["kordp<br>Dispatch Gateway<br>Port 12346<br>Tool Routing"]
         archivp["archivp<br>Local Archive<br>Filesystem<br>YYYY/MM/DD"]
     end
-    
+
     %% =====================
     %% DASHBOARD
     %% =====================
     subgraph Dashboard["🖥️ Dashboard Layer (19.opena20_dashboard_agent)"]
         opena20["opena20<br>Dashboard Service<br>Port 12349<br>Web UI + API"]
     end
-    
+
     %% =====================
     %% OPERATIONAL AGENTS
     %% =====================
@@ -1228,38 +1228,38 @@ flowchart TB
         opena19["opena19<br>Aktien & Crypto<br>Port 12365<br>✅ Online"]
         opena21["opena21<br>Workflow Engine<br>Port 12364<br>✅ Running"]
     end
-    
+
     %% =====================
     %% SCTA LAYER
     %% =====================
     subgraph SCTA["📋 SCTA Layer (Structured Code Task Automation)"]
         agenda_api["agenda_api<br>16-Seiten Agenda<br>Port 12399<br>✅ Running"]
     end
-    
+
     %% =====================
     %% EXTERNAL UI (FORBIDDEN FOR BACKEND)
     %% =====================
     subgraph External["⚠️ External UI (UI-Only, No Backend)"]
         openwebui_ui["OpenWebUI UI<br>Port 8080<br>❌ Backend Forbidden"]
     end
-    
+
     %% =====================
     %% OPTION-2-FLOW (CORE ROUTING)
     %% =====================
-    
+
     %% Entry → opena1
     OpenAI -->|Request71| opena1
     UserUI -->|API Call| opena1
-    
+
     %% opena1 → opena2 (CMD Safepoint)
     opena1 -->|Decision72 → CMD| opena2
-    
+
     %% opena2 → kordp (Route)
     opena2 -->|ROUTE Safepoint| kordp
-    
+
     %% opena2 → archivp (Persist)
     opena2 -.->|Save Safepoint<br>YYYY/MM/DD| archivp
-    
+
     %% kordp → Tools (Dispatch)
     kordp -->|Dispatch| opena3
     kordp -->|Dispatch| opena4
@@ -1279,17 +1279,17 @@ flowchart TB
     kordp -->|Dispatch| opena18
     kordp -->|Dispatch| opena19
     kordp -->|Dispatch| opena21
-    
+
     %% Tools → opena2 (RESP Safepoint)
     opena3 -.->|RESP| opena2
     opena6 -.->|RESP| opena2
-    
+
     %% opena2 → opena1 (Return)
     opena2 -->|RESP to Coordinator| opena1
-    
+
     %% opena1 → OpenAI (Final Response)
     opena1 -->|Final Response| OpenAI
-    
+
     %% =====================
     %% DASHBOARD MONITORING
     %% =====================
@@ -1297,17 +1297,17 @@ flowchart TB
     opena20 -.->|Status Poll| opena2
     opena20 -.->|Status Poll| kordp
     opena20 -.->|Read Safepoints| archivp
-    
+
     %% =====================
     %% SCTA INTEGRATION
     %% =====================
     opena1 -.->|Agenda Query| agenda_api
-    
+
     %% =====================
     %% OPENWEBUI UI (EXTERNAL, UI-ONLY)
     %% =====================
     openwebui_ui -.->|HTTP → Adapter → opena3| opena6
-    
+
     %% =====================
     %% STYLING
     %% =====================
@@ -1318,7 +1318,7 @@ flowchart TB
     classDef forbidden fill:#f44336,stroke:#d32f2f,color:#fff
     classDef dashboard fill:#f0ad4e,stroke:#ec971f,color:#fff
     classDef scta fill:#4caf50,stroke:#388e3c,color:#fff
-    
+
     class opena1,opena2,kordp,archivp,opena20,agenda_api running
     class opena3,opena5,opena6,opena7,opena8,opena9,opena10,opena11,opena12,opena13,opena14,opena15,opena16,opena17,opena18,opena19 online
     class opena4 offline
@@ -1364,32 +1364,32 @@ OpenAI → opena1:12344 → opena2:12345 → kordp:12346 → Tools
 
 ### Port Policy
 
-| Port | Service | Role | Status |
-|------|---------|------|--------|
-| **12344** | **opena1** | Coordinator (Request71→Decision72) | ✅ Running |
-| **12345** | **opena2** | Archivator (CMD/RESP Safepoints) | ✅ Running |
-| **12346** | **kordp** | Gateway (Tool Dispatch) | ✅ Running |
-| **12347** | **opena3** | OpenWebUI Terminal (owuip) | ✅ **Online** |
-| **12348** | **opena4** | Telegram Bot (telep) | ❌ Offline |
-| **12349** | **opena20** | Dashboard (Live Monitoring UI) | ✅ Running |
-| **12350** | **opena6 Adapter** | OpenWebUI Adapter | ✅ Running |
-| **12351** | **opena5** | VS Code Agent (vscop) | ❌ Offline |
-| **12352** | **opena6** | Browser Automation (browsep) | ❌ Offline |
-| **12353** | **opena7** | E-Mail Client (emailp) | ❌ Offline |
-| **12354** | **opena8** | WhatsApp API (whatsappp) | ❌ Offline |
-| **12355** | **opena9** | Telefonie (telphonep) | ❌ Offline |
-| **12356** | **opena10** | Call Tracking (calltrackp) | ❌ Offline |
-| **12357** | **opena11** | Unlock Master (unlockp) | ❌ Offline |
-| **12358** | **opena12** | Social Media (smp) | ❌ Offline |
-| **12359** | **opena13** | Influencer (influp) | ❌ Offline |
-| **12360** | **opena14** | Calendar (calp) | ❌ Offline |
-| **12361** | **opena15** | HTML Creator (htmlp) | ❌ Offline |
-| **12362** | **opena16** | Shop Creator (shopp) | ❌ Offline |
-| **12363** | **opena17** | Homepage Creator (hpcreatep) | ❌ Offline |
-| **12364** | **opena18** | CRM / Local Archiv (crmp) | ✅ **Online** |
-| **12365** | **opena19** | Aktien & Crypto (stockcryptop) | ❌ Offline |
-| **12364** | **opena21** | Workflow Engine (workflowp) | ✅ **Running** |
-| **12366-12399** | **Reserved** | Future Expansion | 📅 Available |
+| Port            | Service            | Role                               | Status         |
+| --------------- | ------------------ | ---------------------------------- | -------------- |
+| **12344**       | **opena1**         | Coordinator (Request71→Decision72) | ✅ Running     |
+| **12345**       | **opena2**         | Archivator (CMD/RESP Safepoints)   | ✅ Running     |
+| **12346**       | **kordp**          | Gateway (Tool Dispatch)            | ✅ Running     |
+| **12347**       | **opena3**         | OpenWebUI Terminal (owuip)         | ✅ **Online**  |
+| **12348**       | **opena4**         | Telegram Bot (telep)               | ❌ Offline     |
+| **12349**       | **opena20**        | Dashboard (Live Monitoring UI)     | ✅ Running     |
+| **12350**       | **opena6 Adapter** | OpenWebUI Adapter                  | ✅ Running     |
+| **12351**       | **opena5**         | VS Code Agent (vscop)              | ❌ Offline     |
+| **12352**       | **opena6**         | Browser Automation (browsep)       | ❌ Offline     |
+| **12353**       | **opena7**         | E-Mail Client (emailp)             | ❌ Offline     |
+| **12354**       | **opena8**         | WhatsApp API (whatsappp)           | ❌ Offline     |
+| **12355**       | **opena9**         | Telefonie (telphonep)              | ❌ Offline     |
+| **12356**       | **opena10**        | Call Tracking (calltrackp)         | ❌ Offline     |
+| **12357**       | **opena11**        | Unlock Master (unlockp)            | ❌ Offline     |
+| **12358**       | **opena12**        | Social Media (smp)                 | ❌ Offline     |
+| **12359**       | **opena13**        | Influencer (influp)                | ❌ Offline     |
+| **12360**       | **opena14**        | Calendar (calp)                    | ❌ Offline     |
+| **12361**       | **opena15**        | HTML Creator (htmlp)               | ❌ Offline     |
+| **12362**       | **opena16**        | Shop Creator (shopp)               | ❌ Offline     |
+| **12363**       | **opena17**        | Homepage Creator (hpcreatep)       | ❌ Offline     |
+| **12364**       | **opena18**        | CRM / Local Archiv (crmp)          | ✅ **Online**  |
+| **12365**       | **opena19**        | Aktien & Crypto (stockcryptop)     | ❌ Offline     |
+| **12364**       | **opena21**        | Workflow Engine (workflowp)        | ✅ **Running** |
+| **12366-12399** | **Reserved**       | Future Expansion                   | 📅 Available   |
 
 **Live-Status:** 28.11.2025 03:30:00 | **16/17 Agenten online** (❌ nur opena4 offline)
 
@@ -1399,18 +1399,18 @@ OpenAI → opena1:12344 → opena2:12345 → kordp:12346 → Tools
 
 ### ✅ Completed Phases (7-16)
 
-| Phase | Feature | Details |
-|-------|---------|---------|
-| **7b** | Runtime Validation | OpenA1/OpenA2 Health Checks ✓ |
-| **8** | Service Architecture | 19 Service Folders + CI/CD Gate ✓ |
-| **9** | Portier Service | Coordinator + Routing Registry ✓ |
-| **10** | Telegram + OpenWebUI | Messaging + Inference Integration ✓ |
-| **11** | Multi-Service Test | 4 Services, Route Registration ✓ |
-| **12** | Git Sync | All Changes Committed & Pushed ✓ |
-| **13** | Load-Test Phase 1 | 100 Requests, 30.33 req/s, 100% Success ✓ |
-| **14** | llama-stack Integration | Inference Service, Bridge, 0.87 req/s ✓ |
-| **15** | Scale zu 20 Services | Template, Bulk Generation, 27.74 req/s ✓ |
-| **16** | CI/CD Hardening | GitHub Actions, Pre-Commit, Deployment Validation ✓ |
+| Phase  | Feature                 | Details                                             |
+| ------ | ----------------------- | --------------------------------------------------- |
+| **7b** | Runtime Validation      | OpenA1/OpenA2 Health Checks ✓                       |
+| **8**  | Service Architecture    | 19 Service Folders + CI/CD Gate ✓                   |
+| **9**  | Portier Service         | Coordinator + Routing Registry ✓                    |
+| **10** | Telegram + OpenWebUI    | Messaging + Inference Integration ✓                 |
+| **11** | Multi-Service Test      | 4 Services, Route Registration ✓                    |
+| **12** | Git Sync                | All Changes Committed & Pushed ✓                    |
+| **13** | Load-Test Phase 1       | 100 Requests, 30.33 req/s, 100% Success ✓           |
+| **14** | llama-stack Integration | Inference Service, Bridge, 0.87 req/s ✓             |
+| **15** | Scale zu 20 Services    | Template, Bulk Generation, 27.74 req/s ✓            |
+| **16** | CI/CD Hardening         | GitHub Actions, Pre-Commit, Deployment Validation ✓ |
 
 ---
 
@@ -1812,43 +1812,43 @@ find . -name "*.pyc" -delete
 
 **System-Architektur & Design:**
 
-| Dokument | Link | Zweck | Status |
-|----------|------|-------|--------|
-| **System-Architektur** | `ELION_SYSTEM_ARCHITECTURE.md` | Überblick: Datenstruktur, Datenpfad, Projektstruktur | ✅ Master |
-| **Datenstruktur** | `DATENSTRUKTUR.md` | Detaillierte Dokumentation der Datenmodelle | ✅ |
-| **Datenpfad** | `DATENPFAD.md` | Datenflüsse und Verarbeitungspipelines | ✅ |
-| **Projektstruktur** | `PROJEKTSTRUKTUR.md` | Verzeichnisorganisation und Module | ✅ |
-| **Verzeichnis-Inventar** | `DIRECTORY_INVENTORY.md` | Vollständiges Verzeichnis-Inventar mit 248 Ordnern, Agent-Struktur, Datenpfaden | ✅ |
-| **Runbook: System-Architektur** | `Runbooks/RUNBOOK_SYSTEM_ARCHITECTURE.md` | Operationale Version für DevOps | ✅ |
+| Dokument                        | Link                                      | Zweck                                                                           | Status    |
+| ------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------- | --------- |
+| **System-Architektur**          | `ELION_SYSTEM_ARCHITECTURE.md`            | Überblick: Datenstruktur, Datenpfad, Projektstruktur                            | ✅ Master |
+| **Datenstruktur**               | `DATENSTRUKTUR.md`                        | Detaillierte Dokumentation der Datenmodelle                                     | ✅        |
+| **Datenpfad**                   | `DATENPFAD.md`                            | Datenflüsse und Verarbeitungspipelines                                          | ✅        |
+| **Projektstruktur**             | `PROJEKTSTRUKTUR.md`                      | Verzeichnisorganisation und Module                                              | ✅        |
+| **Verzeichnis-Inventar**        | `DIRECTORY_INVENTORY.md`                  | Vollständiges Verzeichnis-Inventar mit 248 Ordnern, Agent-Struktur, Datenpfaden | ✅        |
+| **Runbook: System-Architektur** | `Runbooks/RUNBOOK_SYSTEM_ARCHITECTURE.md` | Operationale Version für DevOps                                                 | ✅        |
 
 **Betriebsanleitungen:**
 
-| Dokument | Link | Zweck | Status |
-|----------|------|-------|--------|
-| Architecture Runbook | `docs/OPERATIONS.md` | Allgemeine Operations | ✅ |
-| Patch Flow & Guard | `Runbooks/Runbook_PatchFlow_and_Guard.md` | Patch-Management | ✅ |
-| No-Ask Integration | `Runbooks/Runbook_NoAsk.md` | Copilot No-Ask Mode | ✅ |
-| Env Setup | `Runbooks/Runbook_EnvSetup.md` | Umgebungskonfiguration | ✅ |
-| Portier API | `src/services/portier/main.py` (docstrings) | API-Dokumentation | ✅ |
-| Service Template | `src/services/template/main.py` | Service-Vorlage | ✅ |
-| Routing Matrix | `configs/routing_matrix.yaml` | Routing-Konfiguration | ✅ |
-| CI/CD Config | `.github/workflows/ci.yml` | CI/CD-Pipeline | ✅ |
-| Load-Test Docs | `scripts/load_test*.py` (comments) | Performance-Tests | ✅ |
+| Dokument             | Link                                        | Zweck                  | Status |
+| -------------------- | ------------------------------------------- | ---------------------- | ------ |
+| Architecture Runbook | `docs/OPERATIONS.md`                        | Allgemeine Operations  | ✅     |
+| Patch Flow & Guard   | `Runbooks/Runbook_PatchFlow_and_Guard.md`   | Patch-Management       | ✅     |
+| No-Ask Integration   | `Runbooks/Runbook_NoAsk.md`                 | Copilot No-Ask Mode    | ✅     |
+| Env Setup            | `Runbooks/Runbook_EnvSetup.md`              | Umgebungskonfiguration | ✅     |
+| Portier API          | `src/services/portier/main.py` (docstrings) | API-Dokumentation      | ✅     |
+| Service Template     | `src/services/template/main.py`             | Service-Vorlage        | ✅     |
+| Routing Matrix       | `configs/routing_matrix.yaml`               | Routing-Konfiguration  | ✅     |
+| CI/CD Config         | `.github/workflows/ci.yml`                  | CI/CD-Pipeline         | ✅     |
+| Load-Test Docs       | `scripts/load_test*.py` (comments)          | Performance-Tests      | ✅     |
 
 ---
 
 ## 🚦 Current Status (28. November 2025)
 
-| Component | Status | Details |
-|-----------|--------|---------|
-| **Core Architecture** | ✅ Complete | 20 Services, 4 Running |
-| **Coordinator** | ✅ Complete | Portier + Route Registry |
-| **Archive** | ✅ Complete | JSONL + Daily Partitions |
-| **Inference** | ✅ Complete | llama2 via Ollama |
-| **OpenWebUI** | ✅ Complete | Port 3000, Bridge Active |
-| **Load Testing** | ✅ Complete | 27.74 req/s validated |
-| **CI/CD** | ✅ Complete | GitHub Actions, Pre-Commit |
-| **Production Ready** | ⏳ Phase 17-18 | Monitoring + Deployment |
+| Component             | Status         | Details                    |
+| --------------------- | -------------- | -------------------------- |
+| **Core Architecture** | ✅ Complete    | 20 Services, 4 Running     |
+| **Coordinator**       | ✅ Complete    | Portier + Route Registry   |
+| **Archive**           | ✅ Complete    | JSONL + Daily Partitions   |
+| **Inference**         | ✅ Complete    | llama2 via Ollama          |
+| **OpenWebUI**         | ✅ Complete    | Port 3000, Bridge Active   |
+| **Load Testing**      | ✅ Complete    | 27.74 req/s validated      |
+| **CI/CD**             | ✅ Complete    | GitHub Actions, Pre-Commit |
+| **Production Ready**  | ⏳ Phase 17-18 | Monitoring + Deployment    |
 
 ---
 
@@ -1964,14 +1964,14 @@ Diese Dokumentation bietet einen umfassenden Überblick über die **ELION-System
 
 **🎯 Wer sollte was lesen:**
 
-| Rolle | Empfohlene Dateien |
-|-------|-------------------|
-| **Entwickler (Backend)** | `DATENSTRUKTUR.md`, `DATENPFAD.md` |
-| **DevOps / SysAdmin** | `Runbooks/RUNBOOK_SYSTEM_ARCHITECTURE.md`, `PROJEKTSTRUKTUR.md` |
-| **Frontend-Entwickler** | `PROJEKTSTRUKTUR.md`, `LocalAgent-Pro/README.md` |
-| **Architekten** | `ELION_SYSTEM_ARCHITECTURE.md` (all-in-one) |
-| **Projektmanager** | `ELION_SYSTEM_ARCHITECTURE.md` (Executive Summary) |
-| **Neue Team-Mitglieder** | Start mit `ELION_SYSTEM_ARCHITECTURE.md`, dann spezialisieren |
+| Rolle                    | Empfohlene Dateien                                              |
+| ------------------------ | --------------------------------------------------------------- |
+| **Entwickler (Backend)** | `DATENSTRUKTUR.md`, `DATENPFAD.md`                              |
+| **DevOps / SysAdmin**    | `Runbooks/RUNBOOK_SYSTEM_ARCHITECTURE.md`, `PROJEKTSTRUKTUR.md` |
+| **Frontend-Entwickler**  | `PROJEKTSTRUKTUR.md`, `LocalAgent-Pro/README.md`                |
+| **Architekten**          | `ELION_SYSTEM_ARCHITECTURE.md` (all-in-one)                     |
+| **Projektmanager**       | `ELION_SYSTEM_ARCHITECTURE.md` (Executive Summary)              |
+| **Neue Team-Mitglieder** | Start mit `ELION_SYSTEM_ARCHITECTURE.md`, dann spezialisieren   |
 
 ---
 
@@ -1985,9 +1985,9 @@ MIT License – Siehe [LICENSE](LICENSE) für Details
 
 ## 🏢 PORTIER 3.0 — Firmen-Kontext
 
-**Entwickelt für:**  
-ELION Technologies GmbH  
-Lead Developer: **Danijel Jokic**  
+**Entwickelt für:**
+ELION Technologies GmbH
+Lead Developer: **Danijel Jokic**
 Team: AI Engineering & Automation
 
 **Technologie-Partner:**
@@ -2004,7 +2004,7 @@ Team: AI Engineering & Automation
 
 ## 📄 License
 
-**MIT License** (Open Source Components)  
+**MIT License** (Open Source Components)
 **Internal Use Only** (Enterprise Components)
 
 ```
@@ -2031,26 +2031,26 @@ in the Software without restriction...
 
 ---
 
-**Last Updated:** 28. November 2025  
-**Version:** 3.0.0 PORTIER Release  
-**Status:** ✅ **PRODUCTION-READY**  
+**Last Updated:** 28. November 2025
+**Version:** 3.0.0 PORTIER Release
+**Status:** ✅ **PRODUCTION-READY**
 **Maintainer:** Danijel Jokic (ELION Team)
 
 ---
 
-**🚀 Dashboard:** <http://127.0.0.1:12349/dashboard>  
-**📊 Status API:** <http://127.0.0.1:12349/api/status>  
+**🚀 Dashboard:** <http://127.0.0.1:12349/dashboard>
+**📊 Status API:** <http://127.0.0.1:12349/api/status>
 **💚 Health Check:** <http://127.0.0.1:12349/health>
 
 ---
 
-**Für vollständige technische Dokumentation siehe:**  
-📖 **[PORTIER_SYSTEM_DOCS.md](PORTIER_SYSTEM_DOCS.md)** (654 Zeilen)  
-📖 **[README_ENTERPRISE.md](README_ENTERPRISE.md)** (5,890 Zeilen, 20 Seiten)  
+**Für vollständige technische Dokumentation siehe:**
+📖 **[PORTIER_SYSTEM_DOCS.md](PORTIER_SYSTEM_DOCS.md)** (654 Zeilen)
+📖 **[README_ENTERPRISE.md](README_ENTERPRISE.md)** (5,890 Zeilen, 20 Seiten)
 📖 **[README_STRUCTURE.md](README_STRUCTURE.md)** (README-Übersicht, alle Agents)
 
 ---
 
-**Maintainer:** ELION Team  
-**Letzte Aktualisierung:** 28. November 2025  
+**Maintainer:** ELION Team
+**Letzte Aktualisierung:** 28. November 2025
 **Version:** 1.1

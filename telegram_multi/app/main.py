@@ -2,16 +2,18 @@
 Telegram Multi-Bot FastAPI Server (Port 8000)
 Webhook-based, Multi-tenant, Option-2 compliant
 """
-from fastapi import FastAPI, HTTPException, Depends
-from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.ext.asyncio import AsyncSession
+
+import logging
 from contextlib import asynccontextmanager
-from app.db.session import engine, AsyncSessionLocal, get_db
-from app.db.models import SQLModel
-from app.telegram.webhooks import router as telegram_router
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from app.admin.routes import router as admin_router
 from app.config import settings
-import logging
+from app.db.models import SQLModel
+from app.db.session import engine
+from app.telegram.webhooks import router as telegram_router
 
 # Configure logging
 logging.basicConfig(
@@ -28,15 +30,15 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Startup/shutdown events"""
-    
+
     # Startup
     logger.info("🚀 Telegram Multi-Bot starting...")
     async with engine.begin() as conn:
         await conn.run_sync(SQLModel.metadata.create_all)
     logger.info("✅ Database initialized")
-    
+
     yield
-    
+
     # Shutdown
     logger.info("🛑 Telegram Multi-Bot shutting down...")
     await engine.dispose()
@@ -98,7 +100,7 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
-    
+
     uvicorn.run(
         "app.main:app",
         host=settings.api_host,

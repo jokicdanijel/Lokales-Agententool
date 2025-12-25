@@ -7,6 +7,7 @@ Schnelleinstieg in 5 Minuten!
 ## 🎯 Ziel
 
 Nach diesem Guide hast du:
+
 - ✅ LocalAgent-Pro installiert und gestartet
 - ✅ Erste API-Anfrage erfolgreich gesendet
 - ✅ Grundlegende Funktionen getestet
@@ -45,6 +46,7 @@ curl http://localhost:8001/health
 ```
 
 **Erwartete Antwort:**
+
 ```json
 {
   "status": "healthy",
@@ -69,6 +71,7 @@ curl -X POST http://localhost:8001/v1/chat/completions \
 ```
 
 **Erwartete Antwort:**
+
 ```json
 {
   "choices": [
@@ -151,12 +154,12 @@ Wenn du OpenWebUI nutzen möchtest:
 
 ### Wichtige Endpoints
 
-| Endpoint | Beschreibung |
-|----------|--------------|
-| `GET /health` | Server-Status |
-| `GET /v1/models` | Verfügbare Modelle |
-| `POST /v1/chat/completions` | Chat-Anfrage |
-| `GET /metrics` | Prometheus-Metriken |
+| Endpoint                    | Beschreibung        |
+| --------------------------- | ------------------- |
+| `GET /health`               | Server-Status       |
+| `GET /v1/models`            | Verfügbare Modelle  |
+| `POST /v1/chat/completions` | Chat-Anfrage        |
+| `GET /metrics`              | Prometheus-Metriken |
 
 ### Beispiel-Workflows
 

@@ -316,4 +316,3 @@ case "${1:-help}" in
   *)
     err "Unbekannter Befehl: ${1:-}"; cmd_help; exit 2 ;;
 esac
-

@@ -23,9 +23,7 @@
     "backups/",
     "agent_registry.json"
   ],
-  "pre_update_commands": [
-    ["systemctl", "stop", "opena20"]
-  ],
+  "pre_update_commands": [["systemctl", "stop", "opena20"]],
   "post_update_commands": [
     ["pip", "install", "-r", "requirements.txt", "--upgrade"]
   ],

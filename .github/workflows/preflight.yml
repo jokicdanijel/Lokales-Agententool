@@ -62,24 +62,24 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
 
           if [ -f artifacts/preflight_result.json ]; then
-            python -c "
-import json
-with open('artifacts/preflight_result.json', 'r') as f:
-    result = json.load(f)
+            python - <<'PY'
+            import json
+            with open('artifacts/preflight_result.json', 'r') as f:
+                result = json.load(f)
 
-with open('$GITHUB_STEP_SUMMARY', 'a') as summary:
-    summary.write(f'### 📊 Statistics\n\n')
-    summary.write(f'- **Agents Checked:** {result[\"agents_checked\"]}\n')
-    summary.write(f'- **Agents Passed:** {result[\"agents_passed\"]}\n')
-    summary.write(f'- **Agents Failed:** {result[\"agents_failed\"]}\n')
-    summary.write(f'- **Violations:** {len(result[\"violations\"])}\n')
-    summary.write(f'- **Warnings:** {len(result[\"warnings\"])}\n\n')
+            with open('$GITHUB_STEP_SUMMARY', 'a') as summary:
+                summary.write(f'### 📊 Statistics\n\n')
+                summary.write(f'- **Agents Checked:** {result[\"agents_checked\"]}\n')
+                summary.write(f'- **Agents Passed:** {result[\"agents_passed\"]}\n')
+                summary.write(f'- **Agents Failed:** {result[\"agents_failed\"]}\n')
+                summary.write(f'- **Violations:** {len(result[\"violations\"])}\n')
+                summary.write(f'- **Warnings:** {len(result[\"warnings\"])}\n\n')
 
-    if result['violations']:
-        summary.write(f'### ❌ Violations\n\n')
-        for v in result['violations'][:10]:
-            summary.write(f'- {v}\n')
-            "
+                if result['violations']:
+                    summary.write(f'### ❌ Violations\n\n')
+                    for v in result['violations'][:10]:
+                        summary.write(f'- {v}\n')
+            PY
           else
             echo "❌ Preflight result file not found" >> $GITHUB_STEP_SUMMARY
           fi
@@ -122,15 +122,15 @@ with open('$GITHUB_STEP_SUMMARY', 'a') as summary:
       - name: 📊 Check Agent Count
         run: |
           if [ -f system_baseline.yaml ]; then
-            python -c "
-import yaml
-with open('system_baseline.yaml', 'r') as f:
-    baseline = yaml.safe_load(f)
-    agent_count = len(baseline.get('agents', []))
-    print(f'✅ Baseline contains {agent_count} agents')
-    if agent_count != 21:
-        print(f'⚠️ Expected 21 agents, found {agent_count}')
-            "
+            python - <<'PY'
+            import yaml
+            with open('system_baseline.yaml', 'r') as f:
+                baseline = yaml.safe_load(f)
+            agent_count = len(baseline.get('agents', []))
+            print(f'✅ Baseline contains {agent_count} agents')
+            if agent_count != 21:
+                print(f'⚠️ Expected 21 agents, found {agent_count}')
+            PY
           else
             echo "⚠️ system_baseline.yaml not found"
           fi

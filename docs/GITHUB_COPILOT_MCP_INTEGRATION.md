@@ -1,7 +1,7 @@
 # GitHub Copilot MCP Integration
 
-**Status:** ✅ Configuration Ready  
-**Last Updated:** 2025-12-17  
+**Status:** ✅ Configuration Ready
+**Last Updated:** 2025-12-17
 **API Endpoint:** `https://api.githubcopilot.com/mcp/`
 
 ---
@@ -32,7 +32,7 @@ GITHUB_COPILOT_MCP_ENDPOINT=https://api.githubcopilot.com/mcp/
 
 1. **Visit GitHub Settings**
    - Navigate to [GitHub Settings → Developer settings → Personal access tokens](https://github.com/settings/tokens)
-   
+
 2. **Generate New Token**
    - Select "Generate new token (classic)" or use fine-grained tokens
    - Required scopes: `copilot`, `read:org` (if using organization features)
@@ -78,16 +78,19 @@ curl -H "Authorization: Bearer $GITHUB_COPILOT_API_KEY" \
 The GitHub Copilot MCP API can be integrated with the following ELION services:
 
 ### MCP Server (`mcp_server/`)
+
 - **Port:** 12350
 - **Purpose:** MCP protocol server for AI tool integration
 - **Configuration:** `mcp_server/.env`
 
 ### Dashboard (opena20)
+
 - **Port:** 12349
 - **Purpose:** Central monitoring and management UI
 - **Use Case:** Display Copilot API usage metrics, manage API keys
 
 ### Agent Services
+
 - **Potential Integration:** Any agent can leverage Copilot API for enhanced AI capabilities
 - **Authentication:** Uses `GITHUB_COPILOT_API_KEY` from environment
 
@@ -96,6 +99,7 @@ The GitHub Copilot MCP API can be integrated with the following ELION services:
 ## 📊 API Endpoints
 
 ### Base URL
+
 ```
 https://api.githubcopilot.com/mcp/
 ```
@@ -130,20 +134,24 @@ curl -X POST https://api.githubcopilot.com/mcp/chat/completions \
 ## 🔐 Security Best Practices
 
 ### 1. Never Commit Secrets
+
 ```bash
 # Ensure .env is in .gitignore
 echo ".env" >> .gitignore
 ```
 
 ### 2. Use Environment-Specific Keys
+
 - **Development:** Use personal tokens with limited scopes
 - **Production:** Use organization tokens with appropriate permissions
 
 ### 3. Rotate Keys Regularly
+
 - Regenerate API keys every 90 days
 - Revoke unused or compromised keys immediately
 
 ### 4. Limit Scope
+
 - Only grant necessary permissions
 - Use fine-grained tokens when possible
 
@@ -211,7 +219,7 @@ load_dotenv()
 
 GITHUB_COPILOT_API_KEY = os.getenv("GITHUB_COPILOT_API_KEY")
 GITHUB_COPILOT_MCP_ENDPOINT = os.getenv(
-    "GITHUB_COPILOT_MCP_ENDPOINT", 
+    "GITHUB_COPILOT_MCP_ENDPOINT",
     "https://api.githubcopilot.com/mcp/"
 )
 
@@ -220,16 +228,16 @@ def test_api_connection():
     if not GITHUB_COPILOT_API_KEY:
         print("❌ GITHUB_COPILOT_API_KEY not set in .env")
         return False
-    
+
     headers = {
         "Authorization": f"Bearer {GITHUB_COPILOT_API_KEY}",
         "Accept": "application/json"
     }
-    
+
     try:
         print(f"🔍 Testing connection to {GITHUB_COPILOT_MCP_ENDPOINT}...")
         response = requests.get(GITHUB_COPILOT_MCP_ENDPOINT, headers=headers, timeout=10)
-        
+
         if response.status_code == 200:
             print("✅ API connection successful")
             print(f"Response: {response.json() if response.text else 'Empty response'}")
@@ -303,20 +311,26 @@ if __name__ == "__main__":
 ## ⚠️ Troubleshooting
 
 ### Error: "GITHUB_COPILOT_API_KEY not set"
+
 **Solution:** Ensure `.env` file exists and contains the API key:
+
 ```bash
 cp .env.example .env
 # Edit .env and add your key
 ```
 
 ### Error: "401 Unauthorized"
-**Solution:** 
+
+**Solution:**
+
 1. Verify your API key is correct
 2. Check token has `copilot` scope
 3. Ensure token hasn't expired
 
 ### Error: "404 Not Found"
-**Solution:** 
+
+**Solution:**
+
 1. Verify the endpoint URL is correct
 2. Check GitHub API documentation for current endpoints
 3. Ensure you have access to GitHub Copilot
@@ -326,6 +340,7 @@ cp .env.example .env
 ## 📝 Changelog
 
 ### 2025-12-17
+
 - ✅ Initial documentation created
 - ✅ Added configuration instructions
 - ✅ Added test scripts
@@ -333,6 +348,6 @@ cp .env.example .env
 
 ---
 
-**Maintainer:** ELION Team  
-**Status:** ✅ Ready for Use  
+**Maintainer:** ELION Team
+**Status:** ✅ Ready for Use
 **Next Steps:** Implement MCP server integration with GitHub Copilot API

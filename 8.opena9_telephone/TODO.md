@@ -1,7 +1,7 @@
 # TODO – opena9 Telefonie Agent
 
-**Port:** 12354  
-**Status:** 🟡 Planned  
+**Port:** 12354
+**Status:** 🟡 Planned
 **Kürzel:** `telphonep`
 
 ---
@@ -97,5 +97,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

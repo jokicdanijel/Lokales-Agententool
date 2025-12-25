@@ -7,16 +7,11 @@ Real-time monitoring, metrics & system control
 """
 
 import http.server
-import socketserver
 import json
 import os
-from pathlib import Path
-from datetime import datetime
-import threading
+import socketserver
 import subprocess
-import socket
-import psutil
-import platform
+from datetime import datetime
 
 PORT = 8000
 VERSION = "2.0.0"
@@ -982,7 +977,7 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
 
     def serve_status_page(self):
         """Serve system status as HTML page"""
-        import json as json_module
+
         try:
             status = {
                 "status": "online",
@@ -992,8 +987,8 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
                     "localaagent-pro": "running",
                     "ollama": "running",
                     "openwebui": "running",
-                    "http-server": "running"
-                }
+                    "http-server": "running",
+                },
             }
 
             html = f"""
@@ -1064,13 +1059,15 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
             tools = [
                 {"name": "📝 File Manager", "desc": "Read, write, delete files safely", "icon": "📁"},
                 {"name": "⚡ Shell Executor", "desc": "Execute whitelisted shell commands", "icon": "🖥️"},
-                {"name": "🎤 Program Launcher", "desc": "Start voice programs in background", "icon": "🚀"}
+                {"name": "🎤 Program Launcher", "desc": "Start voice programs in background", "icon": "🚀"},
             ]
 
-            tools_html = '\n'.join([
-                f'<div class="tool-card"><div class="tool-icon">{t["icon"]}</div><h3>{t["name"]}</h3><p>{t["desc"]}</p></div>'
-                for t in tools
-            ])
+            tools_html = "\n".join(
+                [
+                    f'<div class="tool-card"><div class="tool-icon">{t["icon"]}</div><h3>{t["name"]}</h3><p>{t["desc"]}</p></div>'
+                    for t in tools
+                ]
+            )
 
             html = f"""
 <!DOCTYPE html>
@@ -1124,17 +1121,19 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
                 {"name": "☎️ Call System", "file": "voice_call_system.py", "desc": "Voice call management"},
                 {"name": "📝 Note Recorder", "file": "voice_note_recorder.py", "desc": "Record voice notes"},
                 {"name": "🎙️ Transcriber", "file": "voice_transcriber.py", "desc": "Audio transcription"},
-                {"name": "📅 Scheduler", "file": "voice_scheduler.py", "desc": "Schedule voice tasks"}
+                {"name": "📅 Scheduler", "file": "voice_scheduler.py", "desc": "Schedule voice tasks"},
             ]
 
-            programs_html = '\n'.join([
-                f'''<div class="program-card" onclick="startProgram('{p['file']}')">
+            programs_html = "\n".join(
+                [
+                    f"""<div class="program-card" onclick="startProgram('{p['file']}')">
                     <div class="program-title">{p["name"]}</div>
                     <div class="program-desc">{p["desc"]}</div>
                     <button class="start-btn">▶️ Starten</button>
-                </div>'''
-                for p in programs
-            ])
+                </div>"""
+                    for p in programs
+                ]
+            )
 
             html = f"""
 <!DOCTYPE html>
@@ -1216,11 +1215,11 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
                 "localaagent-pro": "running",
                 "ollama": "running",
                 "openwebui": "running",
-                "http-server": "running"
+                "http-server": "running",
             },
             "tools": 5,
             "programs": 6,
-            "total_code_lines": 1041
+            "total_code_lines": 1041,
         }
 
         self.send_response(200)
@@ -1232,31 +1231,11 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
     def serve_tools(self):
         """Serve available tools as JSON"""
         tools = [
-            {
-                "name": "write_file",
-                "description": "Erstelle Dateien in der Sandbox",
-                "category": "File Operations"
-            },
-            {
-                "name": "read_file",
-                "description": "Lese Dateien aus der Sandbox",
-                "category": "File Operations"
-            },
-            {
-                "name": "delete_file",
-                "description": "Lösche Dateien aus der Sandbox",
-                "category": "File Operations"
-            },
-            {
-                "name": "shell_exec",
-                "description": "Führe Shell-Befehle aus",
-                "category": "System Commands"
-            },
-            {
-                "name": "fetch_webpage",
-                "description": "Hole Web-Inhalte ab",
-                "category": "Web Operations"
-            }
+            {"name": "write_file", "description": "Erstelle Dateien in der Sandbox", "category": "File Operations"},
+            {"name": "read_file", "description": "Lese Dateien aus der Sandbox", "category": "File Operations"},
+            {"name": "delete_file", "description": "Lösche Dateien aus der Sandbox", "category": "File Operations"},
+            {"name": "shell_exec", "description": "Führe Shell-Befehle aus", "category": "System Commands"},
+            {"name": "fetch_webpage", "description": "Hole Web-Inhalte ab", "category": "Web Operations"},
         ]
 
         self.send_response(200)
@@ -1273,43 +1252,43 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
                 "title": "Voice Command Parser",
                 "file": "tools/voice_command_parser.py",
                 "lines": 147,
-                "category": "Voice Control"
+                "category": "Voice Control",
             },
             {
                 "name": "voice_note_recorder",
                 "title": "Voice Note Recorder",
                 "file": "tools/voice_note_recorder.py",
                 "lines": 187,
-                "category": "Voice Input"
+                "category": "Voice Input",
             },
             {
                 "name": "voice_call_system",
                 "title": "Voice Call System",
                 "file": "tools/voice_call_system.py",
                 "lines": 173,
-                "category": "Communication"
+                "category": "Communication",
             },
             {
                 "name": "voice_assistant",
                 "title": "Voice Assistant",
                 "file": "tools/voice_assistant.py",
                 "lines": 138,
-                "category": "AI Assistant"
+                "category": "AI Assistant",
             },
             {
                 "name": "voice_transcriber",
                 "title": "Voice Transcriber",
                 "file": "tools/voice_transcriber.py",
                 "lines": 226,
-                "category": "Audio Processing"
+                "category": "Audio Processing",
             },
             {
                 "name": "voice_scheduler",
                 "title": "Voice Scheduler",
                 "file": "tools/voice_scheduler.py",
                 "lines": 176,
-                "category": "Task Management"
-            }
+                "category": "Task Management",
+            },
         ]
 
         self.send_response(200)
@@ -1335,24 +1314,13 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
                 path = os.path.join(current_dir, item)
                 if os.path.isfile(path):
                     size = os.path.getsize(path)
-                    files.append({
-                        "name": item,
-                        "size": size,
-                        "type": "file",
-                        "path": item
-                    })
-                elif os.path.isdir(path) and not item.startswith('.'):
-                    files.append({
-                        "name": item,
-                        "type": "dir",
-                        "path": item
-                    })
+                    files.append({"name": item, "size": size, "type": "file", "path": item})
+                elif os.path.isdir(path) and not item.startswith("."):
+                    files.append({"name": item, "type": "dir", "path": item})
 
-            self.send_json_response({
-                "status": "ok",
-                "directory": current_dir,
-                "files": sorted(files, key=lambda x: (x['type'], x['name']))
-            })
+            self.send_json_response(
+                {"status": "ok", "directory": current_dir, "files": sorted(files, key=lambda x: (x["type"], x["name"]))}
+            )
         except Exception as e:
             self.send_json_response({"error": str(e)}, 500)
 
@@ -1370,16 +1338,12 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_json_response({"error": "File not found"}, 404)
                 return
 
-            with open(filepath, "r", encoding="utf-8") as f:
+            with open(filepath, encoding="utf-8") as f:
                 content = f.read()
 
-            self.send_json_response({
-                "status": "ok",
-                "path": filepath,
-                "content": content,
-                "size": len(content),
-                "encoding": "utf-8"
-            })
+            self.send_json_response(
+                {"status": "ok", "path": filepath, "content": content, "size": len(content), "encoding": "utf-8"}
+            )
         except Exception as e:
             self.send_json_response({"error": str(e)}, 500)
 
@@ -1400,12 +1364,14 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
             with open(filepath, "w", encoding="utf-8") as f:
                 f.write(content)
 
-            self.send_json_response({
-                "status": "ok",
-                "path": filepath,
-                "message": f"File written successfully ({len(content)} bytes)",
-                "size": len(content)
-            })
+            self.send_json_response(
+                {
+                    "status": "ok",
+                    "path": filepath,
+                    "message": f"File written successfully ({len(content)} bytes)",
+                    "size": len(content),
+                }
+            )
         except Exception as e:
             self.send_json_response({"error": str(e)}, 500)
 
@@ -1429,11 +1395,7 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
 
             os.remove(filepath)
 
-            self.send_json_response({
-                "status": "ok",
-                "path": filepath,
-                "message": "File deleted successfully"
-            })
+            self.send_json_response({"status": "ok", "path": filepath, "message": "File deleted successfully"})
         except Exception as e:
             self.send_json_response({"error": str(e)}, 500)
 
@@ -1444,43 +1406,51 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
 
             # Security: whitelist safe commands
             allowed_commands = [
-                "ls", "pwd", "echo", "cat", "grep", "find", "wc",
-                "head", "tail", "date", "whoami", "mkdir", "rm",
-                "cp", "mv", "touch", "chmod", "python3", "pip3"
+                "ls",
+                "pwd",
+                "echo",
+                "cat",
+                "grep",
+                "find",
+                "wc",
+                "head",
+                "tail",
+                "date",
+                "whoami",
+                "mkdir",
+                "rm",
+                "cp",
+                "mv",
+                "touch",
+                "chmod",
+                "python3",
+                "pip3",
             ]
 
             cmd_name = command.split()[0] if command else ""
 
             if cmd_name not in allowed_commands:
-                self.send_json_response({
-                    "error": f"Command '{cmd_name}' not allowed",
-                    "allowed": allowed_commands
-                }, 403)
+                self.send_json_response(
+                    {"error": f"Command '{cmd_name}' not allowed", "allowed": allowed_commands}, 403
+                )
                 return
 
             # Execute with timeout
             try:
-                result = subprocess.run(
-                    command,
-                    shell=True,
-                    capture_output=True,
-                    text=True,
-                    timeout=10
-                )
+                result = subprocess.run(command, shell=True, capture_output=True, text=True, timeout=10)
 
-                self.send_json_response({
-                    "status": "ok",
-                    "command": command,
-                    "returncode": result.returncode,
-                    "stdout": result.stdout[:5000],  # Limit output
-                    "stderr": result.stderr[:5000],
-                    "message": "Command executed successfully"
-                })
+                self.send_json_response(
+                    {
+                        "status": "ok",
+                        "command": command,
+                        "returncode": result.returncode,
+                        "stdout": result.stdout[:5000],  # Limit output
+                        "stderr": result.stderr[:5000],
+                        "message": "Command executed successfully",
+                    }
+                )
             except subprocess.TimeoutExpired:
-                self.send_json_response({
-                    "error": "Command execution timeout (>10s)",
-                    "command": command
-                }, 408)
+                self.send_json_response({"error": "Command execution timeout (>10s)", "command": command}, 408)
         except Exception as e:
             self.send_json_response({"error": str(e)}, 500)
 
@@ -1491,40 +1461,32 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
 
             # Security: only allow voice programs
             if not file.startswith("voice_") or not file.endswith(".py"):
-                self.send_json_response({
-                    "error": "Only voice programs allowed",
-                    "pattern": "voice_*.py"
-                }, 403)
+                self.send_json_response({"error": "Only voice programs allowed", "pattern": "voice_*.py"}, 403)
                 return
 
             filepath = os.path.join("tools", file)
 
             if not os.path.exists(filepath):
-                self.send_json_response({
-                    "error": f"Program not found: {file}"
-                }, 404)
+                self.send_json_response({"error": f"Program not found: {file}"}, 404)
                 return
 
             # Start program in background
             try:
                 process = subprocess.Popen(
-                    ["python3", filepath],
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                    stdin=subprocess.PIPE
+                    ["python3", filepath], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE
                 )
 
-                self.send_json_response({
-                    "status": "ok",
-                    "file": file,
-                    "filepath": filepath,
-                    "pid": process.pid,
-                    "message": f"✅ Programm '{file}' gestartet (PID: {process.pid})"
-                })
+                self.send_json_response(
+                    {
+                        "status": "ok",
+                        "file": file,
+                        "filepath": filepath,
+                        "pid": process.pid,
+                        "message": f"✅ Programm '{file}' gestartet (PID: {process.pid})",
+                    }
+                )
             except Exception as e:
-                self.send_json_response({
-                    "error": f"Failed to start program: {str(e)}"
-                }, 500)
+                self.send_json_response({"error": f"Failed to start program: {e!s}"}, 500)
         except Exception as e:
             self.send_json_response({"error": str(e)}, 500)
 
@@ -1535,24 +1497,24 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
 
 def main():
     """Start the web dashboard server"""
-    print("\n" + "="*70)
+    print("\n" + "=" * 70)
     print("  🤖 OpenA3 Web Dashboard")
-    print("="*70)
+    print("=" * 70)
     print(f"\n✅ Server startet auf: http://0.0.0.0:{PORT}")
     print(f"\n📊 Dashboard verfügbar unter: http://0.0.0.0:{PORT}/")
-    print(f"📡 API Endpoints:")
+    print("📡 API Endpoints:")
     print(f"   • Status:  http://0.0.0.0:{PORT}/api/status")
     print(f"   • Tools:   http://0.0.0.0:{PORT}/api/tools")
     print(f"   • Programs: http://0.0.0.0:{PORT}/api/programs")
-    print(f"\n🎤 Voice Programme können gestartet werden mit:")
-    print(f"   python3 tools/voice_command_parser.py")
-    print(f"   python3 tools/voice_note_recorder.py")
-    print(f"   python3 tools/voice_call_system.py")
-    print(f"   python3 tools/voice_assistant.py")
-    print(f"   python3 tools/voice_transcriber.py")
-    print(f"   python3 tools/voice_scheduler.py")
-    print(f"\n⏹️  Drücke CTRL+C zum Beenden")
-    print("="*70 + "\n")
+    print("\n🎤 Voice Programme können gestartet werden mit:")
+    print("   python3 tools/voice_command_parser.py")
+    print("   python3 tools/voice_note_recorder.py")
+    print("   python3 tools/voice_call_system.py")
+    print("   python3 tools/voice_assistant.py")
+    print("   python3 tools/voice_transcriber.py")
+    print("   python3 tools/voice_scheduler.py")
+    print("\n⏹️  Drücke CTRL+C zum Beenden")
+    print("=" * 70 + "\n")
 
     try:
         with socketserver.TCPServer(("", PORT), DashboardHandler) as httpd:

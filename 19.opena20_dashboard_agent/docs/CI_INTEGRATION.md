@@ -7,21 +7,25 @@ Die Production Hardening Checks sind vollständig in GitHub Actions integriert.
 ### Jobs
 
 **1. Preflight Gate Validation**
+
 - Führt alle 8 Scanner sequenziell aus
 - Bricht bei erstem Fehler ab (fail-fast)
 - Generiert Scan-Reports als Artifacts
 
 **2. Baseline Validation**
+
 - Validiert `system_baseline.yaml`
 - Prüft Agent-IDs und Ports
 - Erkennt Duplikate und Policy-Verstöße
 
 **3. Entitlements Validation**
+
 - Baut Entitlements-System
 - Validiert Plan-Hierarchie
 - Prüft Basic-Plan (4 clickable agents)
 
 **4. Summary**
+
 - Sammelt alle Job-Ergebnisse
 - Zeigt Gesamt-Status
 - Blockiert bei Violations
@@ -49,6 +53,7 @@ python3 scripts/preflight_gate_scanner.py
 Nach jedem CI-Run werden folgende Artifacts hochgeladen:
 
 ### `preflight-scan-reports` (30 Tage)
+
 - `ports_ids_scan.json` + `.md`
 - `folder_coverage_scan.json` + `.md`
 - `secrets_vault_scan.json` + `.md`
@@ -59,21 +64,25 @@ Nach jedem CI-Run werden folgende Artifacts hochgeladen:
 - `preflight_gate_scan.json` + `.md`
 
 ### `baseline-validation` (30 Tage)
+
 - `baseline_validation.json`
 
 ### `entitlements-validation` (30 Tage)
+
 - `entitlements.json`
 - `entitlements_validation.json`
 
 ## ⚡ Trigger
 
 Der Workflow läuft bei:
+
 - **Push** auf `main`, `ci/**`, `feat/**` Branches
 - **Pull Requests** gegen `main`
 
 ## 🚫 Failure-Verhalten
 
 Bei Violations:
+
 - ❌ Job schlägt fehl
 - 🔴 PR wird als "failed" markiert
 - 📊 Scan-Reports in Artifacts verfügbar

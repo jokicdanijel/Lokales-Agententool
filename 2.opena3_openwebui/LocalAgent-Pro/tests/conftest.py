@@ -1,8 +1,9 @@
 """Pytest configuration and fixtures."""
 
-import pytest
 import sys
 from pathlib import Path
+
+import pytest
 
 # Add src to path
 SRC_PATH = Path(__file__).parent.parent / "src"
@@ -28,6 +29,7 @@ def temp_dir(tmp_path):
 @pytest.fixture
 def mock_api_client():
     """Mock API client fixture."""
+
     class MockClient:
         def get(self, url):
             return {"status": "ok", "data": []}

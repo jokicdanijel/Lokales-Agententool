@@ -1,7 +1,7 @@
 # 🔐 JWT Authentication System für ELION
 
-**Status:** ✅ **PRODUKTIONSREIF**  
-**Version:** 1.0.0  
+**Status:** ✅ **PRODUKTIONSREIF**
+**Version:** 1.0.0
 **Datum:** 2025-11-08
 
 ---
@@ -22,6 +22,7 @@
 ## 📚 Übersicht
 
 Das JWT-System bietet:
+
 - ✅ **RS256-Signierung** (RSA 2048-bit)
 - ✅ **Token-Expirierung** (Konfigurierbar, default 24h)
 - ✅ **Agent-spezifische Claims** (agent_id, scope, permissions)
@@ -78,6 +79,7 @@ private_key, public_key = RSAKeyManager.generate_keypair()
 ```
 
 **Speicherorte:**
+
 - Private Key: `secrets/jwt_private.pem`
 - Public Key: `secrets/jwt_public.pem`
 
@@ -169,16 +171,16 @@ else:
 
 ### Error-Typen
 
-| Error Type | Bedeutung |
-|-----------|-----------|
-| `EXPIRED` | Token ist abgelaufen |
-| `INVALID_SIGNATURE` | Signatur ist ungültig |
-| `INVALID_AUDIENCE` | Zielgruppe stimmt nicht überein |
-| `INVALID_ISSUER` | Aussteller stimmt nicht überein |
-| `DECODE_ERROR` | Token kann nicht dekodiert werden |
-| `MISSING_HEADER` | Authorization-Header fehlt |
-| `INVALID_FORMAT` | Header-Format ist ungültig |
-| `KEY_LOAD_ERROR` | Private/Public Key kann nicht geladen werden |
+| Error Type          | Bedeutung                                    |
+| ------------------- | -------------------------------------------- |
+| `EXPIRED`           | Token ist abgelaufen                         |
+| `INVALID_SIGNATURE` | Signatur ist ungültig                        |
+| `INVALID_AUDIENCE`  | Zielgruppe stimmt nicht überein              |
+| `INVALID_ISSUER`    | Aussteller stimmt nicht überein              |
+| `DECODE_ERROR`      | Token kann nicht dekodiert werden            |
+| `MISSING_HEADER`    | Authorization-Header fehlt                   |
+| `INVALID_FORMAT`    | Header-Format ist ungültig                   |
+| `KEY_LOAD_ERROR`    | Private/Public Key kann nicht geladen werden |
 
 ---
 
@@ -201,6 +203,7 @@ else:
 ```
 
 **Refresh-Logik:**
+
 - Wenn Token < 1 Stunde bis Ablauf: Automatische Erneuerung
 - Wenn Token > 1 Stunde bis Ablauf: Keine Erneuerung nötig
 - Neue Token erhalten gleiche `scope` und `permissions`
@@ -222,19 +225,19 @@ app = FastAPI()
 @app.post("/api/agents/{agent_id}/token")
 async def get_agent_token(agent_id: str, authorization: str):
     """Generiere JWT-Token für Agent"""
-    
+
     # 1. Prüfe Admin-Token
     admin_result = verify_token(authorization.replace("Bearer ", ""))
     if not admin_result.valid or admin_result.claims.scope != "admin":
         raise HTTPException(status_code=403, detail="Forbidden")
-    
+
     # 2. Erstelle Agent-Token
     token = create_token(
         agent_id=agent_id,
         scope="invoke",
         permissions=["read", "write"]
     )
-    
+
     return {
         "access_token": token,
         "token_type": "Bearer",
@@ -258,20 +261,20 @@ async def invoke(
     authorization: str = Header(None)
 ):
     """Agent-Endpoint mit JWT-Validierung"""
-    
+
     # 1. Prüfe Authorization-Header
     if not authorization:
         raise HTTPException(status_code=401, detail="Missing token")
-    
+
     # 2. Verifiziere Token
     result = verify_token(authorization.replace("Bearer ", ""))
     if not result.valid:
         raise HTTPException(status_code=403, detail=result.error)
-    
+
     # 3. Prüfe Berechtigungen
     if "write" not in result.claims.permissions:
         raise HTTPException(status_code=403, detail="Insufficient permissions")
-    
+
     # 4. Verarbeite Request
     return {"status": "ok", "agent_id": result.claims.agent_id}
 ```
@@ -390,6 +393,7 @@ pytest tests/test_jwt_auth.py --cov=jwt_auth
 ### Problem: "JWT module not available"
 
 **Lösung:**
+
 ```bash
 pip install PyJWT cryptography
 ```
@@ -397,6 +401,7 @@ pip install PyJWT cryptography
 ### Problem: "Private key not found"
 
 **Lösung:**
+
 ```bash
 # Schlüssel automatisch generieren
 python -c "from jwt_auth import RSAKeyManager; RSAKeyManager.generate_keypair()"
@@ -405,11 +410,13 @@ python -c "from jwt_auth import RSAKeyManager; RSAKeyManager.generate_keypair()"
 ### Problem: "Invalid signature"
 
 **Ursachen:**
+
 - Private/Public Key stimmt nicht überein
 - Token wurde manipuliert
 - Falscher Algorithmus
 
 **Lösung:**
+
 ```bash
 # Schlüssel neu generieren
 rm secrets/jwt_*.pem
@@ -419,6 +426,7 @@ python -c "from jwt_auth import RSAKeyManager; RSAKeyManager.generate_keypair()"
 ### Problem: "Token expired"
 
 **Lösung:**
+
 ```python
 # Neue Tokens mit längerer Expirierung erstellen
 token = create_token(agent_id="opena1", expires_in_hours=48)
@@ -427,6 +435,7 @@ token = create_token(agent_id="opena1", expires_in_hours=48)
 ### Problem: "Missing Authorization header"
 
 **Lösung:**
+
 ```bash
 # Request muss Bearer-Token enthalten
 curl -H "Authorization: Bearer <token>" \
@@ -449,10 +458,10 @@ class OpenWebUIIntegrationManager:
             "expired": 0,
             "invalid": 0
         }
-    
+
     def record_token_created(self):
         self.token_metrics["created"] += 1
-    
+
     def record_token_verified(self):
         self.token_metrics["verified"] += 1
 ```
@@ -486,16 +495,19 @@ curl -X POST http://localhost:12349/api/auth/verify \
 ## 🎯 Nächste Schritte
 
 1. JWT in Dashboard aktivieren:
+
    ```bash
    # In main_dashboard.py Token-Endpoints hinzufügen
    ```
 
 2. Alle Agenten mit JWT ausstatten:
+
    ```bash
    # In main_opena*.py Token-Validierung hinzufügen
    ```
 
 3. Integration testen:
+
    ```bash
    pytest tests/test_jwt_auth.py -v
    ```
@@ -510,6 +522,6 @@ curl -X POST http://localhost:12349/api/auth/verify \
 
 ---
 
-**Erstellt:** 2025-11-08  
-**Version:** 1.0.0  
+**Erstellt:** 2025-11-08
+**Version:** 1.0.0
 **Status:** Production Ready ✅

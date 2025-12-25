@@ -1,4 +1,2854 @@
-"use strict";(globalThis.webpackChunk_github_ui_github_ui=globalThis.webpackChunk_github_ui_github_ui||[]).push([[26548],{18042:(e,n,l)=>{l.d(n,{k:()=>a});let a={confirmations:{deleteEditHistoryTitle:"Are you sure you want to delete this revision from the history?",deleteEditHistoryContent:"This edit\u2019s content will no longer be visible. This action can not be undone.",deleteEditHistoryConfirmButtonContent:"Remove"},editHistory:{viewingEditTitle:"Viewing edit",deleted:"Deleted",mostRecent:"Most recent",emptyEdit:"This revision does not contain any content.",deletedThisRevision:"deleted this revision",created:"created",edited:"edited",deleteRevisionAriaLabel:"Delete this edit revision",ariaLabel:"Open edits",openEditsButton:"Edits",editedBy:"edited by"}}},19805:(e,n,l)=>{l.r(n),l.d(n,{ReactionViewerRelay:()=>S,ReactionViewerRelayQueryComponent:()=>H,default:()=>L});var a,t,i,r,s,o,d,u,c,m,y,g,p,k,f,h,F,E,K,b,C=l(74848);let w={argumentDefinitions:[],kind:"Fragment",metadata:null,name:"ReactionViewerRelayGroups",selections:[{alias:null,args:null,concreteType:"ReactionGroup",kind:"LinkedField",name:"reactionGroups",plural:!0,selections:[{alias:null,args:null,kind:"ScalarField",name:"content",storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"viewerHasReacted",storageKey:null},{alias:null,args:[{kind:"Literal",name:"first",value:5}],concreteType:"ReactorConnection",kind:"LinkedField",name:"reactors",plural:!1,selections:[{alias:null,args:null,kind:"ScalarField",name:"totalCount",storageKey:null},{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"nodes",plural:!0,selections:[{alias:null,args:null,kind:"ScalarField",name:"__typename",storageKey:null},{kind:"InlineFragment",selections:t=[a={alias:null,args:null,kind:"ScalarField",name:"login",storageKey:null}],type:"User",abstractKey:null},{kind:"InlineFragment",selections:[a,{alias:null,args:null,kind:"ScalarField",name:"isCopilot",storageKey:null}],type:"Bot",abstractKey:null},{kind:"InlineFragment",selections:t,type:"Organization",abstractKey:null},{kind:"InlineFragment",selections:t,type:"Mannequin",abstractKey:null}],storageKey:null}],storageKey:"reactors(first:5)"}],storageKey:null}],type:"Reactable",abstractKey:"__isReactable"};w.hash="4957e34582c8895c7e94b4dc9fa57fc9";let _=(u={alias:null,args:null,kind:"ScalarField",name:"id",storageKey:null},{fragment:{argumentDefinitions:i=[{defaultValue:null,kind:"LocalArgument",name:"id"}],kind:"Fragment",metadata:null,name:"ReactionViewerRelayLazyQuery",selections:[{alias:null,args:r=[{kind:"Variable",name:"id",variableName:"id"}],concreteType:null,kind:"LinkedField",name:"node",plural:!1,selections:[{kind:"InlineFragment",selections:[{args:null,kind:"FragmentSpread",name:"ReactionViewerRelayGroups"}],type:"Comment",abstractKey:"__isComment"}],storageKey:null}],type:"Query",abstractKey:null},kind:"Request",operation:{argumentDefinitions:i,kind:"Operation",name:"ReactionViewerRelayLazyQuery",selections:[{alias:null,args:r,concreteType:null,kind:"LinkedField",name:"node",plural:!1,selections:[s={alias:null,args:null,kind:"ScalarField",name:"__typename",storageKey:null},{kind:"InlineFragment",selections:[{kind:"InlineFragment",selections:[{alias:null,args:null,concreteType:"ReactionGroup",kind:"LinkedField",name:"reactionGroups",plural:!0,selections:[{alias:null,args:null,kind:"ScalarField",name:"content",storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"viewerHasReacted",storageKey:null},{alias:null,args:[{kind:"Literal",name:"first",value:5}],concreteType:"ReactorConnection",kind:"LinkedField",name:"reactors",plural:!1,selections:[{alias:null,args:null,kind:"ScalarField",name:"totalCount",storageKey:null},{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"nodes",plural:!0,selections:[s,{kind:"InlineFragment",selections:d=[o={alias:null,args:null,kind:"ScalarField",name:"login",storageKey:null}],type:"User",abstractKey:null},{kind:"InlineFragment",selections:[o,{alias:null,args:null,kind:"ScalarField",name:"isCopilot",storageKey:null}],type:"Bot",abstractKey:null},{kind:"InlineFragment",selections:d,type:"Organization",abstractKey:null},{kind:"InlineFragment",selections:d,type:"Mannequin",abstractKey:null},{kind:"InlineFragment",selections:[u],type:"Node",abstractKey:"__isNode"}],storageKey:null}],storageKey:"reactors(first:5)"}],storageKey:null}],type:"Reactable",abstractKey:"__isReactable"}],type:"Comment",abstractKey:"__isComment"},u],storageKey:null}]},params:{id:"4ad1541bb8051d5b7a55a10bbdf54731",metadata:{},name:"ReactionViewerRelayLazyQuery",operationKind:"query",text:null}});_.hash="37ec1495c4c7ace448e859305895ad0e";var v=l(96540),x=l(18312),N=l(74547);let R=(k={alias:null,args:null,kind:"ScalarField",name:"id",storageKey:null},{fragment:{argumentDefinitions:c=[{defaultValue:null,kind:"LocalArgument",name:"input"}],kind:"Fragment",metadata:null,name:"addReactionMutation",selections:[{alias:null,args:m=[{kind:"Variable",name:"input",variableName:"input"}],concreteType:"AddReactionPayload",kind:"LinkedField",name:"addReaction",plural:!1,selections:[{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"subject",plural:!1,selections:[{args:null,kind:"FragmentSpread",name:"ReactionViewerRelayGroups"}],storageKey:null}],storageKey:null}],type:"Mutation",abstractKey:null},kind:"Request",operation:{argumentDefinitions:c,kind:"Operation",name:"addReactionMutation",selections:[{alias:null,args:m,concreteType:"AddReactionPayload",kind:"LinkedField",name:"addReaction",plural:!1,selections:[{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"subject",plural:!1,selections:[y={alias:null,args:null,kind:"ScalarField",name:"__typename",storageKey:null},{kind:"TypeDiscriminator",abstractKey:"__isReactable"},{alias:null,args:null,concreteType:"ReactionGroup",kind:"LinkedField",name:"reactionGroups",plural:!0,selections:[{alias:null,args:null,kind:"ScalarField",name:"content",storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"viewerHasReacted",storageKey:null},{alias:null,args:[{kind:"Literal",name:"first",value:5}],concreteType:"ReactorConnection",kind:"LinkedField",name:"reactors",plural:!1,selections:[{alias:null,args:null,kind:"ScalarField",name:"totalCount",storageKey:null},{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"nodes",plural:!0,selections:[y,{kind:"InlineFragment",selections:p=[g={alias:null,args:null,kind:"ScalarField",name:"login",storageKey:null}],type:"User",abstractKey:null},{kind:"InlineFragment",selections:[g,{alias:null,args:null,kind:"ScalarField",name:"isCopilot",storageKey:null}],type:"Bot",abstractKey:null},{kind:"InlineFragment",selections:p,type:"Organization",abstractKey:null},{kind:"InlineFragment",selections:p,type:"Mannequin",abstractKey:null},{kind:"InlineFragment",selections:[k],type:"Node",abstractKey:"__isNode"}],storageKey:null}],storageKey:"reactors(first:5)"}],storageKey:null},k],storageKey:null}],storageKey:null}]},params:{id:"c925c985a3bde5cd71f1859404c89567",metadata:{},name:"addReactionMutation",operationKind:"mutation",text:null}});R.hash="504ef43df20e9ee96a023f421682e18d";let j=(b={alias:null,args:null,kind:"ScalarField",name:"id",storageKey:null},{fragment:{argumentDefinitions:f=[{defaultValue:null,kind:"LocalArgument",name:"input"}],kind:"Fragment",metadata:null,name:"removeReactionMutation",selections:[{alias:null,args:h=[{kind:"Variable",name:"input",variableName:"input"}],concreteType:"RemoveReactionPayload",kind:"LinkedField",name:"removeReaction",plural:!1,selections:[{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"subject",plural:!1,selections:[{args:null,kind:"FragmentSpread",name:"ReactionViewerRelayGroups"}],storageKey:null}],storageKey:null}],type:"Mutation",abstractKey:null},kind:"Request",operation:{argumentDefinitions:f,kind:"Operation",name:"removeReactionMutation",selections:[{alias:null,args:h,concreteType:"RemoveReactionPayload",kind:"LinkedField",name:"removeReaction",plural:!1,selections:[{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"subject",plural:!1,selections:[F={alias:null,args:null,kind:"ScalarField",name:"__typename",storageKey:null},{kind:"TypeDiscriminator",abstractKey:"__isReactable"},{alias:null,args:null,concreteType:"ReactionGroup",kind:"LinkedField",name:"reactionGroups",plural:!0,selections:[{alias:null,args:null,kind:"ScalarField",name:"content",storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"viewerHasReacted",storageKey:null},{alias:null,args:[{kind:"Literal",name:"first",value:5}],concreteType:"ReactorConnection",kind:"LinkedField",name:"reactors",plural:!1,selections:[{alias:null,args:null,kind:"ScalarField",name:"totalCount",storageKey:null},{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"nodes",plural:!0,selections:[F,{kind:"InlineFragment",selections:K=[E={alias:null,args:null,kind:"ScalarField",name:"login",storageKey:null}],type:"User",abstractKey:null},{kind:"InlineFragment",selections:[E,{alias:null,args:null,kind:"ScalarField",name:"isCopilot",storageKey:null}],type:"Bot",abstractKey:null},{kind:"InlineFragment",selections:K,type:"Organization",abstractKey:null},{kind:"InlineFragment",selections:K,type:"Mannequin",abstractKey:null},{kind:"InlineFragment",selections:[b],type:"Node",abstractKey:"__isNode"}],storageKey:null}],storageKey:"reactors(first:5)"}],storageKey:null},b],storageKey:null}],storageKey:null}]},params:{id:"fd20390882af8180d05f0d4a921c00d9",metadata:{},name:"removeReactionMutation",operationKind:"mutation",text:null}});j.hash="8e28d0138da52c07bb0e64eda432f580";var D=l(78809);function S({reactionGroups:e,subjectId:n,canReact:l=!0}){let a=(0,x.useRelayEnvironment)(),t=(0,x.useFragment)(w,e),i=(0,v.useCallback)((e,t)=>{l&&(t?function({environment:e,input:{subject:n,content:l},onError:a,onCompleted:t}){(0,x.commitMutation)(e,{mutation:j,variables:{input:{subjectId:n,content:l}},optimisticUpdater:e=>{let a=e.get(n);if(!a)return;let t=a.getLinkedRecords("reactionGroups");if(!t)return;let i=t.findIndex(e=>e.getValue("content")===l),r=t[i];if(r){r.setValue(!1,"viewerHasReacted");let l=`client:${n}:reactionGroups:${i}:reactors(first:5)`,a=e.get(l);if(a){let e=a.getValue("totalCount");a.setValue(e&&e>0?e-1:0,"totalCount")}}},onError:e=>a&&a(e),onCompleted:e=>t&&t(e)})}({environment:a,input:{subject:n,content:e}}):function({environment:e,input:{subject:n,content:l},onError:a,onCompleted:t}){(0,x.commitMutation)(e,{mutation:R,variables:{input:{subjectId:n,content:l}},optimisticUpdater:e=>{let a=e.get(n);if(!a)return;let t=a.getLinkedRecords("reactionGroups");if(!t)return;let i=t.findIndex(e=>e.getValue("content")===l),r=t[i];if(r){r.setValue(!0,"viewerHasReacted");let l=`client:${n}:reactionGroups:${i}:reactors(first:5)`,a=e.get(l);if(a){let e=a.getValue("totalCount");a.setValue(e?e+1:1,"totalCount")}}},onError:e=>a&&a(e),onCompleted:e=>t&&t(e)})}({environment:a,input:{subject:n,content:e}}))},[l,a,n]),r=(t.reactionGroups||[]).filter(e=>!!e).map(e=>({reaction:{content:e.content,viewerHasReacted:e.viewerHasReacted},reactors:e.reactors?.nodes?.map(e=>e&&"%other"!==e.__typename?{login:"Bot"===e.__typename&&e.isCopilot?N.t.copilotDisplayName:e.login,typeName:e.__typename}:{login:"",typeName:"Other"})||[],totalCount:e.reactors?.totalCount||0}));return(0,C.jsx)(D.P,{reactionGroups:r,canReact:l,subjectId:n,onReact:i})}function H({id:e,subjectLocked:n}){let l=(0,x.useLazyLoadQuery)(_,{id:e},{fetchPolicy:"store-or-network"});return l.node?(0,C.jsx)(S,{subjectId:e,reactionGroups:l.node,canReact:!n}):null}let L=S;try{S.displayName||(S.displayName="ReactionViewerRelay")}catch{}try{H.displayName||(H.displayName="ReactionViewerRelayQueryComponent")}catch{}},21086:(e,n,l)=>{l.d(n,{_:()=>o});var a=l(74848);let t={argumentDefinitions:[],kind:"Fragment",metadata:null,name:"MarkdownLastEditedBy",selections:[{alias:null,args:null,kind:"ScalarField",name:"viewerCanReadUserContentEdits",storageKey:null},{alias:null,args:null,concreteType:"UserContentEdit",kind:"LinkedField",name:"lastUserContentEdit",plural:!1,selections:[{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"editor",plural:!1,selections:[{alias:null,args:null,kind:"ScalarField",name:"url",storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"login",storageKey:null}],storageKey:null}],storageKey:null}],type:"Comment",abstractKey:"__isComment"};t.hash="bbab0cb2d43eeaaa0ed5b010868ec7f4";var i=l(84268),r=l(18312),s=l(18042);function o({editInformation:e,includeSeparator:n,forceUnderline:l}){let o=(0,r.useFragment)(t,e);if(!o||!o.viewerCanReadUserContentEdits||!o.lastUserContentEdit||!o.lastUserContentEdit.editor)return null;let{login:d,url:u}=o.lastUserContentEdit.editor;return(0,a.jsxs)("span",{className:"MarkdownLastEditedBy-module__lastEditInfoContainer--EN_Qz",children:[n&&(0,a.jsx)("span",{children:" \xb7 "}),(0,a.jsxs)("span",{children:[`${s.k.editHistory.editedBy} `,(0,a.jsx)(i.A,{href:u,inline:l,className:"MarkdownLastEditedBy-module__mutedEditorLink--pD3Z6",children:d})]})]})}try{o.displayName||(o.displayName="MarkdownLastEditedBy")}catch{}},23656:(e,n,l)=>{l.d(n,{W:()=>ec});var a,t,i,r,s,o,d,u,c,m,y,g,p,k,f,h,F,E,K,b,C,w,_,v,x,N,R=l(74848);let j={fragment:{argumentDefinitions:a=[{defaultValue:null,kind:"LocalArgument",name:"id"}],kind:"Fragment",metadata:null,name:"MarkdownEditHistoryViewerQuery",selections:[{alias:null,args:t=[{kind:"Variable",name:"id",variableName:"id"}],concreteType:null,kind:"LinkedField",name:"node",plural:!1,selections:[{kind:"InlineFragment",selections:[i={alias:null,args:null,kind:"ScalarField",name:"includesCreatedEdit",storageKey:null},{alias:null,args:r=[{kind:"Literal",name:"first",value:100}],concreteType:"UserContentEditConnection",kind:"LinkedField",name:"userContentEdits",plural:!1,selections:[s={alias:null,args:null,kind:"ScalarField",name:"totalCount",storageKey:null},{alias:null,args:null,concreteType:"UserContentEditEdge",kind:"LinkedField",name:"edges",plural:!0,selections:[{alias:null,args:null,concreteType:"UserContentEdit",kind:"LinkedField",name:"node",plural:!1,selections:[o={alias:null,args:null,kind:"ScalarField",name:"id",storageKey:null},d={alias:null,args:null,kind:"ScalarField",name:"editedAt",storageKey:null},u={alias:null,args:null,kind:"ScalarField",name:"deletedAt",storageKey:null},{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"editor",plural:!1,selections:[c={alias:null,args:null,kind:"ScalarField",name:"avatarUrl",storageKey:null},m={alias:null,args:null,kind:"ScalarField",name:"login",storageKey:null}],storageKey:null}],storageKey:null}],storageKey:null}],storageKey:"userContentEdits(first:100)"}],type:"Comment",abstractKey:"__isComment"}],storageKey:null}],type:"Query",abstractKey:null},kind:"Request",operation:{argumentDefinitions:a,kind:"Operation",name:"MarkdownEditHistoryViewerQuery",selections:[{alias:null,args:t,concreteType:null,kind:"LinkedField",name:"node",plural:!1,selections:[y={alias:null,args:null,kind:"ScalarField",name:"__typename",storageKey:null},{kind:"InlineFragment",selections:[i,{alias:null,args:r,concreteType:"UserContentEditConnection",kind:"LinkedField",name:"userContentEdits",plural:!1,selections:[s,{alias:null,args:null,concreteType:"UserContentEditEdge",kind:"LinkedField",name:"edges",plural:!0,selections:[{alias:null,args:null,concreteType:"UserContentEdit",kind:"LinkedField",name:"node",plural:!1,selections:[o,d,u,{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"editor",plural:!1,selections:[y,c,m,o],storageKey:null}],storageKey:null}],storageKey:null}],storageKey:"userContentEdits(first:100)"}],type:"Comment",abstractKey:"__isComment"},o],storageKey:null}]},params:{id:"c6113eea560ba83b319c9b30fc5d4f7e",metadata:{},name:"MarkdownEditHistoryViewerQuery",operationKind:"query",text:null}};j.hash="58ea81646b217a25de6cfe147936e7f6";let D={argumentDefinitions:[],kind:"Fragment",metadata:null,name:"MarkdownEditHistoryViewer_comment",selections:[{alias:null,args:null,kind:"ScalarField",name:"id",storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"viewerCanReadUserContentEdits",storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"lastEditedAt",storageKey:null}],type:"Comment",abstractKey:"__isComment"};D.hash="fcc1ee717c6a87a4ffdb4f4d9391d55c";var S=l(77430),H=l(76873),L=l(81945),T=l(94236),A=l(5524),V=l(62935),I=l(26607),M=l(96540),U=l(18312),B=l(73454);let G=({retry:e})=>(0,R.jsx)(B.h,{message:"Couldn't load",retry:e,className:"CouldNotFindFallbackError-module__CouldNotFindFallbackErrorContainer--PNbb0"});try{G.displayName||(G.displayName="CouldNotFindFallbackError")}catch{}let O={fragment:{argumentDefinitions:g=[{defaultValue:null,kind:"LocalArgument",name:"id"}],kind:"Fragment",metadata:null,name:"EditHistoryDialogQuery",selections:[{alias:null,args:p=[{kind:"Variable",name:"id",variableName:"id"}],concreteType:null,kind:"LinkedField",name:"node",plural:!1,selections:[{kind:"InlineFragment",selections:[k={alias:null,args:null,kind:"ScalarField",name:"diff",storageKey:null},f={alias:null,args:null,kind:"ScalarField",name:"diffBefore",storageKey:null},h={alias:null,args:null,kind:"ScalarField",name:"deletedAt",storageKey:null},{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"deletedBy",plural:!1,selections:[F={alias:null,args:null,kind:"ScalarField",name:"login",storageKey:null}],storageKey:null},{args:null,kind:"FragmentSpread",name:"EditHistoryDialogHeaderFragment"}],type:"UserContentEdit",abstractKey:null}],storageKey:null}],type:"Query",abstractKey:null},kind:"Request",operation:{argumentDefinitions:g,kind:"Operation",name:"EditHistoryDialogQuery",selections:[{alias:null,args:p,concreteType:null,kind:"LinkedField",name:"node",plural:!1,selections:[E={alias:null,args:null,kind:"ScalarField",name:"__typename",storageKey:null},{kind:"InlineFragment",selections:[k,f,h,{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"deletedBy",plural:!1,selections:[E,F,K={alias:null,args:null,kind:"ScalarField",name:"id",storageKey:null}],storageKey:null},{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"editor",plural:!1,selections:[E,{alias:null,args:null,kind:"ScalarField",name:"avatarUrl",storageKey:null},F,K],storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"editedAt",storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"newest",storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"firstEdit",storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"viewerCanDelete",storageKey:null}],type:"UserContentEdit",abstractKey:null},K],storageKey:null}]},params:{id:"95112ed4d46018d629c28241b711a389",metadata:{},name:"EditHistoryDialogQuery",operationKind:"query",text:null}};O.hash="027faee365f58b6aa217941196bb5c80";var Q=l(15220),$=l(18042);let z="EditHistoryDialog-module__mutedInfoText--C13E3",P={argumentDefinitions:[],kind:"Fragment",metadata:null,name:"EditHistoryDialogHeaderFragment",selections:[{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"editor",plural:!1,selections:[{alias:null,args:null,kind:"ScalarField",name:"avatarUrl",storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"login",storageKey:null}],storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"deletedAt",storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"editedAt",storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"newest",storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"firstEdit",storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"viewerCanDelete",storageKey:null}],type:"UserContentEdit",abstractKey:null};P.hash="173b0fbf2e248d6057ccd670ace2eea7";var q=l(43258),W=l(38621),J=l(59394),Y=l(21373),Z=l(10095);let X={fragment:{argumentDefinitions:b=[{defaultValue:null,kind:"LocalArgument",name:"input"}],kind:"Fragment",metadata:null,name:"deleteUserContentEditMutation",selections:[{alias:null,args:C=[{kind:"Variable",name:"input",variableName:"input"}],concreteType:"DeleteUserContentEditPayload",kind:"LinkedField",name:"deleteUserContentEdit",plural:!1,selections:[{alias:null,args:null,concreteType:"UserContentEdit",kind:"LinkedField",name:"userContentEdit",plural:!1,selections:[w={alias:null,args:null,kind:"ScalarField",name:"id",storageKey:null},_={alias:null,args:null,kind:"ScalarField",name:"deletedAt",storageKey:null},{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"deletedBy",plural:!1,selections:[v={alias:null,args:null,kind:"ScalarField",name:"login",storageKey:null},x={alias:null,args:null,kind:"ScalarField",name:"avatarUrl",storageKey:null}],storageKey:null},N={alias:null,args:null,kind:"ScalarField",name:"diff",storageKey:null}],storageKey:null}],storageKey:null}],type:"Mutation",abstractKey:null},kind:"Request",operation:{argumentDefinitions:b,kind:"Operation",name:"deleteUserContentEditMutation",selections:[{alias:null,args:C,concreteType:"DeleteUserContentEditPayload",kind:"LinkedField",name:"deleteUserContentEdit",plural:!1,selections:[{alias:null,args:null,concreteType:"UserContentEdit",kind:"LinkedField",name:"userContentEdit",plural:!1,selections:[w,_,{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"deletedBy",plural:!1,selections:[{alias:null,args:null,kind:"ScalarField",name:"__typename",storageKey:null},v,x,w],storageKey:null},N],storageKey:null}],storageKey:null}]},params:{id:"71452b9f40a7828ac05811d1ad4f821e",metadata:{},name:"deleteUserContentEditMutation",operationKind:"mutation",text:null}};X.hash="45e1f3e7d425560f65ef39e8c357794d";let ee=({queryRef:e,userContentEditId:n})=>{let l=(0,U.useFragment)(P,e),a=(0,U.useRelayEnvironment)(),t=(0,J.S)(),{addToast:i}=(0,q.Y6)(),r=(0,M.useCallback)(async()=>{await t({title:$.k.confirmations.deleteEditHistoryTitle,content:$.k.confirmations.deleteEditHistoryContent,confirmButtonType:"danger",confirmButtonContent:$.k.confirmations.deleteEditHistoryConfirmButtonContent})&&function({environment:e,input:{id:n},onCompleted:l,onError:a}){(0,U.commitMutation)(e,{mutation:X,variables:{input:{id:n}},onCompleted:e=>{null===e.deleteUserContentEdit?a?.():l?.()},onError:e=>a?.(e)})}({environment:a,input:{id:n},onError:()=>{i({type:"error",message:"Failed to delete this revision"})}})},[i,t,a,n]),s=l.newest||l.deletedAt;return(0,R.jsxs)("div",{className:"EditHistoryDialogHeader-module__EditHistoryDialogHeaderContainer--IRXVB",children:[l.editor&&(0,R.jsx)(en,{login:l.editor.login,avatarUrl:l.editor.avatarUrl,time:l.editedAt,details:l.firstEdit?$.k.editHistory.created:$.k.editHistory.edited,trailingElement:s?(0,R.jsx)(I.A,{className:"EditHistoryDialogHeader-module__statusLabel--Pf9hN",children:l.deletedAt?$.k.editHistory.deleted:$.k.editHistory.mostRecent}):void 0}),l.viewerCanDelete&&!l.newest&&!l.deletedAt&&(0,R.jsxs)(Y.Q,{variant:"danger",size:"small","aria-label":$.k.editHistory.deleteRevisionAriaLabel,onClick:r,className:"EditHistoryDialogHeader-module__deleteRevisionButton--I4tuB",children:[(0,R.jsx)(Z.A,{icon:W.TrashIcon})," ","Delete revision"]})]})};function en({login:e,avatarUrl:n,details:l,time:a,className:t,trailingElement:i}){let r=!!n&&!!e;return(0,R.jsxs)("div",{className:"EditHistoryDialogHeader-module__actorDetailsWrapper--hz1cP",children:[(0,R.jsxs)("div",{className:t,children:[r&&(0,R.jsxs)(R.Fragment,{children:[(0,R.jsx)(S.r,{src:n,size:16,alt:`@${e}`,className:"EditHistoryDialogHeader-module__userAvatar--hMoGt"}),(0,R.jsx)("span",{className:"EditHistoryDialogHeader-module__usernameBold--nCSfu",children:e})]}),!r&&(0,R.jsx)("span",{children:e??"ghost"}),(0,R.jsxs)("span",{children:[" ",l," "]}),a&&(0,R.jsx)(V.A,{date:new Date(a)})]}),i]})}try{ee.displayName||(ee.displayName="EditHistoryDialogHeader")}catch{}try{en.displayName||(en.displayName="ActorOperationDetails")}catch{}let el=(e,n)=>({groups:[{words:e??"",modification:n}],modification:n}),ea=e=>{switch(e){case"ADDED":return{open:"[+]",close:"[/+]"};case"REMOVED":return{open:"[-]",close:"[/-]"}}return{open:"",close:""}},et=e=>"ADDED"===e||"REMOVED"===e,ei=({groups:e,modification:n})=>{let l=e.map(e=>e.words).join(" ");return(0,R.jsxs)("span",{className:"GroupedTextDiffViewer-module__diffLine--yfbRY",children:["EDITED"===n&&e?.map((e,n)=>(0,R.jsxs)(R.Fragment,{children:[et(e.modification)&&(0,R.jsx)("span",{className:"sr-only",children:ea(e.modification).open}),(0,R.jsx)("span",{className:(e=>{switch(e){case"ADDED":return"GroupedTextDiffViewer-module__wordStylingAdded--WmYJz";case"REMOVED":return"GroupedTextDiffViewer-module__wordStylingRemoved--n4HZo";case"UNCHANGED":return""}})(e.modification),children:`${0===n?"":" "}${e.words}`}),et(e.modification)&&(0,R.jsx)("span",{className:"sr-only",children:ea(e.modification).close})]},n-1)),"EDITED"!==n&&e.length>0&&(0,R.jsxs)(R.Fragment,{children:[(0,R.jsx)("span",{className:"sr-only",children:ea(n).open}),(0,R.jsx)("span",{children:l}),(0,R.jsx)("span",{className:"sr-only",children:ea(n).close})]}),0===e.length&&(0,R.jsx)("br",{})]})},er=({before:e,after:n})=>{let l=function({before:e,after:n}){let l=e?e.split(/\r?\n/):[],a=n?n.split(/\r?\n/):[],t=[];for(let e=0;e<l.length||e<a.length;e++){let n=l[e],i=a[e];t.push(function(e,n){let l=e?e.split(/\s+/):[],a=n?n.split(/\s+/):[];if(0===l.length&&0===a.length||e===n)return el(e,"UNCHANGED");if(0===l.length)return el(n,"ADDED");if(0===a.length)return el(e,"REMOVED");let t=[],i={words:"",modification:"UNCHANGED"},r={words:"",modification:"ADDED"},s={words:"",modification:"REMOVED"};for(let e=0;e<l.length||e<a.length;e++){let n=l[e],o=a[e];n===o?(i.words=`${i.words}${0===i.words.length?"":" "}${n}`,""!==r.words&&(t.push(r),r={words:"",modification:"ADDED"}),""!==s.words&&(t.push(s),s={words:"",modification:"REMOVED"})):(""!==i.words&&(void 0!==n||void 0!==o)&&(t.push(i),i={words:"",modification:"UNCHANGED"}),void 0!==n&&(s.words=`${s.words}${0===s.words.length?"":" "}${n}`),void 0!==o&&(r.words=`${r.words}${0===r.words.length?"":" "}${o}`))}return""!==r.words&&t.push(r),""!==s.words&&t.push(s),""!==i.words&&t.push(i),{groups:t,modification:"EDITED"}}(n,i))}return{lines:t}}({before:e,after:n});return(0,R.jsx)("div",{className:"GroupedTextDiffViewer-module__diffContainer--vSv5M",children:l.lines.map((e,n)=>(0,R.jsx)("div",{className:(e=>{switch(e){case"ADDED":return"GroupedTextDiffViewer-module__borderStylingAdded--vmx_p";case"REMOVED":return"GroupedTextDiffViewer-module__borderStylingRemoved--nuxu4";case"EDITED":return"GroupedTextDiffViewer-module__borderStylingChanged--SGyL6";case"UNCHANGED":return""}})(e.modification),children:(0,R.jsx)(ei,{...e})},n))})};try{ei.displayName||(ei.displayName="LineDiffViewer")}catch{}try{er.displayName||(er.displayName="GroupedTextDiffViewer")}catch{}let es=({userContentEditId:e,onClose:n})=>(0,R.jsx)(Q.l,{renderBody:()=>(0,R.jsx)(eo,{userContentEditId:e}),onClose:n,title:$.k.editHistory.viewingEditTitle,width:"xlarge",height:"auto",className:"EditHistoryDialog-module__EditHistoryDialogContainer--g7yZt"}),eo=({userContentEditId:e})=>{let[n,l]=(0,U.useQueryLoader)(O);return((0,M.useEffect)(()=>{l({id:e})},[l,e]),n)?(0,R.jsx)(M.Suspense,{fallback:(0,R.jsx)(eu,{}),children:(0,R.jsx)(H.A,{onRetry:()=>l({id:e},{fetchPolicy:"network-only"}),fallback:e=>(0,R.jsx)(G,{retry:e}),children:(0,R.jsx)(ed,{queryRef:n,userContentEditId:e})})}):(0,R.jsx)(eu,{})},ed=({queryRef:e,userContentEditId:n})=>{let l=(0,U.usePreloadedQuery)(O,e).node;if(!l)return(0,R.jsx)(eu,{});let a=!l.diffBefore&&!l.diff;return(0,R.jsxs)("div",{className:"EditHistoryDialog-module__editHistoryContentScrollable--Sso3i",children:[(0,R.jsx)(ee,{queryRef:l,userContentEditId:n}),(0,R.jsxs)("div",{className:"EditHistoryDialog-module__contentViewerContainer--CLOK3",children:[!l.deletedAt&&!a&&(0,R.jsx)(er,{before:l.diffBefore??void 0,after:l.diff??void 0}),!l.deletedAt&&a&&(0,R.jsx)("span",{className:z,children:$.k.editHistory.emptyEdit}),l.deletedAt&&(0,R.jsx)(en,{login:l.deletedBy?.login,details:$.k.editHistory.deletedThisRevision,time:l.deletedAt,className:z})]})]})};function eu(){return(0,R.jsxs)("div",{className:"EditHistoryDialog-module__loadingSkeletonContainer--ob6sY",children:[(0,R.jsx)(L.O,{variant:"rounded",height:"md",width:"100%"}),(0,R.jsx)(L.O,{variant:"rounded",height:"md",width:"100%"})]})}try{es.displayName||(es.displayName="EditHistoryDialog")}catch{}try{eo.displayName||(eo.displayName="EditContent")}catch{}try{ed.displayName||(ed.displayName="EditContentInternal")}catch{}try{eu.displayName||(eu.displayName="EditContentLoading")}catch{}function ec({editHistory:e}){let n=(0,U.useFragment)(D,e),[l,a]=(0,M.useState)(!1),[t,i]=(0,M.useState)("");return n&&n.viewerCanReadUserContentEdits&&n.lastEditedAt?(0,R.jsxs)("div",{className:"MarkdownEditHistoryViewer-module__editHistoryContainer--l0A8s",children:[(0,R.jsxs)(T.W,{children:[(0,R.jsx)(T.W.Button,{variant:"invisible",size:"small","aria-label":$.k.editHistory.ariaLabel,className:"MarkdownEditHistoryViewer-module__editHistoryMenuButton--GyyK7",children:$.k.editHistory.openEditsButton}),(0,R.jsx)(T.W.Overlay,{width:"auto",children:(0,R.jsx)(em,{setIsEditHistoryDialogOpen:a,setSelectedId:i,editHistoryId:n.id,lastEditedAt:n.lastEditedAt})})]}),l&&(0,R.jsx)(es,{onClose:()=>a(!1),userContentEditId:t})]}):null}let em=({editHistoryId:e,lastEditedAt:n,...l})=>{let[a,t]=(0,U.useQueryLoader)(j);return((0,M.useEffect)(()=>{t({id:e},{fetchPolicy:"network-only"})},[e,t,n]),a)?(0,R.jsx)(M.Suspense,{fallback:(0,R.jsx)(eg,{}),children:(0,R.jsx)(H.A,{onRetry:()=>t({id:e},{fetchPolicy:"network-only"}),fallback:e=>(0,R.jsx)(G,{retry:e}),children:(0,R.jsx)(ey,{queryRef:a,...l})})}):(0,R.jsx)(eg,{})},ey=({setIsEditHistoryDialogOpen:e,setSelectedId:n,queryRef:l})=>{let a=(0,U.usePreloadedQuery)(j,l);if(!a.node?.userContentEdits)return(0,R.jsx)(eg,{});let t=a.node.userContentEdits.totalCount;return(0,R.jsx)(A.l,{className:"MarkdownEditHistoryViewer-module__scrollableEditHistoryList--PDigD",children:(0,R.jsxs)(A.l.Group,{children:[(0,R.jsx)(A.l.GroupHeading,{children:`Edited ${t-1} time${t>2?"s":""}`}),a.node.userContentEdits.edges?.map((l,i)=>{let r=l?.node;if(!r?.editor)return null;let s=a.node?.includesCreatedEdit&&i===t-1;return(0,R.jsxs)(A.l.Item,{onSelect:()=>{n(r.id),e(!0)},children:[(0,R.jsx)(A.l.LeadingVisual,{children:(0,R.jsx)(S.r,{src:r.editor.avatarUrl,size:16,alt:`@${r.editor.login}`,className:"MarkdownEditHistoryViewer-module__editorAvatar--HeVVG"})}),(0,R.jsx)("span",{className:"MarkdownEditHistoryViewer-module__editorUsername--_tgsX",children:r.editor.login}),(0,R.jsxs)(A.l.Description,{truncate:!0,className:"MarkdownEditHistoryViewer-module__editHistoryItemMetadata--oUxNy",children:[s&&(0,R.jsx)("div",{title:"",children:$.k.editHistory.created}),(0,R.jsx)(V.A,{date:new Date(r.editedAt)})]}),(0===i||r.deletedAt)&&(0,R.jsx)(A.l.TrailingVisual,{children:(0,R.jsx)(I.A,{children:0===i?$.k.editHistory.mostRecent:$.k.editHistory.deleted})})]},r.id)})]})})};function eg(){return(0,R.jsxs)("div",{className:"MarkdownEditHistoryViewer-module__loadingSkeletonContainer--K3qvZ",children:[(0,R.jsx)(L.O,{variant:"rounded",height:"md",width:"100%"}),(0,R.jsx)(L.O,{variant:"rounded",height:"md",width:"100%"}),(0,R.jsx)(L.O,{variant:"rounded",height:"md",width:"100%"}),(0,R.jsx)(L.O,{variant:"rounded",height:"md",width:"100%"})]})}try{ec.displayName||(ec.displayName="MarkdownEditHistoryViewer")}catch{}try{em.displayName||(em.displayName="EditHistoryActionMenuContent")}catch{}try{ey.displayName||(ey.displayName="EditHistoryActionMenuContentInternal")}catch{}try{eg.displayName||(eg.displayName="EditHistoryLoading")}catch{}},38829:(e,n,l)=>{l.d(n,{f:()=>d});let a={fragment:{argumentDefinitions:t=[{defaultValue:null,kind:"LocalArgument",name:"id"}],kind:"Fragment",metadata:null,name:"useMarkdownEditHistoryViewerQueryQuery",selections:[{alias:null,args:i=[{kind:"Variable",name:"id",variableName:"id"}],concreteType:null,kind:"LinkedField",name:"node",plural:!1,selections:[{kind:"InlineFragment",selections:[{args:null,kind:"FragmentSpread",name:"MarkdownEditHistoryViewer_comment"},{args:null,kind:"FragmentSpread",name:"MarkdownLastEditedBy"}],type:"Comment",abstractKey:"__isComment"}],storageKey:null}],type:"Query",abstractKey:null},kind:"Request",operation:{argumentDefinitions:t,kind:"Operation",name:"useMarkdownEditHistoryViewerQueryQuery",selections:[{alias:null,args:i,concreteType:null,kind:"LinkedField",name:"node",plural:!1,selections:[r={alias:null,args:null,kind:"ScalarField",name:"__typename",storageKey:null},s={alias:null,args:null,kind:"ScalarField",name:"id",storageKey:null},{kind:"InlineFragment",selections:[{alias:null,args:null,kind:"ScalarField",name:"viewerCanReadUserContentEdits",storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"lastEditedAt",storageKey:null},{alias:null,args:null,concreteType:"UserContentEdit",kind:"LinkedField",name:"lastUserContentEdit",plural:!1,selections:[{alias:null,args:null,concreteType:null,kind:"LinkedField",name:"editor",plural:!1,selections:[r,{alias:null,args:null,kind:"ScalarField",name:"url",storageKey:null},{alias:null,args:null,kind:"ScalarField",name:"login",storageKey:null},s],storageKey:null},s],storageKey:null}],type:"Comment",abstractKey:"__isComment"}],storageKey:null}]},params:{id:"d72649dd9392589f64dd4570b992b900",metadata:{},name:"useMarkdownEditHistoryViewerQueryQuery",operationKind:"query",text:null}};a.hash="4c6ffc38d14bcfbd11af3056fe1ca692";var t,i,r,s,o=l(18312);function d({id:e}){let n=(0,o.useLazyLoadQuery)(a,{id:e});return n.node?n.node:null}},43617:(e,n,l)=>{l.d(n,{Q:()=>s});var a=l(74848),t=l(29731),i=l(34164),r=l(35220);function s({children:e}){let{variant:n}=(0,r.e)();return(0,a.jsx)(a.Fragment,{children:(0,a.jsx)("div",{...(0,t.G)("list-view-item-main-content"),className:"MainContent-module__container--NyRpm",children:(0,a.jsx)("div",{className:(0,i.$)("MainContent-module__inner--qD0Pb","compact"===n&&"MainContent-module__compact--S3brA"),children:e})})})}try{s.displayName||(s.displayName="ListItemMainContent")}catch{}},60912:(e,n,l)=>{l.d(n,{P:()=>i});var a=l(74848),t=l(34164);function i({reason:e,icon:n,...l}){return(0,a.jsx)("div",{className:(0,t.$)("blankslate","ReadonlyCommentBox-module__ReadonlyCommentBoxContainer--qNC85"),...l,children:(0,a.jsxs)("div",{className:"ReadonlyCommentBox-module__centeredContent--bVUCp",children:[n&&(0,a.jsx)(n,{size:24}),(0,a.jsx)("div",{className:"readonly-comment-box-module__reason--QIvzf",children:e})]})})}try{i.displayName||(i.displayName="ReadonlyCommentBox")}catch{}},61423:(e,n,l)=>{l.d(n,{i:()=>t});var a=l(96901);function t(e,n,l=null,i="issue"){return e?a.k.repoArchived:n?a.k.issueLockedToCollaborators:l||a.k.canNotComment(i)}},74547:(e,n,l)=>{l.d(n,{t:()=>a});let a={react:"React",reactionsUnavailable:"Reactions are currently unavailable",copilotDisplayName:"Copilot"}},76873:(e,n,l)=>{l.d(n,{A:()=>d});var a=l(50467),t=l(74848),i=l(96540),r=l(38102),s=l(49936);let o=e=>(0,t.jsxs)("div",{children:[(0,t.jsx)("span",{children:"Error:"}),(0,t.jsx)("button",{onClick:e,children:"Retry"})]});let BasicPreloadedQueryBoundary=class BasicPreloadedQueryBoundary extends i.Component{static getDerivedStateFromError(e){return{error:e}}componentDidCatch(e){let n=e.shouldSkipReport??!1,l={critical:this.props.critical||!1,reactAppName:this.props.appName};n||(0,r.N7)(e,l)}render(){let{children:e}=this.props,{error:n}=this.state,l=this.props.fallback||o;return n?l(this._retry,n):e}constructor(...e){super(...e),(0,a._)(this,"state",{error:null}),(0,a._)(this,"_retry",()=>{this.props.onRetry(),this.setState({error:null})})}};function d(e){let n=(0,i.useContext)(s.I),l=e.appName||n?.appName;return(0,t.jsx)(BasicPreloadedQueryBoundary,{...e,appName:l})}try{d.displayName||(d.displayName="PreloadedQueryBoundary")}catch{}},78809:(e,n,l)=>{l.d(n,{P:()=>f});var a=l(74848),t=l(11683),i=l(45800),r=l(31604),s=l(5524),o=l(96540),d=l(11196),u=l(21373),c=l(34164),m=l(79866);function y({reactionGroup:e,disabled:n,onReact:l}){let{content:t,viewerHasReacted:i}=e.reaction,{reactors:r,totalCount:s}=e,y=(0,o.useId)();if(0===s)return null;let g=r.flatMap(e=>"Other"!==e.typeName?[e.login]:[]),p=(0,m.JQ)(t,i),k=(0,m.fj)(t,s);return(0,a.jsx)(d.m,{text:(0,m.Js)(g,s),type:"description",direction:"ne",children:(0,a.jsxs)(u.Q,{size:"small","aria-label":k,role:"switch","aria-checked":i,leadingVisual:()=>(0,a.jsx)(a.Fragment,{children:m.qG[t]}),onClick:()=>l(t,i),disabled:n,className:(0,c.$)("ReactionButton-module__reactionToggleButton--axnvQ",i&&"ReactionButton-module__reactionToggleButtonReacted--TgLue"),"aria-describedby":y,children:[(0,a.jsx)("span",{className:"sr-only",id:y,children:p}),s]})})}try{y.displayName||(y.displayName="ReactionButton")}catch{}var g=l(35811);function p({onReact:e,reaction:n}){let{content:l,viewerHasReacted:t}=n;return(0,a.jsx)(g.lF.Item,{sx:{"&:hover":{backgroundColor:"accent.emphasis"},backgroundColor:t?"accent.subtle":"transparent"},role:"menuitemcheckbox","aria-checked":t,onSelect:()=>e(l,t),className:"ReactionsMenuItem-module__ReactionsMenuOption--uvJoP",children:m.qG[l]},l)}try{p.displayName||(p.displayName="ReactionsMenuItem")}catch{}var k=l(97911);let f=(0,o.forwardRef)(({reactionGroups:e,canReact:n=!0,onReact:l},d)=>{let[u,c]=(0,o.useState)(!1),m=e.length>0,{containerRef:g}=(0,i.G)({bindKeys:t.z0.HomeAndEnd|t.z0.ArrowHorizontal,focusOutBehavior:"wrap"});return(0,a.jsxs)("div",{role:"toolbar","aria-label":"Reactions",ref:g,className:"d-flex gap-1 flex-wrap",children:[n&&(0,a.jsx)(r.T,{open:u,onOpen:()=>c(m),onClose:()=>c(!1),anchorRef:g,focusZoneSettings:{bindKeys:t.z0.ArrowAll|t.z0.HomeAndEnd,focusOutBehavior:"wrap"},renderAnchor:e=>(0,a.jsx)(k.N,{renderAnchorProps:e,reactionsAvailable:m,ref:d}),children:(0,a.jsx)(s.l,{className:"d-flex flex-row p-1 gap-1",role:"menu","aria-orientation":"horizontal",children:(e||[]).map((e,n)=>(0,a.jsx)(p,{reaction:e.reaction,onReact:(e,n)=>{l(e,n),c(!1)}},n))})}),(e||[]).map((e,n)=>(0,a.jsx)(y,{reactionGroup:e,onReact:(e,n)=>l(e,n)},n))]})});f.displayName="ReactionViewerBase"},79866:(e,n,l)=>{l.d(n,{JQ:()=>i,Js:()=>t,fj:()=>r,qG:()=>a});let a={CONFUSED:"\u{1F615}",EYES:"\u{1F440}",HEART:"\u2764\uFE0F",HOORAY:"\u{1F389}",LAUGH:"\u{1F604}",THUMBS_DOWN:"\u{1F44E}",THUMBS_UP:"\u{1F44D}",ROCKET:"\u{1F680}"};function t(e,n){if(0===e.length||0===n)return"";let l=e.slice(0);if(1===l.length)return l[0];if(2===l.length)return l.join(" and ");n>e.length&&l.push(`${n-e.length} more`);let a=l.pop();return l.push(`${l.pop()} and ${a}`),l.join(", ")}function i(e,n){return`${n?"Unreact":"React"} with ${a[e]}`}function r(e,n){return`${a[e]} ${n} reaction${1===n?"":"s"}`}},81034:(e,n,l)=>{l.d(n,{x:()=>m});var a=l(62559),t=l(44569),i=l(34267),r=l(57019),s=l(40104),o=l(96540),d=l(96760),u=l(81156),c=l(20459);function m({commentBoxRef:e,markdownComposerRef:n,onChange:l,onCancel:m,referenceId:y,insidePortal:g}){let[p,k]=(0,s.Fo)(u.t.localStorageKeys.issueNewComment("viewer",y),""),[f,h]=(0,o.useState)(p),F=(0,o.useMemo)(()=>(0,a.KG)(f),[f]),{anyItemPickerOpen:E}=(0,i.t)(),K=(0,o.useCallback)(e=>{h(e),k(e)},[k]),b=(0,o.useCallback)(e=>{K(e),l(),""===e&&m()},[K,m,l]);(0,o.useImperativeHandle)(n,()=>({appendText:e=>{b(`${f}
+"use strict";
+(globalThis.webpackChunk_github_ui_github_ui =
+  globalThis.webpackChunk_github_ui_github_ui || []).push([
+  [26548],
+  {
+    18042: (e, n, l) => {
+      l.d(n, { k: () => a });
+      let a = {
+        confirmations: {
+          deleteEditHistoryTitle:
+            "Are you sure you want to delete this revision from the history?",
+          deleteEditHistoryContent:
+            "This edit\u2019s content will no longer be visible. This action can not be undone.",
+          deleteEditHistoryConfirmButtonContent: "Remove",
+        },
+        editHistory: {
+          viewingEditTitle: "Viewing edit",
+          deleted: "Deleted",
+          mostRecent: "Most recent",
+          emptyEdit: "This revision does not contain any content.",
+          deletedThisRevision: "deleted this revision",
+          created: "created",
+          edited: "edited",
+          deleteRevisionAriaLabel: "Delete this edit revision",
+          ariaLabel: "Open edits",
+          openEditsButton: "Edits",
+          editedBy: "edited by",
+        },
+      };
+    },
+    19805: (e, n, l) => {
+      (l.r(n),
+        l.d(n, {
+          ReactionViewerRelay: () => S,
+          ReactionViewerRelayQueryComponent: () => H,
+          default: () => L,
+        }));
+      var a,
+        t,
+        i,
+        r,
+        s,
+        o,
+        d,
+        u,
+        c,
+        m,
+        y,
+        g,
+        p,
+        k,
+        f,
+        h,
+        F,
+        E,
+        K,
+        b,
+        C = l(74848);
+      let w = {
+        argumentDefinitions: [],
+        kind: "Fragment",
+        metadata: null,
+        name: "ReactionViewerRelayGroups",
+        selections: [
+          {
+            alias: null,
+            args: null,
+            concreteType: "ReactionGroup",
+            kind: "LinkedField",
+            name: "reactionGroups",
+            plural: !0,
+            selections: [
+              {
+                alias: null,
+                args: null,
+                kind: "ScalarField",
+                name: "content",
+                storageKey: null,
+              },
+              {
+                alias: null,
+                args: null,
+                kind: "ScalarField",
+                name: "viewerHasReacted",
+                storageKey: null,
+              },
+              {
+                alias: null,
+                args: [{ kind: "Literal", name: "first", value: 5 }],
+                concreteType: "ReactorConnection",
+                kind: "LinkedField",
+                name: "reactors",
+                plural: !1,
+                selections: [
+                  {
+                    alias: null,
+                    args: null,
+                    kind: "ScalarField",
+                    name: "totalCount",
+                    storageKey: null,
+                  },
+                  {
+                    alias: null,
+                    args: null,
+                    concreteType: null,
+                    kind: "LinkedField",
+                    name: "nodes",
+                    plural: !0,
+                    selections: [
+                      {
+                        alias: null,
+                        args: null,
+                        kind: "ScalarField",
+                        name: "__typename",
+                        storageKey: null,
+                      },
+                      {
+                        kind: "InlineFragment",
+                        selections: (t = [
+                          (a = {
+                            alias: null,
+                            args: null,
+                            kind: "ScalarField",
+                            name: "login",
+                            storageKey: null,
+                          }),
+                        ]),
+                        type: "User",
+                        abstractKey: null,
+                      },
+                      {
+                        kind: "InlineFragment",
+                        selections: [
+                          a,
+                          {
+                            alias: null,
+                            args: null,
+                            kind: "ScalarField",
+                            name: "isCopilot",
+                            storageKey: null,
+                          },
+                        ],
+                        type: "Bot",
+                        abstractKey: null,
+                      },
+                      {
+                        kind: "InlineFragment",
+                        selections: t,
+                        type: "Organization",
+                        abstractKey: null,
+                      },
+                      {
+                        kind: "InlineFragment",
+                        selections: t,
+                        type: "Mannequin",
+                        abstractKey: null,
+                      },
+                    ],
+                    storageKey: null,
+                  },
+                ],
+                storageKey: "reactors(first:5)",
+              },
+            ],
+            storageKey: null,
+          },
+        ],
+        type: "Reactable",
+        abstractKey: "__isReactable",
+      };
+      w.hash = "4957e34582c8895c7e94b4dc9fa57fc9";
+      let _ =
+        ((u = {
+          alias: null,
+          args: null,
+          kind: "ScalarField",
+          name: "id",
+          storageKey: null,
+        }),
+        {
+          fragment: {
+            argumentDefinitions: (i = [
+              { defaultValue: null, kind: "LocalArgument", name: "id" },
+            ]),
+            kind: "Fragment",
+            metadata: null,
+            name: "ReactionViewerRelayLazyQuery",
+            selections: [
+              {
+                alias: null,
+                args: (r = [
+                  { kind: "Variable", name: "id", variableName: "id" },
+                ]),
+                concreteType: null,
+                kind: "LinkedField",
+                name: "node",
+                plural: !1,
+                selections: [
+                  {
+                    kind: "InlineFragment",
+                    selections: [
+                      {
+                        args: null,
+                        kind: "FragmentSpread",
+                        name: "ReactionViewerRelayGroups",
+                      },
+                    ],
+                    type: "Comment",
+                    abstractKey: "__isComment",
+                  },
+                ],
+                storageKey: null,
+              },
+            ],
+            type: "Query",
+            abstractKey: null,
+          },
+          kind: "Request",
+          operation: {
+            argumentDefinitions: i,
+            kind: "Operation",
+            name: "ReactionViewerRelayLazyQuery",
+            selections: [
+              {
+                alias: null,
+                args: r,
+                concreteType: null,
+                kind: "LinkedField",
+                name: "node",
+                plural: !1,
+                selections: [
+                  (s = {
+                    alias: null,
+                    args: null,
+                    kind: "ScalarField",
+                    name: "__typename",
+                    storageKey: null,
+                  }),
+                  {
+                    kind: "InlineFragment",
+                    selections: [
+                      {
+                        kind: "InlineFragment",
+                        selections: [
+                          {
+                            alias: null,
+                            args: null,
+                            concreteType: "ReactionGroup",
+                            kind: "LinkedField",
+                            name: "reactionGroups",
+                            plural: !0,
+                            selections: [
+                              {
+                                alias: null,
+                                args: null,
+                                kind: "ScalarField",
+                                name: "content",
+                                storageKey: null,
+                              },
+                              {
+                                alias: null,
+                                args: null,
+                                kind: "ScalarField",
+                                name: "viewerHasReacted",
+                                storageKey: null,
+                              },
+                              {
+                                alias: null,
+                                args: [
+                                  { kind: "Literal", name: "first", value: 5 },
+                                ],
+                                concreteType: "ReactorConnection",
+                                kind: "LinkedField",
+                                name: "reactors",
+                                plural: !1,
+                                selections: [
+                                  {
+                                    alias: null,
+                                    args: null,
+                                    kind: "ScalarField",
+                                    name: "totalCount",
+                                    storageKey: null,
+                                  },
+                                  {
+                                    alias: null,
+                                    args: null,
+                                    concreteType: null,
+                                    kind: "LinkedField",
+                                    name: "nodes",
+                                    plural: !0,
+                                    selections: [
+                                      s,
+                                      {
+                                        kind: "InlineFragment",
+                                        selections: (d = [
+                                          (o = {
+                                            alias: null,
+                                            args: null,
+                                            kind: "ScalarField",
+                                            name: "login",
+                                            storageKey: null,
+                                          }),
+                                        ]),
+                                        type: "User",
+                                        abstractKey: null,
+                                      },
+                                      {
+                                        kind: "InlineFragment",
+                                        selections: [
+                                          o,
+                                          {
+                                            alias: null,
+                                            args: null,
+                                            kind: "ScalarField",
+                                            name: "isCopilot",
+                                            storageKey: null,
+                                          },
+                                        ],
+                                        type: "Bot",
+                                        abstractKey: null,
+                                      },
+                                      {
+                                        kind: "InlineFragment",
+                                        selections: d,
+                                        type: "Organization",
+                                        abstractKey: null,
+                                      },
+                                      {
+                                        kind: "InlineFragment",
+                                        selections: d,
+                                        type: "Mannequin",
+                                        abstractKey: null,
+                                      },
+                                      {
+                                        kind: "InlineFragment",
+                                        selections: [u],
+                                        type: "Node",
+                                        abstractKey: "__isNode",
+                                      },
+                                    ],
+                                    storageKey: null,
+                                  },
+                                ],
+                                storageKey: "reactors(first:5)",
+                              },
+                            ],
+                            storageKey: null,
+                          },
+                        ],
+                        type: "Reactable",
+                        abstractKey: "__isReactable",
+                      },
+                    ],
+                    type: "Comment",
+                    abstractKey: "__isComment",
+                  },
+                  u,
+                ],
+                storageKey: null,
+              },
+            ],
+          },
+          params: {
+            id: "4ad1541bb8051d5b7a55a10bbdf54731",
+            metadata: {},
+            name: "ReactionViewerRelayLazyQuery",
+            operationKind: "query",
+            text: null,
+          },
+        });
+      _.hash = "37ec1495c4c7ace448e859305895ad0e";
+      var v = l(96540),
+        x = l(18312),
+        N = l(74547);
+      let R =
+        ((k = {
+          alias: null,
+          args: null,
+          kind: "ScalarField",
+          name: "id",
+          storageKey: null,
+        }),
+        {
+          fragment: {
+            argumentDefinitions: (c = [
+              { defaultValue: null, kind: "LocalArgument", name: "input" },
+            ]),
+            kind: "Fragment",
+            metadata: null,
+            name: "addReactionMutation",
+            selections: [
+              {
+                alias: null,
+                args: (m = [
+                  { kind: "Variable", name: "input", variableName: "input" },
+                ]),
+                concreteType: "AddReactionPayload",
+                kind: "LinkedField",
+                name: "addReaction",
+                plural: !1,
+                selections: [
+                  {
+                    alias: null,
+                    args: null,
+                    concreteType: null,
+                    kind: "LinkedField",
+                    name: "subject",
+                    plural: !1,
+                    selections: [
+                      {
+                        args: null,
+                        kind: "FragmentSpread",
+                        name: "ReactionViewerRelayGroups",
+                      },
+                    ],
+                    storageKey: null,
+                  },
+                ],
+                storageKey: null,
+              },
+            ],
+            type: "Mutation",
+            abstractKey: null,
+          },
+          kind: "Request",
+          operation: {
+            argumentDefinitions: c,
+            kind: "Operation",
+            name: "addReactionMutation",
+            selections: [
+              {
+                alias: null,
+                args: m,
+                concreteType: "AddReactionPayload",
+                kind: "LinkedField",
+                name: "addReaction",
+                plural: !1,
+                selections: [
+                  {
+                    alias: null,
+                    args: null,
+                    concreteType: null,
+                    kind: "LinkedField",
+                    name: "subject",
+                    plural: !1,
+                    selections: [
+                      (y = {
+                        alias: null,
+                        args: null,
+                        kind: "ScalarField",
+                        name: "__typename",
+                        storageKey: null,
+                      }),
+                      {
+                        kind: "TypeDiscriminator",
+                        abstractKey: "__isReactable",
+                      },
+                      {
+                        alias: null,
+                        args: null,
+                        concreteType: "ReactionGroup",
+                        kind: "LinkedField",
+                        name: "reactionGroups",
+                        plural: !0,
+                        selections: [
+                          {
+                            alias: null,
+                            args: null,
+                            kind: "ScalarField",
+                            name: "content",
+                            storageKey: null,
+                          },
+                          {
+                            alias: null,
+                            args: null,
+                            kind: "ScalarField",
+                            name: "viewerHasReacted",
+                            storageKey: null,
+                          },
+                          {
+                            alias: null,
+                            args: [
+                              { kind: "Literal", name: "first", value: 5 },
+                            ],
+                            concreteType: "ReactorConnection",
+                            kind: "LinkedField",
+                            name: "reactors",
+                            plural: !1,
+                            selections: [
+                              {
+                                alias: null,
+                                args: null,
+                                kind: "ScalarField",
+                                name: "totalCount",
+                                storageKey: null,
+                              },
+                              {
+                                alias: null,
+                                args: null,
+                                concreteType: null,
+                                kind: "LinkedField",
+                                name: "nodes",
+                                plural: !0,
+                                selections: [
+                                  y,
+                                  {
+                                    kind: "InlineFragment",
+                                    selections: (p = [
+                                      (g = {
+                                        alias: null,
+                                        args: null,
+                                        kind: "ScalarField",
+                                        name: "login",
+                                        storageKey: null,
+                                      }),
+                                    ]),
+                                    type: "User",
+                                    abstractKey: null,
+                                  },
+                                  {
+                                    kind: "InlineFragment",
+                                    selections: [
+                                      g,
+                                      {
+                                        alias: null,
+                                        args: null,
+                                        kind: "ScalarField",
+                                        name: "isCopilot",
+                                        storageKey: null,
+                                      },
+                                    ],
+                                    type: "Bot",
+                                    abstractKey: null,
+                                  },
+                                  {
+                                    kind: "InlineFragment",
+                                    selections: p,
+                                    type: "Organization",
+                                    abstractKey: null,
+                                  },
+                                  {
+                                    kind: "InlineFragment",
+                                    selections: p,
+                                    type: "Mannequin",
+                                    abstractKey: null,
+                                  },
+                                  {
+                                    kind: "InlineFragment",
+                                    selections: [k],
+                                    type: "Node",
+                                    abstractKey: "__isNode",
+                                  },
+                                ],
+                                storageKey: null,
+                              },
+                            ],
+                            storageKey: "reactors(first:5)",
+                          },
+                        ],
+                        storageKey: null,
+                      },
+                      k,
+                    ],
+                    storageKey: null,
+                  },
+                ],
+                storageKey: null,
+              },
+            ],
+          },
+          params: {
+            id: "c925c985a3bde5cd71f1859404c89567",
+            metadata: {},
+            name: "addReactionMutation",
+            operationKind: "mutation",
+            text: null,
+          },
+        });
+      R.hash = "504ef43df20e9ee96a023f421682e18d";
+      let j =
+        ((b = {
+          alias: null,
+          args: null,
+          kind: "ScalarField",
+          name: "id",
+          storageKey: null,
+        }),
+        {
+          fragment: {
+            argumentDefinitions: (f = [
+              { defaultValue: null, kind: "LocalArgument", name: "input" },
+            ]),
+            kind: "Fragment",
+            metadata: null,
+            name: "removeReactionMutation",
+            selections: [
+              {
+                alias: null,
+                args: (h = [
+                  { kind: "Variable", name: "input", variableName: "input" },
+                ]),
+                concreteType: "RemoveReactionPayload",
+                kind: "LinkedField",
+                name: "removeReaction",
+                plural: !1,
+                selections: [
+                  {
+                    alias: null,
+                    args: null,
+                    concreteType: null,
+                    kind: "LinkedField",
+                    name: "subject",
+                    plural: !1,
+                    selections: [
+                      {
+                        args: null,
+                        kind: "FragmentSpread",
+                        name: "ReactionViewerRelayGroups",
+                      },
+                    ],
+                    storageKey: null,
+                  },
+                ],
+                storageKey: null,
+              },
+            ],
+            type: "Mutation",
+            abstractKey: null,
+          },
+          kind: "Request",
+          operation: {
+            argumentDefinitions: f,
+            kind: "Operation",
+            name: "removeReactionMutation",
+            selections: [
+              {
+                alias: null,
+                args: h,
+                concreteType: "RemoveReactionPayload",
+                kind: "LinkedField",
+                name: "removeReaction",
+                plural: !1,
+                selections: [
+                  {
+                    alias: null,
+                    args: null,
+                    concreteType: null,
+                    kind: "LinkedField",
+                    name: "subject",
+                    plural: !1,
+                    selections: [
+                      (F = {
+                        alias: null,
+                        args: null,
+                        kind: "ScalarField",
+                        name: "__typename",
+                        storageKey: null,
+                      }),
+                      {
+                        kind: "TypeDiscriminator",
+                        abstractKey: "__isReactable",
+                      },
+                      {
+                        alias: null,
+                        args: null,
+                        concreteType: "ReactionGroup",
+                        kind: "LinkedField",
+                        name: "reactionGroups",
+                        plural: !0,
+                        selections: [
+                          {
+                            alias: null,
+                            args: null,
+                            kind: "ScalarField",
+                            name: "content",
+                            storageKey: null,
+                          },
+                          {
+                            alias: null,
+                            args: null,
+                            kind: "ScalarField",
+                            name: "viewerHasReacted",
+                            storageKey: null,
+                          },
+                          {
+                            alias: null,
+                            args: [
+                              { kind: "Literal", name: "first", value: 5 },
+                            ],
+                            concreteType: "ReactorConnection",
+                            kind: "LinkedField",
+                            name: "reactors",
+                            plural: !1,
+                            selections: [
+                              {
+                                alias: null,
+                                args: null,
+                                kind: "ScalarField",
+                                name: "totalCount",
+                                storageKey: null,
+                              },
+                              {
+                                alias: null,
+                                args: null,
+                                concreteType: null,
+                                kind: "LinkedField",
+                                name: "nodes",
+                                plural: !0,
+                                selections: [
+                                  F,
+                                  {
+                                    kind: "InlineFragment",
+                                    selections: (K = [
+                                      (E = {
+                                        alias: null,
+                                        args: null,
+                                        kind: "ScalarField",
+                                        name: "login",
+                                        storageKey: null,
+                                      }),
+                                    ]),
+                                    type: "User",
+                                    abstractKey: null,
+                                  },
+                                  {
+                                    kind: "InlineFragment",
+                                    selections: [
+                                      E,
+                                      {
+                                        alias: null,
+                                        args: null,
+                                        kind: "ScalarField",
+                                        name: "isCopilot",
+                                        storageKey: null,
+                                      },
+                                    ],
+                                    type: "Bot",
+                                    abstractKey: null,
+                                  },
+                                  {
+                                    kind: "InlineFragment",
+                                    selections: K,
+                                    type: "Organization",
+                                    abstractKey: null,
+                                  },
+                                  {
+                                    kind: "InlineFragment",
+                                    selections: K,
+                                    type: "Mannequin",
+                                    abstractKey: null,
+                                  },
+                                  {
+                                    kind: "InlineFragment",
+                                    selections: [b],
+                                    type: "Node",
+                                    abstractKey: "__isNode",
+                                  },
+                                ],
+                                storageKey: null,
+                              },
+                            ],
+                            storageKey: "reactors(first:5)",
+                          },
+                        ],
+                        storageKey: null,
+                      },
+                      b,
+                    ],
+                    storageKey: null,
+                  },
+                ],
+                storageKey: null,
+              },
+            ],
+          },
+          params: {
+            id: "fd20390882af8180d05f0d4a921c00d9",
+            metadata: {},
+            name: "removeReactionMutation",
+            operationKind: "mutation",
+            text: null,
+          },
+        });
+      j.hash = "8e28d0138da52c07bb0e64eda432f580";
+      var D = l(78809);
+      function S({ reactionGroups: e, subjectId: n, canReact: l = !0 }) {
+        let a = (0, x.useRelayEnvironment)(),
+          t = (0, x.useFragment)(w, e),
+          i = (0, v.useCallback)(
+            (e, t) => {
+              l &&
+                (t
+                  ? (function ({
+                      environment: e,
+                      input: { subject: n, content: l },
+                      onError: a,
+                      onCompleted: t,
+                    }) {
+                      (0, x.commitMutation)(e, {
+                        mutation: j,
+                        variables: { input: { subjectId: n, content: l } },
+                        optimisticUpdater: (e) => {
+                          let a = e.get(n);
+                          if (!a) return;
+                          let t = a.getLinkedRecords("reactionGroups");
+                          if (!t) return;
+                          let i = t.findIndex(
+                              (e) => e.getValue("content") === l,
+                            ),
+                            r = t[i];
+                          if (r) {
+                            r.setValue(!1, "viewerHasReacted");
+                            let l = `client:${n}:reactionGroups:${i}:reactors(first:5)`,
+                              a = e.get(l);
+                            if (a) {
+                              let e = a.getValue("totalCount");
+                              a.setValue(e && e > 0 ? e - 1 : 0, "totalCount");
+                            }
+                          }
+                        },
+                        onError: (e) => a && a(e),
+                        onCompleted: (e) => t && t(e),
+                      });
+                    })({ environment: a, input: { subject: n, content: e } })
+                  : (function ({
+                      environment: e,
+                      input: { subject: n, content: l },
+                      onError: a,
+                      onCompleted: t,
+                    }) {
+                      (0, x.commitMutation)(e, {
+                        mutation: R,
+                        variables: { input: { subjectId: n, content: l } },
+                        optimisticUpdater: (e) => {
+                          let a = e.get(n);
+                          if (!a) return;
+                          let t = a.getLinkedRecords("reactionGroups");
+                          if (!t) return;
+                          let i = t.findIndex(
+                              (e) => e.getValue("content") === l,
+                            ),
+                            r = t[i];
+                          if (r) {
+                            r.setValue(!0, "viewerHasReacted");
+                            let l = `client:${n}:reactionGroups:${i}:reactors(first:5)`,
+                              a = e.get(l);
+                            if (a) {
+                              let e = a.getValue("totalCount");
+                              a.setValue(e ? e + 1 : 1, "totalCount");
+                            }
+                          }
+                        },
+                        onError: (e) => a && a(e),
+                        onCompleted: (e) => t && t(e),
+                      });
+                    })({ environment: a, input: { subject: n, content: e } }));
+            },
+            [l, a, n],
+          ),
+          r = (t.reactionGroups || [])
+            .filter((e) => !!e)
+            .map((e) => ({
+              reaction: {
+                content: e.content,
+                viewerHasReacted: e.viewerHasReacted,
+              },
+              reactors:
+                e.reactors?.nodes?.map((e) =>
+                  e && "%other" !== e.__typename
+                    ? {
+                        login:
+                          "Bot" === e.__typename && e.isCopilot
+                            ? N.t.copilotDisplayName
+                            : e.login,
+                        typeName: e.__typename,
+                      }
+                    : { login: "", typeName: "Other" },
+                ) || [],
+              totalCount: e.reactors?.totalCount || 0,
+            }));
+        return (0, C.jsx)(D.P, {
+          reactionGroups: r,
+          canReact: l,
+          subjectId: n,
+          onReact: i,
+        });
+      }
+      function H({ id: e, subjectLocked: n }) {
+        let l = (0, x.useLazyLoadQuery)(
+          _,
+          { id: e },
+          { fetchPolicy: "store-or-network" },
+        );
+        return l.node
+          ? (0, C.jsx)(S, {
+              subjectId: e,
+              reactionGroups: l.node,
+              canReact: !n,
+            })
+          : null;
+      }
+      let L = S;
+      try {
+        S.displayName || (S.displayName = "ReactionViewerRelay");
+      } catch {}
+      try {
+        H.displayName || (H.displayName = "ReactionViewerRelayQueryComponent");
+      } catch {}
+    },
+    21086: (e, n, l) => {
+      l.d(n, { _: () => o });
+      var a = l(74848);
+      let t = {
+        argumentDefinitions: [],
+        kind: "Fragment",
+        metadata: null,
+        name: "MarkdownLastEditedBy",
+        selections: [
+          {
+            alias: null,
+            args: null,
+            kind: "ScalarField",
+            name: "viewerCanReadUserContentEdits",
+            storageKey: null,
+          },
+          {
+            alias: null,
+            args: null,
+            concreteType: "UserContentEdit",
+            kind: "LinkedField",
+            name: "lastUserContentEdit",
+            plural: !1,
+            selections: [
+              {
+                alias: null,
+                args: null,
+                concreteType: null,
+                kind: "LinkedField",
+                name: "editor",
+                plural: !1,
+                selections: [
+                  {
+                    alias: null,
+                    args: null,
+                    kind: "ScalarField",
+                    name: "url",
+                    storageKey: null,
+                  },
+                  {
+                    alias: null,
+                    args: null,
+                    kind: "ScalarField",
+                    name: "login",
+                    storageKey: null,
+                  },
+                ],
+                storageKey: null,
+              },
+            ],
+            storageKey: null,
+          },
+        ],
+        type: "Comment",
+        abstractKey: "__isComment",
+      };
+      t.hash = "bbab0cb2d43eeaaa0ed5b010868ec7f4";
+      var i = l(84268),
+        r = l(18312),
+        s = l(18042);
+      function o({
+        editInformation: e,
+        includeSeparator: n,
+        forceUnderline: l,
+      }) {
+        let o = (0, r.useFragment)(t, e);
+        if (
+          !o ||
+          !o.viewerCanReadUserContentEdits ||
+          !o.lastUserContentEdit ||
+          !o.lastUserContentEdit.editor
+        )
+          return null;
+        let { login: d, url: u } = o.lastUserContentEdit.editor;
+        return (0, a.jsxs)("span", {
+          className:
+            "MarkdownLastEditedBy-module__lastEditInfoContainer--EN_Qz",
+          children: [
+            n && (0, a.jsx)("span", { children: " \xb7 " }),
+            (0, a.jsxs)("span", {
+              children: [
+                `${s.k.editHistory.editedBy} `,
+                (0, a.jsx)(i.A, {
+                  href: u,
+                  inline: l,
+                  className:
+                    "MarkdownLastEditedBy-module__mutedEditorLink--pD3Z6",
+                  children: d,
+                }),
+              ],
+            }),
+          ],
+        });
+      }
+      try {
+        o.displayName || (o.displayName = "MarkdownLastEditedBy");
+      } catch {}
+    },
+    23656: (e, n, l) => {
+      l.d(n, { W: () => ec });
+      var a,
+        t,
+        i,
+        r,
+        s,
+        o,
+        d,
+        u,
+        c,
+        m,
+        y,
+        g,
+        p,
+        k,
+        f,
+        h,
+        F,
+        E,
+        K,
+        b,
+        C,
+        w,
+        _,
+        v,
+        x,
+        N,
+        R = l(74848);
+      let j = {
+        fragment: {
+          argumentDefinitions: (a = [
+            { defaultValue: null, kind: "LocalArgument", name: "id" },
+          ]),
+          kind: "Fragment",
+          metadata: null,
+          name: "MarkdownEditHistoryViewerQuery",
+          selections: [
+            {
+              alias: null,
+              args: (t = [
+                { kind: "Variable", name: "id", variableName: "id" },
+              ]),
+              concreteType: null,
+              kind: "LinkedField",
+              name: "node",
+              plural: !1,
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  selections: [
+                    (i = {
+                      alias: null,
+                      args: null,
+                      kind: "ScalarField",
+                      name: "includesCreatedEdit",
+                      storageKey: null,
+                    }),
+                    {
+                      alias: null,
+                      args: (r = [
+                        { kind: "Literal", name: "first", value: 100 },
+                      ]),
+                      concreteType: "UserContentEditConnection",
+                      kind: "LinkedField",
+                      name: "userContentEdits",
+                      plural: !1,
+                      selections: [
+                        (s = {
+                          alias: null,
+                          args: null,
+                          kind: "ScalarField",
+                          name: "totalCount",
+                          storageKey: null,
+                        }),
+                        {
+                          alias: null,
+                          args: null,
+                          concreteType: "UserContentEditEdge",
+                          kind: "LinkedField",
+                          name: "edges",
+                          plural: !0,
+                          selections: [
+                            {
+                              alias: null,
+                              args: null,
+                              concreteType: "UserContentEdit",
+                              kind: "LinkedField",
+                              name: "node",
+                              plural: !1,
+                              selections: [
+                                (o = {
+                                  alias: null,
+                                  args: null,
+                                  kind: "ScalarField",
+                                  name: "id",
+                                  storageKey: null,
+                                }),
+                                (d = {
+                                  alias: null,
+                                  args: null,
+                                  kind: "ScalarField",
+                                  name: "editedAt",
+                                  storageKey: null,
+                                }),
+                                (u = {
+                                  alias: null,
+                                  args: null,
+                                  kind: "ScalarField",
+                                  name: "deletedAt",
+                                  storageKey: null,
+                                }),
+                                {
+                                  alias: null,
+                                  args: null,
+                                  concreteType: null,
+                                  kind: "LinkedField",
+                                  name: "editor",
+                                  plural: !1,
+                                  selections: [
+                                    (c = {
+                                      alias: null,
+                                      args: null,
+                                      kind: "ScalarField",
+                                      name: "avatarUrl",
+                                      storageKey: null,
+                                    }),
+                                    (m = {
+                                      alias: null,
+                                      args: null,
+                                      kind: "ScalarField",
+                                      name: "login",
+                                      storageKey: null,
+                                    }),
+                                  ],
+                                  storageKey: null,
+                                },
+                              ],
+                              storageKey: null,
+                            },
+                          ],
+                          storageKey: null,
+                        },
+                      ],
+                      storageKey: "userContentEdits(first:100)",
+                    },
+                  ],
+                  type: "Comment",
+                  abstractKey: "__isComment",
+                },
+              ],
+              storageKey: null,
+            },
+          ],
+          type: "Query",
+          abstractKey: null,
+        },
+        kind: "Request",
+        operation: {
+          argumentDefinitions: a,
+          kind: "Operation",
+          name: "MarkdownEditHistoryViewerQuery",
+          selections: [
+            {
+              alias: null,
+              args: t,
+              concreteType: null,
+              kind: "LinkedField",
+              name: "node",
+              plural: !1,
+              selections: [
+                (y = {
+                  alias: null,
+                  args: null,
+                  kind: "ScalarField",
+                  name: "__typename",
+                  storageKey: null,
+                }),
+                {
+                  kind: "InlineFragment",
+                  selections: [
+                    i,
+                    {
+                      alias: null,
+                      args: r,
+                      concreteType: "UserContentEditConnection",
+                      kind: "LinkedField",
+                      name: "userContentEdits",
+                      plural: !1,
+                      selections: [
+                        s,
+                        {
+                          alias: null,
+                          args: null,
+                          concreteType: "UserContentEditEdge",
+                          kind: "LinkedField",
+                          name: "edges",
+                          plural: !0,
+                          selections: [
+                            {
+                              alias: null,
+                              args: null,
+                              concreteType: "UserContentEdit",
+                              kind: "LinkedField",
+                              name: "node",
+                              plural: !1,
+                              selections: [
+                                o,
+                                d,
+                                u,
+                                {
+                                  alias: null,
+                                  args: null,
+                                  concreteType: null,
+                                  kind: "LinkedField",
+                                  name: "editor",
+                                  plural: !1,
+                                  selections: [y, c, m, o],
+                                  storageKey: null,
+                                },
+                              ],
+                              storageKey: null,
+                            },
+                          ],
+                          storageKey: null,
+                        },
+                      ],
+                      storageKey: "userContentEdits(first:100)",
+                    },
+                  ],
+                  type: "Comment",
+                  abstractKey: "__isComment",
+                },
+                o,
+              ],
+              storageKey: null,
+            },
+          ],
+        },
+        params: {
+          id: "c6113eea560ba83b319c9b30fc5d4f7e",
+          metadata: {},
+          name: "MarkdownEditHistoryViewerQuery",
+          operationKind: "query",
+          text: null,
+        },
+      };
+      j.hash = "58ea81646b217a25de6cfe147936e7f6";
+      let D = {
+        argumentDefinitions: [],
+        kind: "Fragment",
+        metadata: null,
+        name: "MarkdownEditHistoryViewer_comment",
+        selections: [
+          {
+            alias: null,
+            args: null,
+            kind: "ScalarField",
+            name: "id",
+            storageKey: null,
+          },
+          {
+            alias: null,
+            args: null,
+            kind: "ScalarField",
+            name: "viewerCanReadUserContentEdits",
+            storageKey: null,
+          },
+          {
+            alias: null,
+            args: null,
+            kind: "ScalarField",
+            name: "lastEditedAt",
+            storageKey: null,
+          },
+        ],
+        type: "Comment",
+        abstractKey: "__isComment",
+      };
+      D.hash = "fcc1ee717c6a87a4ffdb4f4d9391d55c";
+      var S = l(77430),
+        H = l(76873),
+        L = l(81945),
+        T = l(94236),
+        A = l(5524),
+        V = l(62935),
+        I = l(26607),
+        M = l(96540),
+        U = l(18312),
+        B = l(73454);
+      let G = ({ retry: e }) =>
+        (0, R.jsx)(B.h, {
+          message: "Couldn't load",
+          retry: e,
+          className:
+            "CouldNotFindFallbackError-module__CouldNotFindFallbackErrorContainer--PNbb0",
+        });
+      try {
+        G.displayName || (G.displayName = "CouldNotFindFallbackError");
+      } catch {}
+      let O = {
+        fragment: {
+          argumentDefinitions: (g = [
+            { defaultValue: null, kind: "LocalArgument", name: "id" },
+          ]),
+          kind: "Fragment",
+          metadata: null,
+          name: "EditHistoryDialogQuery",
+          selections: [
+            {
+              alias: null,
+              args: (p = [
+                { kind: "Variable", name: "id", variableName: "id" },
+              ]),
+              concreteType: null,
+              kind: "LinkedField",
+              name: "node",
+              plural: !1,
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  selections: [
+                    (k = {
+                      alias: null,
+                      args: null,
+                      kind: "ScalarField",
+                      name: "diff",
+                      storageKey: null,
+                    }),
+                    (f = {
+                      alias: null,
+                      args: null,
+                      kind: "ScalarField",
+                      name: "diffBefore",
+                      storageKey: null,
+                    }),
+                    (h = {
+                      alias: null,
+                      args: null,
+                      kind: "ScalarField",
+                      name: "deletedAt",
+                      storageKey: null,
+                    }),
+                    {
+                      alias: null,
+                      args: null,
+                      concreteType: null,
+                      kind: "LinkedField",
+                      name: "deletedBy",
+                      plural: !1,
+                      selections: [
+                        (F = {
+                          alias: null,
+                          args: null,
+                          kind: "ScalarField",
+                          name: "login",
+                          storageKey: null,
+                        }),
+                      ],
+                      storageKey: null,
+                    },
+                    {
+                      args: null,
+                      kind: "FragmentSpread",
+                      name: "EditHistoryDialogHeaderFragment",
+                    },
+                  ],
+                  type: "UserContentEdit",
+                  abstractKey: null,
+                },
+              ],
+              storageKey: null,
+            },
+          ],
+          type: "Query",
+          abstractKey: null,
+        },
+        kind: "Request",
+        operation: {
+          argumentDefinitions: g,
+          kind: "Operation",
+          name: "EditHistoryDialogQuery",
+          selections: [
+            {
+              alias: null,
+              args: p,
+              concreteType: null,
+              kind: "LinkedField",
+              name: "node",
+              plural: !1,
+              selections: [
+                (E = {
+                  alias: null,
+                  args: null,
+                  kind: "ScalarField",
+                  name: "__typename",
+                  storageKey: null,
+                }),
+                {
+                  kind: "InlineFragment",
+                  selections: [
+                    k,
+                    f,
+                    h,
+                    {
+                      alias: null,
+                      args: null,
+                      concreteType: null,
+                      kind: "LinkedField",
+                      name: "deletedBy",
+                      plural: !1,
+                      selections: [
+                        E,
+                        F,
+                        (K = {
+                          alias: null,
+                          args: null,
+                          kind: "ScalarField",
+                          name: "id",
+                          storageKey: null,
+                        }),
+                      ],
+                      storageKey: null,
+                    },
+                    {
+                      alias: null,
+                      args: null,
+                      concreteType: null,
+                      kind: "LinkedField",
+                      name: "editor",
+                      plural: !1,
+                      selections: [
+                        E,
+                        {
+                          alias: null,
+                          args: null,
+                          kind: "ScalarField",
+                          name: "avatarUrl",
+                          storageKey: null,
+                        },
+                        F,
+                        K,
+                      ],
+                      storageKey: null,
+                    },
+                    {
+                      alias: null,
+                      args: null,
+                      kind: "ScalarField",
+                      name: "editedAt",
+                      storageKey: null,
+                    },
+                    {
+                      alias: null,
+                      args: null,
+                      kind: "ScalarField",
+                      name: "newest",
+                      storageKey: null,
+                    },
+                    {
+                      alias: null,
+                      args: null,
+                      kind: "ScalarField",
+                      name: "firstEdit",
+                      storageKey: null,
+                    },
+                    {
+                      alias: null,
+                      args: null,
+                      kind: "ScalarField",
+                      name: "viewerCanDelete",
+                      storageKey: null,
+                    },
+                  ],
+                  type: "UserContentEdit",
+                  abstractKey: null,
+                },
+                K,
+              ],
+              storageKey: null,
+            },
+          ],
+        },
+        params: {
+          id: "95112ed4d46018d629c28241b711a389",
+          metadata: {},
+          name: "EditHistoryDialogQuery",
+          operationKind: "query",
+          text: null,
+        },
+      };
+      O.hash = "027faee365f58b6aa217941196bb5c80";
+      var Q = l(15220),
+        $ = l(18042);
+      let z = "EditHistoryDialog-module__mutedInfoText--C13E3",
+        P = {
+          argumentDefinitions: [],
+          kind: "Fragment",
+          metadata: null,
+          name: "EditHistoryDialogHeaderFragment",
+          selections: [
+            {
+              alias: null,
+              args: null,
+              concreteType: null,
+              kind: "LinkedField",
+              name: "editor",
+              plural: !1,
+              selections: [
+                {
+                  alias: null,
+                  args: null,
+                  kind: "ScalarField",
+                  name: "avatarUrl",
+                  storageKey: null,
+                },
+                {
+                  alias: null,
+                  args: null,
+                  kind: "ScalarField",
+                  name: "login",
+                  storageKey: null,
+                },
+              ],
+              storageKey: null,
+            },
+            {
+              alias: null,
+              args: null,
+              kind: "ScalarField",
+              name: "deletedAt",
+              storageKey: null,
+            },
+            {
+              alias: null,
+              args: null,
+              kind: "ScalarField",
+              name: "editedAt",
+              storageKey: null,
+            },
+            {
+              alias: null,
+              args: null,
+              kind: "ScalarField",
+              name: "newest",
+              storageKey: null,
+            },
+            {
+              alias: null,
+              args: null,
+              kind: "ScalarField",
+              name: "firstEdit",
+              storageKey: null,
+            },
+            {
+              alias: null,
+              args: null,
+              kind: "ScalarField",
+              name: "viewerCanDelete",
+              storageKey: null,
+            },
+          ],
+          type: "UserContentEdit",
+          abstractKey: null,
+        };
+      P.hash = "173b0fbf2e248d6057ccd670ace2eea7";
+      var q = l(43258),
+        W = l(38621),
+        J = l(59394),
+        Y = l(21373),
+        Z = l(10095);
+      let X = {
+        fragment: {
+          argumentDefinitions: (b = [
+            { defaultValue: null, kind: "LocalArgument", name: "input" },
+          ]),
+          kind: "Fragment",
+          metadata: null,
+          name: "deleteUserContentEditMutation",
+          selections: [
+            {
+              alias: null,
+              args: (C = [
+                { kind: "Variable", name: "input", variableName: "input" },
+              ]),
+              concreteType: "DeleteUserContentEditPayload",
+              kind: "LinkedField",
+              name: "deleteUserContentEdit",
+              plural: !1,
+              selections: [
+                {
+                  alias: null,
+                  args: null,
+                  concreteType: "UserContentEdit",
+                  kind: "LinkedField",
+                  name: "userContentEdit",
+                  plural: !1,
+                  selections: [
+                    (w = {
+                      alias: null,
+                      args: null,
+                      kind: "ScalarField",
+                      name: "id",
+                      storageKey: null,
+                    }),
+                    (_ = {
+                      alias: null,
+                      args: null,
+                      kind: "ScalarField",
+                      name: "deletedAt",
+                      storageKey: null,
+                    }),
+                    {
+                      alias: null,
+                      args: null,
+                      concreteType: null,
+                      kind: "LinkedField",
+                      name: "deletedBy",
+                      plural: !1,
+                      selections: [
+                        (v = {
+                          alias: null,
+                          args: null,
+                          kind: "ScalarField",
+                          name: "login",
+                          storageKey: null,
+                        }),
+                        (x = {
+                          alias: null,
+                          args: null,
+                          kind: "ScalarField",
+                          name: "avatarUrl",
+                          storageKey: null,
+                        }),
+                      ],
+                      storageKey: null,
+                    },
+                    (N = {
+                      alias: null,
+                      args: null,
+                      kind: "ScalarField",
+                      name: "diff",
+                      storageKey: null,
+                    }),
+                  ],
+                  storageKey: null,
+                },
+              ],
+              storageKey: null,
+            },
+          ],
+          type: "Mutation",
+          abstractKey: null,
+        },
+        kind: "Request",
+        operation: {
+          argumentDefinitions: b,
+          kind: "Operation",
+          name: "deleteUserContentEditMutation",
+          selections: [
+            {
+              alias: null,
+              args: C,
+              concreteType: "DeleteUserContentEditPayload",
+              kind: "LinkedField",
+              name: "deleteUserContentEdit",
+              plural: !1,
+              selections: [
+                {
+                  alias: null,
+                  args: null,
+                  concreteType: "UserContentEdit",
+                  kind: "LinkedField",
+                  name: "userContentEdit",
+                  plural: !1,
+                  selections: [
+                    w,
+                    _,
+                    {
+                      alias: null,
+                      args: null,
+                      concreteType: null,
+                      kind: "LinkedField",
+                      name: "deletedBy",
+                      plural: !1,
+                      selections: [
+                        {
+                          alias: null,
+                          args: null,
+                          kind: "ScalarField",
+                          name: "__typename",
+                          storageKey: null,
+                        },
+                        v,
+                        x,
+                        w,
+                      ],
+                      storageKey: null,
+                    },
+                    N,
+                  ],
+                  storageKey: null,
+                },
+              ],
+              storageKey: null,
+            },
+          ],
+        },
+        params: {
+          id: "71452b9f40a7828ac05811d1ad4f821e",
+          metadata: {},
+          name: "deleteUserContentEditMutation",
+          operationKind: "mutation",
+          text: null,
+        },
+      };
+      X.hash = "45e1f3e7d425560f65ef39e8c357794d";
+      let ee = ({ queryRef: e, userContentEditId: n }) => {
+        let l = (0, U.useFragment)(P, e),
+          a = (0, U.useRelayEnvironment)(),
+          t = (0, J.S)(),
+          { addToast: i } = (0, q.Y6)(),
+          r = (0, M.useCallback)(async () => {
+            (await t({
+              title: $.k.confirmations.deleteEditHistoryTitle,
+              content: $.k.confirmations.deleteEditHistoryContent,
+              confirmButtonType: "danger",
+              confirmButtonContent:
+                $.k.confirmations.deleteEditHistoryConfirmButtonContent,
+            })) &&
+              (function ({
+                environment: e,
+                input: { id: n },
+                onCompleted: l,
+                onError: a,
+              }) {
+                (0, U.commitMutation)(e, {
+                  mutation: X,
+                  variables: { input: { id: n } },
+                  onCompleted: (e) => {
+                    null === e.deleteUserContentEdit ? a?.() : l?.();
+                  },
+                  onError: (e) => a?.(e),
+                });
+              })({
+                environment: a,
+                input: { id: n },
+                onError: () => {
+                  i({
+                    type: "error",
+                    message: "Failed to delete this revision",
+                  });
+                },
+              });
+          }, [i, t, a, n]),
+          s = l.newest || l.deletedAt;
+        return (0, R.jsxs)("div", {
+          className:
+            "EditHistoryDialogHeader-module__EditHistoryDialogHeaderContainer--IRXVB",
+          children: [
+            l.editor &&
+              (0, R.jsx)(en, {
+                login: l.editor.login,
+                avatarUrl: l.editor.avatarUrl,
+                time: l.editedAt,
+                details: l.firstEdit
+                  ? $.k.editHistory.created
+                  : $.k.editHistory.edited,
+                trailingElement: s
+                  ? (0, R.jsx)(I.A, {
+                      className:
+                        "EditHistoryDialogHeader-module__statusLabel--Pf9hN",
+                      children: l.deletedAt
+                        ? $.k.editHistory.deleted
+                        : $.k.editHistory.mostRecent,
+                    })
+                  : void 0,
+              }),
+            l.viewerCanDelete &&
+              !l.newest &&
+              !l.deletedAt &&
+              (0, R.jsxs)(Y.Q, {
+                variant: "danger",
+                size: "small",
+                "aria-label": $.k.editHistory.deleteRevisionAriaLabel,
+                onClick: r,
+                className:
+                  "EditHistoryDialogHeader-module__deleteRevisionButton--I4tuB",
+                children: [
+                  (0, R.jsx)(Z.A, { icon: W.TrashIcon }),
+                  " ",
+                  "Delete revision",
+                ],
+              }),
+          ],
+        });
+      };
+      function en({
+        login: e,
+        avatarUrl: n,
+        details: l,
+        time: a,
+        className: t,
+        trailingElement: i,
+      }) {
+        let r = !!n && !!e;
+        return (0, R.jsxs)("div", {
+          className:
+            "EditHistoryDialogHeader-module__actorDetailsWrapper--hz1cP",
+          children: [
+            (0, R.jsxs)("div", {
+              className: t,
+              children: [
+                r &&
+                  (0, R.jsxs)(R.Fragment, {
+                    children: [
+                      (0, R.jsx)(S.r, {
+                        src: n,
+                        size: 16,
+                        alt: `@${e}`,
+                        className:
+                          "EditHistoryDialogHeader-module__userAvatar--hMoGt",
+                      }),
+                      (0, R.jsx)("span", {
+                        className:
+                          "EditHistoryDialogHeader-module__usernameBold--nCSfu",
+                        children: e,
+                      }),
+                    ],
+                  }),
+                !r && (0, R.jsx)("span", { children: e ?? "ghost" }),
+                (0, R.jsxs)("span", { children: [" ", l, " "] }),
+                a && (0, R.jsx)(V.A, { date: new Date(a) }),
+              ],
+            }),
+            i,
+          ],
+        });
+      }
+      try {
+        ee.displayName || (ee.displayName = "EditHistoryDialogHeader");
+      } catch {}
+      try {
+        en.displayName || (en.displayName = "ActorOperationDetails");
+      } catch {}
+      let el = (e, n) => ({
+          groups: [{ words: e ?? "", modification: n }],
+          modification: n,
+        }),
+        ea = (e) => {
+          switch (e) {
+            case "ADDED":
+              return { open: "[+]", close: "[/+]" };
+            case "REMOVED":
+              return { open: "[-]", close: "[/-]" };
+          }
+          return { open: "", close: "" };
+        },
+        et = (e) => "ADDED" === e || "REMOVED" === e,
+        ei = ({ groups: e, modification: n }) => {
+          let l = e.map((e) => e.words).join(" ");
+          return (0, R.jsxs)("span", {
+            className: "GroupedTextDiffViewer-module__diffLine--yfbRY",
+            children: [
+              "EDITED" === n &&
+                e?.map((e, n) =>
+                  (0, R.jsxs)(
+                    R.Fragment,
+                    {
+                      children: [
+                        et(e.modification) &&
+                          (0, R.jsx)("span", {
+                            className: "sr-only",
+                            children: ea(e.modification).open,
+                          }),
+                        (0, R.jsx)("span", {
+                          className: ((e) => {
+                            switch (e) {
+                              case "ADDED":
+                                return "GroupedTextDiffViewer-module__wordStylingAdded--WmYJz";
+                              case "REMOVED":
+                                return "GroupedTextDiffViewer-module__wordStylingRemoved--n4HZo";
+                              case "UNCHANGED":
+                                return "";
+                            }
+                          })(e.modification),
+                          children: `${0 === n ? "" : " "}${e.words}`,
+                        }),
+                        et(e.modification) &&
+                          (0, R.jsx)("span", {
+                            className: "sr-only",
+                            children: ea(e.modification).close,
+                          }),
+                      ],
+                    },
+                    n - 1,
+                  ),
+                ),
+              "EDITED" !== n &&
+                e.length > 0 &&
+                (0, R.jsxs)(R.Fragment, {
+                  children: [
+                    (0, R.jsx)("span", {
+                      className: "sr-only",
+                      children: ea(n).open,
+                    }),
+                    (0, R.jsx)("span", { children: l }),
+                    (0, R.jsx)("span", {
+                      className: "sr-only",
+                      children: ea(n).close,
+                    }),
+                  ],
+                }),
+              0 === e.length && (0, R.jsx)("br", {}),
+            ],
+          });
+        },
+        er = ({ before: e, after: n }) => {
+          let l = (function ({ before: e, after: n }) {
+            let l = e ? e.split(/\r?\n/) : [],
+              a = n ? n.split(/\r?\n/) : [],
+              t = [];
+            for (let e = 0; e < l.length || e < a.length; e++) {
+              let n = l[e],
+                i = a[e];
+              t.push(
+                (function (e, n) {
+                  let l = e ? e.split(/\s+/) : [],
+                    a = n ? n.split(/\s+/) : [];
+                  if ((0 === l.length && 0 === a.length) || e === n)
+                    return el(e, "UNCHANGED");
+                  if (0 === l.length) return el(n, "ADDED");
+                  if (0 === a.length) return el(e, "REMOVED");
+                  let t = [],
+                    i = { words: "", modification: "UNCHANGED" },
+                    r = { words: "", modification: "ADDED" },
+                    s = { words: "", modification: "REMOVED" };
+                  for (let e = 0; e < l.length || e < a.length; e++) {
+                    let n = l[e],
+                      o = a[e];
+                    n === o
+                      ? ((i.words = `${i.words}${0 === i.words.length ? "" : " "}${n}`),
+                        "" !== r.words &&
+                          (t.push(r),
+                          (r = { words: "", modification: "ADDED" })),
+                        "" !== s.words &&
+                          (t.push(s),
+                          (s = { words: "", modification: "REMOVED" })))
+                      : ("" !== i.words &&
+                          (void 0 !== n || void 0 !== o) &&
+                          (t.push(i),
+                          (i = { words: "", modification: "UNCHANGED" })),
+                        void 0 !== n &&
+                          (s.words = `${s.words}${0 === s.words.length ? "" : " "}${n}`),
+                        void 0 !== o &&
+                          (r.words = `${r.words}${0 === r.words.length ? "" : " "}${o}`));
+                  }
+                  return (
+                    "" !== r.words && t.push(r),
+                    "" !== s.words && t.push(s),
+                    "" !== i.words && t.push(i),
+                    { groups: t, modification: "EDITED" }
+                  );
+                })(n, i),
+              );
+            }
+            return { lines: t };
+          })({ before: e, after: n });
+          return (0, R.jsx)("div", {
+            className: "GroupedTextDiffViewer-module__diffContainer--vSv5M",
+            children: l.lines.map((e, n) =>
+              (0, R.jsx)(
+                "div",
+                {
+                  className: ((e) => {
+                    switch (e) {
+                      case "ADDED":
+                        return "GroupedTextDiffViewer-module__borderStylingAdded--vmx_p";
+                      case "REMOVED":
+                        return "GroupedTextDiffViewer-module__borderStylingRemoved--nuxu4";
+                      case "EDITED":
+                        return "GroupedTextDiffViewer-module__borderStylingChanged--SGyL6";
+                      case "UNCHANGED":
+                        return "";
+                    }
+                  })(e.modification),
+                  children: (0, R.jsx)(ei, { ...e }),
+                },
+                n,
+              ),
+            ),
+          });
+        };
+      try {
+        ei.displayName || (ei.displayName = "LineDiffViewer");
+      } catch {}
+      try {
+        er.displayName || (er.displayName = "GroupedTextDiffViewer");
+      } catch {}
+      let es = ({ userContentEditId: e, onClose: n }) =>
+          (0, R.jsx)(Q.l, {
+            renderBody: () => (0, R.jsx)(eo, { userContentEditId: e }),
+            onClose: n,
+            title: $.k.editHistory.viewingEditTitle,
+            width: "xlarge",
+            height: "auto",
+            className:
+              "EditHistoryDialog-module__EditHistoryDialogContainer--g7yZt",
+          }),
+        eo = ({ userContentEditId: e }) => {
+          let [n, l] = (0, U.useQueryLoader)(O);
+          return ((0, M.useEffect)(() => {
+            l({ id: e });
+          }, [l, e]),
+          n)
+            ? (0, R.jsx)(M.Suspense, {
+                fallback: (0, R.jsx)(eu, {}),
+                children: (0, R.jsx)(H.A, {
+                  onRetry: () => l({ id: e }, { fetchPolicy: "network-only" }),
+                  fallback: (e) => (0, R.jsx)(G, { retry: e }),
+                  children: (0, R.jsx)(ed, {
+                    queryRef: n,
+                    userContentEditId: e,
+                  }),
+                }),
+              })
+            : (0, R.jsx)(eu, {});
+        },
+        ed = ({ queryRef: e, userContentEditId: n }) => {
+          let l = (0, U.usePreloadedQuery)(O, e).node;
+          if (!l) return (0, R.jsx)(eu, {});
+          let a = !l.diffBefore && !l.diff;
+          return (0, R.jsxs)("div", {
+            className:
+              "EditHistoryDialog-module__editHistoryContentScrollable--Sso3i",
+            children: [
+              (0, R.jsx)(ee, { queryRef: l, userContentEditId: n }),
+              (0, R.jsxs)("div", {
+                className:
+                  "EditHistoryDialog-module__contentViewerContainer--CLOK3",
+                children: [
+                  !l.deletedAt &&
+                    !a &&
+                    (0, R.jsx)(er, {
+                      before: l.diffBefore ?? void 0,
+                      after: l.diff ?? void 0,
+                    }),
+                  !l.deletedAt &&
+                    a &&
+                    (0, R.jsx)("span", {
+                      className: z,
+                      children: $.k.editHistory.emptyEdit,
+                    }),
+                  l.deletedAt &&
+                    (0, R.jsx)(en, {
+                      login: l.deletedBy?.login,
+                      details: $.k.editHistory.deletedThisRevision,
+                      time: l.deletedAt,
+                      className: z,
+                    }),
+                ],
+              }),
+            ],
+          });
+        };
+      function eu() {
+        return (0, R.jsxs)("div", {
+          className:
+            "EditHistoryDialog-module__loadingSkeletonContainer--ob6sY",
+          children: [
+            (0, R.jsx)(L.O, {
+              variant: "rounded",
+              height: "md",
+              width: "100%",
+            }),
+            (0, R.jsx)(L.O, {
+              variant: "rounded",
+              height: "md",
+              width: "100%",
+            }),
+          ],
+        });
+      }
+      try {
+        es.displayName || (es.displayName = "EditHistoryDialog");
+      } catch {}
+      try {
+        eo.displayName || (eo.displayName = "EditContent");
+      } catch {}
+      try {
+        ed.displayName || (ed.displayName = "EditContentInternal");
+      } catch {}
+      try {
+        eu.displayName || (eu.displayName = "EditContentLoading");
+      } catch {}
+      function ec({ editHistory: e }) {
+        let n = (0, U.useFragment)(D, e),
+          [l, a] = (0, M.useState)(!1),
+          [t, i] = (0, M.useState)("");
+        return n && n.viewerCanReadUserContentEdits && n.lastEditedAt
+          ? (0, R.jsxs)("div", {
+              className:
+                "MarkdownEditHistoryViewer-module__editHistoryContainer--l0A8s",
+              children: [
+                (0, R.jsxs)(T.W, {
+                  children: [
+                    (0, R.jsx)(T.W.Button, {
+                      variant: "invisible",
+                      size: "small",
+                      "aria-label": $.k.editHistory.ariaLabel,
+                      className:
+                        "MarkdownEditHistoryViewer-module__editHistoryMenuButton--GyyK7",
+                      children: $.k.editHistory.openEditsButton,
+                    }),
+                    (0, R.jsx)(T.W.Overlay, {
+                      width: "auto",
+                      children: (0, R.jsx)(em, {
+                        setIsEditHistoryDialogOpen: a,
+                        setSelectedId: i,
+                        editHistoryId: n.id,
+                        lastEditedAt: n.lastEditedAt,
+                      }),
+                    }),
+                  ],
+                }),
+                l &&
+                  (0, R.jsx)(es, {
+                    onClose: () => a(!1),
+                    userContentEditId: t,
+                  }),
+              ],
+            })
+          : null;
+      }
+      let em = ({ editHistoryId: e, lastEditedAt: n, ...l }) => {
+          let [a, t] = (0, U.useQueryLoader)(j);
+          return ((0, M.useEffect)(() => {
+            t({ id: e }, { fetchPolicy: "network-only" });
+          }, [e, t, n]),
+          a)
+            ? (0, R.jsx)(M.Suspense, {
+                fallback: (0, R.jsx)(eg, {}),
+                children: (0, R.jsx)(H.A, {
+                  onRetry: () => t({ id: e }, { fetchPolicy: "network-only" }),
+                  fallback: (e) => (0, R.jsx)(G, { retry: e }),
+                  children: (0, R.jsx)(ey, { queryRef: a, ...l }),
+                }),
+              })
+            : (0, R.jsx)(eg, {});
+        },
+        ey = ({
+          setIsEditHistoryDialogOpen: e,
+          setSelectedId: n,
+          queryRef: l,
+        }) => {
+          let a = (0, U.usePreloadedQuery)(j, l);
+          if (!a.node?.userContentEdits) return (0, R.jsx)(eg, {});
+          let t = a.node.userContentEdits.totalCount;
+          return (0, R.jsx)(A.l, {
+            className:
+              "MarkdownEditHistoryViewer-module__scrollableEditHistoryList--PDigD",
+            children: (0, R.jsxs)(A.l.Group, {
+              children: [
+                (0, R.jsx)(A.l.GroupHeading, {
+                  children: `Edited ${t - 1} time${t > 2 ? "s" : ""}`,
+                }),
+                a.node.userContentEdits.edges?.map((l, i) => {
+                  let r = l?.node;
+                  if (!r?.editor) return null;
+                  let s = a.node?.includesCreatedEdit && i === t - 1;
+                  return (0, R.jsxs)(
+                    A.l.Item,
+                    {
+                      onSelect: () => {
+                        (n(r.id), e(!0));
+                      },
+                      children: [
+                        (0, R.jsx)(A.l.LeadingVisual, {
+                          children: (0, R.jsx)(S.r, {
+                            src: r.editor.avatarUrl,
+                            size: 16,
+                            alt: `@${r.editor.login}`,
+                            className:
+                              "MarkdownEditHistoryViewer-module__editorAvatar--HeVVG",
+                          }),
+                        }),
+                        (0, R.jsx)("span", {
+                          className:
+                            "MarkdownEditHistoryViewer-module__editorUsername--_tgsX",
+                          children: r.editor.login,
+                        }),
+                        (0, R.jsxs)(A.l.Description, {
+                          truncate: !0,
+                          className:
+                            "MarkdownEditHistoryViewer-module__editHistoryItemMetadata--oUxNy",
+                          children: [
+                            s &&
+                              (0, R.jsx)("div", {
+                                title: "",
+                                children: $.k.editHistory.created,
+                              }),
+                            (0, R.jsx)(V.A, { date: new Date(r.editedAt) }),
+                          ],
+                        }),
+                        (0 === i || r.deletedAt) &&
+                          (0, R.jsx)(A.l.TrailingVisual, {
+                            children: (0, R.jsx)(I.A, {
+                              children:
+                                0 === i
+                                  ? $.k.editHistory.mostRecent
+                                  : $.k.editHistory.deleted,
+                            }),
+                          }),
+                      ],
+                    },
+                    r.id,
+                  );
+                }),
+              ],
+            }),
+          });
+        };
+      function eg() {
+        return (0, R.jsxs)("div", {
+          className:
+            "MarkdownEditHistoryViewer-module__loadingSkeletonContainer--K3qvZ",
+          children: [
+            (0, R.jsx)(L.O, {
+              variant: "rounded",
+              height: "md",
+              width: "100%",
+            }),
+            (0, R.jsx)(L.O, {
+              variant: "rounded",
+              height: "md",
+              width: "100%",
+            }),
+            (0, R.jsx)(L.O, {
+              variant: "rounded",
+              height: "md",
+              width: "100%",
+            }),
+            (0, R.jsx)(L.O, {
+              variant: "rounded",
+              height: "md",
+              width: "100%",
+            }),
+          ],
+        });
+      }
+      try {
+        ec.displayName || (ec.displayName = "MarkdownEditHistoryViewer");
+      } catch {}
+      try {
+        em.displayName || (em.displayName = "EditHistoryActionMenuContent");
+      } catch {}
+      try {
+        ey.displayName ||
+          (ey.displayName = "EditHistoryActionMenuContentInternal");
+      } catch {}
+      try {
+        eg.displayName || (eg.displayName = "EditHistoryLoading");
+      } catch {}
+    },
+    38829: (e, n, l) => {
+      l.d(n, { f: () => d });
+      let a = {
+        fragment: {
+          argumentDefinitions: (t = [
+            { defaultValue: null, kind: "LocalArgument", name: "id" },
+          ]),
+          kind: "Fragment",
+          metadata: null,
+          name: "useMarkdownEditHistoryViewerQueryQuery",
+          selections: [
+            {
+              alias: null,
+              args: (i = [
+                { kind: "Variable", name: "id", variableName: "id" },
+              ]),
+              concreteType: null,
+              kind: "LinkedField",
+              name: "node",
+              plural: !1,
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  selections: [
+                    {
+                      args: null,
+                      kind: "FragmentSpread",
+                      name: "MarkdownEditHistoryViewer_comment",
+                    },
+                    {
+                      args: null,
+                      kind: "FragmentSpread",
+                      name: "MarkdownLastEditedBy",
+                    },
+                  ],
+                  type: "Comment",
+                  abstractKey: "__isComment",
+                },
+              ],
+              storageKey: null,
+            },
+          ],
+          type: "Query",
+          abstractKey: null,
+        },
+        kind: "Request",
+        operation: {
+          argumentDefinitions: t,
+          kind: "Operation",
+          name: "useMarkdownEditHistoryViewerQueryQuery",
+          selections: [
+            {
+              alias: null,
+              args: i,
+              concreteType: null,
+              kind: "LinkedField",
+              name: "node",
+              plural: !1,
+              selections: [
+                (r = {
+                  alias: null,
+                  args: null,
+                  kind: "ScalarField",
+                  name: "__typename",
+                  storageKey: null,
+                }),
+                (s = {
+                  alias: null,
+                  args: null,
+                  kind: "ScalarField",
+                  name: "id",
+                  storageKey: null,
+                }),
+                {
+                  kind: "InlineFragment",
+                  selections: [
+                    {
+                      alias: null,
+                      args: null,
+                      kind: "ScalarField",
+                      name: "viewerCanReadUserContentEdits",
+                      storageKey: null,
+                    },
+                    {
+                      alias: null,
+                      args: null,
+                      kind: "ScalarField",
+                      name: "lastEditedAt",
+                      storageKey: null,
+                    },
+                    {
+                      alias: null,
+                      args: null,
+                      concreteType: "UserContentEdit",
+                      kind: "LinkedField",
+                      name: "lastUserContentEdit",
+                      plural: !1,
+                      selections: [
+                        {
+                          alias: null,
+                          args: null,
+                          concreteType: null,
+                          kind: "LinkedField",
+                          name: "editor",
+                          plural: !1,
+                          selections: [
+                            r,
+                            {
+                              alias: null,
+                              args: null,
+                              kind: "ScalarField",
+                              name: "url",
+                              storageKey: null,
+                            },
+                            {
+                              alias: null,
+                              args: null,
+                              kind: "ScalarField",
+                              name: "login",
+                              storageKey: null,
+                            },
+                            s,
+                          ],
+                          storageKey: null,
+                        },
+                        s,
+                      ],
+                      storageKey: null,
+                    },
+                  ],
+                  type: "Comment",
+                  abstractKey: "__isComment",
+                },
+              ],
+              storageKey: null,
+            },
+          ],
+        },
+        params: {
+          id: "d72649dd9392589f64dd4570b992b900",
+          metadata: {},
+          name: "useMarkdownEditHistoryViewerQueryQuery",
+          operationKind: "query",
+          text: null,
+        },
+      };
+      a.hash = "4c6ffc38d14bcfbd11af3056fe1ca692";
+      var t,
+        i,
+        r,
+        s,
+        o = l(18312);
+      function d({ id: e }) {
+        let n = (0, o.useLazyLoadQuery)(a, { id: e });
+        return n.node ? n.node : null;
+      }
+    },
+    43617: (e, n, l) => {
+      l.d(n, { Q: () => s });
+      var a = l(74848),
+        t = l(29731),
+        i = l(34164),
+        r = l(35220);
+      function s({ children: e }) {
+        let { variant: n } = (0, r.e)();
+        return (0, a.jsx)(a.Fragment, {
+          children: (0, a.jsx)("div", {
+            ...(0, t.G)("list-view-item-main-content"),
+            className: "MainContent-module__container--NyRpm",
+            children: (0, a.jsx)("div", {
+              className: (0, i.$)(
+                "MainContent-module__inner--qD0Pb",
+                "compact" === n && "MainContent-module__compact--S3brA",
+              ),
+              children: e,
+            }),
+          }),
+        });
+      }
+      try {
+        s.displayName || (s.displayName = "ListItemMainContent");
+      } catch {}
+    },
+    60912: (e, n, l) => {
+      l.d(n, { P: () => i });
+      var a = l(74848),
+        t = l(34164);
+      function i({ reason: e, icon: n, ...l }) {
+        return (0, a.jsx)("div", {
+          className: (0, t.$)(
+            "blankslate",
+            "ReadonlyCommentBox-module__ReadonlyCommentBoxContainer--qNC85",
+          ),
+          ...l,
+          children: (0, a.jsxs)("div", {
+            className: "ReadonlyCommentBox-module__centeredContent--bVUCp",
+            children: [
+              n && (0, a.jsx)(n, { size: 24 }),
+              (0, a.jsx)("div", {
+                className: "readonly-comment-box-module__reason--QIvzf",
+                children: e,
+              }),
+            ],
+          }),
+        });
+      }
+      try {
+        i.displayName || (i.displayName = "ReadonlyCommentBox");
+      } catch {}
+    },
+    61423: (e, n, l) => {
+      l.d(n, { i: () => t });
+      var a = l(96901);
+      function t(e, n, l = null, i = "issue") {
+        return e
+          ? a.k.repoArchived
+          : n
+            ? a.k.issueLockedToCollaborators
+            : l || a.k.canNotComment(i);
+      }
+    },
+    74547: (e, n, l) => {
+      l.d(n, { t: () => a });
+      let a = {
+        react: "React",
+        reactionsUnavailable: "Reactions are currently unavailable",
+        copilotDisplayName: "Copilot",
+      };
+    },
+    76873: (e, n, l) => {
+      l.d(n, { A: () => d });
+      var a = l(50467),
+        t = l(74848),
+        i = l(96540),
+        r = l(38102),
+        s = l(49936);
+      let o = (e) =>
+        (0, t.jsxs)("div", {
+          children: [
+            (0, t.jsx)("span", { children: "Error:" }),
+            (0, t.jsx)("button", { onClick: e, children: "Retry" }),
+          ],
+        });
+      let BasicPreloadedQueryBoundary = class BasicPreloadedQueryBoundary
+        extends i.Component
+      {
+        static getDerivedStateFromError(e) {
+          return { error: e };
+        }
+        componentDidCatch(e) {
+          let n = e.shouldSkipReport ?? !1,
+            l = {
+              critical: this.props.critical || !1,
+              reactAppName: this.props.appName,
+            };
+          n || (0, r.N7)(e, l);
+        }
+        render() {
+          let { children: e } = this.props,
+            { error: n } = this.state,
+            l = this.props.fallback || o;
+          return n ? l(this._retry, n) : e;
+        }
+        constructor(...e) {
+          (super(...e),
+            (0, a._)(this, "state", { error: null }),
+            (0, a._)(this, "_retry", () => {
+              (this.props.onRetry(), this.setState({ error: null }));
+            }));
+        }
+      };
+      function d(e) {
+        let n = (0, i.useContext)(s.I),
+          l = e.appName || n?.appName;
+        return (0, t.jsx)(BasicPreloadedQueryBoundary, { ...e, appName: l });
+      }
+      try {
+        d.displayName || (d.displayName = "PreloadedQueryBoundary");
+      } catch {}
+    },
+    78809: (e, n, l) => {
+      l.d(n, { P: () => f });
+      var a = l(74848),
+        t = l(11683),
+        i = l(45800),
+        r = l(31604),
+        s = l(5524),
+        o = l(96540),
+        d = l(11196),
+        u = l(21373),
+        c = l(34164),
+        m = l(79866);
+      function y({ reactionGroup: e, disabled: n, onReact: l }) {
+        let { content: t, viewerHasReacted: i } = e.reaction,
+          { reactors: r, totalCount: s } = e,
+          y = (0, o.useId)();
+        if (0 === s) return null;
+        let g = r.flatMap((e) => ("Other" !== e.typeName ? [e.login] : [])),
+          p = (0, m.JQ)(t, i),
+          k = (0, m.fj)(t, s);
+        return (0, a.jsx)(d.m, {
+          text: (0, m.Js)(g, s),
+          type: "description",
+          direction: "ne",
+          children: (0, a.jsxs)(u.Q, {
+            size: "small",
+            "aria-label": k,
+            role: "switch",
+            "aria-checked": i,
+            leadingVisual: () => (0, a.jsx)(a.Fragment, { children: m.qG[t] }),
+            onClick: () => l(t, i),
+            disabled: n,
+            className: (0, c.$)(
+              "ReactionButton-module__reactionToggleButton--axnvQ",
+              i && "ReactionButton-module__reactionToggleButtonReacted--TgLue",
+            ),
+            "aria-describedby": y,
+            children: [
+              (0, a.jsx)("span", { className: "sr-only", id: y, children: p }),
+              s,
+            ],
+          }),
+        });
+      }
+      try {
+        y.displayName || (y.displayName = "ReactionButton");
+      } catch {}
+      var g = l(35811);
+      function p({ onReact: e, reaction: n }) {
+        let { content: l, viewerHasReacted: t } = n;
+        return (0, a.jsx)(
+          g.lF.Item,
+          {
+            sx: {
+              "&:hover": { backgroundColor: "accent.emphasis" },
+              backgroundColor: t ? "accent.subtle" : "transparent",
+            },
+            role: "menuitemcheckbox",
+            "aria-checked": t,
+            onSelect: () => e(l, t),
+            className: "ReactionsMenuItem-module__ReactionsMenuOption--uvJoP",
+            children: m.qG[l],
+          },
+          l,
+        );
+      }
+      try {
+        p.displayName || (p.displayName = "ReactionsMenuItem");
+      } catch {}
+      var k = l(97911);
+      let f = (0, o.forwardRef)(
+        ({ reactionGroups: e, canReact: n = !0, onReact: l }, d) => {
+          let [u, c] = (0, o.useState)(!1),
+            m = e.length > 0,
+            { containerRef: g } = (0, i.G)({
+              bindKeys: t.z0.HomeAndEnd | t.z0.ArrowHorizontal,
+              focusOutBehavior: "wrap",
+            });
+          return (0, a.jsxs)("div", {
+            role: "toolbar",
+            "aria-label": "Reactions",
+            ref: g,
+            className: "d-flex gap-1 flex-wrap",
+            children: [
+              n &&
+                (0, a.jsx)(r.T, {
+                  open: u,
+                  onOpen: () => c(m),
+                  onClose: () => c(!1),
+                  anchorRef: g,
+                  focusZoneSettings: {
+                    bindKeys: t.z0.ArrowAll | t.z0.HomeAndEnd,
+                    focusOutBehavior: "wrap",
+                  },
+                  renderAnchor: (e) =>
+                    (0, a.jsx)(k.N, {
+                      renderAnchorProps: e,
+                      reactionsAvailable: m,
+                      ref: d,
+                    }),
+                  children: (0, a.jsx)(s.l, {
+                    className: "d-flex flex-row p-1 gap-1",
+                    role: "menu",
+                    "aria-orientation": "horizontal",
+                    children: (e || []).map((e, n) =>
+                      (0, a.jsx)(
+                        p,
+                        {
+                          reaction: e.reaction,
+                          onReact: (e, n) => {
+                            (l(e, n), c(!1));
+                          },
+                        },
+                        n,
+                      ),
+                    ),
+                  }),
+                }),
+              (e || []).map((e, n) =>
+                (0, a.jsx)(
+                  y,
+                  { reactionGroup: e, onReact: (e, n) => l(e, n) },
+                  n,
+                ),
+              ),
+            ],
+          });
+        },
+      );
+      f.displayName = "ReactionViewerBase";
+    },
+    79866: (e, n, l) => {
+      l.d(n, { JQ: () => i, Js: () => t, fj: () => r, qG: () => a });
+      let a = {
+        CONFUSED: "\u{1F615}",
+        EYES: "\u{1F440}",
+        HEART: "\u2764\uFE0F",
+        HOORAY: "\u{1F389}",
+        LAUGH: "\u{1F604}",
+        THUMBS_DOWN: "\u{1F44E}",
+        THUMBS_UP: "\u{1F44D}",
+        ROCKET: "\u{1F680}",
+      };
+      function t(e, n) {
+        if (0 === e.length || 0 === n) return "";
+        let l = e.slice(0);
+        if (1 === l.length) return l[0];
+        if (2 === l.length) return l.join(" and ");
+        n > e.length && l.push(`${n - e.length} more`);
+        let a = l.pop();
+        return (l.push(`${l.pop()} and ${a}`), l.join(", "));
+      }
+      function i(e, n) {
+        return `${n ? "Unreact" : "React"} with ${a[e]}`;
+      }
+      function r(e, n) {
+        return `${a[e]} ${n} reaction${1 === n ? "" : "s"}`;
+      }
+    },
+    81034: (e, n, l) => {
+      l.d(n, { x: () => m });
+      var a = l(62559),
+        t = l(44569),
+        i = l(34267),
+        r = l(57019),
+        s = l(40104),
+        o = l(96540),
+        d = l(96760),
+        u = l(81156),
+        c = l(20459);
+      function m({
+        commentBoxRef: e,
+        markdownComposerRef: n,
+        onChange: l,
+        onCancel: m,
+        referenceId: y,
+        insidePortal: g,
+      }) {
+        let [p, k] = (0, s.Fo)(
+            u.t.localStorageKeys.issueNewComment("viewer", y),
+            "",
+          ),
+          [f, h] = (0, o.useState)(p),
+          F = (0, o.useMemo)(() => (0, a.KG)(f), [f]),
+          { anyItemPickerOpen: E } = (0, i.t)(),
+          K = (0, o.useCallback)(
+            (e) => {
+              (h(e), k(e));
+            },
+            [k],
+          ),
+          b = (0, o.useCallback)(
+            (e) => {
+              (K(e), l(), "" === e && m());
+            },
+            [K, m, l],
+          );
+        ((0, o.useImperativeHandle)(
+          n,
+          () => ({
+            appendText: (e) => {
+              b(`${f}
 
-${e}`)},setText:e=>{b(e)},focus:()=>{e.current?.focus()}}),[b,f,e]),(0,o.useEffect)(()=>h(f),[f,h]);let C=(0,o.useMemo)(()=>(0,t.zw)(),[]),w=(0,o.useCallback)(n=>{if(!(!C||E())&&e&&e.current){n.preventDefault();let l=window.getSelection();if(l&&l.anchorNode){let e={anchorNode:l.anchorNode,range:l.getRangeAt(0)},n=l.anchorNode.parentElement,a=n?.closest((0,d.Sp)(d.mU.issueComment))??n?.closest((0,d.Sp)(d.mU.issueBody));if(a&&a instanceof HTMLDivElement){let n=(0,c.E)(a,e);K(`${n}`)}}e.current.scrollIntoView(),e.current.focus()}},[C,E,K,e]),_=(0,o.useCallback)(()=>{e.current?e.current.reset():h(""),k(void 0)},[e,k]);return(0,r._)(["r"],w,{triggerWhenInputElementHasFocus:!1,triggerWhenPortalIsActive:g}),{handleMarkdownBodyChanged:b,markdownValidationResult:F,markdownBody:f,resetMarkdownBody:_}}},97911:(e,n,l)=>{l.d(n,{N:()=>o});var a=l(74848),t=l(38621),i=l(26108),r=l(96540),s=l(74547);let o=(0,r.forwardRef)(({renderAnchorProps:e,reactionsAvailable:n},l)=>(0,a.jsx)(i.K,{size:"small",icon:t.SmileyIcon,...e,"aria-label":n?s.t.react:s.t.reactionsUnavailable,inactive:!n,"aria-labelledby":void 0,className:"ReactionViewerAnchor-module__ReactionViewerAnchorButton--kb52r",ref:l}));o.displayName="ReactionViewerAnchor"},98994:(e,n,l)=>{l.d(n,{U:()=>s});var a=l(74848),t=l(29731),i=l(34164),r=l(35220);function s({children:e,style:n,className:l}){let{variant:s}=(0,r.e)();return(0,a.jsx)("div",{...(0,t.G)("list-view-item-description"),className:(0,i.$)("Description-module__container--Zwqe8","compact"===s&&"Description-module__compact--Lw6nW",l),style:n,children:e})}try{s.displayName||(s.displayName="ListItemDescription")}catch{}}}]);
+${e}`);
+            },
+            setText: (e) => {
+              b(e);
+            },
+            focus: () => {
+              e.current?.focus();
+            },
+          }),
+          [b, f, e],
+        ),
+          (0, o.useEffect)(() => h(f), [f, h]));
+        let C = (0, o.useMemo)(() => (0, t.zw)(), []),
+          w = (0, o.useCallback)(
+            (n) => {
+              if (!(!C || E()) && e && e.current) {
+                n.preventDefault();
+                let l = window.getSelection();
+                if (l && l.anchorNode) {
+                  let e = { anchorNode: l.anchorNode, range: l.getRangeAt(0) },
+                    n = l.anchorNode.parentElement,
+                    a =
+                      n?.closest((0, d.Sp)(d.mU.issueComment)) ??
+                      n?.closest((0, d.Sp)(d.mU.issueBody));
+                  if (a && a instanceof HTMLDivElement) {
+                    let n = (0, c.E)(a, e);
+                    K(`${n}`);
+                  }
+                }
+                (e.current.scrollIntoView(), e.current.focus());
+              }
+            },
+            [C, E, K, e],
+          ),
+          _ = (0, o.useCallback)(() => {
+            (e.current ? e.current.reset() : h(""), k(void 0));
+          }, [e, k]);
+        return (
+          (0, r._)(["r"], w, {
+            triggerWhenInputElementHasFocus: !1,
+            triggerWhenPortalIsActive: g,
+          }),
+          {
+            handleMarkdownBodyChanged: b,
+            markdownValidationResult: F,
+            markdownBody: f,
+            resetMarkdownBody: _,
+          }
+        );
+      }
+    },
+    97911: (e, n, l) => {
+      l.d(n, { N: () => o });
+      var a = l(74848),
+        t = l(38621),
+        i = l(26108),
+        r = l(96540),
+        s = l(74547);
+      let o = (0, r.forwardRef)(
+        ({ renderAnchorProps: e, reactionsAvailable: n }, l) =>
+          (0, a.jsx)(i.K, {
+            size: "small",
+            icon: t.SmileyIcon,
+            ...e,
+            "aria-label": n ? s.t.react : s.t.reactionsUnavailable,
+            inactive: !n,
+            "aria-labelledby": void 0,
+            className:
+              "ReactionViewerAnchor-module__ReactionViewerAnchorButton--kb52r",
+            ref: l,
+          }),
+      );
+      o.displayName = "ReactionViewerAnchor";
+    },
+    98994: (e, n, l) => {
+      l.d(n, { U: () => s });
+      var a = l(74848),
+        t = l(29731),
+        i = l(34164),
+        r = l(35220);
+      function s({ children: e, style: n, className: l }) {
+        let { variant: s } = (0, r.e)();
+        return (0, a.jsx)("div", {
+          ...(0, t.G)("list-view-item-description"),
+          className: (0, i.$)(
+            "Description-module__container--Zwqe8",
+            "compact" === s && "Description-module__compact--Lw6nW",
+            l,
+          ),
+          style: n,
+          children: e,
+        });
+      }
+      try {
+        s.displayName || (s.displayName = "ListItemDescription");
+      } catch {}
+    },
+  },
+]);
 //# sourceMappingURL=26548-a1edcd7ea7f5.js.map

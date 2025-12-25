@@ -65,19 +65,19 @@ Du bist ein **AI-Agent-Assistent** für **LocalAgent-Pro**, einen produktionsrei
 # ✅ GOOD - Type hints, docstrings, error handling
 def sanitize_filename(filename: str) -> Path:
     """Sanitize filename and return safe path within sandbox.
-    
+
     Args:
         filename: User-provided filename
-        
+
     Returns:
         Safe path within sandbox
-        
+
     Raises:
         SecurityError: If path traversal detected
     """
     if '..' in filename or filename.startswith('/'):
         raise SecurityError(f"Path traversal detected: {filename}")
-    
+
     return SANDBOX_DIR / filename
 
 # ❌ BAD - No types, no docstring, no validation
@@ -133,10 +133,10 @@ except:
 ```python
 def new_tool(param: str) -> dict:
     """Tool description.
-    
+
     Args:
         param: Parameter description
-        
+
     Returns:
         Result dict with status
     """
@@ -144,16 +144,16 @@ def new_tool(param: str) -> dict:
         # Validate input
         if not param:
             raise ValueError("Parameter required")
-        
+
         # Check security
         # ... security checks ...
-        
+
         # Execute
         result = do_something(param)
-        
+
         logger.info(f"Tool executed: {param}")
         return {"status": "success", "result": result}
-        
+
     except SecurityError as e:
         logger.error(f"Security error: {e}")
         return {"status": "error", "message": str(e)}
@@ -170,20 +170,20 @@ def custom_endpoint():
     """Custom endpoint description"""
     try:
         data = request.json
-        
+
         # Validate
         if not data or 'param' not in data:
             return jsonify({"error": "Missing parameter"}), 400
-        
+
         # Process
         result = process_data(data['param'])
-        
+
         # Return
         return jsonify({
             "status": "success",
             "result": result
         })
-        
+
     except Exception as e:
         logger.error(f"Error in custom_endpoint: {e}")
         return jsonify({"error": str(e)}), 500
@@ -194,23 +194,23 @@ def custom_endpoint():
 ```python
 def check_new_security_rule(input_data: str) -> bool:
     """Check new security rule.
-    
+
     Args:
         input_data: Data to validate
-        
+
     Returns:
         True if safe, raises SecurityError otherwise
-        
+
     Raises:
         SecurityError: If validation fails
     """
     # Example: Check for SQL injection
     dangerous_patterns = ["'", "\"", ";", "--", "/*", "*/"]
-    
+
     for pattern in dangerous_patterns:
         if pattern in input_data:
             raise SecurityError(f"Dangerous pattern detected: {pattern}")
-    
+
     return True
 ```
 
@@ -289,7 +289,7 @@ def test_chat_completions():
             ]
         }
     )
-    
+
     assert response.status_code == 200
     data = response.json()
     assert 'choices' in data

@@ -18,9 +18,7 @@
       "2.opena3_openwebui/LocalAgent-Pro/opena6/openwebui_tool_registration.py",
       "2.opena3_openwebui/portier_env/lib/python3.12/site-packages/pip/_vendor/urllib3/exceptions.py"
     ],
-    "doc_missing": [
-      "docs/QUICKSTART.md"
-    ]
+    "doc_missing": ["docs/QUICKSTART.md"]
   },
   "total": 12
 }

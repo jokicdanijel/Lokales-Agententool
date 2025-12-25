@@ -57,14 +57,14 @@ for i in {1..10}; do
         log "✅ Web Panel ready!"
         log "🌐 Access: http://localhost:$PORT"
         log "🔗 API Target: Configure to http://127.0.0.1:12347"
-        
+
         echo ""
         log "📋 Quick Test:"
         echo "  1. Open http://localhost:$PORT"
         echo "  2. Enter Bearer Token"
         echo "  3. Click 'Health Check'"
         echo "  4. Test Native Chat or CMD Dispatch"
-        
+
         exit 0
     fi
     sleep 1

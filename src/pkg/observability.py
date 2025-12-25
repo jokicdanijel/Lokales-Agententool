@@ -19,7 +19,6 @@ from __future__ import annotations
 
 import logging
 import os
-from typing import Optional
 
 _logger = logging.getLogger(__name__)
 _initialized = False
@@ -32,7 +31,13 @@ def _env_flag(name: str) -> bool:
     return str(v).lower() in ("1", "true", "yes", "on")
 
 
-def init_tracing(app: Optional[object] = None, service_name: Optional[str] = None, *, enabled: Optional[bool] = None, endpoint: Optional[str] = None) -> bool:
+def init_tracing(
+    app: object | None = None,
+    service_name: str | None = None,
+    *,
+    enabled: bool | None = None,
+    endpoint: str | None = None,
+) -> bool:
     """Initialize OpenTelemetry tracing optionally and idempotently.
 
     Returns True if tracing was successfully initialized, False otherwise.
@@ -44,30 +49,38 @@ def init_tracing(app: Optional[object] = None, service_name: Optional[str] = Non
 
     # Determine whether tracing should be enabled
     if enabled is None:
-        enabled = _env_flag("OTEL_ENABLED") or _env_flag("ENABLE_TRACING") or os.environ.get("OTEL_EXPORTER_OTLP_ENDPOINT") is not None
+        enabled = (
+            _env_flag("OTEL_ENABLED")
+            or _env_flag("ENABLE_TRACING")
+            or os.environ.get("OTEL_EXPORTER_OTLP_ENDPOINT") is not None
+        )
 
     if not enabled:
         _logger.info("OpenTelemetry tracing is disabled (env) — skipping setup")
         return False
 
-    endpoint = endpoint or os.environ.get("OTEL_EXPORTER_OTLP_ENDPOINT", os.environ.get("OTEL_ENDPOINT", "http://localhost:4318/v1/traces"))
+    endpoint = endpoint or os.environ.get(
+        "OTEL_EXPORTER_OTLP_ENDPOINT", os.environ.get("OTEL_ENDPOINT", "http://localhost:4318/v1/traces")
+    )
 
     try:
         # Lazy import of opentelemetry packages so code is safe when deps are absent
         from opentelemetry import trace
+        from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+        from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+        from opentelemetry.instrumentation.logging import LoggingInstrumentor
+        from opentelemetry.instrumentation.requests import RequestsInstrumentor
         from opentelemetry.sdk.resources import Resource
         from opentelemetry.sdk.trace import TracerProvider
         from opentelemetry.sdk.trace.export import BatchSpanProcessor
-        from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
-        from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
-        from opentelemetry.instrumentation.requests import RequestsInstrumentor
-        from opentelemetry.instrumentation.logging import LoggingInstrumentor
     except ImportError as exc:  # pragma: no cover - environment dependent
         _logger.warning("OpenTelemetry packages not installed; tracing skipped: %s", exc)
         return False
 
     try:
-        service_name = service_name or os.environ.get("OTEL_SERVICE_NAME", os.environ.get("SERVICE_NAME", "portier-service"))
+        service_name = service_name or os.environ.get(
+            "OTEL_SERVICE_NAME", os.environ.get("SERVICE_NAME", "portier-service")
+        )
 
         resource = Resource.create(attributes={"service.name": service_name})
         provider = TracerProvider(resource=resource)

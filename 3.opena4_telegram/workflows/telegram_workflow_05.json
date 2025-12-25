@@ -12,10 +12,7 @@
       "name": "Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1,
-      "position": [
-        200,
-        300
-      ]
+      "position": [200, 300]
     },
     {
       "parameters": {
@@ -28,10 +25,7 @@
       "name": "Get Config",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 1,
-      "position": [
-        400,
-        300
-      ]
+      "position": [400, 300]
     },
     {
       "parameters": {},
@@ -39,10 +33,7 @@
       "name": "Return",
       "type": "n8n-nodes-base.set",
       "typeVersion": 1,
-      "position": [
-        600,
-        300
-      ]
+      "position": [600, 300]
     }
   ],
   "connections": {

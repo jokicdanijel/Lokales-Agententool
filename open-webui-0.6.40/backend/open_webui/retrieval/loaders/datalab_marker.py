@@ -1,11 +1,11 @@
+import json
+import logging
 import os
 import time
+
 import requests
-import logging
-import json
-from typing import List, Optional
-from langchain_core.documents import Document
 from fastapi import HTTPException, status
+from langchain_core.documents import Document
 
 log = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ class DatalabMarkerLoader:
         file_path: str,
         api_key: str,
         api_base_url: str,
-        additional_config: Optional[str] = None,
+        additional_config: str | None = None,
         use_llm: bool = False,
         skip_cache: bool = False,
         force_ocr: bool = False,
@@ -80,11 +80,9 @@ class DatalabMarkerLoader:
             )
         except ValueError as e:
             log.error(f"Invalid JSON checking Marker request: {e}")
-            raise HTTPException(
-                status.HTTP_502_BAD_GATEWAY, detail=f"Invalid JSON: {e}"
-            )
+            raise HTTPException(status.HTTP_502_BAD_GATEWAY, detail=f"Invalid JSON: {e}")
 
-    def load(self) -> List[Document]:
+    def load(self) -> list[Document]:
         filename = os.path.basename(self.file_path)
         mime_type = self._get_mime_type(filename)
         headers = {"X-Api-Key": self.api_key}
@@ -119,18 +117,14 @@ class DatalabMarkerLoader:
                 response.raise_for_status()
                 result = response.json()
         except FileNotFoundError:
-            raise HTTPException(
-                status.HTTP_404_NOT_FOUND, detail=f"File not found: {self.file_path}"
-            )
+            raise HTTPException(status.HTTP_404_NOT_FOUND, detail=f"File not found: {self.file_path}")
         except requests.HTTPError as e:
             raise HTTPException(
                 status.HTTP_400_BAD_REQUEST,
                 detail=f"Datalab Marker request failed: {e}",
             )
         except ValueError as e:
-            raise HTTPException(
-                status.HTTP_502_BAD_GATEWAY, detail=f"Invalid JSON response: {e}"
-            )
+            raise HTTPException(status.HTTP_502_BAD_GATEWAY, detail=f"Invalid JSON response: {e}")
         except Exception as e:
             raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
@@ -155,9 +149,7 @@ class DatalabMarkerLoader:
                 except (requests.HTTPError, ValueError) as e:
                     raw_body = poll_response.text
                     log.error(f"Polling error: {e}, response body: {raw_body}")
-                    raise HTTPException(
-                        status.HTTP_502_BAD_GATEWAY, detail=f"Polling failed: {e}"
-                    )
+                    raise HTTPException(status.HTTP_502_BAD_GATEWAY, detail=f"Polling failed: {e}")
 
                 status_val = poll_result.get("status")
                 success_val = poll_result.get("success")
@@ -174,19 +166,12 @@ class DatalabMarkerLoader:
                             "total_cost",
                         )
                     }
-                    log.info(
-                        f"Marker processing completed successfully: {json.dumps(summary, indent=2)}"
-                    )
+                    log.info(f"Marker processing completed successfully: {json.dumps(summary, indent=2)}")
                     break
 
                 if status_val == "failed" or success_val is False:
-                    log.error(
-                        f"Marker poll failed full response: {json.dumps(poll_result, indent=2)}"
-                    )
-                    error_msg = (
-                        poll_result.get("error")
-                        or "Marker returned failure without error message"
-                    )
+                    log.error(f"Marker poll failed full response: {json.dumps(poll_result, indent=2)}")
+                    error_msg = poll_result.get("error") or "Marker returned failure without error message"
                     raise HTTPException(
                         status.HTTP_400_BAD_REQUEST,
                         detail=f"Marker processing failed: {error_msg}",
@@ -215,11 +200,7 @@ class DatalabMarkerLoader:
                 raw_content = result.get("output")
                 final_result = result
             else:
-                available_fields = (
-                    list(result.keys())
-                    if isinstance(result, dict)
-                    else "non-dict response"
-                )
+                available_fields = list(result.keys()) if isinstance(result, dict) else "non-dict response"
                 raise HTTPException(
                     status.HTTP_502_BAD_GATEWAY,
                     detail=f"Custom Marker endpoint returned success but no 'output' field found. Available fields: {available_fields}. Expected either 'request_check_url' for polling or 'output' field for direct response.",

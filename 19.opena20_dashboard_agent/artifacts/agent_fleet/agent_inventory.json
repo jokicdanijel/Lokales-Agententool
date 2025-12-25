@@ -1,9 +1,7 @@
 {
   "scanned_at": "2025-12-24T10:32:30.812928Z",
   "total_services": 1,
-  "compose_files_scanned": [
-    "docker-compose.yml"
-  ],
+  "compose_files_scanned": ["docker-compose.yml"],
   "services": [
     {
       "service_name": "opena20-dashboard",
@@ -94,9 +92,7 @@
       "stable-diffusion-webui",
       "playwright"
     ],
-    "modified": [
-      "opena20-dashboard"
-    ],
+    "modified": ["opena20-dashboard"],
     "unchanged": []
   },
   "port_conflicts": {}

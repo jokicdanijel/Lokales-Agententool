@@ -446,7 +446,7 @@ BRIDGE_PORT=12351
 **Datei:** `docker-compose.dev.yml`
 
 ```yaml
-version: '3.9'
+version: "3.9"
 
 services:
   dashboard:
@@ -458,10 +458,10 @@ services:
       LOG_LEVEL: DEBUG
     ports:
       - "12349:12349"
-      - "12344:12344"  # opena1
-      - "12345:12345"  # opena2
-      - "12346:12346"  # kordp
-      - "12351:12351"  # bridge (new)
+      - "12344:12344" # opena1
+      - "12345:12345" # opena2
+      - "12346:12346" # kordp
+      - "12351:12351" # bridge (new)
     volumes:
       - ./19.dashboard_agent:/app
     command: >
@@ -482,7 +482,7 @@ services:
 **Datei:** `docker-compose.prod.yml`
 
 ```yaml
-version: '3.9'
+version: "3.9"
 
 services:
   dashboard:
@@ -667,14 +667,14 @@ jobs:
 
 ## 8. Migration Path (Phase 4, Week 2)
 
-| Date | Task | Owner | Checklist |
-|------|------|-------|-----------|
-| Nov 14 | Review this blueprint | Dev Team | - [ ] Understand DEV/PROD differences |
-| Nov 15 | Implement `config_env.py` | Dev | - [ ] Module complete, tested |
-| Nov 16–17 | Update `security.py` | Security | - [ ] All checks working |
-| Nov 18 | Update endpoints | Dev | - [ ] Dashboard, emergency, debug |
-| Nov 19 | Test DEV mode | QA | - [ ] All bypasses work in DEV |
-| Nov 20–21 | Pre-prod validation | QA | - [ ] PROD configs verified |
+| Date      | Task                      | Owner    | Checklist                             |
+| --------- | ------------------------- | -------- | ------------------------------------- |
+| Nov 14    | Review this blueprint     | Dev Team | - [ ] Understand DEV/PROD differences |
+| Nov 15    | Implement `config_env.py` | Dev      | - [ ] Module complete, tested         |
+| Nov 16–17 | Update `security.py`      | Security | - [ ] All checks working              |
+| Nov 18    | Update endpoints          | Dev      | - [ ] Dashboard, emergency, debug     |
+| Nov 19    | Test DEV mode             | QA       | - [ ] All bypasses work in DEV        |
+| Nov 20–21 | Pre-prod validation       | QA       | - [ ] PROD configs verified           |
 
 ---
 

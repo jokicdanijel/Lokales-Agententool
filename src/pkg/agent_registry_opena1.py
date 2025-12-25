@@ -86,5 +86,3 @@ if __name__ == "__main__":
         finally:
             await client.aclose()
     asyncio.run(_main())
-
-

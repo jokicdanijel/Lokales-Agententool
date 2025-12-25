@@ -1,7 +1,7 @@
 # TODO – opena12 Social Media Agent
 
-**Port:** 12357  
-**Status:** 🟡 Planned  
+**Port:** 12357
+**Status:** 🟡 Planned
 **Kürzel:** `smp`
 
 ---
@@ -96,5 +96,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

@@ -8,18 +8,15 @@ Port: 12346 (Policy-bound, assigned)
 Integration: Portier (kordp) via /dispatch/kordp
 """
 
-import asyncio
 import hashlib
-import json
 import os
 import socket
-import time
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-from fastapi import FastAPI, HTTPException, Request
-from pydantic import BaseModel, Field, ConfigDict
 import httpx
+from fastapi import FastAPI
+from pydantic import BaseModel, ConfigDict, Field
 
 # ────────────────────────────────────────────────────────────────────────
 # Configuration
@@ -47,16 +44,13 @@ def _key_fingerprint(secret: str) -> str:
 OPENWEBUI_PRESENT = bool(OPENWEBUI_API_KEY)
 OPENWEBUI_FP = _key_fingerprint(OPENWEBUI_API_KEY)
 
-REDACT_KEYS = {
-    "authorization", "openwebui_api_key", "api_key", "token",
-    "OPENWEBUI_API_KEY", "bearer", "key"
-}
+REDACT_KEYS = {"authorization", "openwebui_api_key", "api_key", "token", "OPENWEBUI_API_KEY", "bearer", "key"}
 
 
 def _redact_secrets(obj: Any) -> Any:
     """Remove/obfuscate sensitive fields recursively."""
     if isinstance(obj, dict):
-        sanitized: Dict[str, Any] = {}
+        sanitized: dict[str, Any] = {}
         for k, v in obj.items():
             kl = str(k).lower()
             if kl in REDACT_KEYS or "token" in kl or "secret" in kl or "key" in kl:
@@ -86,19 +80,22 @@ def _hostname() -> str:
 # Pydantic Models
 # ────────────────────────────────────────────────────────────────────────
 
+
 class ChatCompletionIn(BaseModel):
     """Chat completion request."""
+
     model_config = ConfigDict(extra="forbid")
     model: str = Field(default=DEFAULT_MODEL)
-    messages: List[Dict[str, str]] = Field(...)
+    messages: list[dict[str, str]] = Field(...)
     temperature: float = Field(default=0.7, ge=0.0, le=2.0)
-    max_tokens: Optional[int] = None
+    max_tokens: int | None = None
     strict: bool = True
 
 
 class ModelListResponse(BaseModel):
     """Model list response."""
-    models: List[str] = Field(...)
+
+    models: list[str] = Field(...)
     available: int = Field(...)
 
 
@@ -109,7 +106,7 @@ class ModelListResponse(BaseModel):
 app = FastAPI(
     title=f"Open Web UI Gateway — {PROGRAM_TARGET.upper()}",
     description="Inference Gateway for Open Web UI",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 # Statistics
@@ -136,7 +133,8 @@ APP_META = {
 # Helper: Store Safepoint
 # ────────────────────────────────────────────────────────────────────────
 
-async def _store_safepoint(kind: str, body: Dict[str, Any]) -> None:
+
+async def _store_safepoint(kind: str, body: dict[str, Any]) -> None:
     """Delegate safepoint storage to OpenA2."""
     url = f"http://127.0.0.1:{ARCHIVP_PORT}/store/archivp"
     payload = {
@@ -145,7 +143,7 @@ async def _store_safepoint(kind: str, body: Dict[str, Any]) -> None:
         "kind": kind,
         "body": _redact_secrets(body),
         "strict": True,
-        "ts": _now()
+        "ts": _now(),
     }
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
@@ -160,8 +158,9 @@ async def _store_safepoint(kind: str, body: Dict[str, Any]) -> None:
 # Endpoints
 # ────────────────────────────────────────────────────────────────────────
 
+
 @app.get("/health")
-async def health() -> Dict[str, Any]:
+async def health() -> dict[str, Any]:
     """Health check endpoint."""
     return {
         **APP_META,
@@ -178,29 +177,35 @@ async def list_models() -> ModelListResponse:
     """List available models from Open Web UI."""
     # Mock response (replace with real API call if OpenWebUI is running)
     models = [DEFAULT_MODEL, "gpt-4", "claude-2", "mistral"]
-    
-    await _store_safepoint("MODEL_LIST", {
-        "models_count": len(models),
-        "models": models,
-    })
-    
+
+    await _store_safepoint(
+        "MODEL_LIST",
+        {
+            "models_count": len(models),
+            "models": models,
+        },
+    )
+
     return ModelListResponse(models=models, available=len(models))
 
 
 @app.post("/chat/completions")
-async def chat_completion(req: ChatCompletionIn) -> Dict[str, Any]:
+async def chat_completion(req: ChatCompletionIn) -> dict[str, Any]:
     """Request chat completion from Open Web UI."""
     STATS["completions_requested"] += 1
-    
+
     # Mock response (replace with real API call if OpenWebUI is running)
     completion = f"Mock response from {req.model}: processed {len(req.messages)} messages"
-    
-    await _store_safepoint("COMPLETION", {
-        "model": req.model,
-        "messages_count": len(req.messages),
-        "temperature": req.temperature,
-    })
-    
+
+    await _store_safepoint(
+        "COMPLETION",
+        {
+            "model": req.model,
+            "messages_count": len(req.messages),
+            "temperature": req.temperature,
+        },
+    )
+
     return {
         "ok": True,
         "model": req.model,
@@ -211,7 +216,7 @@ async def chat_completion(req: ChatCompletionIn) -> Dict[str, Any]:
 
 
 @app.post("/echo")
-async def echo(payload: Dict[str, Any]) -> Dict[str, Any]:
+async def echo(payload: dict[str, Any]) -> dict[str, Any]:
     """Echo endpoint for testing."""
     await _store_safepoint("ECHO", payload)
     return {
@@ -227,11 +232,5 @@ async def echo(payload: Dict[str, Any]) -> Dict[str, Any]:
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(
-        "main:app",
-        host="127.0.0.1",
-        port=PORT,
-        reload=False,
-        access_log=False,
-        log_level="info"
-    )
+
+    uvicorn.run("main:app", host="127.0.0.1", port=PORT, reload=False, access_log=False, log_level="info")

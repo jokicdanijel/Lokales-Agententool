@@ -10,7 +10,7 @@
 
 ## ✅ Pre-Launch Validation (Alle müssen PASS sein)
 
-### [  ] 1. Repository & Branch Setup
+### [ ] 1. Repository & Branch Setup
 
 ```bash
 # Git branch status
@@ -30,16 +30,17 @@ ls -la 19.dashboard_agent/docs/PDI/
 ```
 
 **Checklist:**
+
 - [ ] Main branch clean
 - [ ] Feature branch ready (or create)
 - [ ] All PDI docs committed
 - [ ] No uncommitted changes
 
-**Validator:** ________________  **Date:** ________
+**Validator:** ******\_\_\_\_****** **Date:** **\_\_\_\_**
 
 ---
 
-### [  ] 2. Environment Setup
+### [ ] 2. Environment Setup
 
 ```bash
 # Python version
@@ -56,16 +57,17 @@ cat 19.dashboard_agent/requirements.txt | head -5
 ```
 
 **Checklist:**
+
 - [ ] Python 3.12+ installed
 - [ ] venv313 activated
 - [ ] All dependencies installed (pip freeze OK)
 - [ ] No version conflicts
 
-**Validator:** ________________  **Date:** ________
+**Validator:** ******\_\_\_\_****** **Date:** **\_\_\_\_**
 
 ---
 
-### [  ] 3. File Structure Validation
+### [ ] 3. File Structure Validation
 
 ```bash
 # Check all required Phase 4.1 directories exist
@@ -88,16 +90,17 @@ done
 ```
 
 **Checklist:**
+
 - [ ] All directories exist
 - [ ] All critical PDI files present
 - [ ] Task 01 file executable (bin/system_mode_switch.sh -x)
 - [ ] No missing dependencies
 
-**Validator:** ________________  **Date:** ________
+**Validator:** ******\_\_\_\_****** **Date:** **\_\_\_\_**
 
 ---
 
-### [  ] 4. Code Quality Checks
+### [ ] 4. Code Quality Checks
 
 ```bash
 # Lint check
@@ -115,16 +118,17 @@ cd ../..
 ```
 
 **Checklist:**
+
 - [ ] Pylint score ≥8.0 (or accept current)
 - [ ] Black formatting OK
 - [ ] No syntax errors
 - [ ] No import errors
 
-**Validator:** ________________  **Date:** ________
+**Validator:** ******\_\_\_\_****** **Date:** **\_\_\_\_**
 
 ---
 
-### [  ] 5. Task 01 Functional Test
+### [ ] 5. Task 01 Functional Test
 
 ```bash
 # Test system_mode_switch.sh
@@ -140,16 +144,17 @@ bin/system_mode_switch.sh validate development 2>&1 | grep -q "validation passed
 ```
 
 **Checklist:**
+
 - [ ] `system_mode_switch.sh show` works
 - [ ] `system_mode_switch.sh help` works
 - [ ] `system_mode_switch.sh validate development` passes
 - [ ] Audit log created (logs/system_mode_audit.log)
 
-**Validator:** ________________  **Date:** ________
+**Validator:** ******\_\_\_\_****** **Date:** **\_\_\_\_**
 
 ---
 
-### [  ] 6. Phase 3 Services Status
+### [ ] 6. Phase 3 Services Status
 
 ```bash
 # Check if Phase 3 services still work
@@ -161,16 +166,17 @@ bin/check_ports.sh 2>&1
 ```
 
 **Checklist:**
+
 - [ ] Dashboard accessible (or confirm ports)
 - [ ] At least one service running
 - [ ] No critical errors in logs
 - [ ] bin/ops.sh responds to commands
 
-**Validator:** ________________  **Date:** ________
+**Validator:** ******\_\_\_\_****** **Date:** **\_\_\_\_**
 
 ---
 
-### [  ] 7. Bootstrap Prompt Validation
+### [ ] 7. Bootstrap Prompt Validation
 
 ```bash
 # Check bootstrap prompt exists and is readable
@@ -183,16 +189,17 @@ grep -q "Rolle & Mission" 19.dashboard_agent/.vscode/portier-bridge/BOOTSTRAP_PD
 ```
 
 **Checklist:**
+
 - [ ] Bootstrap file readable
 - [ ] Contains all sections (Rolle, System-Status, Verhaltensmatrix, etc.)
 - [ ] PDI-ACTIVE header present
 - [ ] Version 1.0 noted
 
-**Validator:** ________________  **Date:** ________
+**Validator:** ******\_\_\_\_****** **Date:** **\_\_\_\_**
 
 ---
 
-### [  ] 8. Documentation Completeness
+### [ ] 8. Documentation Completeness
 
 ```bash
 # Check all required docs exist
@@ -213,16 +220,17 @@ done
 ```
 
 **Checklist:**
+
 - [ ] All PDI docs present
 - [ ] Project manifest complete (>200 lines)
 - [ ] Kapitelplan has all 20 positions
 - [ ] All docs have PDI headers
 
-**Validator:** ________________  **Date:** ________
+**Validator:** ******\_\_\_\_****** **Date:** **\_\_\_\_**
 
 ---
 
-### [  ] 9. GitHub Preparation
+### [ ] 9. GitHub Preparation
 
 ```bash
 # Check GitHub branch
@@ -236,16 +244,17 @@ git remote -v | grep -q "origin" && echo "✅ Remote configured"
 ```
 
 **Checklist:**
+
 - [ ] GitHub remote configured (git remote -v)
 - [ ] Branch ready for feature/phase-4-bridge
 - [ ] No conflicts with main
 - [ ] CI/CD workflows prepared (or pending)
 
-**Validator:** ________________  **Date:** ________
+**Validator:** ******\_\_\_\_****** **Date:** **\_\_\_\_**
 
 ---
 
-### [  ] 10. Security Baseline
+### [ ] 10. Security Baseline
 
 ```bash
 # Check for hardcoded secrets
@@ -262,29 +271,30 @@ grep -q "\.env" .gitignore && echo "✅ .env in .gitignore"
 ```
 
 **Checklist:**
+
 - [ ] No hardcoded tokens in code
 - [ ] .env files not committed
 - [ ] .gitignore excludes sensitive files
 - [ ] BOOTSTRAP_PDI_PROMPT has no secrets
 
-**Validator:** ________________  **Date:** ________
+**Validator:** ******\_\_\_\_****** **Date:** **\_\_\_\_**
 
 ---
 
 ## 🚀 Pre-Launch Readiness Summary
 
-| Check | Status | Notes |
-|-------|--------|-------|
-| Repository setup | [ ] | |
-| Environment ready | [ ] | |
-| File structure OK | [ ] | |
-| Code quality | [ ] | |
-| Task 01 works | [ ] | |
-| Phase 3 intact | [ ] | |
-| Bootstrap valid | [ ] | |
-| Docs complete | [ ] | |
-| GitHub ready | [ ] | |
-| Security baseline | [ ] | |
+| Check             | Status | Notes |
+| ----------------- | ------ | ----- |
+| Repository setup  | [ ]    |       |
+| Environment ready | [ ]    |       |
+| File structure OK | [ ]    |       |
+| Code quality      | [ ]    |       |
+| Task 01 works     | [ ]    |       |
+| Phase 3 intact    | [ ]    |       |
+| Bootstrap valid   | [ ]    |       |
+| Docs complete     | [ ]    |       |
+| GitHub ready      | [ ]    |       |
+| Security baseline | [ ]    |       |
 
 ---
 
@@ -297,22 +307,23 @@ Failed: ___
 ```
 
 ### Criteria for GO-LIVE:
+
 - ✅ All 10 checks PASS, OR
 - ✅ 9/10 checks PASS + risk accepted by Lead, OR
 - ❌ <9 checks PASS → **HOLD** pending fixes
 
-### Decision: ☐ GO   ☐ GO-WITH-ACCEPTED-RISKS   ☐ NO-GO
+### Decision: ☐ GO ☐ GO-WITH-ACCEPTED-RISKS ☐ NO-GO
 
 ---
 
 ## Sign-Off
 
-| Role | Name | Signature | Date |
-|------|------|-----------|------|
-| DevOps Lead | _____________ | _____________ | _____ |
-| QA Lead | _____________ | _____________ | _____ |
-| Tech Lead | _____________ | _____________ | _____ |
-| Project Lead | Danijel Jokic | _____________ | _____ |
+| Role         | Name           | Signature      | Date   |
+| ------------ | -------------- | -------------- | ------ |
+| DevOps Lead  | ******\_****** | ******\_****** | **\_** |
+| QA Lead      | ******\_****** | ******\_****** | **\_** |
+| Tech Lead    | ******\_****** | ******\_****** | **\_** |
+| Project Lead | Danijel Jokic  | ******\_****** | **\_** |
 
 ---
 

@@ -12,11 +12,11 @@ Dieses Dokument dokumentiert die Bereinigung von Großdateien (>100 MB) aus der 
 
 ### Findings
 
-| Issue | Größe | Typ | Status |
-|-------|-------|-----|--------|
-| `backups/portier-20251109-033043.tar.gz` | 348 MB | Binary | ✅ Removed |
-| `backups/portier-20251109-033043.zip` | 438 MB | Binary | ✅ Removed |
-| `backups/portier-20251109-033203.zip` | 438 MB | Binary | ✅ Removed |
+| Issue                                         | Größe  | Typ    | Status     |
+| --------------------------------------------- | ------ | ------ | ---------- |
+| `backups/portier-20251109-033043.tar.gz`      | 348 MB | Binary | ✅ Removed |
+| `backups/portier-20251109-033043.zip`         | 438 MB | Binary | ✅ Removed |
+| `backups/portier-20251109-033203.zip`         | 438 MB | Binary | ✅ Removed |
 | `GitHubDesktop-linux-amd64-3.4.13-linux1.deb` | 124 MB | Binary | ✅ Removed |
 
 ---
@@ -59,11 +59,13 @@ git filter-branch --force --index-filter \
 ```
 
 **Impact:**
+
 - Alle Commits, die Großdateien enthielten, wurden umgeschrieben
 - Neue Commit-Hashes erstellt (keine Großdateien mehr)
 - Tags aktualisiert (automatisch)
 
 **Commit Rewrites:**
+
 ```
 Rewrite 81ef28e → (neuer Hash) – ohne Großdateien
 Rewrite 9725487 → (neuer Hash) – ohne Großdateien
@@ -98,6 +100,7 @@ git push origin main --force
 Alle 3 Core Services nutzen einheitliches Port-Policy-Format:
 
 #### Service: `opena1` (Port 12344)
+
 **Datei:** `3.opena1_coordinator/main.py`
 
 ```python
@@ -122,6 +125,7 @@ async def health():
 ```
 
 #### Service: `kordp` (Port 12346)
+
 **Datei:** `5.kordp_scheduler/main.py`
 
 ```python
@@ -134,6 +138,7 @@ config = PortierServiceConfig(
 ```
 
 #### Service: `opena2` (Port 12348)
+
 **Datei:** `4.opena2_archivator/main.py`
 
 ```python
@@ -170,6 +175,7 @@ curl http://127.0.0.1:12348/health | jq .
 ```
 
 **Expected Response:**
+
 ```json
 {
   "service": "opena1",
@@ -201,19 +207,19 @@ git ls-remote origin main
 
 ### Commits in dieser Phase
 
-| Commit | Message | Changes |
-|--------|---------|---------|
-| `9091c3b` | chore: add .gitignore for large files | .gitignore patterns hinzugefügt |
-| (via `git filter-branch`) | – | 7 Commits ohne Großdateien umgeschrieben |
+| Commit                    | Message                               | Changes                                  |
+| ------------------------- | ------------------------------------- | ---------------------------------------- |
+| `9091c3b`                 | chore: add .gitignore for large files | .gitignore patterns hinzugefügt          |
+| (via `git filter-branch`) | –                                     | 7 Commits ohne Großdateien umgeschrieben |
 
 ### Affected Files
 
-| File | Change | Reason |
-|------|--------|--------|
-| `.gitignore` | +4 lines | Patterns für backups/*, *.deb |
-| `3.opena1_coordinator/main.py` | No change | Bereits PortierServiceConfig |
-| `5.kordp_scheduler/main.py` | No change | Bereits PortierServiceConfig |
-| `4.opena2_archivator/main.py` | No change | Bereits PortierServiceConfig |
+| File                           | Change    | Reason                        |
+| ------------------------------ | --------- | ----------------------------- |
+| `.gitignore`                   | +4 lines  | Patterns für backups/_, _.deb |
+| `3.opena1_coordinator/main.py` | No change | Bereits PortierServiceConfig  |
+| `5.kordp_scheduler/main.py`    | No change | Bereits PortierServiceConfig  |
+| `4.opena2_archivator/main.py`  | No change | Bereits PortierServiceConfig  |
 
 ---
 
@@ -251,16 +257,19 @@ Alle neuen Services sollten folgendes implementieren:
 ## Referenzen
 
 **Related Issues:**
+
 - P0 Compliance Audit: `docs/CI_AUDIT_INTEGRATION_REPORT.md`
 - Port-Policy Framework: `docs/PORTIER_COMPLIANCE_REMOVAL.md`
 - Tools Registry: `1.opena1&2_portier/config/tools_registry.json`
 
 **Related Commits:**
+
 - `99604b1` – CI Audit & Agents
 - `69ae666` – P0 Scan & Verification
 - `9091c3b` – Large Files Cleanup
 
 **GitHub Actions:**
+
 - Workflow: `.github/workflows/portier-ci.yml`
 - Gates: Port-Policy, venv313, Endpoints, Health, Safepoints
 

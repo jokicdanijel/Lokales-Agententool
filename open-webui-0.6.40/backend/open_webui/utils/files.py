@@ -1,23 +1,11 @@
-from open_webui.routers.images import (
-    get_image_data,
-    upload_image,
-)
-
-from fastapi import (
-    APIRouter,
-    Depends,
-    HTTPException,
-    Request,
-    UploadFile,
-)
-
-from open_webui.routers.files import upload_file_handler
-
-import mimetypes
 import base64
 import io
+import mimetypes
 import re
 
+from fastapi import UploadFile
+from open_webui.routers.files import upload_file_handler
+from open_webui.routers.images import get_image_data, upload_image
 
 BASE64_IMAGE_URL_PREFIX = re.compile(r"data:image/\w+;base64,", re.IGNORECASE)
 MARKDOWN_IMAGE_URL_PATTERN = re.compile(r"!\[(.*?)\]\((.+?)\)", re.IGNORECASE)
@@ -61,9 +49,7 @@ def load_b64_audio_data(b64_str):
             b64_data = b64_str
             header = "data:audio/wav;base64"
         audio_data = base64.b64decode(b64_data)
-        content_type = (
-            header.split(";")[0].split(":")[1] if ";" in header else "audio/wav"
-        )
+        content_type = header.split(";")[0].split(":")[1] if ";" in header else "audio/wav"
         return audio_data, content_type
     except Exception as e:
         print(f"Error decoding base64 audio data: {e}")

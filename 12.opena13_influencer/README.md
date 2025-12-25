@@ -1,10 +1,10 @@
 # 🤖 opena13 - Influencer Agent
 
-**Agent-ID:** `opena13`  
-**Port:** 12359  
-**Kürzel:** `influp`  
-**Version:** 3.0  
-**Status:** 🟡 **Planned** (PORTIER 3.0 Architecture Ready)  
+**Agent-ID:** `opena13`
+**Port:** 12359
+**Kürzel:** `influp`
+**Version:** 3.0
+**Status:** 🟡 **Planned** (PORTIER 3.0 Architecture Ready)
 **Letzte Aktualisierung:** 29. November 2025
 
 ---
@@ -166,8 +166,8 @@ curl http://127.0.0.1:12359/metrics
 
 ---
 
-**Maintainer:** Danijel Jokic (ELION Team)  
-**Letzte Aktualisierung:** 29. November 2025  
+**Maintainer:** Danijel Jokic (ELION Team)
+**Letzte Aktualisierung:** 29. November 2025
 **Status:** 🟡 **Architecture Ready** (Implementation Pending)
 
 ## 📖 Überblick
@@ -208,6 +208,7 @@ Client/UI
 ## 📡 API-Endpoints
 
 ### `GET /health`
+
 Health-Check des Agents.
 
 ```bash
@@ -215,6 +216,7 @@ curl http://127.0.0.1:12355/health | jq .
 ```
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -229,6 +231,7 @@ curl http://127.0.0.1:12355/health | jq .
 ```
 
 ### `POST /profiles/create`
+
 Influencer-Profil erstellen.
 
 ```bash
@@ -248,6 +251,7 @@ curl -X POST http://127.0.0.1:12358/profiles/create \
 ```
 
 ### `POST /campaigns/create`
+
 Kampagne erstellen.
 
 ```bash
@@ -267,6 +271,7 @@ curl -X POST http://127.0.0.1:12358/campaigns/create \
 ```
 
 ### `POST /match`
+
 Influencer für Kampagne matchen.
 
 ```bash
@@ -281,6 +286,7 @@ curl -X POST http://127.0.0.1:12358/match \
 ```
 
 **Response:**
+
 ```json
 {
   "campaign_id": "a0e74275-...",
@@ -298,6 +304,7 @@ curl -X POST http://127.0.0.1:12358/match \
 ```
 
 ### `POST /metrics`
+
 Aggregierte Metriken abrufen.
 
 ```bash
@@ -435,5 +442,5 @@ tail -f data/audit.jsonl | jq .
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 27. November 2025

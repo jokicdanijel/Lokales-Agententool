@@ -12,17 +12,19 @@ Features:
     - Support for SQLite and PostgreSQL
 """
 
-from sqlalchemy import create_engine, event
-from sqlalchemy.orm import sessionmaker, Session
-from sqlalchemy.pool import StaticPool, QueuePool
-from sqlalchemy.exc import SQLAlchemyError, OperationalError
-from app.models.paper import Base
-import os
 import logging
+import os
 import threading
-from typing import Optional, Generator
+from collections.abc import Generator
 from contextlib import contextmanager
 from time import sleep
+
+from sqlalchemy import create_engine, event
+from sqlalchemy.exc import OperationalError, SQLAlchemyError
+from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.pool import QueuePool, StaticPool
+
+from app.models.paper import Base
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -52,13 +54,13 @@ def _create_engine(db_path: str):
     logger.debug(f"Creating engine for: {db_path}")
 
     try:
-        if db_path.endswith('.db') or ':memory:' in db_path:
+        if db_path.endswith(".db") or ":memory:" in db_path:
             # SQLite configuration
             engine = create_engine(
-                f'sqlite:///{db_path}',
-                connect_args={'check_same_thread': False},
+                f"sqlite:///{db_path}",
+                connect_args={"check_same_thread": False},
                 poolclass=StaticPool,
-                echo=os.getenv('SQL_ECHO', 'False').lower() == 'true'
+                echo=os.getenv("SQL_ECHO", "False").lower() == "true",
             )
             logger.info(f"✅ SQLite engine created: {db_path}")
         else:
@@ -69,12 +71,13 @@ def _create_engine(db_path: str):
                 pool_size=5,
                 max_overflow=10,
                 pool_pre_ping=True,
-                echo=os.getenv('SQL_ECHO', 'False').lower() == 'true'
+                echo=os.getenv("SQL_ECHO", "False").lower() == "true",
             )
-            logger.info(f"✅ PostgreSQL engine created")
+            logger.info("✅ PostgreSQL engine created")
 
         # Enable foreign keys for SQLite
-        if db_path.endswith('.db') or ':memory:' in db_path:
+        if db_path.endswith(".db") or ":memory:" in db_path:
+
             @event.listens_for(engine, "connect")
             def set_sqlite_pragma(dbapi_conn, connection_record):
                 cursor = dbapi_conn.cursor()
@@ -88,7 +91,7 @@ def _create_engine(db_path: str):
         raise
 
 
-def init_db(db_path: Optional[str] = None) -> tuple:
+def init_db(db_path: str | None = None) -> tuple:
     """
     Initialize database and create all tables.
 
@@ -108,7 +111,7 @@ def init_db(db_path: Optional[str] = None) -> tuple:
     global _engine, _SessionLocal
 
     if db_path is None:
-        db_path = os.getenv('DB_PATH', './research_papers.db')
+        db_path = os.getenv("DB_PATH", "./research_papers.db")
 
     # Thread-safe initialization
     with _lock:
@@ -121,12 +124,7 @@ def init_db(db_path: Optional[str] = None) -> tuple:
             _engine = _create_engine(db_path)
 
             # Create session factory
-            _SessionLocal = sessionmaker(
-                bind=_engine,
-                autoflush=False,
-                autocommit=False,
-                expire_on_commit=False
-            )
+            _SessionLocal = sessionmaker(bind=_engine, autoflush=False, autocommit=False, expire_on_commit=False)
 
             # Create all tables
             Base.metadata.create_all(_engine)
@@ -139,7 +137,7 @@ def init_db(db_path: Optional[str] = None) -> tuple:
             raise
 
 
-def get_engine(db_path: Optional[str] = None):
+def get_engine(db_path: str | None = None):
     """
     Get or create global database engine.
 
@@ -157,13 +155,13 @@ def get_engine(db_path: Optional[str] = None):
         with _lock:
             if _engine is None:
                 if db_path is None:
-                    db_path = os.getenv('DB_PATH', './research_papers.db')
+                    db_path = os.getenv("DB_PATH", "./research_papers.db")
                 _engine = _create_engine(db_path)
 
     return _engine
 
 
-def get_session_factory(db_path: Optional[str] = None):
+def get_session_factory(db_path: str | None = None):
     """
     Get or create session factory.
 
@@ -179,17 +177,12 @@ def get_session_factory(db_path: Optional[str] = None):
         engine = get_engine(db_path)
         with _lock:
             if _SessionLocal is None:
-                _SessionLocal = sessionmaker(
-                    bind=engine,
-                    autoflush=False,
-                    autocommit=False,
-                    expire_on_commit=False
-                )
+                _SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, expire_on_commit=False)
 
     return _SessionLocal
 
 
-def get_session(db_path: Optional[str] = None, max_retries: int = 3) -> Session:
+def get_session(db_path: str | None = None, max_retries: int = 3) -> Session:
     """
     Get new database session with retry logic.
 
@@ -227,7 +220,7 @@ def get_session(db_path: Optional[str] = None, max_retries: int = 3) -> Session:
 
 
 @contextmanager
-def get_db_session(db_path: Optional[str] = None) -> Generator[Session, None, None]:
+def get_db_session(db_path: str | None = None) -> Generator[Session, None, None]:
     """
     Context manager for automatic session cleanup.
 

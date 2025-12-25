@@ -18,13 +18,11 @@ class TestChats(AbstractPostgresTest):
         self.chats.insert_new_chat(
             "2",
             ChatForm(
-                **{
-                    "chat": {
-                        "name": "chat1",
-                        "description": "chat1 description",
-                        "tags": ["tag1", "tag2"],
-                        "history": {"currentId": "1", "messages": []},
-                    }
+                chat={
+                    "name": "chat1",
+                    "description": "chat1 description",
+                    "tags": ["tag1", "tag2"],
+                    "history": {"currentId": "1", "messages": []},
                 }
             ),
         )

@@ -16,27 +16,20 @@ Verfügbare Endpoints:
   POST /execute             - Direkt Browser-Aktion ausführen
 """
 
+import http.server
 import json
 import logging
-import http.server
 import socketserver
 import threading
-import time
 from datetime import datetime
-from typing import Dict, Any, Optional
-from pathlib import Path
-import sys
-import urllib.parse
+from typing import Any
 
 # ============================================================================
 # SETUP
 # ============================================================================
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s [TOOL_SERVER] %(levelname)s - %(message)s'
-)
-logger = logging.getLogger('tool_server')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [TOOL_SERVER] %(levelname)s - %(message)s")
+logger = logging.getLogger("tool_server")
 
 # ============================================================================
 # TOOL MANIFEST
@@ -61,42 +54,30 @@ TOOL_MANIFEST = {
                         "query_selector",
                         "screenshot",
                         "scroll",
-                        "wait_for"
+                        "wait_for",
                     ],
-                    "description": "Browser-Aktion ausführen"
+                    "description": "Browser-Aktion ausführen",
                 },
-                "url": {
-                    "type": "string",
-                    "description": "Zielseite URL (z.B. https://example.com)"
-                },
-                "selector": {
-                    "type": "string",
-                    "description": "CSS oder XPath Selektor"
-                },
-                "text": {
-                    "type": "string",
-                    "description": "Text zum eingeben (für 'type' Aktion)"
-                },
-                "wait_ms": {
-                    "type": "integer",
-                    "default": 500,
-                    "description": "Wartezeit nach Aktion in ms"
-                },
+                "url": {"type": "string", "description": "Zielseite URL (z.B. https://example.com)"},
+                "selector": {"type": "string", "description": "CSS oder XPath Selektor"},
+                "text": {"type": "string", "description": "Text zum eingeben (für 'type' Aktion)"},
+                "wait_ms": {"type": "integer", "default": 500, "description": "Wartezeit nach Aktion in ms"},
                 "return_format": {
                     "type": "string",
                     "enum": ["text", "html", "json", "raw"],
                     "default": "text",
-                    "description": "Format der Rückgabe"
-                }
+                    "description": "Format der Rückgabe",
+                },
             },
-            "required": ["action", "url"]
-        }
-    }
+            "required": ["action", "url"],
+        },
+    },
 }
 
 # ============================================================================
 # TOOL SERVER
 # ============================================================================
+
 
 class ToolServerHandler(http.server.SimpleHTTPRequestHandler):
     """HTTP Handler für Tool Server"""
@@ -112,24 +93,28 @@ class ToolServerHandler(http.server.SimpleHTTPRequestHandler):
             self._send_html_dashboard()
 
         elif self.path == "/health":
-            self._send_json({
-                "status": "ok",
-                "timestamp": datetime.now().isoformat(),
-                "service": "Browser Agent Tool Server",
-                "version": "1.0.0"
-            })
+            self._send_json(
+                {
+                    "status": "ok",
+                    "timestamp": datetime.now().isoformat(),
+                    "service": "Browser Agent Tool Server",
+                    "version": "1.0.0",
+                }
+            )
 
         elif self.path == "/manifest":
             self._send_json(TOOL_MANIFEST)
 
         elif self.path == "/status":
-            self._send_json({
-                "status": "operational",
-                "uptime": self.tool_server.get_uptime() if self.tool_server else "unknown",
-                "calls_total": self.tool_server.call_count if self.tool_server else 0,
-                "last_call": self.tool_server.last_call if self.tool_server else None,
-                "timestamp": datetime.now().isoformat()
-            })
+            self._send_json(
+                {
+                    "status": "operational",
+                    "uptime": self.tool_server.get_uptime() if self.tool_server else "unknown",
+                    "calls_total": self.tool_server.call_count if self.tool_server else 0,
+                    "last_call": self.tool_server.last_call if self.tool_server else None,
+                    "timestamp": datetime.now().isoformat(),
+                }
+            )
 
         else:
             self.send_error(404, "Not Found")
@@ -138,8 +123,8 @@ class ToolServerHandler(http.server.SimpleHTTPRequestHandler):
         """Handle POST requests"""
         logger.info(f"POST {self.path}")
 
-        content_length = int(self.headers.get('Content-Length', 0))
-        body = self.rfile.read(content_length).decode('utf-8')
+        content_length = int(self.headers.get("Content-Length", 0))
+        body = self.rfile.read(content_length).decode("utf-8")
 
         try:
             data = json.loads(body) if body else {}
@@ -156,7 +141,7 @@ class ToolServerHandler(http.server.SimpleHTTPRequestHandler):
         else:
             self._send_json({"error": "Unknown endpoint"}, status=404)
 
-    def _handle_tool_call(self, data: Dict[str, Any]):
+    def _handle_tool_call(self, data: dict[str, Any]):
         """Handle tool call from OpenWebUI"""
         logger.info(f"Tool call: {data}")
 
@@ -171,13 +156,13 @@ class ToolServerHandler(http.server.SimpleHTTPRequestHandler):
         result = self._forward_to_agent(func_args)
         self._send_json(result)
 
-    def _handle_execute(self, data: Dict[str, Any]):
+    def _handle_execute(self, data: dict[str, Any]):
         """Handle direct execute request"""
         logger.info(f"Execute: {data}")
         result = self._forward_to_agent(data)
         self._send_json(result)
 
-    def _forward_to_agent(self, args: Dict[str, Any]) -> Dict[str, Any]:
+    def _forward_to_agent(self, args: dict[str, Any]) -> dict[str, Any]:
         """Forward request to Browser Agent"""
         import requests
 
@@ -188,11 +173,8 @@ class ToolServerHandler(http.server.SimpleHTTPRequestHandler):
             response = requests.post(
                 f"{agent_url}/execute",
                 json=args,
-                headers={
-                    "Authorization": f"Bearer {bearer_token}",
-                    "Content-Type": "application/json"
-                },
-                timeout=30
+                headers={"Authorization": f"Bearer {bearer_token}", "Content-Type": "application/json"},
+                timeout=30,
             )
 
             if response.status_code == 200:
@@ -201,27 +183,20 @@ class ToolServerHandler(http.server.SimpleHTTPRequestHandler):
                 return result
             else:
                 logger.error(f"❌ Agent error: {response.status_code}")
-                return {
-                    "status": "error",
-                    "message": f"Agent error: {response.status_code}",
-                    "details": response.text
-                }
+                return {"status": "error", "message": f"Agent error: {response.status_code}", "details": response.text}
 
         except Exception as e:
             logger.error(f"❌ Request error: {e}")
-            return {
-                "status": "error",
-                "message": str(e)
-            }
+            return {"status": "error", "message": str(e)}
 
-    def _send_json(self, data: Dict[str, Any], status: int = 200):
+    def _send_json(self, data: dict[str, Any], status: int = 200):
         """Send JSON response"""
         response = json.dumps(data, indent=2, ensure_ascii=False)
         self.send_response(status)
-        self.send_header('Content-Type', 'application/json')
-        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
-        self.wfile.write(response.encode('utf-8'))
+        self.wfile.write(response.encode("utf-8"))
 
         # Track call
         if self.tool_server:
@@ -532,9 +507,9 @@ ${JSON.stringify(data, null, 2)}
 </html>
         """
         self.send_response(200)
-        self.send_header('Content-Type', 'text/html; charset=utf-8')
+        self.send_header("Content-Type", "text/html; charset=utf-8")
         self.end_headers()
-        self.wfile.write(html.encode('utf-8'))
+        self.wfile.write(html.encode("utf-8"))
 
     def log_message(self, format, *args):
         """Override to use our logger"""
@@ -544,6 +519,7 @@ ${JSON.stringify(data, null, 2)}
 # ============================================================================
 # MAIN TOOL SERVER
 # ============================================================================
+
 
 class ToolServer:
     """Main Tool Server"""
@@ -560,7 +536,7 @@ class ToolServer:
     def get_uptime(self) -> str:
         """Get uptime string"""
         uptime = datetime.now() - self.start_time
-        return str(uptime).split('.')[0]
+        return str(uptime).split(".")[0]
 
     def start(self):
         """Start the server"""
@@ -595,12 +571,11 @@ class ToolServer:
 # CLI
 # ============================================================================
 
+
 def main():
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Browser Agent - OpenWebUI Tool Server"
-    )
+    parser = argparse.ArgumentParser(description="Browser Agent - OpenWebUI Tool Server")
     parser.add_argument("--host", default="0.0.0.0", help="Bind address (0.0.0.0 für externen Zugriff)")
     parser.add_argument("--port", type=int, default=8765, help="Port")
     parser.add_argument("--local", action="store_true", help="Nur auf localhost (127.0.0.1) lauschen")

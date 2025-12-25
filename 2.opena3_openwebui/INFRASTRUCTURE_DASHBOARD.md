@@ -461,13 +461,13 @@ tail -f /var/log/auth.log | grep sshd
 
 ## 🆘 Schnelle Fehlerbehebung
 
-| Problem | Befehl | Lösung |
-|---------|--------|--------|
-| Server läuft nicht | `ps aux \| grep tool` | `python3 tool_server.py --host 0.0.0.0 --port 8765` |
-| Port blockiert | `ss -tlnp \| grep 8765` | `sudo ufw allow 8765/tcp` |
-| LAN nicht erreichbar | `curl http://192.168.x.x:8765/health` | Server auf 0.0.0.0 binden |
-| ngrok Fehler | `ngrok --version` && `cat ~/.ngrok2/ngrok.yml` | Token neu setzen |
-| SSH Tunnel fällt aus | `ps aux \| grep ssh` | `autossh` mit reconnect verwenden |
+| Problem              | Befehl                                         | Lösung                                              |
+| -------------------- | ---------------------------------------------- | --------------------------------------------------- |
+| Server läuft nicht   | `ps aux \| grep tool`                          | `python3 tool_server.py --host 0.0.0.0 --port 8765` |
+| Port blockiert       | `ss -tlnp \| grep 8765`                        | `sudo ufw allow 8765/tcp`                           |
+| LAN nicht erreichbar | `curl http://192.168.x.x:8765/health`          | Server auf 0.0.0.0 binden                           |
+| ngrok Fehler         | `ngrok --version` && `cat ~/.ngrok2/ngrok.yml` | Token neu setzen                                    |
+| SSH Tunnel fällt aus | `ps aux \| grep ssh`                           | `autossh` mit reconnect verwenden                   |
 
 ---
 

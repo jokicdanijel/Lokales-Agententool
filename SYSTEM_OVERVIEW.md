@@ -1,8 +1,8 @@
 # 🧠 SYSTEM_OVERVIEW – ELION Hyper-Dashboard
 
-**Version:** 3.0  
-**Datum:** 27. November 2025  
-**Status:** ✅ **PRODUCTION-READY**  
+**Version:** 3.0
+**Datum:** 27. November 2025
+**Status:** ✅ **PRODUCTION-READY**
 **Scope:** Vollständige Systemübersicht für alle Stakeholder
 
 ---
@@ -87,12 +87,12 @@ Es definiert die Rolle eines **"allwissenden" Co-Piloten**, der:
 
 ### Ordnerstruktur (unveränderlich)
 
-| Ordner | Funktion | Ports |
-|--------|----------|-------|
-| `1.opena1&2_portier` | Kernagenten (Koordinator, Archivator) | 12344-12346 |
-| `2.opena3_openwebui` | Terminal-Agent | 12347 |
-| `19.opena20_dashboard_agent` | FastAPI-Backend + Dashboard | 12349-12350 |
-| `3-18, 20` | Spezialisierte Agenten | 12348-12367 |
+| Ordner                       | Funktion                              | Ports       |
+| ---------------------------- | ------------------------------------- | ----------- |
+| `1.opena1&2_portier`         | Kernagenten (Koordinator, Archivator) | 12344-12346 |
+| `2.opena3_openwebui`         | Terminal-Agent                        | 12347       |
+| `19.opena20_dashboard_agent` | FastAPI-Backend + Dashboard           | 12349-12350 |
+| `3-18, 20`                   | Spezialisierte Agenten                | 12348-12367 |
 
 ### Agentennamen (fixiert, unveränderbar)
 
@@ -143,14 +143,14 @@ Tool → opena2 → opena1 → OpenAI
 
 ### Port-Mapping (Standard)
 
-| Service | Port | Typ |
-|---------|------|-----|
-| opena1 (Koordinator) | 12344 | FastAPI |
-| opena2 (Archivator) | 12345 | FastAPI |
-| kordp (Koordinatport) | 12346 | FastAPI |
-| opena3 (OpenWebUI) | 12347 | FastAPI |
-| Dashboard | 12349 | FastAPI + SSE |
-| OpenWebUI Adapter | 12350 | FastAPI |
+| Service               | Port  | Typ           |
+| --------------------- | ----- | ------------- |
+| opena1 (Koordinator)  | 12344 | FastAPI       |
+| opena2 (Archivator)   | 12345 | FastAPI       |
+| kordp (Koordinatport) | 12346 | FastAPI       |
+| opena3 (OpenWebUI)    | 12347 | FastAPI       |
+| Dashboard             | 12349 | FastAPI + SSE |
+| OpenWebUI Adapter     | 12350 | FastAPI       |
 
 ### Port 8080 (exklusiv)
 
@@ -347,35 +347,35 @@ Prüft: Ports, Health-Checks, Option-2-Flow, Safepoints
 
 ## 📚 Referenzen & Weitere Dokumentation
 
-| Dokument | Pfad | Zweck |
-|----------|------|-------|
-| **Completion Checklist** | `.github/copilot-instructions.md` | Phase 1-3 Tracking |
-| **Master Prompt** | `.github/copilot-master-prompt.md` | Vollständiges Systemwissen |
-| **Operations Guide** | `docs/OPERATIONS.md` | Runtime-Befehle |
-| **OpenWebUI Integration** | `docs/OPENWEBUI_INTEGRATION.md` | opena3 + Adapter Specs |
-| **Troubleshooting** | `docs/TROUBLESHOOTING.md` | Fehlerszenarien + Lösungen |
-| **API Documentation** | `docs/OPENWEBUI_API.md` | Endpoint-Specs |
-| **Quick Start** | `README_STACK_START.md` | Schnelleinstieg |
+| Dokument                  | Pfad                               | Zweck                      |
+| ------------------------- | ---------------------------------- | -------------------------- |
+| **Completion Checklist**  | `.github/copilot-instructions.md`  | Phase 1-3 Tracking         |
+| **Master Prompt**         | `.github/copilot-master-prompt.md` | Vollständiges Systemwissen |
+| **Operations Guide**      | `docs/OPERATIONS.md`               | Runtime-Befehle            |
+| **OpenWebUI Integration** | `docs/OPENWEBUI_INTEGRATION.md`    | opena3 + Adapter Specs     |
+| **Troubleshooting**       | `docs/TROUBLESHOOTING.md`          | Fehlerszenarien + Lösungen |
+| **API Documentation**     | `docs/OPENWEBUI_API.md`            | Endpoint-Specs             |
+| **Quick Start**           | `README_STACK_START.md`            | Schnelleinstieg            |
 
 ---
 
 ## 🔥 Kurzmodus: Unveränderbare Kernregeln
 
-| Regel | Details |
-|-------|---------|
-| **Option-2-Kette** | Immer `opena1 → opena2 → kordp → Tool` |
-| **Ports** | 12344–12399 (Backend), 8080 (UI-only) |
-| **Safepoints** | Append-only, Unicode-Pfeil `→`, `YYYY/MM/DD` |
-| **JSON-Schemas** | `extra="forbid"`, strict mode |
-| **Agentennamen** | opena1, opena2, kordp, archivp (fest) |
-| **Top-Level-Struktur** | Keine neuen Ordner, keine Umbenennungen |
-| **Backdoors** | Keine, niemals, unter keinen Umständen |
-| **Code-Qualität** | Produktiv, vollständig, keine Platzhalter |
-| **ENV-Secrets** | Niemals hardcoded |
+| Regel                  | Details                                      |
+| ---------------------- | -------------------------------------------- |
+| **Option-2-Kette**     | Immer `opena1 → opena2 → kordp → Tool`       |
+| **Ports**              | 12344–12399 (Backend), 8080 (UI-only)        |
+| **Safepoints**         | Append-only, Unicode-Pfeil `→`, `YYYY/MM/DD` |
+| **JSON-Schemas**       | `extra="forbid"`, strict mode                |
+| **Agentennamen**       | opena1, opena2, kordp, archivp (fest)        |
+| **Top-Level-Struktur** | Keine neuen Ordner, keine Umbenennungen      |
+| **Backdoors**          | Keine, niemals, unter keinen Umständen       |
+| **Code-Qualität**      | Produktiv, vollständig, keine Platzhalter    |
+| **ENV-Secrets**        | Niemals hardcoded                            |
 
 ---
 
-**Ende des SYSTEM_OVERVIEW.**  
-**Maintainer:** Danijel Jokic (ELION Team)  
-**Letzte Aktualisierung:** 27. November 2025  
+**Ende des SYSTEM_OVERVIEW.**
+**Maintainer:** Danijel Jokic (ELION Team)
+**Letzte Aktualisierung:** 27. November 2025
 **Status:** ✅ **PRODUCTION-READY**

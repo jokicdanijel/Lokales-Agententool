@@ -7,17 +7,15 @@ OpenWebUI v0.6+ hat eine spezifische API für Tools/Functions.
 Dieses Skript registriert den Browser Agent ordnungsgemäß.
 """
 
-import requests
 import json
 import logging
-from typing import Dict, Any, Optional
 from datetime import datetime
+from typing import Any
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s [OPENWEBUI] %(levelname)s - %(message)s'
-)
-logger = logging.getLogger('openwebui_bridge')
+import requests
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [OPENWEBUI] %(levelname)s - %(message)s")
+logger = logging.getLogger("openwebui_bridge")
 
 # ============================================================================
 # OPENWEBUI TOOL DEFINITION (v0.6+)
@@ -42,48 +40,35 @@ BROWSER_TOOL_MANIFEST = {
                         "query_selector",
                         "screenshot",
                         "scroll",
-                        "wait_for"
+                        "wait_for",
                     ],
-                    "description": "Zu führende Browser-Aktion aus"
+                    "description": "Zu führende Browser-Aktion aus",
                 },
-                "url": {
-                    "type": "string",
-                    "description": "Zielseite URL (https://example.com)"
-                },
-                "selector": {
-                    "type": "string",
-                    "description": "CSS oder XPath Selektor für die Aktion"
-                },
-                "text": {
-                    "type": "string",
-                    "description": "Text zum eingeben (nur für 'type' Aktion)"
-                },
-                "wait_ms": {
-                    "type": "integer",
-                    "default": 500,
-                    "description": "Wartezeit nach Aktion in Millisekunden"
-                },
+                "url": {"type": "string", "description": "Zielseite URL (https://example.com)"},
+                "selector": {"type": "string", "description": "CSS oder XPath Selektor für die Aktion"},
+                "text": {"type": "string", "description": "Text zum eingeben (nur für 'type' Aktion)"},
+                "wait_ms": {"type": "integer", "default": 500, "description": "Wartezeit nach Aktion in Millisekunden"},
                 "return_format": {
                     "type": "string",
                     "enum": ["text", "html", "json", "raw"],
                     "default": "text",
-                    "description": "Format der Rückgabe"
-                }
+                    "description": "Format der Rückgabe",
+                },
             },
-            "required": ["action", "url"]
-        }
-    }
+            "required": ["action", "url"],
+        },
+    },
 }
 
 # ============================================================================
 # OPENWEBUI FUNCTION CALLING BRIDGE
 # ============================================================================
 
+
 class OpenWebUIBridge:
     """Bridge zwischen OpenWebUI und Browser Agent"""
 
-    def __init__(self, openwebui_url: str = "http://localhost:3000",
-                 agent_url: str = "http://localhost:12350"):
+    def __init__(self, openwebui_url: str = "http://localhost:3000", agent_url: str = "http://localhost:12350"):
         """
         Initialize OpenWebUI Bridge
 
@@ -91,8 +76,8 @@ class OpenWebUIBridge:
             openwebui_url: OpenWebUI URL
             agent_url: Browser Agent URL
         """
-        self.openwebui_url = openwebui_url.rstrip('/')
-        self.agent_url = agent_url.rstrip('/')
+        self.openwebui_url = openwebui_url.rstrip("/")
+        self.agent_url = agent_url.rstrip("/")
         self.bearer_token = "sk_opena6_browser_v3_production"
         self.session = requests.Session()
 
@@ -103,20 +88,18 @@ class OpenWebUIBridge:
             r1 = self.session.get(f"{self.openwebui_url}/api/config", timeout=5)
             # Check Browser Agent
             r2 = self.session.get(
-                f"{self.agent_url}/health",
-                headers={"Authorization": f"Bearer {self.bearer_token}"},
-                timeout=5
+                f"{self.agent_url}/health", headers={"Authorization": f"Bearer {self.bearer_token}"}, timeout=5
             )
 
             available = r1.status_code == 200 and r2.status_code == 200
             if available:
-                logger.info(f"✅ Beide Services verfügbar")
+                logger.info("✅ Beide Services verfügbar")
             return available
         except Exception as e:
             logger.error(f"❌ Verfügbarkeitsprüfung fehlgeschlagen: {e}")
             return False
 
-    async def handle_function_call(self, function_call: Dict[str, Any]) -> Dict[str, Any]:
+    async def handle_function_call(self, function_call: dict[str, Any]) -> dict[str, Any]:
         """
         Handle OpenWebUI function call
 
@@ -137,42 +120,29 @@ class OpenWebUIBridge:
                 func_args = function_call.get("arguments", {})
 
             if func_name != "browser_agent":
-                return {
-                    "status": "error",
-                    "message": f"Unknown function: {func_name}"
-                }
+                return {"status": "error", "message": f"Unknown function: {func_name}"}
 
             # Forward to Browser Agent
             response = self.session.post(
                 f"{self.agent_url}/execute",
                 json=func_args,
-                headers={
-                    "Authorization": f"Bearer {self.bearer_token}",
-                    "Content-Type": "application/json"
-                },
-                timeout=30
+                headers={"Authorization": f"Bearer {self.bearer_token}", "Content-Type": "application/json"},
+                timeout=30,
             )
 
             if response.status_code == 200:
                 result = response.json()
-                return {
-                    "status": "success",
-                    "data": result,
-                    "timestamp": datetime.now().isoformat()
-                }
+                return {"status": "success", "data": result, "timestamp": datetime.now().isoformat()}
             else:
                 return {
                     "status": "error",
                     "message": f"Browser Agent Error: {response.status_code}",
-                    "details": response.text
+                    "details": response.text,
                 }
 
         except Exception as e:
             logger.error(f"❌ Function Call Error: {e}")
-            return {
-                "status": "error",
-                "message": str(e)
-            }
+            return {"status": "error", "message": str(e)}
 
     def setup_function_calling(self) -> bool:
         """
@@ -194,13 +164,15 @@ class OpenWebUIBridge:
         logger.info("Oder verwende den OpenWebUI Tool Editor für visuelle Konfiguration")
         return True
 
-    def get_manifest(self) -> Dict[str, Any]:
+    def get_manifest(self) -> dict[str, Any]:
         """Get tool manifest for documentation"""
         return BROWSER_TOOL_MANIFEST
+
 
 # ============================================================================
 # INTEGRATION HELPER
 # ============================================================================
+
 
 class OpenWebUIIntegrationHelper:
     """Helper für OpenWebUI Integration"""
@@ -271,32 +243,25 @@ Immer zuerst 'open' aufrufen, bevor du andere Aktionen ausführst.
 Verwende eindeutige und spezifische CSS-Selektoren.
 Validiere URLs bevor du sie öffnest."""
 
+
 # ============================================================================
 # CLI
 # ============================================================================
 
+
 def main():
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Browser Agent - OpenWebUI Integration (v0.6+)"
-    )
-    parser.add_argument(
-        "--action",
-        choices=["setup", "manifest", "prompt", "health"],
-        default="setup"
-    )
+    parser = argparse.ArgumentParser(description="Browser Agent - OpenWebUI Integration (v0.6+)")
+    parser.add_argument("--action", choices=["setup", "manifest", "prompt", "health"], default="setup")
     parser.add_argument("--openwebui-url", default="http://localhost:3000")
     parser.add_argument("--agent-url", default="http://localhost:12350")
 
     args = parser.parse_args()
 
-    bridge = OpenWebUIBridge(
-        openwebui_url=args.openwebui_url,
-        agent_url=args.agent_url
-    )
+    bridge = OpenWebUIBridge(openwebui_url=args.openwebui_url, agent_url=args.agent_url)
 
-    logger.info(f"🔗 Browser Agent - OpenWebUI Bridge (v0.6+)")
+    logger.info("🔗 Browser Agent - OpenWebUI Bridge (v0.6+)")
     logger.info(f"   OpenWebUI: {args.openwebui_url}")
     logger.info(f"   Agent: {args.agent_url}")
     logger.info("")
@@ -323,6 +288,7 @@ def main():
         return 0
 
     return 0
+
 
 if __name__ == "__main__":
     exit(main())

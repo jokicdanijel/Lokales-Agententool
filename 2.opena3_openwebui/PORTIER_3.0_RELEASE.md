@@ -1,4 +1,5 @@
 # 🚀 PORTIER 3.0 — Official Release Candidate (RC)
+
 **Enterprise Multi-Agent Intelligence Platform**
 
 ## 📌 Release Information
@@ -16,6 +17,7 @@
 ### Major Features
 
 #### 1. **Core Architecture Solidification**
+
 - ✅ Unified multi-agent orchestration
 - ✅ RESTful API endpoints for all services
 - ✅ Distributed archive system (Archivator)
@@ -23,6 +25,7 @@
 - ✅ Health check endpoints for all services
 
 #### 2. **Enterprise Dashboard (opena20)**
+
 - ✅ Modern UI with dark theme
 - ✅ Real-time system monitoring
 - ✅ Tool execution interface
@@ -31,6 +34,7 @@
 - ✅ Shell command executor (whitelisted)
 
 #### 3. **Advanced Archivation (opena2)**
+
 - ✅ Distributed safepoints
 - ✅ Automated backup system
 - ✅ State recovery mechanism
@@ -38,6 +42,7 @@
 - ✅ Query API for historical data
 
 #### 4. **Smart Gateway (opena3)**
+
 - ✅ Service discovery
 - ✅ Request routing
 - ✅ Load balancing
@@ -45,6 +50,7 @@
 - ✅ Error handling & fallback
 
 #### 5. **Coordination Hub (opena1)**
+
 - ✅ Service orchestration
 - ✅ Health monitoring
 - ✅ API aggregation
@@ -55,6 +61,7 @@
 ## 📦 What's Included
 
 ### Core Services (Production-Ready)
+
 ```
 ✅ opena1    | Coordinator (Port 12345)
 ✅ opena2    | Archivator  (Port 12346)
@@ -63,6 +70,7 @@
 ```
 
 ### Integration Stack
+
 ```
 ✅ OpenWebUI  | Web interface for LLMs (Docker)
 ✅ Ollama     | Local LLM inference (Docker)
@@ -70,6 +78,7 @@
 ```
 
 ### Future-Ready (Planned)
+
 ```
 ⏳ opena4-19   | Agent cluster (Phase 4)
 ⏳ Prometheus  | Monitoring (Phase 17)
@@ -247,6 +256,7 @@ Body: { "file": "voice_command_parser.py" }
 ## 📊 Performance Metrics
 
 ### Throughput
+
 ```
 Phase 13: 24.55 req/s
 Phase 14: 0.87 req/s (Inference)
@@ -255,6 +265,7 @@ Target (Phase 20): 1000+ req/s
 ```
 
 ### Latency
+
 ```
 Service Response: < 50ms (avg)
 Gateway Overhead: < 5ms
@@ -262,6 +273,7 @@ Archivator Write: < 100ms
 ```
 
 ### Resource Usage
+
 ```
 Memory per Service: 50-150MB
 CPU (Idle): < 1%
@@ -274,14 +286,15 @@ Disk (Logs/Day): ~100MB
 ## 🔒 Security Features
 
 ### Bearer Token Authentication
+
 ```
 All services protected with unique bearer tokens
 Token format: sk_opena[1-20]_[hash]_strict_v1
 Rotation: Planned for Phase 18
 ```
 
-
 ### Sandbox Execution
+
 ```
 File operations restricted to current directory
 Shell commands whitelisted (no rm -rf /)
@@ -289,6 +302,7 @@ Path traversal protection (.., /)
 ```
 
 ### Audit Logging
+
 ```
 All API calls logged with timestamp
 Errors tracked with full stack traces
@@ -335,31 +349,37 @@ siege -c 100 -r 10 -b http://127.0.0.1:12349/
 ## 📈 Roadmap (Phases 4-10+)
 
 ### Phase 4: Agent Cluster (In Planning)
+
 - Scale to 16 agents (opena4-opena19)
 - Dynamic service discovery
 - Load balancing across cluster
 
 ### Phase 17: Monitoring & Observability
+
 - Prometheus metrics collection
 - Grafana dashboards
 - Alert system
 
 ### Phase 18: Kubernetes Support
+
 - Container orchestration
 - Service mesh integration
 - Multi-node deployment
 
 ### Phase 19: Advanced Orchestration
+
 - Istio integration
 - Traffic management
 - Canary deployments
 
 ### Phase 20: AI-Powered Operations
+
 - Auto-scaling based on load
 - Predictive maintenance
 - Anomaly detection
 
 ### Phase 21: Enterprise Features
+
 - Multi-tenancy support
 - RBAC (Role-Based Access Control)
 - Analytics engine
@@ -370,12 +390,14 @@ siege -c 100 -r 10 -b http://127.0.0.1:12349/
 ## 🐛 Known Issues & Limitations
 
 ### Current Limitations
+
 - Single-node deployment only (Phase 18: Multi-node)
 - Limited to 4 core services (Phase 4: Scale to 20)
 - No persistent metrics (Phase 17: Prometheus)
 - Bearer token rotation manual (Phase 18: Automated)
 
 ### Known Issues
+
 - None reported in RC stage
 - If you find issues, please report via GitHub Issues
 
@@ -384,12 +406,14 @@ siege -c 100 -r 10 -b http://127.0.0.1:12349/
 ## 📚 Documentation
 
 ### Essential Docs
+
 - `README.md` - Project overview
 - `operators/OPS_RUNBOOK.md` - Operations guide
 - `LocalAgent-Pro/INTEGRATION_GUIDE.md` - Integration steps
 - `API_REFERENCE.md` - Complete API documentation
 
 ### Generated Docs
+
 - `PORTIER_SYSTEM_DOCS.md` - Full system documentation
 - `PORTIER_3.0_RELEASE.md` - This file
 
@@ -415,6 +439,7 @@ tail -f LocalAgent-Pro/logs/*.log
 ```
 
 ### Getting Help
+
 1. Check `operators/OPS_RUNBOOK.md`
 2. Review logs in `LocalAgent-Pro/logs/`
 3. Test with `curl` commands
@@ -427,6 +452,7 @@ tail -f LocalAgent-Pro/logs/*.log
 ### Version 3.0.0 (24. November 2025)
 
 #### ✨ New Features
+
 - Dashboard with modern UI (v2.0.0)
 - File manager interface
 - Shell executor (whitelisted)
@@ -434,6 +460,7 @@ tail -f LocalAgent-Pro/logs/*.log
 - Real-time system monitoring
 
 #### 🔧 Improvements
+
 - Enhanced error handling
 - Better logging infrastructure
 - Improved API documentation
@@ -441,12 +468,14 @@ tail -f LocalAgent-Pro/logs/*.log
 - OPS_RUNBOOK documentation
 
 #### 🐛 Bug Fixes
+
 - Fixed Bearer token handling
 - Improved path traversal protection
 - Better resource cleanup
 - Memory leak fixes
 
 #### 🔐 Security
+
 - Stricter sandbox rules
 - Enhanced authentication
 - Audit logging
@@ -457,6 +486,7 @@ tail -f LocalAgent-Pro/logs/*.log
 ## 📜 License & Attribution
 
 **PORTIER 3.0** is an open-source project.
+
 - Repository: https://github.com/jokicdanijel/Gesamtprojekt-start
 - Owner: jokicdanijel
 - License: MIT (or as specified in LICENSE file)

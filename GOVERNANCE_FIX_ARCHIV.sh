@@ -28,9 +28,9 @@ safety_checks() {
     echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
     echo -e "${BLUE}🔒 SAFETY CHECKS${NC}"
     echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
-    
+
     local all_passed=true
-    
+
     # Check 1: Git-Repository
     if ! git -C "$PROJECT_ROOT" rev-parse --git-dir > /dev/null 2>&1; then
         echo -e "${RED}✗ FEHLER: Kein Git-Repository gefunden${NC}"
@@ -39,7 +39,7 @@ safety_checks() {
     else
         echo -e "${GREEN}✓ Git-Repository vorhanden${NC}"
     fi
-    
+
     # Check 2: Uncommitted Changes
     if [[ -n $(git -C "$PROJECT_ROOT" status --porcelain) ]]; then
         echo -e "${YELLOW}⚠ Uncommitted Changes vorhanden${NC}"
@@ -47,7 +47,7 @@ safety_checks() {
     else
         echo -e "${GREEN}✓ Working Directory clean${NC}"
     fi
-    
+
     # Check 3: Branch Check
     local current_branch
     current_branch=$(git -C "$PROJECT_ROOT" branch --show-current)
@@ -55,7 +55,7 @@ safety_checks() {
     if [[ "$current_branch" == "main" ]] || [[ "$current_branch" == "master" ]]; then
         echo -e "${YELLOW}⚠ Du bist auf $current_branch – sicherer wäre ein Feature-Branch${NC}"
     fi
-    
+
     # Check 4: rename_map.csv vorhanden
     if [[ ! -f "$RENAME_MAP" ]]; then
         echo -e "${RED}✗ FEHLER: $RENAME_MAP nicht gefunden${NC}"
@@ -63,7 +63,7 @@ safety_checks() {
     else
         echo -e "${GREEN}✓ rename_map.csv vorhanden ($(wc -l < "$RENAME_MAP") Zeilen)${NC}"
     fi
-    
+
     # Check 5: configs/ existiert
     if [[ ! -d "$CONFIGS_DIR" ]]; then
         echo -e "${YELLOW}⚠ configs/ existiert nicht – Script wird nichts tun${NC}"
@@ -72,7 +72,7 @@ safety_checks() {
         sp_count=$(find "$CONFIGS_DIR" -name "SP*.json" 2>/dev/null | wc -l)
         echo -e "${BLUE}ℹ Safepoints in configs/: ${YELLOW}$sp_count${NC}"
     fi
-    
+
     # Check 6: DRY-RUN Mode
     if [[ "$DRY_RUN" == "true" ]]; then
         echo -e "${GREEN}✓ DRY-RUN Mode aktiv – keine Dateien werden verändert${NC}"
@@ -80,14 +80,14 @@ safety_checks() {
         echo -e "${RED}⚠ LIVE Mode – Dateien werden WIRKLICH verschoben!${NC}"
         echo -e "${YELLOW}  → Setze DRY_RUN=false nur nach Review!${NC}"
     fi
-    
+
     echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
-    
+
     if [[ "$all_passed" == "false" ]]; then
         echo -e "${RED}❌ SAFETY CHECKS FEHLGESCHLAGEN – ABBRUCH${NC}"
         exit 1
     fi
-    
+
     if [[ "$DRY_RUN" == "false" ]]; then
         echo -e "${YELLOW}▶ Drücke ENTER zum Fortfahren oder CTRL+C zum Abbrechen${NC}"
         read -r
@@ -101,28 +101,28 @@ rollback_archiv() {
     echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
     echo -e "${BLUE}📦 ARCHIV-ROLLBACK (configs/ → ARCHIV/archivp/)${NC}"
     echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
-    
+
     local count_moved=0
     local count_skipped=0
     local count_errors=0
-    
+
     # Parse rename_map.csv: Zeilen mit "ARCHIV.*configs/SP"
     grep -E "ARCHIV.*,configs/SP.*\.json" "$RENAME_MAP" | while IFS=',' read -r src dst _rest; do
         # Bereinige Pfade (entferne führende/trailing Leerzeichen)
         src=$(echo "$src" | xargs)
         dst=$(echo "$dst" | xargs)
-        
+
         # Vollständige Pfade
         local src_full="$PROJECT_ROOT/$src"
         local dst_full="$PROJECT_ROOT/$dst"
-        
+
         # Prüfe: dst existiert (in configs/)
         if [[ ! -f "$dst_full" ]]; then
             echo -e "${YELLOW}⚠ Übersprungen (Datei nicht in configs/): $(basename "$dst")${NC}" | tee -a "$LOG_FILE"
             count_skipped=$((count_skipped + 1))
             continue
         fi
-        
+
         # Prüfe: src-Ziel existiert bereits (Konflikt)
         if [[ -f "$src_full" ]]; then
             echo -e "${YELLOW}⚠ Konflikt (Ziel existiert bereits): $src${NC}" | tee -a "$LOG_FILE"
@@ -130,11 +130,11 @@ rollback_archiv() {
             count_skipped=$((count_skipped + 1))
             continue
         fi
-        
+
         # Erstelle Zielverzeichnis
         local src_dir
         src_dir=$(dirname "$src_full")
-        
+
         if [[ "$DRY_RUN" == "true" ]]; then
             echo -e "${BLUE}[DRY-RUN] mkdir -p $src_dir${NC}"
             echo -e "${BLUE}[DRY-RUN] mv $dst_full → $src_full${NC}"
@@ -149,7 +149,7 @@ rollback_archiv() {
             fi
         fi
     done
-    
+
     echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
     echo -e "${GREEN}✅ Verschoben: $count_moved${NC}"
     echo -e "${YELLOW}⚠ Übersprungen: $count_skipped${NC}"
@@ -163,16 +163,16 @@ validate() {
     echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
     echo -e "${BLUE}🔍 VALIDIERUNG${NC}"
     echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
-    
+
     local sp_in_configs
     sp_in_configs=$(find "$CONFIGS_DIR" -name "SP*.json" 2>/dev/null | wc -l)
-    
+
     local sp_in_archiv
     sp_in_archiv=$(find "$PROJECT_ROOT" -path "*/ARCHIV/*.json" -o -path "*/archivp/*.json" 2>/dev/null | wc -l)
-    
+
     echo -e "${BLUE}Safepoints in configs/: ${YELLOW}$sp_in_configs${NC} (Soll: 0)"
     echo -e "${BLUE}Safepoints in ARCHIV/archivp/: ${YELLOW}$sp_in_archiv${NC}"
-    
+
     if [[ $sp_in_configs -eq 0 ]]; then
         echo -e "${GREEN}✅ configs/ ist sauber (keine Safepoints)${NC}"
     else
@@ -190,17 +190,17 @@ main() {
     echo -e "${BLUE}Start: $(date -u +"%Y-%m-%d %H:%M:%S UTC")${NC}"
     echo -e "${BLUE}DRY-RUN: ${YELLOW}$DRY_RUN${NC}"
     echo ""
-    
+
     safety_checks
     rollback_archiv
     validate
-    
+
     echo ""
     echo -e "${BLUE}════════════════════════════════════════════════════════════════${NC}"
     echo -e "${BLUE}Ende: $(date -u +"%Y-%m-%d %H:%M:%S UTC")${NC}"
     echo -e "${BLUE}Log: $LOG_FILE${NC}"
     echo -e "${BLUE}════════════════════════════════════════════════════════════════${NC}"
-    
+
     if [[ "$DRY_RUN" == "true" ]]; then
         echo ""
         echo -e "${YELLOW}ℹ DRY-RUN abgeschlossen. Für echte Ausführung:${NC}"

@@ -1,7 +1,7 @@
 # TODO – opena5 VS Code Agent
 
-**Port:** 12351  
-**Status:** 🟡 Planned  
+**Port:** 12351
+**Status:** 🟡 Planned
 **Kürzel:** `vscop`
 
 ---
@@ -96,5 +96,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

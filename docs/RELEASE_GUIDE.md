@@ -1,7 +1,7 @@
 # PORTIER 3.0 - Release Guide
 
-**Document Version:** 1.0  
-**Last Updated:** 2025-12-02  
+**Document Version:** 1.0
+**Last Updated:** 2025-12-02
 **Maintainer:** Danijel Jokic
 
 ---
@@ -35,9 +35,9 @@ The release package is designed to:
 ### Excluded from Release
 
 - ❌ Virtual environments (.venv, venv)
-- ❌ Python cache (\_\_pycache\_\_, *.pyc)
-- ❌ Log files (*.log, logs/)
-- ❌ Database files (*.db,*.sqlite)
+- ❌ Python cache (\_\_pycache\_\_, \*.pyc)
+- ❌ Log files (\*.log, logs/)
+- ❌ Database files (_.db,_.sqlite)
 - ❌ Git history (.git/)
 - ❌ Backup files
 - ❌ Broken/deprecated components
@@ -397,6 +397,6 @@ For issues with the release package:
 
 ---
 
-**Document Version:** 1.0  
-**Last Updated:** 2025-12-02  
+**Document Version:** 1.0
+**Last Updated:** 2025-12-02
 **Next Review:** 2026-01-02

@@ -12,9 +12,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -24,9 +22,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -36,9 +32,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -48,9 +42,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -60,9 +52,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -72,9 +62,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -84,9 +72,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -96,9 +82,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -108,9 +92,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -120,9 +102,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -132,9 +112,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -144,9 +122,7 @@
       "is_empty": false,
       "file_count": 1,
       "files_with_hashes": 1,
-      "violations": [
-        "File count mismatch: inventory=1, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=1, actual=121"],
       "passed": false
     },
     {
@@ -156,9 +132,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -168,9 +142,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -180,9 +152,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -192,9 +162,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -204,9 +172,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -216,9 +182,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -228,9 +192,7 @@
       "is_empty": false,
       "file_count": 1,
       "files_with_hashes": 1,
-      "violations": [
-        "File count mismatch: inventory=1, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=1, actual=121"],
       "passed": false
     },
     {
@@ -240,9 +202,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     },
     {
@@ -252,9 +212,7 @@
       "is_empty": false,
       "file_count": 120,
       "files_with_hashes": 120,
-      "violations": [
-        "File count mismatch: inventory=120, actual=121"
-      ],
+      "violations": ["File count mismatch: inventory=120, actual=121"],
       "passed": false
     }
   ]

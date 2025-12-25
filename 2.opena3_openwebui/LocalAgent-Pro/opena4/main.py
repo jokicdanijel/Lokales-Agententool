@@ -6,21 +6,17 @@ monitoring, and comprehensive error handling.
 """
 
 import http.server
-import socketserver
 import json
-import time
 import logging
 import os
+import socketserver
 import sys
-from typing import Dict, Optional, Tuple
-from datetime import datetime
 import threading
+import time
+from datetime import datetime
 
 # Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 # Global metrics
@@ -29,7 +25,7 @@ _metrics = {
     "errors": 0,
     "start_time": datetime.now().isoformat(),
     "last_request": None,
-    "response_times": []
+    "response_times": [],
 }
 _metrics_lock = threading.Lock()
 
@@ -52,13 +48,13 @@ class ConfigManager:
         self._initialized = True
         self._config = self._load_config()
 
-    def _load_config(self) -> Dict:
+    def _load_config(self) -> dict:
         """Load configuration from config.json and environment variables."""
         try:
             # Load from config.json
-            config_file = os.path.join(os.path.dirname(__file__), 'config.json')
+            config_file = os.path.join(os.path.dirname(__file__), "config.json")
             if os.path.exists(config_file):
-                with open(config_file, 'r') as f:
+                with open(config_file) as f:
                     config = json.load(f)
                 logger.info(f"✅ Config loaded from {config_file}")
             else:
@@ -66,17 +62,16 @@ class ConfigManager:
                 config = {"service": "opena4", "port": 12348}
 
             # Override with environment variables
-            config['port'] = int(os.getenv('OPENA4_PORT', config.get('port', 12348)))
-            config['bearer_token'] = os.getenv(
-                'OPENA4_BEARER_TOKEN',
-                os.getenv('BEARER_TOKEN', 'sk_opena4_compute_v3_production')
+            config["port"] = int(os.getenv("OPENA4_PORT", config.get("port", 12348)))
+            config["bearer_token"] = os.getenv(
+                "OPENA4_BEARER_TOKEN", os.getenv("BEARER_TOKEN", "sk_opena4_compute_v3_production")
             )
-            config['log_level'] = os.getenv('OPENA4_LOG_LEVEL', config.get('log_level', 'INFO'))
-            config['max_workers'] = int(os.getenv('OPENA4_MAX_WORKERS', config.get('max_workers', 4)))
-            config['timeout'] = int(os.getenv('OPENA4_TIMEOUT', config.get('timeout', 30)))
+            config["log_level"] = os.getenv("OPENA4_LOG_LEVEL", config.get("log_level", "INFO"))
+            config["max_workers"] = int(os.getenv("OPENA4_MAX_WORKERS", config.get("max_workers", 4)))
+            config["timeout"] = int(os.getenv("OPENA4_TIMEOUT", config.get("timeout", 30)))
 
             # Update logging level
-            logging.getLogger().setLevel(config['log_level'])
+            logging.getLogger().setLevel(config["log_level"])
 
             return config
 
@@ -93,7 +88,7 @@ class ConfigManager:
         return self._config[key]
 
 
-def validate_bearer_token(auth_header: Optional[str], expected_token: str) -> bool:
+def validate_bearer_token(auth_header: str | None, expected_token: str) -> bool:
     """
     Validate Bearer token from Authorization header.
 
@@ -124,12 +119,7 @@ def validate_bearer_token(auth_header: Optional[str], expected_token: str) -> bo
 class ComputeHandler(http.server.BaseHTTPRequestHandler):
     """HTTP request handler for compute service."""
 
-    def _send_json_response(
-        self,
-        status_code: int,
-        data: Dict,
-        headers: Optional[Dict[str, str]] = None
-    ) -> None:
+    def _send_json_response(self, status_code: int, data: dict, headers: dict[str, str] | None = None) -> None:
         """
         Send JSON response with standard headers.
 
@@ -172,19 +162,13 @@ class ComputeHandler(http.server.BaseHTTPRequestHandler):
             elif self.path == "/metrics":
                 self._handle_metrics()
             else:
-                self._send_json_response(
-                    404,
-                    {"error": "Endpoint not found", "path": self.path}
-                )
+                self._send_json_response(404, {"error": "Endpoint not found", "path": self.path})
 
         except Exception as e:
             logger.error(f"Error handling GET {self.path}: {e}")
             with _metrics_lock:
                 _metrics["errors"] += 1
-            self._send_json_response(
-                500,
-                {"error": "Internal server error", "details": str(e)}
-            )
+            self._send_json_response(500, {"error": "Internal server error", "details": str(e)})
 
         finally:
             response_time = time.time() - start_time
@@ -207,19 +191,13 @@ class ComputeHandler(http.server.BaseHTTPRequestHandler):
             if self.path == "/compute":
                 self._handle_compute()
             else:
-                self._send_json_response(
-                    404,
-                    {"error": "Endpoint not found", "path": self.path}
-                )
+                self._send_json_response(404, {"error": "Endpoint not found", "path": self.path})
 
         except Exception as e:
             logger.error(f"Error handling POST {self.path}: {e}")
             with _metrics_lock:
                 _metrics["errors"] += 1
-            self._send_json_response(
-                500,
-                {"error": "Internal server error", "details": str(e)}
-            )
+            self._send_json_response(500, {"error": "Internal server error", "details": str(e)})
 
         finally:
             response_time = time.time() - start_time
@@ -245,16 +223,15 @@ class ComputeHandler(http.server.BaseHTTPRequestHandler):
                 "port": config.get("port"),
                 "version": config.get("version", "3.0.0"),
                 "timestamp": datetime.now().isoformat(),
-                "uptime_seconds": (datetime.fromisoformat(_metrics["start_time"]) - datetime.now()).total_seconds()
-            }
+                "uptime_seconds": (datetime.fromisoformat(_metrics["start_time"]) - datetime.now()).total_seconds(),
+            },
         )
 
     def _handle_metrics(self) -> None:
         """Handle /metrics endpoint."""
         with _metrics_lock:
             avg_response_time = (
-                sum(_metrics["response_times"]) / len(_metrics["response_times"])
-                if _metrics["response_times"] else 0
+                sum(_metrics["response_times"]) / len(_metrics["response_times"]) if _metrics["response_times"] else 0
             )
 
             self._send_json_response(
@@ -265,23 +242,17 @@ class ComputeHandler(http.server.BaseHTTPRequestHandler):
                     "start_time": _metrics["start_time"],
                     "last_request": _metrics["last_request"],
                     "avg_response_time_ms": round(avg_response_time * 1000, 2),
-                    "error_rate": (
-                        _metrics["errors"] / _metrics["requests"] * 100
-                        if _metrics["requests"] > 0 else 0
-                    )
-                }
+                    "error_rate": (_metrics["errors"] / _metrics["requests"] * 100 if _metrics["requests"] > 0 else 0),
+                },
             )
 
     def _handle_compute(self) -> None:
         """Handle /compute endpoint (placeholder)."""
         config = ConfigManager()
-        content_length = int(self.headers.get('Content-Length', 0))
+        content_length = int(self.headers.get("Content-Length", 0))
 
         if content_length == 0:
-            self._send_json_response(
-                400,
-                {"error": "No request body provided"}
-            )
+            self._send_json_response(400, {"error": "No request body provided"})
             return
 
         try:
@@ -293,16 +264,13 @@ class ComputeHandler(http.server.BaseHTTPRequestHandler):
                 "status": "completed",
                 "input": request_data,
                 "computation": "placeholder",
-                "timestamp": datetime.now().isoformat()
+                "timestamp": datetime.now().isoformat(),
             }
 
             self._send_json_response(200, result)
 
         except json.JSONDecodeError:
-            self._send_json_response(
-                400,
-                {"error": "Invalid JSON in request body"}
-            )
+            self._send_json_response(400, {"error": "Invalid JSON in request body"})
 
     def log_message(self, format: str, *args) -> None:
         """Override to use structured logging instead."""
@@ -316,16 +284,16 @@ def main() -> None:
     port = config["port"]
     service_name = config.get("service", "opena4")
 
-    logger.info(f"═" * 70)
+    logger.info("═" * 70)
     logger.info(f"🚀 {service_name.upper()} Compute Service Starting")
-    logger.info(f"═" * 70)
+    logger.info("═" * 70)
     logger.info(f"  Host: {host}")
     logger.info(f"  Port: {port}")
     logger.info(f"  Service: {service_name}")
     logger.info(f"  Max Workers: {config.get('max_workers')}")
     logger.info(f"  Timeout: {config.get('timeout')}s")
     logger.info(f"  Log Level: {config.get('log_level')}")
-    logger.info(f"═" * 70)
+    logger.info("═" * 70)
 
     try:
         with socketserver.TCPServer((host, port), ComputeHandler) as httpd:

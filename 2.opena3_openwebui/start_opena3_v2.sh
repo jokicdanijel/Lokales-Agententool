@@ -37,23 +37,23 @@ start_service() {
     echo "🚀 Starting opena3 V2 (PORTIER 3.0 Certified)"
     echo "📍 Port: 12347"
     echo "🔗 OpenWebUI: ${OPENWEBUI_URL:-http://127.0.0.1:8080}"
-    
+
     # Aktiviere Virtual Environment falls vorhanden
     if [ -d "$PROJECT_ROOT/.venv" ]; then
         source "$PROJECT_ROOT/.venv/bin/activate"
         echo "✓ Virtual environment activated"
     fi
-    
+
     # Starte Service
     cd "$PROJECT_ROOT"
     nohup python3 opena3_terminal_v2.py > logs/opena3_v2.nohup.log 2>&1 &
-    
+
     # PID speichern
     echo $! > "$PID_FILE"
-    
+
     echo "✓ opena3 V2 started (PID: $(cat $PID_FILE))"
     echo "📋 Logs: $PROJECT_ROOT/logs/opena3_v2.nohup.log"
-    
+
     # Health Check
     sleep 3
     if curl -s --connect-timeout 3 "http://127.0.0.1:12347/health" > /dev/null; then
@@ -70,7 +70,7 @@ show_status() {
         PID=$(cat "$PID_FILE")
         if ps -p $PID > /dev/null 2>&1; then
             echo "✅ opena3 V2 running (PID: $PID)"
-            
+
             # API Health Check
             if curl -s --connect-timeout 2 "http://127.0.0.1:12347/health" | jq . > /dev/null 2>&1; then
                 echo "✅ API responding"
@@ -113,11 +113,11 @@ case "${1:-start}" in
         ;;
     test)
         echo "🧪 Testing opena3 V2 endpoints..."
-        
+
         # Health Test
         echo "1. Health Check:"
         curl -s "http://127.0.0.1:12347/health" | jq . || echo "❌ Failed"
-        
+
         # Native Chat Test (needs Bearer token)
         echo -e "\n2. Native Chat Test:"
         if [ -n "$BEARER_TOKEN" ]; then
@@ -128,7 +128,7 @@ case "${1:-start}" in
         else
             echo "⚠️  BEARER_TOKEN not set - skipping auth tests"
         fi
-        
+
         # Self-Test
         echo -e "\n3. Self-Test:"
         if [ -n "$BEARER_TOKEN" ]; then

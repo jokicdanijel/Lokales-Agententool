@@ -9,25 +9,24 @@ Kürzel: browsep
 PORTIER 3.0 konform – Pydantic V2
 """
 
-import os
 from pathlib import Path
-from typing import List, Optional
-from pydantic import BaseModel, Field, ConfigDict
+
+from pydantic import BaseModel, ConfigDict, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class PortPolicy:
     """PORTIER 3.0 Port Policy Enforcement"""
-    
+
     ALLOWED_RANGE = range(12344, 12400)
     FORBIDDEN_PORTS = [8080]
-    
+
     @classmethod
     def is_valid_port(cls, port: int) -> bool:
         return port in cls.ALLOWED_RANGE and port not in cls.FORBIDDEN_PORTS
-    
+
     @classmethod
-    def get_allowed_origins(cls) -> List[str]:
+    def get_allowed_origins(cls) -> list[str]:
         origins = ["http://127.0.0.1:8080"]
         for port in cls.ALLOWED_RANGE:
             if port not in cls.FORBIDDEN_PORTS:
@@ -37,36 +36,29 @@ class PortPolicy:
 
 class ServiceConfig(BaseSettings):
     """Hauptkonfiguration für opena6"""
-    
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore"
-    )
-    
+
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+
     service_name: str = "opena6"
     kuerzel: str = "browsep"
     port: int = 12350
     version: str = "3.0"
-    
-    bearer_token: str = Field(
-        default="c899b90d-faf8-485b-afa4-078357cf5313",
-        alias="BEARER_TOKEN"
-    )
-    
+
+    bearer_token: str = Field(default="c899b90d-faf8-485b-afa4-078357cf5313", alias="BEARER_TOKEN")
+
     base_dir: Path = Path(__file__).parent
-    
+
     opena1_url: str = Field(default="http://127.0.0.1:12344", alias="OPENA1_URL")
     opena2_url: str = Field(default="http://127.0.0.1:12345", alias="OPENA2_URL")
     opena20_url: str = Field(default="http://127.0.0.1:12349", alias="OPENA20_URL")
-    
+
     log_level: str = Field(default="INFO", alias="LOG_LEVEL")
     log_format: str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
     @property
     def data_dir(self) -> Path:
         return self.base_dir / "data"
-    
+
     @property
     def logs_dir(self) -> Path:
         return self.base_dir / "logs"
@@ -74,9 +66,9 @@ class ServiceConfig(BaseSettings):
 
 class AgentInfo(BaseModel):
     """Agent-Informationen"""
-    
+
     model_config = ConfigDict(extra="forbid")
-    
+
     id: str = Field(..., description="Agent ID")
     name: str = Field(..., description="Agent Name")
     kuerzel: str = Field(..., description="PORTIER Kürzel")
@@ -84,7 +76,7 @@ class AgentInfo(BaseModel):
     enabled: bool = Field(default=True)
 
 
-_config: Optional[ServiceConfig] = None
+_config: ServiceConfig | None = None
 
 
 def load_config() -> ServiceConfig:

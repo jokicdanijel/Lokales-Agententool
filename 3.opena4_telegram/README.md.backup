@@ -1,11 +1,11 @@
 # 📱 opena4 - Telegram Agent
 
-**Agent-ID:** `opena4`  
-**Port:** 12348  
-**Kürzel:** `telep`  
-**Status:** ✅ RUNNING (PID: siehe logs/opena4.pid)  
-**Version:** 2.0  
-**Status:** ✅ Production  
+**Agent-ID:** `opena4`
+**Port:** 12348
+**Kürzel:** `telep`
+**Status:** ✅ RUNNING (PID: siehe logs/opena4.pid)
+**Version:** 2.0
+**Status:** ✅ Production
 **Letzte Aktualisierung:** 27. November 2025
 
 ---
@@ -14,7 +14,7 @@
 
 **Role:** Bot-Connector (Telegram) – empfängt/sendet Nachrichten und integriert in die Portier-Architektur.
 
-**Ingress:** Telegram Webhook → FastAPI  
+**Ingress:** Telegram Webhook → FastAPI
 **Egress:** Archivierung via `opena2` (`/store/archivp`) und Dispatch via `kordp` (`/dispatch/kordp`)
 
 ---

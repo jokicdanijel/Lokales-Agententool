@@ -5,7 +5,7 @@ Centralized request/response validation models.
 
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any
 from uuid import UUID
 
 from pydantic import BaseModel, Field, field_validator
@@ -36,9 +36,9 @@ class TaskCreate(BaseModel):
     """Request model for task creation."""
 
     title: str = Field(..., min_length=1, max_length=255)
-    description: Optional[str] = Field(None, max_length=2000)
+    description: str | None = Field(None, max_length=2000)
     priority: TaskPriority = Field(default=TaskPriority.MEDIUM)
-    metadata: Optional[Dict[str, Any]] = Field(default_factory=dict)
+    metadata: dict[str, Any] | None = Field(default_factory=dict)
 
     class Config:
         """Pydantic config: strict validation."""
@@ -52,15 +52,15 @@ class TaskResponse(BaseModel):
 
     id: UUID
     title: str
-    description: Optional[str]
+    description: str | None
     status: TaskStatus
     priority: TaskPriority
     created_at: datetime
     updated_at: datetime
-    completed_at: Optional[datetime] = None
-    metadata: Dict[str, Any]
-    result: Optional[Dict[str, Any]] = None
-    error: Optional[str] = None
+    completed_at: datetime | None = None
+    metadata: dict[str, Any]
+    result: dict[str, Any] | None = None
+    error: str | None = None
 
     class Config:
         """Pydantic config."""
@@ -72,7 +72,7 @@ class TaskListResponse(BaseModel):
     """Response model for task list."""
 
     total: int
-    items: List[TaskResponse]
+    items: list[TaskResponse]
     page: int
     page_size: int
 
@@ -82,9 +82,9 @@ class SubtaskCreate(BaseModel):
 
     task_id: UUID
     title: str = Field(..., min_length=1, max_length=255)
-    description: Optional[str] = Field(None, max_length=2000)
+    description: str | None = Field(None, max_length=2000)
     order: int = Field(..., ge=0)
-    metadata: Optional[Dict[str, Any]] = Field(default_factory=dict)
+    metadata: dict[str, Any] | None = Field(default_factory=dict)
 
     class Config:
         """Pydantic config."""
@@ -98,13 +98,13 @@ class SubtaskResponse(BaseModel):
     id: UUID
     task_id: UUID
     title: str
-    description: Optional[str]
+    description: str | None
     status: TaskStatus
     order: int
     created_at: datetime
     updated_at: datetime
-    result: Optional[Dict[str, Any]] = None
-    error: Optional[str] = None
+    result: dict[str, Any] | None = None
+    error: str | None = None
 
     class Config:
         """Pydantic config."""
@@ -118,7 +118,7 @@ class HealthCheckResponse(BaseModel):
     status: str = Field(..., pattern="^(healthy|degraded|unhealthy)$")
     timestamp: datetime
     version: str
-    dependencies: Dict[str, str]
+    dependencies: dict[str, str]
 
     @field_validator("status")
     @classmethod
@@ -144,7 +144,7 @@ class AgentResponse(BaseModel):
 class AgentListResponse(BaseModel):
     """Response model for agent list."""
 
-    agents: List[AgentResponse]
+    agents: list[AgentResponse]
     total: int
 
 
@@ -153,7 +153,7 @@ class ErrorResponse(BaseModel):
 
     error_code: str
     message: str
-    details: Optional[Dict[str, Any]] = None
+    details: dict[str, Any] | None = None
     timestamp: datetime
 
     class Config:

@@ -5,7 +5,7 @@
 groups:
   - name: elion_alerts
     interval: 15s
-    
+
     rules:
       # Alert 1: Service Down
       - alert: ServiceDown
@@ -18,7 +18,7 @@ groups:
           summary: "{{ $labels.service }} is down"
           description: "Service {{ $labels.service }} (port {{ $labels.port }}) has been unavailable for 30 seconds"
           runbook: "Stop and restart the service: bin/ops.sh restart {{ $labels.service }}"
-      
+
       # Alert 2: High Response Latency
       - alert: HighLatency
         expr: histogram_quantile(0.95, elion_service_response_time_seconds) > 1.0
@@ -30,7 +30,7 @@ groups:
           summary: "High latency on {{ $labels.service }}"
           description: "95th percentile latency for {{ $labels.service }} {{ $labels.endpoint }} is {{ $value | humanize }}s"
           runbook: "Check service load: curl http://localhost:{{ $labels.port }}/health"
-      
+
       # Alert 3: Archive Growing Too Fast
       - alert: ArchiveGrowthTooFast
         expr: elion_archive_growth_entries_per_hour > 100
@@ -42,10 +42,10 @@ groups:
           summary: "Archive growing too quickly"
           description: "Archive is growing at {{ $value | humanize }} entries/hour (threshold: 100)"
           runbook: "Review archive content: bin/ops.sh archiv:last?n=10"
-      
+
       # Alert 4: Memory Usage High
       - alert: HighMemoryUsage
-        expr: elion_service_memory_bytes > 536870912  # 512 MB
+        expr: elion_service_memory_bytes > 536870912 # 512 MB
         for: 2m
         labels:
           severity: warning
@@ -54,7 +54,7 @@ groups:
           summary: "High memory usage: {{ $labels.service }}"
           description: "{{ $labels.service }} is using {{ $value | humanize1024 }}B of memory"
           runbook: "Restart service or investigate memory leak"
-      
+
       # Alert 5: Error Rate High
       - alert: HighErrorRate
         expr: elion_error_rate_percent > 5
@@ -66,10 +66,10 @@ groups:
           summary: "High error rate detected"
           description: "System-wide error rate is {{ $value | humanize }}% (threshold: 5%)"
           runbook: "Check service logs: bin/ops.sh logs"
-      
+
       # Alert 6: Archive Size Critical
       - alert: ArchiveSizeCritical
-        expr: elion_archive_size_bytes > 1073741824  # 1 GB
+        expr: elion_archive_size_bytes > 1073741824 # 1 GB
         for: 5m
         labels:
           severity: warning
@@ -78,7 +78,7 @@ groups:
           summary: "Archive size is getting large"
           description: "Archive size is {{ $value | humanize1024 }}B"
           runbook: "Consider archiving old entries: bin/ops.sh archiv:prune"
-      
+
       # Alert 7: Few Services Online
       - alert: LowServiceAvailability
         expr: elion_services_online < 2
@@ -90,7 +90,7 @@ groups:
           summary: "Less than 2 services are online"
           description: "Only {{ $value }} services are currently online (expected at least 2)"
           runbook: "Start missing services: bin/ops.sh start"
-      
+
       # Alert 8: Zero Throughput (System Stuck?)
       - alert: ZeroThroughput
         expr: elion_requests_per_second == 0 and elion_services_online > 0

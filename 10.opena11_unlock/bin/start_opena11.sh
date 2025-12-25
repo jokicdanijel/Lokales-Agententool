@@ -35,12 +35,12 @@ log_warn() {
 
 check_dependencies() {
     log_info "Checking dependencies..."
-    
+
     if ! command -v python3 &> /dev/null; then
         log_error "python3 not found"
         exit 1
     fi
-    
+
     if ! command -v pip3 &> /dev/null; then
         log_error "pip3 not found"
         exit 1
@@ -49,7 +49,7 @@ check_dependencies() {
 
 load_env() {
     # Try project root first
-    
+
     if [ -z "$BEARER_TOKEN" ]; then
         log_error "BEARER_TOKEN not set in .env"
         exit 1
@@ -58,12 +58,12 @@ load_env() {
 
 check_port() {
     log_info "Checking if port $PORT is available..."
-    
+
     if lsof -Pi :$PORT -sTCP:LISTEN -t >/dev/null 2>&1; then
         log_error "Port $PORT is already in use"
         exit 1
     fi
-    
+
     log_info "Port $PORT is available ✓"
 }
 
@@ -82,22 +82,22 @@ check_existing_process() {
 
 install_dependencies() {
     log_info "Checking Python dependencies..."
-    
+
     cd "$AGENT_DIR"
-    
+
     # Check if dependencies are already installed
     if python3 -c "import fastapi, uvicorn, pydantic" 2>/dev/null; then
         log_info "Dependencies already installed ✓"
         return 0
     fi
-    
+
     log_info "Installing Python dependencies..."
-    
+
     # Use --break-system-packages (PEP 668 override)
     pip3 install --user --break-system-packages -q fastapi uvicorn pydantic 2>/dev/null || {
         log_warn "Failed to install dependencies via pip (continuing anyway - dependencies may already exist)"
     }
-    
+
     # Final check
     if python3 -c "import fastapi, uvicorn, pydantic" 2>/dev/null; then
         log_info "Dependencies verified ✓"
@@ -109,27 +109,27 @@ install_dependencies() {
 
 start_service() {
     log_info "Starting $SERVICE_NAME on port $PORT..."
-    
+
     cd "$AGENT_DIR"
-    
+
     nohup python3 main_unlock_agent.py > "$LOG_FILE" 2>&1 &
     PID=$!
-    
+
     echo "$PID" > "$PID_FILE"
-    
+
     log_info "Started $SERVICE_NAME with PID $PID"
     log_info "Logs: $LOG_FILE"
-    
+
     # Wait for service to start
     sleep 2
-    
+
     # Verify process is still running
     if ! kill -0 "$PID" 2>/dev/null; then
         log_error "$SERVICE_NAME failed to start (check logs: $LOG_FILE)"
         rm -f "$PID_FILE"
         exit 1
     fi
-    
+
     # Health check
     log_info "Performing health check..."
     if curl -s -f "http://127.0.0.1:$PORT/health" > /dev/null 2>&1; then
@@ -145,14 +145,14 @@ start_service() {
 
 main() {
     log_info "🚀 Starting opena11 (unlockp)"
-    
+
     check_dependencies
     load_env
     check_port
     check_existing_process
     install_dependencies
     start_service
-    
+
     echo ""
     log_info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     log_info "✅ opena11 started successfully"

@@ -36,21 +36,21 @@ echo
 count=0
 for service_spec in "${SERVICES[@]}"; do
   IFS=':' read -r port target service_name <<< "$service_spec"
-  
+
   SERVICE_DIR="${SERVICES_DIR}/${service_name}"
-  
+
   # Skip if already exists
   if [ -d "$SERVICE_DIR" ]; then
     echo "✅ ${service_name} (${port}) — Already exists"
     continue
   fi
-  
+
   # Create directory
   mkdir -p "$SERVICE_DIR"
-  
+
   # Copy template
   cp "$TEMPLATE_FILE" "${SERVICE_DIR}/main.py"
-  
+
   # Create wrapper for environment variables
   cat > "${SERVICE_DIR}/run.sh" << EOF
 #!/usr/bin/env bash
@@ -60,7 +60,7 @@ export PORT="${port}"
 exec python3 "\$(dirname "\${BASH_SOURCE[0]}")/main.py" "\$@"
 EOF
   chmod +x "${SERVICE_DIR}/run.sh"
-  
+
   # Create requirements.txt
   cat > "${SERVICE_DIR}/requirements.txt" << 'EOF'
 fastapi==0.121.0
@@ -70,7 +70,7 @@ pydantic-settings==2.12.0
 httpx==0.27.2
 python-multipart==0.0.7
 EOF
-  
+
   echo "✨ ${service_name:0:15:}... (${port}, ${target:0:6}...)"
   ((count++))
 done

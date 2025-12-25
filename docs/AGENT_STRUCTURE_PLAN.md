@@ -1,7 +1,9 @@
 # Agent Verzeichnis-Struktur - PLAN
 
 ## 1. ZIEL
+
 Erstelle **19 vollständige, isolierte Agent-Verzeichnisse** (wie 1.opena1&2_portier/, 2.openwebui/) unter Projektwurzel mit:
+
 - Nummern-Präfix (3-21)
 - Konsistente Struktur
 - Vollständige Dateien (nicht leer)
@@ -11,27 +13,27 @@ Erstelle **19 vollständige, isolierte Agent-Verzeichnisse** (wie 1.opena1&2_por
 
 ## 2. AGENT-MAPPING (19 Agenten)
 
-| # | Verzeichnis | Agent_ID | Port | Beschreibung | Kategorie |
-|---|---|---|---|---|---|
-| 3 | opena1_coordinator | opena1 | 12344 | Orchestrator Phase 1 | Core |
-| 4 | opena2_archivator | opena2 | 12345 | File Storage System | Core |
-| 5 | kordp_scheduler | kordp | 12346 | Event Coordination | Core |
-| 6 | opena4_telegram | opena4 | 12347 | Telegram Integration | Integration |
-| 7 | opena5_browser | opena5 | 12348 | Browser Automation | Tools |
-| 8 | opena6_email | opena6 | 12349 | Email Management | Tools |
-| 9 | opena7_whatsapp | opena7 | 12350 | WhatsApp Integration | Integration |
-| 10 | opena8_telephone | opena8 | 12351 | Telephone System | Integration |
-| 11 | opena9_call_tracking | opena9 | 12352 | Call Analytics | Analytics |
-| 12 | opena10_unlock | opena10 | 12353 | Security & Access | Security |
-| 13 | opena11_social_media | opena11 | 12359 | Social Media Manager | Integration |
-| 14 | opena12_influencer | opena12 | 12360 | Influencer Collab | Tools |
-| 15 | opena13_calendar | opena13 | 12361 | Calendar & Scheduling | Tools |
-| 16 | opena14_html | opena14 | 12362 | HTML Generation | Tools |
-| 17 | opena15_shop | opena15 | 12363 | E-commerce System | Business |
-| 18 | opena16_crm | opena16 | 12364 | CRM Management | Business |
-| 19 | opena17_analytics | opena17 | 12365 | Data Analytics | Analytics |
-| 20 | opena18_dashboard | opena18 | 12366 | Dashboard UI | UI |
-| 21 | opena19_workflow | opena19 | 12367 | Workflow Automation | Automation |
+| #   | Verzeichnis          | Agent_ID | Port  | Beschreibung          | Kategorie   |
+| --- | -------------------- | -------- | ----- | --------------------- | ----------- |
+| 3   | opena1_coordinator   | opena1   | 12344 | Orchestrator Phase 1  | Core        |
+| 4   | opena2_archivator    | opena2   | 12345 | File Storage System   | Core        |
+| 5   | kordp_scheduler      | kordp    | 12346 | Event Coordination    | Core        |
+| 6   | opena4_telegram      | opena4   | 12347 | Telegram Integration  | Integration |
+| 7   | opena5_browser       | opena5   | 12348 | Browser Automation    | Tools       |
+| 8   | opena6_email         | opena6   | 12349 | Email Management      | Tools       |
+| 9   | opena7_whatsapp      | opena7   | 12350 | WhatsApp Integration  | Integration |
+| 10  | opena8_telephone     | opena8   | 12351 | Telephone System      | Integration |
+| 11  | opena9_call_tracking | opena9   | 12352 | Call Analytics        | Analytics   |
+| 12  | opena10_unlock       | opena10  | 12353 | Security & Access     | Security    |
+| 13  | opena11_social_media | opena11  | 12359 | Social Media Manager  | Integration |
+| 14  | opena12_influencer   | opena12  | 12360 | Influencer Collab     | Tools       |
+| 15  | opena13_calendar     | opena13  | 12361 | Calendar & Scheduling | Tools       |
+| 16  | opena14_html         | opena14  | 12362 | HTML Generation       | Tools       |
+| 17  | opena15_shop         | opena15  | 12363 | E-commerce System     | Business    |
+| 18  | opena16_crm          | opena16  | 12364 | CRM Management        | Business    |
+| 19  | opena17_analytics    | opena17  | 12365 | Data Analytics        | Analytics   |
+| 20  | opena18_dashboard    | opena18  | 12366 | Dashboard UI          | UI          |
+| 21  | opena19_workflow     | opena19  | 12367 | Workflow Automation   | Automation  |
 
 ---
 
@@ -66,6 +68,7 @@ X.agent_name/
 ## 4. DATEI-INHALTE
 
 ### 4.1 main.py
+
 - FastAPI-App
 - `/health` Endpoint
 - `/status` Endpoint
@@ -73,6 +76,7 @@ X.agent_name/
 - Logging zu `logs/app.log`
 
 ### 4.2 README.md
+
 - Agent-Beschreibung
 - Port & ID
 - Quick Start
@@ -81,6 +85,7 @@ X.agent_name/
 - Logging-Info
 
 ### 4.3 requirements.txt
+
 ```
 fastapi==0.104.1
 uvicorn==0.24.0
@@ -90,6 +95,7 @@ python-dotenv==1.0.0
 ```
 
 ### 4.4 .env.template
+
 ```
 AGENT_ID=openaX
 PORT=123XX
@@ -100,17 +106,20 @@ ARCHIVATOR_URL=http://127.0.0.1:12345
 ```
 
 ### 4.5 config/agent.conf
+
 - [agent] Sektion mit ID, Port, Name
 - [security] mit Token-Info
 - [logging] mit Level
 - [integrations] mit URLs
 
 ### 4.6 tests/test_agent.py
+
 - Basis-Test-Template
 - Health-Check-Test
 - Invoke-Test
 
 ### 4.7 bin/start.sh
+
 - Lade .env
 - Setze PORT
 - Starte `python main.py`

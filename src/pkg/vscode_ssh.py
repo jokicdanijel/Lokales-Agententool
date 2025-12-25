@@ -3,11 +3,10 @@ VSCode SSH Integration Module
 Handles secure SSH connections to remote servers for file operations
 """
 
-import asyncssh
-import logging
 import asyncio
-from typing import Optional
-from datetime import datetime
+import logging
+
+import asyncssh
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +18,7 @@ class VSCodeSSH:
         self.host = host
         self.user = user
         self.key_path = key_path
-        self._conn: Optional[asyncssh.SSHClientConnection] = None
+        self._conn: asyncssh.SSHClientConnection | None = None
         self._connected = False
 
     async def connect(self) -> bool:
@@ -33,12 +32,12 @@ class VSCodeSSH:
                     known_hosts=None,  # For testing; production: use known_hosts file
                     password=None,
                 ),
-                timeout=10
+                timeout=10,
             )
             self._connected = True
             logger.info(f"✅ SSH connected to {self.host}")
             return True
-        except asyncio.TimeoutError:
+        except TimeoutError:
             logger.error(f"❌ SSH connection timeout to {self.host}")
             return False
         except Exception as e:
@@ -51,15 +50,12 @@ class VSCodeSSH:
             raise RuntimeError("SSH connection not established")
 
         try:
-            result = await asyncio.wait_for(
-                self._conn.run(cmd, check=False),
-                timeout=timeout
-            )
-            output = result.stdout.decode('utf-8', errors='ignore')
+            result = await asyncio.wait_for(self._conn.run(cmd, check=False), timeout=timeout)
+            output = result.stdout.decode("utf-8", errors="ignore")
             if result.stderr:
                 logger.warning(f"SSH stderr: {result.stderr.decode('utf-8', errors='ignore')}")
             return output
-        except asyncio.TimeoutError:
+        except TimeoutError:
             raise TimeoutError(f"Command timeout: {cmd}")
         except Exception as e:
             logger.error(f"Command execution failed: {e}")
@@ -71,10 +67,10 @@ class VSCodeSSH:
             # First check file size
             size_result = await self.exec_cmd(f"wc -c < {path}")
             size = int(size_result.strip())
-            
+
             if size > max_size:
                 raise ValueError(f"File too large: {size} bytes (max: {max_size})")
-            
+
             content = await self.exec_cmd(f"cat {path}")
             logger.info(f"✅ Read {len(content)} bytes from {path}")
             return content
@@ -86,11 +82,11 @@ class VSCodeSSH:
         """Write file to remote server"""
         try:
             # Escape special characters for shell
-            escaped_content = content.replace('\\', '\\\\').replace('"', '\\"')
-            
+            escaped_content = content.replace("\\", "\\\\").replace('"', '\\"')
+
             # Use heredoc for safe multi-line writes
-            cmd = f'cat > {path} << \'EOF\'\n{content}\nEOF'
-            
+            cmd = f"cat > {path} << 'EOF'\n{content}\nEOF"
+
             await self.exec_cmd(cmd)
             logger.info(f"✅ Wrote {len(content)} bytes to {path}")
             return True
@@ -102,20 +98,22 @@ class VSCodeSSH:
         """List directory contents"""
         try:
             result = await self.exec_cmd(f"ls -lah {path}")
-            lines = result.strip().split('\n')[1:]  # Skip header
-            
+            lines = result.strip().split("\n")[1:]  # Skip header
+
             files = []
             for line in lines:
                 if line.strip():
                     parts = line.split(None, 8)
                     if len(parts) >= 9:
-                        files.append({
-                            "name": parts[8],
-                            "type": "dir" if parts[0].startswith('d') else "file",
-                            "size": parts[4],
-                            "modified": f"{parts[5]} {parts[6]} {parts[7]}"
-                        })
-            
+                        files.append(
+                            {
+                                "name": parts[8],
+                                "type": "dir" if parts[0].startswith("d") else "file",
+                                "size": parts[4],
+                                "modified": f"{parts[5]} {parts[6]} {parts[7]}",
+                            }
+                        )
+
             logger.info(f"✅ Listed {len(files)} items in {path}")
             return files
         except Exception as e:
@@ -146,7 +144,7 @@ class VSCodeSSH:
         """Check if file exists on remote server"""
         try:
             result = await self.exec_cmd(f"test -f {path} && echo 'yes' || echo 'no'")
-            return result.strip() == 'yes'
+            return result.strip() == "yes"
         except Exception as e:
             logger.error(f"❌ Failed to check {path}: {e}")
             return False
@@ -164,7 +162,7 @@ class VSCodeSSH:
 
 
 # Global SSH instance (will be initialized in main_opena4_vscode.py)
-_ssh_instance: Optional[VSCodeSSH] = None
+_ssh_instance: VSCodeSSH | None = None
 
 
 async def get_ssh() -> VSCodeSSH:

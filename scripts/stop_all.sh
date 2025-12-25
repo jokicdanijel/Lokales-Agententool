@@ -7,4 +7,3 @@ systemctl --user stop n8n.service || true
 systemctl --user stop openwebui.service || true
 
 echo "[OK] Dienste gestoppt: portier-codegen, n8n, openwebui"
-

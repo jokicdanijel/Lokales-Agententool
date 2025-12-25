@@ -162,8 +162,8 @@ class AgentDashboardClient:
             # POST request
             req_data = json.dumps(data).encode('utf-8') if data else None
             req = urllib.request.Request(
-                url, 
-                data=req_data, 
+                url,
+                data=req_data,
                 headers={'Content-Type': 'application/json'}
             )
             response = urllib.request.urlopen(req)
@@ -488,7 +488,7 @@ from abc import ABC, abstractmethod
 class AgentBase(ABC):
     """
     Base class for all agents in the system
-    
+
     Provides common functionality for:
     - Agent identification
     - State management
@@ -697,7 +697,7 @@ class PromptAgent(AgentBase):
 class AgentManager:
     """
     Central management system for all agents
-    
+
     Features:
     - Agent registration and lifecycle management
     - Agent orchestration and communication
@@ -937,7 +937,7 @@ class AgentManager:
         """Save agent registry to file"""
         registry_data = {
             "agents": {
-                agent_id: agent.serialize() 
+                agent_id: agent.serialize()
                 for agent_id, agent in self.agents.items()
             },
             "last_saved": datetime.now().isoformat()
@@ -1440,7 +1440,7 @@ Wenn du willst, erstelle ich dir:
 Sag kurz SCHREIB und ich lege das Skript hier vollständig als Dateiblock an (du kopierst es dann nur noch ins Repo), oder sag ICH FÜHRE wenn du's lokal ausführen willst und mir die Ausgabe schickst — dann helfe ich mit dem nächsten Schritt (Tests / Serverstart).
 Du:
 # in dashboard/backend
- 
+
 # oder logs von uvicorn
 journalctl -u portier-agent -n 200 --no-pager   # falls systemd / service genutztdanijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/lokaler gpt/-portier-openai./tools$ python3 -m venv venv313
 source venv313/bin/activate
@@ -1638,7 +1638,7 @@ Traceback (most recent call last):
   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
   File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
-ModuleNotFoundError: No module named 'agents'  
+ModuleNotFoundError: No module named 'agents'
 
 
 # 1. Suche nach requirements
@@ -1844,7 +1844,7 @@ Ich weiß, das war zäh — das geht anders und geht besser. Wenn du willst, mac
 
 Nochmals: tut mir leid für das Durcheinander. Du bestimmst den nächsten Schritt.
 Du:
-Ich glaube, 4 Stunden oder für einen 20-Minuten-Skript, 
+Ich glaube, 4 Stunden oder für einen 20-Minuten-Skript,
 ChatGPT:
 
 Du hast recht — das hätte in 20 Minuten erledigt sein sollen. Sorry, dass’s so gezogen hat. Hier ist jetzt das minimale, sofort ausführbare Skript, exakt auf dein Projekt angepasst. Einmal kopieren, ausführbar machen, starten — fertig. Keine Experimente, keine Extras.
@@ -1947,7 +1947,7 @@ agent_server:app danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekt
 insgesamt 8
 drwxrwxr-x 2 danijel-jd danijel-jd 4096 Okt 24 03:36 .
 drwxrwxr-x 3 danijel-jd danijel-jd 4096 Okt 24 03:36 ..
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/lokaler gpt/-portier-openai./dashboard/backend$  
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/lokaler gpt/-portier-openai./dashboard/backend$
 ChatGPT:
 
 dashboard/backend/agent_server.py
@@ -2753,7 +2753,7 @@ danijel-jd@danijeljd-ESPRIMO-P920:~$ hello mainPromptAgent
 Der Befehl 'hello' wurde nicht gefunden, kann aber installiert werden mit:
 sudo apt install hello              # version 2.10-3, or
 sudo apt install hello-traditional  # version 2.10-6
-danijel-jd@danijeljd-ESPRIMO-P920:~$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~$
 
 inweis: Ersetze <OWNER>/<REPO> nur wenn nötig (falls origin noch nicht gesetzt ist). Führe die Befehle im Projekt-Root aus (/home/danijel-jd/Dokumente/Workspace/Projekte/lokaler gpt/-portier-openai.).
 
@@ -3092,6 +3092,3 @@ Ausgabe:
 ---
 
 Wenn du später mehrere Tools à la `start-db`, `start-ui`, `start-whatever` brauchst, lässt sich das Muster einfach erweitern. Sag Bescheid, dann zieh ich’s modular auf.
-
-
-

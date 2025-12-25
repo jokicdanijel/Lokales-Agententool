@@ -1,9 +1,9 @@
 # 📈 opena19 - Stocks & Crypto Agent
 
-**Agent-ID:** `opena19`  
-**Port:** 12364  
-**Kürzel:** `stockcryptop`  
-**Version:** 1.0  
+**Agent-ID:** `opena19`
+**Port:** 12364
+**Kürzel:** `stockcryptop`
+**Version:** 1.0
 **Status:** ✅ RUNNING (PID: 1819135)
 
 ---
@@ -243,5 +243,5 @@ tail -f data/stockcrypto_history.jsonl | jq .
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 27. November 2025

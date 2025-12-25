@@ -1,4 +1,5 @@
 # OpenWebUI LocalAgentPro Setup Guide
+
 ## Integration, Configuration, Deployment & Testing
 
 **Version:** 1.0
@@ -52,12 +53,12 @@
 
 ### 1.2 Components
 
-| Component | Port | Description |
-|-----------|------|-------------|
-| **OpenWebUI** | 3000 | Main UI + API |
-| **VSCode Bridge** | 8765 | Code generation, tests, refactoring |
+| Component         | Port  | Description                          |
+| ----------------- | ----- | ------------------------------------ |
+| **OpenWebUI**     | 3000  | Main UI + API                        |
+| **VSCode Bridge** | 8765  | Code generation, tests, refactoring  |
 | **Browser Agent** | 12350 | Web automation, multi-step workflows |
-| **Dispatcher** | 8100 | Multi-agent routing, safepoints |
+| **Dispatcher**    | 8100  | Multi-agent routing, safepoints      |
 
 ---
 
@@ -84,7 +85,7 @@ curl -s http://localhost:8100/health
 ### 2.2 Docker Compose Setup
 
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
   openwebui:
@@ -119,6 +120,7 @@ services:
 ```
 
 **Starten:**
+
 ```bash
 docker-compose up -d
 ```
@@ -200,11 +202,13 @@ LocalAgent-Pro/personas/
 ### 4.3 Richtige Persona für richtige Kontext
 
 **Verwende in OpenWebUI:**
+
 ```
 System Prompt: localagentpro_openwebui_prompt.md
 ```
 
 **Diese Persona ist speziell für OpenWebUI gebaut und enthält:**
+
 - SCAN-FIRST Workflow
 - Tool-Orchestrierung (@-Befehle)
 - META-AUTOPILOT Loop
@@ -319,6 +323,7 @@ In OpenWebUI Chat:
 ```
 
 Expected Response:
+
 ```json
 {
   "status": "success",
@@ -339,6 +344,7 @@ Scan das Projekt und berichte über den Status
 ```
 
 Expected: Automatische INVENTORY MODE Phase mit:
+
 - Dateien-Klassifizierung
 - Kritische Module Identifikation
 - Abhängigkeits-Analyse
@@ -373,6 +379,7 @@ Expected: Browser öffnet Seite und returniert Screenshot + HTML.
 ### 7.1 Scenario: Complete Project Analysis
 
 **User Input:**
+
 ```
 Analysiere das gesamte LocalAgent-Pro Projekt und berichte über kritische Probleme
 ```
@@ -380,6 +387,7 @@ Analysiere das gesamte LocalAgent-Pro Projekt und berichte über kritische Probl
 **LocalAgentPro Workflow:**
 
 1. **INVENTORY MODE** (automatisch)
+
    ```
    Scanne Projekt...
    • 45 Python-Module
@@ -392,12 +400,14 @@ Analysiere das gesamte LocalAgent-Pro Projekt und berichte über kritische Probl
    ```
 
 2. **Riski-Bewertung**
+
    ```
    ⚠️  Circular import: opena5 ↔ opena6
    ⚠️  Missing type hints in dispatcher
    ```
 
 3. **Bestätigung**
+
    ```
    Möchtest du dass ich diese Probleme analysiere und Lösungen vorschlage? [Ja/Nein]
    ```
@@ -412,6 +422,7 @@ Analysiere das gesamte LocalAgent-Pro Projekt und berichte über kritische Probl
 ### 7.2 Scenario: Web Automation Task
 
 **User Input:**
+
 ```
 Öffne https://example.com/login, logge dich ein mit user@test.com / password123,
 und extrahiere die Benutzer-ID von der Dashboard
@@ -422,19 +433,28 @@ und extrahiere die Benutzer-ID von der Dashboard
 ```json
 {
   "workflow": [
-    {"action": "open", "url": "https://example.com/login"},
-    {"action": "wait_for", "selector": "input[name='email']"},
-    {"action": "type", "selector": "input[name='email']", "text": "user@test.com"},
-    {"action": "type", "selector": "input[name='password']", "text": "password123"},
-    {"action": "click", "selector": "button[type='submit']"},
-    {"action": "wait_for", "selector": ".dashboard"},
-    {"action": "extract_text", "selector": ".user-id"},
-    {"action": "screenshot"}
+    { "action": "open", "url": "https://example.com/login" },
+    { "action": "wait_for", "selector": "input[name='email']" },
+    {
+      "action": "type",
+      "selector": "input[name='email']",
+      "text": "user@test.com"
+    },
+    {
+      "action": "type",
+      "selector": "input[name='password']",
+      "text": "password123"
+    },
+    { "action": "click", "selector": "button[type='submit']" },
+    { "action": "wait_for", "selector": ".dashboard" },
+    { "action": "extract_text", "selector": ".user-id" },
+    { "action": "screenshot" }
   ]
 }
 ```
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -455,6 +475,7 @@ und extrahiere die Benutzer-ID von der Dashboard
 **Symptom:** `@vscode_copilot_bridge` wird nicht erkannt
 
 **Lösung:**
+
 ```bash
 # 1. Check OpenWebUI API
 curl -X GET http://localhost:3000/api/v1/health
@@ -471,6 +492,7 @@ tail -f logs/tools_registration.log
 **Symptom:** Tool-Aufruf schlägt fehl mit Timeout
 
 **Lösung:**
+
 ```bash
 # 1. Check ob Bridge läuft
 curl http://localhost:8765/health
@@ -489,6 +511,7 @@ python3 -m vscode_bridge --port 8765
 **Symptom:** BrowserAgent-Aktion gibt Error
 
 **Lösung:**
+
 ```bash
 # 1. Check Abhängigkeiten
 python3 -c "import selenium; import headless_chrome"
@@ -505,6 +528,7 @@ docker restart browser-agent
 **Symptom:** Dispatcher läuft, aber Safepoints fehlen
 
 **Lösung:**
+
 ```bash
 # 1. Check Dispatcher Logs
 tail -f logs/dispatcher.log

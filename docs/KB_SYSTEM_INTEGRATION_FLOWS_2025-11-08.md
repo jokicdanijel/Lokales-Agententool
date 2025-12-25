@@ -1,7 +1,7 @@
 # 🔄 System Integration Flows – Complete Data Flows KB
 
-**Erstellt:** Nov 8, 2025 19:10 UTC  
-**Version:** 1.0  
+**Erstellt:** Nov 8, 2025 19:10 UTC
+**Version:** 1.0
 **Status:** 🟢 FULLY VERIFIED (Nov 8)
 
 ---
@@ -78,6 +78,7 @@
 ```
 
 **Latency Breakdown (Nov 8 Measured):**
+
 - Telegram→opena4_telegram: 50ms (network)
 - opena4_telegram validation: 2ms
 - opena4_telegram→opena_finance: 20ms (API call)
@@ -116,6 +117,7 @@
 ```
 
 **Check:** All 3 services health check
+
 ```bash
 for port in 12344 12345 12346; do
   echo "Port $port: $(curl -s http://127.0.0.1:$port/health | jq .status)"
@@ -143,6 +145,7 @@ done
 ```
 
 **Check:** Both apps health + registry status
+
 ```bash
 curl -s http://127.0.0.1:12347/health | jq .status
 curl -s http://127.0.0.1:12348/health | jq .status
@@ -262,31 +265,31 @@ After backoff:
 
 ```
 Every 5 seconds:
-  
+
   FOR agent IN [opena2, opena_finance, opena4_telegram, kordp, opena19]:
-    
+
     GET /health from http://127.0.0.1:{port}/health
-    
+
     IF 200 response in <2 seconds:
       status = "healthy"
       last_check = now
       consecutive_failures = 0
-      
+
     ELSE IF timeout after 2 seconds:
       consecutive_failures += 1
-      
+
       IF consecutive_failures >= 3:
         status = "unhealthy"
         broadcast: event_agent_unhealthy
         log: ERROR_<agent>_TIMEOUT
       ELSE:
         status = "degraded" (still trying)
-    
+
     ELSE IF error response:
       status = "error"
       last_error = error_message
       consecutive_failures += 1
-  
+
   SAVE registry to disk (agent_registry.json)
   BROADCAST health_matrix event
 ```
@@ -306,14 +309,14 @@ Every 5 seconds:
 
 ## 📈 Performance Baseline (Nov 8 Measured)
 
-| Operation | Latency | Throughput | Notes |
-|-----------|---------|-----------|-------|
-| Telegram webhook | ~50ms | 30 req/sec | Rate-limited by Telegram |
-| Finance API call | ~20ms | 100 req/sec | Local, very fast |
-| Archive write | ~10ms | 50 req/sec | Disk I/O bound |
-| Registry update | <1ms | 1000 req/sec | In-memory |
-| Health check | ~5ms | 200 req/sec | Per agent |
-| End-to-end flow | ~150ms | 6-7 req/sec | Full pipeline |
+| Operation        | Latency | Throughput   | Notes                    |
+| ---------------- | ------- | ------------ | ------------------------ |
+| Telegram webhook | ~50ms   | 30 req/sec   | Rate-limited by Telegram |
+| Finance API call | ~20ms   | 100 req/sec  | Local, very fast         |
+| Archive write    | ~10ms   | 50 req/sec   | Disk I/O bound           |
+| Registry update  | <1ms    | 1000 req/sec | In-memory                |
+| Health check     | ~5ms    | 200 req/sec  | Per agent                |
+| End-to-end flow  | ~150ms  | 6-7 req/sec  | Full pipeline            |
 
 ---
 
@@ -322,6 +325,7 @@ Every 5 seconds:
 ### Horizontal Scaling
 
 **Multiple instances per service:**
+
 ```
 opena_finance can run on:
   - Port 12347 (main)
@@ -337,11 +341,13 @@ Load balancer distributes:
 ### Database Scaling
 
 **opena_finance (SQLite):**
+
 - Current: 2 accounts, 3 transactions, 1 statement
 - Limit: ~10,000 rows before optimization needed
 - Scaling: Migrate to PostgreSQL when >100k rows
 
 **opena2 (Archivator):**
+
 - Current: 15+ files, ~7 KB total
 - Scaling: Append-only, disk is the limit
 - Expected in 1 year: ~500MB (at current rate)
@@ -349,11 +355,13 @@ Load balancer distributes:
 ### Network Scaling
 
 **Current (single machine):**
+
 - All services on 127.0.0.1 (localhost)
 - No network overhead
 - All communication <1ms
 
 **Multi-machine (future):**
+
 - Would need TLS/HTTPS for all services
 - Network latency: ~5-10ms per hop
 - Recommend: Keep opena1+2 on same machine, scale opena_finance+4+19
@@ -363,30 +371,35 @@ Load balancer distributes:
 ## ✅ Nov 9 Verification Checklist
 
 ### 9:00-9:05 AM – Infrastructure Check
+
 - [ ] opena1 health: `curl -s http://127.0.0.1:12344/health | jq .status` = "healthy"
 - [ ] opena2 health: `curl -s http://127.0.0.1:12345/health | jq .status` = "healthy"
 - [ ] kordp health: `curl -s http://127.0.0.1:12346/health | jq .status` = "healthy"
 - [ ] opena1 registry has 3 entries (opena1, 2, kordp)
 
 ### 9:05-9:10 AM – Application Check
+
 - [ ] opena_finance health: `curl -s http://127.0.0.1:12347/health | jq .status` = "healthy"
 - [ ] opena4_telegram health: `curl -s http://127.0.0.1:12348/health | jq .status` = "healthy"
 - [ ] Both registered in opena1 registry
 - [ ] opena_finance has 2 accounts & 3 transactions from Nov 8
 
 ### 9:10-9:15 AM – Dashboard Check
+
 - [ ] opena19 health: `curl -s http://127.0.0.1:12349/health | jq .status` = "healthy"
 - [ ] opena19 can query all 5 agents
 - [ ] Dashboard shows all 5 agents with "healthy" status
 - [ ] Dashboard widget shows Finance data (€6,050)
 
 ### 9:15-9:20 AM – Integration Test
+
 - [ ] Send Telegram /balance command
 - [ ] Receive portfolio response (€6,050)
 - [ ] Message appears in archive
 - [ ] Archive entry has correct Safepoint format
 
 ### 9:20 AM – System Ready
+
 - [ ] All 6 services operational (✅ 6/6)
 - [ ] All data flows verified
 - [ ] Archive has 20+ entries (Nov 8 + Nov 9 startup)
@@ -405,6 +418,6 @@ Load balancer distributes:
 
 ---
 
-**Status:** 🟢 FULLY VERIFIED  
-**Last Tested:** Nov 8, 18:11 UTC (Telegram→Finance→Archive ✅)  
+**Status:** 🟢 FULLY VERIFIED
+**Last Tested:** Nov 8, 18:11 UTC (Telegram→Finance→Archive ✅)
 **Version:** 1.0

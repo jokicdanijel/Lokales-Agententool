@@ -3,11 +3,13 @@
 ## 1. Allowed Ports
 
 ### Backend-Ports
+
 ```
 12344-12399
 ```
 
 ### Zuordnung
+
 | Service               | Port  |
 | --------------------- | ----- |
 | opena1 (Koordinator)  | 12344 |
@@ -19,6 +21,7 @@
 | OpenWebUI Adapter     | 12350 |
 
 ### Verfuegbar
+
 ```
 12351-12399 (49 freie Slots)
 ```
@@ -26,6 +29,7 @@
 ## 2. Forbidden Ports
 
 ### Port 8080
+
 - **Exklusiv fuer OpenWebUI UI**
 - Niemals Backend
 - Niemals API
@@ -33,6 +37,7 @@
 - Docker-Container: open-webui/open-webui:main
 
 ### Gruende
+
 - Legacy-Konflikt-Vermeidung
 - Klare Trennung UI/Backend
 - Security-Policy
@@ -41,11 +46,12 @@
 ## 3. Enforcement
 
 ### Middleware
+
 ```python
 class PortPolicyMiddleware:
     allowed_ports = range(12344, 12400)
     forbidden_ports = [8080]
-    
+
     def check(self, port):
         if port in self.forbidden_ports:
             raise Forbidden("Port 8080 verboten")
@@ -54,6 +60,7 @@ class PortPolicyMiddleware:
 ```
 
 ### In jedem Service
+
 ```python
 # main.py
 from middleware import PortPolicyMiddleware
@@ -68,12 +75,13 @@ app.add_middleware(
 ## 4. Registry
 
 ### config/registry.json
+
 ```json
 {
   "tools": {
-    "opena1": {"port": 12344, "type": "coordinator"},
-    "opena2": {"port": 12345, "type": "archiver"},
-    "kordp": {"port": 12346, "type": "dispatcher"}
+    "opena1": { "port": 12344, "type": "coordinator" },
+    "opena2": { "port": 12345, "type": "archiver" },
+    "kordp": { "port": 12346, "type": "dispatcher" }
   },
   "ports": {
     "allowed": [12344, 12345, 12346, 12347, 12348, 12349, 12350],
@@ -83,6 +91,7 @@ app.add_middleware(
 ```
 
 ### Single Source of Truth
+
 - Zentrale Port-Verwaltung
 - Automatische Validierung
 - Konsistenz-Checks
@@ -91,6 +100,7 @@ app.add_middleware(
 ## 5. Validierung
 
 ### Startup
+
 ```bash
 python scripts/validate_ports.py
 # Prueft:
@@ -101,6 +111,7 @@ python scripts/validate_ports.py
 ```
 
 ### Runtime
+
 - Middleware prueft jeden Request
 - Health-Checks validieren Ports
 - Monitoring detektiert Abweichungen
@@ -108,6 +119,7 @@ python scripts/validate_ports.py
 ## 6. Error-Handling
 
 ### 8080 Violation
+
 ```json
 {
   "error": {
@@ -123,6 +135,7 @@ python scripts/validate_ports.py
 ```
 
 ### Out-of-Range
+
 ```json
 {
   "error": {
@@ -137,6 +150,7 @@ python scripts/validate_ports.py
 ```
 
 ## 7. Best Practices
+
 - Immer Registry konsultieren
 - Niemals hardcoded Ports
 - Environment-Variables nutzen

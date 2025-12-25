@@ -60,7 +60,7 @@ log "⚠️ Graceful Shutdown fehlgeschlagen - Force Kill..."
 if kill -0 "$PID" 2>/dev/null; then
     kill -KILL "$PID"
     sleep 1
-    
+
     if ! kill -0 "$PID" 2>/dev/null; then
         log "✅ $SERVICE_NAME force-stopped"
         rm -f "$PID_FILE"
@@ -81,7 +81,7 @@ elif command -v ss >/dev/null 2>&1; then
     if ss -tuln | grep -q ":$PORT "; then
         log "⚠️ Port $PORT noch belegt"
     else
-        log "🟢 Port $PORT freigegeben"  
+        log "🟢 Port $PORT freigegeben"
     fi
 fi
 

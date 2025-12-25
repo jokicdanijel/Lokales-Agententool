@@ -1,28 +1,21 @@
-from typing import Optional
 import logging
 from urllib.parse import urlparse
 
+from open_webui.config import (
+    QDRANT_API_KEY,
+    QDRANT_COLLECTION_PREFIX,
+    QDRANT_GRPC_PORT,
+    QDRANT_HNSW_M,
+    QDRANT_ON_DISK,
+    QDRANT_PREFER_GRPC,
+    QDRANT_TIMEOUT,
+    QDRANT_URI,
+)
+from open_webui.env import SRC_LOG_LEVELS
+from open_webui.retrieval.vector.main import GetResult, SearchResult, VectorDBBase, VectorItem
 from qdrant_client import QdrantClient as Qclient
 from qdrant_client.http.models import PointStruct
 from qdrant_client.models import models
-
-from open_webui.retrieval.vector.main import (
-    VectorDBBase,
-    VectorItem,
-    SearchResult,
-    GetResult,
-)
-from open_webui.config import (
-    QDRANT_URI,
-    QDRANT_API_KEY,
-    QDRANT_ON_DISK,
-    QDRANT_GRPC_PORT,
-    QDRANT_PREFER_GRPC,
-    QDRANT_COLLECTION_PREFIX,
-    QDRANT_TIMEOUT,
-    QDRANT_HNSW_M,
-)
-from open_webui.env import SRC_LOG_LEVELS
 
 NO_LIMIT = 999999999
 
@@ -77,13 +70,7 @@ class QdrantClient(VectorDBBase):
             documents.append(payload["text"])
             metadatas.append(payload["metadata"])
 
-        return GetResult(
-            **{
-                "ids": [ids],
-                "documents": [documents],
-                "metadatas": [metadatas],
-            }
-        )
+        return GetResult(ids=[ids], documents=[documents], metadatas=[metadatas])
 
     def _create_collection(self, collection_name: str, dimension: int):
         collection_name_with_prefix = f"{self.collection_prefix}_{collection_name}"
@@ -122,9 +109,7 @@ class QdrantClient(VectorDBBase):
 
     def _create_collection_if_not_exists(self, collection_name, dimension):
         if not self.has_collection(collection_name=collection_name):
-            self._create_collection(
-                collection_name=collection_name, dimension=dimension
-            )
+            self._create_collection(collection_name=collection_name, dimension=dimension)
 
     def _create_points(self, items: list[VectorItem]):
         return [
@@ -137,18 +122,12 @@ class QdrantClient(VectorDBBase):
         ]
 
     def has_collection(self, collection_name: str) -> bool:
-        return self.client.collection_exists(
-            f"{self.collection_prefix}_{collection_name}"
-        )
+        return self.client.collection_exists(f"{self.collection_prefix}_{collection_name}")
 
     def delete_collection(self, collection_name: str):
-        return self.client.delete_collection(
-            collection_name=f"{self.collection_prefix}_{collection_name}"
-        )
+        return self.client.delete_collection(collection_name=f"{self.collection_prefix}_{collection_name}")
 
-    def search(
-        self, collection_name: str, vectors: list[list[float | int]], limit: int
-    ) -> Optional[SearchResult]:
+    def search(self, collection_name: str, vectors: list[list[float | int]], limit: int) -> SearchResult | None:
         # Search for the nearest neighbor items based on the vectors and return 'limit' number of results.
         if limit is None:
             limit = NO_LIMIT  # otherwise qdrant would set limit to 10!
@@ -167,7 +146,7 @@ class QdrantClient(VectorDBBase):
             distances=[[(point.score + 1.0) / 2.0 for point in query_response.points]],
         )
 
-    def query(self, collection_name: str, filter: dict, limit: Optional[int] = None):
+    def query(self, collection_name: str, filter: dict, limit: int | None = None):
         # Construct the filter string for querying
         if not self.has_collection(collection_name):
             return None
@@ -178,9 +157,7 @@ class QdrantClient(VectorDBBase):
             field_conditions = []
             for key, value in filter.items():
                 field_conditions.append(
-                    models.FieldCondition(
-                        key=f"metadata.{key}", match=models.MatchValue(value=value)
-                    )
+                    models.FieldCondition(key=f"metadata.{key}", match=models.MatchValue(value=value))
                 )
 
             points = self.client.scroll(
@@ -193,7 +170,7 @@ class QdrantClient(VectorDBBase):
             log.exception(f"Error querying a collection '{collection_name}': {e}")
             return None
 
-    def get(self, collection_name: str) -> Optional[GetResult]:
+    def get(self, collection_name: str) -> GetResult | None:
         # Get all the items in the collection.
         points = self.client.scroll(
             collection_name=f"{self.collection_prefix}_{collection_name}",
@@ -216,34 +193,36 @@ class QdrantClient(VectorDBBase):
     def delete(
         self,
         collection_name: str,
-        ids: Optional[list[str]] = None,
-        filter: Optional[dict] = None,
+        ids: list[str] | None = None,
+        filter: dict | None = None,
     ):
         # Delete the items from the collection based on the ids.
         field_conditions = []
 
         if ids:
             for id_value in ids:
-                field_conditions.append(
-                    models.FieldCondition(
-                        key="metadata.id",
-                        match=models.MatchValue(value=id_value),
+                (
+                    field_conditions.append(
+                        models.FieldCondition(
+                            key="metadata.id",
+                            match=models.MatchValue(value=id_value),
+                        ),
                     ),
-                ),
+                )
         elif filter:
             for key, value in filter.items():
-                field_conditions.append(
-                    models.FieldCondition(
-                        key=f"metadata.{key}",
-                        match=models.MatchValue(value=value),
+                (
+                    field_conditions.append(
+                        models.FieldCondition(
+                            key=f"metadata.{key}",
+                            match=models.MatchValue(value=value),
+                        ),
                     ),
-                ),
+                )
 
         return self.client.delete(
             collection_name=f"{self.collection_prefix}_{collection_name}",
-            points_selector=models.FilterSelector(
-                filter=models.Filter(must=field_conditions)
-            ),
+            points_selector=models.FilterSelector(filter=models.Filter(must=field_conditions)),
         )
 
     def reset(self):

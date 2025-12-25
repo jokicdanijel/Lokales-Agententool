@@ -1,34 +1,19 @@
-from typing import List, Optional
-from pydantic import BaseModel
-from fastapi import APIRouter, Depends, HTTPException, status, Request, Query
-from fastapi.concurrency import run_in_threadpool
 import logging
+from typing import Optional
 
-from open_webui.models.knowledge import (
-    Knowledges,
-    KnowledgeForm,
-    KnowledgeResponse,
-    KnowledgeUserResponse,
-)
-from open_webui.models.files import Files, FileModel, FileMetadataResponse
-from open_webui.retrieval.vector.factory import VECTOR_DB_CLIENT
-from open_webui.routers.retrieval import (
-    process_file,
-    ProcessFileForm,
-    process_files_batch,
-    BatchProcessFilesForm,
-)
-from open_webui.storage.provider import Storage
-
-from open_webui.constants import ERROR_MESSAGES
-from open_webui.utils.auth import get_verified_user
-from open_webui.utils.access_control import has_access, has_permission
-
-
-from open_webui.env import SRC_LOG_LEVELS
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
+from fastapi.concurrency import run_in_threadpool
 from open_webui.config import BYPASS_ADMIN_ACCESS_CONTROL
-from open_webui.models.models import Models, ModelForm
-
+from open_webui.constants import ERROR_MESSAGES
+from open_webui.env import SRC_LOG_LEVELS
+from open_webui.models.files import FileMetadataResponse, FileModel, Files
+from open_webui.models.knowledge import KnowledgeForm, KnowledgeResponse, Knowledges, KnowledgeUserResponse
+from open_webui.models.models import ModelForm, Models
+from open_webui.retrieval.vector.factory import VECTOR_DB_CLIENT
+from open_webui.routers.retrieval import BatchProcessFilesForm, ProcessFileForm, process_file, process_files_batch
+from open_webui.utils.access_control import has_access, has_permission
+from open_webui.utils.auth import get_verified_user
+from pydantic import BaseModel
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MODELS"])
@@ -54,16 +39,11 @@ async def get_knowledge(user=Depends(get_verified_user)):
     for knowledge_base in knowledge_bases:
         files = []
         if knowledge_base.data:
-            files = Files.get_file_metadatas_by_ids(
-                knowledge_base.data.get("file_ids", [])
-            )
+            files = Files.get_file_metadatas_by_ids(knowledge_base.data.get("file_ids", []))
 
             # Check if all files exist
             if len(files) != len(knowledge_base.data.get("file_ids", [])):
-                missing_files = list(
-                    set(knowledge_base.data.get("file_ids", []))
-                    - set([file.id for file in files])
-                )
+                missing_files = list(set(knowledge_base.data.get("file_ids", [])) - set([file.id for file in files]))
                 if missing_files:
                     data = knowledge_base.data or {}
                     file_ids = data.get("file_ids", [])
@@ -72,9 +52,7 @@ async def get_knowledge(user=Depends(get_verified_user)):
                         file_ids.remove(missing_file)
 
                     data["file_ids"] = file_ids
-                    Knowledges.update_knowledge_data_by_id(
-                        id=knowledge_base.id, data=data
-                    )
+                    Knowledges.update_knowledge_data_by_id(id=knowledge_base.id, data=data)
 
                     files = Files.get_file_metadatas_by_ids(file_ids)
 
@@ -102,16 +80,11 @@ async def get_knowledge_list(user=Depends(get_verified_user)):
     for knowledge_base in knowledge_bases:
         files = []
         if knowledge_base.data:
-            files = Files.get_file_metadatas_by_ids(
-                knowledge_base.data.get("file_ids", [])
-            )
+            files = Files.get_file_metadatas_by_ids(knowledge_base.data.get("file_ids", []))
 
             # Check if all files exist
             if len(files) != len(knowledge_base.data.get("file_ids", [])):
-                missing_files = list(
-                    set(knowledge_base.data.get("file_ids", []))
-                    - set([file.id for file in files])
-                )
+                missing_files = list(set(knowledge_base.data.get("file_ids", [])) - set([file.id for file in files]))
                 if missing_files:
                     data = knowledge_base.data or {}
                     file_ids = data.get("file_ids", [])
@@ -120,9 +93,7 @@ async def get_knowledge_list(user=Depends(get_verified_user)):
                         file_ids.remove(missing_file)
 
                     data["file_ids"] = file_ids
-                    Knowledges.update_knowledge_data_by_id(
-                        id=knowledge_base.id, data=data
-                    )
+                    Knowledges.update_knowledge_data_by_id(id=knowledge_base.id, data=data)
 
                     files = Files.get_file_metadatas_by_ids(file_ids)
 
@@ -141,9 +112,7 @@ async def get_knowledge_list(user=Depends(get_verified_user)):
 
 
 @router.post("/create", response_model=Optional[KnowledgeResponse])
-async def create_new_knowledge(
-    request: Request, form_data: KnowledgeForm, user=Depends(get_verified_user)
-):
+async def create_new_knowledge(request: Request, form_data: KnowledgeForm, user=Depends(get_verified_user)):
     if user.role != "admin" and not has_permission(
         user.id, "workspace.knowledge", request.app.state.config.USER_PERMISSIONS
     ):
@@ -204,9 +173,7 @@ async def reindex_knowledge_files(request: Request, user=Depends(get_verified_us
                 Knowledges.delete_knowledge_by_id(id=knowledge_base.id)
                 deleted_knowledge_bases.append(knowledge_base.id)
             except Exception as e:
-                log.error(
-                    f"Failed to delete invalid knowledge base {knowledge_base.id}: {e}"
-                )
+                log.error(f"Failed to delete invalid knowledge base {knowledge_base.id}: {e}")
             continue
 
         try:
@@ -214,11 +181,9 @@ async def reindex_knowledge_files(request: Request, user=Depends(get_verified_us
             files = Files.get_files_by_ids(file_ids)
             try:
                 if VECTOR_DB_CLIENT.has_collection(collection_name=knowledge_base.id):
-                    VECTOR_DB_CLIENT.delete_collection(
-                        collection_name=knowledge_base.id
-                    )
+                    VECTOR_DB_CLIENT.delete_collection(collection_name=knowledge_base.id)
             except Exception as e:
-                log.error(f"Error deleting collection {knowledge_base.id}: {str(e)}")
+                log.error(f"Error deleting collection {knowledge_base.id}: {e!s}")
                 continue  # Skip, don't raise
 
             failed_files = []
@@ -227,27 +192,21 @@ async def reindex_knowledge_files(request: Request, user=Depends(get_verified_us
                     await run_in_threadpool(
                         process_file,
                         request,
-                        ProcessFileForm(
-                            file_id=file.id, collection_name=knowledge_base.id
-                        ),
+                        ProcessFileForm(file_id=file.id, collection_name=knowledge_base.id),
                         user=user,
                     )
                 except Exception as e:
-                    log.error(
-                        f"Error processing file {file.filename} (ID: {file.id}): {str(e)}"
-                    )
+                    log.error(f"Error processing file {file.filename} (ID: {file.id}): {e!s}")
                     failed_files.append({"file_id": file.id, "error": str(e)})
                     continue
 
         except Exception as e:
-            log.error(f"Error processing knowledge base {knowledge_base.id}: {str(e)}")
+            log.error(f"Error processing knowledge base {knowledge_base.id}: {e!s}")
             # Don't raise, just continue
             continue
 
         if failed_files:
-            log.warning(
-                f"Failed to process {len(failed_files)} files in knowledge base {knowledge_base.id}"
-            )
+            log.warning(f"Failed to process {len(failed_files)} files in knowledge base {knowledge_base.id}")
             for failed in failed_files:
                 log.warning(f"File ID: {failed['file_id']}, Error: {failed['error']}")
 
@@ -271,13 +230,11 @@ async def get_knowledge_by_id(id: str, user=Depends(get_verified_user)):
     knowledge = Knowledges.get_knowledge_by_id(id=id)
 
     if knowledge:
-
         if (
             user.role == "admin"
             or knowledge.user_id == user.id
             or has_access(user.id, "read", knowledge.access_control)
         ):
-
             file_ids = knowledge.data.get("file_ids", []) if knowledge.data else []
             files = Files.get_file_metadatas_by_ids(file_ids)
 
@@ -462,7 +419,6 @@ def update_file_from_knowledge_by_id(
         and not has_access(user.id, "write", knowledge.access_control)
         and user.role != "admin"
     ):
-
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=ERROR_MESSAGES.ACCESS_PROHIBITED,
@@ -476,9 +432,7 @@ def update_file_from_knowledge_by_id(
         )
 
     # Remove content from the vector database
-    VECTOR_DB_CLIENT.delete(
-        collection_name=knowledge.id, filter={"file_id": form_data.file_id}
-    )
+    VECTOR_DB_CLIENT.delete(collection_name=knowledge.id, filter={"file_id": form_data.file_id})
 
     # Add content to the vector database
     try:
@@ -548,13 +502,10 @@ def remove_file_from_knowledge_by_id(
 
     # Remove content from the vector database
     try:
-        VECTOR_DB_CLIENT.delete(
-            collection_name=knowledge.id, filter={"file_id": form_data.file_id}
-        )
+        VECTOR_DB_CLIENT.delete(collection_name=knowledge.id, filter={"file_id": form_data.file_id})
     except Exception as e:
         log.debug("This was most likely caused by bypassing embedding processing")
         log.debug(e)
-        pass
 
     if delete_file:
         try:
@@ -565,7 +516,6 @@ def remove_file_from_knowledge_by_id(
         except Exception as e:
             log.debug("This was most likely caused by bypassing embedding processing")
             log.debug(e)
-            pass
 
         # Delete file from database
         Files.delete_file_by_id(form_data.file_id)
@@ -662,7 +612,6 @@ async def delete_knowledge_by_id(id: str, user=Depends(get_verified_user)):
         VECTOR_DB_CLIENT.delete_collection(collection_name=id)
     except Exception as e:
         log.debug(e)
-        pass
     result = Knowledges.delete_knowledge_by_id(id=id)
     return result
 
@@ -695,7 +644,6 @@ async def reset_knowledge_by_id(id: str, user=Depends(get_verified_user)):
         VECTOR_DB_CLIENT.delete_collection(collection_name=id)
     except Exception as e:
         log.debug(e)
-        pass
 
     knowledge = Knowledges.update_knowledge_data_by_id(id=id, data={"file_ids": []})
 
@@ -736,7 +684,7 @@ def add_files_to_knowledge_batch(
 
     # Get files content
     log.info(f"files/batch/add - {len(form_data)} files")
-    files: List[FileModel] = []
+    files: list[FileModel] = []
     for form in form_data:
         file = Files.get_file_by_id(form.file_id)
         if not file:
@@ -754,9 +702,7 @@ def add_files_to_knowledge_batch(
             user=user,
         )
     except Exception as e:
-        log.error(
-            f"add_files_to_knowledge_batch: Exception occurred: {e}", exc_info=True
-        )
+        log.error(f"add_files_to_knowledge_batch: Exception occurred: {e}", exc_info=True)
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
     # Add successful files to knowledge base

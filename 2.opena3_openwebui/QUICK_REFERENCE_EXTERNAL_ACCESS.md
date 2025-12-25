@@ -85,6 +85,7 @@ bash setup_external_access.sh
 ```
 
 Wähle dann aus dem Menü:
+
 1. LAN-Zugriff
 2. ngrok Setup
 3. SSH Tunneling
@@ -172,13 +173,13 @@ sudo iptables-save | sudo tee /etc/iptables/rules.v4
 
 ## 📊 Vergleichstabelle
 
-| Methode | Latenz | Sicherheit | Kosten | Einrichtung |
-|---------|--------|-----------|--------|------------|
-| LAN | <5ms | ⚠️ Mittel | Kostenlos | 5 Min |
-| ngrok | ~50ms | ✅ HTTPS | Kostenlos* | 10 Min |
-| SSH | ~20ms | ✅✅ Verschlüsselt | Kostenlos | 15 Min |
+| Methode | Latenz | Sicherheit         | Kosten      | Einrichtung |
+| ------- | ------ | ------------------ | ----------- | ----------- |
+| LAN     | <5ms   | ⚠️ Mittel          | Kostenlos   | 5 Min       |
+| ngrok   | ~50ms  | ✅ HTTPS           | Kostenlos\* | 10 Min      |
+| SSH     | ~20ms  | ✅✅ Verschlüsselt | Kostenlos   | 15 Min      |
 
-*ngrok Free: 1x pro 40 Minuten neue URL
+\*ngrok Free: 1x pro 40 Minuten neue URL
 
 ---
 

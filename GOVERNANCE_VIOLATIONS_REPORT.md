@@ -9,13 +9,13 @@
 
 ## 📊 **EXECUTIVE SUMMARY**
 
-| Kategorie                    | Anzahl Verstöße | Schweregrad   | Status         |
-| ---------------------------- | --------------- | ------------- | -------------- |
-| **ARCHIV → configs/**        | **84 Dateien**  | **CRITICAL**  | ❌ **BLOCKIERT** |
-| **venv → src/pkg**           | **6 Dateien**   | **HIGH**      | ⚠️ **REVIEW**    |
-| **tests → _conflicts/**      | **30+ Dateien** | **HIGH**      | ⚠️ **REVIEW**    |
-| Port-Assignments             | 0               | OK            | ✅ KONFORM      |
-| Docs-Struktur                | 3 Duplikate     | MEDIUM        | ⚠️ REVIEW       |
+| Kategorie                | Anzahl Verstöße | Schweregrad  | Status           |
+| ------------------------ | --------------- | ------------ | ---------------- |
+| **ARCHIV → configs/**    | **84 Dateien**  | **CRITICAL** | ❌ **BLOCKIERT** |
+| **venv → src/pkg**       | **6 Dateien**   | **HIGH**     | ⚠️ **REVIEW**    |
+| **tests → \_conflicts/** | **30+ Dateien** | **HIGH**     | ⚠️ **REVIEW**    |
+| Port-Assignments         | 0               | OK           | ✅ KONFORM       |
+| Docs-Struktur            | 3 Duplikate     | MEDIUM       | ⚠️ REVIEW        |
 
 **Gesamtbewertung:** ❌ **NICHT PRODUKTIONSBEREIT** (CRITICAL BLOCKER aktiv)
 
@@ -24,9 +24,11 @@
 ## 🔥 **KRITISCHER VERSTSOSS #1: ARCHIV → configs/ (DATENINTEGRITÄT)**
 
 ### **Problem:**
+
 **84 Safepoint-Dateien** wurden fälschlicherweise von `ARCHIV/` bzw. `archivp/` nach `configs/` gemappt.
 
 ### **Warum CRITICAL?**
+
 - **Architektur-Verletzung:** Safepoints sind **Laufzeit-History** (append-only), KEINE statische Konfiguration
 - **Datenintegrität:** opena2 (Archivator) **muss** auf `archivp/ARCHIV/` zugreifen, NICHT `configs/`
 - **Option-2-Flow-Bruch:** Archivator ist Teil der heiligen Kette (OpenAI → opena1 → **opena2** → kordp → Tools)
@@ -89,9 +91,11 @@ find */ARCHIV/ -name "SP*.json" | wc -l  # MUSS 84+ SEIN
 ## ⚠️ **VERSTSOSS #2: venv → src/pkg (VENDOR-LEAKS)**
 
 ### **Problem:**
+
 **6 Third-Party-Pakete** aus venv-Verzeichnissen wurden nach `src/pkg/` kopiert.
 
 ### **Warum HIGH?**
+
 - **Dependency-Management-Verletzung:** Dependencies gehören in `pyproject.toml` / `requirements.txt`, NICHT in `src/`
 - **Lizenz-Risiko:** Kopierte Pakete ohne License-Dateien
 - **Update-Problem:** Kein Mechanismus für Sicherheits-/Bug-Fixes
@@ -148,12 +152,14 @@ grep -l "import src.pkg.socks" **/*.py  # MUSS LEER SEIN
 
 ---
 
-## ⚠️ **VERSTSOSS #3: tests → _conflicts/ (TESTVERLUST)**
+## ⚠️ **VERSTSOSS #3: tests → \_conflicts/ (TESTVERLUST)**
 
 ### **Problem:**
+
 **30+ produktive Tests** wurden in Quarantäne-Ordner `_conflicts/` verschoben.
 
 ### **Warum HIGH?**
+
 - **Qualitätssicherung:** Kritische Tests nicht mehr in CI/CD-Pipeline
 - **Coverage-Verlust:** Regression-Tests für opena4, opena8, opena9, opena10, Archivator fehlen
 - **Dokumentations-Verlust:** `AGENT_TEST_RESULTS.md` nicht mehr auffindbar
@@ -227,12 +233,14 @@ pytest 19.dashboard_agent/tests/  # MUSS DURCHLAUFEN
 **Datei:** `GOVERNANCE_ROLLBACK_SCRIPT.sh` (wird erstellt)
 
 **Ausführung:**
+
 ```bash
 chmod +x GOVERNANCE_ROLLBACK_SCRIPT.sh
 ./GOVERNANCE_ROLLBACK_SCRIPT.sh
 ```
 
 **Validierung nach Ausführung:**
+
 ```bash
 # Check 1: Keine Safepoints in configs/
 find configs/ -name "SP*.json" | wc -l
@@ -279,6 +287,7 @@ Nach Ausführung der Korrekturmaßnahmen:
 ## 📞 **ESKALATION**
 
 Bei Fragen oder Problemen:
+
 - **Architektur-Verantwortlicher:** Siehe `.github/copilot-master-prompt.md`
 - **Governance-Audit:** Dieses Dokument
 - **Option-2-Flow-Dokumentation:** `docs/ARCHITECTURE.md`

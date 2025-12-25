@@ -1,4 +1,4 @@
-from evaluation.metrics import exact_match, contains_frac, length_ratio
+from evaluation.metrics import contains_frac, exact_match, length_ratio
 
 
 def test_exact_match():

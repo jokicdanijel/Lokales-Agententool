@@ -1,10 +1,10 @@
 # 📋 opena10 (Call Tracking Agent) – Implementation Report
 
-**Agent:** opena10 (calltrackp)  
-**Port:** 12355  
-**Status:** ✅ **PRODUCTION READY**  
-**Datum:** 27. November 2025  
-**Version:** 1.0.0  
+**Agent:** opena10 (calltrackp)
+**Port:** 12355
+**Status:** ✅ **PRODUCTION READY**
+**Datum:** 27. November 2025
+**Version:** 1.0.0
 **Compliance:** 100% (11/11 Policies)
 
 ---
@@ -20,8 +20,8 @@ opena10 ist der **Call Tracking Agent** des PORTIER 3.0 Systems mit **SQLAlchemy
 - ✅ **SQLAlchemy Models** (Campaign, TrackingNumber, CallEvent)
 - ✅ **SQLite Database** (upgradeable to PostgreSQL)
 
-**Implementierung:** 700+ LOC, 10 REST-Endpoints, SQLAlchemy 2.x ORM  
-**Tests:** 11/11 bestanden (100%)  
+**Implementierung:** 700+ LOC, 10 REST-Endpoints, SQLAlchemy 2.x ORM
+**Tests:** 11/11 bestanden (100%)
 **Runtime:** Python 3.13, FastAPI 0.104+, Uvicorn, SQLAlchemy 2.x
 
 ---
@@ -34,24 +34,24 @@ opena10 ist der **Call Tracking Agent** des PORTIER 3.0 Systems mit **SQLAlchemy
 opena9 (Telefonie) → opena10 (Call Tracking) → SQLite DB
           ↓                     ↓
      Safepoint            archivp_store
-     
+
 Option-2-Flow: opena1 → opena2 → kordp → calltrackp
 ```
 
 ### Endpunkte
 
-| Endpoint | Method | Funktion | Auth |
-|----------|--------|----------|------|
-| `/` | GET | Agent-Info, Capabilities | ❌ |
-| `/health` | GET | Health-Status, DB Connection | ❌ |
-| `/command` | POST | Option-2-Flow Command | ✅ Bearer |
-| `/campaigns/create` | POST | Campaign erstellen | ✅ Bearer |
-| `/campaigns/list` | GET | Campaigns auflisten | ✅ Bearer |
-| `/tracking_numbers/create` | POST | Tracking Number erstellen | ✅ Bearer |
-| `/tracking_numbers/list` | GET | Tracking Numbers auflisten | ✅ Bearer |
-| `/events/ingest` | POST | Call Event aufnehmen | ✅ Bearer |
-| `/stats/summary` | GET | Gesamtstatistik | ✅ Bearer |
-| `/stats/by_campaign` | GET | Statistik pro Campaign | ✅ Bearer |
+| Endpoint                   | Method | Funktion                     | Auth      |
+| -------------------------- | ------ | ---------------------------- | --------- |
+| `/`                        | GET    | Agent-Info, Capabilities     | ❌        |
+| `/health`                  | GET    | Health-Status, DB Connection | ❌        |
+| `/command`                 | POST   | Option-2-Flow Command        | ✅ Bearer |
+| `/campaigns/create`        | POST   | Campaign erstellen           | ✅ Bearer |
+| `/campaigns/list`          | GET    | Campaigns auflisten          | ✅ Bearer |
+| `/tracking_numbers/create` | POST   | Tracking Number erstellen    | ✅ Bearer |
+| `/tracking_numbers/list`   | GET    | Tracking Numbers auflisten   | ✅ Bearer |
+| `/events/ingest`           | POST   | Call Event aufnehmen         | ✅ Bearer |
+| `/stats/summary`           | GET    | Gesamtstatistik              | ✅ Bearer |
+| `/stats/by_campaign`       | GET    | Statistik pro Campaign       | ✅ Bearer |
 
 ### SQLAlchemy Models
 
@@ -156,9 +156,9 @@ async def stats_summary(db: Session = Depends(get_db)):
     completed_calls = db.query(func.count(CallEvent.id)).filter(
         CallEvent.status == "completed"
     ).scalar() or 0
-    
+
     success_rate = (completed_calls / total_calls * 100) if total_calls > 0 else 0
-    
+
     return {
         "total_calls": total_calls,
         "avg_duration_seconds": round(avg_duration, 2),
@@ -170,6 +170,7 @@ async def stats_summary(db: Session = Depends(get_db)):
 ### 2. Start/Stop Scripts
 
 **bin/start_opena10.sh (90 LOC):**
+
 - PID-basierte Konflikt-Erkennung
 - Port 12355 Availability Check
 - .env loading (Projekt-Root oder lokal)
@@ -180,6 +181,7 @@ async def stats_summary(db: Session = Depends(get_db)):
 - Health-Check Log Tail
 
 **bin/stop_opena10.sh (40 LOC):**
+
 - Graceful SIGTERM Shutdown
 - 10-second Wait mit kill -0 Polling
 - Force SIGKILL Fallback
@@ -209,19 +211,19 @@ async def stats_summary(db: Session = Depends(get_db)):
 
 ### PORTIER 3.0 Policies (11/11)
 
-| Policy | Compliance | Implementation Details |
-|--------|-----------|------------------------|
-| **Port-Policy** | ✅ 100% | Port 12355 (erlaubt: 12344-12399), Startup-Enforcement, 8080 verboten |
-| **Option-2-Flow** | ✅ 100% | POST /command → opena1 → opena2 → kordp → calltrackp |
-| **Safepoint** | ✅ 100% | Archiv: archivp_store, CMD/RESP für alle Operationen, Unicode-Pfeil → |
-| **Strict JSON** | ✅ 100% | `extra="forbid"` in allen Pydantic Models, 422 Validation Test |
-| **Agentennamen** | ✅ 100% | Kürzel: `calltrackp` (korrekt, unveränderbar) |
-| **ENV-only** | ✅ 100% | CALLTRACK_DB_URL, BEARER_TOKEN aus .env, keine Hardcodes |
-| **Logging** | ✅ 100% | Strukturiert (JSON-ready), keine Secrets im Log |
-| **Tests** | ✅ 100% | 11/11 Tests bestanden, E2E-Flow validiert |
-| **Dokumentation** | ✅ 100% | MASTER_PROMPT.md, README.md, TODO.md, IMPLEMENTATION_REPORT.md |
-| **Code-Qualität** | ✅ 100% | 700+ LOC, produktiv, keine Platzhalter, keine TODOs, vollständige Implementierung |
-| **Integration** | ✅ 100% | Tool Registry aktualisiert, Service läuft (PID 1683514), opena9-Integration |
+| Policy            | Compliance | Implementation Details                                                            |
+| ----------------- | ---------- | --------------------------------------------------------------------------------- |
+| **Port-Policy**   | ✅ 100%    | Port 12355 (erlaubt: 12344-12399), Startup-Enforcement, 8080 verboten             |
+| **Option-2-Flow** | ✅ 100%    | POST /command → opena1 → opena2 → kordp → calltrackp                              |
+| **Safepoint**     | ✅ 100%    | Archiv: archivp_store, CMD/RESP für alle Operationen, Unicode-Pfeil →             |
+| **Strict JSON**   | ✅ 100%    | `extra="forbid"` in allen Pydantic Models, 422 Validation Test                    |
+| **Agentennamen**  | ✅ 100%    | Kürzel: `calltrackp` (korrekt, unveränderbar)                                     |
+| **ENV-only**      | ✅ 100%    | CALLTRACK_DB_URL, BEARER_TOKEN aus .env, keine Hardcodes                          |
+| **Logging**       | ✅ 100%    | Strukturiert (JSON-ready), keine Secrets im Log                                   |
+| **Tests**         | ✅ 100%    | 11/11 Tests bestanden, E2E-Flow validiert                                         |
+| **Dokumentation** | ✅ 100%    | MASTER_PROMPT.md, README.md, TODO.md, IMPLEMENTATION_REPORT.md                    |
+| **Code-Qualität** | ✅ 100%    | 700+ LOC, produktiv, keine Platzhalter, keine TODOs, vollständige Implementierung |
+| **Integration**   | ✅ 100%    | Tool Registry aktualisiert, Service läuft (PID 1683514), opena9-Integration       |
 
 **Gesamt-Compliance:** 100%
 
@@ -237,6 +239,7 @@ bash bin/start_opena10.sh
 ```
 
 **Output:**
+
 ```
 ✅ Lade .env aus Projekt-Root
 📦 Prüfe Dependencies...
@@ -254,6 +257,7 @@ curl -s http://127.0.0.1:12355/health | jq .
 ```
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -303,19 +307,19 @@ Tests bestanden: 11/11
 
 ## 📊 Metriken
 
-| Metric | Value |
-|--------|-------|
-| **Lines of Code** | 700+ |
-| **Endpoints** | 10 |
-| **Tests** | 11/11 (100%) |
-| **Compliance** | 100% (11/11 Policies) |
-| **Dependencies** | 4 (FastAPI, uvicorn, pydantic, sqlalchemy) |
-| **Port** | 12355 |
-| **PID** | 1683514 |
-| **Database** | SQLite (upgradeable to PostgreSQL) |
-| **Uptime** | Stabil seit Start |
-| **Memory** | ~60MB (FastAPI + SQLAlchemy baseline) |
-| **Response Time** | <50ms (Health-Check), <100ms (Stats) |
+| Metric            | Value                                      |
+| ----------------- | ------------------------------------------ |
+| **Lines of Code** | 700+                                       |
+| **Endpoints**     | 10                                         |
+| **Tests**         | 11/11 (100%)                               |
+| **Compliance**    | 100% (11/11 Policies)                      |
+| **Dependencies**  | 4 (FastAPI, uvicorn, pydantic, sqlalchemy) |
+| **Port**          | 12355                                      |
+| **PID**           | 1683514                                    |
+| **Database**      | SQLite (upgradeable to PostgreSQL)         |
+| **Uptime**        | Stabil seit Start                          |
+| **Memory**        | ~60MB (FastAPI + SQLAlchemy baseline)      |
+| **Response Time** | <50ms (Health-Check), <100ms (Stats)       |
 
 ---
 
@@ -390,8 +394,8 @@ Agent(
     port=12355,
     description="Call tracking, campaign analytics, SQLAlchemy models (calltrackp)",
     role="Analytics",
-    tools=["events_ingest", "stats_summary", "stats_by_campaign", 
-           "tracking_numbers_list", "tracking_numbers_create", 
+    tools=["events_ingest", "stats_summary", "stats_by_campaign",
+           "tracking_numbers_list", "tracking_numbers_create",
            "campaigns_create", "campaigns_list"],
     dependencies=["opena1", "opena2", "opena9"],
     enabled=True,
@@ -426,19 +430,19 @@ Erforderlich für vollständigen Option-2-Flow.
 
 ## 📝 Known Limitations
 
-1. **In-Memory Session:** SQLAlchemy SessionLocal nicht persistent  
+1. **In-Memory Session:** SQLAlchemy SessionLocal nicht persistent
    → **Fix:** Connection Pooling konfigurieren
 
-2. **SQLite:** Nicht für High-Concurrency optimiert  
+2. **SQLite:** Nicht für High-Concurrency optimiert
    → **Production:** PostgreSQL Migration empfohlen
 
-3. **Timezone:** Alle Timestamps UTC, keine Timezone-Konvertierung  
+3. **Timezone:** Alle Timestamps UTC, keine Timezone-Konvertierung
    → **Future:** Timezone-aware Queries
 
-4. **Retention:** Keine automatische Löschung alter Events  
+4. **Retention:** Keine automatische Löschung alter Events
    → **Future:** Retention-Policy implementieren
 
-5. **Analytics:** Nur Basic Aggregations  
+5. **Analytics:** Nur Basic Aggregations
    → **Future:** Grafana/Metabase Integration
 
 ---
@@ -471,25 +475,25 @@ Erforderlich für vollständigen Option-2-Flow.
 
 ## 🎓 Lessons Learned
 
-1. **SQLAlchemy 2.x:** `declarative_base()` deprecated → Warning (nicht kritisch)  
+1. **SQLAlchemy 2.x:** `declarative_base()` deprecated → Warning (nicht kritisch)
    → **Future:** Migrate zu `DeclarativeBase` class
 
-2. **Reserved Keywords:** `metadata` nicht erlaubt in SQLAlchemy Models  
+2. **Reserved Keywords:** `metadata` nicht erlaubt in SQLAlchemy Models
    → **Lösung:** Umbenennen zu `extra_data`
 
-3. **text() Wrapper:** SQLAlchemy 2.x erfordert `text("SELECT 1")` statt `"SELECT 1"`  
+3. **text() Wrapper:** SQLAlchemy 2.x erfordert `text("SELECT 1")` statt `"SELECT 1"`
    → **Fix:** Import `text` von `sqlalchemy`
 
-4. **DB Session Dependency:** FastAPI `Depends(get_db)` sehr elegant  
+4. **DB Session Dependency:** FastAPI `Depends(get_db)` sehr elegant
    → **Pattern:** Session-per-Request automatisch
 
-5. **Indexes:** Wichtig für Performance (campaign_id, timestamp, status)  
+5. **Indexes:** Wichtig für Performance (campaign_id, timestamp, status)
    → **Production:** Query-Profiling durchführen
 
-6. **Relationships:** SQLAlchemy `back_populates` sehr mächtig  
+6. **Relationships:** SQLAlchemy `back_populates` sehr mächtig
    → **Vorteil:** Automatische Join-Queries
 
-7. **Validation:** Pydantic `@field_validator` für Custom-Validierung  
+7. **Validation:** Pydantic `@field_validator` für Custom-Validierung
    → **Beispiel:** Status-Enum-Validierung
 
 ---
@@ -506,8 +510,8 @@ Erforderlich für vollständigen Option-2-Flow.
 
 ---
 
-**Maintainer:** Danijel (ELION Team)  
-**Agent:** opena10 (calltrackp)  
-**Version:** 1.0.0  
-**Datum:** 27. November 2025  
+**Maintainer:** Danijel (ELION Team)
+**Agent:** opena10 (calltrackp)
+**Version:** 1.0.0
+**Datum:** 27. November 2025
 **Status:** ✅ **PRODUCTION READY**

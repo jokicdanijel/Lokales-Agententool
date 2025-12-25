@@ -28,6 +28,7 @@ SANDBOX_DIR = os.path.expanduser("~/localagent_sandbox")
 ```
 
 **Verhindert:**
+
 - ✅ Zugriff auf System-Dateien
 - ✅ Manipulation kritischer Konfigurationen
 - ✅ Unberechtigtes Lesen sensibler Daten
@@ -51,12 +52,13 @@ Nur sichere Befehle sind erlaubt:
 
 ```python
 ALLOWED_COMMANDS = [
-    "ls", "cat", "grep", "echo", "pwd", 
+    "ls", "cat", "grep", "echo", "pwd",
     "date", "whoami", "uname", "df", "du"
 ]
 ```
 
 **Blockierte Befehle:**
+
 - ❌ `rm -rf` (Löschen)
 - ❌ `sudo` (Privilege-Escalation)
 - ❌ `dd` (Low-Level-Disk-Operations)
@@ -167,8 +169,8 @@ security:
   sandbox_enabled: true
   command_whitelist_enabled: true
   domain_whitelist_enabled: true
-  max_file_size: 10485760  # 10 MB
-  max_request_size: 1048576  # 1 MB
+  max_file_size: 10485760 # 10 MB
+  max_request_size: 1048576 # 1 MB
 ```
 
 ### 2. Logging & Monitoring
@@ -265,6 +267,7 @@ bandit -r src/
 ## 📧 Security-Kontakt
 
 **Sicherheitslücken melden:**
+
 - **Email:** jokicdanijel@protonmail.com
 - **GitHub Security Advisory:** [Create Advisory](https://github.com/jokicdanijel/Lokales-Agententool/security/advisories/new)
 

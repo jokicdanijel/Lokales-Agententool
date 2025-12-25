@@ -55,7 +55,7 @@ done
 
 if [ ${#MISSING_PACKAGES[@]} -gt 0 ]; then
     echo -e "${YELLOW}[INFO]${NC} Installiere fehlende Packages: ${MISSING_PACKAGES[*]}"
-    
+
     # PEP 668 Workaround (Ubuntu 25.04)
     if python3 -m pip install --help | grep -q -- '--break-system-packages'; then
         python3 -m pip install --break-system-packages "${MISSING_PACKAGES[@]}"
@@ -133,19 +133,19 @@ RETRY_COUNT=0
 while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
     if curl -s http://127.0.0.1:$PORT/health > /dev/null 2>&1; then
         echo -e "${GREEN}[INFO]${NC} ✅ Health-Check erfolgreich"
-        
+
         # Health-Response anzeigen
         curl -s http://127.0.0.1:$PORT/health | python3 -m json.tool
-        
+
         echo ""
         echo -e "${GREEN}[SUCCESS]${NC} $SERVICE_NAME erfolgreich gestartet!"
         echo -e "${YELLOW}[INFO]${NC} PID: $SERVICE_PID"
         echo -e "${YELLOW}[INFO]${NC} Port: $PORT"
         echo -e "${YELLOW}[INFO]${NC} Logs: tail -f $LOG_FILE"
-        
+
         exit 0
     fi
-    
+
     sleep 1
     RETRY_COUNT=$((RETRY_COUNT + 1))
 done

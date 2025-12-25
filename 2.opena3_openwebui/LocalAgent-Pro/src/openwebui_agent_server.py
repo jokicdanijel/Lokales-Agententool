@@ -4,25 +4,20 @@ LocalAgent-Pro - OpenWebUI Agent Server
 Production-ready AI-Agent-Server with OpenWebUI integration
 """
 
-import os
-import sys
-import json
 import hashlib
+import json
 import logging
+import os
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional
 
-from flask import Flask, request, jsonify
-from flask_cors import CORS
 import requests
 import yaml
+from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 # Setup logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 # Initialize Flask app
@@ -30,16 +25,16 @@ app = Flask(__name__)
 CORS(app)
 
 # Load configuration
-CONFIG_PATH = Path(__file__).parent.parent / 'config' / 'config.yaml'
-with open(CONFIG_PATH, 'r') as f:
+CONFIG_PATH = Path(__file__).parent.parent / "config" / "config.yaml"
+with open(CONFIG_PATH) as f:
     CONFIG = yaml.safe_load(f)
 
 # Constants
-SANDBOX_DIR = Path.home() / 'localagent_sandbox'
-OLLAMA_BASE_URL = os.getenv('OLLAMA_BASE_URL', CONFIG['ollama']['base_url'])
-OLLAMA_MODEL = os.getenv('OLLAMA_MODEL', CONFIG['ollama']['model'])
-ALLOWED_COMMANDS = CONFIG['security']['shell_whitelist']
-DANGEROUS_COMMANDS = CONFIG['security']['dangerous_commands']
+SANDBOX_DIR = Path.home() / "localagent_sandbox"
+OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", CONFIG["ollama"]["base_url"])
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", CONFIG["ollama"]["model"])
+ALLOWED_COMMANDS = CONFIG["security"]["shell_whitelist"]
+DANGEROUS_COMMANDS = CONFIG["security"]["dangerous_commands"]
 
 # Request deduplication cache
 request_cache = set()
@@ -52,20 +47,19 @@ logger.info(f"Sandbox directory: {SANDBOX_DIR}")
 
 class SecurityError(Exception):
     """Raised when a security violation is detected"""
-    pass
 
 
 def sanitize_filename(filename: str) -> Path:
     """Sanitize filename and return safe path within sandbox"""
-    if '..' in filename or filename.startswith('/'):
+    if ".." in filename or filename.startswith("/"):
         raise SecurityError(f"Path traversal detected: {filename}")
-    
+
     safe_path = SANDBOX_DIR / filename
-    
+
     # Ensure path is within sandbox
     if not str(safe_path.resolve()).startswith(str(SANDBOX_DIR.resolve())):
         raise SecurityError(f"Path outside sandbox: {filename}")
-    
+
     return safe_path
 
 
@@ -75,14 +69,14 @@ def check_command_safety(command: str) -> bool:
     for dangerous in DANGEROUS_COMMANDS:
         if dangerous in command:
             raise SecurityError(f"Dangerous command detected: {dangerous}")
-    
+
     # Extract base command
     base_cmd = command.split()[0] if command else ""
-    
+
     # Check whitelist
     if base_cmd not in ALLOWED_COMMANDS:
         raise SecurityError(f"Command not whitelisted: {base_cmd}")
-    
+
     return True
 
 
@@ -90,18 +84,18 @@ def check_duplicate_request(request_data: dict) -> bool:
     """Check for duplicate requests using MD5 hash"""
     request_str = json.dumps(request_data, sort_keys=True)
     request_hash = hashlib.md5(request_str.encode()).hexdigest()
-    
+
     if request_hash in request_cache:
         logger.warning(f"Duplicate request detected: {request_hash}")
         return True
-    
+
     # Add to cache
     request_cache.add(request_hash)
-    
+
     # Limit cache size
     if len(request_cache) > MAX_CACHE_SIZE:
         request_cache.pop()
-    
+
     return False
 
 
@@ -110,16 +104,12 @@ def write_file(filename: str, content: str) -> dict:
     try:
         file_path = sanitize_filename(filename)
         file_path.parent.mkdir(parents=True, exist_ok=True)
-        
-        with open(file_path, 'w') as f:
+
+        with open(file_path, "w") as f:
             f.write(content)
-        
+
         logger.info(f"File created: {filename}")
-        return {
-            "status": "success",
-            "message": f"File created: {filename}",
-            "path": str(file_path)
-        }
+        return {"status": "success", "message": f"File created: {filename}", "path": str(file_path)}
     except SecurityError as e:
         logger.error(f"Security error: {e}")
         return {"status": "error", "message": str(e)}
@@ -132,19 +122,15 @@ def read_file(filename: str) -> dict:
     """Read file from sandbox"""
     try:
         file_path = sanitize_filename(filename)
-        
+
         if not file_path.exists():
             return {"status": "error", "message": f"File not found: {filename}"}
-        
-        with open(file_path, 'r') as f:
+
+        with open(file_path) as f:
             content = f.read()
-        
+
         logger.info(f"File read: {filename}")
-        return {
-            "status": "success",
-            "content": content,
-            "path": str(file_path)
-        }
+        return {"status": "success", "content": content, "path": str(file_path)}
     except SecurityError as e:
         logger.error(f"Security error: {e}")
         return {"status": "error", "message": str(e)}
@@ -157,17 +143,14 @@ def delete_file(filename: str) -> dict:
     """Delete file from sandbox"""
     try:
         file_path = sanitize_filename(filename)
-        
+
         if not file_path.exists():
             return {"status": "error", "message": f"File not found: {filename}"}
-        
+
         file_path.unlink()
-        
+
         logger.info(f"File deleted: {filename}")
-        return {
-            "status": "success",
-            "message": f"File deleted: {filename}"
-        }
+        return {"status": "success", "message": f"File deleted: {filename}"}
     except SecurityError as e:
         logger.error(f"Security error: {e}")
         return {"status": "error", "message": str(e)}
@@ -180,24 +163,13 @@ def shell_exec(command: str) -> dict:
     """Execute shell command (whitelisted only)"""
     try:
         check_command_safety(command)
-        
+
         import subprocess
-        result = subprocess.run(
-            command,
-            shell=True,
-            cwd=SANDBOX_DIR,
-            capture_output=True,
-            text=True,
-            timeout=30
-        )
-        
+
+        result = subprocess.run(command, shell=True, cwd=SANDBOX_DIR, capture_output=True, text=True, timeout=30)
+
         logger.info(f"Command executed: {command}")
-        return {
-            "status": "success",
-            "stdout": result.stdout,
-            "stderr": result.stderr,
-            "returncode": result.returncode
-        }
+        return {"status": "success", "stdout": result.stdout, "stderr": result.stderr, "returncode": result.returncode}
     except SecurityError as e:
         logger.error(f"Security error: {e}")
         return {"status": "error", "message": str(e)}
@@ -227,18 +199,20 @@ def get_filename_from_response(response, url: str) -> str:
     if "filename=" in content_disposition:
         # filename="example.gpg" oder filename=example.gpg
         import re
+
         match = re.search(r'filename="?([^";\s]+)"?', content_disposition)
         if match:
             return match.group(1)
-    
+
     # Fallback: Extrahiere aus URL
-    from urllib.parse import urlparse, unquote
+    from urllib.parse import unquote, urlparse
+
     path = urlparse(url).path
     filename = unquote(path.split("/")[-1]) if path else ""
-    
+
     if filename and "." in filename:
         return filename
-    
+
     # Letzter Fallback: Timestamp-basierter Name
     return f"download_{datetime.now().strftime('%Y%m%d_%H%M%S')}.bin"
 
@@ -255,29 +229,30 @@ def format_file_size(size_bytes: int) -> str:
 
 def fetch_webpage(url: str) -> dict:
     """Fetch webpage content (whitelisted domains only)
-    
+
     Behandelt Text/HTML/JSON wie bisher, aber speichert Binärdateien
     lokal ab und gibt nur Metadaten zurück (kein Binär-Müll im Chat).
     """
     try:
         # Check domain whitelist
         from urllib.parse import urlparse
+
         domain = urlparse(url).netloc
-        
-        allowed_domains = CONFIG['security']['domain_whitelist']
+
+        allowed_domains = CONFIG["security"]["domain_whitelist"]
         if not any(domain.endswith(allowed) for allowed in allowed_domains):
             raise SecurityError(f"Domain not whitelisted: {domain}")
-        
+
         response = requests.get(url, timeout=10)
         response.raise_for_status()
-        
+
         # Content-Type analysieren
         content_type = response.headers.get("Content-Type", "application/octet-stream")
         kind = classify_content_type(content_type)
         size_bytes = len(response.content)
-        
+
         logger.info(f"Webpage fetched: {url} (type: {kind}, size: {size_bytes})")
-        
+
         # === TEXT / HTML Content ===
         if kind == "text":
             content = response.text
@@ -285,7 +260,7 @@ def fetch_webpage(url: str) -> dict:
             MAX_LEN = 8000
             if len(content) > MAX_LEN:
                 content = content[:MAX_LEN] + "\n\n[...] (gekürzt)"
-            
+
             return {
                 "status": "success",
                 "kind": "text",
@@ -293,9 +268,9 @@ def fetch_webpage(url: str) -> dict:
                 "content": content,
                 "content_type": content_type,
                 "status_code": response.status_code,
-                "size_bytes": size_bytes
+                "size_bytes": size_bytes,
             }
-        
+
         # === JSON Content ===
         elif kind == "json":
             try:
@@ -306,7 +281,7 @@ def fetch_webpage(url: str) -> dict:
                 MAX_LEN = 8000
                 if len(content) > MAX_LEN:
                     content = content[:MAX_LEN] + "\n\n[...] (gekürzt)"
-                
+
                 return {
                     "status": "success",
                     "kind": "json",
@@ -314,7 +289,7 @@ def fetch_webpage(url: str) -> dict:
                     "content": content,
                     "content_type": content_type,
                     "status_code": response.status_code,
-                    "size_bytes": size_bytes
+                    "size_bytes": size_bytes,
                 }
             except json.JSONDecodeError:
                 # Falls JSON-Parsing fehlschlägt, als Text behandeln
@@ -325,36 +300,36 @@ def fetch_webpage(url: str) -> dict:
                     "content": response.text[:8000],
                     "content_type": content_type,
                     "status_code": response.status_code,
-                    "size_bytes": size_bytes
+                    "size_bytes": size_bytes,
                 }
-        
+
         # === BINARY Content (NEU: Speichern statt ausgeben) ===
         else:
             # Downloads-Verzeichnis erstellen
             downloads_dir = SANDBOX_DIR / "downloads"
             downloads_dir.mkdir(parents=True, exist_ok=True)
-            
+
             # Dateinamen ermitteln
             filename = get_filename_from_response(response, url)
             file_path = downloads_dir / filename
-            
+
             # Bei Namenskollision: Timestamp anhängen
             if file_path.exists():
                 stem = file_path.stem
                 suffix = file_path.suffix
-                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                 filename = f"{stem}_{timestamp}{suffix}"
                 file_path = downloads_dir / filename
-            
+
             # Binärdatei speichern
-            with open(file_path, 'wb') as f:
+            with open(file_path, "wb") as f:
                 f.write(response.content)
-            
+
             logger.info(f"Binary saved: {file_path} ({format_file_size(size_bytes)})")
-            
+
             # Saubere Zusammenfassung für Chat (KEIN Binärinhalt!)
             relative_path = f"localagent_sandbox/downloads/{filename}"
-            
+
             return {
                 "status": "success",
                 "kind": "binary",
@@ -374,9 +349,9 @@ def fetch_webpage(url: str) -> dict:
 • Größe: {format_file_size(size_bytes)}
 • Speicherort: {relative_path}
 
-Hinweis: Das ist eine Binärdatei. Der Inhalt wurde lokal gespeichert und nicht im Chat angezeigt."""
+Hinweis: Das ist eine Binärdatei. Der Inhalt wurde lokal gespeichert und nicht im Chat angezeigt.""",
             }
-    
+
     except SecurityError as e:
         logger.error(f"Security error: {e}")
         return {"status": "error", "message": str(e)}
@@ -385,49 +360,49 @@ Hinweis: Das ist eine Binärdatei. Der Inhalt wurde lokal gespeichert und nicht 
         return {"status": "error", "message": str(e)}
 
 
-def process_tool_call(messages: List[dict]) -> Optional[dict]:
+def process_tool_call(messages: list[dict]) -> dict | None:
     """Process tool calls from chat messages"""
     if not messages:
         return None
-    
-    last_message = messages[-1]['content'].lower()
-    
+
+    last_message = messages[-1]["content"].lower()
+
     # Detect file operations
-    if 'erstelle' in last_message or 'write' in last_message:
+    if "erstelle" in last_message or "write" in last_message:
         # Extract filename and content
-        parts = messages[-1]['content'].split('\n', 1)
+        parts = messages[-1]["content"].split("\n", 1)
         if len(parts) == 2:
             filename = parts[0].split()[-1]
             content = parts[1]
             return write_file(filename, content)
-    
-    elif 'lies' in last_message or 'read' in last_message:
+
+    elif "lies" in last_message or "read" in last_message:
         # Extract filename
-        words = messages[-1]['content'].split()
+        words = messages[-1]["content"].split()
         for word in words:
-            if '.' in word:
+            if "." in word:
                 return read_file(word)
-    
-    elif 'lösche' in last_message or 'delete' in last_message:
+
+    elif "lösche" in last_message or "delete" in last_message:
         # Extract filename
-        words = messages[-1]['content'].split()
+        words = messages[-1]["content"].split()
         for word in words:
-            if '.' in word:
+            if "." in word:
                 return delete_file(word)
-    
-    elif 'führe aus' in last_message or 'execute' in last_message or 'command' in last_message:
+
+    elif "führe aus" in last_message or "execute" in last_message or "command" in last_message:
         # Extract command
-        if ':' in messages[-1]['content']:
-            command = messages[-1]['content'].split(':', 1)[1].strip()
+        if ":" in messages[-1]["content"]:
+            command = messages[-1]["content"].split(":", 1)[1].strip()
             return shell_exec(command)
-    
-    elif 'hole' in last_message or 'fetch' in last_message:
+
+    elif "hole" in last_message or "fetch" in last_message:
         # Extract URL
-        words = messages[-1]['content'].split()
+        words = messages[-1]["content"].split()
         for word in words:
-            if word.startswith('http'):
+            if word.startswith("http"):
                 return fetch_webpage(word)
-    
+
     return None
 
 
@@ -438,20 +413,20 @@ def format_tool_result(tool_result: dict) -> str:
     """
     if tool_result.get("status") == "error":
         return f"❌ Fehler: {tool_result.get('message', 'Unbekannter Fehler')}"
-    
+
     kind = tool_result.get("kind")
-    
+
     # Binary-Download: Verwende die vorformatierte message
     if kind == "binary":
         return tool_result.get("message", "Binary-Download abgeschlossen.")
-    
+
     # JSON: Hübsch formatiert
     if kind == "json":
         url = tool_result.get("url", "")
         status = tool_result.get("status_code", "")
         content = tool_result.get("content", "")
         size = tool_result.get("size_bytes", 0)
-        
+
         return f"""🌐 JSON-Response
 
 • URL: {url}
@@ -461,7 +436,7 @@ def format_tool_result(tool_result: dict) -> str:
 ```json
 {content}
 ```"""
-    
+
     # Text/HTML: Standard-Ausgabe
     if kind == "text":
         url = tool_result.get("url", "")
@@ -469,7 +444,7 @@ def format_tool_result(tool_result: dict) -> str:
         content = tool_result.get("content", "")
         size = tool_result.get("size_bytes", 0)
         content_type = tool_result.get("content_type", "text/plain")
-        
+
         return f"""🌐 Webseite geladen
 
 • URL: {url}
@@ -479,107 +454,105 @@ def format_tool_result(tool_result: dict) -> str:
 
 ---
 {content}"""
-    
+
     # Andere Tool-Ergebnisse (write_file, read_file, shell_exec, etc.)
     return f"Tool executed:\n```json\n{json.dumps(tool_result, indent=2, ensure_ascii=False)}\n```"
 
 
-@app.route('/health', methods=['GET'])
+@app.route("/health", methods=["GET"])
 def health_check():
     """Health check endpoint"""
-    return jsonify({
-        "status": "healthy",
-        "version": "1.0.0",
-        "sandbox": str(SANDBOX_DIR),
-        "timestamp": datetime.now().isoformat()
-    })
+    return jsonify(
+        {"status": "healthy", "version": "1.0.0", "sandbox": str(SANDBOX_DIR), "timestamp": datetime.now().isoformat()}
+    )
 
 
-@app.route('/v1', methods=['GET'])
+@app.route("/v1", methods=["GET"])
 def api_info():
     """API info endpoint für OpenWebUI-Kompatibilität"""
-    return jsonify({
-        "status": "ok",
-        "version": "1.0.0",
-        "endpoints": ["/v1/models", "/v1/chat/completions"]
-    })
+    return jsonify({"status": "ok", "version": "1.0.0", "endpoints": ["/v1/models", "/v1/chat/completions"]})
 
 
-@app.route('/v1/models', methods=['GET'])
-@app.route('/models', methods=['GET'])  # Alias für OpenWebUI-Kompatibilität
+@app.route("/v1/models", methods=["GET"])
+@app.route("/models", methods=["GET"])  # Alias für OpenWebUI-Kompatibilität
 def list_models():
     """List available models"""
     try:
         response = requests.get(f"{OLLAMA_BASE_URL}/api/tags")
         models = response.json()
-        
-        return jsonify({
-            "object": "list",
-            "data": [
-                {
-                    "id": OLLAMA_MODEL,
-                    "object": "model",
-                    "created": int(datetime.now().timestamp()),
-                    "owned_by": "localagent-pro"
-                }
-            ]
-        })
+
+        return jsonify(
+            {
+                "object": "list",
+                "data": [
+                    {
+                        "id": OLLAMA_MODEL,
+                        "object": "model",
+                        "created": int(datetime.now().timestamp()),
+                        "owned_by": "localagent-pro",
+                    }
+                ],
+            }
+        )
     except Exception as e:
         logger.error(f"Error listing models: {e}")
         return jsonify({"error": str(e)}), 500
 
 
-@app.route('/v1/chat/completions', methods=['POST'])
-@app.route('/chat/completions', methods=['POST'])  # Alias für OpenWebUI-Kompatibilität
+@app.route("/v1/chat/completions", methods=["POST"])
+@app.route("/chat/completions", methods=["POST"])  # Alias für OpenWebUI-Kompatibilität
 def chat_completions():
     """Chat completions endpoint"""
     try:
         data = request.json
-        messages = data.get('messages', [])
-        
+        messages = data.get("messages", [])
+
         # Check for duplicate requests
         if check_duplicate_request(data):
             return jsonify({"error": "Duplicate request"}), 429
-        
+
         # Process tool calls
         tool_result = process_tool_call(messages)
-        
+
         if tool_result:
             # Return tool result - use smart formatter
             response_content = format_tool_result(tool_result)
         else:
             # Forward to Ollama - with proper error handling
             ollama_url = f"{OLLAMA_BASE_URL}/api/chat"
-            ollama_payload = {
-                "model": OLLAMA_MODEL,
-                "messages": messages,
-                "stream": False
-            }
-            
+            ollama_payload = {"model": OLLAMA_MODEL, "messages": messages, "stream": False}
+
             try:
                 ollama_response = requests.post(ollama_url, json=ollama_payload, timeout=120)
-                
+
                 # Log Ollama response status for debugging
                 if ollama_response.status_code != 200:
                     error_detail = ollama_response.text[:200] if ollama_response.text else "No response body"
-                    logger.error(f"Ollama error: status={ollama_response.status_code}, url={ollama_url}, detail={error_detail}")
-                    
+                    logger.error(
+                        f"Ollama error: status={ollama_response.status_code}, url={ollama_url}, detail={error_detail}"
+                    )
+
                     # Return proper error instead of empty response
-                    return jsonify({
-                        "error": {
-                            "message": f"Ollama backend error: {ollama_response.status_code}",
-                            "type": "backend_error",
-                            "detail": error_detail
-                        }
-                    }), 502
-                
+                    return (
+                        jsonify(
+                            {
+                                "error": {
+                                    "message": f"Ollama backend error: {ollama_response.status_code}",
+                                    "type": "backend_error",
+                                    "detail": error_detail,
+                                }
+                            }
+                        ),
+                        502,
+                    )
+
                 ollama_data = ollama_response.json()
-                response_content = ollama_data.get('message', {}).get('content', '')
-                
+                response_content = ollama_data.get("message", {}).get("content", "")
+
                 # Warn if response is empty
                 if not response_content:
                     logger.warning(f"Ollama returned empty content. Response: {ollama_data}")
-                    
+
             except requests.exceptions.Timeout:
                 logger.error(f"Ollama timeout after 120s: {ollama_url}")
                 return jsonify({"error": {"message": "Ollama timeout", "type": "timeout"}}), 504
@@ -589,30 +562,25 @@ def chat_completions():
             except Exception as oe:
                 logger.error(f"Ollama request failed: {oe}")
                 return jsonify({"error": {"message": str(oe), "type": "ollama_error"}}), 500
-        
-        return jsonify({
-            "id": f"chatcmpl-{hashlib.md5(str(datetime.now()).encode()).hexdigest()[:8]}",
-            "object": "chat.completion",
-            "created": int(datetime.now().timestamp()),
-            "model": OLLAMA_MODEL,
-            "choices": [
-                {
-                    "index": 0,
-                    "message": {
-                        "role": "assistant",
-                        "content": response_content
-                    },
-                    "finish_reason": "stop"
-                }
-            ]
-        })
-    
+
+        return jsonify(
+            {
+                "id": f"chatcmpl-{hashlib.md5(str(datetime.now()).encode()).hexdigest()[:8]}",
+                "object": "chat.completion",
+                "created": int(datetime.now().timestamp()),
+                "model": OLLAMA_MODEL,
+                "choices": [
+                    {"index": 0, "message": {"role": "assistant", "content": response_content}, "finish_reason": "stop"}
+                ],
+            }
+        )
+
     except Exception as e:
         logger.error(f"Error in chat completions: {e}")
         return jsonify({"error": str(e)}), 500
 
 
-@app.route('/metrics', methods=['GET'])
+@app.route("/metrics", methods=["GET"])
 def metrics():
     """Prometheus metrics endpoint"""
     return f"""# HELP http_requests_total Total HTTP requests
@@ -625,13 +593,13 @@ sandbox_files {len(list(SANDBOX_DIR.glob('*')))}
 """
 
 
-if __name__ == '__main__':
-    port = int(os.getenv('PORT', CONFIG['server']['port']))
-    host = os.getenv('HOST', CONFIG['server']['host'])
-    
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", CONFIG["server"]["port"]))
+    host = os.getenv("HOST", CONFIG["server"]["host"])
+
     logger.info(f"Starting LocalAgent-Pro on {host}:{port}")
     logger.info(f"Ollama: {OLLAMA_BASE_URL}")
     logger.info(f"Model: {OLLAMA_MODEL}")
     logger.info(f"Sandbox: {SANDBOX_DIR}")
-    
-    app.run(host=host, port=port, debug=CONFIG['server']['debug'])
+
+    app.run(host=host, port=port, debug=CONFIG["server"]["debug"])

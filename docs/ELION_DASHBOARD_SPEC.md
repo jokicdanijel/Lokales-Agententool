@@ -3,12 +3,14 @@
 ## 📋 Übersicht
 
 ### Systemidentifikation
+
 - **Name:** ELION Hyper-Dashboard 2.0
 - **Version:** Production 1.0
 - **Basis-URL:** `http://127.0.0.1:12344`
 - **Architektur:** Option 2 (OpenAI → opena1 → opena2 → kordp → Tool)
 
 ### Hauptkomponenten
+
 1. **Backend (opena19)** - Port 12344
    - Status-Aggregation
    - Event-Streaming
@@ -36,6 +38,7 @@
 ### Backend-API (Port 12344)
 
 #### 1. Status-Endpunkte
+
 ```http
 GET /api/status/all
 GET /api/status/{agent}
@@ -43,6 +46,7 @@ GET /api/agents
 ```
 
 Antwortschema:
+
 ```json
 {
   "strict": true,
@@ -60,11 +64,13 @@ Antwortschema:
 ```
 
 #### 2. Befehls-Endpunkte
+
 ```http
 POST /api/command/{agent}
 ```
 
 Request-Schema:
+
 ```json
 {
   "request_id": "uuid-...",
@@ -75,11 +81,13 @@ Request-Schema:
 ```
 
 #### 3. Event-Stream
+
 ```http
 GET /api/events/live
 ```
 
 SSE-Format:
+
 ```
 event: agent_status
 data: {"agent": "opena19", "status": "healthy", "timestamp": "..."}
@@ -91,12 +99,14 @@ data: {"path": "archivp/2025/10/22/SP12345...json", "type": "CMD"}
 ### Frontend-Integration
 
 #### 1. Hauptdashboard
+
 - URL: `http://127.0.0.1:12344/ui/`
 - Layout: Grid mit Agent-Kacheln
 - Live-Updates via SSE
 - Responsive Design
 
 #### 2. Agent-Detailseiten
+
 - URL: `http://127.0.0.1:12344/agent/{agent}`
 - Safepoint-Historie
 - Status-Metriken
@@ -105,22 +115,26 @@ data: {"path": "archivp/2025/10/22/SP12345...json", "type": "CMD"}
 ## 🔒 Sicherheit
 
 ### Authentifizierung
+
 ```http
 Authorization: Bearer <DASHBOARD_TOKEN>
 ```
 
 ### Port-Policy
+
 - ✅ Erlaubt: 12344-12399
 - ❌ Verboten: 8080
 - Ausnahme: OpenWebUI intern
 
 ### Rate-Limiting
+
 - 60 Requests/Minute pro Token
 - 429 bei Überschreitung
 
 ## 📁 Dateisystem
 
 ### Projektstruktur
+
 ```
 /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/
 ├── 19.dashboard_agent/        # Backend
@@ -137,6 +151,7 @@ Authorization: Bearer <DASHBOARD_TOKEN>
 ```
 
 ### Safepoint-Archiv
+
 ```
 archivp/
 └── 2025/
@@ -149,12 +164,14 @@ archivp/
 ## 🧪 Tests & Qualitätssicherung
 
 ### Pflicht-Tests
+
 1. Port-Policy-Konformität
 2. Token-Validierung
 3. Safepoint-Integrität
 4. Event-Stream-Stabilität
 
 ### Monitoring
+
 - Health-Checks alle 60 Sekunden
 - Safepoint-Validierung täglich
 - Port-Scan stündlich
@@ -162,11 +179,13 @@ archivp/
 ## 🔄 Integration
 
 ### VS Code
+
 - Status-Panel via API
 - Command-Palette-Integration
 - Live-Diagnostics
 
 ### Telegram
+
 - `/dashboard status`
 - Automatische Alerts
 - Tägliche Reports
@@ -213,16 +232,19 @@ archivp/
 ## 📚 Wartung & Support
 
 ### Logs
+
 - Rotation: täglich
 - Aufbewahrung: 90 Tage
 - Format: JSON + Timestamp
 
 ### Backup
+
 - Safepoints: stündlich
 - Konfig: täglich
 - Retention: 30 Tage
 
 ### Monitoring
+
 - Grafana-Dashboard
 - Prometheus-Metrics
 - Alert-Manager
@@ -230,6 +252,7 @@ archivp/
 ## 🔍 Fehlerbehandlung
 
 ### HTTP-Codes
+
 - 200: Erfolg
 - 202: Async accepted
 - 400: Invalid request
@@ -239,6 +262,7 @@ archivp/
 - 500: Server error
 
 ### Retry-Strategie
+
 - Exponential Backoff
 - Max 3 Versuche
 - Jitter: 100-500ms
@@ -246,16 +270,19 @@ archivp/
 ## 🏁 Abnahmetest-Szenario
 
 1. **Start**
+
    ```bash
    ./venv313/bin/python3 main.py --port 12344
    ```
 
 2. **Validierung**
+
    ```bash
    curl http://127.0.0.1:12344/health
    ```
 
 3. **Test-Sequenz**
+
    ```bash
    # Health
    curl http://127.0.0.1:12344/health

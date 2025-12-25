@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena18 CRM Agent
 
-**Agent-ID:** opena18  
-**Port:** 12363  
-**Status:** 🟡 Planned  
-**Kürzel:** `crmp`  
+**Agent-ID:** opena18
+**Port:** 12363
+**Status:** 🟡 Planned
+**Kürzel:** `crmp`
 **Domäne:** CRM Agent, Contacts, Deals, DSGVO-Compliance
 
 ---
@@ -141,5 +141,5 @@ Kopiere diesen Prompt in:
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

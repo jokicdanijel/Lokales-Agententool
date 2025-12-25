@@ -1,11 +1,13 @@
 """
 RQ Worker: Background job processing for Telegram tasks.
 """
-from rq import Worker
-from rq.job import JobStatus
-from redis import Redis
-from app.config import settings
+
 import logging
+
+from redis import Redis
+from rq import Worker
+
+from app.config import settings
 
 logger = logging.getLogger(__name__)
 

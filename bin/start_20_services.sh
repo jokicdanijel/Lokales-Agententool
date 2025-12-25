@@ -43,30 +43,30 @@ FAILED=0
 for service in "${!SERVICES[@]}"; do
     port=${SERVICES[$service]}
     service_path="$SERVICES_DIR/$service"
-    
+
     if [ ! -f "$service_path/main.py" ]; then
         echo "  ❌ $service: main.py not found"
         ((FAILED++))
         continue
     fi
-    
+
     log_file="$LOGS_DIR/${service}.nohup.log"
-    
+
     # Check if already running
     if lsof -i ":$port" > /dev/null 2>&1; then
         echo "  ⚠️  $service (port $port): Already running"
         ((STARTED++))
         continue
     fi
-    
+
     # Start service
     cd "$service_path"
     nohup python3 main.py > "$log_file" 2>&1 &
     PID=$!
-    
+
     # Wait briefly to verify
     sleep 0.5
-    
+
     if ps -p "$PID" > /dev/null 2>&1; then
         echo "  ✅ $service (port $port) — PID $PID"
         ((STARTED++))

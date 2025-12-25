@@ -43,6 +43,7 @@ curl http://127.0.0.1:12370/health
 ### 4. Webhook URLs (zusätzlich)
 
 **WhatsApp Webhook:**
+
 - **Callback URL**: `https://deine-domain.com:12351/webhook`
 - **Verify Token**: Der Wert aus `.env` → `META_WEBHOOK_VERIFY_TOKEN`
 
@@ -100,11 +101,13 @@ curl "http://127.0.0.1:12370/deletion-status?code=abc123"
 ## 🔍 Status Tracking
 
 Jede Löschung wird gespeichert in:
+
 ```
 data/deletion_requests/deletion_{code}.json
 ```
 
 Nutzer können Status prüfen mit:
+
 ```
 https://deine-domain.com:12370/deletion-status?code={confirmation_code}
 ```
@@ -120,14 +123,17 @@ https://deine-domain.com:12370/deletion-status?code={confirmation_code}
 ## 🚨 Troubleshooting
 
 ### Problem: "Invalid signed_request"
+
 - **Ursache**: Falscher `META_APP_SECRET`
 - **Lösung**: App Secret aus Facebook Developer Console kopieren
 
 ### Problem: "Callback URL nicht erreichbar"
+
 - **Ursache**: Port 12370 nicht öffentlich erreichbar
 - **Lösung**: Reverse Proxy (nginx) oder Ngrok verwenden
 
 ### Problem: "Missing user_id"
+
 - **Ursache**: Signed Request Format falsch
 - **Lösung**: Facebook Developer Tool verwenden für Test
 
@@ -147,6 +153,7 @@ tail -f logs/data_deletion.log
 ## 📞 Support
 
 Bei Problemen:
+
 1. Prüfe Logs: `logs/data_deletion.log`
 2. Teste Signed Request Parsing
 3. Verifiziere App Secret in Facebook Console
@@ -154,6 +161,6 @@ Bei Problemen:
 
 ---
 
-**Status**: ✅ GDPR-Compliant Data Deletion implementiert  
-**Port**: 12370  
+**Status**: ✅ GDPR-Compliant Data Deletion implementiert
+**Port**: 12370
 **Endpoints**: `/data-deletion-callback`, `/deletion-status`, `/health`

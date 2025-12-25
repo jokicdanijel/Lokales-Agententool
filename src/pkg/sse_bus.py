@@ -9,22 +9,23 @@ API:
 
 import asyncio
 import contextlib
-from typing import AsyncIterator, Dict, Any, List, Optional
+from collections.abc import AsyncIterator
+from typing import Any
 
 
 class SSEBus:
-    def __init__(self, per_subscriber_queue: int = 100, heartbeat_seconds: Optional[float] = None) -> None:
+    def __init__(self, per_subscriber_queue: int = 100, heartbeat_seconds: float | None = None) -> None:
         """
         :param per_subscriber_queue: Max. Anzahl gepufferter Events pro Subscriber
         :param heartbeat_seconds:    Optionales Heartbeat-Intervall (z.B. 15.0), None = aus
         """
-        self._subscribers: List[asyncio.Queue] = []
+        self._subscribers: list[asyncio.Queue] = []
         self._lock = asyncio.Lock()
         self._per_subscriber_queue = int(per_subscriber_queue)
         self._heartbeat_seconds = heartbeat_seconds
         self._closed = False
 
-    async def publish(self, event: Dict[str, Any]) -> None:
+    async def publish(self, event: dict[str, Any]) -> None:
         """
         Sendet ein Event an alle Subscriber (best-effort).
         Verwirft Events bei vollen Queues anstatt zu blockieren.
@@ -62,7 +63,7 @@ class SSEBus:
             # normale Beendigung
             return
 
-    async def subscribe(self) -> AsyncIterator[Dict[str, Any]]:
+    async def subscribe(self) -> AsyncIterator[dict[str, Any]]:
         """
         Erstellt eine dedizierte Queue für den Subscriber und liefert
         einen asynchronen Iterator, der Events liefert, bis:
@@ -75,7 +76,7 @@ class SSEBus:
             yield  # pragma: no cover
 
         q: asyncio.Queue = asyncio.Queue(maxsize=self._per_subscriber_queue)
-        heartbeat_task: Optional[asyncio.Task] = None
+        heartbeat_task: asyncio.Task | None = None
 
         async with self._lock:
             self._subscribers.append(q)
@@ -131,5 +132,3 @@ class _CloseSentinel:
 _CLOSE_SENTINEL = _CloseSentinel()
 
 # kleine Hilfs-Imports für finally/cleanup
-import contextlib  # am Ende importiert, um den Kopf schlank zu halten
-

@@ -1,32 +1,20 @@
 import logging
-from typing import Optional, Tuple, List, Dict, Any
+from typing import Any
 
 from open_webui.config import (
-    MILVUS_URI,
-    MILVUS_TOKEN,
-    MILVUS_DB,
     MILVUS_COLLECTION_PREFIX,
-    MILVUS_INDEX_TYPE,
-    MILVUS_METRIC_TYPE,
-    MILVUS_HNSW_M,
+    MILVUS_DB,
     MILVUS_HNSW_EFCONSTRUCTION,
+    MILVUS_HNSW_M,
+    MILVUS_INDEX_TYPE,
     MILVUS_IVF_FLAT_NLIST,
+    MILVUS_METRIC_TYPE,
+    MILVUS_TOKEN,
+    MILVUS_URI,
 )
 from open_webui.env import SRC_LOG_LEVELS
-from open_webui.retrieval.vector.main import (
-    GetResult,
-    SearchResult,
-    VectorDBBase,
-    VectorItem,
-)
-from pymilvus import (
-    connections,
-    utility,
-    Collection,
-    CollectionSchema,
-    FieldSchema,
-    DataType,
-)
+from open_webui.retrieval.vector.main import GetResult, SearchResult, VectorDBBase, VectorItem
+from pymilvus import Collection, CollectionSchema, DataType, FieldSchema, connections, utility
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["RAG"])
@@ -59,7 +47,7 @@ class MilvusClient(VectorDBBase):
             self.HASH_BASED_COLLECTION,
         ]
 
-    def _get_collection_and_resource_id(self, collection_name: str) -> Tuple[str, str]:
+    def _get_collection_and_resource_id(self, collection_name: str) -> tuple[str, str]:
         """
         Maps the traditional collection name to multi-tenant collection and resource ID.
 
@@ -78,9 +66,7 @@ class MilvusClient(VectorDBBase):
             return self.FILE_COLLECTION, resource_id
         elif collection_name.startswith("web-search-"):
             return self.WEB_SEARCH_COLLECTION, resource_id
-        elif len(collection_name) == 63 and all(
-            c in "0123456789abcdef" for c in collection_name
-        ):
+        elif len(collection_name) == 63 and all(c in "0123456789abcdef" for c in collection_name):
             return self.HASH_BASED_COLLECTION, resource_id
         else:
             return self.KNOWLEDGE_COLLECTION, resource_id
@@ -125,9 +111,7 @@ class MilvusClient(VectorDBBase):
             self._create_shared_collection(mt_collection_name, dimension)
 
     def has_collection(self, collection_name: str) -> bool:
-        mt_collection, resource_id = self._get_collection_and_resource_id(
-            collection_name
-        )
+        mt_collection, resource_id = self._get_collection_and_resource_id(collection_name)
         if not utility.has_collection(mt_collection):
             return False
 
@@ -136,12 +120,10 @@ class MilvusClient(VectorDBBase):
         res = collection.query(expr=f"{RESOURCE_ID_FIELD} == '{resource_id}'", limit=1)
         return len(res) > 0
 
-    def upsert(self, collection_name: str, items: List[VectorItem]):
+    def upsert(self, collection_name: str, items: list[VectorItem]):
         if not items:
             return
-        mt_collection, resource_id = self._get_collection_and_resource_id(
-            collection_name
-        )
+        mt_collection, resource_id = self._get_collection_and_resource_id(collection_name)
         dimension = len(items[0]["vector"])
         self._ensure_collection(mt_collection, dimension)
         collection = Collection(mt_collection)
@@ -159,15 +141,11 @@ class MilvusClient(VectorDBBase):
         collection.insert(entities)
         collection.flush()
 
-    def search(
-        self, collection_name: str, vectors: List[List[float]], limit: int
-    ) -> Optional[SearchResult]:
+    def search(self, collection_name: str, vectors: list[list[float]], limit: int) -> SearchResult | None:
         if not vectors:
             return None
 
-        mt_collection, resource_id = self._get_collection_and_resource_id(
-            collection_name
-        )
+        mt_collection, resource_id = self._get_collection_and_resource_id(collection_name)
         if not utility.has_collection(mt_collection):
             return None
 
@@ -197,19 +175,15 @@ class MilvusClient(VectorDBBase):
             metadatas.append(batch_metadatas)
             distances.append(batch_dists)
 
-        return SearchResult(
-            ids=ids, documents=documents, metadatas=metadatas, distances=distances
-        )
+        return SearchResult(ids=ids, documents=documents, metadatas=metadatas, distances=distances)
 
     def delete(
         self,
         collection_name: str,
-        ids: Optional[List[str]] = None,
-        filter: Optional[Dict[str, Any]] = None,
+        ids: list[str] | None = None,
+        filter: dict[str, Any] | None = None,
     ):
-        mt_collection, resource_id = self._get_collection_and_resource_id(
-            collection_name
-        )
+        mt_collection, resource_id = self._get_collection_and_resource_id(collection_name)
         if not utility.has_collection(mt_collection):
             return
 
@@ -234,21 +208,15 @@ class MilvusClient(VectorDBBase):
                 utility.drop_collection(collection_name)
 
     def delete_collection(self, collection_name: str):
-        mt_collection, resource_id = self._get_collection_and_resource_id(
-            collection_name
-        )
+        mt_collection, resource_id = self._get_collection_and_resource_id(collection_name)
         if not utility.has_collection(mt_collection):
             return
 
         collection = Collection(mt_collection)
         collection.delete(f"{RESOURCE_ID_FIELD} == '{resource_id}'")
 
-    def query(
-        self, collection_name: str, filter: Dict[str, Any], limit: Optional[int] = None
-    ) -> Optional[GetResult]:
-        mt_collection, resource_id = self._get_collection_and_resource_id(
-            collection_name
-        )
+    def query(self, collection_name: str, filter: dict[str, Any], limit: int | None = None) -> GetResult | None:
+        mt_collection, resource_id = self._get_collection_and_resource_id(collection_name)
         if not utility.has_collection(mt_collection):
             return None
 
@@ -275,8 +243,8 @@ class MilvusClient(VectorDBBase):
 
         return GetResult(ids=[ids], documents=[documents], metadatas=[metadatas])
 
-    def get(self, collection_name: str) -> Optional[GetResult]:
+    def get(self, collection_name: str) -> GetResult | None:
         return self.query(collection_name, filter={}, limit=None)
 
-    def insert(self, collection_name: str, items: List[VectorItem]):
+    def insert(self, collection_name: str, items: list[VectorItem]):
         return self.upsert(collection_name, items)

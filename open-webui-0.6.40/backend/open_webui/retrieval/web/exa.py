@@ -1,6 +1,5 @@
 import logging
 from dataclasses import dataclass
-from typing import Optional
 
 import requests
 from open_webui.env import SRC_LOG_LEVELS
@@ -23,7 +22,7 @@ def search_exa(
     api_key: str,
     query: str,
     count: int,
-    filter_list: Optional[list[str]] = None,
+    filter_list: list[str] | None = None,
 ) -> list[SearchResult]:
     """Search using Exa Search API and return the results as a list of SearchResult objects.
 
@@ -46,9 +45,7 @@ def search_exa(
     }
 
     try:
-        response = requests.post(
-            f"{EXA_API_BASE}/search", headers=headers, json=payload
-        )
+        response = requests.post(f"{EXA_API_BASE}/search", headers=headers, json=payload)
         response.raise_for_status()
         data = response.json()
 

@@ -56,10 +56,13 @@ def call_model(prompt: str) -> str:
 Verification / Smoke Checks
 
 - Dry‑run agent smoke:
+
 ```bash
 AGENT_DRY_RUN=1 python -c "from agent.core import run_sync; print(run_sync('Hallo'))"
 ```
+
 - Real model smoke (after setting keys):
+
 ```bash
 export AGENT_DRY_RUN=0
 export AGENT_PROVIDER=github

@@ -6,18 +6,15 @@ Inference Service — llama-stack + Ollama Integration
 - Port: 12348 (infer)
 """
 
-import asyncio
-import json
 import os
 import time
 from datetime import datetime
-from typing import Any, Dict, List, Optional
 from socket import gethostname
+from typing import Any
 
 import httpx
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
-from pydantic_settings import BaseSettings
 
 # ────────────────────────────────────────────────────────────────────────
 # Configuration
@@ -48,11 +45,13 @@ LATENCIES = []  # Track latencies for percentiles
 # Pydantic Models
 # ────────────────────────────────────────────────────────────────────────
 
+
 class CompletionRequest(BaseModel):
     """Inference request."""
+
     model: str = DEFAULT_MODEL
-    prompt: Optional[str] = None
-    messages: Optional[List[Dict[str, str]]] = None
+    prompt: str | None = None
+    messages: list[dict[str, str]] | None = None
     max_tokens: int = Field(default=2048, ge=1, le=8192)
     temperature: float = Field(default=0.7, ge=0.0, le=2.0)
     stream: bool = False
@@ -60,6 +59,7 @@ class CompletionRequest(BaseModel):
 
 class CompletionResponse(BaseModel):
     """Inference response."""
+
     ok: bool
     model: str
     completion: str
@@ -70,6 +70,7 @@ class CompletionResponse(BaseModel):
 
 class ModelInfo(BaseModel):
     """Model metadata."""
+
     id: str
     name: str
     provider: str
@@ -78,18 +79,20 @@ class ModelInfo(BaseModel):
 
 class HealthResponse(BaseModel):
     """Health check response."""
+
     status: str
     service: str
     program_target: str
     ollama_present: bool
     default_model: str
-    models: List[str]
-    stats: Dict[str, Any]
+    models: list[str]
+    stats: dict[str, Any]
 
 
 # ────────────────────────────────────────────────────────────────────────
 # Helper Functions
 # ────────────────────────────────────────────────────────────────────────
+
 
 def _hostname() -> str:
     """Get hostname."""
@@ -114,7 +117,7 @@ async def _check_ollama() -> bool:
         return False
 
 
-async def _get_available_models() -> List[str]:
+async def _get_available_models() -> list[str]:
     """Fetch available models from Ollama."""
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
@@ -127,12 +130,7 @@ async def _get_available_models() -> List[str]:
     return [DEFAULT_MODEL]
 
 
-async def _inference_ollama(
-    model: str,
-    prompt: str,
-    max_tokens: int,
-    temperature: float
-) -> tuple[str, int, float]:
+async def _inference_ollama(model: str, prompt: str, max_tokens: int, temperature: float) -> tuple[str, int, float]:
     """Call Ollama inference API."""
     url = f"{OLLAMA_ENDPOINT}/api/generate"
     payload = {
@@ -142,23 +140,23 @@ async def _inference_ollama(
         "options": {
             "temperature": temperature,
             "num_predict": max_tokens,
-        }
+        },
     }
-    
+
     start_time = time.time()
     try:
         async with httpx.AsyncClient(timeout=60.0) as client:
             r = await client.post(url, json=payload)
             r.raise_for_status()
-            
+
         latency = time.time() - start_time
         data = r.json()
         completion = data.get("response", "")
         tokens = len(completion.split())
-        
+
         STATS["tokens_processed"] += tokens
         LATENCIES.append(latency)
-        
+
         # Update percentiles
         if len(LATENCIES) >= 1:
             sorted_latencies = sorted(LATENCIES)
@@ -166,25 +164,18 @@ async def _inference_ollama(
         if len(LATENCIES) >= 100:
             sorted_latencies = sorted(LATENCIES)
             STATS["latency_p99"] = sorted_latencies[int(len(LATENCIES) * 0.99)]
-        
+
         return completion, tokens, latency
-    
+
     except Exception as e:
         STATS["errors"] += 1
-        raise HTTPException(status_code=500, detail=f"Inference failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Inference failed: {e!s}")
 
 
-async def _store_safepoint(kind: str, body: Dict[str, Any]) -> None:
+async def _store_safepoint(kind: str, body: dict[str, Any]) -> None:
     """Delegate safepoint storage to OpenA2."""
     url = f"http://127.0.0.1:{ARCHIVP_PORT}/store/archivp"
-    payload = {
-        "src": PROGRAM_TARGET,
-        "dst": "archivp",
-        "kind": kind,
-        "body": body,
-        "strict": True,
-        "ts": _now()
-    }
+    payload = {"src": PROGRAM_TARGET, "dst": "archivp", "kind": kind, "body": body, "strict": True, "ts": _now()}
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
             r = await client.post(url, json=payload)
@@ -201,7 +192,7 @@ async def _store_safepoint(kind: str, body: Dict[str, Any]) -> None:
 app = FastAPI(
     title=f"Inference Gateway — {PROGRAM_TARGET.upper()}",
     description="Multi-model inference service (llama-stack + Ollama)",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 
@@ -209,12 +200,13 @@ app = FastAPI(
 # Endpoints
 # ────────────────────────────────────────────────────────────────────────
 
+
 @app.get("/health")
 async def health() -> HealthResponse:
     """Health check."""
     ollama_present = await _check_ollama()
     available_models = await _get_available_models() if ollama_present else [DEFAULT_MODEL]
-    
+
     return HealthResponse(
         status="ok",
         service=SERVICE_NAME,
@@ -227,15 +219,18 @@ async def health() -> HealthResponse:
 
 
 @app.get("/models")
-async def list_models() -> Dict[str, Any]:
+async def list_models() -> dict[str, Any]:
     """List available models."""
     models = await _get_available_models()
-    
-    await _store_safepoint("MODEL_LIST", {
-        "models_count": len(models),
-        "models": models,
-    })
-    
+
+    await _store_safepoint(
+        "MODEL_LIST",
+        {
+            "models_count": len(models),
+            "models": models,
+        },
+    )
+
     return {
         "ok": True,
         "models": models,
@@ -248,29 +243,29 @@ async def list_models() -> Dict[str, Any]:
 async def completions(req: CompletionRequest) -> CompletionResponse:
     """Generate completion via Ollama."""
     STATS["completions_requested"] += 1
-    
+
     # Build prompt from messages or direct prompt
     if req.messages:
         prompt = "\n".join([f"{m['role']}: {m['content']}" for m in req.messages])
     else:
         prompt = req.prompt or "Hello"
-    
+
     # Call Ollama
     completion, tokens, latency = await _inference_ollama(
-        model=req.model or DEFAULT_MODEL,
-        prompt=prompt,
-        max_tokens=req.max_tokens,
-        temperature=req.temperature
+        model=req.model or DEFAULT_MODEL, prompt=prompt, max_tokens=req.max_tokens, temperature=req.temperature
     )
-    
+
     # Store safepoint
-    await _store_safepoint("COMPLETION", {
-        "model": req.model,
-        "prompt_tokens": len(prompt.split()),
-        "completion_tokens": tokens,
-        "latency_ms": latency * 1000,
-    })
-    
+    await _store_safepoint(
+        "COMPLETION",
+        {
+            "model": req.model,
+            "prompt_tokens": len(prompt.split()),
+            "completion_tokens": tokens,
+            "latency_ms": latency * 1000,
+        },
+    )
+
     return CompletionResponse(
         ok=True,
         model=req.model or DEFAULT_MODEL,
@@ -281,54 +276,47 @@ async def completions(req: CompletionRequest) -> CompletionResponse:
 
 
 @app.post("/chat/completions")
-async def chat_completions(req: CompletionRequest) -> Dict[str, Any]:
+async def chat_completions(req: CompletionRequest) -> dict[str, Any]:
     """OpenAI-compatible chat completions endpoint."""
     STATS["completions_requested"] += 1
-    
+
     # Build prompt from messages
     if req.messages:
         prompt = "\n".join([f"{m['role']}: {m['content']}" for m in req.messages])
     else:
         prompt = req.prompt or "You are a helpful assistant."
-    
+
     # Call Ollama
     completion, tokens, latency = await _inference_ollama(
-        model=req.model or DEFAULT_MODEL,
-        prompt=prompt,
-        max_tokens=req.max_tokens,
-        temperature=req.temperature
+        model=req.model or DEFAULT_MODEL, prompt=prompt, max_tokens=req.max_tokens, temperature=req.temperature
     )
-    
+
     # Store safepoint
-    await _store_safepoint("CHAT_COMPLETION", {
-        "model": req.model,
-        "messages_count": len(req.messages) if req.messages else 0,
-        "completion_tokens": tokens,
-        "latency_ms": latency * 1000,
-    })
-    
+    await _store_safepoint(
+        "CHAT_COMPLETION",
+        {
+            "model": req.model,
+            "messages_count": len(req.messages) if req.messages else 0,
+            "completion_tokens": tokens,
+            "latency_ms": latency * 1000,
+        },
+    )
+
     return {
         "ok": True,
         "model": req.model or DEFAULT_MODEL,
-        "choices": [
-            {
-                "message": {
-                    "role": "assistant",
-                    "content": completion
-                }
-            }
-        ],
+        "choices": [{"message": {"role": "assistant", "content": completion}}],
         "usage": {
             "prompt_tokens": len(prompt.split()),
             "completion_tokens": tokens,
-            "total_tokens": len(prompt.split()) + tokens
+            "total_tokens": len(prompt.split()) + tokens,
         },
         "latency_ms": latency * 1000,
     }
 
 
 @app.get("/stats")
-async def get_stats() -> Dict[str, Any]:
+async def get_stats() -> dict[str, Any]:
     """Get current statistics."""
     return {
         "ok": True,
@@ -343,6 +331,7 @@ async def get_stats() -> Dict[str, Any]:
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(
         "main:app",
         host="127.0.0.1",

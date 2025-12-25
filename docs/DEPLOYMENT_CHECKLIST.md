@@ -9,6 +9,7 @@
 ## ✅ PRE-DEPLOYMENT VERIFICATION
 
 ### Code Quality Checks
+
 - [x] Syntax validation (all 4 Phase 5 agents import successfully)
 - [x] Type hints on all functions
 - [x] Docstrings on all classes
@@ -18,6 +19,7 @@
 - [x] No external dependencies except FastAPI/Uvicorn
 
 ### Architecture Compliance
+
 - [x] All agents use FastAPI + Uvicorn
 - [x] All agents implement Bearer token validation
 - [x] All agents archive operations to opena2:12345
@@ -29,12 +31,14 @@
 - [x] Agent chaining implemented (opena19)
 
 ### Database/Archive
+
 - [x] Archive path structure: archiv/YYYY/MM/DD/
 - [x] All operations logged with timestamp
 - [x] Archivator (opena2) functional
 - [x] Archive read/write tested
 
 ### Security
+
 - [x] Token stored in .env (not in code)
 - [x] All endpoints require Authorization header (except health)
 - [x] Token validation on every protected endpoint
@@ -42,6 +46,7 @@
 - [x] Missing token returns 401 Unauthorized
 
 ### Testing
+
 - [x] Unit tests for all 4 Phase 5 agents (27 tests)
 - [x] Integration tests for agent-to-agent communication
 - [x] Health check tests for all agents
@@ -50,6 +55,7 @@
 - [x] All tests passing ✅
 
 ### Documentation
+
 - [x] PHASE_5_IMPLEMENTATION_COMPLETE.md created
 - [x] PHASE_5_FINAL_STATUS.md created
 - [x] ARCHITECTURE.md created
@@ -62,6 +68,7 @@
 ## 🚀 DEPLOYMENT STEPS
 
 ### Step 1: Environment Preparation
+
 ```bash
 # 1.1 Navigate to project directory
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
@@ -77,6 +84,7 @@ touch 19.dashboard_agent/.env || echo "Token auto-generated"
 ```
 
 ### Step 2: Activate Virtual Environment
+
 ```bash
 # 2.1 Source Python venv
 source 1.opena1&2_portier/venv313/bin/activate
@@ -89,6 +97,7 @@ pip list | grep -i fastapi
 ```
 
 ### Step 3: Start All Services
+
 ```bash
 # 3.1 Navigate to dashboard directory
 cd 19.dashboard_agent
@@ -110,6 +119,7 @@ tail -n 5 logs/opena19_workflow.nohup.log
 ```
 
 ### Step 4: Verify Service Health
+
 ```bash
 # 4.1 Check individual health endpoints
 curl http://127.0.0.1:12364/health
@@ -125,6 +135,7 @@ netstat -tlnp | grep 1236
 ```
 
 ### Step 5: Register Agents
+
 ```bash
 # 5.1 Register all agents in dashboard
 ./bin/ops.sh agents:register
@@ -137,6 +148,7 @@ netstat -tlnp | grep 1236
 ```
 
 ### Step 6: Run Integration Tests
+
 ```bash
 # 6.1 Run Phase 5 test suite
 pytest tests/test_phase5.py -v
@@ -155,6 +167,7 @@ pytest tests/test_phase5.py -v
 ```
 
 ### Step 7: System Verification
+
 ```bash
 # 7.1 Full integration test
 ./bin/ops.sh verify
@@ -176,6 +189,7 @@ tail -f logs/opena19_workflow.nohup.log
 ### Functionality Tests
 
 #### CRM Agent (12364)
+
 ```bash
 TOKEN=$(cat .env)
 
@@ -195,6 +209,7 @@ curl -X POST http://127.0.0.1:12364/customer/create \
 ```
 
 #### Analytics Agent (12365)
+
 ```bash
 # Test report generation
 curl -X POST http://127.0.0.1:12365/report/generate \
@@ -212,6 +227,7 @@ curl -X POST http://127.0.0.1:12365/report/generate \
 ```
 
 #### Dashboard Agent (12366)
+
 ```bash
 # Test widget creation
 curl -X POST http://127.0.0.1:12366/widget/create \
@@ -234,6 +250,7 @@ curl -N http://127.0.0.1:12366/data/stream \
 ```
 
 #### Workflow Agent (12367)
+
 ```bash
 # Test workflow creation
 curl -X POST http://127.0.0.1:12367/workflow/create \
@@ -259,6 +276,7 @@ curl -X POST http://127.0.0.1:12367/workflow/create \
 ### Error Handling Tests
 
 #### Missing Token
+
 ```bash
 curl http://127.0.0.1:12364/customer/create
 
@@ -267,6 +285,7 @@ curl http://127.0.0.1:12364/customer/create
 ```
 
 #### Invalid Token
+
 ```bash
 curl -H "Authorization: Bearer INVALID_TOKEN" \
   http://127.0.0.1:12364/customer/create
@@ -276,6 +295,7 @@ curl -H "Authorization: Bearer INVALID_TOKEN" \
 ```
 
 #### Invalid Endpoint
+
 ```bash
 curl -H "Authorization: Bearer $TOKEN" \
   http://127.0.0.1:12364/invalid/endpoint
@@ -286,6 +306,7 @@ curl -H "Authorization: Bearer $TOKEN" \
 ### Performance Baselines
 
 #### Response Time
+
 - Health check: < 50ms
 - Customer create: < 200ms
 - Report generate: < 300ms
@@ -293,11 +314,13 @@ curl -H "Authorization: Bearer $TOKEN" \
 - Workflow execute: < 500ms (4 steps)
 
 #### Concurrent Load
+
 - 10 simultaneous requests: ✅
 - 50 simultaneous requests: Monitor
 - 100 simultaneous requests: May degrade
 
 #### Archive Performance
+
 - Write throughput: 100+ ops/min
 - Read latency: < 100ms
 
@@ -306,6 +329,7 @@ curl -H "Authorization: Bearer $TOKEN" \
 ## 📊 MONITORING & ALERTS
 
 ### Health Check Script
+
 ```bash
 #!/bin/bash
 # Run every 60 seconds
@@ -319,6 +343,7 @@ done
 ```
 
 ### Log Monitoring
+
 ```bash
 # Monitor all Phase 5 agent logs
 tail -f logs/opena{16,17,18,19}*.log
@@ -331,6 +356,7 @@ wc -l logs/opena{16,17,18,19}*.log
 ```
 
 ### Archive Monitoring
+
 ```bash
 # Check today's archive entries
 ls -la archiv/2025/11/09/ | wc -l
@@ -344,7 +370,9 @@ ls -lt archiv/2025/11/09/ | head -20
 ## 🔧 TROUBLESHOOTING
 
 ### Issue: Agent not responding
+
 **Solution:**
+
 ```bash
 # 1. Check if process is running
 ps aux | grep main_opena16
@@ -362,7 +390,9 @@ bin/start_all.sh
 ```
 
 ### Issue: Token validation failing
+
 **Solution:**
+
 ```bash
 # 1. Verify token file exists
 cat 19.dashboard_agent/.env
@@ -378,7 +408,9 @@ bin/ops.sh agents:register
 ```
 
 ### Issue: Archive write failing
+
 **Solution:**
+
 ```bash
 # 1. Verify opena2 is running
 curl http://127.0.0.1:12345/health
@@ -394,7 +426,9 @@ chmod -R 755 archiv/
 ```
 
 ### Issue: SSE stream not working
+
 **Solution:**
+
 ```bash
 # 1. Test SSE endpoint directly
 curl -N http://127.0.0.1:12366/data/stream \
@@ -427,16 +461,19 @@ curl -N http://127.0.0.1:12366/data/stream \
 ## 📞 SUPPORT CONTACTS
 
 **Technical Issues:**
+
 - Check logs: `tail -f logs/opena*.nohup.log`
 - Test endpoint: `curl http://127.0.0.1:12XXX/health`
 - Full status: `bin/ops.sh status`
 
 **Deployment Issues:**
+
 - Reference: PHASE_5_IMPLEMENTATION_COMPLETE.md
 - Architecture: ARCHITECTURE.md
 - Quickstart: quickstart.sh
 
 **Emergency Stop:**
+
 ```bash
 bin/ops.sh stop
 ```

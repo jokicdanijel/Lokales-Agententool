@@ -1,6 +1,6 @@
 # ELION Hyper-Dashboard – Evaluation Framework
 
-**Version:** 1.1 (Dec 2025)  
+**Version:** 1.1 (Dec 2025)
 **Purpose:** Automated workspace health assessment & Production-Readiness certification
 
 ---
@@ -25,8 +25,10 @@ cat workspace_evaluation_report.json | jq .
 ## 📊 Evaluation Categories (7 Areas)
 
 ### 1. **Policy & Governance** (Weight: 2.5x)
-**Purpose:** Enforce critical infrastructure policies  
+
+**Purpose:** Enforce critical infrastructure policies
 **Checks:**
+
 - ✅ No forbidden port 8080 in ops.sh
 - ✅ AGENTS mapping exists (Single Source of Truth)
 - ✅ .env NOT sourced in agent start scripts
@@ -38,8 +40,10 @@ cat workspace_evaluation_report.json | jq .
 ---
 
 ### 2. **Python Environment** (Weight: 1.5x)
-**Purpose:** Ensure reproducible, clean Python setup  
+
+**Purpose:** Ensure reproducible, clean Python setup
 **Checks:**
+
 - ✅ `.venv/` directory exists and properly initialized
 - ✅ `requirements.txt` present with pinned versions
 - ✅ `pydantic` listed (data validation)
@@ -48,6 +52,7 @@ cat workspace_evaluation_report.json | jq .
 - ✅ venv Python executable exists & is usable
 
 **Common Issues:**
+
 - ❌ ~/.local contamination (use `export PYTHONNOUSERSITE=1`)
 - ❌ Missing venv (run `python3 -m venv .venv`)
 - ❌ Dependency conflicts (pip freeze & compare)
@@ -55,8 +60,10 @@ cat workspace_evaluation_report.json | jq .
 ---
 
 ### 3. **Infrastructure & Operations** (Weight: 1.5x)
-**Purpose:** Operational excellence & automation  
+
+**Purpose:** Operational excellence & automation
 **Checks:**
+
 - ✅ `bin/ops.sh` syntax valid (bash -n check)
 - ✅ `bin/ops.sh` executable (+x permission)
 - ✅ `logs/` directory exists for service output
@@ -65,6 +72,7 @@ cat workspace_evaluation_report.json | jq .
 - ✅ Core startup scripts present (opena1, opena20)
 
 **Generate Runbook:**
+
 ```bash
 bin/ops.sh doc:agents
 ```
@@ -72,8 +80,10 @@ bin/ops.sh doc:agents
 ---
 
 ### 4. **Configuration & Secrets** (Weight: 2.5x – HIGHEST)
-**Purpose:** Secure credential management  
+
+**Purpose:** Secure credential management
 **Checks:**
+
 - ✅ `.env` file readable and accessible
 - ✅ `DASHBOARD_ADMIN_TOKEN` configured
 - ✅ `OPENAI_API_KEY_OPENA1` & `OPENA2` present
@@ -81,6 +91,7 @@ bin/ops.sh doc:agents
 - ✅ `.env` file permissions: NOT world-readable
 
 **Setup .env:**
+
 ```bash
 # Copy template
 cp .env.example .env
@@ -96,8 +107,10 @@ grep -E "^(DASHBOARD_ADMIN_TOKEN|OPENAI_API_KEY)" .env | head -3
 ---
 
 ### 5. **Code Quality & Standards** (Weight: 1.0x)
-**Purpose:** Maintainability & best practices  
+
+**Purpose:** Maintainability & best practices
 **Checks:**
+
 - ✅ `tests/` directory exists
 - ✅ `.gitignore` present with proper exclusions
 - ✅ `.gitignore` covers `.env`, `.venv`, `__pycache__`
@@ -106,6 +119,7 @@ grep -E "^(DASHBOARD_ADMIN_TOKEN|OPENAI_API_KEY)" .env | head -3
 - ✅ No `__pycache__` proliferation (< 5 dirs)
 
 **Setup .gitignore:**
+
 ```bash
 # Ensure covers:
 .env
@@ -120,14 +134,17 @@ logs/
 ---
 
 ### 6. **Documentation & Accessibility** (Weight: 0.8x)
-**Purpose:** Onboarding & operations knowledge  
+
+**Purpose:** Onboarding & operations knowledge
 **Checks:**
+
 - ✅ `docs/` directory exists
 - ✅ Documentation files present (.md, .rst, .html)
 - ✅ HTML Runbook (`docs/agent_startanleitung.html`)
 - ✅ Architecture/API documentation (optional)
 
 **Key Documents:**
+
 - `docs/agent_startanleitung.html` – Interactive startup guide
 - `docs/OPERATIONS.md` – Daily operations manual
 - `docs/TROUBLESHOOTING.md` – Common issues & fixes
@@ -135,8 +152,10 @@ logs/
 ---
 
 ### 7. **Deployment Readiness** (Weight: 1.2x)
-**Purpose:** Production operability  
+
+**Purpose:** Production operability
 **Checks:**
+
 - ✅ Logging infrastructure (`logs/` directory)
 - ✅ Health check logic in `ops.sh`
 - ✅ Reverse proxy config (Nginx example)
@@ -144,6 +163,7 @@ logs/
 - ✅ Container orchestration hints (docker-compose)
 
 **Reverse Proxy Setup (Nginx):**
+
 ```nginx
 # Example: opena1 at 127.0.0.1:12344
 location ^~ /opena1/ {
@@ -157,12 +177,12 @@ location ^~ /opena1/ {
 
 ## 🎯 Readiness Levels
 
-| Score | Level | Meaning |
-|-------|-------|---------|
-| 90–100% | ✅ **PRODUCTION_READY** | Deploy to production immediately |
-| 75–89% | ⚠️ **PRODUCTION_READY_WITH_REVIEW** | Production-ready but review checklist first |
-| 60–74% | 🔶 **STAGING_READY** | Deploy to staging; fix before production |
-| < 60% | ❌ **DEVELOPMENT_ONLY** | Not ready; development/testing only |
+| Score   | Level                               | Meaning                                     |
+| ------- | ----------------------------------- | ------------------------------------------- |
+| 90–100% | ✅ **PRODUCTION_READY**             | Deploy to production immediately            |
+| 75–89%  | ⚠️ **PRODUCTION_READY_WITH_REVIEW** | Production-ready but review checklist first |
+| 60–74%  | 🔶 **STAGING_READY**                | Deploy to staging; fix before production    |
+| < 60%   | ❌ **DEVELOPMENT_ONLY**             | Not ready; development/testing only         |
 
 ---
 
@@ -203,8 +223,10 @@ echo "✅ Ready to deploy"
 ## 🔧 Common Failures & Fixes
 
 ### ❌ ".env: No placeholders" fails
-**Problem:** `.env` has template values  
+
+**Problem:** `.env` has template values
 **Fix:**
+
 ```bash
 nano .env
 # Find and replace: YOUR_, CHANGE_ME, FIXME, etc.
@@ -215,8 +237,10 @@ nano .env
 ```
 
 ### ❌ "ops.sh: Syntax valid" fails
-**Problem:** ops.sh has syntax errors  
+
+**Problem:** ops.sh has syntax errors
 **Fix:**
+
 ```bash
 bash -n bin/ops.sh  # Detailed error
 # Usually: line 1 garbage, CRLF, BOM
@@ -226,8 +250,10 @@ bash -n bin/ops.sh  # Should pass now
 ```
 
 ### ❌ ".env: Not sourced in agent scripts" fails
-**Problem:** Agent start scripts still use `source .env`  
+
+**Problem:** Agent start scripts still use `source .env`
 **Fix:**
+
 ```bash
 # Find offenders
 find . -name "start_*.sh" -exec grep -l "source.*\.env" {} \;
@@ -237,8 +263,10 @@ sed -i '/source.*\.env/d' <file>
 ```
 
 ### ❌ "Agent ports within policy" fails
-**Problem:** Port outside 12344–12399 or using 8080  
+
+**Problem:** Port outside 12344–12399 or using 8080
 **Fix:**
+
 ```bash
 # Check ops.sh AGENTS mapping
 grep "openaX:" bin/ops.sh | grep -v "12344\|12345\|1234[7-9]\|1235[0-9]\|1236[0-9]\|1236[7-9]"
@@ -250,8 +278,10 @@ grep "openaX:" bin/ops.sh | grep -v "12344\|12345\|1234[7-9]\|1235[0-9]\|1236[0-
 ```
 
 ### ❌ "Python Environment" failures
-**Problem:** venv missing or incomplete dependencies  
+
+**Problem:** venv missing or incomplete dependencies
 **Fix:**
+
 ```bash
 # Rebuild venv from scratch
 rm -rf .venv
@@ -286,6 +316,7 @@ Weights:
 ```
 
 **Example:**
+
 ```
 Policy:           95% × 2.5 = 237.5
 Python:           90% × 1.5 = 135.0
@@ -318,12 +349,12 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
-      
+          python-version: "3.12"
+
       - name: Run evaluation
         run: |
           python3 scripts/workspace_evaluation.py
-      
+
       - name: Check readiness
         run: |
           READY=$(jq -r .readiness_level workspace_evaluation_report.json)
@@ -331,7 +362,7 @@ jobs:
             echo "❌ Not production-ready: $READY"
             exit 1
           fi
-      
+
       - name: Upload report
         uses: actions/upload-artifact@v3
         with:
@@ -344,6 +375,7 @@ jobs:
 ## 📞 Support
 
 **Issues?** Run the full evaluation and share:
+
 ```bash
 # Generate report
 python3 scripts/workspace_evaluation.py
@@ -357,5 +389,5 @@ cat workspace_evaluation_report.json
 
 ---
 
-**Last Updated:** 2025-12-18  
+**Last Updated:** 2025-12-18
 **Framework Version:** 1.1 (Enterprise Edition)

@@ -11,11 +11,11 @@
 
 ## 📋 Supported Versions
 
-| Version | Status | Support Until | Security Updates |
-|---------|--------|---|---|
-| **3.0.0+** | ✅ Full Support | 2026-11-24 | Weekly |
-| **2.x** | ⚠️ Limited | 2025-12-31 | Critical only |
-| **<2.0** | ❌ EOL | N/A | No support |
+| Version    | Status          | Support Until | Security Updates |
+| ---------- | --------------- | ------------- | ---------------- |
+| **3.0.0+** | ✅ Full Support | 2026-11-24    | Weekly           |
+| **2.x**    | ⚠️ Limited      | 2025-12-31    | Critical only    |
+| **<2.0**   | ❌ EOL          | N/A           | No support       |
 
 ---
 
@@ -316,10 +316,10 @@ Email: security@jdsmartvisio.eu
 
 ## 📝 Change Log
 
-| Date | Event | Severity | Status |
-|------|-------|----------|--------|
-| 2025-11-24 | PHASE 13 Security Policy Created | - | Active |
-| TBD | First Security Audit | - | Pending |
+| Date       | Event                            | Severity | Status  |
+| ---------- | -------------------------------- | -------- | ------- |
+| 2025-11-24 | PHASE 13 Security Policy Created | -        | Active  |
+| TBD        | First Security Audit             | -        | Pending |
 
 ---
 
@@ -338,6 +338,6 @@ This Security Policy is part of PORTIER 3.0 and covered under the MIT License wi
 
 ---
 
-*Effective from: 24. November 2025*
-*PORTIER 3.0 — JD Smart Vision EU*
-*PHASE 13 — Enterprise Production*
+_Effective from: 24. November 2025_
+_PORTIER 3.0 — JD Smart Vision EU_
+_PHASE 13 — Enterprise Production_

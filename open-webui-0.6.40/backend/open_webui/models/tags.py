@@ -1,14 +1,9 @@
 import logging
-import time
-import uuid
-from typing import Optional
-
-from open_webui.internal.db import Base, get_db
-
 
 from open_webui.env import SRC_LOG_LEVELS
+from open_webui.internal.db import Base, get_db
 from pydantic import BaseModel, ConfigDict
-from sqlalchemy import BigInteger, Column, String, JSON, PrimaryKeyConstraint, Index
+from sqlalchemy import JSON, Column, Index, PrimaryKeyConstraint, String
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MODELS"])
@@ -37,7 +32,7 @@ class TagModel(BaseModel):
     id: str
     name: str
     user_id: str
-    meta: Optional[dict] = None
+    meta: dict | None = None
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -52,10 +47,10 @@ class TagChatIdForm(BaseModel):
 
 
 class TagTable:
-    def insert_new_tag(self, name: str, user_id: str) -> Optional[TagModel]:
+    def insert_new_tag(self, name: str, user_id: str) -> TagModel | None:
         with get_db() as db:
             id = name.replace(" ", "_").lower()
-            tag = TagModel(**{"id": id, "user_id": user_id, "name": name})
+            tag = TagModel(id=id, user_id=user_id, name=name)
             try:
                 result = Tag(**tag.model_dump())
                 db.add(result)
@@ -69,9 +64,7 @@ class TagTable:
                 log.exception(f"Error inserting a new tag: {e}")
                 return None
 
-    def get_tag_by_name_and_user_id(
-        self, name: str, user_id: str
-    ) -> Optional[TagModel]:
+    def get_tag_by_name_and_user_id(self, name: str, user_id: str) -> TagModel | None:
         try:
             id = name.replace(" ", "_").lower()
             with get_db() as db:
@@ -82,20 +75,13 @@ class TagTable:
 
     def get_tags_by_user_id(self, user_id: str) -> list[TagModel]:
         with get_db() as db:
-            return [
-                TagModel.model_validate(tag)
-                for tag in (db.query(Tag).filter_by(user_id=user_id).all())
-            ]
+            return [TagModel.model_validate(tag) for tag in (db.query(Tag).filter_by(user_id=user_id).all())]
 
-    def get_tags_by_ids_and_user_id(
-        self, ids: list[str], user_id: str
-    ) -> list[TagModel]:
+    def get_tags_by_ids_and_user_id(self, ids: list[str], user_id: str) -> list[TagModel]:
         with get_db() as db:
             return [
                 TagModel.model_validate(tag)
-                for tag in (
-                    db.query(Tag).filter(Tag.id.in_(ids), Tag.user_id == user_id).all()
-                )
+                for tag in (db.query(Tag).filter(Tag.id.in_(ids), Tag.user_id == user_id).all())
             ]
 
     def delete_tag_by_name_and_user_id(self, name: str, user_id: str) -> bool:

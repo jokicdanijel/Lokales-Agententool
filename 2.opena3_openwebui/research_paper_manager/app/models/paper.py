@@ -3,7 +3,8 @@ Paper Data Model - SQLAlchemy ORM
 """
 
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Text, Date, DateTime, ForeignKey, JSON, create_engine
+
+from sqlalchemy import JSON, Column, Date, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -13,7 +14,7 @@ Base = declarative_base()
 class Paper(Base):
     """Akademisches Paper Model"""
 
-    __tablename__ = 'papers'
+    __tablename__ = "papers"
 
     id = Column(Integer, primary_key=True)
     arxiv_id = Column(String(20), unique=True, nullable=True)
@@ -37,30 +38,30 @@ class Paper(Base):
     def to_dict(self):
         """Convert to dictionary"""
         return {
-            'id': self.id,
-            'arxiv_id': self.arxiv_id,
-            'title': self.title,
-            'authors': self.authors,
-            'abstract': self.abstract,
-            'category': self.category,
-            'url': self.url,
-            'pdf_url': self.pdf_url,
-            'published_date': self.published_date.isoformat() if self.published_date else None,
-            'summary': self.summary,
-            'keywords': self.keywords,
-            'created_at': self.created_at.isoformat(),
-            'updated_at': self.updated_at.isoformat(),
-            'metadata': self.metadata
+            "id": self.id,
+            "arxiv_id": self.arxiv_id,
+            "title": self.title,
+            "authors": self.authors,
+            "abstract": self.abstract,
+            "category": self.category,
+            "url": self.url,
+            "pdf_url": self.pdf_url,
+            "published_date": self.published_date.isoformat() if self.published_date else None,
+            "summary": self.summary,
+            "keywords": self.keywords,
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat(),
+            "metadata": self.metadata,
         }
 
 
 class Tag(Base):
     """Tag/Label für Papers"""
 
-    __tablename__ = 'tags'
+    __tablename__ = "tags"
 
     id = Column(Integer, primary_key=True)
-    paper_id = Column(Integer, ForeignKey('papers.id'), nullable=False)
+    paper_id = Column(Integer, ForeignKey("papers.id"), nullable=False)
     tag_name = Column(String(100), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
@@ -69,17 +70,17 @@ class Tag(Base):
 
     def to_dict(self):
         return {
-            'id': self.id,
-            'paper_id': self.paper_id,
-            'tag_name': self.tag_name,
-            'created_at': self.created_at.isoformat()
+            "id": self.id,
+            "paper_id": self.paper_id,
+            "tag_name": self.tag_name,
+            "created_at": self.created_at.isoformat(),
         }
 
 
 class Collection(Base):
     """Paper Collection / Ordner"""
 
-    __tablename__ = 'collections'
+    __tablename__ = "collections"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(200), nullable=False)
@@ -92,23 +93,23 @@ class Collection(Base):
 
     def to_dict(self):
         return {
-            'id': self.id,
-            'name': self.name,
-            'description': self.description,
-            'created_at': self.created_at.isoformat(),
-            'updated_at': self.updated_at.isoformat(),
-            'paper_count': len(self.papers)
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat(),
+            "paper_count": len(self.papers),
         }
 
 
 class CollectionPaper(Base):
     """Association zwischen Collection und Paper"""
 
-    __tablename__ = 'collection_papers'
+    __tablename__ = "collection_papers"
 
     id = Column(Integer, primary_key=True)
-    collection_id = Column(Integer, ForeignKey('collections.id'), nullable=False)
-    paper_id = Column(Integer, ForeignKey('papers.id'), nullable=False)
+    collection_id = Column(Integer, ForeignKey("collections.id"), nullable=False)
+    paper_id = Column(Integer, ForeignKey("papers.id"), nullable=False)
     added_at = Column(DateTime, default=datetime.utcnow)
 
     # Relationships
@@ -117,8 +118,8 @@ class CollectionPaper(Base):
 
     def to_dict(self):
         return {
-            'id': self.id,
-            'collection_id': self.collection_id,
-            'paper_id': self.paper_id,
-            'added_at': self.added_at.isoformat()
+            "id": self.id,
+            "collection_id": self.collection_id,
+            "paper_id": self.paper_id,
+            "added_at": self.added_at.isoformat(),
         }

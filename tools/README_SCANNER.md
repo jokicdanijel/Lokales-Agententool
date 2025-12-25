@@ -15,14 +15,14 @@ python3 tools/scan_project.py --root . --out project_map
 
 ### Output-Artefakte (in `project_map/`)
 
-| Datei              | Größe    | Inhalt                                                     |
-|--------------------|----------|-------------------------------------------------------------|
-| **STRUCTURE.md**   | ~37 KB   | ChatGPT-ready Überblick: Tree, Stats, Hotspots, Violations |
-| **path_index.json** | ~2.1 MB  | JSON-Array aller Dateien mit Metadaten + SHA256-Hashes     |
-| **files.csv**      | ~1.1 MB  | Gleiche Infos wie JSON, CSV-Format (UTF-8)                 |
-| **stats.json**     | ~2.5 KB  | Summen: Dateizahl, Größe, Extension-Counts, Top-Level     |
-| **TREE.txt**       | ~326 KB  | Vollständiger Ordnerbaum (kein Pruning)                    |
-| **violations.md**  | ~668 KB  | Violations (Tiefe >6, Größe >25 MB, binär in src/, etc.)   |
+| Datei               | Größe   | Inhalt                                                     |
+| ------------------- | ------- | ---------------------------------------------------------- |
+| **STRUCTURE.md**    | ~37 KB  | ChatGPT-ready Überblick: Tree, Stats, Hotspots, Violations |
+| **path_index.json** | ~2.1 MB | JSON-Array aller Dateien mit Metadaten + SHA256-Hashes     |
+| **files.csv**       | ~1.1 MB | Gleiche Infos wie JSON, CSV-Format (UTF-8)                 |
+| **stats.json**      | ~2.5 KB | Summen: Dateizahl, Größe, Extension-Counts, Top-Level      |
+| **TREE.txt**        | ~326 KB | Vollständiger Ordnerbaum (kein Pruning)                    |
+| **violations.md**   | ~668 KB | Violations (Tiefe >6, Größe >25 MB, binär in src/, etc.)   |
 
 ### Makefile Targets
 
@@ -58,29 +58,35 @@ python3 tools/scan_project.py \
 - **Scanned**: `2025-11-09T02:49:17Z`
 - **Host**: `Linux 6.14.0-35-generic` · Python: `3.12.3`
 
-| Metric | Value |
-|---|---|
-| **Files** | 5249 |
+| Metric         | Value  |
+| -------------- | ------ |
+| **Files**      | 5249   |
 | **Total Size** | 379 MB |
-| **Skipped** | 50 |
-| **Duration** | 1.7s |
+| **Skipped**    | 50     |
+| **Duration**   | 1.7s   |
 
 ## Directory Tree (depth ≤ 4)
+
 [kompaktes Verzeichnis-Präfix, max. 4 Ebenen]
 
 ## Key Areas
+
 [Dateizahl nach src/, app/, services/, etc.]
 
 ## Hotspots: Largest Files (Top 20)
+
 [Größte Dateien]
 
 ## Hotspots: Newest Files (Top 20)
+
 [Zuletzt geänderte Dateien]
 
 ## Files by Extension
+
 [Statistik: .py, .json, .md, etc.]
 
 ## Files by Top-Level Folder
+
 [Statistik: 1.opena1&2_portier, 19.dashboard_agent, etc.]
 ```
 
@@ -107,6 +113,7 @@ python3 tools/scan_project.py \
 ```
 
 **Felder**:
+
 - `path`: Relative Pfad (POSIX, `/` als Separator)
 - `size_bytes`: Dateigröße (0 bei Symlinks)
 - `mtime_iso`: Modifikationszeit (ISO 8601 UTC)
@@ -169,7 +176,7 @@ Ungekürzter Ordnerbaum ohne Pruning (für `--max-tree-depth` zu ∞). Für Tool
 
 ## 🔧 Code-Struktur
 
-### tools/_common.py (Utilities, nur Stdlib)
+### tools/\_common.py (Utilities, nur Stdlib)
 
 ```python
 relpath_posix(path, root)          # Relativer Pfad mit /
@@ -320,7 +327,7 @@ for cur, dirs, fnames in os.walk(root, topdown=True, followlinks=True):  # Chang
 
 ## 📝 Troubleshooting
 
-### "ModuleNotFoundError: No module named '_common'"
+### "ModuleNotFoundError: No module named '\_common'"
 
 ```bash
 # Stelle sicher, dass _common.py im Verzeichnis ist

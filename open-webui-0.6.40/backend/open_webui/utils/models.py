@@ -1,35 +1,19 @@
-import time
-import logging
 import asyncio
+import logging
 import sys
+import time
 
-from aiocache import cached
 from fastapi import Request
-
-from open_webui.routers import openai, ollama
+from open_webui.config import BYPASS_ADMIN_ACCESS_CONTROL, DEFAULT_ARENA_MODEL
+from open_webui.env import BYPASS_MODEL_ACCESS_CONTROL, GLOBAL_LOG_LEVEL, SRC_LOG_LEVELS
 from open_webui.functions import get_function_models
-
-
 from open_webui.models.functions import Functions
-from open_webui.models.models import Models
 from open_webui.models.groups import Groups
-
-
-from open_webui.utils.plugin import (
-    load_function_module_by_id,
-    get_function_module_from_cache,
-)
-from open_webui.utils.access_control import has_access
-
-
-from open_webui.config import (
-    BYPASS_ADMIN_ACCESS_CONTROL,
-    DEFAULT_ARENA_MODEL,
-)
-
-from open_webui.env import BYPASS_MODEL_ACCESS_CONTROL, SRC_LOG_LEVELS, GLOBAL_LOG_LEVEL
+from open_webui.models.models import Models
 from open_webui.models.users import UserModel
-
+from open_webui.routers import ollama, openai
+from open_webui.utils.access_control import has_access
+from open_webui.utils.plugin import get_function_module_from_cache
 
 logging.basicConfig(stream=sys.stdout, level=GLOBAL_LOG_LEVEL)
 log = logging.getLogger(__name__)
@@ -71,9 +55,7 @@ async def get_all_base_models(request: Request, user: UserModel = None):
     )
     function_task = get_function_models(request)
 
-    openai_models, ollama_models, function_models = await asyncio.gather(
-        openai_task, ollama_task, function_task
-    )
+    openai_models, ollama_models, function_models = await asyncio.gather(openai_task, ollama_task, function_task)
 
     return function_models + openai_models + ollama_models
 
@@ -131,21 +113,11 @@ async def get_all_models(request, refresh: bool = False, user: UserModel = None)
             ]
         models = models + arena_models
 
-    global_action_ids = [
-        function.id for function in Functions.get_global_action_functions()
-    ]
-    enabled_action_ids = [
-        function.id
-        for function in Functions.get_functions_by_type("action", active_only=True)
-    ]
+    global_action_ids = [function.id for function in Functions.get_global_action_functions()]
+    enabled_action_ids = [function.id for function in Functions.get_functions_by_type("action", active_only=True)]
 
-    global_filter_ids = [
-        function.id for function in Functions.get_global_filter_functions()
-    ]
-    enabled_filter_ids = [
-        function.id
-        for function in Functions.get_functions_by_type("filter", active_only=True)
-    ]
+    global_filter_ids = [function.id for function in Functions.get_global_filter_functions()]
+    enabled_filter_ids = [function.id for function in Functions.get_functions_by_type("filter", active_only=True)]
 
     custom_models = Models.get_all_models()
     for custom_model in custom_models:
@@ -169,12 +141,8 @@ async def get_all_models(request, refresh: bool = False, user: UserModel = None)
 
                         if "info" in model:
                             if "meta" in model["info"]:
-                                action_ids.extend(
-                                    model["info"]["meta"].get("actionIds", [])
-                                )
-                                filter_ids.extend(
-                                    model["info"]["meta"].get("filterIds", [])
-                                )
+                                action_ids.extend(model["info"]["meta"].get("actionIds", []))
+                                filter_ids.extend(model["info"]["meta"].get("filterIds", []))
 
                             if "params" in model["info"]:
                                 # Remove params to avoid exposing sensitive info
@@ -185,18 +153,13 @@ async def get_all_models(request, refresh: bool = False, user: UserModel = None)
                     else:
                         models.remove(model)
 
-        elif custom_model.is_active and (
-            custom_model.id not in [model["id"] for model in models]
-        ):
+        elif custom_model.is_active and (custom_model.id not in [model["id"] for model in models]):
             # Custom model based on a base model
             owned_by = "openai"
             pipe = None
 
             for m in models:
-                if (
-                    custom_model.base_model_id == m["id"]
-                    or custom_model.base_model_id == m["id"].split(":")[0]
-                ):
+                if custom_model.base_model_id == m["id"] or custom_model.base_model_id == m["id"].split(":")[0]:
                     owned_by = m.get("owned_by", "unknown")
                     if "pipe" in m:
                         pipe = m["pipe"]
@@ -304,9 +267,7 @@ async def get_all_models(request, refresh: bool = False, user: UserModel = None)
                 raise Exception(f"Action not found: {action_id}")
 
             function_module = get_function_module_by_id(action_id)
-            model["actions"].extend(
-                get_action_items_from_module(action_function, function_module)
-            )
+            model["actions"].extend(get_action_items_from_module(action_function, function_module))
 
         model["filters"] = []
         for filter_id in filter_ids:
@@ -317,9 +278,7 @@ async def get_all_models(request, refresh: bool = False, user: UserModel = None)
             function_module = get_function_module_by_id(filter_id)
 
             if getattr(function_module, "toggle", None):
-                model["filters"].extend(
-                    get_filter_items_from_module(filter_function, function_module)
-                )
+                model["filters"].extend(get_filter_items_from_module(filter_function, function_module))
 
     log.debug(f"get_all_models() returned {len(models)} models")
 
@@ -332,9 +291,7 @@ def check_model_access(user, model):
         if not has_access(
             user.id,
             type="read",
-            access_control=model.get("info", {})
-            .get("meta", {})
-            .get("access_control", {}),
+            access_control=model.get("info", {}).get("meta", {}).get("access_control", {}),
         ):
             raise Exception("Model not found")
     else:
@@ -342,10 +299,7 @@ def check_model_access(user, model):
         if not model_info:
             raise Exception("Model not found")
         elif not (
-            user.id == model_info.user_id
-            or has_access(
-                user.id, type="read", access_control=model_info.access_control
-            )
+            user.id == model_info.user_id or has_access(user.id, type="read", access_control=model_info.access_control)
         ):
             raise Exception("Model not found")
 
@@ -353,8 +307,7 @@ def check_model_access(user, model):
 def get_filtered_models(models, user):
     # Filter out models that the user does not have access to
     if (
-        user.role == "user"
-        or (user.role == "admin" and not BYPASS_ADMIN_ACCESS_CONTROL)
+        user.role == "user" or (user.role == "admin" and not BYPASS_ADMIN_ACCESS_CONTROL)
     ) and not BYPASS_MODEL_ACCESS_CONTROL:
         filtered_models = []
         user_group_ids = {group.id for group in Groups.get_groups_by_member_id(user.id)}
@@ -363,9 +316,7 @@ def get_filtered_models(models, user):
                 if has_access(
                     user.id,
                     type="read",
-                    access_control=model.get("info", {})
-                    .get("meta", {})
-                    .get("access_control", {}),
+                    access_control=model.get("info", {}).get("meta", {}).get("access_control", {}),
                     user_group_ids=user_group_ids,
                 ):
                     filtered_models.append(model)

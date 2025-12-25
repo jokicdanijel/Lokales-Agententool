@@ -14,6 +14,6 @@ __author__ = "PORTIER 3.0 Team"
 __license__ = "Enterprise"
 
 from .client import OpenA3Client
-from .models import CMDRequest, ChatRequest, HealthResponse
+from .models import ChatRequest, CMDRequest, HealthResponse
 
 __all__ = ["OpenA3Client", "CMDRequest", "ChatRequest", "HealthResponse"]
