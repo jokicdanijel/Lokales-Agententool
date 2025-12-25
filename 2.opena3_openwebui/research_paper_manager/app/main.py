@@ -2,16 +2,17 @@
 Main Flask Application - Research Paper Manager
 """
 
-from flask import Flask, jsonify, request, render_template, send_from_directory
-from flask_cors import CORS
+import json
 import os
 from pathlib import Path
-import json
+
+from app.db.database import close_db, get_db_session, init_db
 
 # Import models and services
-from app.models.paper import Base, Paper, Tag, Collection, CollectionPaper
+from app.models.paper import Base, Collection, CollectionPaper, Paper, Tag
 from app.services.arxiv_service import ArxivService
-from app.db.database import init_db, get_db_session, close_db
+from flask import Flask, jsonify, render_template, request, send_from_directory
+from flask_cors import CORS
 
 # Initialize Flask App
 app = Flask(__name__, template_folder='../web', static_folder='../web')

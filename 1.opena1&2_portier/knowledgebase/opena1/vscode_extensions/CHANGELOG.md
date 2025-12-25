@@ -29,7 +29,7 @@ We dropped support of this changelog file on December, 2021. If you want to see 
 ## 11.5.0 (June 13, 2021)
 
 - Fix: Set `vsce` version to 1.88.0. ([@robertohuertasm](https://github.com/robertohuertasm) in [#2796](https://github.com/vscode-icons/vscode-icons/pull/2796))
-- Enhancement: Added light version of the  `Rust toolchain` icon. ([@robertohuertasm](https://github.com/robertohuertasm) in [#2794](https://github.com/vscode-icons/vscode-icons/pull/2794))
+- Enhancement: Added light version of the `Rust toolchain` icon. ([@robertohuertasm](https://github.com/robertohuertasm) in [#2794](https://github.com/vscode-icons/vscode-icons/pull/2794))
 - Feature: Support for `Licensebat` configuration file. ([@robertohuertasm](https://github.com/robertohuertasm) in [#2793](https://github.com/vscode-icons/vscode-icons/pull/2793))
 - Feature: Support for untrusted workspaces. ([@robertohuertasm](https://github.com/robertohuertasm) in [#2792](https://github.com/vscode-icons/vscode-icons/pull/2792))
 - Feature: Support for virtual workspaces. ([@robertohuertasm](https://github.com/robertohuertasm) in [#2791](https://github.com/vscode-icons/vscode-icons/pull/2791))
@@ -452,7 +452,7 @@ We dropped support of this changelog file on December, 2021. If you want to see 
 - Enhancement: Support for more `Mocha` extensions. ([@calebcartwright](https://github.com/calebcartwright) in [#1892](https://github.com/vscode-icons/vscode-icons/pull/1892))
 - Enhancement: Updated `Meson` icon. ([@KingDarBoja](https://github.com/KingDarBoja) in [#1890](https://github.com/vscode-icons/vscode-icons/pull/1890))
 - Feature: Support for `TTCN-3`. ([@ealap](https://github.com/ealap) in [#1889](https://github.com/vscode-icons/vscode-icons/pull/1889))
-- Feature: Support for `QML` &  `Qbs`. ([@oltodo](https://github.com/oltodo) in [#1886](https://github.com/vscode-icons/vscode-icons/pull/1886))
+- Feature: Support for `QML` & `Qbs`. ([@oltodo](https://github.com/oltodo) in [#1886](https://github.com/vscode-icons/vscode-icons/pull/1886))
 - Enhancement: Updated `Tikz` file association. ([@KingDarBoja](https://github.com/KingDarBoja) in [#1882](https://github.com/vscode-icons/vscode-icons/pull/1882))
 - Enhancement: Updated `Al` file. ([@KingDarBoja](https://github.com/KingDarBoja) in [#1881](https://github.com/vscode-icons/vscode-icons/pull/1881))
 - Feature: Support for `Unibeautify`. ([@KingDarBoja](https://github.com/KingDarBoja) in [#1880](https://github.com/vscode-icons/vscode-icons/pull/1880))
@@ -1031,15 +1031,15 @@ We dropped support of this changelog file on December, 2021. If you want to see 
 - Fix: `Slim` icon has been improved. ([@JimiC](https://github.com/JimiC) in [#701](https://github.com/vscode-icons/vscode-icons/pull/701))
 - Enhancement: New logo for the extension (svg). ([@JimiC](https://github.com/JimiC) in [#689](https://github.com/vscode-icons/vscode-icons/pull/689))
 - Enhancement: New batch of svg icons. ([@JimiC](https://github.com/JimiC) in [#687](https://github.com/vscode-icons/vscode-icons/pull/687))
-- Enhancement: Angular autodetection cancellation improved.  ([@JimiC](https://github.com/JimiC) in [#679](https://github.com/vscode-icons/vscode-icons/pull/679))
-- Fix: Disabled folders are never shown.  ([@robertohuertasm](https://github.com/robertohuertasm) in [#678](https://github.com/vscode-icons/vscode-icons/pull/678))
-- Enhancement: `package.json` updated to use vscode engine >=1.5.0.  ([@JimiC](https://github.com/JimiC) in [#675](https://github.com/vscode-icons/vscode-icons/pull/675))
-- Enhancement: Angular auto-detection disabled in a specific workspace.  ([@JimiC](https://github.com/JimiC) in [#672](https://github.com/vscode-icons/vscode-icons/pull/672))
+- Enhancement: Angular autodetection cancellation improved. ([@JimiC](https://github.com/JimiC) in [#679](https://github.com/vscode-icons/vscode-icons/pull/679))
+- Fix: Disabled folders are never shown. ([@robertohuertasm](https://github.com/robertohuertasm) in [#678](https://github.com/vscode-icons/vscode-icons/pull/678))
+- Enhancement: `package.json` updated to use vscode engine >=1.5.0. ([@JimiC](https://github.com/JimiC) in [#675](https://github.com/vscode-icons/vscode-icons/pull/675))
+- Enhancement: Angular auto-detection disabled in a specific workspace. ([@JimiC](https://github.com/JimiC) in [#672](https://github.com/vscode-icons/vscode-icons/pull/672))
 - Fix: Grammar error . ([@JimiC](https://github.com/JimiC) in [#670](https://github.com/vscode-icons/vscode-icons/pull/670))
 
 ## 7.1.2 (January 23, 2017)
 
-- Patch: Proper Angular icon version was not correctly applied when autodetection took place.  ([@JimiC](https://github.com/JimiC) in [#667](https://github.com/vscode-icons/vscode-icons/pull/667))
+- Patch: Proper Angular icon version was not correctly applied when autodetection took place. ([@JimiC](https://github.com/JimiC) in [#667](https://github.com/vscode-icons/vscode-icons/pull/667))
 - Fix: Readme spelling and grammar. ([@JimiC](https://github.com/JimiC) in [#664](https://github.com/vscode-icons/vscode-icons/pull/664))
 
 ## 7.1.1 (January 23, 2017)

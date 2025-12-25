@@ -55,55 +55,55 @@ SERVICE_USER="opena20"
 # Dependency checks
 check_dependencies() {
     local missing_deps=()
-    
+
     # Check required commands
     for cmd in systemctl curl jq python3; do
         if ! command -v "$cmd" &> /dev/null; then
             missing_deps+=("$cmd")
         fi
     done
-    
+
     if [[ ${#missing_deps[@]} -gt 0 ]]; then
         error "Missing required dependencies: ${missing_deps[*]}"
         info "Install with: sudo apt update && sudo apt install -y ${missing_deps[*]}"
         exit 1
     fi
-    
+
     # Check Python version
     if ! python3 -c "import sys; sys.exit(0 if sys.version_info >= (3, 8) else 1)" 2>/dev/null; then
         error "Python 3.8+ required"
         exit 1
     fi
-    
+
     log "✅ All dependencies satisfied"
 }
 
 # Pre-installation checks
 pre_install_checks() {
     info "Performing pre-installation checks..."
-    
+
     # Check if service file exists
     if [[ ! -f "$SERVICE_FILE" ]]; then
         error "Service file not found: $SERVICE_FILE"
         exit 1
     fi
-    
+
     # Validate service file syntax
     if ! systemd-analyze verify "$SERVICE_FILE" 2>/dev/null; then
         warn "Service file validation warnings (continuing anyway)"
     fi
-    
+
     # Check if user has sudo privileges
     if ! sudo -n true 2>/dev/null; then
         error "This script requires sudo privileges"
         exit 1
     fi
-    
+
     # Check if ports are available
     if ss -tuln | grep -q ":12349 "; then
         warn "Port 12349 is already in use"
     fi
-    
+
     log "✅ Pre-installation checks passed"
 }
 
@@ -115,7 +115,7 @@ create_service_user() {
     else
         info "Service user $SERVICE_USER already exists"
     fi
-    
+
     # Set up proper permissions for service directories
     sudo mkdir -p /var/log/opena20 /var/lib/opena20
     sudo chown "$SERVICE_USER:$SERVICE_USER" /var/log/opena20 /var/lib/opena20
@@ -125,17 +125,17 @@ create_service_user() {
 # Install service
 install_service() {
     info "Installing systemd service..."
-    
+
     # Stop existing service if running
     if systemctl is-active --quiet opena20 2>/dev/null; then
         log "🛑 Stopping existing opena20 service..."
         sudo systemctl stop opena20
     fi
-    
+
     # Copy service file
     log "📁 Installing service file..."
     sudo cp "$SERVICE_FILE" "$SYSTEMD_DIR/$SERVICE_NAME"
-    
+
     # Set proper permissions
     sudo chmod 644 "$SYSTEMD_DIR/$SERVICE_NAME"
     sudo chown root:root "$SYSTEMD_DIR/$SERVICE_NAME"
@@ -143,18 +143,18 @@ install_service() {
     # Reload systemd
     log "🔄 Reloading systemd daemon..."
     sudo systemctl daemon-reload
-    
+
     # Enable service for auto-start
     log "✅ Enabling opena20 service for auto-start..."
     sudo systemctl enable opena20
-    
+
     log "✅ Service installation completed"
 }
 
 # Start and verify service
 start_and_verify_service() {
     info "Starting and verifying opena20 service..."
-    
+
     # Start service
     log "🚀 Starting opena20 service..."
     if ! sudo systemctl start opena20; then
@@ -163,18 +163,18 @@ start_and_verify_service() {
         sudo journalctl -u opena20 --no-pager -n 20
         exit 1
     fi
-    
+
     # Wait for service to become healthy
     log "⏳ Waiting for opena20 service to become healthy..."
     local max_attempts=40  # 20 seconds total
     local attempt=0
-    
+
     while [[ $attempt -lt $max_attempts ]]; do
         if curl -s -f http://127.0.0.1:12349/health >/dev/null 2>&1; then
             log "✅ Service is healthy after $((attempt/2)) seconds"
             break
         fi
-        
+
         if [[ $attempt -eq $((max_attempts-1)) ]]; then
             error "Service failed to become healthy within 20 seconds"
             log "Service status:"
@@ -183,7 +183,7 @@ start_and_verify_service() {
             sudo journalctl -u opena20 --no-pager -n 10
             exit 1
         fi
-        
+
         sleep 0.5
         ((attempt++))
     done
@@ -192,35 +192,35 @@ start_and_verify_service() {
 # Comprehensive endpoint testing
 test_endpoints() {
     info "🧪 Testing opena20 endpoints..."
-    
+
     local base_url="http://127.0.0.1:12349"
     local bearer_token
-    
+
     # Try to read bearer token from .env
     if [[ -f "$SCRIPT_DIR/.env" ]]; then
         bearer_token=$(grep "^BEARER_TOKEN=" "$SCRIPT_DIR/.env" | cut -d'=' -f2 | tr -d '"')
     fi
-    
+
     # Test health endpoint
     if curl -s -f "$base_url/health" >/dev/null; then
         log "✅ Health endpoint responding"
     else
         warn "❌ Health endpoint not responding"
     fi
-    
+
     # Test dashboard
     if curl -s -f "$base_url/self_cleaning_dashboard.html" >/dev/null; then
         log "✅ Dashboard HTML accessible"
     else
         warn "❌ Dashboard HTML not accessible"
     fi
-    
+
     # Test API status (with token if available)
     local auth_header=""
     if [[ -n "$bearer_token" ]]; then
         auth_header="-H \"Authorization: Bearer $bearer_token\""
     fi
-    
+
     if eval curl -s -f $auth_header "$base_url/api/status/all" >/dev/null; then
         log "✅ API status endpoint responding"
     else
@@ -232,7 +232,7 @@ test_endpoints() {
 display_service_info() {
     info "📊 Service Status:"
     sudo systemctl status opena20 --no-pager -l
-    
+
     echo ""
     log "✅ opena20 Dashboard Agent is running successfully!"
     echo ""
@@ -241,7 +241,7 @@ display_service_info() {
     echo "  🏥 Health Check: http://127.0.0.1:12349/health"
     echo "  📊 Dashboard:    http://127.0.0.1:12349/self_cleaning_dashboard.html"
     echo "  📈 Metrics:      http://127.0.0.1:9090/metrics (if monitoring enabled)"
-    
+
     echo ""
     echo -e "${BLUE}📋 Service Management Commands:${NC}"
     echo "  Start:    sudo systemctl start opena20"
@@ -250,17 +250,17 @@ display_service_info() {
     echo "  Status:   sudo systemctl status opena20"
     echo "  Logs:     sudo journalctl -u opena20 -f"
     echo "  Disable:  sudo systemctl disable opena20"
-    
+
     echo ""
     echo -e "${BLUE}🔧 Maintenance Commands:${NC}"
     echo "  Health:   curl -s http://127.0.0.1:12349/health | jq ."
     echo "  Monitor:  python3 $SCRIPT_DIR/monitoring_dashboard.py --dashboard"
     echo "  Update:   python3 $SCRIPT_DIR/auto_updater.py --check"
     echo "  Maintain: python3 $SCRIPT_DIR/maintenance_tools.py full-maintenance"
-    
+
     echo ""
     log "🎉 opena20 systemd installation complete!"
-    
+
     # Show next steps
     echo ""
     echo -e "${GREEN}🚀 Next Steps:${NC}"
@@ -285,9 +285,9 @@ cleanup() {
 # Main installation flow
 main() {
     trap cleanup EXIT
-    
+
     log "Starting opena20 systemd installation..."
-    
+
     # Run installation steps
     check_dependencies
     pre_install_checks
@@ -296,7 +296,7 @@ main() {
     start_and_verify_service
     test_endpoints
     display_service_info
-    
+
     log "Installation completed successfully!"
 }
 

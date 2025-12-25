@@ -28,6 +28,7 @@ bash install_portier_dashboards.sh
 ```
 
 Der Installer:
+
 - ✅ Erstellt automatische Backups
 - ✅ Prüft Python-Syntax
 - ✅ Kopiert Dateien in OpenWebUI
@@ -37,12 +38,14 @@ Der Installer:
 ### Manuelle Installation
 
 1. Kopieren Sie die Python-Dateien nach `open-webui/extensions/functions/`:
+
    ```bash
    cp portier_*.py /path/to/open-webui/extensions/functions/
    cp dispatcher_*.py /path/to/open-webui/extensions/functions/
    ```
 
 2. Kopieren Sie Theme Pack:
+
    ```bash
    cp theme_pack.json /path/to/open-webui/extensions/functions/
    ```
@@ -61,6 +64,7 @@ Der Installer:
 ```
 
 **Funktionen:**
+
 - Rechnungen erstellen und verwalten
 - Dokumente hochladen und analysieren
 - Read-only Integrations-Status
@@ -76,6 +80,7 @@ Der Installer:
 ```
 
 **Funktionen:**
+
 - Vollständige Systemmetriken (CPU, Memory, Disk)
 - Benutzerverwaltung (CRUD)
 - Rollenverwaltung (RBAC)
@@ -92,6 +97,7 @@ Der Installer:
 ```
 
 **Funktionen:**
+
 - PDF Base64-Encoding
 - Textextraktion
 - OCR-Unterstützung
@@ -106,6 +112,7 @@ Der Installer:
 ```
 
 **Funktionen:**
+
 - CMD/RESP Flow-Visualisierung
 - Safepoint-Management
 - Kritischen Pfad berechnen
@@ -158,6 +165,7 @@ Theme Pack importieren und konfigurieren:
 ### User Dashboard - Sicherheit
 
 ✅ **Eingeschränkte Funktionen:**
+
 - Nur 4 Navigations-Seiten
 - Keine Admin-Funktionen
 - Read-only Integrationen
@@ -165,6 +173,7 @@ Theme Pack importieren und konfigurieren:
 - Sicheres PDF Sandbox
 
 ✅ **Authentifizierung:**
+
 - Bearer-Token Support
 - Session Management
 - User-Isolation
@@ -172,6 +181,7 @@ Theme Pack importieren und konfigurieren:
 ### Admin Dashboard - Sicherheit
 
 ✅ **Vollständige Kontrolle:**
+
 - Role-Based Access Control (RBAC)
 - Bearer-Token Auth
 - Admin-only Funktionen
@@ -179,6 +189,7 @@ Theme Pack importieren und konfigurieren:
 - Backup & Restore
 
 ✅ **System-Kontrolle:**
+
 - Konfiguration
 - Benutzer-Management
 - Logs & Monitoring
@@ -186,6 +197,7 @@ Theme Pack importieren und konfigurieren:
 ### PDF Viewer - Sicherheit
 
 ✅ **Sandbox-Umgebung:**
+
 - Base64-Encoding (sicher)
 - Keine direkten Filesystem-Zugriffe
 - OCR Sandbox
@@ -194,6 +206,7 @@ Theme Pack importieren und konfigurieren:
 ### Dispatcher FlowMap - Sicherheit
 
 ✅ **Read-Only Zugriff:**
+
 - Keine Modifikations-Befugnisse
 - Safepoint View
 - Flow Tracing für Debugging
@@ -230,25 +243,27 @@ export OPENWEBUI_DIR=/path/to/open-webui
 
 ## 📊 Statistiken
 
-| Metrik | Wert |
-|--------|------|
-| **Gesamt Code** | ~60 KB |
-| **Zeilen Code** | 1.800+ |
-| **Docstrings & Comments** | 400+ |
-| **Funktionen** | 28+ |
-| **Klassen** | 10+ |
-| **Pydantic Models** | 8 |
-| **Themes** | 5 |
-| **OpenWebUI-Kompatibilität** | 100% |
+| Metrik                       | Wert   |
+| ---------------------------- | ------ |
+| **Gesamt Code**              | ~60 KB |
+| **Zeilen Code**              | 1.800+ |
+| **Docstrings & Comments**    | 400+   |
+| **Funktionen**               | 28+    |
+| **Klassen**                  | 10+    |
+| **Pydantic Models**          | 8      |
+| **Themes**                   | 5      |
+| **OpenWebUI-Kompatibilität** | 100%   |
 
 ## 🔧 Technische Details
 
 ### Python Version
+
 - Python 3.8+
 - Type Hints vollständig
 - Pydantic Models für Validierung
 
 ### Dependencies (Optional)
+
 ```
 psutil          # System Metrics
 PyPDF2          # PDF Processing
@@ -375,6 +390,7 @@ python3 -m py_compile portier_*.py
 **Fehler:** `Module not found: PyPDF2`
 
 Installieren Sie optionale Dependencies:
+
 ```bash
 pip install PyPDF2 pdf2image pytesseract pillow
 ```
@@ -392,6 +408,7 @@ pip install PyPDF2 pdf2image pytesseract pillow
 ### Version 1.0.0 (2025-11-25)
 
 ✅ **Initial Release**
+
 - User Dashboard 1.0.0
 - Admin Dashboard 3.0.0
 - PDF Viewer 1.0.0
@@ -433,6 +450,7 @@ MIT License - Frei verwendbar für private und kommerzielle Projekte
 ## 👨‍💻 Author
 
 **LocalAgentPro**
+
 - Advanced OpenWebUI Integration
 - Distributed Multi-Agent Architecture
 - Security-First Dashboard System

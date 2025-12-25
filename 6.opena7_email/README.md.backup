@@ -465,5 +465,5 @@ curl http://127.0.0.1:12345/archiv/last?n=10 | jq '.items[] | select(.payload.sr
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Status:** ✅ Production

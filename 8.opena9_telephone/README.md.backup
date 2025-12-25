@@ -1,10 +1,10 @@
 # ☎️ opena9 - Telefonie Agent (Twilio)
 
-**Agent-ID:** `opena9`  
-**Port:** 12354  
-**Kürzel:** `telphonep`  
-**Status:** ✅ RUNNING (PID: siehe logs/opena9.pid)  
-**Version:** 2.0  
+**Agent-ID:** `opena9`
+**Port:** 12354
+**Kürzel:** `telphonep`
+**Status:** ✅ RUNNING (PID: siehe logs/opena9.pid)
+**Version:** 2.0
 **Status:** ✅ Production
 
 ---
@@ -185,5 +185,5 @@ curl http://127.0.0.1:12351/metrics
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 21. November 2025

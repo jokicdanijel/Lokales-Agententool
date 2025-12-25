@@ -1,9 +1,7 @@
 {
   "agents": [
     {
-      "agent_references": [
-        "opena1"
-      ],
+      "agent_references": ["opena1"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -626,10 +624,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena1",
-        "opena2"
-      ],
+      "agent_references": ["opena1", "opena2"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -1252,9 +1247,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena3"
-      ],
+      "agent_references": ["opena3"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -1877,9 +1870,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena4"
-      ],
+      "agent_references": ["opena4"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -2502,9 +2493,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena5"
-      ],
+      "agent_references": ["opena5"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -3127,9 +3116,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena6"
-      ],
+      "agent_references": ["opena6"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -3752,9 +3739,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena7"
-      ],
+      "agent_references": ["opena7"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -4377,9 +4362,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena8"
-      ],
+      "agent_references": ["opena8"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -5002,9 +4985,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena9"
-      ],
+      "agent_references": ["opena9"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -5627,9 +5608,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena10"
-      ],
+      "agent_references": ["opena10"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -6252,9 +6231,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena11"
-      ],
+      "agent_references": ["opena11"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -6877,9 +6854,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena12"
-      ],
+      "agent_references": ["opena12"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -7502,9 +7477,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena13"
-      ],
+      "agent_references": ["opena13"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -8127,9 +8100,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena14"
-      ],
+      "agent_references": ["opena14"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -8752,9 +8723,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena15"
-      ],
+      "agent_references": ["opena15"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -9377,9 +9346,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena16"
-      ],
+      "agent_references": ["opena16"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -10002,9 +9969,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena17"
-      ],
+      "agent_references": ["opena17"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -10627,9 +10592,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena18"
-      ],
+      "agent_references": ["opena18"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -11252,9 +11215,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena19"
-      ],
+      "agent_references": ["opena19"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -11877,9 +11838,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena20"
-      ],
+      "agent_references": ["opena20"],
       "endpoints": [],
       "file_count": 121,
       "files": [
@@ -12502,9 +12461,7 @@
       "ports_detected": []
     },
     {
-      "agent_references": [
-        "opena21"
-      ],
+      "agent_references": ["opena21"],
       "endpoints": [],
       "file_count": 121,
       "files": [

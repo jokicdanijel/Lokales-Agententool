@@ -4,31 +4,33 @@
 - Sends request to configured endpoint (or uses a local evaluator function)
 - Computes metrics from evaluation.metrics and writes JSON report
 """
-import os
-import json
-import time
-from typing import List, Dict, Any, Optional
-import requests
-from .metrics import exact_match, contains_frac, length_ratio, aggregate
 
+import json
+import os
+import time
+from typing import Any
+
+import requests
+
+from .metrics import aggregate, contains_frac, exact_match, length_ratio
 
 DEFAULT_ENDPOINT = os.getenv("EVALUATION_ENDPOINT", "http://127.0.0.1:12349/api/openwebui/chat")
 
 
 class Runner:
-    def __init__(self, endpoint: Optional[str] = None):
+    def __init__(self, endpoint: str | None = None):
         self.endpoint = endpoint or DEFAULT_ENDPOINT
 
-    def load_dataset(self, path: str) -> List[Dict[str, Any]]:
+    def load_dataset(self, path: str) -> list[dict[str, Any]]:
         items = []
-        with open(path, "r", encoding="utf-8") as f:
+        with open(path, encoding="utf-8") as f:
             for line in f:
                 if not line.strip():
                     continue
                 items.append(json.loads(line))
         return items
 
-    def run_sample(self, sample: Dict[str, Any]) -> Dict[str, Any]:
+    def run_sample(self, sample: dict[str, Any]) -> dict[str, Any]:
         """Send one sample to the endpoint and compute metrics.
 
         Uses env EVALUATION_BEARER_TOKEN or BEARER_TOKEN for Authorization if present.
@@ -79,7 +81,12 @@ class Runner:
                             text = val
                         else:
                             # Try to extract a reasonable string from nested structures
-                            if isinstance(val, dict) and "message" in val and isinstance(val["message"], dict) and "content" in val["message"]:
+                            if (
+                                isinstance(val, dict)
+                                and "message" in val
+                                and isinstance(val["message"], dict)
+                                and "content" in val["message"]
+                            ):
                                 text = val["message"]["content"]
                             else:
                                 try:
@@ -109,7 +116,7 @@ class Runner:
             "metrics": {"exact_match": em, "contains_frac": cf, "length_ratio": lr},
         }
 
-    def run(self, dataset_path: str, out_path: Optional[str] = None) -> Dict[str, Any]:
+    def run(self, dataset_path: str, out_path: str | None = None) -> dict[str, Any]:
         data = self.load_dataset(dataset_path)
         results = []
         scores = {"exact_match": [], "contains_frac": [], "length_ratio": []}

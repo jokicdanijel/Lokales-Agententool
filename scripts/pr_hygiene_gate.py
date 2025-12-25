@@ -92,7 +92,7 @@ def run_gh_search(
 def sanitize_labels(lbls: list[dict[str, Any]]) -> list[str]:
     names: List[str] = []
     for label in lbls:
-        name = label.get('name')
+        name = label.get("name")
         if name:
             names.append(name)
     return names

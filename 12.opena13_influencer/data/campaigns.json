@@ -4,10 +4,7 @@
     "name": "Summer Fashion Campaign 2025",
     "budget": 50000.0,
     "target_audience": "Women 18-35, Fashion-conscious, Urban",
-    "niches": [
-      "fashion",
-      "lifestyle"
-    ],
+    "niches": ["fashion", "lifestyle"],
     "min_followers": 100000,
     "min_engagement_rate": 3.0,
     "start_date": "2025-06-01T00:00:00Z",
@@ -21,9 +18,7 @@
     "name": "Fitness Campaign - High Reach",
     "budget": 30000.0,
     "target_audience": "Fitness enthusiasts 20-40",
-    "niches": [
-      "fitness"
-    ],
+    "niches": ["fitness"],
     "min_followers": 200000,
     "min_engagement_rate": 2.0,
     "start_date": "2025-07-01T00:00:00Z",
@@ -37,10 +32,7 @@
     "name": "Summer Fashion Campaign 2025",
     "budget": 50000.0,
     "target_audience": "Women 18-35, Fashion-conscious, Urban",
-    "niches": [
-      "fashion",
-      "lifestyle"
-    ],
+    "niches": ["fashion", "lifestyle"],
     "min_followers": 100000,
     "min_engagement_rate": 3.0,
     "start_date": "2025-06-01T00:00:00Z",
@@ -54,9 +46,7 @@
     "name": "Fitness Campaign - High Reach",
     "budget": 30000.0,
     "target_audience": "Fitness enthusiasts 20-40",
-    "niches": [
-      "fitness"
-    ],
+    "niches": ["fitness"],
     "min_followers": 200000,
     "min_engagement_rate": 2.0,
     "start_date": "2025-07-01T00:00:00Z",

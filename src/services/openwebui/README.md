@@ -8,11 +8,13 @@
 ## Start
 
 1. Core starten (`opena1` + `opena2`):
+
    ```bash
    bash scripts/start_core.sh
    ```
 
 2. Service starten:
+
    ```bash
    ./.venv/bin/python3 -m uvicorn src.services.openwebui.service:app --host 127.0.0.1 --port 12346
    ```

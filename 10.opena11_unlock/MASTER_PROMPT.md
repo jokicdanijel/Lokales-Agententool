@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena11 Unlock Master
 
-**Agent-ID:** opena11  
-**Port:** 12356  
-**Status:** 🟡 Planned  
-**Kürzel:** `unlockp`  
+**Agent-ID:** opena11
+**Port:** 12356
+**Status:** 🟡 Planned
+**Kürzel:** `unlockp`
 **Domäne:** Unlock Master, RBAC, Permission-Store, Audit-Log
 
 ---
@@ -141,5 +141,5 @@ Kopiere diesen Prompt in:
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

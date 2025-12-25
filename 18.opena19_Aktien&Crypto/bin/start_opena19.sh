@@ -53,7 +53,7 @@ done
 
 if [[ ${#MISSING_PACKAGES[@]} -gt 0 ]]; then
     echo "[INFO] Installiere fehlende Packages: ${MISSING_PACKAGES[*]}"
-    
+
     # PEP 668 Check (Ubuntu 25.04)
     if $PYTHON_CMD -m pip install --help | grep -q "break-system-packages"; then
         $PYTHON_CMD -m pip install --break-system-packages "${MISSING_PACKAGES[@]}" || {
@@ -107,7 +107,7 @@ fi
 # Health-Check via curl
 if command -v curl &> /dev/null; then
     HEALTH_URL="http://127.0.0.1:$PORT/health"
-    
+
     for i in {1..5}; do
         if curl -s "$HEALTH_URL" > /dev/null 2>&1; then
             echo "[INFO] ✅ Service ist erreichbar"
@@ -126,7 +126,7 @@ if command -v curl &> /dev/null; then
         echo "[INFO] Warte auf Service... ($i/5)"
         sleep 2
     done
-    
+
     echo "[WARN] ⚠️  Service läuft, aber Health-Check fehlgeschlagen"
     echo "[WARN] Prüfe Logs: tail -f $LOG_FILE"
 else

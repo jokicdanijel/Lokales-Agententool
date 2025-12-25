@@ -40,9 +40,9 @@ for port in 12344 12345 12347 12348 12349 12351 12352 12353 12354 12355 12356 12
     info="${AGENTS[$port]}"
     agent="${info%|*}"
     name="${info#*|}"
-    
+
     result=$(curl -s --connect-timeout 1 "http://127.0.0.1:$port/health" 2>/dev/null)
-    
+
     if [ -n "$result" ]; then
         status="✅ ONLINE"
         ((online++))
@@ -50,7 +50,7 @@ for port in 12344 12345 12347 12348 12349 12351 12352 12353 12354 12355 12356 12
         status="❌ OFFLINE"
         ((offline++))
     fi
-    
+
     printf "║ %-6s │ %-10s │ %-25s │ %-10s ║\n" "$port" "$agent" "$name" "$status"
 done
 

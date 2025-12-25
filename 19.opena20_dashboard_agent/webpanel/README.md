@@ -4,9 +4,9 @@
 
 ## 🎯 Überblick
 
-**Service:** Web Panel Control Interface  
-**Port:** 8088 (Docker)  
-**Target API:** http://127.0.0.1:12347  
+**Service:** Web Panel Control Interface
+**Port:** 8088 (Docker)
+**Target API:** http://127.0.0.1:12347
 **Technologie:** HTML/CSS/JavaScript + Docker
 **Status:** ✅ Production Ready
 
@@ -40,7 +40,7 @@ nginx -c nginx.conf
 
 - **🔐 Bearer Token Authentication**
 - **🩺 Health Check** - Service Status
-- **💬 Native Chat** - Direkte Chat-Kommunikation  
+- **💬 Native Chat** - Direkte Chat-Kommunikation
 - **🛠️ CMD Dispatch** - Option-2-Flow Commands
 - **🚦 Dispatch Ready** - Routing Status
 - **🧪 Self-Test** - Vollständiger Systemtest
@@ -59,9 +59,9 @@ nginx -c nginx.conf
 
 ```javascript
 const CONFIG = {
-    BASE_URL: "http://127.0.0.1:12347",  // OpenWebUI Integration Server
-    VERSION: "2.0.0",
-    PORTIER_COMPLIANCE: "3.0"
+  BASE_URL: "http://127.0.0.1:12347", // OpenWebUI Integration Server
+  VERSION: "2.0.0",
+  PORTIER_COMPLIANCE: "3.0",
 };
 ```
 
@@ -135,8 +135,8 @@ nginx -p . -c nginx.conf
 
 ```javascript
 // Beispiel API Call
-const response = await api('/health', 'GET');
-setLog('health_output', response);
+const response = await api("/health", "GET");
+setLog("health_output", response);
 ```
 
 ## 🐳 Docker Details
@@ -179,24 +179,24 @@ docker rm opena3-webpanel-container
 
 ### API Endpoints
 
-| Endpoint | Methode | Beschreibung |
-|----------|---------|-------------|
-| `/health` | GET | Service Health Check |
-| `/native` | POST | Native Chat Request |
-| `/cmd` | POST | CMD Dispatch (Option-2) |
-| `/dispatch_ready` | GET | Routing Status |
-| `/selftest` | GET | Vollständiger Systemtest |
+| Endpoint          | Methode | Beschreibung             |
+| ----------------- | ------- | ------------------------ |
+| `/health`         | GET     | Service Health Check     |
+| `/native`         | POST    | Native Chat Request      |
+| `/cmd`            | POST    | CMD Dispatch (Option-2)  |
+| `/dispatch_ready` | GET     | Routing Status           |
+| `/selftest`       | GET     | Vollständiger Systemtest |
 
 ## 🚨 Troubleshooting
 
 ### Häufige Probleme
 
-| Problem | Ursache | Lösung |
-|---------|---------|--------|
-| 401 Unauthorized | Fehlendes Bearer Token | Token in UI eingeben |
-| CORS Error | Falscher Origin | API Server CORS prüfen |
-| Connection Refused | API Server offline | opena3 (Port 12347) starten |
-| 404 Not Found | Falscher Endpoint | URL in config.js prüfen |
+| Problem            | Ursache                | Lösung                      |
+| ------------------ | ---------------------- | --------------------------- |
+| 401 Unauthorized   | Fehlendes Bearer Token | Token in UI eingeben        |
+| CORS Error         | Falscher Origin        | API Server CORS prüfen      |
+| Connection Refused | API Server offline     | opena3 (Port 12347) starten |
+| 404 Not Found      | Falscher Endpoint      | URL in config.js prüfen     |
 
 ### Debug Commands
 
@@ -213,9 +213,9 @@ telnet 127.0.0.1 12347
 
 ---
 
-**Version:** 2.0.0  
-**Build:** 2025-11-29  
-**PORTIER Compliance:** 3.0  
+**Version:** 2.0.0
+**Build:** 2025-11-29
+**PORTIER Compliance:** 3.0
 **Status:** ✅ Production Ready
 EXTREM WICHTIG — FILE-SCAN-PFLICHT FÜR DIESEN AGENT
 Bevor du irgendeine Datei erzeugst, MUSST du folgendes tun:
@@ -225,17 +225,17 @@ Scanne rekursiv das Verzeichnis dieses Agents:
 
 css
 ￼Code kopieren
-<AgentRoot>/   → z. B. 16.opena17_homepagecreator
-    main.py
-    routes.py
-    models.py
-    agent_logic.py
-    config.py
-    security.py
-    bin/
-    data/
-    templates/
-    tests/
+<AgentRoot>/ → z. B. 16.opena17_homepagecreator
+main.py
+routes.py
+models.py
+agent_logic.py
+config.py
+security.py
+bin/
+data/
+templates/
+tests/
 ✔ 2. Existierende Dateien feststellen
 Alle vorhandenen Dateien müssen analysiert werden:
 
@@ -278,9 +278,9 @@ Neue Dateien dürfen nur erstellt werden, wenn sie wirklich fehlen:
 sql
 ￼Code kopieren
 if file_exists:
-    patch
+patch
 else:
-    create new file
+create new file
 ✔ 5. PRIORITÄT: EXISTING > NEW
 Immer:
 

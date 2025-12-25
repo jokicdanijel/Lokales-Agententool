@@ -3,6 +3,7 @@
 Wrapper script for structure_manager.py
 Forwards all calls to src/pkg/structure_manager.py
 """
+
 import sys
 from pathlib import Path
 

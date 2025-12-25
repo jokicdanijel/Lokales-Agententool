@@ -1,4 +1,5 @@
 # 📖 Externe Zugriffs-Anleitung
+
 ## Browser Agent Tool Server - Externe Zugänglichkeit
 
 Mache deinen lokalen Browser Agent Tool Server (Port 8765) für andere Geräte im Netzwerk oder über das Internet zugänglich – LAN, ngrok, SSH.
@@ -16,20 +17,20 @@ Mache deinen lokalen Browser Agent Tool Server (Port 8765) für andere Geräte i
 
 Bevor du startest, stelle sicher dass folgende Punkte erfüllt sind:
 
-| # | Voraussetzung | Status | Befehl |
-|---|---------------|--------|--------|
-| 1 | Server läuft auf Port 8765 | ✅ | `ps aux \| grep tool_server` |
-| 2 | 0.0.0.0 Binding aktiv | ✅ | `ss -tlnp \| grep 8765` |
-| 3 | Firewall/Router erlaubt Port 8765 | ✅ | `sudo ufw status \| grep 8765` |
-| 4 | CLI/Terminal Zugriff | ✅ | Bash, Zsh, PowerShell, WSL |
-| 5 | Bearer Token gesetzt | ✅ | `echo $BEARER_TOKEN` |
+| #   | Voraussetzung                     | Status | Befehl                         |
+| --- | --------------------------------- | ------ | ------------------------------ |
+| 1   | Server läuft auf Port 8765        | ✅     | `ps aux \| grep tool_server`   |
+| 2   | 0.0.0.0 Binding aktiv             | ✅     | `ss -tlnp \| grep 8765`        |
+| 3   | Firewall/Router erlaubt Port 8765 | ✅     | `sudo ufw status \| grep 8765` |
+| 4   | CLI/Terminal Zugriff              | ✅     | Bash, Zsh, PowerShell, WSL     |
+| 5   | Bearer Token gesetzt              | ✅     | `echo $BEARER_TOKEN`           |
 
 ### Optional (2 Punkte)
 
-| # | Option | Nutzen | Quelle |
-|---|--------|--------|--------|
-| 6 | ngrok Account & Token | Internet-Zugriff | https://ngrok.com |
-| 7 | SSH Remote Zugriff | Sicheres Tunneling | SSH-Schlüssel |
+| #   | Option                | Nutzen             | Quelle            |
+| --- | --------------------- | ------------------ | ----------------- |
+| 6   | ngrok Account & Token | Internet-Zugriff   | https://ngrok.com |
+| 7   | SSH Remote Zugriff    | Sicheres Tunneling | SSH-Schlüssel     |
 
 ---
 
@@ -68,11 +69,13 @@ curl http://127.0.0.1:8765/health
 ### 5-Minuten Setup für LAN-Zugriff
 
 **1. Terminal öffnen und zu Projekt navigieren:**
+
 ```bash
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.opena3_openwebui
 ```
 
 **2. Tool Server auf 0.0.0.0 starten:**
+
 ```bash
 python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
 ```
@@ -80,6 +83,7 @@ python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
 **3. Deine lokale IP-Adresse finden:**
 
 **Linux/macOS:**
+
 ```bash
 ip a | grep "inet " | grep -v 127.0.0.1
 # oder
@@ -87,25 +91,30 @@ ifconfig | grep "inet "
 ```
 
 **Windows (in PowerShell):**
+
 ```powershell
 ipconfig
 # Suche: IPv4-Adresse (z.B. 192.168.x.x)
 ```
 
 **Beispiel Output:**
+
 ```
 inet 192.168.0.70/24 brd 192.168.0.255 scope global dynamic eth0
 ```
+
 → Deine IP: `192.168.0.70`
 
 **4. Von anderem Gerät im selben Netzwerk testen:**
 
 **iPhone/Android/Laptop im Browser:**
+
 ```
 http://192.168.0.70:8765
 ```
 
 **oder via curl:**
+
 ```bash
 curl http://192.168.0.70:8765/health
 curl http://192.168.0.70:8765/manifest
@@ -122,6 +131,7 @@ curl http://192.168.0.70:8765/manifest
 #### Schritt 1: Server auf 0.0.0.0 binden
 
 **Terminal 1 - Tool Server starten:**
+
 ```bash
 # Wechsel zum Projektverzeichnis
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.opena3_openwebui
@@ -131,6 +141,7 @@ python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
 ```
 
 **Output sollte sein:**
+
 ```
 🚀 Tool Server gestartet auf 0.0.0.0:8765
    Dashboard: http://localhost:8765
@@ -141,6 +152,7 @@ python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
 #### Schritt 2: Lokale IP-Adresse ermitteln
 
 **Linux:**
+
 ```bash
 hostname -I
 # oder ausführlicher:
@@ -151,6 +163,7 @@ ip a show | grep "inet " | grep -v 127.0.0.1
 ```
 
 **macOS:**
+
 ```bash
 ifconfig | grep "inet " | grep -v 127.0.0.1
 
@@ -159,6 +172,7 @@ ifconfig | grep "inet " | grep -v 127.0.0.1
 ```
 
 **Windows PowerShell:**
+
 ```powershell
 ipconfig
 
@@ -169,6 +183,7 @@ ipconfig
 #### Schritt 3: Firewall konfigurieren (optional)
 
 **Linux (UFW):**
+
 ```bash
 # Port freigeben (wenn UFW aktiv)
 sudo ufw allow 8765/tcp
@@ -178,6 +193,7 @@ sudo ufw status
 ```
 
 **Linux (iptables):**
+
 ```bash
 # Prüfe ob Port offen ist
 sudo iptables -L -n | grep 8765
@@ -188,6 +204,7 @@ sudo iptables-save | sudo tee /etc/iptables/rules.v4
 ```
 
 **macOS:**
+
 ```bash
 # macOS Firewall (System Preferences → Security & Privacy)
 # Oder via Terminal:
@@ -196,6 +213,7 @@ sudo /usr/libexec/ApplicationFirewall/socketfilterfw --add /path/to/python
 ```
 
 **Windows (Defender Firewall):**
+
 ```powershell
 # PowerShell (als Admin)
 New-NetFirewallRule -DisplayName "Python 8765" `
@@ -205,6 +223,7 @@ New-NetFirewallRule -DisplayName "Python 8765" `
 #### Schritt 4: Von externem Gerät testen
 
 **Von Laptop/Phone im selben Netzwerk:**
+
 ```bash
 # Terminal/Shell:
 curl http://192.168.0.70:8765/health
@@ -214,6 +233,7 @@ http://192.168.0.70:8765
 ```
 
 **Erwartet Output:**
+
 ```json
 {
   "status": "ok",
@@ -237,6 +257,7 @@ http://192.168.0.70:8765
 4. **Speichern & Router neu starten**
 
 5. **Teste von außerhalb des Netzwerks:**
+
 ```bash
 # Finde deine öffentliche IP:
 curl https://api.ipify.org
@@ -246,6 +267,7 @@ curl https://YOUR_PUBLIC_IP:8765/health
 ```
 
 ⚠️ **Sicherheit beachten:**
+
 - Port-Forwarding nur für vertrauenswürdige Services
 - Immer Bearer Token verwenden
 - Idealerweise: ngrok oder SSH verwenden (sicherer)
@@ -259,11 +281,13 @@ curl https://YOUR_PUBLIC_IP:8765/health
 #### Installation
 
 **macOS:**
+
 ```bash
 brew install ngrok
 ```
 
 **Linux:**
+
 ```bash
 # Debian/Ubuntu
 curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
@@ -277,6 +301,7 @@ sudo mv ngrok /usr/local/bin/
 ```
 
 **Windows:**
+
 ```powershell
 choco install ngrok
 # oder manual von https://ngrok.com/download
@@ -291,6 +316,7 @@ choco install ngrok
    - https://dashboard.ngrok.com/auth/your-authtoken
 
 3. **Token konfigurieren:**
+
 ```bash
 ngrok config add-authtoken YOUR_TOKEN_HERE
 ```
@@ -298,16 +324,19 @@ ngrok config add-authtoken YOUR_TOKEN_HERE
 #### Tunnel starten
 
 **Terminal 1 - Tool Server:**
+
 ```bash
 python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
 ```
 
 **Terminal 2 - ngrok Tunnel:**
+
 ```bash
 ngrok http 8765
 ```
 
 **Output:**
+
 ```
 ngrok                                                                (Ctrl-C to quit)
 
@@ -327,6 +356,7 @@ Connections                   ttl     opn     dl      ul      pd
 #### Public URL verwenden
 
 **Von überall zugänglich:**
+
 ```bash
 # Health Check:
 curl https://abc123def456.ngrok.io/health
@@ -345,6 +375,7 @@ http://127.0.0.1:4040
 ```
 
 Hier siehst du:
+
 - Alle eingehenden Requests
 - Response Status Codes
 - Headers & Body
@@ -371,22 +402,26 @@ ngrok http 12350
 #### Tipps & Tricks
 
 **Problem: URL ändert sich bei jedem Neustart**
+
 - Lösung: ngrok Pro Account ($5/Monat) für reserved domains
 - Oder: Immer neue URL kommunizieren
 
 **Rate Limiting:**
+
 ```bash
 # Für 100 requests/minute:
 ngrok http 8765 --rate-limit 100r/m
 ```
 
 **IP Whitelist:**
+
 ```bash
 # Nur von bestimmten IPs:
 ngrok http 8765 --allow-ip 203.0.113.0
 ```
 
 **Custom Subdomain (Pro):**
+
 ```bash
 ngrok http 8765 --subdomain my-browser-agent
 # URL: https://my-browser-agent.ngrok.io
@@ -411,6 +446,7 @@ ssh -L 8765:localhost:8765 user@remote.host -N
 ```
 
 **Dann vom Remote-Server:**
+
 ```bash
 curl http://localhost:8765/health
 ```
@@ -428,6 +464,7 @@ ssh -R 8765:localhost:8765 user@remote.host -N
 ```
 
 **Dann von außen (auf remote.host):**
+
 ```bash
 curl http://remote.host:8765/health
 ```
@@ -458,6 +495,7 @@ pkill -f "ssh.*8765"
 #### Mit Automatischem Neustart
 
 **Datei: `start_ssh_tunnel.sh`**
+
 ```bash
 #!/bin/bash
 
@@ -482,6 +520,7 @@ done
 ```
 
 **Ausführbar machen:**
+
 ```bash
 chmod +x start_ssh_tunnel.sh
 ./start_ssh_tunnel.sh
@@ -494,6 +533,7 @@ chmod +x start_ssh_tunnel.sh
 ### Best Practices
 
 **1. Bearer Token verwenden:**
+
 ```bash
 # Alle Requests mit Auth Header:
 curl -H "Authorization: Bearer sk_opena6_browser_v3_production" \
@@ -501,11 +541,13 @@ curl -H "Authorization: Bearer sk_opena6_browser_v3_production" \
 ```
 
 **2. HTTPS erzwingen:**
+
 - ngrok: Automatisch HTTPS
 - SSH: Verschlüsselt
 - Firewall: Nur HTTPS bei externem Zugriff
 
 **3. IP Whitelist (optional):**
+
 ```bash
 # Nur von bestimmtem Netzwerk:
 # In Router: Source IP Filtering
@@ -516,6 +558,7 @@ sudo iptables -A INPUT -p tcp --dport 8765 \
 ```
 
 **4. VPN als zusätzliche Schutzschicht:**
+
 ```bash
 # Beispiel mit WireGuard:
 # 1. VPN Server einrichten
@@ -524,6 +567,7 @@ sudo iptables -A INPUT -p tcp --dport 8765 \
 ```
 
 **5. Rate Limiting:**
+
 ```bash
 # Mit ngrok:
 ngrok http 8765 --rate-limit 100r/m
@@ -534,6 +578,7 @@ sudo iptables -A INPUT -p tcp --dport 8765 \
 ```
 
 **6. Logging & Monitoring:**
+
 ```bash
 # ngrok Web UI: http://127.0.0.1:4040
 
@@ -646,23 +691,24 @@ time curl https://your-tunnel.ngrok.io/health | wc -c
 
 ## 📊 Vergleich der Methoden
 
-| Feature | LAN (Firewall) | ngrok | SSH |
-|---------|----------------|-------|-----|
-| **Einrichtung** | ⚡ 5 Min | ⚡ 10 Min | ⚡⚡ 15 Min |
-| **Sicherheit** | ⚠️ Grundlegend | ✅ HTTPS | ✅✅ Encrypted |
-| **Kostenlos** | ✅ | ✅ (Free Tier) | ✅ |
-| **Latenz** | 🟢 <5ms | 🟡 ~50ms | 🟢 ~20ms |
-| **Internet-Zugriff** | ❌ (nur LAN) | ✅ Weltweit | ✅ Remote Host |
-| **Persistenz** | ✅ Solange läuft | ✅ Pro Abo | ⚠️ Kann Abreißen |
-| **Setup-Komplexität** | 🟢 Einfach | 🟡 Mittel | 🟡 Mittel |
-| **Performance** | 🟢 Maximal | 🟡 Gut | 🟢 Gut |
-| **Mobile Tests** | ✅ | ✅ | ✅ (mit Remote) |
+| Feature               | LAN (Firewall)   | ngrok          | SSH              |
+| --------------------- | ---------------- | -------------- | ---------------- |
+| **Einrichtung**       | ⚡ 5 Min         | ⚡ 10 Min      | ⚡⚡ 15 Min      |
+| **Sicherheit**        | ⚠️ Grundlegend   | ✅ HTTPS       | ✅✅ Encrypted   |
+| **Kostenlos**         | ✅               | ✅ (Free Tier) | ✅               |
+| **Latenz**            | 🟢 <5ms          | 🟡 ~50ms       | 🟢 ~20ms         |
+| **Internet-Zugriff**  | ❌ (nur LAN)     | ✅ Weltweit    | ✅ Remote Host   |
+| **Persistenz**        | ✅ Solange läuft | ✅ Pro Abo     | ⚠️ Kann Abreißen |
+| **Setup-Komplexität** | 🟢 Einfach       | 🟡 Mittel      | 🟡 Mittel        |
+| **Performance**       | 🟢 Maximal       | 🟡 Gut         | 🟢 Gut           |
+| **Mobile Tests**      | ✅               | ✅             | ✅ (mit Remote)  |
 
 ---
 
 ## 🚀 Schnelle Befehle (Copy & Paste)
 
 ### LAN-Setup in 30 Sekunden:
+
 ```bash
 # Terminal 1:
 python3 LocalAgent-Pro/opena6/tool_server.py --host 0.0.0.0 --port 8765
@@ -674,6 +720,7 @@ curl http://$IP:8765/health
 ```
 
 ### ngrok Setup in 1 Minute:
+
 ```bash
 # Einmal:
 ngrok config add-authtoken YOUR_TOKEN
@@ -684,6 +731,7 @@ ngrok http 8765
 ```
 
 ### SSH Reverse Tunnel:
+
 ```bash
 ssh -R 8765:localhost:8765 user@example.com -N
 ```

@@ -12,13 +12,12 @@ Fixe Labels/Endpoints (bindend):
 
 import logging
 from datetime import datetime
-from typing import Any, Dict
+from typing import Any
 
 import httpx
-from fastapi import FastAPI, HTTPException, Security, Request
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-
-from security import verify_token, RateLimiter, _read_env_token
+from fastapi import FastAPI, HTTPException, Request, Security
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from security import RateLimiter, _read_env_token, verify_token
 
 OPENA2_URL = "http://127.0.0.1:12348"  # Archivator NEU: 12348
 
@@ -32,10 +31,7 @@ FORBIDDEN_PORTS = {8080}
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - kordp - %(levelname)s - %(message)s",
-    handlers=[
-        logging.FileHandler("logs/kordp_runtime.log"),
-        logging.StreamHandler()
-    ]
+    handlers=[logging.FileHandler("logs/kordp_runtime.log"), logging.StreamHandler()],
 )
 logger = logging.getLogger("kordp")
 
@@ -47,6 +43,7 @@ security = HTTPBearer()
 rate_limiter = RateLimiter(requests_per_minute=90)
 
 _client = httpx.AsyncClient(timeout=10)
+
 
 # -------------------------------------------------------------------
 # Middleware: Port-Policy
@@ -60,6 +57,7 @@ async def validate_port_policy(request: Request, call_next):
         raise HTTPException(status_code=403, detail=f"Port {port} außerhalb {ALLOWED_PORT_MIN}–{ALLOWED_PORT_MAX}")
     return await call_next(request)
 
+
 # -------------------------------------------------------------------
 # Lifecycle
 # -------------------------------------------------------------------
@@ -68,24 +66,18 @@ async def on_start():
     _ = _read_env_token()
     logger.info("kordp gestartet. Ziel-Archivator: %s", OPENA2_URL)
 
+
 # -------------------------------------------------------------------
 # Endpunkte
 # -------------------------------------------------------------------
 @app.get("/health")
 async def health():
-    return {
-        "service": "kordp",
-        "status": "healthy",
-        "strict": True,
-        "timestamp": datetime.utcnow().isoformat()
-    }
+    return {"service": "kordp", "status": "healthy", "strict": True, "timestamp": datetime.utcnow().isoformat()}
+
 
 @app.post("/dispatch/kordp")
 @rate_limiter.limit()
-async def dispatch(
-    payload: Dict[str, Any],
-    token: HTTPAuthorizationCredentials = Security(security)
-):
+async def dispatch(payload: dict[str, Any], token: HTTPAuthorizationCredentials = Security(security)):
     if not verify_token(token.credentials):
         raise HTTPException(status_code=401, detail="Ungültiger Token")
 
@@ -102,17 +94,10 @@ async def dispatch(
             "src": src,
             "dst": "opena2",
             "kind": "CMD",
-            "data": {
-                "command": command,
-                "params": params,
-                "ts": datetime.utcnow().isoformat(),
-                "strict": True
-            }
+            "data": {"command": command, "params": params, "ts": datetime.utcnow().isoformat(), "strict": True},
         }
         r = await _client.post(
-            f"{OPENA2_URL}/store/archivp",
-            headers={"Authorization": f"Bearer {token_val}"},
-            json=sp_body
+            f"{OPENA2_URL}/store/archivp", headers={"Authorization": f"Bearer {token_val}"}, json=sp_body
         )
         if r.status_code != 200:
             logger.error("Safepoint-Write fehlgeschlagen: %s %s", r.status_code, r.text)
@@ -124,16 +109,13 @@ async def dispatch(
         logger.error("Archivator-Aufruf fehlgeschlagen: %s", e)
         raise HTTPException(status_code=502, detail="Archivator nicht erreichbar")
 
-    return {
-        "strict": True,
-        "accepted": True,
-        "safepoint": sp_info
-    }
+    return {"strict": True, "accepted": True, "safepoint": sp_info}
+
 
 # -------------------------------------------------------------------
 # Main
 # -------------------------------------------------------------------
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main_kordp:app", host="127.0.0.1", port=12346, reload=False)
 
+    uvicorn.run("main_kordp:app", host="127.0.0.1", port=12346, reload=False)

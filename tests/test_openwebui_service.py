@@ -2,8 +2,11 @@
 tests/test_openwebui_service.py
 Unit tests for OpenA3 (OpenWebUI → openweb)
 """
+
 from unittest.mock import AsyncMock, patch
+
 from fastapi.testclient import TestClient
+
 from src.services.openwebui.service import app
 
 
@@ -35,10 +38,7 @@ def test_call_prompt_valid():
     with patch("src.services.openwebui.service._route_register", new_callable=AsyncMock):
         with patch("src.services.openwebui.service.httpx.AsyncClient.post", new_callable=AsyncMock):
             client = TestClient(app)
-            r = client.post(
-                "/openwebui/call",
-                json={"action": "prompt", "data": {"text": "hello world"}}
-            )
+            r = client.post("/openwebui/call", json={"action": "prompt", "data": {"text": "hello world"}})
             assert r.status_code == 200
             j = r.json()
             assert j["ok"] is True
@@ -49,10 +49,7 @@ def test_call_unsupported_action():
     """Test /openwebui/call with unsupported action."""
     with patch("src.services.openwebui.service._route_register", new_callable=AsyncMock):
         client = TestClient(app)
-        r = client.post(
-            "/openwebui/call",
-            json={"action": "invalid_action", "data": {}}
-        )
+        r = client.post("/openwebui/call", json={"action": "invalid_action", "data": {}})
         assert r.status_code == 400
 
 
@@ -62,8 +59,7 @@ def test_redaction_in_call():
         with patch("src.services.openwebui.service.httpx.AsyncClient.post", new_callable=AsyncMock) as mock_post:
             client = TestClient(app)
             r = client.post(
-                "/openwebui/call",
-                json={"action": "prompt", "data": {"text": "hello", "api_key": "secret123"}}
+                "/openwebui/call", json={"action": "prompt", "data": {"text": "hello", "api_key": "secret123"}}
             )
             assert r.status_code == 200
             # Verify redaction in the call (mock should receive redacted payload)
@@ -73,4 +69,5 @@ def test_redaction_in_call():
 
 if __name__ == "__main__":
     import pytest
+
     pytest.main([__file__, "-v"])

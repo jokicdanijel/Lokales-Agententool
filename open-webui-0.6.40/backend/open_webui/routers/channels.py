@@ -1,59 +1,20 @@
-import json
 import logging
 from typing import Optional
 
-
-from fastapi import APIRouter, Depends, HTTPException, Request, status, BackgroundTasks
-from pydantic import BaseModel
-
-
-from open_webui.socket.main import (
-    sio,
-    get_user_ids_from_room,
-    get_active_status_by_user_id,
-)
-from open_webui.models.users import (
-    UserListResponse,
-    UserModelResponse,
-    Users,
-    UserNameResponse,
-)
-
-from open_webui.models.groups import Groups
-from open_webui.models.channels import (
-    Channels,
-    ChannelModel,
-    ChannelForm,
-    ChannelResponse,
-)
-from open_webui.models.messages import (
-    Messages,
-    MessageModel,
-    MessageResponse,
-    MessageForm,
-)
-
-
-from open_webui.config import ENABLE_ADMIN_CHAT_ACCESS, ENABLE_ADMIN_EXPORT
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request, status
 from open_webui.constants import ERROR_MESSAGES
 from open_webui.env import SRC_LOG_LEVELS
-
-
-from open_webui.utils.models import (
-    get_all_models,
-    get_filtered_models,
-)
-from open_webui.utils.chat import generate_chat_completion
-
-
+from open_webui.models.channels import ChannelForm, ChannelModel, ChannelResponse, Channels
+from open_webui.models.messages import MessageForm, MessageModel, MessageResponse, Messages
+from open_webui.models.users import UserListResponse, UserModelResponse, UserNameResponse, Users
+from open_webui.socket.main import get_active_status_by_user_id, get_user_ids_from_room, sio
+from open_webui.utils.access_control import get_permitted_group_and_user_ids, get_users_with_access, has_access
 from open_webui.utils.auth import get_admin_user, get_verified_user
-from open_webui.utils.access_control import (
-    has_access,
-    get_users_with_access,
-    get_permitted_group_and_user_ids,
-)
-from open_webui.utils.webhook import post_webhook
 from open_webui.utils.channels import extract_mentions, replace_mentions
+from open_webui.utils.chat import generate_chat_completion
+from open_webui.utils.models import get_all_models, get_filtered_models
+from open_webui.utils.webhook import post_webhook
+from pydantic import BaseModel
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MODELS"])
@@ -89,9 +50,7 @@ async def create_new_channel(form_data: ChannelForm, user=Depends(get_admin_user
         return ChannelModel(**channel.model_dump())
     except Exception as e:
         log.exception(e)
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT())
 
 
 ############################
@@ -103,20 +62,12 @@ async def create_new_channel(form_data: ChannelForm, user=Depends(get_admin_user
 async def get_channel_by_id(id: str, user=Depends(get_verified_user)):
     channel = Channels.get_channel_by_id(id)
     if not channel:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
-    if user.role != "admin" and not has_access(
-        user.id, type="read", access_control=channel.access_control
-    ):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT()
-        )
+    if user.role != "admin" and not has_access(user.id, type="read", access_control=channel.access_control):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT())
 
-    write_access = has_access(
-        user.id, type="write", access_control=channel.access_control, strict=False
-    )
+    write_access = has_access(user.id, type="write", access_control=channel.access_control, strict=False)
 
     user_count = len(get_users_with_access("read", channel.access_control))
 
@@ -135,18 +86,15 @@ PAGE_ITEM_COUNT = 30
 @router.get("/{id}/users", response_model=UserListResponse)
 async def get_channel_users_by_id(
     id: str,
-    query: Optional[str] = None,
-    order_by: Optional[str] = None,
-    direction: Optional[str] = None,
-    page: Optional[int] = 1,
+    query: str | None = None,
+    order_by: str | None = None,
+    direction: str | None = None,
+    page: int | None = 1,
     user=Depends(get_verified_user),
 ):
-
     channel = Channels.get_channel_by_id(id)
     if not channel:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
     limit = PAGE_ITEM_COUNT
 
@@ -176,10 +124,7 @@ async def get_channel_users_by_id(
 
     return {
         "users": [
-            UserModelResponse(
-                **user.model_dump(), is_active=get_active_status_by_user_id(user.id)
-            )
-            for user in users
+            UserModelResponse(**user.model_dump(), is_active=get_active_status_by_user_id(user.id)) for user in users
         ],
         "total": total,
     }
@@ -191,23 +136,17 @@ async def get_channel_users_by_id(
 
 
 @router.post("/{id}/update", response_model=Optional[ChannelModel])
-async def update_channel_by_id(
-    id: str, form_data: ChannelForm, user=Depends(get_admin_user)
-):
+async def update_channel_by_id(id: str, form_data: ChannelForm, user=Depends(get_admin_user)):
     channel = Channels.get_channel_by_id(id)
     if not channel:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
     try:
         channel = Channels.update_channel_by_id(id, form_data)
         return ChannelModel(**channel.model_dump())
     except Exception as e:
         log.exception(e)
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT())
 
 
 ############################
@@ -219,18 +158,14 @@ async def update_channel_by_id(
 async def delete_channel_by_id(id: str, user=Depends(get_admin_user)):
     channel = Channels.get_channel_by_id(id)
     if not channel:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
     try:
         Channels.delete_channel_by_id(id)
         return True
     except Exception as e:
         log.exception(e)
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT())
 
 
 ############################
@@ -243,21 +178,13 @@ class MessageUserResponse(MessageResponse):
 
 
 @router.get("/{id}/messages", response_model=list[MessageUserResponse])
-async def get_channel_messages(
-    id: str, skip: int = 0, limit: int = 50, user=Depends(get_verified_user)
-):
+async def get_channel_messages(id: str, skip: int = 0, limit: int = 50, user=Depends(get_verified_user)):
     channel = Channels.get_channel_by_id(id)
     if not channel:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
-    if user.role != "admin" and not has_access(
-        user.id, type="read", access_control=channel.access_control
-    ):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT()
-        )
+    if user.role != "admin" and not has_access(user.id, type="read", access_control=channel.access_control):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT())
 
     message_list = Messages.get_messages_by_channel_id(id, skip, limit)
     users = {}
@@ -269,9 +196,7 @@ async def get_channel_messages(
             users[message.user_id] = user
 
         thread_replies = Messages.get_thread_replies_by_message_id(message.id)
-        latest_thread_reply_at = (
-            thread_replies[0].created_at if thread_replies else None
-        )
+        latest_thread_reply_at = thread_replies[0].created_at if thread_replies else None
 
         messages.append(
             MessageUserResponse(
@@ -299,9 +224,7 @@ async def send_notification(name, webui_url, channel, message, active_user_ids):
     for user in users:
         if user.id not in active_user_ids:
             if user.settings:
-                webhook_url = user.settings.ui.get("notifications", {}).get(
-                    "webhook_url", None
-                )
+                webhook_url = user.settings.ui.get("notifications", {}).get("webhook_url", None)
                 if webhook_url:
                     await post_webhook(
                         name,
@@ -319,10 +242,7 @@ async def send_notification(name, webui_url, channel, message, active_user_ids):
 
 
 async def model_response_handler(request, channel, message, user):
-    MODELS = {
-        model["id"]: model
-        for model in get_filtered_models(await get_all_models(request, user=user), user)
-    }
+    MODELS = {model["id"]: model for model in get_filtered_models(await get_all_models(request, user=user), user)}
 
     mentions = extract_mentions(message.content)
     message_content = replace_mentions(message.content)
@@ -362,17 +282,13 @@ async def model_response_handler(request, channel, message, user):
                     request,
                     channel.id,
                     MessageForm(
-                        **{
-                            "parent_id": (
-                                message.parent_id if message.parent_id else message.id
-                            ),
-                            "content": f"",
-                            "data": {},
-                            "meta": {
-                                "model_id": model_id,
-                                "model_name": model.get("name", model_id),
-                            },
-                        }
+                        parent_id=(message.parent_id if message.parent_id else message.id),
+                        content="",
+                        data={},
+                        meta={
+                            "model_id": model_id,
+                            "model_name": model.get("name", model_id),
+                        },
                     ),
                     user,
                 )
@@ -389,23 +305,15 @@ async def model_response_handler(request, channel, message, user):
                     else:
                         message_user = message_users[thread_message.user_id]
 
-                    if thread_message.meta and thread_message.meta.get(
-                        "model_id", None
-                    ):
+                    if thread_message.meta and thread_message.meta.get("model_id", None):
                         # If the message was sent by a model, use the model name
                         message_model_id = thread_message.meta.get("model_id", None)
                         message_model = MODELS.get(message_model_id, None)
-                        username = (
-                            message_model.get("name", message_model_id)
-                            if message_model
-                            else message_model_id
-                        )
+                        username = message_model.get("name", message_model_id) if message_model else message_model_id
                     else:
                         username = message_user.name if message_user else "Unknown"
 
-                    thread_history.append(
-                        f"{username}: {replace_mentions(thread_message.content)}"
-                    )
+                    thread_history.append(f"{username}: {replace_mentions(thread_message.content)}")
 
                     thread_message_files = thread_message.data.get("files", [])
                     for file in thread_message_files:
@@ -462,12 +370,10 @@ async def model_response_handler(request, channel, message, user):
                             channel.id,
                             response_message.id,
                             MessageForm(
-                                **{
-                                    "content": res["choices"][0]["message"]["content"],
-                                    "meta": {
-                                        "done": True,
-                                    },
-                                }
+                                content=res["choices"][0]["message"]["content"],
+                                meta={
+                                    "done": True,
+                                },
                             ),
                             user,
                         )
@@ -476,37 +382,28 @@ async def model_response_handler(request, channel, message, user):
                             channel.id,
                             response_message.id,
                             MessageForm(
-                                **{
-                                    "content": f"Error: {res['error']}",
-                                    "meta": {
-                                        "done": True,
-                                    },
-                                }
+                                content=f"Error: {res['error']}",
+                                meta={
+                                    "done": True,
+                                },
                             ),
                             user,
                         )
             except Exception as e:
                 log.info(e)
-                pass
 
     return True
 
 
-async def new_message_handler(
-    request: Request, id: str, form_data: MessageForm, user=Depends(get_verified_user)
-):
+async def new_message_handler(request: Request, id: str, form_data: MessageForm, user=Depends(get_verified_user)):
     channel = Channels.get_channel_by_id(id)
     if not channel:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
     if user.role != "admin" and not has_access(
         user.id, type="write", access_control=channel.access_control, strict=False
     ):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT())
 
     try:
         message = Messages.insert_new_message(form_data, channel.id, user.id)
@@ -553,9 +450,7 @@ async def new_message_handler(
             raise Exception("Error creating message")
     except Exception as e:
         log.exception(e)
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT())
 
 
 @router.post("/{id}/messages/post", response_model=Optional[MessageModel])
@@ -566,7 +461,6 @@ async def post_new_message(
     background_tasks: BackgroundTasks,
     user=Depends(get_verified_user),
 ):
-
     try:
         message, channel = await new_message_handler(request, id, form_data, user)
         active_user_ids = get_user_ids_from_room(f"channel:{channel.id}")
@@ -589,9 +483,7 @@ async def post_new_message(
         raise e
     except Exception as e:
         log.exception(e)
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT())
 
 
 ############################
@@ -600,39 +492,25 @@ async def post_new_message(
 
 
 @router.get("/{id}/messages/{message_id}", response_model=Optional[MessageUserResponse])
-async def get_channel_message(
-    id: str, message_id: str, user=Depends(get_verified_user)
-):
+async def get_channel_message(id: str, message_id: str, user=Depends(get_verified_user)):
     channel = Channels.get_channel_by_id(id)
     if not channel:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
-    if user.role != "admin" and not has_access(
-        user.id, type="read", access_control=channel.access_control
-    ):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT()
-        )
+    if user.role != "admin" and not has_access(user.id, type="read", access_control=channel.access_control):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT())
 
     message = Messages.get_message_by_id(message_id)
     if not message:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
     if message.channel_id != id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT())
 
     return MessageUserResponse(
         **{
             **message.model_dump(),
-            "user": UserNameResponse(
-                **Users.get_user_by_id(message.user_id).model_dump()
-            ),
+            "user": UserNameResponse(**Users.get_user_by_id(message.user_id).model_dump()),
         }
     )
 
@@ -642,9 +520,7 @@ async def get_channel_message(
 ############################
 
 
-@router.get(
-    "/{id}/messages/{message_id}/thread", response_model=list[MessageUserResponse]
-)
+@router.get("/{id}/messages/{message_id}/thread", response_model=list[MessageUserResponse])
 async def get_channel_thread_messages(
     id: str,
     message_id: str,
@@ -654,16 +530,10 @@ async def get_channel_thread_messages(
 ):
     channel = Channels.get_channel_by_id(id)
     if not channel:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
-    if user.role != "admin" and not has_access(
-        user.id, type="read", access_control=channel.access_control
-    ):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT()
-        )
+    if user.role != "admin" and not has_access(user.id, type="read", access_control=channel.access_control):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT())
 
     message_list = Messages.get_messages_by_parent_id(id, message_id, skip, limit)
     users = {}
@@ -694,37 +564,25 @@ async def get_channel_thread_messages(
 ############################
 
 
-@router.post(
-    "/{id}/messages/{message_id}/update", response_model=Optional[MessageModel]
-)
-async def update_message_by_id(
-    id: str, message_id: str, form_data: MessageForm, user=Depends(get_verified_user)
-):
+@router.post("/{id}/messages/{message_id}/update", response_model=Optional[MessageModel])
+async def update_message_by_id(id: str, message_id: str, form_data: MessageForm, user=Depends(get_verified_user)):
     channel = Channels.get_channel_by_id(id)
     if not channel:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
     message = Messages.get_message_by_id(message_id)
     if not message:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
     if message.channel_id != id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT())
 
     if (
         user.role != "admin"
         and message.user_id != user.id
         and not has_access(user.id, type="read", access_control=channel.access_control)
     ):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT())
 
     try:
         message = Messages.update_message_by_id(message_id, form_data)
@@ -749,9 +607,7 @@ async def update_message_by_id(
         return MessageModel(**message.model_dump())
     except Exception as e:
         log.exception(e)
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT())
 
 
 ############################
@@ -764,32 +620,22 @@ class ReactionForm(BaseModel):
 
 
 @router.post("/{id}/messages/{message_id}/reactions/add", response_model=bool)
-async def add_reaction_to_message(
-    id: str, message_id: str, form_data: ReactionForm, user=Depends(get_verified_user)
-):
+async def add_reaction_to_message(id: str, message_id: str, form_data: ReactionForm, user=Depends(get_verified_user)):
     channel = Channels.get_channel_by_id(id)
     if not channel:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
     if user.role != "admin" and not has_access(
         user.id, type="write", access_control=channel.access_control, strict=False
     ):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT())
 
     message = Messages.get_message_by_id(message_id)
     if not message:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
     if message.channel_id != id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT())
 
     try:
         Messages.add_reaction_to_message(message_id, user.id, form_data.name)
@@ -816,9 +662,7 @@ async def add_reaction_to_message(
         return True
     except Exception as e:
         log.exception(e)
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT())
 
 
 ############################
@@ -832,32 +676,22 @@ async def remove_reaction_by_id_and_user_id_and_name(
 ):
     channel = Channels.get_channel_by_id(id)
     if not channel:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
     if user.role != "admin" and not has_access(
         user.id, type="write", access_control=channel.access_control, strict=False
     ):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT())
 
     message = Messages.get_message_by_id(message_id)
     if not message:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
     if message.channel_id != id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT())
 
     try:
-        Messages.remove_reaction_by_id_and_user_id_and_name(
-            message_id, user.id, form_data.name
-        )
+        Messages.remove_reaction_by_id_and_user_id_and_name(message_id, user.id, form_data.name)
 
         message = Messages.get_message_by_id(message_id)
 
@@ -882,9 +716,7 @@ async def remove_reaction_by_id_and_user_id_and_name(
         return True
     except Exception as e:
         log.exception(e)
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT())
 
 
 ############################
@@ -893,36 +725,24 @@ async def remove_reaction_by_id_and_user_id_and_name(
 
 
 @router.delete("/{id}/messages/{message_id}/delete", response_model=bool)
-async def delete_message_by_id(
-    id: str, message_id: str, user=Depends(get_verified_user)
-):
+async def delete_message_by_id(id: str, message_id: str, user=Depends(get_verified_user)):
     channel = Channels.get_channel_by_id(id)
     if not channel:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
     message = Messages.get_message_by_id(message_id)
     if not message:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
     if message.channel_id != id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT())
 
     if (
         user.role != "admin"
         and message.user_id != user.id
-        and not has_access(
-            user.id, type="write", access_control=channel.access_control, strict=False
-        )
+        and not has_access(user.id, type="write", access_control=channel.access_control, strict=False)
     ):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.DEFAULT())
 
     try:
         Messages.delete_message_by_id(message_id)
@@ -967,6 +787,4 @@ async def delete_message_by_id(
         return True
     except Exception as e:
         log.exception(e)
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT()
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.DEFAULT())

@@ -19,6 +19,7 @@ Analysis of the codebase revealed significant code duplication across 10+ agent 
 - **Port configuration**: Duplicated in 3 files
 
 This duplication led to:
+
 - **Maintenance burden**: Bug fixes needed in multiple places
 - **Inconsistency**: Different implementations with subtle variations
 - **Testing overhead**: Same logic tested multiple times
@@ -33,12 +34,14 @@ We created four new shared modules in `src/pkg/shared/`:
 **Purpose**: Centralize authentication and authorization logic.
 
 **Key Functions**:
+
 - `load_bearer_token_from_env()`: Load token from env or .env file
 - `verify_token_httpbearer()`: Verify token using HTTPBearer security
 - `verify_token_header()`: Verify token from Authorization header
 - `create_token_verifier()`: Factory to create token verifier dependencies
 
 **Example Usage**:
+
 ```python
 from src.pkg.shared import load_bearer_token_from_env, create_token_verifier
 
@@ -59,6 +62,7 @@ async def protected_endpoint(user: str = Depends(verify_token)):
 **Purpose**: Provide standard Pydantic models for all agents.
 
 **Key Models**:
+
 - `CommandRequest`: Generic command request (Option-2-Flow)
 - `HealthResponse`: Standard health check response
 - `ServiceInfo`: Service information for root endpoint
@@ -66,11 +70,13 @@ async def protected_endpoint(user: str = Depends(verify_token)):
 - `ErrorResponse`: Generic error response
 
 **Helper Functions**:
+
 - `get_current_timestamp_iso()`: Get ISO 8601 timestamp
 - `create_health_response()`: Factory for health responses
 - `create_service_info()`: Factory for service info
 
 **Example Usage**:
+
 ```python
 from src.pkg.shared import create_health_response
 
@@ -90,11 +96,13 @@ async def health():
 **Purpose**: Provide common data persistence patterns.
 
 **Key Classes**:
+
 - `BaseDataStore[T]`: Abstract base class for JSON stores
 - `JSONDataStore`: Simple dictionary-based store
 - `AuditLog`: JSONL append-only audit log (WORM-compliant)
 
 **Features**:
+
 - Generic type support
 - Automatic serialization/deserialization
 - CRUD operations (add, remove, find, find_all)
@@ -102,6 +110,7 @@ async def health():
 - JSONL format for audit logs
 
 **Example Usage**:
+
 ```python
 from src.pkg.shared import BaseDataStore, AuditLog
 from dataclasses import dataclass, asdict
@@ -115,7 +124,7 @@ class Profile:
 class ProfileStore(BaseDataStore[Profile]):
     def _serialize(self, item):
         return asdict(item)
-    
+
     def _deserialize(self, data):
         return Profile(**data)
 
@@ -139,14 +148,17 @@ audit.log(
 **Purpose**: Centralize configuration management with validation.
 
 **Key Functions**:
+
 - `validate_port()`: Validate port against policy (12344-12399, not 8080)
 - `get_port_from_env()`: Get and validate port from environment
 
 **Constants**:
+
 - `ALLOWED_PORT_RANGE`: Valid port range (12344-12399)
 - `FORBIDDEN_PORTS`: Forbidden ports ([8080])
 
 **Example Usage**:
+
 ```python
 from src.pkg.shared import get_port_from_env
 
@@ -233,7 +245,7 @@ async def health():
 class PermissionStore(BaseDataStore[Permission]):
     def _serialize(self, item):
         return item.model_dump()
-    
+
     def _deserialize(self, data):
         return Permission(**data)
 ```
@@ -257,21 +269,25 @@ python3 -m pytest project-root/tests/unit/test_shared_*.py -v
 ## Benefits
 
 ### Code Reduction
+
 - **Before**: ~2,000 lines of duplicated code across 10 files
 - **After**: ~500 lines in shared modules (75% reduction)
 - **Per Agent**: 100-200 lines saved per agent file
 
 ### Maintainability
+
 - **Single source of truth**: Bug fixes in one place
 - **Consistent behavior**: All agents use same implementation
 - **Easier updates**: Change once, affects all agents
 
 ### Testing
+
 - **Test once**: Shared modules tested comprehensively
 - **Higher confidence**: 56 unit tests covering edge cases
 - **Faster test execution**: Don't re-test same logic
 
 ### Developer Experience
+
 - **Cleaner code**: Agents focus on business logic
 - **Faster development**: Reuse instead of rewrite
 - **Better documentation**: Centralized docs for common patterns
@@ -287,6 +303,7 @@ python3 -m pytest project-root/tests/unit/test_shared_*.py -v
 ## Support
 
 For questions or issues with the shared modules:
+
 1. Check this documentation first
 2. Review the unit tests for usage examples
 3. Check inline code documentation (docstrings)

@@ -1,9 +1,9 @@
 # 🔓 opena11 - Unlock Master (RBAC & Permission Store)
 
-**Agent-ID:** `opena11`  
-**Port:** 12356  
-**Kürzel:** `unlockp`  
-**Version:** 2.0  
+**Agent-ID:** `opena11`
+**Port:** 12356
+**Kürzel:** `unlockp`
+**Version:** 2.0
 **Status:** ✅ RUNNING (PID: siehe logs/opena11.pid)
 
 ---
@@ -195,5 +195,5 @@ curl http://127.0.0.1:12356/metrics
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 21. November 2025

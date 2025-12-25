@@ -1,37 +1,37 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 scan_project: Rekursiver Repo-Scanner für ChatGPT-freundliche Projekt-Maps.
 Erzeugt: STRUCTURE.md, TREE.txt, files.csv, path_index.json, stats.json, violations.md
 Nur Python-Stdlib, performant für große Repos, cross-platform.
 """
+
 from __future__ import annotations
 
-import os
-import sys
-import json
-import csv
 import argparse
-import time
+import csv
+import json
+import os
 import platform
-from collections import defaultdict, Counter
-from typing import List, Dict, Any, Tuple
+import sys
+import time
+from collections import Counter, defaultdict
+from typing import Any
 
 # Lokale Utils
 sys.path.insert(0, os.path.dirname(__file__))
 try:
     from _common import (
-        relpath_posix,
-        iso_utc,
         file_ext,
-        path_depth,
+        human_bytes,
         is_executable,
         is_probably_binary,
-        sha256_limited,
+        iso_utc,
         load_gitignore_patterns,
-        should_exclude,
+        path_depth,
+        relpath_posix,
         render_tree,
-        human_bytes,
+        sha256_limited,
+        should_exclude,
     )
 except ImportError as e:
     print(f"[ERROR] Could not import _common: {e}", file=sys.stderr)
@@ -73,9 +73,7 @@ VIOLATION_LARGE_BYTES = 25 * 1024 * 1024  # 25 MB
 
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(
-        description="Scan repository and build ChatGPT-friendly project map."
-    )
+    p = argparse.ArgumentParser(description="Scan repository and build ChatGPT-friendly project map.")
     p.add_argument("--root", default=".", help="Root directory to scan")
     p.add_argument("--out", default="project_map", help="Output directory")
     p.add_argument(
@@ -111,8 +109,8 @@ def main() -> int:
     gitignore_patterns = load_gitignore_patterns(root)
     hard_excludes = set(DEFAULT_EXCLUDES)
 
-    files: List[Dict[str, Any]] = []
-    errors: List[str] = []
+    files: list[dict[str, Any]] = []
+    errors: list[str] = []
     skipped: int = 0
     processed: int = 0
 
@@ -198,17 +196,14 @@ def main() -> int:
     # Summaries
     total_size = sum(f["size_bytes"] for f in files)
     by_ext = Counter(f["ext"] for f in files)
-    by_top = Counter(
-        (f["path"].split("/", 1)[0] if "/" in f["path"] else f["path"])
-        for f in files
-    )
+    by_top = Counter((f["path"].split("/", 1)[0] if "/" in f["path"] else f["path"]) for f in files)
 
     # Hotspots
     largest = sorted(files, key=lambda x: x["size_bytes"], reverse=True)[:20]
     youngest = sorted(files, key=lambda x: x["mtime_iso"], reverse=True)[:20]
 
     # Violations
-    violations: List[str] = []
+    violations: list[str] = []
 
     too_deep = [f for f in files if f["depth"] > VIOLATION_MAX_DEPTH]
     for f in too_deep:
@@ -217,16 +212,14 @@ def main() -> int:
     too_large = [f for f in files if f["size_bytes"] >= VIOLATION_LARGE_BYTES]
     for f in too_large:
         sz = human_bytes(f["size_bytes"])
-        violations.append(
-            f"[SIZE ≥{human_bytes(VIOLATION_LARGE_BYTES)}] {f['path']} ({sz})"
-        )
+        violations.append(f"[SIZE ≥{human_bytes(VIOLATION_LARGE_BYTES)}] {f['path']} ({sz})")
 
     bin_in_src = [f for f in files if f["is_binary"] and f["path"].startswith("src/")]
     for f in bin_in_src:
         violations.append(f"[BINARY_IN_SRC] {f['path']}")
 
     # Duplizierte Dateinamen
-    name_map: Dict[str, List[str]] = defaultdict(list)
+    name_map: dict[str, list[str]] = defaultdict(list)
     for f in files:
         name_map[os.path.basename(f["path"])].append(f["path"])
     dup_names = {k: v for k, v in name_map.items() if len(v) > 1}
@@ -245,37 +238,23 @@ def main() -> int:
 
     # === STRUCTURE.md (kompakt) ===
     print("[PROGRESS] Generating STRUCTURE.md", file=sys.stderr)
-    struct_tree = render_tree(
-        root, (f["path"] for f in files), max_depth=args.max_tree_depth
-    )
-    struct_md: List[str] = []
+    struct_tree = render_tree(root, (f["path"] for f in files), max_depth=args.max_tree_depth)
+    struct_md: list[str] = []
     struct_md.append("# Project Structure\n")
     struct_md.append(f"- **Root**: `{os.path.basename(root)}`")
     struct_md.append(f"- **Scanned**: `{iso_utc(time.time())}`")
     struct_md.append(
         f"- **Host**: `{platform.system()} {platform.release()}` · Python: `{platform.python_version()}`\n"
     )
-    struct_md.append(
-        f"| Metric | Value |"
-    )
-    struct_md.append(
-        f"|---|---|"
-    )
-    struct_md.append(
-        f"| **Files** | {len(files)} |"
-    )
-    struct_md.append(
-        f"| **Total Size** | {human_bytes(total_size)} |"
-    )
-    struct_md.append(
-        f"| **Skipped** | {skipped} |"
-    )
-    struct_md.append(
-        f"| **Duration** | {time.time() - t0:.1f}s |\n"
-    )
+    struct_md.append("| Metric | Value |")
+    struct_md.append("|---|---|")
+    struct_md.append(f"| **Files** | {len(files)} |")
+    struct_md.append(f"| **Total Size** | {human_bytes(total_size)} |")
+    struct_md.append(f"| **Skipped** | {skipped} |")
+    struct_md.append(f"| **Duration** | {time.time() - t0:.1f}s |\n")
 
     # Directory Tree
-    struct_md.append("## Directory Tree (depth ≤ {})\n".format(args.max_tree_depth))
+    struct_md.append(f"## Directory Tree (depth ≤ {args.max_tree_depth})\n")
     struct_md.append("```text")
     struct_md.append(struct_tree)
     struct_md.append("```\n")

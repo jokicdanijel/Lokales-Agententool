@@ -14,9 +14,11 @@ Das **Entitlements-System** ist vollständig datengetrieben und CI-fähig. Alle 
 ## 📦 Deliverables
 
 ### 1. `scripts/build_entitlements.py` (500+ Zeilen)
+
 **Entitlements-Generator**
 
 #### Funktionen:
+
 - ✅ Lädt `system_baseline.yaml` + `agent_inventory.json`
 - ✅ Generiert `build/entitlements.json` (plan → agent → {visible, clickable, limits, gates})
 - ✅ Enforced Basic: EXAKT 4 klickbare Agenten (opena3, opena4, opena7, opena11)
@@ -26,6 +28,7 @@ Das **Entitlements-System** ist vollständig datengetrieben und CI-fähig. Alle 
 - ✅ System-Agenten (opena20, opena21): sichtbar, nicht klickbar
 
 #### Constraints:
+
 ```python
 CORE_AGENTS = ['opena1', 'opena2']
 SYSTEM_AGENTS = ['opena20', 'opena21']
@@ -34,6 +37,7 @@ BASIC_CLICKABLE = ['opena3', 'opena4', 'opena7', 'opena11']
 ```
 
 #### Output-Struktur:
+
 ```json
 {
   "basic": {
@@ -74,9 +78,11 @@ BASIC_CLICKABLE = ['opena3', 'opena4', 'opena7', 'opena11']
 ```
 
 ### 2. `scripts/validate_entitlements.py` (400+ Zeilen)
+
 **Entitlements-Validator**
 
 #### Validierungen:
+
 1. ✅ **Structure** - Alle 4 Pläne vorhanden
 2. ✅ **Basic Constraint** - EXAKT 4 klickbare Agenten (opena3, opena4, opena7, opena11)
 3. ✅ **Inclusion Ordering** - ultimum ⊇ premium ⊇ pro ⊇ basic
@@ -86,10 +92,12 @@ BASIC_CLICKABLE = ['opena3', 'opena4', 'opena7', 'opena11']
 7. ✅ **Limits Monotonicity** - Limits steigen mit Plan-Tier
 
 #### Exit-Codes:
+
 - `0`: Alle Validierungen bestanden
 - `1`: Validierung fehlgeschlagen (CI sollte fehlschlagen)
 
 ### 3. `build/entitlements.json` (24 KB)
+
 **Generierte Entitlements**
 
 - 4 Pläne (basic, pro, premium, ultimum)
@@ -98,6 +106,7 @@ BASIC_CLICKABLE = ['opena3', 'opena4', 'opena7', 'opena11']
 - Metadata (baseline_hash, generation timestamp)
 
 ### 4. `artifacts/entitlements_validation.json` (2 KB)
+
 **Validierungsergebnis**
 
 ```json
@@ -121,6 +130,7 @@ BASIC_CLICKABLE = ['opena3', 'opena4', 'opena7', 'opena11']
 ```
 
 ### 5. `system_baseline.yaml` (3.1 KB)
+
 **Baseline-Definition**
 
 Auto-generiert mit allen 21 Agenten und Plan-Definitionen.
@@ -130,6 +140,7 @@ Auto-generiert mit allen 21 Agenten und Plan-Definitionen.
 ## 🔐 Harte Regeln (100% durchgesetzt)
 
 ### ✅ Basic-Plan
+
 - **EXAKT 4 klickbare Agenten**: opena3, opena4, opena7, opena11
 - **Workflows**: 4 pro Agent
 - **Logs**: read-only
@@ -137,6 +148,7 @@ Auto-generiert mit allen 21 Agenten und Plan-Definitionen.
 - **API Calls**: 1000/Tag
 
 ### ✅ Inclusion-Regel
+
 ```
 ultimum ⊇ premium ⊇ pro ⊇ basic
 
@@ -147,10 +159,12 @@ ultimum: 17 clickable (premium + 5)
 ```
 
 ### ✅ Core-Agenten (opena1, opena2)
+
 - **Immer sichtbar** in allen Plänen
 - **NIE klickbar** (Infrastructure)
 
 ### ✅ System-Agenten (opena20, opena21)
+
 - **Sichtbar** aber nicht klickbar
 - **Monitoring/Orchestration** only
 
@@ -224,6 +238,7 @@ jq '.basic | {clickable_count, limits}' build/entitlements.json
 ```
 
 **Output:**
+
 ```json
 {
   "clickable_count": 4,
@@ -247,6 +262,7 @@ done
 ```
 
 **Output:**
+
 ```
 basic:
 opena3
@@ -305,6 +321,7 @@ jq '.summary' artifacts/entitlements_validation.json
 ```
 
 **Output:**
+
 ```json
 {
   "total_validations": 9,

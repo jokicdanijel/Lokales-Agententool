@@ -32,6 +32,7 @@
 **Ziel:** Verzeichnisstruktur + Dateimanifest validieren
 
 **Aktuell:**
+
 - ✅ `.github/` – Copilot guidelines, completion checklist
 - ✅ `19.dashboard_agent/docs/` – All documentation
 - ✅ `19.dashboard_agent/docs/PDI/` – Project manifest, chapters
@@ -39,6 +40,7 @@
 - ✅ `19.dashboard_agent/bin/` – Service scripts (18 scripts, all executable)
 
 **Anforderungen für Phase 4:**
+
 - [ ] `docs/PDI/artefacts/` – Generated schemas, configs
 - [ ] `extension/` – VS Code Extension code
 - [ ] `.github/workflows/` – CI/CD pipelines
@@ -53,11 +55,13 @@
 **Ziel:** Cross-file Validierung (Token, Ports, Konventionen)
 
 ### Token Handling
+
 - ✅ All endpoints (except `/health`) require Bearer Token
 - ✅ Token from `.env` (auto-generated if missing)
 - ✅ Validation: `security.py` in all services
 
 ### Port Consistency
+
 - ✅ Dashboard: 12349
 - ✅ Agents: 12344–12346
 - ✅ opena3: 12347
@@ -66,10 +70,12 @@
 - ✅ OpenWebUI: 8080
 
 ### Error Response Format
+
 - ✅ All errors: `{"detail": "message"}`
 - ✅ HTTP status codes: 401 (auth), 403 (forbidden), 429 (rate limit), 502 (unavailable)
 
 ### Logging Convention
+
 - ✅ Format: print() or logging module
 - ✅ Output: `logs/{service}.nohup.log`
 - ✅ No hardcoded paths (use env vars)
@@ -109,28 +115,33 @@ Vor Phase 4 Start:
 Alle 20 Positionen folgen diesem DoD:
 
 ### Code
+
 - [ ] Lint passes (Python black/pylint, Bash shellcheck, TS eslint)
 - [ ] Type hints complete
 - [ ] Error handling comprehensive
 - [ ] No hardcoded paths/tokens
 
 ### Testing
+
 - [ ] Unit tests pass (>80% coverage)
 - [ ] Integration tests pass
 - [ ] Local smoke test passes
 - [ ] No regressions from Phase 3
 
 ### Documentation
+
 - [ ] README/docstring for each module
 - [ ] OpenAPI schema updated
 - [ ] Changelog entry added
 - [ ] Examples provided (cURL, Python, TS)
 
 ### Safepoints
+
 - [ ] ≥1 safepoint written to `archivp/`
 - [ ] Metadata correct (timestamp, status, duration)
 
 ### Validation
+
 - [ ] Lint report clean
 - [ ] Build succeeds locally
 - [ ] `bin/ops.sh verify` passes
@@ -166,15 +177,15 @@ bin/ops.sh logs | head -30
 
 ## 📝 Change History
 
-| Date | Phase | Event | Status |
-|------|-------|-------|--------|
-| 2025-11-06 | 3 | 41/41 tasks complete | ✅ |
-| 2025-11-06 | 4 | Manifest v1.0 created | ✅ |
-| 2025-11-06 | 4 | Kapitelplan (20 pos.) created | ✅ |
-| 2025-11-06 | 4 | Validation framework created | ✅ |
-| 2025-11-07 | 4 | Position 01 implementation starts | 🔜 |
-| — | 4 | All 20 positions complete | 🔜 |
-| — | 4 | v1.0 release + GitHub | 🔜 |
+| Date       | Phase | Event                             | Status |
+| ---------- | ----- | --------------------------------- | ------ |
+| 2025-11-06 | 3     | 41/41 tasks complete              | ✅     |
+| 2025-11-06 | 4     | Manifest v1.0 created             | ✅     |
+| 2025-11-06 | 4     | Kapitelplan (20 pos.) created     | ✅     |
+| 2025-11-06 | 4     | Validation framework created      | ✅     |
+| 2025-11-07 | 4     | Position 01 implementation starts | 🔜     |
+| —          | 4     | All 20 positions complete         | 🔜     |
+| —          | 4     | v1.0 release + GitHub             | 🔜     |
 
 ---
 

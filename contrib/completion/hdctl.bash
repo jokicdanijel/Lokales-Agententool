@@ -7,10 +7,10 @@ _hdctl_completion() {
     local cur="${COMP_WORDS[COMP_CWORD]}"
     local prev="${COMP_WORDS[COMP_CWORD-1]}"
     local first="${COMP_WORDS[1]}"
-    
+
     # Base commands
     local commands="login logout pages users jobs env help version"
-    
+
     case $first in
         login)
             # login <username>
@@ -87,7 +87,7 @@ _hdctl_completion() {
             fi
             ;;
     esac
-    
+
     return 0
 }
 
@@ -95,18 +95,18 @@ _hdctl_completion() {
 _hdctl_page_ids() {
     local token="${HDCTL_TOKEN:-250886}"
     local api_url="${HDCTL_API:-http://127.0.0.1:12399}"
-    
+
     # Fetch page IDs from API with timeout
     local pages=$(curl -s -m 2 \
         -H "Authorization: Bearer $token" \
         "$api_url/agenda/pages" 2>/dev/null | \
         jq -r '.[].id' 2>/dev/null || echo "")
-    
+
     if [[ -z "$pages" ]]; then
         # Fallback: static list if API unavailable
         pages=$(seq 1 16)
     fi
-    
+
     COMPREPLY=($(compgen -W "$pages" -- "$cur"))
 }
 
@@ -114,12 +114,12 @@ _hdctl_page_ids() {
 _hdctl_users() {
     local token="${HDCTL_TOKEN:-250886}"
     local api_url="${HDCTL_API:-http://127.0.0.1:12399}"
-    
+
     local users=$(curl -s -m 2 \
         -H "Authorization: Bearer $token" \
         "$api_url/users" 2>/dev/null | \
         jq -r '.[].username' 2>/dev/null || echo "admin")
-    
+
     COMPREPLY=($(compgen -W "$users" -- "$cur"))
 }
 
@@ -127,12 +127,12 @@ _hdctl_users() {
 _hdctl_job_ids() {
     local token="${HDCTL_TOKEN:-250886}"
     local api_url="${HDCTL_API:-http://127.0.0.1:12399}"
-    
+
     local jobs=$(curl -s -m 2 \
         -H "Authorization: Bearer $token" \
         "$api_url/jobs" 2>/dev/null | \
         jq -r '.[].id' 2>/dev/null || echo "")
-    
+
     COMPREPLY=($(compgen -W "$jobs" -- "$cur"))
 }
 
@@ -140,12 +140,12 @@ _hdctl_job_ids() {
 _hdctl_env_vars() {
     local token="${HDCTL_TOKEN:-250886}"
     local api_url="${HDCTL_API:-http://127.0.0.1:12399}"
-    
+
     local vars=$(curl -s -m 2 \
         -H "Authorization: Bearer $token" \
         "$api_url/env" 2>/dev/null | \
         jq -r 'keys[]' 2>/dev/null || env | cut -d= -f1 | sort)
-    
+
     COMPREPLY=($(compgen -W "$vars" -- "$cur"))
 }
 

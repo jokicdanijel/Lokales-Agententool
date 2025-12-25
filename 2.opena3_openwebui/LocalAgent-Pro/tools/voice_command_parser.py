@@ -6,16 +6,17 @@ Production tool for command-based voice control
 
 import sys
 from pathlib import Path
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.speech_input import SpeechInput
-import subprocess
 import os
+
+from src.speech_input import SpeechInput
 
 
 class VoiceCommandParser:
     """Parse and execute voice commands"""
-    
+
     def __init__(self, language="de-DE"):
         self.speech = SpeechInput(language=language)
         self.commands = {
@@ -26,7 +27,7 @@ class VoiceCommandParser:
             "system-information": self.system_info,
             "beende": self.exit_program,
         }
-    
+
     def open_file(self, path):
         """Open file with default application"""
         try:
@@ -36,7 +37,7 @@ class VoiceCommandParser:
         except Exception as e:
             print(f"❌ Fehler: {e}")
             return False
-    
+
     def create_file(self, path):
         """Create new file"""
         try:
@@ -46,7 +47,7 @@ class VoiceCommandParser:
         except Exception as e:
             print(f"❌ Fehler: {e}")
             return False
-    
+
     def delete_file(self, path):
         """Delete file"""
         try:
@@ -60,7 +61,7 @@ class VoiceCommandParser:
         except Exception as e:
             print(f"❌ Fehler: {e}")
             return False
-    
+
     def list_directory(self, path="."):
         """List directory contents"""
         try:
@@ -77,7 +78,7 @@ class VoiceCommandParser:
         except Exception as e:
             print(f"❌ Fehler: {e}")
             return False
-    
+
     def system_info(self):
         """Show system information"""
         try:
@@ -87,29 +88,29 @@ class VoiceCommandParser:
         except Exception as e:
             print(f"❌ Fehler: {e}")
             return False
-    
+
     def exit_program(self):
         """Exit program"""
         print("👋 Auf Wiedersehen!")
         sys.exit(0)
-    
+
     def parse_and_execute(self, text):
         """Parse voice command and execute"""
         text_lower = text.lower()
-        
+
         for command_phrase, handler in self.commands.items():
             if command_phrase in text_lower:
                 # Extract parameter if present
                 param = text_lower.replace(command_phrase, "").strip()
-                
+
                 if param:
                     return handler(param)
                 else:
                     return handler() if command_phrase != "datei öffnen" else handler(".")
-        
+
         print(f"❌ Unbekannter Befehl: {text}")
         return False
-    
+
     def run_interactive(self):
         """Run interactive voice command mode"""
         print("\n" + "=" * 60)
@@ -123,7 +124,7 @@ class VoiceCommandParser:
         print("  • system-information")
         print("  • beende")
         print("\nSprich einen Befehl...\n")
-        
+
         while True:
             try:
                 command = self.speech.listen_once()

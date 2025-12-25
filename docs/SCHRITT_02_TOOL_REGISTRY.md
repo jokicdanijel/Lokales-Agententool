@@ -100,14 +100,14 @@ Request: POST /api/dispatch
 
 ### 3.1 Default Agents (Initialized)
 
-| Agent ID | Name | Port | Role | Enabled | Tools |
-|----------|------|------|------|---------|-------|
-| opena1 | Koordinator | 12344 | Koordinator | ✅ | status, invoke, log |
-| opena2 | Archivator | 12348 | Persistence | ✅ | store, query, dedupe |
-| opena3 | OpenWebUI | 8080 | UI | ✅ | browse, chat, display |
-| opena4 | Telegram Agent | 12347 | Messenger | ✅ | send_message, receive_message, notify |
-| opena5 | VS Code Bridge | 12348 | Editor | ⏸️ | edit_file, diff, apply_patch |
-| opena20 | Monitoring | 12349 | Monitoring | ⏸️ | health_check, metrics, alert |
+| Agent ID | Name           | Port  | Role        | Enabled | Tools                                 |
+| -------- | -------------- | ----- | ----------- | ------- | ------------------------------------- |
+| opena1   | Koordinator    | 12344 | Koordinator | ✅      | status, invoke, log                   |
+| opena2   | Archivator     | 12348 | Persistence | ✅      | store, query, dedupe                  |
+| opena3   | OpenWebUI      | 8080  | UI          | ✅      | browse, chat, display                 |
+| opena4   | Telegram Agent | 12347 | Messenger   | ✅      | send_message, receive_message, notify |
+| opena5   | VS Code Bridge | 12348 | Editor      | ⏸️      | edit_file, diff, apply_patch          |
+| opena20  | Monitoring     | 12349 | Monitoring  | ⏸️      | health_check, metrics, alert          |
 
 ### 3.2 Tool Categories
 
@@ -145,6 +145,7 @@ Index:   archivp/YYYY/MM/DD/index.jsonl (append-only)
 ### 4.1 Registry Queries
 
 #### GET /api/tools
+
 List all available tools
 
 ```bash
@@ -152,6 +153,7 @@ curl -s http://127.0.0.1:12349/api/tools | jq .
 ```
 
 Response:
+
 ```json
 {
   "ok": true,
@@ -162,7 +164,7 @@ Response:
       "agent_name": "Koordinator",
       "port": 12344,
       "tools": [
-        {"id": "status", "name": "Service Status", "category": "monitor"}
+        { "id": "status", "name": "Service Status", "category": "monitor" }
       ]
     }
   }
@@ -170,6 +172,7 @@ Response:
 ```
 
 #### GET /api/tools/{tool_id}
+
 Get tool details
 
 ```bash
@@ -177,6 +180,7 @@ curl -s http://127.0.0.1:12349/api/tools/browse | jq .
 ```
 
 Response:
+
 ```json
 {
   "id": "browse",
@@ -191,11 +195,12 @@ Response:
   },
   "timeout": 30,
   "requires_auth": true,
-  "params": {"url": "string (required)"}
+  "params": { "url": "string (required)" }
 }
 ```
 
 #### GET /api/agents
+
 List all agents
 
 ```bash
@@ -203,6 +208,7 @@ curl -s http://127.0.0.1:12349/api/agents | jq .
 ```
 
 #### GET /api/status
+
 Registry status overview
 
 ```bash
@@ -210,6 +216,7 @@ curl -s http://127.0.0.1:12349/api/status | jq .
 ```
 
 Response:
+
 ```json
 {
   "ok": true,
@@ -218,14 +225,15 @@ Response:
   "enabled_agents": 4,
   "total_tools": 10,
   "active_tools": 9,
-  "agents_by_role": {"Koordinator": 1, "Persistence": 1, "UI": 1},
-  "tools_by_category": {"browse": 2, "analyze": 1, "edit": 1}
+  "agents_by_role": { "Koordinator": 1, "Persistence": 1, "UI": 1 },
+  "tools_by_category": { "browse": 2, "analyze": 1, "edit": 1 }
 }
 ```
 
 ### 4.2 Tool Dispatch
 
 #### POST /api/dispatch
+
 Dispatch a tool command (creates safepoints)
 
 ```bash
@@ -242,16 +250,18 @@ curl -X POST http://127.0.0.1:12349/api/dispatch \
 ```
 
 Request (DispatchRequest):
+
 ```json
 {
   "tool_id": "browse",
-  "params": {"url": "https://example.com"},
+  "params": { "url": "https://example.com" },
   "source_agent": "dashboard",
-  "request_id": "req-12345"  // Auto-generated if not provided
+  "request_id": "req-12345" // Auto-generated if not provided
 }
 ```
 
 Response (Success):
+
 ```json
 {
   "ok": true,
@@ -270,6 +280,7 @@ Response (Success):
 ```
 
 Response (Error):
+
 ```json
 {
   "ok": false,
@@ -297,7 +308,7 @@ When a tool is dispatched:
   "request_id": "req-12345",
   "payload": {
     "tool": "browse",
-    "params": {"url": "https://example.com"},
+    "params": { "url": "https://example.com" },
     "timestamp": "2025-11-10T12:34:57Z"
   }
 }
@@ -382,6 +393,7 @@ Location: `archivp/2025/11/10/index.jsonl` (append-only, never overwritten)
 - `print_summary()` – Print human-readable summary
 
 **Singleton:**
+
 ```python
 from tool_registry import get_registry
 registry = get_registry()
@@ -408,7 +420,7 @@ tool = registry.get_tool("browse")
 **SafepointWriter:**
 
 - `get_date_folder()` – Get/create archivp/YYYY/MM/DD folder
-- `create_safepoint_name(src, dst, kind)` – Generate SP<ts>_src→dst_KIND.json
+- `create_safepoint_name(src, dst, kind)` – Generate SP<ts>\_src→dst_KIND.json
 - `write_safepoint(src, dst, kind, payload, request_id)` – Write SP file + index entry
 
 **Usage Example:**
@@ -456,14 +468,14 @@ asyncio.run(main())
 
 ### 7.1 Error Codes
 
-| Code | Meaning | HTTP |
-|------|---------|------|
-| TOOL_NOT_FOUND | Tool doesn't exist in registry | 404 |
-| AGENT_NOT_AVAILABLE | Agent disabled or unreachable | 503 |
-| AUTHORIZATION_FAILED | Missing/invalid auth token | 401 |
-| DISPATCH_ERROR | Generic dispatch error | 400 |
-| TIMEOUT | Tool execution exceeded timeout | 504 |
-| VALIDATION_ERROR | Request validation failed | 400 |
+| Code                 | Meaning                         | HTTP |
+| -------------------- | ------------------------------- | ---- |
+| TOOL_NOT_FOUND       | Tool doesn't exist in registry  | 404  |
+| AGENT_NOT_AVAILABLE  | Agent disabled or unreachable   | 503  |
+| AUTHORIZATION_FAILED | Missing/invalid auth token      | 401  |
+| DISPATCH_ERROR       | Generic dispatch error          | 400  |
+| TIMEOUT              | Tool execution exceeded timeout | 504  |
+| VALIDATION_ERROR     | Request validation failed       | 400  |
 
 ### 7.2 Error Response (Schema 8.3)
 

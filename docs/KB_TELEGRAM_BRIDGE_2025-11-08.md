@@ -1,24 +1,24 @@
 # 📱 Telegram-Bridge Module – opena4_telegram KB
 
-**Erstellt:** Nov 8, 2025 18:50 UTC  
-**Version:** 1.0  
-**Status:** 🟢 OPERATIONAL (8/8 Tests Passed)  
+**Erstellt:** Nov 8, 2025 18:50 UTC
+**Version:** 1.0
+**Status:** 🟢 OPERATIONAL (8/8 Tests Passed)
 **Last Verified:** Nov 8, 18:11 UTC
 
 ---
 
 ## 🎯 Service Overview
 
-| Eigenschaft | Wert |
-|-------------|------|
-| **Port** | 12348 |
-| **File** | `19.dashboard_agent/main_opena4_telegram.py` (13 KB) |
-| **Runtime** | Python 3.13 + FastAPI + Uvicorn |
-| **Status** | ✅ LIVE & TESTED |
-| **Test Suite** | 8/8 Passed |
-| **Last Test** | Nov 8, 18:11 UTC |
-| **Uptime** | 100% (since Nov 8, 18:09) |
-| **Process ID** | 2765460 (Nov 8) |
+| Eigenschaft    | Wert                                                 |
+| -------------- | ---------------------------------------------------- |
+| **Port**       | 12348                                                |
+| **File**       | `19.dashboard_agent/main_opena4_telegram.py` (13 KB) |
+| **Runtime**    | Python 3.13 + FastAPI + Uvicorn                      |
+| **Status**     | ✅ LIVE & TESTED                                     |
+| **Test Suite** | 8/8 Passed                                           |
+| **Last Test**  | Nov 8, 18:11 UTC                                     |
+| **Uptime**     | 100% (since Nov 8, 18:09)                            |
+| **Process ID** | 2765460 (Nov 8)                                      |
 
 ---
 
@@ -64,13 +64,13 @@
 
 ## 🎛️ Command Routing Matrix
 
-| Command | Target Endpoint | Response Type | Example Output |
-|---------|-----------------|---------------|----------------|
-| **/balance** | opena_finance `/dashboard` | Portfolio Summary | "💰 Your Portfolio: 2 Accounts, €6,050.00" |
-| **/accounts** | opena_finance `/accounts` | Account List | "Account 1: Giro €1,000\nAccount 2: Savings €5,000" |
-| **/transactions** | opena_finance `/transactions` | Transaction List | "Recent: +€200, -€100, -€50..." |
-| **/help** | Internal (no API call) | Help Text | "Available: /balance /accounts /transactions /help" |
-| **(unknown)** | Error Handler | Error Message | "Unknown command" |
+| Command           | Target Endpoint               | Response Type     | Example Output                                      |
+| ----------------- | ----------------------------- | ----------------- | --------------------------------------------------- |
+| **/balance**      | opena_finance `/dashboard`    | Portfolio Summary | "💰 Your Portfolio: 2 Accounts, €6,050.00"          |
+| **/accounts**     | opena_finance `/accounts`     | Account List      | "Account 1: Giro €1,000\nAccount 2: Savings €5,000" |
+| **/transactions** | opena_finance `/transactions` | Transaction List  | "Recent: +€200, -€100, -€50..."                     |
+| **/help**         | Internal (no API call)        | Help Text         | "Available: /balance /accounts /transactions /help" |
+| **(unknown)**     | Error Handler                 | Error Message     | "Unknown command"                                   |
 
 ---
 
@@ -88,6 +88,7 @@ Every webhook call validates:
 ```
 
 **Configuration:**
+
 - Min Length: 16 characters (best: 20+)
 - Current: 31 chars (from .env)
 - Location: `.env` → `TELEGRAM_WEBHOOK_SECRET=...`
@@ -121,12 +122,14 @@ When calling opena_finance:
 **Endpoint:** `POST /webhook/telegram`
 
 **Headers:**
+
 ```
 X-Telegram-Bot-Api-Secret-Token: <webhook_secret>
 Content-Type: application/json
 ```
 
 **Request Payload (Telegram format):**
+
 ```json
 {
   "message": {
@@ -146,6 +149,7 @@ Content-Type: application/json
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "status": "ok",
@@ -155,6 +159,7 @@ Content-Type: application/json
 ```
 
 **Response (401 Unauthorized - Invalid Secret):**
+
 ```json
 {
   "detail": "Invalid webhook secret"
@@ -162,6 +167,7 @@ Content-Type: application/json
 ```
 
 **Response (403 Forbidden - User Not Whitelisted):**
+
 ```json
 {
   "detail": "User not in whitelist"
@@ -175,15 +181,18 @@ Content-Type: application/json
 **Endpoint:** `POST /message/send`
 
 **Query Parameters:**
+
 - `chat_id`: Telegram chat ID
 - `message`: Message text
 
 **Full URL Example:**
+
 ```
 POST http://127.0.0.1:12348/message/send?chat_id=123456789&message=Hello%20World
 ```
 
 **Response:**
+
 ```json
 {
   "sent": false,
@@ -200,14 +209,17 @@ POST http://127.0.0.1:12348/message/send?chat_id=123456789&message=Hello%20World
 **Endpoint:** `GET /messages/recent`
 
 **Query Parameters:**
+
 - `limit`: Number of messages to return (default: 5)
 
 **Full URL Example:**
+
 ```
 GET http://127.0.0.1:12348/messages/recent?limit=5
 ```
 
 **Response:**
+
 ```json
 {
   "count": 5,
@@ -236,6 +248,7 @@ GET http://127.0.0.1:12348/messages/recent?limit=5
 **Endpoint:** `GET /health`
 
 **Response (200 OK):**
+
 ```json
 {
   "status": "healthy",
@@ -254,6 +267,7 @@ GET http://127.0.0.1:12348/messages/recent?limit=5
 **Endpoint:** `GET /config`
 
 **Response:**
+
 ```json
 {
   "service": "opena4_telegram",
@@ -275,6 +289,7 @@ GET http://127.0.0.1:12348/messages/recent?limit=5
 **Zweck:** Fetch portfolio data for /balance, /accounts, /transactions
 
 **Endpoints aufgerufen:**
+
 - `GET /dashboard` – Portfolio summary (€ total)
 - `GET /accounts` – Account list with balances
 - `GET /transactions` – Transaction history
@@ -284,6 +299,7 @@ GET http://127.0.0.1:12348/messages/recent?limit=5
 **Latency:** ~20ms average
 
 **Fallback bei Fehler:**
+
 ```
 IF opena_finance returns 500
   THEN: Send to Telegram: "Finance service temporarily unavailable"
@@ -295,6 +311,7 @@ IF opena_finance returns 500
 **Zweck:** Log all incoming and outgoing messages
 
 **Endpoint aufgerufen:**
+
 - `POST /store/archivp` – Archive write
 
 **Latency:** ~10ms average
@@ -352,22 +369,23 @@ curl -s http://127.0.0.1:12345/archiv/last?n=5 | jq .
 ## 🧪 Testing
 
 ### Test Suite Location
+
 ```
 19.dashboard_agent/tests/test_opena4_telegram.sh
 ```
 
 ### Test Coverage (8 Tests, All Passing ✅)
 
-| Test # | Name | Status | Details |
-|--------|------|--------|---------|
-| 1 | Health Check | ✅ PASS | Service responds, port 12348 |
-| 2 | Configuration | ✅ PASS | Config endpoint accessible |
-| 3 | /help Webhook | ✅ PASS | Command parsed & logged |
-| 4 | /balance Webhook | ✅ PASS | Finance routing works |
-| 5 | /accounts Webhook | ✅ PASS | Finance routing works |
-| 6 | Invalid Secret (Reject) | ✅ PASS | 401 returned correctly |
-| 7 | Recent Messages | ✅ PASS | Archive query returns 5 items |
-| 8 | Message Send | ✅ PASS | Endpoint responds |
+| Test # | Name                    | Status  | Details                       |
+| ------ | ----------------------- | ------- | ----------------------------- |
+| 1      | Health Check            | ✅ PASS | Service responds, port 12348  |
+| 2      | Configuration           | ✅ PASS | Config endpoint accessible    |
+| 3      | /help Webhook           | ✅ PASS | Command parsed & logged       |
+| 4      | /balance Webhook        | ✅ PASS | Finance routing works         |
+| 5      | /accounts Webhook       | ✅ PASS | Finance routing works         |
+| 6      | Invalid Secret (Reject) | ✅ PASS | 401 returned correctly        |
+| 7      | Recent Messages         | ✅ PASS | Archive query returns 5 items |
+| 8      | Message Send            | ✅ PASS | Endpoint responds             |
 
 ### Running Tests
 
@@ -378,6 +396,7 @@ bash tests/test_opena4_telegram.sh
 ```
 
 **Expected Output:**
+
 ```
 ✅ Test 1/8: Health check passed
 ✅ Test 2/8: Config check passed
@@ -403,6 +422,7 @@ bash bin/start_opena4_telegram.sh
 ```
 
 **What Script Does:**
+
 1. Sources venv313 activation
 2. Creates `logs/` directory if missing
 3. Starts `opena4_telegram` via `nohup` (background)
@@ -415,6 +435,7 @@ bash bin/start_opena4_telegram.sh
 **Location:** `logs/opena4_telegram.nohup.log`
 
 **View Logs:**
+
 ```bash
 # Show last 20 lines
 tail -20 logs/opena4_telegram.nohup.log
@@ -449,11 +470,13 @@ pkill -f "python3.*main_opena4_telegram"
 ### Problem: Port 12348 already in use
 
 **Symptoms:**
+
 ```
 Address already in use
 ```
 
 **Solution:**
+
 ```bash
 # Find what's using the port
 lsof -i :12348
@@ -470,11 +493,13 @@ bash bin/start_opena4_telegram.sh
 ### Problem: Webhook secret not validating
 
 **Symptoms:**
+
 ```
 All webhook calls return 401 Unauthorized
 ```
 
 **Checklist:**
+
 1. Verify .env exists: `cat .env | grep TELEGRAM_WEBHOOK_SECRET`
 2. Min length is 16 chars (currently 31)
 3. Verify curl header includes it:
@@ -488,11 +513,13 @@ All webhook calls return 401 Unauthorized
 ### Problem: Finance API returning 500 errors
 
 **Symptoms:**
+
 ```
 Telegram users get: "Finance service temporarily unavailable"
 ```
 
 **Checklist:**
+
 1. Is opena_finance running?
    ```bash
    curl -s http://127.0.0.1:12347/health | jq .
@@ -511,12 +538,14 @@ Telegram users get: "Finance service temporarily unavailable"
 ### Problem: Messages not archived
 
 **Symptoms:**
+
 ```
 GET /messages/recent returns empty
 Archive doesn't show new Telegram messages
 ```
 
 **Checklist:**
+
 1. Is opena2 running?
    ```bash
    curl -s http://127.0.0.1:12345/health | jq .
@@ -534,26 +563,28 @@ Archive doesn't show new Telegram messages
 
 ## 📈 Performance Notes
 
-| Metric | Value | Notes |
-|--------|-------|-------|
-| Webhook Latency | ~20ms | Includes finance API call |
-| Archive Write | ~10ms | Append-only, very fast |
-| Throughput | ~30 req/sec | Telegram rate-limited |
-| Memory | ~50MB | Python + FastAPI + dependencies |
-| CPU (Idle) | <1% | Waiting for webhook calls |
-| CPU (Under Load) | <5% | During finance calls |
+| Metric           | Value       | Notes                           |
+| ---------------- | ----------- | ------------------------------- |
+| Webhook Latency  | ~20ms       | Includes finance API call       |
+| Archive Write    | ~10ms       | Append-only, very fast          |
+| Throughput       | ~30 req/sec | Telegram rate-limited           |
+| Memory           | ~50MB       | Python + FastAPI + dependencies |
+| CPU (Idle)       | <1%         | Waiting for webhook calls       |
+| CPU (Under Load) | <5%         | During finance calls            |
 
 ---
 
 ## ✅ Nov 9 Checklist
 
 ### Pre-Nov 9
+
 - [ ] opena4_telegram still running from Nov 8
 - [ ] Health check returns 200 OK
 - [ ] Test `/config` endpoint
 - [ ] Test `/health` endpoint
 
 ### Nov 9 Morning
+
 - [ ] Telegram service still responding
 - [ ] opena_finance running (needed for /balance)
 - [ ] opena2 running (needed for archive)
@@ -562,6 +593,7 @@ Archive doesn't show new Telegram messages
 - [ ] Archive entries from Nov 8 still queryable
 
 ### Integration with Dashboard (Nov 9 afternoon)
+
 - [ ] opena19 (Dashboard) started
 - [ ] Dashboard shows Telegram service as "healthy"
 - [ ] Dashboard shows latest Telegram messages
@@ -578,10 +610,10 @@ Archive doesn't show new Telegram messages
 
 ---
 
-**Status:** 🟢 OPERATIONAL  
-**Test Status:** 8/8 PASSING ✅  
-**Version:** 1.0  
-**Last Verified:** Nov 8, 18:11 UTC  
+**Status:** 🟢 OPERATIONAL
+**Test Status:** 8/8 PASSING ✅
+**Version:** 1.0
+**Last Verified:** Nov 8, 18:11 UTC
 
 ---
 

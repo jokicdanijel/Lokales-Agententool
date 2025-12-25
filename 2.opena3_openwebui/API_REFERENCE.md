@@ -81,15 +81,15 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 
 ### HTTP Status Codes
 
-| Code | Meaning | Example |
-|---|---|---|
-| `200` | OK - Request successful | `GET /api/status` |
-| `201` | Created - Resource created | `POST /api/file/write` |
-| `400` | Bad Request - Invalid input | `{"path": "../../etc/passwd"}` |
-| `403` | Forbidden - Access denied | `{"command": "sudo apt update"}` |
-| `404` | Not Found - Resource missing | `GET /nonexistent` |
-| `408` | Timeout - Execution exceeded limit | Long-running shell command |
-| `500` | Server Error - Unexpected error | Malformed JSON |
+| Code  | Meaning                            | Example                          |
+| ----- | ---------------------------------- | -------------------------------- |
+| `200` | OK - Request successful            | `GET /api/status`                |
+| `201` | Created - Resource created         | `POST /api/file/write`           |
+| `400` | Bad Request - Invalid input        | `{"path": "../../etc/passwd"}`   |
+| `403` | Forbidden - Access denied          | `{"command": "sudo apt update"}` |
+| `404` | Not Found - Resource missing       | `GET /nonexistent`               |
+| `408` | Timeout - Execution exceeded limit | Long-running shell command       |
+| `500` | Server Error - Unexpected error    | Malformed JSON                   |
 
 ### Error Response Format
 
@@ -104,14 +104,14 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 
 ### Common Error Messages
 
-| Error | Cause | Solution |
-|---|---|---|
-| `Invalid path` | Path traversal detected | Use relative paths only |
-| `File not found` | File doesn't exist | Verify file path and name |
-| `Command not allowed` | Command not whitelisted | Use allowed commands only |
-| `Program not found` | Program not in tools/ | Check program name exists |
-| `Only voice programs allowed` | Wrong file pattern | Use `voice_*.py` pattern |
-| `Command execution timeout` | Took >10 seconds | Optimize command or increase timeout |
+| Error                         | Cause                   | Solution                             |
+| ----------------------------- | ----------------------- | ------------------------------------ |
+| `Invalid path`                | Path traversal detected | Use relative paths only              |
+| `File not found`              | File doesn't exist      | Verify file path and name            |
+| `Command not allowed`         | Command not whitelisted | Use allowed commands only            |
+| `Program not found`           | Program not in tools/   | Check program name exists            |
+| `Only voice programs allowed` | Wrong file pattern      | Use `voice_*.py` pattern             |
+| `Command execution timeout`   | Took >10 seconds        | Optimize command or increase timeout |
 
 ---
 
@@ -240,7 +240,12 @@ curl http://localhost:8000/api/tools
   "tools": [
     {
       "name": "File Manager",
-      "endpoints": ["/api/file/read", "/api/file/write", "/api/file/delete", "/api/file/list"],
+      "endpoints": [
+        "/api/file/read",
+        "/api/file/write",
+        "/api/file/delete",
+        "/api/file/list"
+      ],
       "description": "Read, write, delete, and list files"
     },
     {
@@ -544,9 +549,25 @@ curl -X POST http://localhost:8000/api/shell/exec \
 {
   "error": "Command 'sudo' not allowed",
   "allowed": [
-    "ls", "pwd", "echo", "cat", "grep", "find", "wc",
-    "head", "tail", "date", "whoami", "mkdir", "rm",
-    "cp", "mv", "touch", "chmod", "python3", "pip3"
+    "ls",
+    "pwd",
+    "echo",
+    "cat",
+    "grep",
+    "find",
+    "wc",
+    "head",
+    "tail",
+    "date",
+    "whoami",
+    "mkdir",
+    "rm",
+    "cp",
+    "mv",
+    "touch",
+    "chmod",
+    "python3",
+    "pip3"
   ]
 }
 ```
@@ -944,13 +965,13 @@ curl http://localhost:8000/api/status
 
 ### Common Issues
 
-| Issue | Solution |
-|---|---|
-| 404 Not Found | Endpoint doesn't exist - check URL spelling |
-| 400 Bad Request | Invalid path (use relative paths only) |
-| 403 Forbidden | Command/program not allowed - check whitelist |
-| 408 Timeout | Command took >10 seconds - optimize or increase timeout |
-| Connection refused | Server not running - start web_dashboard.py |
+| Issue              | Solution                                                |
+| ------------------ | ------------------------------------------------------- |
+| 404 Not Found      | Endpoint doesn't exist - check URL spelling             |
+| 400 Bad Request    | Invalid path (use relative paths only)                  |
+| 403 Forbidden      | Command/program not allowed - check whitelist           |
+| 408 Timeout        | Command took >10 seconds - optimize or increase timeout |
+| Connection refused | Server not running - start web_dashboard.py             |
 
 ---
 

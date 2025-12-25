@@ -35,10 +35,10 @@ Usage: bash scripts/install_completion.sh [OPTION]
 Options:
     --user       Install for current user only (default)
                  Installs to ~/.bash_completion.d/hdctl
-    
+
     --system     Install system-wide (requires sudo)
                  Installs to /etc/bash_completion.d/hdctl
-    
+
     --help       Show this help message
 
 Environment Variables:
@@ -48,10 +48,10 @@ Environment Variables:
 Examples:
     # Install for current user
     bash scripts/install_completion.sh --user
-    
+
     # Install system-wide
     sudo bash scripts/install_completion.sh --system
-    
+
     # Use custom API endpoint
     HDCTL_API=http://api.example.com bash scripts/install_completion.sh
 
@@ -59,7 +59,7 @@ After Installation:
     1. Start a new terminal session OR
     2. Source bash completion:
        source ~/.bash_completion.d/hdctl
-    
+
     3. Test completion:
        hdctl <TAB><TAB>
 EOF
@@ -82,18 +82,18 @@ fi
 install_for_user() {
     local target_dir="$HOME/.bash_completion.d"
     local target_file="$target_dir/hdctl"
-    
+
     echo -e "${BLUE}Installing completion for current user...${NC}"
     echo -e "  Source: $COMPLETION_FILE"
     echo -e "  Target: $target_file"
-    
+
     # Create directory if it doesn't exist
     mkdir -p "$target_dir"
-    
+
     # Copy completion file
     cp "$COMPLETION_FILE" "$target_file"
     chmod 644 "$target_file"
-    
+
     echo -e "${GREEN}✓ Installed successfully${NC}"
     echo ""
     echo -e "${YELLOW}Next steps:${NC}"
@@ -107,7 +107,7 @@ install_for_user() {
 
 install_system_wide() {
     local target_file="/etc/bash_completion.d/hdctl"
-    
+
     # Check if running as root
     if [[ $EUID -ne 0 ]]; then
         echo -e "${RED}✗ System-wide installation requires sudo${NC}"
@@ -116,18 +116,18 @@ install_system_wide() {
         echo "  sudo bash scripts/install_completion.sh --system"
         exit 1
     fi
-    
+
     echo -e "${BLUE}Installing completion system-wide...${NC}"
     echo -e "  Source: $COMPLETION_FILE"
     echo -e "  Target: $target_file"
-    
+
     # Create directory if needed
     mkdir -p "$(dirname "$target_file")"
-    
+
     # Copy completion file
     cp "$COMPLETION_FILE" "$target_file"
     chmod 644 "$target_file"
-    
+
     echo -e "${GREEN}✓ Installed system-wide${NC}"
     echo ""
     echo -e "${YELLOW}Next steps:${NC}"
@@ -141,15 +141,15 @@ install_system_wide() {
 uninstall() {
     local user_file="$HOME/.bash_completion.d/hdctl"
     local system_file="/etc/bash_completion.d/hdctl"
-    
+
     local removed=0
-    
+
     if [[ -f "$user_file" ]]; then
         rm "$user_file"
         echo -e "${GREEN}✓ Removed user completion: $user_file${NC}"
         removed=1
     fi
-    
+
     if [[ -f "$system_file" ]]; then
         if [[ $EUID -ne 0 ]]; then
             echo -e "${YELLOW}⚠ System completion requires sudo to remove${NC}"
@@ -160,7 +160,7 @@ uninstall() {
             removed=1
         fi
     fi
-    
+
     if [[ $removed -eq 0 ]]; then
         echo -e "${YELLOW}No existing installation found${NC}"
     fi
@@ -169,17 +169,17 @@ uninstall() {
 # Verify installation
 verify_installation() {
     echo -e "${BLUE}Verifying installation...${NC}"
-    
+
     if [[ -f "$HOME/.bash_completion.d/hdctl" ]]; then
         echo -e "${GREEN}✓ User completion found${NC}"
         return 0
     fi
-    
+
     if [[ -f "/etc/bash_completion.d/hdctl" ]]; then
         echo -e "${GREEN}✓ System completion found${NC}"
         return 0
     fi
-    
+
     echo -e "${YELLOW}⚠ No installation found${NC}"
     return 1
 }

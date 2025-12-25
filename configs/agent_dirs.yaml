@@ -18,7 +18,7 @@ required_agent_dirs:
   # Koordination & Archivierung
   - "1.opena1&2_portier"
   - "2.opena3_openwebui"
-  
+
   # Agent-Services (3-20)
   - "3.opena4_telegram"
   - "4.opena5_vscode"

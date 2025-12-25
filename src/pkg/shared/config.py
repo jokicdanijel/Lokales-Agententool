@@ -8,7 +8,6 @@ Extended with common agent configuration utilities.
 import logging
 import os
 from functools import lru_cache
-from typing import Optional
 
 from pydantic_settings import BaseSettings
 
@@ -60,7 +59,7 @@ class Settings(BaseSettings):
     # === Redis Configuration ===
     redis_host: str = "localhost"
     redis_port: int = 6379
-    redis_password: Optional[str] = None
+    redis_password: str | None = None
     redis_db: int = 0
 
     @property
@@ -73,7 +72,7 @@ class Settings(BaseSettings):
     # === Qdrant Configuration (Optional) ===
     qdrant_host: str = "localhost"
     qdrant_port: int = 6333
-    qdrant_api_key: Optional[str] = None
+    qdrant_api_key: str | None = None
 
     @property
     def qdrant_url(self) -> str:
@@ -82,8 +81,8 @@ class Settings(BaseSettings):
 
     # === Secrets (MUST be set in production) ===
     dashboard_admin_token: str = "your_secure_token_here"
-    telegram_bot_token: Optional[str] = None
-    telegram_webhook_secret: Optional[str] = None
+    telegram_bot_token: str | None = None
+    telegram_webhook_secret: str | None = None
     telegram_allowed_users: str = ""
 
     # === Authentication ===
@@ -124,7 +123,7 @@ class Settings(BaseSettings):
         ]
 
         for field in sensitive_fields:
-            if field in config_dict and config_dict[field]:
+            if config_dict.get(field):
                 config_dict[field] = "***MASKED***"
 
         return f"Settings({config_dict})"
@@ -144,7 +143,7 @@ class Settings(BaseSettings):
         ]
 
         for field in sensitive_fields:
-            if field in config_dict and config_dict[field]:
+            if config_dict.get(field):
                 config_dict[field] = "***MASKED***"
 
         return config_dict
@@ -163,7 +162,7 @@ def get_settings() -> Settings:
     return settings
 
 
-def init_tracing_from_settings(app: Optional[object] = None, service_name: Optional[str] = None) -> bool:
+def init_tracing_from_settings(app: object | None = None, service_name: str | None = None) -> bool:
     """Initialize OpenTelemetry tracing based on Settings.
 
     Uses the otel_* fields from Settings to configure the tracing endpoint and toggle.
@@ -192,47 +191,44 @@ FORBIDDEN_PORTS = [8080]
 def validate_port(port: int, service_name: str = "service") -> int:
     """
     Validate that a port conforms to the project's port policy.
-    
+
     Args:
         port: Port number to validate
         service_name: Name of service (for error messages)
-        
+
     Returns:
         The validated port number
-        
+
     Raises:
         RuntimeError: If port violates policy
-        
+
     Example:
         >>> PORT = validate_port(12356, "opena11")
     """
     if port in FORBIDDEN_PORTS:
-        raise RuntimeError(
-            f"❌ Port {port} is forbidden for {service_name}! "
-            f"Forbidden ports: {FORBIDDEN_PORTS}"
-        )
-    
+        raise RuntimeError(f"❌ Port {port} is forbidden for {service_name}! " f"Forbidden ports: {FORBIDDEN_PORTS}")
+
     if port not in ALLOWED_PORT_RANGE:
         raise RuntimeError(
             f"❌ Port {port} is outside allowed range for {service_name}! "
             f"Allowed: {ALLOWED_PORT_RANGE.start}-{ALLOWED_PORT_RANGE.stop-1}"
         )
-    
+
     return port
 
 
 def get_port_from_env(env_var: str, default: int, service_name: str = "service") -> int:
     """
     Get port from environment variable with validation.
-    
+
     Args:
         env_var: Environment variable name (e.g., "OPENA11_PORT")
         default: Default port if env var not set
         service_name: Service name for error messages
-        
+
     Returns:
         Validated port number
-        
+
     Example:
         >>> PORT = get_port_from_env("OPENA11_PORT", 12356, "opena11")
     """

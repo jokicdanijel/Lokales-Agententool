@@ -13,14 +13,11 @@ Verwendung:
     python3 external_access_manager.py --method ssh --remote user@host
 """
 
-import subprocess
-import json
-import time
-import socket
-import sys
 import argparse
-from typing import Optional, Dict, Any
-from datetime import datetime
+import json
+import socket
+import subprocess
+import time
 
 
 class NetworkUtils:
@@ -39,15 +36,10 @@ class NetworkUtils:
             return "127.0.0.1"
 
     @staticmethod
-    def get_public_ip() -> Optional[str]:
+    def get_public_ip() -> str | None:
         """Hole die öffentliche IP-Adresse"""
         try:
-            result = subprocess.run(
-                ["curl", "-s", "https://api.ipify.org"],
-                capture_output=True,
-                text=True,
-                timeout=5
-            )
+            result = subprocess.run(["curl", "-s", "https://api.ipify.org"], capture_output=True, text=True, timeout=5)
             if result.returncode == 0:
                 return result.stdout.strip()
         except Exception:
@@ -83,18 +75,15 @@ class FirewallMethod:
     def verify_binding(self) -> bool:
         """Überprüfe ob Port auf 0.0.0.0 gebunden ist"""
         try:
-            result = subprocess.run(
-                ["ss", "-tlnp"],
-                capture_output=True,
-                text=True
-            )
+            result = subprocess.run(["ss", "-tlnp"], capture_output=True, text=True)
             return f":{self.port}" in result.stdout
         except Exception:
             return False
 
     def show_configuration(self):
         """Zeige Konfigurationsschritte"""
-        print(f"""
+        print(
+            f"""
 ╔════════════════════════════════════════════════════════════╗
 ║ Firewall/Router Konfiguration für LAN-Zugriff             ║
 ╚════════════════════════════════════════════════════════════╝
@@ -134,7 +123,8 @@ class FirewallMethod:
    ✅ Aktiviere Firewall auf dem Host
    ✅ Verwende Bearer Token für API-Zugriffe
    ✅ Für Internet: nutze ngrok oder SSH (sicherer)
-""")
+"""
+        )
 
     def verify_setup(self) -> bool:
         """Überprüfe ob Setup korrekt ist"""
@@ -150,23 +140,20 @@ class FirewallMethod:
 
         # Check if port is bound to 0.0.0.0
         if not self.verify_binding():
-            print(f"❌ Port ist nicht auf 0.0.0.0 gebunden")
+            print("❌ Port ist nicht auf 0.0.0.0 gebunden")
             return False
 
-        print(f"✅ Port ist auf 0.0.0.0 gebunden")
+        print("✅ Port ist auf 0.0.0.0 gebunden")
 
         # Test local access
         try:
             result = subprocess.run(
-                ["curl", "-s", f"http://127.0.0.1:{self.port}/health"],
-                capture_output=True,
-                text=True,
-                timeout=5
+                ["curl", "-s", f"http://127.0.0.1:{self.port}/health"], capture_output=True, text=True, timeout=5
             )
             if result.returncode == 0:
-                print(f"✅ Lokaler Zugriff funktioniert")
+                print("✅ Lokaler Zugriff funktioniert")
             else:
-                print(f"❌ Lokaler Zugriff fehlgeschlagen")
+                print("❌ Lokaler Zugriff fehlgeschlagen")
                 return False
         except Exception as e:
             print(f"❌ Fehler beim Test: {e}")
@@ -185,16 +172,13 @@ class NgrokMethod:
 
     def is_installed(self) -> bool:
         """Überprüfe ob ngrok installiert ist"""
-        result = subprocess.run(
-            ["which", "ngrok"],
-            capture_output=True,
-            text=True
-        )
+        result = subprocess.run(["which", "ngrok"], capture_output=True, text=True)
         return result.returncode == 0
 
     def install(self) -> bool:
         """Installiere ngrok"""
         import platform
+
         os_type = platform.system()
 
         if os_type == "Darwin":  # macOS
@@ -211,17 +195,13 @@ class NgrokMethod:
             print("❌ Unsupported OS. Download von: https://ngrok.com/download")
             return False
 
-        print(f"📦 Installiere ngrok...")
+        print("📦 Installiere ngrok...")
         result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
         return result.returncode == 0
 
     def authenticate(self, token: str) -> bool:
         """Authentifiziere ngrok"""
-        result = subprocess.run(
-            ["ngrok", "config", "add-authtoken", token],
-            capture_output=True,
-            text=True
-        )
+        result = subprocess.run(["ngrok", "config", "add-authtoken", token], capture_output=True, text=True)
         success = result.returncode == 0
         if success:
             print("✅ ngrok authentifiziert")
@@ -229,7 +209,7 @@ class NgrokMethod:
             print(f"❌ Authentifizierung fehlgeschlagen: {result.stderr}")
         return success
 
-    def start_tunnel(self) -> Optional[str]:
+    def start_tunnel(self) -> str | None:
         """Starte ngrok Tunnel"""
         if not self.is_installed():
             print("❌ ngrok nicht installiert!")
@@ -243,13 +223,7 @@ class NgrokMethod:
         cmd = ["ngrok", "http", str(self.port), "--log", "stdout"]
 
         try:
-            self.process = subprocess.Popen(
-                cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True,
-                bufsize=1
-            )
+            self.process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
 
             # Warte auf Tunnel-URL
             print("⏳ Warte auf Tunnel URL...")
@@ -258,10 +232,7 @@ class NgrokMethod:
             # Hole ngrok Status
             try:
                 result = subprocess.run(
-                    ["curl", "-s", "http://127.0.0.1:4040/api/tunnels"],
-                    capture_output=True,
-                    text=True,
-                    timeout=5
+                    ["curl", "-s", "http://127.0.0.1:4040/api/tunnels"], capture_output=True, text=True, timeout=5
                 )
                 if result.returncode == 0:
                     data = json.loads(result.stdout)
@@ -287,7 +258,8 @@ class NgrokMethod:
 
     def show_instructions(self, token: str = None):
         """Zeige ngrok Anweisungen"""
-        print(f"""
+        print(
+            f"""
 ╔════════════════════════════════════════════════════════════╗
 ║ ngrok Tunneling für Internet-Zugriff                       ║
 ╚════════════════════════════════════════════════════════════╝
@@ -324,7 +296,8 @@ class NgrokMethod:
    Terminal 1: ngrok http 8765  # Tool Server
    Terminal 2: ngrok http 12350 # Browser Agent
    Terminal 3: ngrok http 12349 # Compute Agent
-""")
+"""
+        )
 
 
 class SSHTunnelMethod:
@@ -332,21 +305,12 @@ class SSHTunnelMethod:
 
     @staticmethod
     def create_forward_tunnel(
-        remote_host: str,
-        remote_user: str,
-        local_port: int,
-        remote_port: int = None,
-        ssh_key: Optional[str] = None
+        remote_host: str, remote_user: str, local_port: int, remote_port: int = None, ssh_key: str | None = None
     ) -> bool:
         """Erstelle SSH Forward Tunnel"""
         remote_port = remote_port or local_port
 
-        cmd = [
-            "ssh",
-            "-L", f"{local_port}:localhost:{remote_port}",
-            f"{remote_user}@{remote_host}",
-            "-N", "-v"
-        ]
+        cmd = ["ssh", "-L", f"{local_port}:localhost:{remote_port}", f"{remote_user}@{remote_host}", "-N", "-v"]
 
         if ssh_key:
             cmd.extend(["-i", ssh_key])
@@ -356,7 +320,7 @@ class SSHTunnelMethod:
 
         try:
             subprocess.Popen(cmd)
-            print(f"✅ Tunnel aktiv!")
+            print("✅ Tunnel aktiv!")
             return True
         except Exception as e:
             print(f"❌ Fehler: {e}")
@@ -364,19 +328,10 @@ class SSHTunnelMethod:
 
     @staticmethod
     def create_reverse_tunnel(
-        remote_host: str,
-        remote_user: str,
-        remote_port: int,
-        local_port: int,
-        ssh_key: Optional[str] = None
+        remote_host: str, remote_user: str, remote_port: int, local_port: int, ssh_key: str | None = None
     ) -> bool:
         """Erstelle SSH Reverse Tunnel"""
-        cmd = [
-            "ssh",
-            "-R", f"{remote_port}:localhost:{local_port}",
-            f"{remote_user}@{remote_host}",
-            "-N", "-v"
-        ]
+        cmd = ["ssh", "-R", f"{remote_port}:localhost:{local_port}", f"{remote_user}@{remote_host}", "-N", "-v"]
 
         if ssh_key:
             cmd.extend(["-i", ssh_key])
@@ -386,7 +341,7 @@ class SSHTunnelMethod:
 
         try:
             subprocess.Popen(cmd)
-            print(f"✅ Reverse Tunnel aktiv!")
+            print("✅ Reverse Tunnel aktiv!")
             return True
         except Exception as e:
             print(f"❌ Fehler: {e}")
@@ -395,7 +350,8 @@ class SSHTunnelMethod:
     @staticmethod
     def show_instructions():
         """Zeige SSH Tunnel Anweisungen"""
-        print(f"""
+        print(
+            """
 ╔════════════════════════════════════════════════════════════╗
 ║ SSH Tunneling für sichere Remote-Verbindungen             ║
 ╚════════════════════════════════════════════════════════════╝
@@ -480,19 +436,13 @@ class SSHTunnelMethod:
 
    # Test Tunnel:
    curl http://localhost:8765/health
-""")
+"""
+        )
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="External Server Access Manager"
-    )
-    parser.add_argument(
-        "--method",
-        choices=["firewall", "ngrok", "ssh"],
-        default="firewall",
-        help="Zugriffsmethode"
-    )
+    parser = argparse.ArgumentParser(description="External Server Access Manager")
+    parser.add_argument("--method", choices=["firewall", "ngrok", "ssh"], default="firewall", help="Zugriffsmethode")
     parser.add_argument("--port", type=int, default=8765, help="Lokaler Port")
     parser.add_argument("--auth", help="ngrok Auth Token")
     parser.add_argument("--remote", help="SSH Remote Host (user@host)")
@@ -502,7 +452,8 @@ def main():
 
     args = parser.parse_args()
 
-    print(f"""
+    print(
+        f"""
 ╔════════════════════════════════════════════════════════════╗
 ║ External Server Access Manager                            ║
 ║ Lokale Server öffentlich zugänglich machen                ║
@@ -511,7 +462,8 @@ def main():
 Lokale IP: {NetworkUtils.get_local_ip()}
 Methode: {args.method.upper()}
 Port: {args.port}
-""")
+"""
+    )
 
     if args.method == "firewall":
         fw = FirewallMethod(args.port)
@@ -545,19 +497,11 @@ Port: {args.port}
 
             if args.ssh_type == "forward":
                 SSHTunnelMethod.create_forward_tunnel(
-                    host,
-                    user,
-                    args.port,
-                    args.remote_port or args.port,
-                    args.ssh_key
+                    host, user, args.port, args.remote_port or args.port, args.ssh_key
                 )
             else:
                 SSHTunnelMethod.create_reverse_tunnel(
-                    host,
-                    user,
-                    args.remote_port or args.port,
-                    args.port,
-                    args.ssh_key
+                    host, user, args.remote_port or args.port, args.port, args.ssh_key
                 )
 
             print("\n   Drücke Ctrl+C zum Beenden")

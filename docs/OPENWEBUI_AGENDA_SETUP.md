@@ -18,6 +18,7 @@ curl -X POST http://127.0.0.1:12399/login \
 ```
 
 **Response:**
+
 ```json
 {
   "token": "250886",
@@ -37,15 +38,15 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 
 ## API-Endpunkte
 
-| Method | Endpoint | Beschreibung |
-|--------|----------|-------------|
-| `POST` | `/login` | Authentifizierung (Username/Password → Token) |
-| `GET` | `/agenda/pages` | Alle 16 Seiten abrufen |
-| `GET` | `/agenda/pages/{id}` | Einzelne Seite abrufen |
-| `POST` | `/agenda/pages/{id}` | Seite aktualisieren |
-| `DELETE` | `/agenda/pages/{id}` | Seite löschen |
-| `GET` | `/agenda/api-registry` | 20 Service-Endpunkte für OpenWebUI |
-| `GET` | `/agenda/stats` | Statistiken |
+| Method   | Endpoint               | Beschreibung                                  |
+| -------- | ---------------------- | --------------------------------------------- |
+| `POST`   | `/login`               | Authentifizierung (Username/Password → Token) |
+| `GET`    | `/agenda/pages`        | Alle 16 Seiten abrufen                        |
+| `GET`    | `/agenda/pages/{id}`   | Einzelne Seite abrufen                        |
+| `POST`   | `/agenda/pages/{id}`   | Seite aktualisieren                           |
+| `DELETE` | `/agenda/pages/{id}`   | Seite löschen                                 |
+| `GET`    | `/agenda/api-registry` | 20 Service-Endpunkte für OpenWebUI            |
+| `GET`    | `/agenda/stats`        | Statistiken                                   |
 
 ---
 
@@ -86,6 +87,7 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 ### Tool-Server Registrierung
 
 In OpenWebUI:
+
 1. **Settings** → **Tool Servers**
 2. **Add Tool Server:**
    ```
@@ -108,7 +110,7 @@ User: "Öffne Agenda 01 – Datenaufnahme"
 
 OpenWebUI → Tool: Get Page
   - ID: page05
-  
+
 Response: {
   "title": "Agenda 01 – Datenaufnahme",
   "bromt": "Eingabe-API, Bromt-Dokumentation, Status-Tracking.",
@@ -147,9 +149,10 @@ CMD ["python", "-u", "agenda_api.py"]
 ```
 
 **docker-compose.prod.yml:**
+
 ```yaml
 agenda-api:
-  build: 
+  build:
     context: .
     dockerfile: src/services/agenda_api/Dockerfile
   ports:
@@ -223,9 +226,9 @@ tail -f logs/agenda_api.nohup.log
 
 ```yaml
 # configs/prometheus.yaml
-- job_name: 'agenda-api'
+- job_name: "agenda-api"
   static_configs:
-    - targets: ['127.0.0.1:12399']
+    - targets: ["127.0.0.1:12399"]
   scrape_interval: 30s
 ```
 
@@ -243,7 +246,7 @@ tail -f logs/agenda_api.nohup.log
 
 ---
 
-**Status:** Ready for OpenWebUI Integration  
-**Port:** 12399  
-**Auth:** Bearer Token  
+**Status:** Ready for OpenWebUI Integration
+**Port:** 12399
+**Auth:** Bearer Token
 **Documentation:** See above

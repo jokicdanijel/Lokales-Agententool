@@ -203,9 +203,9 @@ MAIN_EOF
     cat > "$agent_dir/README.md" << 'README_EOF'
 # Agent: %NAME%
 
-**Agent ID:** `%AGENT_ID%`  
-**Port:** `%PORT%`  
-**Category:** `%CATEGORY%`  
+**Agent ID:** `%AGENT_ID%`
+**Port:** `%PORT%`
+**Category:** `%CATEGORY%`
 **Description:** %DESCRIPTION%
 
 ## Quick Start
@@ -287,7 +287,7 @@ mypy .
 
 ---
 
-**Auto-generated:** 2025-11-08  
+**Auto-generated:** 2025-11-08
 **Framework:** FastAPI 0.104.1 | Python 3.12+
 README_EOF
 
@@ -589,7 +589,7 @@ main() {
 
     for agent in "${AGENTS[@]}"; do
         IFS='|' read -r number name agent_id port description category <<< "$agent"
-        
+
         if create_agent "$number" "$name" "$agent_id" "$port" "$description" "$category"; then
             ((created++))
         else

@@ -1,14 +1,14 @@
 name: Feature Request
 description: Suggest an idea for this project
-title: 'feat: '
-labels: ['triage']
+title: "feat: "
+labels: ["triage"]
 body:
   - type: markdown
     attributes:
       value: |
         ## Important Notes
         ### Before submitting
-        
+
         Please check the **open AND closed** [Issues](https://github.com/open-webui/open-webui/issues) AND [Discussions](https://github.com/open-webui/open-webui/discussions) to see if a similar request has been posted.
         It's likely we're already tracking it! If you’re unsure, start a discussion post first.
 
@@ -18,11 +18,11 @@ body:
         **We will close and force move your feature request to the Ideas section, if we believe your feature request is not trivial/quick to implement.**
         This is to ensure the issues tab is used only for issues, quickly addressable feature requests and tracking tickets by the maintainers.
         Other feature requests belong in the **Ideas** section of the [Discussions](https://github.com/open-webui/open-webui/discussions).
-        
+
         If your feature request might impact others in the community, definitely open a discussion instead and evaluate whether and how to implement it.
-        
+
         This will help us efficiently focus on improving the project.
-        
+
         ### Collaborate respectfully
         We value a **constructive attitude**, so please be mindful of your communication. If negativity is part of your approach, our capacity to engage may be limited. We're here to help if you're **open to learning** and **communicating positively**.
 

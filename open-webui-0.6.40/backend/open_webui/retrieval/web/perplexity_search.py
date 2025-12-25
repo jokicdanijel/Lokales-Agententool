@@ -1,11 +1,9 @@
 import logging
-from typing import Optional, Literal
+
 import requests
-
-from open_webui.retrieval.web.main import SearchResult, get_filtered_results
-from open_webui.utils.headers import include_user_info_headers
 from open_webui.env import SRC_LOG_LEVELS
-
+from open_webui.retrieval.web.main import SearchResult
+from open_webui.utils.headers import include_user_info_headers
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["RAG"])
@@ -15,7 +13,7 @@ def search_perplexity_search(
     api_key: str,
     query: str,
     count: int,
-    filter_list: Optional[list[str]] = None,
+    filter_list: list[str] | None = None,
     api_url: str = "https://api.perplexity.ai/search",
     user=None,
 ) -> list[SearchResult]:
@@ -65,10 +63,7 @@ def search_perplexity_search(
         results = json_response.get("results", [])
 
         return [
-            SearchResult(
-                link=result["url"], title=result["title"], snippet=result["snippet"]
-            )
-            for result in results
+            SearchResult(link=result["url"], title=result["title"], snippet=result["snippet"]) for result in results
         ]
 
     except Exception as e:

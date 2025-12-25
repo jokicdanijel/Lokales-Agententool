@@ -1,11 +1,15 @@
 # CI/CD AUDIT & INTEGRATION REPORT
+
 # Projekt: Portier / ELION Hyper-Dashboard 2.0
+
 # Auditor: Senior CI Auditor & Policy Compliance Officer
+
 # Datum: 2025-11-09 UTC
 
 ## FINDINGS MATRIX
 
 ### BLOCKER-Level (Mustfix – bricht Deployment)
+
 1. [BLOCKER] Python-Version Mismatch
    - **Kontext**: Original-YAML nutzte Python 3.12.x (legacy), Projekt erfordert 3.13.x
    - **Problem**: setup-python@v5 mit python-version "3.12" scheitert auf modernen Runnern (Ubuntu 25.04)
@@ -24,9 +28,10 @@
 4. [BLOCKER] Port 8080-Prüfung zu stringent
    - **Kontext**: Naiver grep auf "8080" flaggte auch OpenWebUI-Config, Docker-Compose, venv-Libs
    - **Problem**: False-Positives führten zu unnötigen Job-Abbrüchen
-   - **Fix**: Intelligente grep mit Ausschlüssen (--exclude-dir=venv*, --exclude=docker-compose.yml, etc.)
+   - **Fix**: Intelligente grep mit Ausschlüssen (--exclude-dir=venv\*, --exclude=docker-compose.yml, etc.)
 
 ### HIGH-Level (Funktionalität beeinträchtigt)
+
 5. [HIGH] Fehlende Agenten-Struktur
    - **Kontext**: CI prüfte auf 4.telegram_agent, 5.vscode_agent, etc., aber keine main_agent.py vorhanden
    - **Problem**: Job würde bei Prüfschritt scheitern, ohne dass Agenten funktionieren
@@ -43,6 +48,7 @@
    - **Fix**: Dynamisch aus git rev-parse, git branch, date -u generiert; Artefakt uploadbar
 
 ### MEDIUM-Level (Code-Qualität/Wartbarkeit)
+
 8. [MEDIUM] Keine Requirements-Locks für Python
    - **Kontext**: Pip installiert Features (fastapi, uvicorn, requests, etc.) ohne Versions-Pinning
    - **Problem**: Unterschiedliche Runner könnten unterschiedliche Versionen ziehen
@@ -59,6 +65,7 @@
     - **Fix**: Gesetzt auf `timeout-minutes: 20` (Puffer für pip install + alle Prüfungen)
 
 ### LOW-Level (Dokumentation/Ergonomie)
+
 11. [LOW] Fehlende run-conditionals
     - **Kontext**: Artefakt-Upload erfolgt auch bei fehlgeschlagenen Steps
     - **Problem**: Workflow-Logs enthalten fehlerhafte deploy_summary.md
@@ -260,62 +267,84 @@ jobs:
 ## TEST-HINWEISE – 5 FEHLERFALL-SZENARIEN
 
 ### Fehlerfall 1: Port 12347 fehlt in telegram_agent
+
 **Simulation**:
+
 ```bash
 sed -i 's/PORT = 12347/PORT = 12360/' 4.telegram_agent/main_agent.py
 git add . && git commit -m "test: port violation"
 git push origin main
 ```
+
 **Erwarteter Fehler**: Job schlägt bei Step "Verify port assignments" ab
+
 ```
 ❌ Port 12347 not found in telegram_agent
 Exit code: 1
 ```
+
 **Diagnose**: `git diff HEAD~1 4.telegram_agent/main_agent.py` zeigt Port-Änderung
 
 ### Fehlerfall 2: tools_registry.json hat Schlüssel "archivp" nicht
+
 **Simulation**:
+
 ```bash
 jq 'del(.archivp)' 1.opena1&2_portier/config/tools_registry.json > /tmp/reg.json
 mv /tmp/reg.json 1.opena1&2_portier/config/tools_registry.json
 ```
+
 **Erwarteter Fehler**: Policy-Validator Step schlägt ab
+
 ```
 ❌ tools_registry.json: Schlüssel 'archivp' fehlt
 Exit code: 1
 ```
+
 **Diagnose**: `cat 1.opena1&2_portier/config/tools_registry.json | jq keys`
 
 ### Fehlerfall 3: Port 8080 in echtem Code (nicht Docker/venv)
+
 **Simulation**:
+
 ```bash
 echo 'PORT = 8080' >> 4.telegram_agent/main_agent.py
 ```
+
 **Erwarteter Fehler**: Job schlägt bei "Verify forbidden port 8080" ab
+
 ```
 ❌ Forbidden port 8080 found
 Exit code: 1
 ```
+
 **Diagnose**: `grep -r "8080" . --exclude-dir=.git --exclude-dir=venv*`
 
 ### Fehlerfall 4: validate_portier.sh nicht ausführbar
+
 **Simulation**:
+
 ```bash
 chmod -x 1.opena1&2_portier/skripte/validate_portier.sh
 ```
+
 **Erwarteter Fehler**: Step "Ensure policy validator is executable" setzt Permissions, lädt aber bei Netzwerkproblemen fehl.
 **Diagnose**: `ls -la 1.opena1&2_portier/skripte/validate_portier.sh`
 
 ### Fehlerfall 5: requirements.txt nicht vorhanden (Cache-Miss)
+
 **Simulation**:
+
 ```bash
 rm 1.opena1&2_portier/requirements.txt
 git commit -m "test: missing requirements"
 ```
+
 **Erwarteter Fehler**: hashFiles() findet Datei nicht, Cache-Key wird leer.
 **Diagnose**: `find . -name requirements.txt -type f` oder CI-Logs zeigen `cache miss`
 
 **Lokaler Test-Workflow** (vor Push):
+
 ```bash
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 
@@ -341,6 +370,7 @@ act push --job integration
 ```
 
 **Tipps zur Diagnose bei CI-Fehlern**:
+
 1. **Logs durchsuchen**: GitHub Actions → Workflow → Job → Step → Output
 2. **Artefakt prüfen**: Actions → [Letzter Workflow] → Artifacts → deploy-summary.md
 3. **Lokale Reproduktion**: `act` (GitHub Actions Emulator) oder Bash-Skript ausführen
@@ -348,6 +378,7 @@ act push --job integration
 5. **Runner-Logs**: Fehler wie "Python 3.13 not available" deuten auf Runner-Upgrade nötig
 
 **Idempotenz-Check** (Job 2x hintereinander ausführen):
+
 ```bash
 # 1. Lauf
 git push origin main  # Workflow startet
@@ -357,4 +388,5 @@ git push origin main  # Workflow startet
 git push origin --force-with-lease  # Force push (oder einfach neuer Commit)
 # Logs sollten identisch sein, Cache sollte getroffen werden
 ```
+
 ✅ Wenn beide Läufe mit Deploy-Summary erfolgreich enden → **Idempotent**

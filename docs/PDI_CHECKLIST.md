@@ -20,6 +20,7 @@
 Für jede Datei, die du erzeugst (Code, Doc, Config):
 
 ### Phase 1: Vorbereitung
+
 ```
 ☐ Artifact-ID definiert (z.B. "agents_auto_register.sh")
 ☐ Artifact-Type bekannt (bash | python | markdown | json | yaml)
@@ -28,6 +29,7 @@ Für jede Datei, die du erzeugst (Code, Doc, Config):
 ```
 
 ### Phase 2: PDI-Validierung durchlaufen
+
 ```
 ☐ Module 1–6 durchlaufen (LINGUISTIC, TECHNICAL, CORRECTION, ANALYTICS, CONTROL, GITHUB)
 ☐ Alle Gates passed (1–6 ✓)
@@ -37,6 +39,7 @@ Für jede Datei, die du erzeugst (Code, Doc, Config):
 ```
 
 ### Phase 3: Freigabe
+
 ```
 ☐ PDI-Header hinzugefügt
 ☐ Validation-Report exportiert
@@ -50,6 +53,7 @@ Für jede Datei, die du erzeugst (Code, Doc, Config):
 ## 3. Gate-Spezifische Checklisten
 
 ### Gate 1: Syntaxprüfung (GITHUB)
+
 ```
 Code-Type: Python
   ☐ python -m py_compile <file>  # Kein SyntaxError
@@ -71,7 +75,8 @@ Config-Type: YAML
 ```
 
 ### Gate 2: Linguistische Validierung
-```
+
+````
 Alle Artifact-Types:
   ☐ Verständlich für Zielgruppe
   ☐ Terminologie konsistent
@@ -84,9 +89,10 @@ Doc-Type:
   ☐ Code-Blöcke mit Sprache-Tag (```python, ```bash)
   ☐ Links funktional
   ☐ Bilder mit Alt-Text
-```
+````
 
 ### Gate 3: Technische Validierung
+
 ```
 Alle Artifact-Types:
   ☐ Schnittstellen dokumentiert
@@ -109,6 +115,7 @@ Bash-Code:
 ```
 
 ### Gate 4: Logik-Prüfung (GITHUB)
+
 ```
 Alle Artifact-Types:
   ☐ Keine offensichtlichen Fehler
@@ -128,6 +135,7 @@ Bash-Code:
 ```
 
 ### Gate 5: Sicherheitsprüfung (GITHUB)
+
 ```
 Alle Artifact-Types:
   ☐ Keine hardcodierten Secrets (Keys, Tokens, Passwords)
@@ -148,6 +156,7 @@ Bash-Code:
 ```
 
 ### Gate 6: Integrations-Prüfung
+
 ```
 Code-Artifact:
   ☐ Abhängigkeiten auflösbar
@@ -169,6 +178,7 @@ Dokumentation:
 Kopiere dies an den Anfang jeder Datei und fülle aus:
 
 ### Python/Bash
+
 ```
 """
 [PDI-ACTIVE: TRUE | VALIDATED | GITHUB-CHECK: PASS]
@@ -182,6 +192,7 @@ Kopiere dies an den Anfang jeder Datei und fülle aus:
 ```
 
 ### Markdown
+
 ```markdown
 [PDI-ACTIVE: TRUE | VALIDATED | GITHUB-CHECK: PASS]
 [MODULES: LINGUISTIC,TECHNICAL]
@@ -189,6 +200,7 @@ Kopiere dies an den Anfang jeder Datei und fülle aus:
 [VALIDATION-TIMESTAMP: 2025-11-09T12:34:56Z]
 
 # Dokumentation
+
 ...
 ```
 
@@ -197,6 +209,7 @@ Kopiere dies an den Anfang jeder Datei und fülle aus:
 ## 5. Quick-Start: PDI für ein neues Projekt
 
 ### Schritt 1: Projekt initialisieren
+
 ```bash
 cd /path/to/project
 python3 << 'EOF'
@@ -214,6 +227,7 @@ EOF
 ```
 
 ### Schritt 2: Artifact validieren
+
 ```bash
 python3 << 'EOF'
 from pdi_core import PDICore
@@ -247,6 +261,7 @@ EOF
 ```
 
 ### Schritt 3: Report generieren
+
 ```bash
 python3 << 'EOF'
 from pdi_core import PDICore
@@ -270,26 +285,28 @@ EOF
 
 ## 6. Troubleshooting
 
-| Problem | Diagnose | Lösung |
-|---------|----------|--------|
-| Gate 1 fehlgeschlagen | `python -m py_compile <file>` | Syntax-Fehler korrigieren |
-| Gate 2 fehlgeschlagen | Lese Errors in result | Text überarbeiten, Typos fixen |
-| Gate 3 fehlgeschlagen | `flake8 <file>` | Code-Style anpassen |
-| Gate 4 fehlgeschlagen | Logik-Fehler im Trace | Edge-Cases hinzufügen |
-| Gate 5 fehlgeschlagen | Security-Warnings lesen | eval(), hardcoded secrets entfernen |
-| Gate 6 fehlgeschlagen | Dependency-Conflicts? | Versionen anpassen oder Conflict-Report schreiben |
+| Problem               | Diagnose                      | Lösung                                            |
+| --------------------- | ----------------------------- | ------------------------------------------------- |
+| Gate 1 fehlgeschlagen | `python -m py_compile <file>` | Syntax-Fehler korrigieren                         |
+| Gate 2 fehlgeschlagen | Lese Errors in result         | Text überarbeiten, Typos fixen                    |
+| Gate 3 fehlgeschlagen | `flake8 <file>`               | Code-Style anpassen                               |
+| Gate 4 fehlgeschlagen | Logik-Fehler im Trace         | Edge-Cases hinzufügen                             |
+| Gate 5 fehlgeschlagen | Security-Warnings lesen       | eval(), hardcoded secrets entfernen               |
+| Gate 6 fehlgeschlagen | Dependency-Conflicts?         | Versionen anpassen oder Conflict-Report schreiben |
 
 ---
 
 ## 7. Best Practices
 
 ### 1. Early & Often validieren
+
 ```
 Nicht: Am Ende alles auf einmal validieren
 Ja:    Nach jedem Kapitel validieren
 ```
 
 ### 2. Feedback ernst nehmen
+
 ```
 Errors = Must fix
 Warnings = Should fix
@@ -297,12 +314,14 @@ Suggestions = Nice to have (backlog)
 ```
 
 ### 3. Validation-Logs speichern
+
 ```bash
 # Speichere nach jeder Validierung
 pdi.get_validation_report() > PDI_REPORT_$(date +%s).json
 ```
 
 ### 4. PDI-Header bei Commit
+
 ```bash
 git commit -m "feat: add agents_auto_register.sh [PDI-ACTIVE: PASS]"
 ```
@@ -322,32 +341,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
-      
+          python-version: "3.12"
+
       - name: Install PDI
         run: |
           pip install -e .  # or cp pdi_core.py to project
-      
+
       - name: Run PDI Validation
         run: |
           python3 << 'EOF'
           from pdi_core import PDICore
           import glob
-          
+
           pdi = PDICore("ELION-Dashboard", "elion-2025")
           pdi.process_input("GitHub Actions Check")
-          
+
           # Find all artifacts to validate
           for file in glob.glob("**/*.py", recursive=True):
               with open(file) as f:
                   pdi.validate_artifact(file, "python", f.read())
-          
+
           report = pdi.get_validation_report()
-          
+
           if report['failed'] > 0:
               print(f"❌ {report['failed']} artifacts failed")
               exit(1)
@@ -355,7 +374,7 @@ jobs:
               print(f"✅ All {report['passed']} artifacts passed")
               exit(0)
           EOF
-      
+
       - name: Upload Report
         if: always()
         uses: actions/upload-artifact@v3
@@ -418,5 +437,5 @@ EOF
 
 ---
 
-**Status:** [PDI-ACTIVE: TRUE | CHECKLIST-COMPLETE | READY-TO-USE]  
+**Status:** [PDI-ACTIVE: TRUE | CHECKLIST-COMPLETE | READY-TO-USE]
 **Last Updated:** 2025-11-09

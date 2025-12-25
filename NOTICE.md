@@ -10,49 +10,49 @@ This project (PORTIER 3.0) uses the following open-source libraries and framewor
 
 ### Core Framework & APIs
 
-| Library | Version | License | Purpose |
-|---------|---------|---------|---------|
-| **FastAPI** | >=0.95.0 | MIT | Web Framework for REST APIs |
-| **Pydantic** | >=2.0.0 | MIT | Data Validation & Settings |
-| **OpenAI** | >=1.0.0 | MIT | OpenAI API Client |
-| **python-telegram-bot** | >=20.0 | LGPL-3.0 | Telegram Bot Integration |
-| **requests** | >=2.31.0 | Apache 2.0 | HTTP Client |
-| **SQLAlchemy** | >=2.0 | MIT | ORM Database Layer |
-| **SQLite3** | Built-in | Public Domain | Local Database |
+| Library                 | Version  | License       | Purpose                     |
+| ----------------------- | -------- | ------------- | --------------------------- |
+| **FastAPI**             | >=0.95.0 | MIT           | Web Framework for REST APIs |
+| **Pydantic**            | >=2.0.0  | MIT           | Data Validation & Settings  |
+| **OpenAI**              | >=1.0.0  | MIT           | OpenAI API Client           |
+| **python-telegram-bot** | >=20.0   | LGPL-3.0      | Telegram Bot Integration    |
+| **requests**            | >=2.31.0 | Apache 2.0    | HTTP Client                 |
+| **SQLAlchemy**          | >=2.0    | MIT           | ORM Database Layer          |
+| **SQLite3**             | Built-in | Public Domain | Local Database              |
 
 ### Async & Concurrency
 
-| Library | License | Purpose |
-|---------|---------|---------|
-| **asyncio** | Python Software Foundation | Async I/O |
-| **aiohttp** | Apache 2.0 | Async HTTP Client |
+| Library     | License                    | Purpose           |
+| ----------- | -------------------------- | ----------------- |
+| **asyncio** | Python Software Foundation | Async I/O         |
+| **aiohttp** | Apache 2.0                 | Async HTTP Client |
 
 ### Data Processing
 
-| Library | License | Purpose |
-|---------|---------|---------|
-| **pandas** | BSD-3-Clause | Data Analysis (Optional) |
-| **numpy** | BSD-3-Clause | Numerical Computing (Optional) |
-| **json** | Python Software Foundation | JSON Serialization |
+| Library    | License                    | Purpose                        |
+| ---------- | -------------------------- | ------------------------------ |
+| **pandas** | BSD-3-Clause               | Data Analysis (Optional)       |
+| **numpy**  | BSD-3-Clause               | Numerical Computing (Optional) |
+| **json**   | Python Software Foundation | JSON Serialization             |
 
 ### Utilities & Helpers
 
-| Library | License | Purpose |
-|---------|---------|---------|
-| **python-dotenv** | BSD-3-Clause | Environment Variable Management |
-| **pathlib** | Python Software Foundation | File Path Operations |
-| **logging** | Python Software Foundation | Logging Framework |
-| **datetime** | Python Software Foundation | Date/Time Operations |
+| Library           | License                    | Purpose                         |
+| ----------------- | -------------------------- | ------------------------------- |
+| **python-dotenv** | BSD-3-Clause               | Environment Variable Management |
+| **pathlib**       | Python Software Foundation | File Path Operations            |
+| **logging**       | Python Software Foundation | Logging Framework               |
+| **datetime**      | Python Software Foundation | Date/Time Operations            |
 
 ---
 
 ## 🐳 Docker & Infrastructure
 
-| Component | License | Purpose |
-|-----------|---------|---------|
-| **Docker** | Apache 2.0 | Container Runtime |
-| **Docker Compose** | Apache 2.0 | Multi-Container Orchestration |
-| **Python 3.12+** | Python Software Foundation | Runtime Environment |
+| Component          | License                    | Purpose                       |
+| ------------------ | -------------------------- | ----------------------------- |
+| **Docker**         | Apache 2.0                 | Container Runtime             |
+| **Docker Compose** | Apache 2.0                 | Multi-Container Orchestration |
+| **Python 3.12+**   | Python Software Foundation | Runtime Environment           |
 
 ---
 
@@ -81,10 +81,10 @@ This project (PORTIER 3.0) uses the following open-source libraries and framewor
 
 ### Dashboard (if applicable)
 
-| Library | License | Purpose |
-|---------|---------|---------|
-| **Glasmorphism CSS** | MIT | Visual Design Pattern |
-| **Responsive HTML5** | - | Web Standards |
+| Library              | License | Purpose               |
+| -------------------- | ------- | --------------------- |
+| **Glasmorphism CSS** | MIT     | Visual Design Pattern |
+| **Responsive HTML5** | -       | Web Standards         |
 
 ---
 
@@ -156,4 +156,4 @@ This NOTICE.md is maintained as part of the PORTIER 3.0 project and updated with
 
 ---
 
-*Generated for PORTIER 3.0 Enterprise Edition - JD Smart Vision EU*
+_Generated for PORTIER 3.0 Enterprise Edition - JD Smart Vision EU_

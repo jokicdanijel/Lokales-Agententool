@@ -1,4 +1,5 @@
 """Quick script to verify tracing helper import and init."""
+
 from pkg.observability import init_tracing
 
 if __name__ == "__main__":

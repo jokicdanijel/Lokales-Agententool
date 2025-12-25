@@ -69,7 +69,10 @@
       "label": "test: curl all agents health",
       "type": "shell",
       "command": "bash",
-      "args": ["-c", "for port in {12344..12367}; do echo \"Port $port:\"; curl -s http://127.0.0.1:$port/health | jq . 2>/dev/null || echo '❌ Not responding'; done"],
+      "args": [
+        "-c",
+        "for port in {12344..12367}; do echo \"Port $port:\"; curl -s http://127.0.0.1:$port/health | jq . 2>/dev/null || echo '❌ Not responding'; done"
+      ],
       "problemMatcher": [],
       "isBackground": false
     },
@@ -108,7 +111,12 @@
       "label": "python: lint (flake8)",
       "type": "shell",
       "command": "python3",
-      "args": ["-m", "flake8", "19.dashboard_agent/openwebui_integration.py", "--max-line-length=120"],
+      "args": [
+        "-m",
+        "flake8",
+        "19.dashboard_agent/openwebui_integration.py",
+        "--max-line-length=120"
+      ],
       "problemMatcher": [],
       "isBackground": false
     },

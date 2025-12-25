@@ -58,12 +58,14 @@ Request Lifecycle:
 **File Modified:** `1.opena1&2_portier/main.py`
 
 **Imports Added:**
+
 ```python
 import asyncio       # For async task management
 import httpx        # For async HTTP calls to /log/opena1
 ```
 
 **New Helper Function:**
+
 ```python
 async def log_safepoint_async(safepoint_data: Dict[str, Any]) -> None:
     """
@@ -77,6 +79,7 @@ async def log_safepoint_async(safepoint_data: Dict[str, Any]) -> None:
 ```
 
 **Enhanced /request Endpoint:**
+
 ```python
 @app.post("/request")
 async def handle_request(payload: RequestPayload) -> ResponsePayload:
@@ -97,6 +100,7 @@ async def handle_request(payload: RequestPayload) -> ResponsePayload:
 ### 1.3 Safepoint Structure
 
 **CMD Safepoint Example:**
+
 ```json
 {
   "timestamp": "2025-11-24T12:06:45.995296Z",
@@ -106,13 +110,14 @@ async def handle_request(payload: RequestPayload) -> ResponsePayload:
   "payload": {
     "request_id": "15388b47-2aa3-480f-b4b1-1b92059589c5",
     "query": "Test query from concurrent load test",
-    "context": {"test_id": "phase_15_3", "concurrency": 50},
+    "context": { "test_id": "phase_15_3", "concurrency": 50 },
     "timestamp": "2025-11-24T12:06:42.632283Z"
   }
 }
 ```
 
 **RESP Safepoint Example:**
+
 ```json
 {
   "timestamp": "2025-11-24T12:06:45.996058Z",
@@ -138,12 +143,14 @@ async def handle_request(payload: RequestPayload) -> ResponsePayload:
 ### 2.1 Load Test: 50 Concurrent Requests
 
 **Test Configuration:**
+
 - Concurrency Level: 50 simultaneous requests
 - Request Payload: Standard RequestPayload with query + context
 - Duration: 0.10 seconds (parallel execution)
 - Auto-Logging: Enabled (CMD + RESP for each request)
 
 **Results Summary:**
+
 ```
 📊 PHASE 15.3 Load Test Results
 ================================
@@ -160,6 +167,7 @@ Throughput:       502.8 req/s
 ### 2.2 Latency Analysis
 
 **Latency Metrics (milliseconds):**
+
 ```
 Min Latency:      53.94ms
 Max Latency:      82.98ms
@@ -170,6 +178,7 @@ P99:              82.98ms
 ```
 
 **Analysis:**
+
 - Latency is dominated by httpx async client overhead (~70ms)
 - Pure endpoint processing: ~2-3ms
 - Logging doesn't increase visible latency (background async)
@@ -178,6 +187,7 @@ P99:              82.98ms
 ### 2.3 Safepoint Logging Verification
 
 **Files Created:**
+
 - Total safepoints in archiv/: 107 files
 - From this test: 100 files (50 CMD + 50 RESP)
 - All safepoints properly formatted JSON
@@ -185,6 +195,7 @@ P99:              82.98ms
 - All have Unicode → markers in filenames
 
 **Sample Correlation Pair:**
+
 ```
 CMD:  SP1763982405995_load_test→opena1_CMD.json
 RESP: SP1763982405996_opena1→load_test_RESP.json
@@ -195,16 +206,16 @@ RESP: SP1763982405996_opena1→load_test_RESP.json
 
 **PHASE 15 Evolution:**
 
-| Metric | PHASE 15.1 | PHASE 15.2 | PHASE 15.3 |
-|--------|-----------|-----------|-----------|
-| Endpoint | /request | /log/opena1 | /request (auto) |
-| Latency (avg) | 2ms | <1ms | 73.87ms* |
-| Load Test Size | 5 req | 5 req | 50 concurrent |
-| Success Rate | 100% | 100% | 100% |
-| Auto-Logging | None | ✅ Existing | ✅ Auto (NEW) |
-| Throughput | N/A | N/A | 502.8 req/s |
+| Metric         | PHASE 15.1 | PHASE 15.2  | PHASE 15.3      |
+| -------------- | ---------- | ----------- | --------------- |
+| Endpoint       | /request   | /log/opena1 | /request (auto) |
+| Latency (avg)  | 2ms        | <1ms        | 73.87ms\*       |
+| Load Test Size | 5 req      | 5 req       | 50 concurrent   |
+| Success Rate   | 100%       | 100%        | 100%            |
+| Auto-Logging   | None       | ✅ Existing | ✅ Auto (NEW)   |
+| Throughput     | N/A        | N/A         | 502.8 req/s     |
 
-*Note: The 73.87ms includes httpx async overhead for the background logging call. Pure endpoint is 2-3ms.
+\*Note: The 73.87ms includes httpx async overhead for the background logging call. Pure endpoint is 2-3ms.
 
 ---
 
@@ -213,6 +224,7 @@ RESP: SP1763982405996_opena1→load_test_RESP.json
 ### 3.1 Goals Accomplished
 
 **✅ B) Auto-Logging Integration:**
+
 - /request automatically logs CMD on receive
 - /request automatically logs RESP on response
 - /request automatically logs ERROR on exception
@@ -220,6 +232,7 @@ RESP: SP1763982405996_opena1→load_test_RESP.json
 - Zero impact on endpoint response time (<5ms)
 
 **✅ D) Response Tracking:**
+
 - Unique request_id generated per request (UUID)
 - CMD safepoint contains request_id + query + context
 - RESP safepoint contains request_id + response + latency
@@ -227,6 +240,7 @@ RESP: SP1763982405996_opena1→load_test_RESP.json
 - Lifecycle tracing across services possible
 
 **✅ E) Performance Optimization:**
+
 - 50 concurrent requests tested successfully
 - 502.8 req/s throughput achieved
 - 100% success rate (0 errors)
@@ -245,14 +259,14 @@ RESP: SP1763982405996_opena1→load_test_RESP.json
 
 **Criteria Assessment:**
 
-| Criterion | Status | Evidence |
-|-----------|--------|----------|
-| Error Handling | ✅ | ERROR safepoints logged on exception |
-| Performance | ✅ | 502.8 req/s, P99 <100ms |
-| Reliability | ✅ | 50/50 requests successful |
-| Traceability | ✅ | request_id correlates CMD/RESP |
-| Durability | ✅ | All safepoints persisted to disk |
-| Scalability | ✅ | Handles 50 concurrent without degradation |
+| Criterion      | Status | Evidence                                  |
+| -------------- | ------ | ----------------------------------------- |
+| Error Handling | ✅     | ERROR safepoints logged on exception      |
+| Performance    | ✅     | 502.8 req/s, P99 <100ms                   |
+| Reliability    | ✅     | 50/50 requests successful                 |
+| Traceability   | ✅     | request_id correlates CMD/RESP            |
+| Durability     | ✅     | All safepoints persisted to disk          |
+| Scalability    | ✅     | Handles 50 concurrent without degradation |
 
 ---
 
@@ -270,6 +284,7 @@ RESP: SP1763982405996_opena1→load_test_RESP.json
 ### 4.2 Load Test Results
 
 **Individual Request Sample (First 5 of 50):**
+
 ```
 Req  1: ✅ PASS | Latency:  70.64ms | RequestID: 1f3f7f26-...
 Req  2: ✅ PASS | Latency:  65.88ms | RequestID: 2ebd38bd-...
@@ -311,6 +326,7 @@ $ ls archiv/ | grep RESP | wc -l
 ### 5.2 Response Format
 
 **Success Response:**
+
 ```json
 {
   "request_id": "uuid-string",
@@ -328,6 +344,7 @@ $ ls archiv/ | grep RESP | wc -l
 ```
 
 **Error Response:**
+
 ```json
 {
   "request_id": "uuid-string",
@@ -344,6 +361,7 @@ $ ls archiv/ | grep RESP | wc -l
 ### 5.3 Safepoint Logging
 
 **Async Fire-and-Forget Pattern:**
+
 ```python
 asyncio.create_task(log_safepoint_async(cmd_data))
 # Returns immediately, logging happens in background
@@ -459,6 +477,7 @@ Execution Time:       0.10 seconds
 **PHASE 15.3 is COMPLETE. ✅**
 
 Successfully implemented:
+
 - ✅ Auto-logging integration (CMD/RESP/ERROR safepoints)
 - ✅ Full request-response tracking via request_id correlation
 - ✅ Performance optimization (502.8 req/s, 100% reliability)

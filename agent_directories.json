@@ -223,7 +223,16 @@
   "type_groups": {
     "portier": ["opena1", "opena2"],
     "ui": ["opena3"],
-    "connectors": ["opena4", "opena5", "opena6", "opena7", "opena8", "opena9", "opena12", "opena14"],
+    "connectors": [
+      "opena4",
+      "opena5",
+      "opena6",
+      "opena7",
+      "opena8",
+      "opena9",
+      "opena12",
+      "opena14"
+    ],
     "analytics": ["opena10", "opena13"],
     "security": ["opena11"],
     "generators": ["opena15", "opena17"],

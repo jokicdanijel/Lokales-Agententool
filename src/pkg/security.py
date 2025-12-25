@@ -5,9 +5,8 @@ Implementiert Token-Validierung, auto-Provisioning und Rate-Limiting.
 
 import logging
 import time
-from datetime import datetime
-from typing import Dict, Optional
 from pathlib import Path
+
 from fastapi.security import HTTPAuthorizationCredentials
 
 logger = logging.getLogger(__name__)
@@ -16,9 +15,12 @@ ENV_FILE = Path(".env")
 LOG_DIR = Path("logs")
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 
+
 def generate_token() -> str:
     import secrets
+
     return secrets.token_urlsafe(32)
+
 
 def _ensure_token_file() -> str:
     if ENV_FILE.exists():
@@ -35,14 +37,17 @@ def _ensure_token_file() -> str:
     logging.getLogger("security").info("Neuer Token generiert und in .env gespeichert.")
     return tok
 
+
 _CURRENT_TOKEN = _ensure_token_file()
+
 
 class RateLimiter:
     """Rate-Limiting pro Token (Sliding Window)"""
+
     def __init__(self, requests_per_minute: int = 60):
         self.rate_limit = requests_per_minute
         self.window_size = 60.0
-        self._reqs: Dict[str, list[float]] = {}
+        self._reqs: dict[str, list[float]] = {}
 
     def _clean(self, t: str):
         now = time.time()
@@ -70,6 +75,7 @@ class RateLimiter:
 
     def limit(self):
         from functools import wraps
+
         from fastapi import HTTPException
 
         def decorator(func):
@@ -89,16 +95,21 @@ class RateLimiter:
                     raise HTTPException(status_code=429, detail="Rate limit überschritten")
 
                 return await func(*args, **kwargs)
+
             return wrapper
+
         return decorator
+
 
 def verify_token(token: str) -> bool:
     ok = bool(token) and token == _CURRENT_TOKEN
     logging.getLogger("security").info(f"Tokenprüfung ok={ok}")
     return ok
 
+
 class SecurityLog:
     """Protokolliert Sicherheitsereignisse"""
+
     def __init__(self):
         self.logger = logging.getLogger("security")
         fh = logging.FileHandler(LOG_DIR / "security.log")
@@ -113,9 +124,8 @@ class SecurityLog:
     def log_violation(self, details: str):
         self.logger.warning(f"Security violation: {details}")
 
+
 security_log = SecurityLog()
-
-
 
 
 rate_limiter = RateLimiter(requests_per_minute=60)

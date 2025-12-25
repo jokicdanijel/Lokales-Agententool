@@ -1,7 +1,7 @@
 # 🚨 Security Incident Report – API Key Exposure
 
-**Datum:** 28. November 2025  
-**Schweregrad:** CRITICAL (P0)  
+**Datum:** 28. November 2025
+**Schweregrad:** CRITICAL (P0)
 **Status:** ✅ RESOLVED (Keys rotiert, Services neu gestartet)
 
 ---
@@ -81,7 +81,7 @@ git log --all --oneline -- .env
    ```bash
    # Projekt Root
    nano /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/.env
-   
+
    # Service Directory
    nano /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/.env
    ```
@@ -90,16 +90,16 @@ git log --all --oneline -- .env
 
    ```bash
    cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
-   
+
    # opena1 restart
    pkill -f opena1_app.py
    cd 1.opena1\&2_portier
    nohup python3 opena1_app.py &
-   
+
    # opena2 restart
    pkill -f opena2_app.py
    nohup python3 opena2_app.py &
-   
+
    # Health Check
    curl -s http://127.0.0.1:12344/health | jq .
    curl -s http://127.0.0.1:12345/health | jq .
@@ -163,17 +163,17 @@ curl -s http://127.0.0.1:12345/health | jq .entries_count
 
 ## 6. Timeline
 
-| Zeit | Event | Status |
-|------|-------|--------|
-| 28.11.2025 ~11:00 | User teilt Konversation mit Keys | ⚠️ Exposure |
-| 28.11.2025 11:05 | Agent erkennt Exposure | ✅ Detected |
-| 28.11.2025 11:06 | .env.template bereinigt | ✅ Fixed |
-| 28.11.2025 11:07 | Git History geprüft | ✅ Clean |
-| 28.11.2025 11:08 | .gitignore validiert | ✅ Protected |
-| 28.11.2025 ~11:10 | **Dieser Report erstellt** | ✅ Documented |
-| 28.11.2025 00:45 | **Keys rotiert** | ✅ **COMPLETE** |
-| 28.11.2025 00:50 | Services neu gestartet | ✅ **COMPLETE** |
-| 28.11.2025 00:53 | Start-Skripte erstellt | ✅ **COMPLETE** |
+| Zeit              | Event                            | Status          |
+| ----------------- | -------------------------------- | --------------- |
+| 28.11.2025 ~11:00 | User teilt Konversation mit Keys | ⚠️ Exposure     |
+| 28.11.2025 11:05  | Agent erkennt Exposure           | ✅ Detected     |
+| 28.11.2025 11:06  | .env.template bereinigt          | ✅ Fixed        |
+| 28.11.2025 11:07  | Git History geprüft              | ✅ Clean        |
+| 28.11.2025 11:08  | .gitignore validiert             | ✅ Protected    |
+| 28.11.2025 ~11:10 | **Dieser Report erstellt**       | ✅ Documented   |
+| 28.11.2025 00:45  | **Keys rotiert**                 | ✅ **COMPLETE** |
+| 28.11.2025 00:50  | Services neu gestartet           | ✅ **COMPLETE** |
+| 28.11.2025 00:53  | Start-Skripte erstellt           | ✅ **COMPLETE** |
 
 ---
 
@@ -181,12 +181,12 @@ curl -s http://127.0.0.1:12345/health | jq .entries_count
 
 ### PORTIER 3.0 Policies Eingehalten?
 
-| Policy | Status | Details |
-|--------|--------|---------|
-| **ENV-Only (no hardcoded)** | ✅ | Keys nur in .env |
-| **Secrets in .gitignore** | ✅ | .env geschützt |
-| **No commits with secrets** | ✅ | History clean |
-| **Redaction protocols** | ❌ | Nicht beim Teilen angewendet |
+| Policy                      | Status | Details                      |
+| --------------------------- | ------ | ---------------------------- |
+| **ENV-Only (no hardcoded)** | ✅     | Keys nur in .env             |
+| **Secrets in .gitignore**   | ✅     | .env geschützt               |
+| **No commits with secrets** | ✅     | History clean                |
+| **Redaction protocols**     | ❌     | Nicht beim Teilen angewendet |
 
 **Verbesserung:** Redaction-Check in Workflow einbauen
 
@@ -194,15 +194,16 @@ curl -s http://127.0.0.1:12345/health | jq .entries_count
 
 ## 8. Sign-Off
 
-**Erstellt von:** GitHub Copilot (HYPER-MASTER-CO-PILOT)  
-**Geprüft durch:** User (post-rotation)  
+**Erstellt von:** GitHub Copilot (HYPER-MASTER-CO-PILOT)
+**Geprüft durch:** User (post-rotation)
 **Status:** ✅ **RESOLVED & VALIDATED**
 
 **E2E-Test Ergebnisse:**
+
 - ✅ opena1: Health OK + OpenAI Key present (FP: 3194b9f2)
 - ✅ opena2: Health OK + OpenAI Key present (FP: f74428ce) + 190 entries
 - ✅ Option-2-Flow: opena1 → opena2 → archivp vollständig funktional
-- ✅ Safepoints: Korrekte Speicherung mit Unicode-Pfeil → 
+- ✅ Safepoints: Korrekte Speicherung mit Unicode-Pfeil →
 - ✅ Bug-Fix: Duplicate `/store/archivp` Endpoint in opena2_app.py behoben
 
 **Incident abgeschlossen:** 28. Nov 2025, 01:01 Uhr

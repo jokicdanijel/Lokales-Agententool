@@ -1,20 +1,13 @@
+import datetime
 import time
-from typing import Optional
-
-from open_webui.internal.db import Base, JSONField, get_db
-
 
 from open_webui.env import DATABASE_USER_ACTIVE_STATUS_UPDATE_INTERVAL
+from open_webui.internal.db import Base, JSONField, get_db
 from open_webui.models.chats import Chats
-from open_webui.models.groups import Groups, GroupMember
+from open_webui.models.groups import GroupMember, Groups
 from open_webui.utils.misc import throttle
-
-
 from pydantic import BaseModel, ConfigDict
-from sqlalchemy import BigInteger, Column, String, Text, Date, exists, select
-from sqlalchemy import or_, case
-
-import datetime
+from sqlalchemy import BigInteger, Column, Date, String, Text, case, exists, or_, select
 
 ####################
 # User DB Schema
@@ -50,9 +43,8 @@ class User(Base):
 
 
 class UserSettings(BaseModel):
-    ui: Optional[dict] = {}
+    ui: dict | None = {}
     model_config = ConfigDict(extra="allow")
-    pass
 
 
 class UserModel(BaseModel):
@@ -60,20 +52,20 @@ class UserModel(BaseModel):
     name: str
 
     email: str
-    username: Optional[str] = None
+    username: str | None = None
 
     role: str = "pending"
     profile_image_url: str
 
-    bio: Optional[str] = None
-    gender: Optional[str] = None
-    date_of_birth: Optional[datetime.date] = None
+    bio: str | None = None
+    gender: str | None = None
+    date_of_birth: datetime.date | None = None
 
-    info: Optional[dict] = None
-    settings: Optional[UserSettings] = None
+    info: dict | None = None
+    settings: UserSettings | None = None
 
-    api_key: Optional[str] = None
-    oauth_sub: Optional[str] = None
+    api_key: str | None = None
+    oauth_sub: str | None = None
 
     last_active_at: int  # timestamp in epoch
     updated_at: int  # timestamp in epoch
@@ -90,9 +82,9 @@ class UserModel(BaseModel):
 class UpdateProfileForm(BaseModel):
     profile_image_url: str
     name: str
-    bio: Optional[str] = None
-    gender: Optional[str] = None
-    date_of_birth: Optional[datetime.date] = None
+    bio: str | None = None
+    gender: str | None = None
+    date_of_birth: datetime.date | None = None
 
 
 class UserGroupIdsModel(UserModel):
@@ -160,7 +152,7 @@ class UserUpdateForm(BaseModel):
     name: str
     email: str
     profile_image_url: str
-    password: Optional[str] = None
+    password: str | None = None
 
 
 class UsersTable:
@@ -171,21 +163,19 @@ class UsersTable:
         email: str,
         profile_image_url: str = "/user.png",
         role: str = "pending",
-        oauth_sub: Optional[str] = None,
-    ) -> Optional[UserModel]:
+        oauth_sub: str | None = None,
+    ) -> UserModel | None:
         with get_db() as db:
             user = UserModel(
-                **{
-                    "id": id,
-                    "name": name,
-                    "email": email,
-                    "role": role,
-                    "profile_image_url": profile_image_url,
-                    "last_active_at": int(time.time()),
-                    "created_at": int(time.time()),
-                    "updated_at": int(time.time()),
-                    "oauth_sub": oauth_sub,
-                }
+                id=id,
+                name=name,
+                email=email,
+                role=role,
+                profile_image_url=profile_image_url,
+                last_active_at=int(time.time()),
+                created_at=int(time.time()),
+                updated_at=int(time.time()),
+                oauth_sub=oauth_sub,
             )
             result = User(**user.model_dump())
             db.add(result)
@@ -196,7 +186,7 @@ class UsersTable:
             else:
                 return None
 
-    def get_user_by_id(self, id: str) -> Optional[UserModel]:
+    def get_user_by_id(self, id: str) -> UserModel | None:
         try:
             with get_db() as db:
                 user = db.query(User).filter_by(id=id).first()
@@ -204,7 +194,7 @@ class UsersTable:
         except Exception:
             return None
 
-    def get_user_by_api_key(self, api_key: str) -> Optional[UserModel]:
+    def get_user_by_api_key(self, api_key: str) -> UserModel | None:
         try:
             with get_db() as db:
                 user = db.query(User).filter_by(api_key=api_key).first()
@@ -212,7 +202,7 @@ class UsersTable:
         except Exception:
             return None
 
-    def get_user_by_email(self, email: str) -> Optional[UserModel]:
+    def get_user_by_email(self, email: str) -> UserModel | None:
         try:
             with get_db() as db:
                 user = db.query(User).filter_by(email=email).first()
@@ -220,7 +210,7 @@ class UsersTable:
         except Exception:
             return None
 
-    def get_user_by_oauth_sub(self, sub: str) -> Optional[UserModel]:
+    def get_user_by_oauth_sub(self, sub: str) -> UserModel | None:
         try:
             with get_db() as db:
                 user = db.query(User).filter_by(oauth_sub=sub).first()
@@ -230,9 +220,9 @@ class UsersTable:
 
     def get_users(
         self,
-        filter: Optional[dict] = None,
-        skip: Optional[int] = None,
-        limit: Optional[int] = None,
+        filter: dict | None = None,
+        skip: int | None = None,
+        limit: int | None = None,
     ) -> dict:
         with get_db() as db:
             # Join GroupMember so we can order by group_id when requested
@@ -359,7 +349,7 @@ class UsersTable:
             users = db.query(User).filter(User.id.in_(user_ids)).all()
             return [UserModel.model_validate(user) for user in users]
 
-    def get_num_users(self) -> Optional[int]:
+    def get_num_users(self) -> int | None:
         with get_db() as db:
             return db.query(User).count()
 
@@ -375,7 +365,7 @@ class UsersTable:
         except Exception:
             return None
 
-    def get_user_webhook_url_by_id(self, id: str) -> Optional[str]:
+    def get_user_webhook_url_by_id(self, id: str) -> str | None:
         try:
             with get_db() as db:
                 user = db.query(User).filter_by(id=id).first()
@@ -383,24 +373,18 @@ class UsersTable:
                 if user.settings is None:
                     return None
                 else:
-                    return (
-                        user.settings.get("ui", {})
-                        .get("notifications", {})
-                        .get("webhook_url", None)
-                    )
+                    return user.settings.get("ui", {}).get("notifications", {}).get("webhook_url", None)
         except Exception:
             return None
 
-    def get_num_users_active_today(self) -> Optional[int]:
+    def get_num_users_active_today(self) -> int | None:
         with get_db() as db:
             current_timestamp = int(datetime.datetime.now().timestamp())
             today_midnight_timestamp = current_timestamp - (current_timestamp % 86400)
-            query = db.query(User).filter(
-                User.last_active_at > today_midnight_timestamp
-            )
+            query = db.query(User).filter(User.last_active_at > today_midnight_timestamp)
             return query.count()
 
-    def update_user_role_by_id(self, id: str, role: str) -> Optional[UserModel]:
+    def update_user_role_by_id(self, id: str, role: str) -> UserModel | None:
         try:
             with get_db() as db:
                 db.query(User).filter_by(id=id).update({"role": role})
@@ -410,14 +394,10 @@ class UsersTable:
         except Exception:
             return None
 
-    def update_user_profile_image_url_by_id(
-        self, id: str, profile_image_url: str
-    ) -> Optional[UserModel]:
+    def update_user_profile_image_url_by_id(self, id: str, profile_image_url: str) -> UserModel | None:
         try:
             with get_db() as db:
-                db.query(User).filter_by(id=id).update(
-                    {"profile_image_url": profile_image_url}
-                )
+                db.query(User).filter_by(id=id).update({"profile_image_url": profile_image_url})
                 db.commit()
 
                 user = db.query(User).filter_by(id=id).first()
@@ -426,12 +406,10 @@ class UsersTable:
             return None
 
     @throttle(DATABASE_USER_ACTIVE_STATUS_UPDATE_INTERVAL)
-    def update_user_last_active_by_id(self, id: str) -> Optional[UserModel]:
+    def update_user_last_active_by_id(self, id: str) -> UserModel | None:
         try:
             with get_db() as db:
-                db.query(User).filter_by(id=id).update(
-                    {"last_active_at": int(time.time())}
-                )
+                db.query(User).filter_by(id=id).update({"last_active_at": int(time.time())})
                 db.commit()
 
                 user = db.query(User).filter_by(id=id).first()
@@ -439,9 +417,7 @@ class UsersTable:
         except Exception:
             return None
 
-    def update_user_oauth_sub_by_id(
-        self, id: str, oauth_sub: str
-    ) -> Optional[UserModel]:
+    def update_user_oauth_sub_by_id(self, id: str, oauth_sub: str) -> UserModel | None:
         try:
             with get_db() as db:
                 db.query(User).filter_by(id=id).update({"oauth_sub": oauth_sub})
@@ -452,7 +428,7 @@ class UsersTable:
         except Exception:
             return None
 
-    def update_user_by_id(self, id: str, updated: dict) -> Optional[UserModel]:
+    def update_user_by_id(self, id: str, updated: dict) -> UserModel | None:
         try:
             with get_db() as db:
                 db.query(User).filter_by(id=id).update(updated)
@@ -465,7 +441,7 @@ class UsersTable:
             print(e)
             return None
 
-    def update_user_settings_by_id(self, id: str, updated: dict) -> Optional[UserModel]:
+    def update_user_settings_by_id(self, id: str, updated: dict) -> UserModel | None:
         try:
             with get_db() as db:
                 user_settings = db.query(User).filter_by(id=id).first().settings
@@ -511,7 +487,7 @@ class UsersTable:
         except Exception:
             return False
 
-    def get_user_api_key_by_id(self, id: str) -> Optional[str]:
+    def get_user_api_key_by_id(self, id: str) -> str | None:
         try:
             with get_db() as db:
                 user = db.query(User).filter_by(id=id).first()
@@ -524,7 +500,7 @@ class UsersTable:
             users = db.query(User).filter(User.id.in_(user_ids)).all()
             return [user.id for user in users]
 
-    def get_super_admin_user(self) -> Optional[UserModel]:
+    def get_super_admin_user(self) -> UserModel | None:
         with get_db() as db:
             user = db.query(User).filter_by(role="admin").first()
             if user:

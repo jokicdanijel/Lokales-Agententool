@@ -6,10 +6,7 @@
     "size": "enterprise",
     "website": "https://www.acme.example.com",
     "address": null,
-    "tags": [
-      "tech",
-      "b2b"
-    ],
+    "tags": ["tech", "b2b"],
     "created_at": "2025-11-27T13:33:03.318285+00:00",
     "updated_at": "2025-11-27T13:33:03.338236+00:00"
   }

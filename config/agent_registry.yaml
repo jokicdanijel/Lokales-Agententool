@@ -430,7 +430,7 @@ port_policy:
   forbidden_ports:
     - 8080
   binding:
-    - "127.0.0.1"  # loopback only
+    - "127.0.0.1" # loopback only
   total_agents: 20
   infrastructure_agents: 2
   communication_agents: 4

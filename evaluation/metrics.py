@@ -1,11 +1,12 @@
 """Helper metrics functions for evaluation framework."""
+
 from __future__ import annotations
 
-from typing import List, Dict, Any
 import statistics
+from typing import Any
 
 
-def summarize_latencies(latencies: List[float]) -> Dict[str, float]:
+def summarize_latencies(latencies: list[float]) -> dict[str, float]:
     if not latencies:
         return {"count": 0, "mean_ms": 0.0, "p50_ms": 0.0, "p95_ms": 0.0, "max_ms": 0.0}
     lat_sorted = sorted(latencies)
@@ -39,7 +40,7 @@ def length_ratio(text: str, expected: str) -> float:
     return len(text) / max(1, len(expected))
 
 
-def aggregate(scores: Dict[str, List[float]]) -> Dict[str, Any]:
+def aggregate(scores: dict[str, list[float]]) -> dict[str, Any]:
     """Aggregate score lists into summary metrics including a relevance pass rate."""
     res = {}
     # means
@@ -47,10 +48,10 @@ def aggregate(scores: Dict[str, List[float]]) -> Dict[str, Any]:
         nums = [v for v in vals if isinstance(v, (int, float))]
         res[f"{k}_mean"] = statistics.mean(nums) if nums else 0.0
     # relevance pass rate: use contains_frac >= 0.5 as pass
-    contains = scores.get('contains_frac', [])
+    contains = scores.get("contains_frac", [])
     if contains:
         passes = sum(1 for v in contains if v >= 0.5)
-        res['relevance_pass_rate'] = passes / len(contains)
+        res["relevance_pass_rate"] = passes / len(contains)
     else:
-        res['relevance_pass_rate'] = 0.0
+        res["relevance_pass_rate"] = 0.0
     return res

@@ -82,9 +82,7 @@
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
-      "command": [
-        "--config=/etc/otel-collector-config.yaml"
-      ],
+      "command": ["--config=/etc/otel-collector-config.yaml"],
       "working_dir": null,
       "scanned_at": "2025-12-24T10:20:47.956352Z",
       "live_status": {
@@ -154,9 +152,7 @@
         "./configs/alert_rules.yaml:/etc/prometheus/alert_rules.yaml:ro",
         "prometheus_data:/prometheus"
       ],
-      "networks": [
-        "elion"
-      ],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
@@ -214,20 +210,11 @@
         "./configs/grafana-dashboard-performance.json:/etc/grafana/provisioning/dashboards/performance.json:ro",
         "./configs/grafana-dashboard-alerts.json:/etc/grafana/provisioning/dashboards/alerts.json:ro"
       ],
-      "networks": [
-        "elion"
-      ],
-      "depends_on": [
-        "prometheus"
-      ],
+      "networks": ["elion"],
+      "depends_on": ["prometheus"],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:3000/api/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:3000/api/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -265,18 +252,11 @@
         "./src/services/portier:/app",
         "./19.opena20_dashboard_agent/metrics_exporter.py:/app/metrics_exporter.py:ro"
       ],
-      "networks": [
-        "elion"
-      ],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12344/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12344/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -314,18 +294,11 @@
         "./src/services/archivator:/app",
         "./1.opena1&2_portier/archivp_store:/data/archive"
       ],
-      "networks": [
-        "elion"
-      ],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12345/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12345/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -359,21 +332,12 @@
         "PORT": "12346",
         "PYTHONUNBUFFERED": "1"
       },
-      "volumes": [
-        "./src/services/telegram:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/telegram:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12346/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12346/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -407,21 +371,12 @@
         "PORT": "12348",
         "PYTHONUNBUFFERED": "1"
       },
-      "volumes": [
-        "./src/services/inference:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/inference:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12348/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12348/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -454,12 +409,8 @@
         "SERVICE_NAME": "browser",
         "PORT": "12349"
       },
-      "volumes": [
-        "./src/services/browser:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/browser:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -491,12 +442,8 @@
         "SERVICE_NAME": "vscode",
         "PORT": "12350"
       },
-      "volumes": [
-        "./src/services/vscode:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/vscode:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -528,12 +475,8 @@
         "SERVICE_NAME": "email",
         "PORT": "12351"
       },
-      "volumes": [
-        "./src/services/email:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/email:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -565,12 +508,8 @@
         "SERVICE_NAME": "whatsapp",
         "PORT": "12352"
       },
-      "volumes": [
-        "./src/services/whatsapp:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/whatsapp:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -602,12 +541,8 @@
         "SERVICE_NAME": "phone",
         "PORT": "12353"
       },
-      "volumes": [
-        "./src/services/phone:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/phone:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -639,12 +574,8 @@
         "SERVICE_NAME": "calendar",
         "PORT": "12354"
       },
-      "volumes": [
-        "./src/services/calendar:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/calendar:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -676,12 +607,8 @@
         "SERVICE_NAME": "social_media",
         "PORT": "12355"
       },
-      "volumes": [
-        "./src/services/social_media:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/social_media:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -713,12 +640,8 @@
         "SERVICE_NAME": "shop",
         "PORT": "12356"
       },
-      "volumes": [
-        "./src/services/shop:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/shop:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -750,12 +673,8 @@
         "SERVICE_NAME": "html_creator",
         "PORT": "12357"
       },
-      "volumes": [
-        "./src/services/html_creator:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/html_creator:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -787,12 +706,8 @@
         "SERVICE_NAME": "homepage_creator",
         "PORT": "12358"
       },
-      "volumes": [
-        "./src/services/homepage_creator:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/homepage_creator:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -824,12 +739,8 @@
         "SERVICE_NAME": "stocks_crypto",
         "PORT": "12359"
       },
-      "volumes": [
-        "./src/services/stocks_crypto:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/stocks_crypto:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -861,12 +772,8 @@
         "SERVICE_NAME": "influencer",
         "PORT": "12360"
       },
-      "volumes": [
-        "./src/services/influencer:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/influencer:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -898,12 +805,8 @@
         "SERVICE_NAME": "unlock_master",
         "PORT": "12361"
       },
-      "volumes": [
-        "./src/services/unlock_master:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/unlock_master:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -935,12 +838,8 @@
         "SERVICE_NAME": "local_archiv",
         "PORT": "12362"
       },
-      "volumes": [
-        "./src/services/local_archiv:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/local_archiv:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -972,12 +871,8 @@
         "SERVICE_NAME": "custom_1",
         "PORT": "12363"
       },
-      "volumes": [
-        "./src/services/custom_1:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/custom_1:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -1009,12 +904,8 @@
         "SERVICE_NAME": "custom_2",
         "PORT": "12364"
       },
-      "volumes": [
-        "./src/services/custom_2:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/custom_2:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -1051,16 +942,11 @@
         "postgres_data:/var/lib/postgresql/data",
         "./infrastructure/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql"
       ],
-      "networks": [
-        "eden-network"
-      ],
+      "networks": ["eden-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD-SHELL",
-          "pg_isready -U eden_user -d eden"
-        ],
+        "test": ["CMD-SHELL", "pg_isready -U eden_user -d eden"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 5
@@ -1090,20 +976,12 @@
         }
       ],
       "environment": {},
-      "volumes": [
-        "redis_data:/data"
-      ],
-      "networks": [
-        "eden-network"
-      ],
+      "volumes": ["redis_data:/data"],
+      "networks": ["eden-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "redis-cli",
-          "ping"
-        ],
+        "test": ["CMD", "redis-cli", "ping"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 5
@@ -1136,13 +1014,8 @@
         "VAULT_DEV_ROOT_TOKEN_ID": "***REDACTED***",
         "VAULT_DEV_LISTEN_ADDRESS": "0.0.0.0:8200"
       },
-      "volumes": [
-        "vault_data:/vault/data",
-        "vault_logs:/vault/logs"
-      ],
-      "networks": [
-        "eden-network"
-      ],
+      "volumes": ["vault_data:/vault/data", "vault_logs:/vault/logs"],
+      "networks": ["eden-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -1183,9 +1056,7 @@
         "REDIS_PASSWORD": "***REDACTED***"
       },
       "volumes": [],
-      "networks": [
-        "eden-network"
-      ],
+      "networks": ["eden-network"],
       "depends_on": {
         "postgres": {
           "condition": "service_healthy"
@@ -1196,12 +1067,7 @@
       },
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12344/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12344/health"],
         "interval": "30s",
         "timeout": "10s",
         "retries": 3
@@ -1243,9 +1109,7 @@
         "REDIS_PASSWORD": "***REDACTED***"
       },
       "volumes": [],
-      "networks": [
-        "eden-network"
-      ],
+      "networks": ["eden-network"],
       "depends_on": {
         "postgres": {
           "condition": "service_healthy"
@@ -1294,9 +1158,7 @@
         "TRIAL_DAYS": "7"
       },
       "volumes": [],
-      "networks": [
-        "eden-network"
-      ],
+      "networks": ["eden-network"],
       "depends_on": {
         "postgres": {
           "condition": "service_healthy"
@@ -1341,13 +1203,8 @@
         "AUTH_SERVICE_URL": "http://auth:12370"
       },
       "volumes": [],
-      "networks": [
-        "eden-network"
-      ],
-      "depends_on": [
-        "postgres",
-        "auth"
-      ],
+      "networks": ["eden-network"],
+      "depends_on": ["postgres", "auth"],
       "restart": "unless-stopped",
       "healthcheck": null,
       "command": null,
@@ -1379,9 +1236,7 @@
         "DOMAIN": "hyperdashboard-one.de"
       },
       "volumes": [],
-      "networks": [
-        "eden-network"
-      ],
+      "networks": ["eden-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -1416,13 +1271,8 @@
         "AUTH_SERVICE_URL": "http://auth:12370"
       },
       "volumes": [],
-      "networks": [
-        "eden-network"
-      ],
-      "depends_on": [
-        "opena1",
-        "auth"
-      ],
+      "networks": ["eden-network"],
+      "depends_on": ["opena1", "auth"],
       "restart": "unless-stopped",
       "healthcheck": null,
       "command": null,
@@ -1461,14 +1311,8 @@
         "DB_PASSWORD": "***REDACTED***"
       },
       "volumes": [],
-      "networks": [
-        "eden-network"
-      ],
-      "depends_on": [
-        "postgres",
-        "opena1",
-        "opena2"
-      ],
+      "networks": ["eden-network"],
+      "depends_on": ["postgres", "opena1", "opena2"],
       "restart": "unless-stopped",
       "healthcheck": null,
       "command": null,
@@ -1506,15 +1350,8 @@
         "./infrastructure/nginx/ssl:/etc/nginx/ssl:ro",
         "nginx_logs:/var/log/nginx"
       ],
-      "networks": [
-        "eden-network"
-      ],
-      "depends_on": [
-        "website",
-        "dashboard",
-        "auth",
-        "billing"
-      ],
+      "networks": ["eden-network"],
+      "depends_on": ["website", "dashboard", "auth", "billing"],
       "restart": "unless-stopped",
       "healthcheck": null,
       "command": null,
@@ -1546,9 +1383,7 @@
         "./infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro",
         "prometheus_data:/prometheus"
       ],
-      "networks": [
-        "eden-network"
-      ],
+      "networks": ["eden-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -1590,12 +1425,8 @@
         "./infrastructure/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro",
         "./infrastructure/grafana/datasources:/etc/grafana/provisioning/datasources:ro"
       ],
-      "networks": [
-        "eden-network"
-      ],
-      "depends_on": [
-        "prometheus"
-      ],
+      "networks": ["eden-network"],
+      "depends_on": ["prometheus"],
       "restart": "unless-stopped",
       "healthcheck": null,
       "command": null,
@@ -1643,15 +1474,11 @@
       "volumes": [
         "./docker/otel-collector-config.yaml:/etc/otel-collector-config.yaml"
       ],
-      "networks": [
-        "elion"
-      ],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
-      "command": [
-        "--config=/etc/otel-collector-config.yaml"
-      ],
+      "command": ["--config=/etc/otel-collector-config.yaml"],
       "working_dir": null,
       "scanned_at": "2025-12-24T10:20:47.998945Z",
       "live_status": {
@@ -1689,9 +1516,7 @@
         "COLLECTOR_OTLP_ENABLED": "true"
       },
       "volumes": [],
-      "networks": [
-        "elion"
-      ],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -1724,9 +1549,7 @@
         "./docker/prometheus.yaml:/etc/prometheus/prometheus.yaml",
         "prometheus_data:/prometheus"
       ],
-      "networks": [
-        "elion"
-      ],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -1761,12 +1584,8 @@
         "GF_SECURITY_ADMIN_PASSWORD": "***REDACTED***",
         "GF_USERS_ALLOW_SIGN_UP": "false"
       },
-      "volumes": [
-        "grafana_data:/var/lib/grafana"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["grafana_data:/var/lib/grafana"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -1796,9 +1615,7 @@
       ],
       "environment": {},
       "volumes": [],
-      "networks": [
-        "portier_net"
-      ],
+      "networks": ["portier_net"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -1844,9 +1661,7 @@
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
-      "command": [
-        "--config=/etc/otel-collector-config.yaml"
-      ],
+      "command": ["--config=/etc/otel-collector-config.yaml"],
       "working_dir": null,
       "scanned_at": "2025-12-24T10:20:48.001745Z",
       "live_status": {
@@ -1883,18 +1698,11 @@
         "dashboard_static:/app/static",
         "dashboard_templates:/app/templates"
       ],
-      "networks": [
-        "portier-network"
-      ],
+      "networks": ["portier-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12349/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12349/health"],
         "interval": "30s",
         "timeout": "10s",
         "retries": 3
@@ -1935,12 +1743,8 @@
         "./ssl:/etc/nginx/ssl:ro",
         "nginx_cache:/var/cache/nginx"
       ],
-      "networks": [
-        "portier-network"
-      ],
-      "depends_on": [
-        "opena20-dashboard"
-      ],
+      "networks": ["portier-network"],
+      "depends_on": ["opena20-dashboard"],
       "restart": "unless-stopped",
       "healthcheck": null,
       "command": null,
@@ -1962,12 +1766,8 @@
       "container_name": "opena20-redis",
       "ports": [],
       "environment": {},
-      "volumes": [
-        "redis_data:/data"
-      ],
-      "networks": [
-        "portier-network"
-      ],
+      "volumes": ["redis_data:/data"],
+      "networks": ["portier-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -2000,9 +1800,7 @@
         "./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro",
         "prometheus_data:/prometheus"
       ],
-      "networks": [
-        "portier-network"
-      ],
+      "networks": ["portier-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -2040,9 +1838,7 @@
       "environment": {
         "TZ": "Europe/Vienna"
       },
-      "volumes": [
-        "openwebui_data:/app/backend/data"
-      ],
+      "volumes": ["openwebui_data:/app/backend/data"],
       "networks": [],
       "depends_on": [],
       "restart": "unless-stopped",
@@ -2076,16 +1872,9 @@
         "REDIS_URL": "redis://redis:6379",
         "LOG_LEVEL": "INFO"
       },
-      "volumes": [
-        "./logs:/app/logs"
-      ],
-      "networks": [
-        "telegram_net"
-      ],
-      "depends_on": [
-        "postgres",
-        "redis"
-      ],
+      "volumes": ["./logs:/app/logs"],
+      "networks": ["telegram_net"],
+      "depends_on": ["postgres", "redis"],
       "restart": "no",
       "healthcheck": null,
       "command": null,
@@ -2117,12 +1906,8 @@
         "POSTGRES_PASSWORD": "***REDACTED***",
         "POSTGRES_DB": "telegram_multi_db"
       },
-      "volumes": [
-        "postgres_data:/var/lib/postgresql/data"
-      ],
-      "networks": [
-        "telegram_net"
-      ],
+      "volumes": ["postgres_data:/var/lib/postgresql/data"],
+      "networks": ["telegram_net"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -2151,12 +1936,8 @@
         }
       ],
       "environment": {},
-      "volumes": [
-        "redis_data:/data"
-      ],
-      "networks": [
-        "telegram_net"
-      ],
+      "volumes": ["redis_data:/data"],
+      "networks": ["telegram_net"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -2182,12 +1963,8 @@
         "REDIS_URL": "redis://redis:6379"
       },
       "volumes": [],
-      "networks": [
-        "telegram_net"
-      ],
-      "depends_on": [
-        "redis"
-      ],
+      "networks": ["telegram_net"],
+      "depends_on": ["redis"],
       "restart": "no",
       "healthcheck": null,
       "command": "python -m app.jobs.worker",
@@ -2229,21 +2006,11 @@
         "./archivp:/app/archivp",
         "./app:/app/app"
       ],
-      "networks": [
-        "portier_net"
-      ],
-      "depends_on": [
-        "opena1",
-        "opena2"
-      ],
+      "networks": ["portier_net"],
+      "depends_on": ["opena1", "opena2"],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12350/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12350/health"],
         "interval": "10s",
         "timeout": "3s",
         "retries": 3
@@ -2274,9 +2041,7 @@
       ],
       "environment": {},
       "volumes": [],
-      "networks": [
-        "portier_net"
-      ],
+      "networks": ["portier_net"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -2305,12 +2070,8 @@
         }
       ],
       "environment": {},
-      "volumes": [
-        "./archivp:/app/archivp"
-      ],
-      "networks": [
-        "portier_net"
-      ],
+      "volumes": ["./archivp:/app/archivp"],
+      "networks": ["portier_net"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -2344,9 +2105,7 @@
         "./configs/alert_rules.yaml:/etc/prometheus/alert_rules.yaml:ro",
         "prometheus_data:/prometheus"
       ],
-      "networks": [
-        "elion"
-      ],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
@@ -2404,20 +2163,11 @@
         "./configs/grafana-dashboard-performance.json:/etc/grafana/provisioning/dashboards/performance.json:ro",
         "./configs/grafana-dashboard-alerts.json:/etc/grafana/provisioning/dashboards/alerts.json:ro"
       ],
-      "networks": [
-        "elion"
-      ],
-      "depends_on": [
-        "prometheus"
-      ],
+      "networks": ["elion"],
+      "depends_on": ["prometheus"],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:3000/api/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:3000/api/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -2455,18 +2205,11 @@
         "./src/services/portier:/app",
         "./19.opena20_dashboard_agent/metrics_exporter.py:/app/metrics_exporter.py:ro"
       ],
-      "networks": [
-        "elion"
-      ],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12344/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12344/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -2504,18 +2247,11 @@
         "./src/services/archivator:/app",
         "./1.opena1&2_portier/archivp_store:/data/archive"
       ],
-      "networks": [
-        "elion"
-      ],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12345/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12345/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -2549,21 +2285,12 @@
         "PORT": "12346",
         "PYTHONUNBUFFERED": "1"
       },
-      "volumes": [
-        "./src/services/telegram:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/telegram:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12346/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12346/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -2597,21 +2324,12 @@
         "PORT": "12348",
         "PYTHONUNBUFFERED": "1"
       },
-      "volumes": [
-        "./src/services/inference:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/inference:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12348/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12348/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -2644,12 +2362,8 @@
         "SERVICE_NAME": "browser",
         "PORT": "12349"
       },
-      "volumes": [
-        "./src/services/browser:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/browser:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -2681,12 +2395,8 @@
         "SERVICE_NAME": "vscode",
         "PORT": "12350"
       },
-      "volumes": [
-        "./src/services/vscode:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/vscode:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -2718,12 +2428,8 @@
         "SERVICE_NAME": "email",
         "PORT": "12351"
       },
-      "volumes": [
-        "./src/services/email:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/email:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -2755,12 +2461,8 @@
         "SERVICE_NAME": "whatsapp",
         "PORT": "12352"
       },
-      "volumes": [
-        "./src/services/whatsapp:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/whatsapp:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -2792,12 +2494,8 @@
         "SERVICE_NAME": "phone",
         "PORT": "12353"
       },
-      "volumes": [
-        "./src/services/phone:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/phone:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -2829,12 +2527,8 @@
         "SERVICE_NAME": "calendar",
         "PORT": "12354"
       },
-      "volumes": [
-        "./src/services/calendar:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/calendar:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -2866,12 +2560,8 @@
         "SERVICE_NAME": "social_media",
         "PORT": "12355"
       },
-      "volumes": [
-        "./src/services/social_media:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/social_media:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -2903,12 +2593,8 @@
         "SERVICE_NAME": "shop",
         "PORT": "12356"
       },
-      "volumes": [
-        "./src/services/shop:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/shop:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -2940,12 +2626,8 @@
         "SERVICE_NAME": "html_creator",
         "PORT": "12357"
       },
-      "volumes": [
-        "./src/services/html_creator:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/html_creator:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -2977,12 +2659,8 @@
         "SERVICE_NAME": "homepage_creator",
         "PORT": "12358"
       },
-      "volumes": [
-        "./src/services/homepage_creator:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/homepage_creator:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3014,12 +2692,8 @@
         "SERVICE_NAME": "stocks_crypto",
         "PORT": "12359"
       },
-      "volumes": [
-        "./src/services/stocks_crypto:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/stocks_crypto:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3051,12 +2725,8 @@
         "SERVICE_NAME": "influencer",
         "PORT": "12360"
       },
-      "volumes": [
-        "./src/services/influencer:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/influencer:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3088,12 +2758,8 @@
         "SERVICE_NAME": "unlock_master",
         "PORT": "12361"
       },
-      "volumes": [
-        "./src/services/unlock_master:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/unlock_master:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3125,12 +2791,8 @@
         "SERVICE_NAME": "local_archiv",
         "PORT": "12362"
       },
-      "volumes": [
-        "./src/services/local_archiv:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/local_archiv:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3162,12 +2824,8 @@
         "SERVICE_NAME": "custom_1",
         "PORT": "12363"
       },
-      "volumes": [
-        "./src/services/custom_1:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/custom_1:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3199,12 +2857,8 @@
         "SERVICE_NAME": "custom_2",
         "PORT": "12364"
       },
-      "volumes": [
-        "./src/services/custom_2:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/custom_2:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3238,9 +2892,7 @@
         "./configs/alert_rules.yaml:/etc/prometheus/alert_rules.yaml:ro",
         "prometheus_data:/prometheus"
       ],
-      "networks": [
-        "elion"
-      ],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
@@ -3298,20 +2950,11 @@
         "./configs/grafana-dashboard-performance.json:/etc/grafana/provisioning/dashboards/performance.json:ro",
         "./configs/grafana-dashboard-alerts.json:/etc/grafana/provisioning/dashboards/alerts.json:ro"
       ],
-      "networks": [
-        "elion"
-      ],
-      "depends_on": [
-        "prometheus"
-      ],
+      "networks": ["elion"],
+      "depends_on": ["prometheus"],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:3000/api/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:3000/api/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -3349,18 +2992,11 @@
         "./src/services/portier:/app",
         "./19.opena20_dashboard_agent/metrics_exporter.py:/app/metrics_exporter.py:ro"
       ],
-      "networks": [
-        "elion"
-      ],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12344/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12344/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -3398,18 +3034,11 @@
         "./src/services/archivator:/app",
         "./1.opena1&2_portier/archivp_store:/data/archive"
       ],
-      "networks": [
-        "elion"
-      ],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12345/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12345/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -3443,21 +3072,12 @@
         "PORT": "12346",
         "PYTHONUNBUFFERED": "1"
       },
-      "volumes": [
-        "./src/services/telegram:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/telegram:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12346/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12346/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -3491,21 +3111,12 @@
         "PORT": "12348",
         "PYTHONUNBUFFERED": "1"
       },
-      "volumes": [
-        "./src/services/inference:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/inference:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12348/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12348/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -3538,12 +3149,8 @@
         "SERVICE_NAME": "browser",
         "PORT": "12349"
       },
-      "volumes": [
-        "./src/services/browser:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/browser:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3575,12 +3182,8 @@
         "SERVICE_NAME": "vscode",
         "PORT": "12350"
       },
-      "volumes": [
-        "./src/services/vscode:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/vscode:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3612,12 +3215,8 @@
         "SERVICE_NAME": "email",
         "PORT": "12351"
       },
-      "volumes": [
-        "./src/services/email:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/email:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3649,12 +3248,8 @@
         "SERVICE_NAME": "whatsapp",
         "PORT": "12352"
       },
-      "volumes": [
-        "./src/services/whatsapp:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/whatsapp:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3686,12 +3281,8 @@
         "SERVICE_NAME": "phone",
         "PORT": "12353"
       },
-      "volumes": [
-        "./src/services/phone:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/phone:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3723,12 +3314,8 @@
         "SERVICE_NAME": "calendar",
         "PORT": "12354"
       },
-      "volumes": [
-        "./src/services/calendar:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/calendar:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3760,12 +3347,8 @@
         "SERVICE_NAME": "social_media",
         "PORT": "12355"
       },
-      "volumes": [
-        "./src/services/social_media:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/social_media:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3797,12 +3380,8 @@
         "SERVICE_NAME": "shop",
         "PORT": "12356"
       },
-      "volumes": [
-        "./src/services/shop:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/shop:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3834,12 +3413,8 @@
         "SERVICE_NAME": "html_creator",
         "PORT": "12357"
       },
-      "volumes": [
-        "./src/services/html_creator:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/html_creator:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3871,12 +3446,8 @@
         "SERVICE_NAME": "homepage_creator",
         "PORT": "12358"
       },
-      "volumes": [
-        "./src/services/homepage_creator:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/homepage_creator:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3908,12 +3479,8 @@
         "SERVICE_NAME": "stocks_crypto",
         "PORT": "12359"
       },
-      "volumes": [
-        "./src/services/stocks_crypto:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/stocks_crypto:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3945,12 +3512,8 @@
         "SERVICE_NAME": "influencer",
         "PORT": "12360"
       },
-      "volumes": [
-        "./src/services/influencer:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/influencer:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -3982,12 +3545,8 @@
         "SERVICE_NAME": "unlock_master",
         "PORT": "12361"
       },
-      "volumes": [
-        "./src/services/unlock_master:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/unlock_master:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -4019,12 +3578,8 @@
         "SERVICE_NAME": "local_archiv",
         "PORT": "12362"
       },
-      "volumes": [
-        "./src/services/local_archiv:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/local_archiv:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -4056,12 +3611,8 @@
         "SERVICE_NAME": "custom_1",
         "PORT": "12363"
       },
-      "volumes": [
-        "./src/services/custom_1:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/custom_1:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -4093,12 +3644,8 @@
         "SERVICE_NAME": "custom_2",
         "PORT": "12364"
       },
-      "volumes": [
-        "./src/services/custom_2:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/custom_2:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -4140,21 +3687,11 @@
         "./archivp:/app/archivp",
         "./app:/app/app"
       ],
-      "networks": [
-        "portier_net"
-      ],
-      "depends_on": [
-        "opena1",
-        "opena2"
-      ],
+      "networks": ["portier_net"],
+      "depends_on": ["opena1", "opena2"],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12349/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12349/health"],
         "interval": "10s",
         "timeout": "3s",
         "retries": 3
@@ -4185,9 +3722,7 @@
       ],
       "environment": {},
       "volumes": [],
-      "networks": [
-        "portier_net"
-      ],
+      "networks": ["portier_net"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -4216,12 +3751,8 @@
         }
       ],
       "environment": {},
-      "volumes": [
-        "./archivp:/app/archivp"
-      ],
-      "networks": [
-        "portier_net"
-      ],
+      "volumes": ["./archivp:/app/archivp"],
+      "networks": ["portier_net"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -4262,21 +3793,11 @@
         "ENABLE_METRICS": "true"
       },
       "volumes": [],
-      "networks": [
-        "portier_net"
-      ],
-      "depends_on": [
-        "opena1",
-        "opena2"
-      ],
+      "networks": ["portier_net"],
+      "depends_on": ["opena1", "opena2"],
       "restart": "no",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12351/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12351/health"],
         "interval": "30s",
         "timeout": "10s",
         "retries": 3
@@ -4307,9 +3828,7 @@
       ],
       "environment": {},
       "volumes": [],
-      "networks": [
-        "portier_net"
-      ],
+      "networks": ["portier_net"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -4339,9 +3858,7 @@
       ],
       "environment": {},
       "volumes": [],
-      "networks": [
-        "portier_net"
-      ],
+      "networks": ["portier_net"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -4410,10 +3927,7 @@
         "N8N_API_KEY": "***REDACTED***",
         "N8N_PUBLIC_API": "***REDACTED***"
       },
-      "volumes": [
-        "./local-files:/files",
-        "n8n_data:/home/node/.n8n"
-      ],
+      "volumes": ["./local-files:/files", "n8n_data:/home/node/.n8n"],
       "networks": [],
       "depends_on": [],
       "restart": "unless-stopped",
@@ -4443,12 +3957,8 @@
         }
       ],
       "environment": {},
-      "volumes": [
-        "ollama-data:/root/.ollama"
-      ],
-      "networks": [
-        "agent-network"
-      ],
+      "volumes": ["ollama-data:/root/.ollama"],
+      "networks": ["agent-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -4480,15 +3990,9 @@
         "OLLAMA_BASE_URL": "http://ollama:11434",
         "WEBUI_SECRET_KEY": "***REDACTED***"
       },
-      "volumes": [
-        "openwebui-data:/app/backend/data"
-      ],
-      "networks": [
-        "agent-network"
-      ],
-      "depends_on": [
-        "ollama"
-      ],
+      "volumes": ["openwebui-data:/app/backend/data"],
+      "networks": ["agent-network"],
+      "depends_on": ["ollama"],
       "restart": "unless-stopped",
       "healthcheck": null,
       "command": null,
@@ -4526,12 +4030,8 @@
         "./logs:/app/logs",
         "./config:/app/config"
       ],
-      "networks": [
-        "agent-network"
-      ],
-      "depends_on": [
-        "ollama"
-      ],
+      "networks": ["agent-network"],
+      "depends_on": ["ollama"],
       "restart": "unless-stopped",
       "healthcheck": null,
       "command": null,
@@ -4559,12 +4059,8 @@
         }
       ],
       "environment": {},
-      "volumes": [
-        "ollama-data:/root/.ollama"
-      ],
-      "networks": [
-        "agent-network"
-      ],
+      "volumes": ["ollama-data:/root/.ollama"],
+      "networks": ["agent-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -4609,21 +4105,11 @@
         "/mnt/data:/mnt/data:rw",
         "../MASTERPROMPT_OPENA3_AUTORECOVERY.md:/system_prompts/MASTERPROMPT_OPENA3_AUTORECOVERY.md:ro"
       ],
-      "networks": [
-        "agent-network"
-      ],
-      "depends_on": [
-        "ollama",
-        "localagent-pro"
-      ],
+      "networks": ["agent-network"],
+      "depends_on": ["ollama", "localagent-pro"],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://0.0.0.0:8080/health || exit 1"
-        ],
+        "test": ["CMD", "curl", "-f", "http://0.0.0.0:8080/health || exit 1"],
         "interval": "30s",
         "timeout": "10s",
         "retries": 3
@@ -4654,9 +4140,7 @@
       ],
       "environment": {},
       "volumes": [],
-      "networks": [
-        "portier_net"
-      ],
+      "networks": ["portier_net"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -4697,18 +4181,11 @@
         "dashboard_static:/app/static",
         "dashboard_templates:/app/templates"
       ],
-      "networks": [
-        "portier-network"
-      ],
+      "networks": ["portier-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12349/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12349/health"],
         "interval": "30s",
         "timeout": "10s",
         "retries": 3
@@ -4749,12 +4226,8 @@
         "./ssl:/etc/nginx/ssl:ro",
         "nginx_cache:/var/cache/nginx"
       ],
-      "networks": [
-        "portier-network"
-      ],
-      "depends_on": [
-        "opena20-dashboard"
-      ],
+      "networks": ["portier-network"],
+      "depends_on": ["opena20-dashboard"],
       "restart": "unless-stopped",
       "healthcheck": null,
       "command": null,
@@ -4776,12 +4249,8 @@
       "container_name": "opena20-redis",
       "ports": [],
       "environment": {},
-      "volumes": [
-        "redis_data:/data"
-      ],
-      "networks": [
-        "portier-network"
-      ],
+      "volumes": ["redis_data:/data"],
+      "networks": ["portier-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -4814,9 +4283,7 @@
         "./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro",
         "prometheus_data:/prometheus"
       ],
-      "networks": [
-        "portier-network"
-      ],
+      "networks": ["portier-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -4861,20 +4328,11 @@
         "./logs:/app/logs",
         "./config:/app/config:ro"
       ],
-      "networks": [
-        "localagent-network"
-      ],
-      "depends_on": [
-        "ollama"
-      ],
+      "networks": ["localagent-network"],
+      "depends_on": ["ollama"],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:8001/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:8001/health"],
         "interval": "30s",
         "timeout": "10s",
         "retries": 3
@@ -4906,21 +4364,12 @@
       "environment": {
         "OLLAMA_ORIGINS": "*"
       },
-      "volumes": [
-        "ollama-data:/root/.ollama"
-      ],
-      "networks": [
-        "localagent-network"
-      ],
+      "volumes": ["ollama-data:/root/.ollama"],
+      "networks": ["localagent-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:11434/api/tags"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:11434/api/tags"],
         "interval": "30s",
         "timeout": "10s",
         "retries": 3
@@ -4954,9 +4403,7 @@
         "./config/prometheus_localagent.yml:/etc/prometheus/prometheus.yml:ro",
         "prometheus-data:/prometheus"
       ],
-      "networks": [
-        "localagent-network"
-      ],
+      "networks": ["localagent-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -4996,12 +4443,8 @@
         "grafana-data:/var/lib/grafana",
         "./config/grafana_dashboard_localagent.json:/etc/grafana/provisioning/dashboards/localagent.json:ro"
       ],
-      "networks": [
-        "localagent-network"
-      ],
-      "depends_on": [
-        "prometheus"
-      ],
+      "networks": ["localagent-network"],
+      "depends_on": ["prometheus"],
       "restart": "unless-stopped",
       "healthcheck": null,
       "command": null,
@@ -5043,21 +4486,11 @@
         "./archivp:/app/archivp",
         "./app:/app/app"
       ],
-      "networks": [
-        "portier_net"
-      ],
-      "depends_on": [
-        "opena1",
-        "opena2"
-      ],
+      "networks": ["portier_net"],
+      "depends_on": ["opena1", "opena2"],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12350/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12350/health"],
         "interval": "10s",
         "timeout": "3s",
         "retries": 3
@@ -5088,9 +4521,7 @@
       ],
       "environment": {},
       "volumes": [],
-      "networks": [
-        "portier_net"
-      ],
+      "networks": ["portier_net"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -5119,12 +4550,8 @@
         }
       ],
       "environment": {},
-      "volumes": [
-        "./archivp:/app/archivp"
-      ],
-      "networks": [
-        "portier_net"
-      ],
+      "volumes": ["./archivp:/app/archivp"],
+      "networks": ["portier_net"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -5165,18 +4592,11 @@
         "dashboard_static:/app/static",
         "dashboard_templates:/app/templates"
       ],
-      "networks": [
-        "portier-network"
-      ],
+      "networks": ["portier-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12349/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12349/health"],
         "interval": "30s",
         "timeout": "10s",
         "retries": 3
@@ -5217,12 +4637,8 @@
         "./ssl:/etc/nginx/ssl:ro",
         "nginx_cache:/var/cache/nginx"
       ],
-      "networks": [
-        "portier-network"
-      ],
-      "depends_on": [
-        "opena20-dashboard"
-      ],
+      "networks": ["portier-network"],
+      "depends_on": ["opena20-dashboard"],
       "restart": "unless-stopped",
       "healthcheck": null,
       "command": null,
@@ -5244,12 +4660,8 @@
       "container_name": "opena20-redis",
       "ports": [],
       "environment": {},
-      "volumes": [
-        "redis_data:/data"
-      ],
-      "networks": [
-        "portier-network"
-      ],
+      "volumes": ["redis_data:/data"],
+      "networks": ["portier-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -5282,9 +4694,7 @@
         "./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro",
         "prometheus_data:/prometheus"
       ],
-      "networks": [
-        "portier-network"
-      ],
+      "networks": ["portier-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -5325,9 +4735,7 @@
         "./configs/alert_rules.yaml:/etc/prometheus/alert_rules.yaml:ro",
         "prometheus_data:/prometheus"
       ],
-      "networks": [
-        "elion"
-      ],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
@@ -5385,20 +4793,11 @@
         "./configs/grafana-dashboard-performance.json:/etc/grafana/provisioning/dashboards/performance.json:ro",
         "./configs/grafana-dashboard-alerts.json:/etc/grafana/provisioning/dashboards/alerts.json:ro"
       ],
-      "networks": [
-        "elion"
-      ],
-      "depends_on": [
-        "prometheus"
-      ],
+      "networks": ["elion"],
+      "depends_on": ["prometheus"],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:3000/api/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:3000/api/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -5436,18 +4835,11 @@
         "./src/services/portier:/app",
         "./19.opena20_dashboard_agent/metrics_exporter.py:/app/metrics_exporter.py:ro"
       ],
-      "networks": [
-        "elion"
-      ],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12344/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12344/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -5485,18 +4877,11 @@
         "./src/services/archivator:/app",
         "./1.opena1&2_portier/archivp_store:/data/archive"
       ],
-      "networks": [
-        "elion"
-      ],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12345/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12345/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -5530,21 +4915,12 @@
         "PORT": "12346",
         "PYTHONUNBUFFERED": "1"
       },
-      "volumes": [
-        "./src/services/telegram:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/telegram:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12346/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12346/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -5578,21 +4954,12 @@
         "PORT": "12348",
         "PYTHONUNBUFFERED": "1"
       },
-      "volumes": [
-        "./src/services/inference:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/inference:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12348/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12348/health"],
         "interval": "10s",
         "timeout": "5s",
         "retries": 3
@@ -5625,12 +4992,8 @@
         "SERVICE_NAME": "browser",
         "PORT": "12349"
       },
-      "volumes": [
-        "./src/services/browser:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/browser:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -5662,12 +5025,8 @@
         "SERVICE_NAME": "vscode",
         "PORT": "12350"
       },
-      "volumes": [
-        "./src/services/vscode:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/vscode:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -5699,12 +5058,8 @@
         "SERVICE_NAME": "email",
         "PORT": "12351"
       },
-      "volumes": [
-        "./src/services/email:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/email:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -5736,12 +5091,8 @@
         "SERVICE_NAME": "whatsapp",
         "PORT": "12352"
       },
-      "volumes": [
-        "./src/services/whatsapp:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/whatsapp:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -5773,12 +5124,8 @@
         "SERVICE_NAME": "phone",
         "PORT": "12353"
       },
-      "volumes": [
-        "./src/services/phone:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/phone:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -5810,12 +5157,8 @@
         "SERVICE_NAME": "calendar",
         "PORT": "12354"
       },
-      "volumes": [
-        "./src/services/calendar:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/calendar:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -5847,12 +5190,8 @@
         "SERVICE_NAME": "social_media",
         "PORT": "12355"
       },
-      "volumes": [
-        "./src/services/social_media:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/social_media:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -5884,12 +5223,8 @@
         "SERVICE_NAME": "shop",
         "PORT": "12356"
       },
-      "volumes": [
-        "./src/services/shop:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/shop:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -5921,12 +5256,8 @@
         "SERVICE_NAME": "html_creator",
         "PORT": "12357"
       },
-      "volumes": [
-        "./src/services/html_creator:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/html_creator:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -5958,12 +5289,8 @@
         "SERVICE_NAME": "homepage_creator",
         "PORT": "12358"
       },
-      "volumes": [
-        "./src/services/homepage_creator:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/homepage_creator:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -5995,12 +5322,8 @@
         "SERVICE_NAME": "stocks_crypto",
         "PORT": "12359"
       },
-      "volumes": [
-        "./src/services/stocks_crypto:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/stocks_crypto:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -6032,12 +5355,8 @@
         "SERVICE_NAME": "influencer",
         "PORT": "12360"
       },
-      "volumes": [
-        "./src/services/influencer:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/influencer:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -6069,12 +5388,8 @@
         "SERVICE_NAME": "unlock_master",
         "PORT": "12361"
       },
-      "volumes": [
-        "./src/services/unlock_master:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/unlock_master:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -6106,12 +5421,8 @@
         "SERVICE_NAME": "local_archiv",
         "PORT": "12362"
       },
-      "volumes": [
-        "./src/services/local_archiv:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/local_archiv:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -6143,12 +5454,8 @@
         "SERVICE_NAME": "custom_1",
         "PORT": "12363"
       },
-      "volumes": [
-        "./src/services/custom_1:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/custom_1:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -6180,12 +5487,8 @@
         "SERVICE_NAME": "custom_2",
         "PORT": "12364"
       },
-      "volumes": [
-        "./src/services/custom_2:/app"
-      ],
-      "networks": [
-        "elion"
-      ],
+      "volumes": ["./src/services/custom_2:/app"],
+      "networks": ["elion"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -6227,21 +5530,11 @@
         "./archivp:/app/archivp",
         "./app:/app/app"
       ],
-      "networks": [
-        "portier_net"
-      ],
-      "depends_on": [
-        "opena1",
-        "opena2"
-      ],
+      "networks": ["portier_net"],
+      "depends_on": ["opena1", "opena2"],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12349/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12349/health"],
         "interval": "10s",
         "timeout": "3s",
         "retries": 3
@@ -6272,9 +5565,7 @@
       ],
       "environment": {},
       "volumes": [],
-      "networks": [
-        "portier_net"
-      ],
+      "networks": ["portier_net"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -6303,12 +5594,8 @@
         }
       ],
       "environment": {},
-      "volumes": [
-        "./archivp:/app/archivp"
-      ],
-      "networks": [
-        "portier_net"
-      ],
+      "volumes": ["./archivp:/app/archivp"],
+      "networks": ["portier_net"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -6349,21 +5636,11 @@
         "ENABLE_METRICS": "true"
       },
       "volumes": [],
-      "networks": [
-        "portier_net"
-      ],
-      "depends_on": [
-        "opena1",
-        "opena2"
-      ],
+      "networks": ["portier_net"],
+      "depends_on": ["opena1", "opena2"],
       "restart": "no",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:12351/health"
-        ],
+        "test": ["CMD", "curl", "-f", "http://localhost:12351/health"],
         "interval": "30s",
         "timeout": "10s",
         "retries": 3
@@ -6394,9 +5671,7 @@
       ],
       "environment": {},
       "volumes": [],
-      "networks": [
-        "portier_net"
-      ],
+      "networks": ["portier_net"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -6426,9 +5701,7 @@
       ],
       "environment": {},
       "volumes": [],
-      "networks": [
-        "portier_net"
-      ],
+      "networks": ["portier_net"],
       "depends_on": [],
       "restart": "no",
       "healthcheck": null,
@@ -6457,12 +5730,8 @@
         }
       ],
       "environment": {},
-      "volumes": [
-        "ollama-data:/root/.ollama"
-      ],
-      "networks": [
-        "agent-network"
-      ],
+      "volumes": ["ollama-data:/root/.ollama"],
+      "networks": ["agent-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -6494,15 +5763,9 @@
         "OLLAMA_BASE_URL": "http://ollama:11434",
         "WEBUI_SECRET_KEY": "***REDACTED***"
       },
-      "volumes": [
-        "openwebui-data:/app/backend/data"
-      ],
-      "networks": [
-        "agent-network"
-      ],
-      "depends_on": [
-        "ollama"
-      ],
+      "volumes": ["openwebui-data:/app/backend/data"],
+      "networks": ["agent-network"],
+      "depends_on": ["ollama"],
       "restart": "unless-stopped",
       "healthcheck": null,
       "command": null,
@@ -6540,12 +5803,8 @@
         "./logs:/app/logs",
         "./config:/app/config"
       ],
-      "networks": [
-        "agent-network"
-      ],
-      "depends_on": [
-        "ollama"
-      ],
+      "networks": ["agent-network"],
+      "depends_on": ["ollama"],
       "restart": "unless-stopped",
       "healthcheck": null,
       "command": null,
@@ -6573,12 +5832,8 @@
         }
       ],
       "environment": {},
-      "volumes": [
-        "ollama-data:/root/.ollama"
-      ],
-      "networks": [
-        "agent-network"
-      ],
+      "volumes": ["ollama-data:/root/.ollama"],
+      "networks": ["agent-network"],
       "depends_on": [],
       "restart": "unless-stopped",
       "healthcheck": null,
@@ -6623,21 +5878,11 @@
         "/mnt/data:/mnt/data:rw",
         "../MASTERPROMPT_OPENA3_AUTORECOVERY.md:/system_prompts/MASTERPROMPT_OPENA3_AUTORECOVERY.md:ro"
       ],
-      "networks": [
-        "agent-network"
-      ],
-      "depends_on": [
-        "ollama",
-        "localagent-pro"
-      ],
+      "networks": ["agent-network"],
+      "depends_on": ["ollama", "localagent-pro"],
       "restart": "unless-stopped",
       "healthcheck": {
-        "test": [
-          "CMD",
-          "curl",
-          "-f",
-          "http://0.0.0.0:8080/health || exit 1"
-        ],
+        "test": ["CMD", "curl", "-f", "http://0.0.0.0:8080/health || exit 1"],
         "interval": "30s",
         "timeout": "10s",
         "retries": 3
@@ -6666,9 +5911,7 @@
         "TERM": "vt100",
         "SD_WEBUI_VARIANT": "default"
       },
-      "volumes": [
-        "./test/test_files/image_gen/sd-empty.pt:/empty.pt"
-      ],
+      "volumes": ["./test/test_files/image_gen/sd-empty.pt:/empty.pt"],
       "networks": [],
       "depends_on": [],
       "restart": "unless-stopped",
@@ -6856,13 +6099,9 @@
         "OTEL_EXPORTER_OTLP_ENDPOINT": "http://grafana:4317",
         "OTEL_SERVICE_NAME": "open-webui"
       },
-      "volumes": [
-        "open-webui:/app/backend/data"
-      ],
+      "volumes": ["open-webui:/app/backend/data"],
       "networks": [],
-      "depends_on": [
-        "grafana"
-      ],
+      "depends_on": ["grafana"],
       "restart": "unless-stopped",
       "healthcheck": null,
       "command": null,
@@ -6884,9 +6123,7 @@
       "container_name": "ollama",
       "ports": [],
       "environment": {},
-      "volumes": [
-        "ollama:/root/.ollama"
-      ],
+      "volumes": ["ollama:/root/.ollama"],
       "networks": [],
       "depends_on": [],
       "restart": "unless-stopped",
@@ -6919,13 +6156,9 @@
         "OLLAMA_BASE_URL": "http://ollama:11434",
         "WEBUI_SECRET_KEY": "***REDACTED***"
       },
-      "volumes": [
-        "open-webui:/app/backend/data"
-      ],
+      "volumes": ["open-webui:/app/backend/data"],
       "networks": [],
-      "depends_on": [
-        "ollama"
-      ],
+      "depends_on": ["ollama"],
       "restart": "unless-stopped",
       "healthcheck": null,
       "command": null,
@@ -6947,9 +6180,7 @@
       "container_name": "ollama",
       "ports": [],
       "environment": {},
-      "volumes": [
-        "${OLLAMA_DATA_DIR-./ollama-data}:/root/.ollama"
-      ],
+      "volumes": ["${OLLAMA_DATA_DIR-./ollama-data}:/root/.ollama"],
       "networks": [],
       "depends_on": [],
       "restart": "no",
@@ -7029,9 +6260,7 @@
         "TERM": "vt100",
         "SD_WEBUI_VARIANT": "default"
       },
-      "volumes": [
-        "./test/test_files/image_gen/sd-empty.pt:/empty.pt"
-      ],
+      "volumes": ["./test/test_files/image_gen/sd-empty.pt:/empty.pt"],
       "networks": [],
       "depends_on": [],
       "restart": "unless-stopped",
@@ -7219,13 +6448,9 @@
         "OTEL_EXPORTER_OTLP_ENDPOINT": "http://grafana:4317",
         "OTEL_SERVICE_NAME": "open-webui"
       },
-      "volumes": [
-        "open-webui:/app/backend/data"
-      ],
+      "volumes": ["open-webui:/app/backend/data"],
       "networks": [],
-      "depends_on": [
-        "grafana"
-      ],
+      "depends_on": ["grafana"],
       "restart": "unless-stopped",
       "healthcheck": null,
       "command": null,
@@ -7247,9 +6472,7 @@
       "container_name": "ollama",
       "ports": [],
       "environment": {},
-      "volumes": [
-        "ollama:/root/.ollama"
-      ],
+      "volumes": ["ollama:/root/.ollama"],
       "networks": [],
       "depends_on": [],
       "restart": "unless-stopped",
@@ -7282,13 +6505,9 @@
         "OLLAMA_BASE_URL": "http://ollama:11434",
         "WEBUI_SECRET_KEY": "***REDACTED***"
       },
-      "volumes": [
-        "open-webui:/app/backend/data"
-      ],
+      "volumes": ["open-webui:/app/backend/data"],
       "networks": [],
-      "depends_on": [
-        "ollama"
-      ],
+      "depends_on": ["ollama"],
       "restart": "unless-stopped",
       "healthcheck": null,
       "command": null,
@@ -7310,9 +6529,7 @@
       "container_name": "ollama",
       "ports": [],
       "environment": {},
-      "volumes": [
-        "${OLLAMA_DATA_DIR-./ollama-data}:/root/.ollama"
-      ],
+      "volumes": ["${OLLAMA_DATA_DIR-./ollama-data}:/root/.ollama"],
       "networks": [],
       "depends_on": [],
       "restart": "no",

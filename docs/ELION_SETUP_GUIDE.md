@@ -3,12 +3,14 @@
 ## Systemarchitektur (Option 2)
 
 **Datenfluss:**
+
 - Hinweg → OpenAI → opena1 (Koordinator) → opena2 (Archivator) → kordp → Tool
 - Rückweg → Tool → opena2 → opena1 → OpenAI
 
 ### 1. Systemvoraussetzungen
 
 **Basis-Anforderungen:**
+
 - **System:** Linux Mint Cinnamon
 - **Python:** Version 3.13.x mit virtueller Umgebung venv313
 - **Modell:** gpt-5-nano
@@ -17,6 +19,7 @@
 - **Speicher:** Mindestens 10GB frei
 
 **Port-Konfiguration:**
+
 - **MCP Server:** Port 12350 (fest zugewiesen)
 - **Agent Ports:** 12344-12349 (dynamisch)
 - **Verboten:** Port 8080 (strikt)
@@ -24,9 +27,10 @@
 - **Binding:** 0.0.0.0 (alle Interfaces)
 
 ### 2. Projektstruktur
+
 Basis-Verzeichnis: `/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/`
 
-```
+````
 /
 ├── 1.opena1&2_portier/         # OpenAI Portier System
 │   ├── docs/                 # Dokumentation
@@ -61,9 +65,10 @@ source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_po
 # Pakete installieren
 python -m pip install --upgrade pip
 pip install fastapi==0.115.5 uvicorn[standard]==0.32.0 pydantic==2.9.2 python-dotenv==1.0.1 fastmcp==2.12.5 mcp-sdk==1.16.0
-```
+````
 
 **MCP Server Installation:**
+
 ```bash
 # MCP Server Abhängigkeiten
 pip install fastmcp==2.12.5 mcp-sdk==1.16.0
@@ -90,6 +95,7 @@ chmod +x scripts/start_mcp_server.sh
 ### 4. Umgebungskonfiguration
 
 1. **.env Datei erstellen:**
+
 ```bash
 cat > /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/.env << EOL
 OPENAI_API_KEY=
@@ -106,6 +112,7 @@ EOL
 ```
 
 2. **Archiv/Safepoints initialisieren:**
+
 ```bash
 base="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/archivp"
 mkdir -p "$base/$(date +%Y/%m/%d)"
@@ -115,6 +122,7 @@ touch "$base/index.jsonl"
 ### 5. Systemstart (Option 2)
 
 **MCP Server Konfiguration:**
+
 - **Server:** Agent8 MCP Server (Port 12350)
 - **Transport:** SSE (Server-Sent Events)
 - **Endpoints:**
@@ -130,12 +138,14 @@ touch "$base/index.jsonl"
   - Status: Via /health endpoint
 
 **Startreihenfolge:**
+
 1. opena2 - Archivator
 2. opena1 - Koordinator
 3. kordp - Dispatcher
 4. Frontend/Tools (opena14-16-19)
 
 **Standardisiertes Startskript:**
+
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
@@ -160,17 +170,20 @@ echo "Healthcheck fehlgeschlagen ($PORT)" >&2; exit 1
 ### 6. System-Validierung
 
 1. **Port-Validierung:**
+
 ```bash
 ss -ltn sport ge 12344 sport le 12399
 ```
 
 2. **Erste Inbetriebnahme:**
+
 ```bash
 source /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/activate
 bash 1.opena1&2_portier/scripts/run_production.sh
 ```
 
 3. **Health-Check aller Komponenten:**
+
 ```bash
 for d in 1.opena1&2_portier 16.homepage_creator; do
   PORT=$(cat "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/$d/.runtime/port" 2>/dev/null || true)
@@ -181,10 +194,12 @@ done
 ### 7. Safepoints & Audit-System
 
 1. **Safepoint-Format:**
+
 - Dateinamenschema: `SP<epoch>_src→dst_{CMD|RESP}.json`
 - Speicherort: `archivp/YYYY/MM/DD/`
 
 2. **Index-Einträge (append-only):**
+
 ```json
 {
   "sp": "SP1732222222_opena1→opena2_CMD.json",
@@ -199,22 +214,24 @@ done
 
 ### 8. Troubleshooting
 
-| Problem | Prüfung |
-|----------|----------|
-| Port blockiert | `ss -ltn sport ge 12344 sport le 12399` |
-| Health fail | `logs/service.err` lesen |
-| Safepoints fehlen | `strict:true` gesetzt? |
-| 8080 aktiv | sofort stoppen (Policy-Verstoß) |
+| Problem           | Prüfung                                 |
+| ----------------- | --------------------------------------- |
+| Port blockiert    | `ss -ltn sport ge 12344 sport le 12399` |
+| Health fail       | `logs/service.err` lesen                |
+| Safepoints fehlen | `strict:true` gesetzt?                  |
+| 8080 aktiv        | sofort stoppen (Policy-Verstoß)         |
 
 ### 9. Dashboard-Architektur
 
 **Komponenten:**
+
 - Backend: Dashboard-Agenten (opena19, opena17)
 - Frontend: HTML-Agenten (opena14, opena16)
 - Jeder Agent → eigene Dashboard-Seite `/agent/<name>`
 - Datenfluss: opena19 API → HTML-Renderer → Option 2-Kette
 
 **Sicherheitsrichtlinien:**
+
 - Strict-Mode: Jedes Request-Objekt muss `"strict": true` enthalten
 - Keine Secrets im Code - nur aus `.env` lesen
 - Port 8080 ist strikt verboten
@@ -223,6 +240,7 @@ done
 ### 10. MCP Server & Deployment
 
 **Server Management:**
+
 ```bash
 # MCP Server starten
 ./scripts/start_mcp_server.sh
@@ -236,6 +254,7 @@ curl -N http://localhost:12350/sse
 ```
 
 **Log Management:**
+
 ```bash
 # Live Logs
 tail -f logs/mcp_server.log
@@ -249,6 +268,7 @@ tail -f logs/mcp_metrics.log | jq 'select(.type=="performance")'
 ```
 
 **Deployment Workflow:**
+
 ```bash
 # System-Status prüfen
 ./deployment_status.sh
@@ -266,10 +286,12 @@ cat .runtime/mcp.pid | xargs ps
 ## Support & Ressourcen
 
 **Technischer Support:**
+
 - E-Mail: support@elion-system.de
 - Dokumentation: docs.elion-system.de
 
 **MCP Ressourcen:**
+
 - FastMCP Docs: https://gofastmcp.com
 - Deployment: https://fastmcp.cloud
 - SDK Reference: https://gofastmcp.com/sdk

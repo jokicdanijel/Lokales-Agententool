@@ -29,7 +29,7 @@ create_config_py() {
     local agent_name="$3"
     local kuerzel="$4"
     local port="$5"
-    
+
     cat > "${BASE_DIR}/${dir}/config.py" << CONFIGEOF
 #!/usr/bin/env python3
 """
@@ -51,14 +51,14 @@ from pydantic_settings import BaseSettings
 
 class PortPolicy:
     """PORTIER 3.0 Port Policy Enforcement"""
-    
+
     ALLOWED_RANGE = range(12344, 12400)
     FORBIDDEN_PORTS = [8080]
-    
+
     @classmethod
     def is_valid_port(cls, port: int) -> bool:
         return port in cls.ALLOWED_RANGE and port not in cls.FORBIDDEN_PORTS
-    
+
     @classmethod
     def get_allowed_origins(cls) -> List[str]:
         origins = ["http://127.0.0.1:8080"]
@@ -70,26 +70,26 @@ class PortPolicy:
 
 class ServiceConfig(BaseSettings):
     """Hauptkonfiguration für ${agent_id}"""
-    
+
     service_name: str = "${agent_id}"
     kuerzel: str = "${kuerzel}"
     port: int = ${port}
     version: str = "3.0"
-    
+
     bearer_token: str = Field(
         default="c899b90d-faf8-485b-afa4-078357cf5313",
         alias="BEARER_TOKEN"
     )
-    
+
     base_dir: Path = Path(__file__).parent
-    
+
     opena1_url: str = Field(default="http://127.0.0.1:12344", alias="OPENA1_URL")
     opena2_url: str = Field(default="http://127.0.0.1:12345", alias="OPENA2_URL")
     opena20_url: str = Field(default="http://127.0.0.1:12349", alias="OPENA20_URL")
-    
+
     log_level: str = Field(default="INFO", alias="LOG_LEVEL")
     log_format: str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
@@ -98,7 +98,7 @@ class ServiceConfig(BaseSettings):
     @property
     def data_dir(self) -> Path:
         return self.base_dir / "data"
-    
+
     @property
     def logs_dir(self) -> Path:
         return self.base_dir / "logs"
@@ -106,13 +106,13 @@ class ServiceConfig(BaseSettings):
 
 class AgentInfo(BaseModel):
     """Agent-Informationen"""
-    
+
     id: str = Field(..., description="Agent ID")
     name: str = Field(..., description="Agent Name")
     kuerzel: str = Field(..., description="PORTIER Kürzel")
     port: int = Field(..., description="Service Port")
     enabled: bool = Field(default=True)
-    
+
     class Config:
         extra = "forbid"
 
@@ -138,7 +138,7 @@ create_security_py() {
     local agent_id="$2"
     local port="$3"
     local kuerzel="$4"
-    
+
     cat > "${BASE_DIR}/${dir}/security.py" << SECEOF
 #!/usr/bin/env python3
 """
@@ -194,21 +194,21 @@ async def verify_token(
     if DEV_MODE and not credentials:
         logger.warning("DEV_MODE: Authentifizierung übersprungen")
         return "dev-mode"
-    
+
     if not credentials:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Bearer Token erforderlich",
             headers={"WWW-Authenticate": "Bearer"}
         )
-    
+
     if credentials.credentials != BEARER_TOKEN:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Ungültiger Bearer Token",
             headers={"WWW-Authenticate": "Bearer"}
         )
-    
+
     return credentials.credentials
 
 
@@ -227,13 +227,13 @@ class RateLimiter:
         self.max_requests = max_requests
         self.window_seconds = window_seconds
         self._requests: Dict[str, list] = defaultdict(list)
-    
+
     def _clean_old_requests(self, client_id: str) -> None:
         cutoff = time.time() - self.window_seconds
         self._requests[client_id] = [
             ts for ts in self._requests[client_id] if ts > cutoff
         ]
-    
+
     def is_allowed(self, request: Request) -> bool:
         client_id = self._get_client_id(request)
         self._clean_old_requests(client_id)
@@ -241,7 +241,7 @@ class RateLimiter:
             return False
         self._requests[client_id].append(time.time())
         return True
-    
+
     def _get_client_id(self, request: Request) -> str:
         forwarded = request.headers.get("X-Forwarded-For")
         if forwarded:
@@ -256,7 +256,7 @@ api_limiter = RateLimiter(max_requests=60, window_seconds=60)
 class PortPolicyEnforcer:
     ALLOWED_RANGE = range(12344, 12400)
     FORBIDDEN_PORTS = [8080]
-    
+
     @classmethod
     def validate_origin(cls, origin: str) -> bool:
         if not origin:
@@ -285,7 +285,7 @@ create_models_py() {
     local agent_id="$2"
     local port="$3"
     local kuerzel="$4"
-    
+
     cat > "${BASE_DIR}/${dir}/models.py" << MODELSEOF
 #!/usr/bin/env python3
 """
@@ -319,7 +319,7 @@ class SafepointCategory(str, Enum):
 
 class HealthResponse(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    
+
     status: str = Field(..., description="Status (ok/error)")
     service: str = Field(..., description="Service-Name")
     kuerzel: str = Field(..., description="PORTIER Kürzel")
@@ -331,7 +331,7 @@ class HealthResponse(BaseModel):
 
 class CommandRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    
+
     action: str = Field(..., description="Aktion")
     target: Optional[str] = Field(None, description="Ziel-Agent")
     params: Dict[str, Any] = Field(default_factory=dict, description="Parameter")
@@ -339,7 +339,7 @@ class CommandRequest(BaseModel):
 
 class CommandResponse(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    
+
     status: str = Field(..., description="Status (success/error)")
     action: str = Field(..., description="Ausgeführte Aktion")
     result: Optional[Dict[str, Any]] = Field(None, description="Ergebnis")
@@ -349,14 +349,14 @@ class CommandResponse(BaseModel):
 
 class InvokeRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    
+
     action: str = Field(..., description="Aktion")
     params: Dict[str, Any] = Field(default_factory=dict, description="Parameter")
 
 
 class SafepointRecord(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    
+
     sp_timestamp: int = Field(..., description="Unix Timestamp")
     timestamp: str = Field(..., description="ISO 8601 Timestamp")
     source: str = Field(..., description="Quell-Agent")
@@ -369,7 +369,7 @@ class SafepointRecord(BaseModel):
 
 class APIResponse(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    
+
     success: bool = Field(..., description="Erfolg")
     data: Optional[Any] = Field(None, description="Daten")
     error: Optional[str] = Field(None, description="Fehlermeldung")
@@ -389,7 +389,7 @@ create_sse_client_py() {
     local agent_id="$2"
     local port="$3"
     local kuerzel="$4"
-    
+
     cat > "${BASE_DIR}/${dir}/sse_client.py" << SSEEOF
 #!/usr/bin/env python3
 """
@@ -431,7 +431,7 @@ class SSEEvent:
 
 class SSEClient:
     """SSE Client für Verbindung zu opena20 Dashboard"""
-    
+
     def __init__(
         self,
         base_url: str = OPENA20_URL,
@@ -443,7 +443,7 @@ class SSEClient:
         self.timeout = timeout
         self._client: Optional[httpx.AsyncClient] = None
         self._running = False
-    
+
     async def connect(self) -> None:
         headers = {"Authorization": f"Bearer {self.bearer_token}"}
         self._client = httpx.AsyncClient(
@@ -452,13 +452,13 @@ class SSEClient:
             timeout=self.timeout
         )
         self._running = True
-    
+
     async def disconnect(self) -> None:
         self._running = False
         if self._client:
             await self._client.aclose()
             self._client = None
-    
+
     async def subscribe(
         self,
         endpoint: str = "/api/events/live",
@@ -466,7 +466,7 @@ class SSEClient:
     ) -> AsyncGenerator[Dict[str, Any], None]:
         if not self._client:
             await self.connect()
-        
+
         try:
             async with self._client.stream("GET", endpoint) as response:
                 response.raise_for_status()
@@ -485,7 +485,7 @@ class SSEClient:
         except Exception as e:
             logger.error(f"SSE Error: {e}")
             raise
-    
+
     def _parse_event(self, event_str: str) -> Optional[Dict[str, Any]]:
         event_data: Dict[str, Any] = {}
         for line in event_str.strip().split("\n"):
@@ -503,7 +503,7 @@ class SSEClient:
 
 class SafepointClient:
     """Client für Safepoint-Archivierung via opena2"""
-    
+
     def __init__(
         self,
         base_url: str = OPENA2_URL,
@@ -514,7 +514,7 @@ class SafepointClient:
         self.bearer_token = bearer_token
         self.source_agent = source_agent
         self._client: Optional[httpx.AsyncClient] = None
-    
+
     async def connect(self) -> None:
         headers = {"Authorization": f"Bearer {self.bearer_token}"}
         self._client = httpx.AsyncClient(
@@ -522,12 +522,12 @@ class SafepointClient:
             headers=headers,
             timeout=10.0
         )
-    
+
     async def disconnect(self) -> None:
         if self._client:
             await self._client.aclose()
             self._client = None
-    
+
     async def write_safepoint(
         self,
         category: str,
@@ -537,7 +537,7 @@ class SafepointClient:
     ) -> Optional[str]:
         if not self._client:
             await self.connect()
-        
+
         safepoint = {
             "sp_timestamp": int(time.time() * 1000),
             "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -548,7 +548,7 @@ class SafepointClient:
             "payload": payload,
             "strict": True
         }
-        
+
         try:
             response = await self._client.post("/api/safepoint", json=safepoint)
             response.raise_for_status()
@@ -591,19 +591,19 @@ echo ""
 for entry in "${AGENT_DIRS[@]}"; do
     dir="${entry%%|*}"
     agents="${entry#*|}"
-    
+
     echo "📁 Verarbeite: ${dir}"
-    
+
     # Mehrere Agents pro Verzeichnis (z.B. opena1&2)
     IFS=';' read -ra AGENT_LIST <<< "$agents"
     for agent_entry in "${AGENT_LIST[@]}"; do
         IFS=',' read -r agent_id agent_name kuerzel port <<< "$agent_entry"
-        
+
         echo "   ✓ ${agent_id} (${kuerzel}, Port ${port})"
-        
+
         # Verzeichnis erstellen falls nicht vorhanden
         mkdir -p "${BASE_DIR}/${dir}"
-        
+
         # Module erstellen
         create_config_py "$dir" "$agent_id" "$agent_name" "$kuerzel" "$port"
         create_security_py "$dir" "$agent_id" "$port" "$kuerzel"

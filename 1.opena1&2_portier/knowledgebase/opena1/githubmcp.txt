@@ -83,9 +83,9 @@ Prerequisites
     2. Once Docker is installed, you will also need to ensure Docker is running. The image is public; if you get errors on pull, you may have an expired token and need to docker logout ghcr.io.
     3. Lastly you will need to Create a GitHub Personal Access Token. The MCP server can use many of the GitHub APIs, so enable the permissions that you feel comfortable granting your AI tools (to learn more about access tokens, please check out the documentation).
 Handling PATs Securely
-    1. 
-        ◦ 
-    • 
+    1.
+        ◦
+    •
 GitHub Enterprise Server and Enterprise Cloud with data residency (ghe.com)
 The flag --gh-host and the environment variable GITHUB_HOST can be used to set the hostname for GitHub Enterprise Server or GitHub Enterprise Cloud with data residency.
     • For GitHub Enterprise Server, prefix the hostname with the https:// URI scheme, as it otherwise defaults to http://, which GitHub Enterprise Server does not support.
@@ -178,10 +178,10 @@ Specifying Toolsets
 To specify toolsets you want available to the LLM, you can pass an allow-list in two ways:
     1. Using Command Line Argument:
        github-mcp-server --toolsets repos,issues,pull_requests,actions,code_security
-       
+
     2. Using Environment Variable:
        GITHUB_TOOLSETS="repos,issues,pull_requests,actions,code_security" ./github-mcp-server
-       
+
 The environment variable GITHUB_TOOLSETS takes precedence over the command line argument if both are provided.
 Using Toolsets With Docker
 When using Docker, you can pass the toolsets as environment variables:
@@ -259,108 +259,108 @@ Copilot Spaces related tools
 github_support_docs_search
 Search docs to answer GitHub product and support questions
 Tools
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-    1. 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-    1. 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
-        ◦ 
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+    1.
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+    1.
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
+        ◦
 Additional Tools in Remote Github MCP Server
-        ◦ 
-        ◦ 
-    • 
-        ◦ 
+        ◦
+        ◦
+    •
+        ◦
 Dynamic Tool Discovery
 Note: This feature is currently in beta and may not be available in all environments. Please test it out and let us know if you encounter any issues.
 Instead of starting with all tools enabled, you can turn on dynamic toolset discovery. Dynamic toolsets allow the MCP host to list and enable toolsets in response to a user prompt. This should help to avoid situations where the model gets confused by the sheer number of tools available.
@@ -505,7 +505,7 @@ So halten Sie Ihr GitHub PAT sicher und wiederverwendbar auf verschiedenen MCP-H
     3. Verweisen Sie in Konfigurationen auf das Token
        # CLI usage
        claude mcp update github -e GITHUB_PERSONAL_ACCESS_TOKEN=$GITHUB_PAT
-       
+
        # In config files (where supported)
        "env": {
          "GITHUB_PERSONAL_ACCESS_TOKEN": "$GITHUB_PAT"
@@ -1318,4 +1318,3 @@ Bibliotheksnutzung
 Die exportierte Go-API dieses Moduls gilt derzeit als instabil und kann zu schwerwiegenden Änderungen führen. Zukünftig werden wir möglicherweise Stabilität bieten. Bitte melden Sie uns, wenn es einen Anwendungsfall gibt, bei dem dies hilfreich wäre.
 Lizenz
 Dieses Projekt unterliegt den Bedingungen der MIT Open Source-Lizenz. Die vollständigen Bedingungen finden Sie beim MIT .
-

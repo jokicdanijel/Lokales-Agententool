@@ -25,13 +25,13 @@
         .agent-title-section h1 { font-size: 2rem; margin-bottom: 0.25rem; }
         .agent-title-section .meta { color: var(--text-secondary); font-size: 0.9rem; }
         .agent-title-section .meta span { margin-right: 1.5rem; }
-        
+
         .detail-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 1.5rem;
         }
-        
+
         .endpoint-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -55,7 +55,7 @@
         .endpoint-method.post { background: rgba(88, 166, 255, 0.15); color: var(--accent-blue); }
         .endpoint-method.put { background: rgba(210, 153, 34, 0.15); color: var(--accent-yellow); }
         .endpoint-method.delete { background: rgba(248, 81, 73, 0.15); color: var(--accent-red); }
-        
+
         .endpoint-path {
             font-family: 'SF Mono', Consolas, monospace;
             font-size: 0.9rem;
@@ -63,7 +63,7 @@
         .endpoint-body { padding: 1rem 1.25rem; }
         .endpoint-desc { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem; }
         .endpoint-actions { display: flex; gap: 0.5rem; }
-        
+
         .config-section {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -85,7 +85,7 @@
         .config-item:last-child { border-bottom: none; }
         .config-label { color: var(--text-secondary); font-size: 0.85rem; }
         .config-value { font-family: 'SF Mono', Consolas, monospace; font-size: 0.85rem; }
-        
+
         .quick-actions {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -93,7 +93,7 @@
             margin-top: 1rem;
         }
         .quick-actions .btn { justify-content: center; }
-        
+
         .response-panel {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -118,7 +118,7 @@
             white-space: pre-wrap;
             color: var(--accent-green);
         }
-        
+
         @media (max-width: 1024px) {
             .detail-grid { grid-template-columns: 1fr; }
         }
@@ -135,7 +135,7 @@
                 </div>
                 <div class="sidebar-subtitle">Hyper-Dashboard v3.0</div>
             </div>
-            
+
             <div class="nav-section">Dashboard</div>
             <a href="/" class="nav-item">
                 <span>📊</span>
@@ -145,7 +145,7 @@
                 <span>🔌</span>
                 <span>API Konsole</span>
             </a>
-            
+
             <div class="nav-section">Agenten</div>
             <nav id="agents-nav"></nav>
         </aside>
@@ -153,7 +153,7 @@
         <!-- Main Content -->
         <main class="main-content">
             <a href="/" class="btn btn-outline" style="margin-bottom: 1rem;">← Zurück zur Übersicht</a>
-            
+
             <div class="agent-detail-header">
                 <div class="agent-icon-large" id="agent-icon">🤖</div>
                 <div class="agent-title-section">
@@ -171,7 +171,7 @@
                 <!-- Left Column: Endpoints -->
                 <div class="endpoints-section">
                     <h2 style="margin-bottom: 1rem;">📡 API Endpoints</h2>
-                    
+
                     <div class="endpoint-card">
                         <div class="endpoint-header">
                             <span class="endpoint-method get">GET</span>
@@ -184,7 +184,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="endpoint-card">
                         <div class="endpoint-header">
                             <span class="endpoint-method get">GET</span>
@@ -197,7 +197,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="endpoint-card">
                         <div class="endpoint-header">
                             <span class="endpoint-method post">POST</span>
@@ -210,7 +210,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="endpoint-card">
                         <div class="endpoint-header">
                             <span class="endpoint-method get">GET</span>
@@ -258,7 +258,7 @@
                             <span class="config-label">Version</span>
                             <span class="config-value" id="config-version">3.0</span>
                         </div>
-                        
+
                         <div class="quick-actions">
                             <button class="btn btn-success" id="btn-start" onclick="startAgent()">▶️ Start</button>
                             <button class="btn btn-danger" id="btn-stop" onclick="stopAgent()">⏹️ Stop</button>
@@ -266,7 +266,7 @@
                             <button class="btn btn-outline" onclick="viewLogs()">📋 Logs</button>
                         </div>
                     </div>
-                    
+
                     <div class="config-section" style="margin-top: 1rem;">
                         <h3>📊 Statistiken</h3>
                         <div class="config-item">
@@ -288,7 +288,7 @@
     </div>
 
     <div id="toast-container"></div>
-    
+
     <script>
         const AGENT_ID = '{{ agent_id }}';
         const AGENTS_CONFIG = {
@@ -313,10 +313,10 @@
             opena19: { name: 'Stocks & Crypto', kuerzel: 'stockcryptop', port: 12365, icon: '📈' },
             opena20: { name: 'Dashboard', kuerzel: 'dashp', port: 12349, icon: '🚀' },
         };
-        
+
         let agentConfig = AGENTS_CONFIG[AGENT_ID] || { name: 'Unknown', port: 0, icon: '❓', kuerzel: '?' };
         let agentPort = agentConfig.port;
-        
+
         document.getElementById('agent-icon').textContent = agentConfig.icon;
         document.getElementById('agent-name').textContent = agentConfig.name;
         document.getElementById('agent-id').textContent = AGENT_ID;
@@ -324,7 +324,7 @@
         document.getElementById('agent-port').textContent = agentPort;
         document.getElementById('config-port').textContent = agentPort;
         document.title = `${agentConfig.name} | ELION Dashboard`;
-        
+
         async function checkHealth() {
             try {
                 const res = await fetch(`http://127.0.0.1:${agentPort}/health`, { signal: AbortSignal.timeout(3000) });
@@ -337,7 +337,7 @@
                     const h = Math.floor(data.uptime_seconds / 3600);
                     const m = Math.floor((data.uptime_seconds % 3600) / 60);
                     const s = Math.floor(data.uptime_seconds % 60);
-                    document.getElementById('config-uptime').textContent = 
+                    document.getElementById('config-uptime').textContent =
                         `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
                 }
             } catch (e) {
@@ -347,7 +347,7 @@
                 document.getElementById('config-status').style.color = 'var(--accent-red)';
             }
         }
-        
+
         async function testEndpoint(method, path) {
             const output = document.getElementById('response-output');
             output.textContent = `Sende ${method} ${path}...`;
@@ -359,16 +359,16 @@
                 output.textContent = `Fehler: ${e.message}`;
             }
         }
-        
+
         function clearResponse() {
             document.getElementById('response-output').textContent = '// Klicke auf einen Endpoint zum Testen...';
         }
-        
+
         function startAgent() { toast(`Starte ${agentConfig.name}...`, 'info'); }
         function stopAgent() { toast(`Stoppe ${agentConfig.name}...`, 'warning'); }
         function restartAgent() { toast(`Restarte ${agentConfig.name}...`, 'info'); }
         function viewLogs() { window.open(`/logs/${AGENT_ID}`, '_blank'); }
-        
+
         function toast(msg, type = 'info') {
             const container = document.getElementById('toast-container');
             const t = document.createElement('div');
@@ -377,7 +377,7 @@
             container.appendChild(t);
             setTimeout(() => t.remove(), 4000);
         }
-        
+
         // Sidebar Navigation
         const nav = document.getElementById('agents-nav');
         nav.innerHTML = Object.entries(AGENTS_CONFIG).map(([id, cfg]) => `
@@ -386,7 +386,7 @@
                 <span>${cfg.name}</span>
             </a>
         `).join('');
-        
+
         checkHealth();
         setInterval(checkHealth, 10000);
     </script>

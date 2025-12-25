@@ -269,48 +269,48 @@ Was du als Nächstes tun kannst
 
 ### USER
 1.  Voraussetzungen
-    
+
 *   VS Code haben.
-    
+
 *   Ein GitHub-Kassenzugang (Account) vorhanden, Pyche. Copilot-Abonnement bzw. Testzugang.
-    
+
 *   Netzwerkzugang zum GitHub-Dienst-ieren.
-    
+
 2.  GitHub Copilot in VS Code installieren
-    
+
 *   VS-Code → Erweiterungen (Erweiterungen) → Suche nach „GitHub Copilot“ und installiere die Erweiterung. Dass für Abendes. VS Code neu starten. (Dazuage Installationshinksee du in den Schlussfolgerung zu GitHub Copilot in VS Code)
-    
+
 *   .
-    
+
 3.  Anmelden und Copilot aktivieren
-    
+
 *   Nach der Installation in der Regel mit dem mit-Dermien GitHub-Standort-Konto und Coavel active. (Hinweise zum Installationsablauf du in den Quellen zu Copilot auf VS Code)
-    
+
 *   .
-    
+
 4.  Copiloten-Verwendung
-    
+
 *   In Datei einer beginnen zu beginnen; Copilot schlägt automatisch- oder Textabschnitte vor. Vorschläge mit Tab bzw. Geben Sie ein.
-    
+
 5.  Prompts gezielt in Coventine Pilot (Optional, Fortgeschrittene)
-    
+
 *   Du kasten Copilot dichte mit Prompts an, Weisen oder Aufgabenstrukturen zu. aus Beispiele dem Kontext:
-    
+
     *   Copilot-Prompt (einfügen und Enter): Erstelle/überschreibe .vscode/launch.json mit EXACTm stimmen JSON. Kommentare von Keine.
-        
-*     
-    
+
+*
+
 *   Ein weiterszen aus dem Kontext: Copilot-Prompt (Einführung in Open WebUI-Setup) mit der Anweisung Dateien, inklusive Inhaltezubereiten.
-    
-*     
-    
+
+*
+
 *   Tipp: Nutzene, präzise Prompts in der Datei, mit Copilot den Output Weidens (z. B. eine preisle JSON-Fächnis oder komplette eine Code-Datei).
-    
+
 6.  Optional: Vorlage und Alternative Direktbeispiele
-    
+
 *   Wenn due prompts oder vorlagen aus dem wollen Kontext übernehmen, kann ich dire bilde vorlagen oder konkrete Beispiel-Einstellungen (z. B. launch.json-Inhalt oder Tasks.json). Beispiele stehenden Quellen, die Copilot-Prompts
-    
-  
+
+
 erstelle anleitung
 , .
 
@@ -374,13 +374,13 @@ Fügen Sie die folgenden JSON-Blocks zu den MCP-Einstellungen Ihrer IDE hinzu.
         }
       }
     }
-              
+
 ```
 Inhalt
 81,61 %
 ```
                 Remote GitHub MCP Server
- 
+
 Der Remote-GitHub-MCP-Server wird von GitHub gehostet und bietet die einfachste Methode zum Aufstehen und Ausführen. Wenn Ihr MCP-Host keine Remote-MCP-Server unterstützt, machen Sie sich keine Sorgen! Sie können stattdessen die lokale Version des GitHub MCP Servers verwenden.
 Voraussetzungen
     1. Ein kompatibler MCP-Host mit Remoteserver-Unterstützung (VS Code 1.101+, Claude Desktop, Cursor, Windsurf, etc.)
@@ -395,7 +395,7 @@ VS-Code (Version 1.101 oder höher)
   "Server": {
     "github": {
       "Typ": "http",
-              
+
 ```
 Inhalt
 80,88%
@@ -409,7 +409,7 @@ Inhalt
     }
   }
 }
-              
+
 ```
 
 ### ASSISTANT

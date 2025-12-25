@@ -7,7 +7,7 @@ Port: 12344
 Endpoints:
   GET /health
   POST /log/opena1
-  
+
 Usage:
   cd 1.opena1&2_portier
   python main.py
@@ -16,18 +16,16 @@ Usage:
 
 import os
 import sys
-import uvicorn
 from pathlib import Path
+
+import uvicorn
 
 # Add parent to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from fastapi import FastAPI
-from src.portier_service_base import (
-    PortierServiceBase,
-    PortierServiceConfig,
-    PortPolicyMiddleware
-)
+
+from src.portier_service_base import PortierServiceBase, PortierServiceConfig, PortPolicyMiddleware
 
 # ─────────────────────────────────────────────────────────────────────────
 # CONFIGURATION
@@ -39,7 +37,7 @@ config = PortierServiceConfig(
     allowed_port_min=12344,
     allowed_port_max=12399,
     bind_addr=os.getenv("BIND_ADDR", "127.0.0.1"),
-    archiv_base=os.getenv("ARCHIV_BASE", "./archiv")
+    archiv_base=os.getenv("ARCHIV_BASE", "./archiv"),
 )
 
 # ─────────────────────────────────────────────────────────────────────────
@@ -49,7 +47,7 @@ config = PortierServiceConfig(
 app = FastAPI(
     title="opena1 – Portier Coordinator",
     description="Coordinator service for Portier agent orchestration",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 # Middleware for port-policy enforcement
@@ -66,15 +64,12 @@ service_base.setup_safepoints(app, config.archiv_base)
 # ROOT ENDPOINT
 # ─────────────────────────────────────────────────────────────────────────
 
+
 @app.get("/")
 async def root():
     """Root endpoint"""
-    return {
-        "service": "opena1",
-        "status": "online",
-        "port": config.service_port,
-        "docs": "/docs"
-    }
+    return {"service": "opena1", "status": "online", "port": config.service_port, "docs": "/docs"}
+
 
 # ─────────────────────────────────────────────────────────────────────────
 # MAIN
@@ -82,24 +77,20 @@ async def root():
 
 if __name__ == "__main__":
     port = config.service_port
-    
-    print(f"""
+
+    print(
+        f"""
     ╔════════════════════════════════════════════════════════════╗
     ║           opena1 – Portier Coordinator                    ║
     ╚════════════════════════════════════════════════════════════╝
-    
+
     Port:      {port}
     Bind:      {config.bind_addr}
     Docs:      http://{config.bind_addr}:{port}/docs
     Health:    http://{config.bind_addr}:{port}/health
-    
+
     Starting server...
-    """)
-    
-    uvicorn.run(
-        "main:app",
-        host=config.bind_addr,
-        port=port,
-        reload=False,
-        log_level="info"
+    """
     )
+
+    uvicorn.run("main:app", host=config.bind_addr, port=port, reload=False, log_level="info")

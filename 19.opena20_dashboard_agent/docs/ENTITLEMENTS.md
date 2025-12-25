@@ -21,13 +21,16 @@ artifacts/agent_inventory.json  ↗                          ↓
 **Zweck**: Erstellt `build/entitlements.json` aus Baseline + Inventory
 
 **Eingaben**:
+
 - `system_baseline.yaml` - Plan-Definitionen
 - `artifacts/agent_inventory.json` - Entdeckte Agents
 
 **Ausgabe**:
+
 - `build/entitlements.json` - Plan → Agent → {visible, clickable, limits, gates}
 
 **Nutzung**:
+
 ```bash
 python3 scripts/build_entitlements.py
 ```
@@ -37,6 +40,7 @@ python3 scripts/build_entitlements.py
 **Zweck**: Validiert Entitlements gegen Policy-Regeln
 
 **Validierungen**:
+
 1. ✓ Keine Agents außerhalb der Baseline
 2. ✓ Plan-Inklusionsordnung: ultimum ⊇ premium ⊇ pro ⊇ basic
 3. ✓ Basic hat genau 4 klickbare (non-core) Agents
@@ -45,17 +49,20 @@ python3 scripts/build_entitlements.py
 6. ✓ Basic plan Limits korrekt
 
 **Nutzung**:
+
 ```bash
 python3 scripts/validate_entitlements.py
 ```
 
 **Exit Codes**:
+
 - `0` - Alle Validierungen bestanden
 - `1` - Validierung fehlgeschlagen (CI bricht ab!)
 
 ## Plan-Hierarchie
 
 ### Basic Plan
+
 - **Klickbare Agents**: opena3, opena4, opena7, opena11 (+ Core agents)
 - **Limits**:
   - `logs_access: read_only`
@@ -63,15 +70,18 @@ python3 scripts/validate_entitlements.py
 - **Total klickbar**: 6 agents
 
 ### Pro Plan
+
 - **Zusätzlich**: opena8, opena12, opena14, opena18
 - **Limits**: Full access
 - **Total klickbar**: 10 agents
 
 ### Premium Plan
+
 - **Zusätzlich**: opena6, opena9, opena15, opena16
 - **Total klickbar**: 14 agents
 
 ### Ultimum Plan
+
 - **Zusätzlich**: opena5, opena10, opena13, opena17, opena19
 - **Total klickbar**: 19 agents
 
@@ -108,25 +118,30 @@ python3 scripts/validate_entitlements.py
 ## Policy-Regeln (Unveränderlich)
 
 ### Core Agents
+
 - **IDs**: opena1, opena2
 - **Regel**: Immer sichtbar und klickbar in allen Plans
 
 ### System Agents
+
 - **IDs**: opena20, opena21
 - **Regel**: Immer sichtbar, aber nicht zwingend klickbar
 
 ### Basic Plan Constraints
+
 - **Genau 4 klickbare non-core agents**: opena3, opena4, opena7, opena11
 - **Logs**: Read-only
 - **Workflows**: Max 4 pro Agent
 
 ### Plan-Inklusion
+
 - Höhere Plans beinhalten ALLE klickbaren Agents niedrigerer Plans
 - `ultimum ⊇ premium ⊇ pro ⊇ basic`
 
 ## CI/CD Integration
 
 ### Build Step
+
 ```bash
 # Generiere Entitlements
 python3 scripts/build_entitlements.py
@@ -138,6 +153,7 @@ python3 scripts/validate_entitlements.py
 ```
 
 ### GitHub Actions Beispiel
+
 ```yaml
 - name: Build Entitlements
   run: python3 scripts/build_entitlements.py
@@ -150,11 +166,13 @@ python3 scripts/validate_entitlements.py
 
 ```javascript
 // Lade entitlements.json
-const entitlements = await fetch('/build/entitlements.json').then(r => r.json());
+const entitlements = await fetch("/build/entitlements.json").then((r) =>
+  r.json(),
+);
 
 // Prüfe Zugriff
-const userPlan = 'basic';
-const agentId = 'opena5';
+const userPlan = "basic";
+const agentId = "opena5";
 
 const access = entitlements.plans[userPlan].agents[agentId];
 
@@ -165,7 +183,7 @@ if (!access.clickable) {
 
 // Prüfe Limits
 const limits = access.limits;
-if (limits.logs_access === 'read_only') {
+if (limits.logs_access === "read_only") {
   disableLogEditing();
 }
 ```
@@ -201,11 +219,13 @@ with open('build/entitlements.json') as f:
 ## Wartung
 
 ### Neuen Plan hinzufügen
+
 1. In `system_baseline.yaml` definieren
 2. `PLAN_HIERARCHY` in beiden Scripts aktualisieren
 3. Rebuild + Validate
 
 ### Neuen Agent hinzufügen
+
 1. Agent-Ordner erstellen
 2. `agent_discovery.py` ausführen
 3. In `system_baseline.yaml` einem Plan zuweisen
@@ -225,6 +245,7 @@ pip install pyyaml
 ## Status
 
 ✅ **DONE CRITERIA ERFÜLLT**:
+
 - ✓ Entitlements sind rein datengesteuert und deterministisch
 - ✓ Jede Regelverletzung führt zu CI-Fehler (Exit Code 1)
 - ✓ Keine Hardcoding in HTML erforderlich

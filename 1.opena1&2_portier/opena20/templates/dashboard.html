@@ -516,7 +516,7 @@
             entry.textContent = `[${timestamp}] → ${message}`;
             logViewer.appendChild(entry);
             logViewer.scrollTop = logViewer.scrollHeight;
-            
+
             if (logViewer.children.length > 100) {
                 logViewer.removeChild(logViewer.firstChild);
             }
@@ -589,7 +589,7 @@
             try {
                 const response = await fetch(`${API_BASE}/e2e`, { method: 'POST' });
                 const data = await response.json();
-                
+
                 if (data.success) {
                     statusPanel.className = 'status_panel success';
                     statusPanel.textContent = `✅ E2E Test Passed\n${JSON.stringify(data, null, 2)}`;
@@ -618,7 +618,7 @@
             try {
                 const response = await fetch(`${API_BASE}/restart`, { method: 'POST' });
                 const data = await response.json();
-                
+
                 if (data.success) {
                     statusPanel.className = 'status_panel success';
                     statusPanel.textContent = `✅ System restarted\n${JSON.stringify(data, null, 2)}`;

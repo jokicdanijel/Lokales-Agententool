@@ -4,9 +4,8 @@ create_agents.py - Erstelle alle 19 Agent-Verzeichnisse
 """
 
 import os
-import sys
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 # Projekt-Root
 PROJECT_ROOT = Path(__file__).parent.absolute()
@@ -99,9 +98,9 @@ if __name__ == "__main__":
 
 README_MD = """# Agent: {name}
 
-**Agent ID:** `{agent_id}`  
-**Port:** `{port}`  
-**Category:** `{category}`  
+**Agent ID:** `{agent_id}`
+**Port:** `{port}`
+**Category:** `{category}`
 **Description:** {description}
 
 ## Quick Start
@@ -232,12 +231,13 @@ def test_invoke(client):
     assert response.status_code == 200
 """
 
+
 def create_agent(number, name, agent_id, port, description, category):
     """Erstelle einen Agent"""
     agent_dir = PROJECT_ROOT / f"{number}.{name}"
-    
+
     print(f"✏️  Erstelle Agent {number}: {name} (Port: {port})")
-    
+
     # Verzeichnisse
     agent_dir.mkdir(exist_ok=True)
     (agent_dir / "bin").mkdir(exist_ok=True)
@@ -247,11 +247,11 @@ def create_agent(number, name, agent_id, port, description, category):
     (agent_dir / "docs").mkdir(exist_ok=True)
     (agent_dir / "data").mkdir(exist_ok=True)
     (agent_dir / "api").mkdir(exist_ok=True)
-    
+
     # main.py
     (agent_dir / "main.py").write_text(MAIN_PY)
     (agent_dir / "main.py").chmod(0o755)
-    
+
     # README.md
     readme = README_MD.format(
         name=name,
@@ -259,59 +259,54 @@ def create_agent(number, name, agent_id, port, description, category):
         port=port,
         category=category,
         description=description,
-        date=datetime.now().strftime("%Y-%m-%d")
+        date=datetime.now().strftime("%Y-%m-%d"),
     )
     (agent_dir / "README.md").write_text(readme)
-    
+
     # requirements.txt
     (agent_dir / "requirements.txt").write_text(REQUIREMENTS_TXT)
-    
+
     # .env.template
     env_tpl = ENV_TEMPLATE.format(agent_id=agent_id, port=port)
     (agent_dir / ".env.template").write_text(env_tpl)
-    
+
     # config/agent.conf
-    conf = AGENT_CONF.format(
-        agent_id=agent_id,
-        name=name,
-        port=port,
-        description=description,
-        category=category
-    )
+    conf = AGENT_CONF.format(agent_id=agent_id, name=name, port=port, description=description, category=category)
     (agent_dir / "config" / "agent.conf").write_text(conf)
-    
+
     # bin/start.sh
     start = START_SCRIPT.format(agent_id=agent_id, port=port)
     start_file = agent_dir / "bin" / "start.sh"
     start_file.write_text(start)
     start_file.chmod(0o755)
-    
+
     # tests/test_agent.py
     (agent_dir / "tests" / "test_agent.py").write_text(TEST_AGENT)
-    
+
     # tests/__init__.py
     (agent_dir / "tests" / "__init__.py").touch()
-    
+
     # logs/.gitkeep
     (agent_dir / "logs" / ".gitkeep").touch()
-    
+
     # data/.gitkeep
     (agent_dir / "data" / ".gitkeep").touch()
-    
+
     # api/__init__.py
     (agent_dir / "api" / "__init__.py").touch()
-    
+
     print(f"✅ Agent {number}: {name} erstellt")
     return True
 
+
 def main():
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("Erstelle alle 19 Agent-Verzeichnisse")
-    print("="*60 + "\n")
-    
+    print("=" * 60 + "\n")
+
     created = 0
     failed = 0
-    
+
     for number, name, agent_id, port, description, category in AGENTS:
         try:
             if create_agent(number, name, agent_id, port, description, category):
@@ -319,14 +314,14 @@ def main():
         except Exception as e:
             print(f"❌ Fehler bei {name}: {e}")
             failed += 1
-    
-    print("\n" + "="*60)
-    print(f"✅ Erstellung abgeschlossen!")
+
+    print("\n" + "=" * 60)
+    print("✅ Erstellung abgeschlossen!")
     print(f"✅ Erstellt: {created} Agenten")
     if failed > 0:
         print(f"❌ Fehler: {failed} Agenten")
-    print("="*60 + "\n")
-    
+    print("=" * 60 + "\n")
+
     # Verifizierung
     print("📋 Verifiziere Struktur...\n")
     for number, name, agent_id, port, description, category in AGENTS:
@@ -337,14 +332,15 @@ def main():
                 print(f"✅ {number}.{name} vollständig")
             else:
                 print(f"⚠️  {number}.{name} unvollständig")
-    
-    print("\n" + "="*60)
+
+    print("\n" + "=" * 60)
     print("🚀 Nächste Schritte:")
     print("   1. cd " + str(PROJECT_ROOT))
     print("   2. git add .")
     print('   3. git commit -m "feat: add 19 standardized agent directories"')
     print("   4. git push origin main")
-    print("="*60 + "\n")
+    print("=" * 60 + "\n")
+
 
 if __name__ == "__main__":
     main()

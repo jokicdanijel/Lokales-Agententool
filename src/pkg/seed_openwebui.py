@@ -2,14 +2,13 @@
 """
 scripts/seed_openwebui.py
 
-Seed-Script: Sendet Beispiel-Prompts an OpenWebUI-Agent und speichert Antworten 
+Seed-Script: Sendet Beispiel-Prompts an OpenWebUI-Agent und speichert Antworten
 als Safepoints in der Archivator (opena2).
 
 Verwendung:
     python3 scripts/seed_openwebui.py
 """
 
-import json
 import logging
 import sys
 from datetime import datetime
@@ -36,10 +35,7 @@ TEST_PROMPTS = [
     "Describe microservices architecture",
 ]
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -49,7 +45,7 @@ def read_token() -> str:
         logger.error(f".env nicht gefunden: {ENV_PATH}")
         sys.exit(1)
 
-    with open(ENV_PATH, "r") as f:
+    with open(ENV_PATH) as f:
         for line in f:
             if line.startswith("DASHBOARD_ADMIN_TOKEN="):
                 return line.split("=", 1)[1].strip()
@@ -60,27 +56,13 @@ def read_token() -> str:
 
 def send_prompt(token: str, prompt: str) -> dict:
     """Sendet Prompt an OpenWebUI-Agent"""
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json"
-    }
+    headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
-    payload = {
-        "prompt": prompt,
-        "context": {
-            "source": "seed_openwebui.py",
-            "timestamp": datetime.utcnow().isoformat()
-        }
-    }
+    payload = {"prompt": prompt, "context": {"source": "seed_openwebui.py", "timestamp": datetime.utcnow().isoformat()}}
 
     try:
         logger.info(f"Sende Prompt: '{prompt[:50]}...'")
-        resp = requests.post(
-            f"{DASHBOARD_URL}/api/openwebui/chat",
-            json=payload,
-            headers=headers,
-            timeout=TIMEOUT
-        )
+        resp = requests.post(f"{DASHBOARD_URL}/api/openwebui/chat", json=payload, headers=headers, timeout=TIMEOUT)
         resp.raise_for_status()
         data = resp.json()
         logger.info(f"Antwort erhalten: {data.get('text', 'N/A')[:50]}...")
@@ -98,10 +80,7 @@ def send_prompt(token: str, prompt: str) -> dict:
 
 def save_safepoint(token: str, prompt: str, response: dict) -> bool:
     """Speichert Response als Safepoint in opena2 (Archivator)"""
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json"
-    }
+    headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
     # Safepoint-Payload
     safepoint = {
@@ -112,20 +91,15 @@ def save_safepoint(token: str, prompt: str, response: dict) -> bool:
             "prompt": prompt,
             "response": response.get("text") or response.get("response"),
             "model": response.get("model"),
-            "ts": response.get("ts") or datetime.utcnow().isoformat()
-        }
+            "ts": response.get("ts") or datetime.utcnow().isoformat(),
+        },
     }
 
     try:
         logger.info(f"Speichere Safepoint für Prompt: '{prompt[:30]}...'")
-        resp = requests.post(
-            f"{OPENA2_URL}/store/archivp",
-            json=safepoint,
-            headers=headers,
-            timeout=TIMEOUT
-        )
+        resp = requests.post(f"{OPENA2_URL}/store/archivp", json=safepoint, headers=headers, timeout=TIMEOUT)
         resp.raise_for_status()
-        logger.info(f"✅ Safepoint gespeichert")
+        logger.info("✅ Safepoint gespeichert")
         return True
     except Exception as e:
         logger.warning(f"⚠️  Safepoint-Speicherung fehlgeschlagen: {e}")

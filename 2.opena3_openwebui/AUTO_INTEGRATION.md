@@ -5,6 +5,7 @@
 Vollautomatische Integration und Indexierung der OpenWebUI-Projektdateien in das ELION-System.
 
 **Dateien:**
+
 - `openwebui_data_backup.tar` (214 Dateien)
 - `main_openwebui_bridge.py` (v1.0.0)
 - `main_openwebui_bridge_v2.py` (v2.0.0)
@@ -20,9 +21,11 @@ bash run_auto_integration.sh
 ## 📦 Komponenten
 
 ### 1. `elion_auto_indexer.py`
+
 **Funktion:** Auto-Extraktion und Indexierung von Projektdateien
 
 **Features:**
+
 - ✅ TAR-Archive automatisch extrahieren
 - ✅ Python-Dateien direkt indexieren
 - ✅ SHA256-Hashing für Deduplikation
@@ -31,11 +34,13 @@ bash run_auto_integration.sh
 - ✅ JSONL-basiertes Index-Format
 
 **Ausgabe:**
+
 - `auto_indexed/extracted/` - Extrahierte Archive
 - `auto_indexed/index_metadata.jsonl` - Vollständiger Index
 - `auto_indexed/index_report_<timestamp>.json` - Bericht
 
 **Verwendung:**
+
 ```bash
 # Standard-Ausführung
 python3 elion_auto_indexer.py
@@ -48,9 +53,11 @@ python3 elion_auto_indexer.py --dry-run
 ```
 
 ### 2. `knowledge_feeder.py`
+
 **Funktion:** Automatisches Knowledgebase-Feeding
 
 **Features:**
+
 - ✅ Intelligente Kategorisierung (9 Kategorien)
 - ✅ Tag-basierte Klassifizierung
 - ✅ Duplikaterkennung via Hash
@@ -59,6 +66,7 @@ python3 elion_auto_indexer.py --dry-run
 - ✅ JSONL-Index mit erweiterten Metadata
 
 **Kategorien:**
+
 - `integration` - Bridge/Relay-Dateien
 - `openwebui` - OpenWebUI-spezifisch
 - `config` - Konfigurationsdateien
@@ -69,10 +77,12 @@ python3 elion_auto_indexer.py --dry-run
 - `misc` - Sonstige
 
 **Ausgabe:**
+
 - `../1.opena1&2_portier/knowledgebase/kb_index.jsonl` - KB-Index
 - `../1.opena1&2_portier/knowledgebase/feed_report_<timestamp>.json` - Bericht
 
 **Verwendung:**
+
 ```bash
 # Standard-Ausführung
 python3 knowledge_feeder.py
@@ -82,14 +92,17 @@ python3 knowledge_feeder.py --verbose
 ```
 
 ### 3. `run_auto_integration.sh`
+
 **Funktion:** Orchestrator für vollständige Integration
 
 **Workflow:**
+
 1. **Auto-Indexierung** → Extrahiert und indexiert Dateien
 2. **KB-Feeding** → Füttert Knowledgebase
 3. **Validierung** → Prüft Integrität
 
 **Ausgabe:**
+
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🚀 ELION Auto-Integration Orchestrator
@@ -136,6 +149,7 @@ python3 knowledge_feeder.py --verbose
 ```
 
 **Keine Änderungen an:**
+
 - ✅ Bestehende Ordnerstruktur bleibt unverändert
 - ✅ Alle Original-Dateien bleiben erhalten
 - ✅ Kein Überschreiben existierender Dateien
@@ -143,6 +157,7 @@ python3 knowledge_feeder.py --verbose
 ## 🔍 Index-Format
 
 ### `index_metadata.jsonl`
+
 ```json
 {
   "file_path": "/path/to/file.py",
@@ -156,6 +171,7 @@ python3 knowledge_feeder.py --verbose
 ```
 
 ### `kb_index.jsonl`
+
 ```json
 {
   "file_path": "/path/to/kb/file.py",
@@ -202,6 +218,7 @@ Kategorien:
 ## 🧪 Validierung
 
 **Automatische Validierung prüft:**
+
 - ✅ Verzeichnis-Existenz
 - ✅ Index-Datei-Integrität
 - ✅ Anzahl indexierter Dateien
@@ -211,6 +228,7 @@ Kategorien:
 ## 🛠️ Troubleshooting
 
 **Problem: TAR-Extraktion schlägt fehl**
+
 ```bash
 # Prüfe TAR-Datei
 file openwebui_data_backup.tar
@@ -218,6 +236,7 @@ tar -tzf openwebui_data_backup.tar | head
 ```
 
 **Problem: Knowledgebase-Verzeichnis nicht gefunden**
+
 ```bash
 # Prüfe Pfade
 echo $BASE_ROOT
@@ -225,6 +244,7 @@ ls -la ../1.opena1\&2_portier/knowledgebase/
 ```
 
 **Problem: Permission-Fehler**
+
 ```bash
 # Setze Berechtigungen
 chmod +x run_auto_integration.sh
@@ -234,6 +254,7 @@ chmod 755 *.py
 ## 📝 Logs
 
 **Log-Level anpassen:**
+
 ```python
 # In den Python-Skripten:
 logging.basicConfig(level=logging.DEBUG)  # Mehr Details
@@ -243,6 +264,7 @@ logging.basicConfig(level=logging.WARNING)  # Nur Warnungen
 ## 🔄 Re-Indexierung
 
 **Vollständige Neuindexierung:**
+
 ```bash
 # Lösche bestehende Indizes
 rm -f auto_indexed/index_metadata.jsonl
@@ -260,6 +282,6 @@ bash run_auto_integration.sh
 
 ---
 
-**Version:** 1.0.0  
-**Erstellt:** 21. November 2025  
+**Version:** 1.0.0
+**Erstellt:** 21. November 2025
 **Maintainer:** ELION Team

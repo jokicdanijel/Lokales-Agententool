@@ -1,8 +1,8 @@
 # 🔌 External Website API Integration Guide — ELION System
 
-**Projekt:** ELION Hyper-Dashboard 3.0.0  
-**Zweck:** Integration externer Website-APIs und Webservices  
-**Status:** ✅ Production Ready  
+**Projekt:** ELION Hyper-Dashboard 3.0.0
+**Zweck:** Integration externer Website-APIs und Webservices
+**Status:** ✅ Production Ready
 **Letzte Aktualisierung:** 21. Dezember 2025
 
 ---
@@ -16,22 +16,26 @@ Dieser Guide beschreibt, wie externe Website-APIs sicher in das ELION Hyper-Dash
 ## 🎯 Unterstützte API-Typen
 
 ### 1. REST-APIs
+
 - **JSON/XML** Responses
 - **GET, POST, PUT, DELETE** Methods
 - **OAuth 2.0** / API-Key Authentication
 - **Webhook** Support
 
 ### 2. GraphQL-APIs
+
 - **Query** & **Mutation** Support
 - **Subscriptions** (WebSocket)
 - **Schema-Introspection**
 
 ### 3. SOAP-APIs
+
 - **WSDL-Based** Services
 - **XML** Request/Response
 - Legacy System Integration
 
 ### 4. WebSocket-APIs
+
 - **Real-time** Communication
 - **Bidirectional** Data Flow
 - Event-Driven Architecture
@@ -99,12 +103,12 @@ from typing import Dict, Optional
 
 class APIKeyAuth:
     """API-Key Authentication Handler."""
-    
+
     def __init__(self, key_name: str):
         self.api_key = os.getenv(key_name)
         if not self.api_key:
             raise ValueError(f"Missing API key: {key_name}")
-    
+
     def get_headers(self) -> Dict[str, str]:
         """Return authentication headers."""
         return {
@@ -124,7 +128,7 @@ from authlib.integrations.httpx_client import AsyncOAuth2Client
 
 class OAuth2Handler:
     """OAuth 2.0 Authentication Handler."""
-    
+
     def __init__(
         self,
         client_id: str,
@@ -135,7 +139,7 @@ class OAuth2Handler:
         self.client_secret = os.getenv(client_secret)
         self.token_url = token_url
         self.access_token: Optional[str] = None
-    
+
     async def get_access_token(self) -> str:
         """Fetch OAuth 2.0 access token."""
         async with AsyncOAuth2Client(
@@ -148,12 +152,12 @@ class OAuth2Handler:
             )
             self.access_token = token['access_token']
             return self.access_token
-    
+
     async def get_headers(self) -> Dict[str, str]:
         """Return OAuth headers."""
         if not self.access_token:
             await self.get_access_token()
-        
+
         return {
             "Authorization": f"Bearer {self.access_token}",
             "Content-Type": "application/json"
@@ -181,14 +185,14 @@ async def validate_webhook_signature(
 ) -> bool:
     """
     Validate webhook signature.
-    
+
     Args:
         request: FastAPI Request object
         secret: Webhook secret from ENV
-    
+
     Returns:
         bool: True if signature is valid
-    
+
     Raises:
         HTTPException: If signature is invalid
     """
@@ -199,7 +203,7 @@ async def validate_webhook_signature(
             status_code=401,
             detail="Missing signature header"
         )
-    
+
     # Calculate expected signature
     body = await request.body()
     expected = hmac.new(
@@ -207,14 +211,14 @@ async def validate_webhook_signature(
         body,
         hashlib.sha256
     ).hexdigest()
-    
+
     # Compare signatures (timing-attack safe)
     if not hmac.compare_digest(signature, expected):
         raise HTTPException(
             status_code=401,
             detail="Invalid signature"
         )
-    
+
     return True
 
 # Verwendung im Webhook-Handler
@@ -222,7 +226,7 @@ async def validate_webhook_signature(
 async def handle_payment_webhook(request: Request):
     secret = os.getenv("WEBHOOK_SECRET")
     await validate_webhook_signature(request, secret)
-    
+
     data = await request.json()
     # Process webhook...
 ```
@@ -242,7 +246,7 @@ logger = logging.getLogger(__name__)
 
 class RESTAPIClient:
     """Standard REST-API Client für externe APIs."""
-    
+
     def __init__(
         self,
         base_url: str,
@@ -252,7 +256,7 @@ class RESTAPIClient:
         self.base_url = base_url.rstrip('/')
         self.auth_handler = auth_handler
         self.timeout = timeout
-    
+
     async def request(
         self,
         method: str,
@@ -262,28 +266,28 @@ class RESTAPIClient:
     ) -> Dict[str, Any]:
         """
         Make REST-API request.
-        
+
         Args:
             method: HTTP method (GET, POST, PUT, DELETE)
             endpoint: API endpoint (e.g., '/users')
             data: Request body (JSON)
             params: Query parameters
-        
+
         Returns:
             Response data as dict
-        
+
         Raises:
             httpx.HTTPError: On API errors
         """
         url = f"{self.base_url}{endpoint}"
-        
+
         # Get auth headers
         headers = {}
         if self.auth_handler:
             headers = await self.auth_handler.get_headers()
-        
+
         logger.info(f"API Request: {method} {url}")
-        
+
         async with httpx.AsyncClient(timeout=self.timeout) as client:
             response = await client.request(
                 method=method,
@@ -292,27 +296,27 @@ class RESTAPIClient:
                 params=params,
                 headers=headers
             )
-            
+
             # Log response
             logger.info(f"API Response: {response.status_code}")
-            
+
             # Raise on error
             response.raise_for_status()
-            
+
             return response.json()
-    
+
     async def get(self, endpoint: str, **kwargs) -> Dict[str, Any]:
         """GET request."""
         return await self.request("GET", endpoint, **kwargs)
-    
+
     async def post(self, endpoint: str, data: Dict[str, Any], **kwargs) -> Dict[str, Any]:
         """POST request."""
         return await self.request("POST", endpoint, data=data, **kwargs)
-    
+
     async def put(self, endpoint: str, data: Dict[str, Any], **kwargs) -> Dict[str, Any]:
         """PUT request."""
         return await self.request("PUT", endpoint, data=data, **kwargs)
-    
+
     async def delete(self, endpoint: str, **kwargs) -> Dict[str, Any]:
         """DELETE request."""
         return await self.request("DELETE", endpoint, **kwargs)
@@ -353,41 +357,41 @@ async def retry_with_backoff(
 ) -> Any:
     """
     Retry function with exponential backoff.
-    
+
     Args:
         func: Async function to retry
         max_retries: Maximum number of retries
         initial_delay: Initial delay in seconds
         backoff_factor: Backoff multiplication factor
         *args, **kwargs: Arguments for func
-    
+
     Returns:
         Result from func
-    
+
     Raises:
         Exception: Last exception after all retries exhausted
     """
     delay = initial_delay
     last_exception = None
-    
+
     for attempt in range(max_retries + 1):
         try:
             return await func(*args, **kwargs)
         except Exception as e:
             last_exception = e
-            
+
             if attempt == max_retries:
                 logger.error(f"Max retries ({max_retries}) exceeded")
                 raise
-            
+
             logger.warning(
                 f"Attempt {attempt + 1} failed: {e}. "
                 f"Retrying in {delay}s..."
             )
-            
+
             await asyncio.sleep(delay)
             delay *= backoff_factor
-    
+
     raise last_exception
 
 # Verwendung
@@ -410,7 +414,7 @@ from gql.transport.aiohttp import AIOHTTPTransport
 
 class GraphQLClient:
     """GraphQL-Client für externe APIs."""
-    
+
     def __init__(
         self,
         endpoint: str,
@@ -420,17 +424,17 @@ class GraphQLClient:
         headers = {}
         if auth_handler:
             headers = auth_handler.get_headers()
-        
+
         transport = AIOHTTPTransport(
             url=endpoint,
             headers=headers
         )
-        
+
         self.client = Client(
             transport=transport,
             fetch_schema_from_transport=True
         )
-    
+
     async def query(
         self,
         query: str,
@@ -438,11 +442,11 @@ class GraphQLClient:
     ) -> Dict[str, Any]:
         """
         Execute GraphQL query.
-        
+
         Args:
             query: GraphQL query string
             variables: Query variables
-        
+
         Returns:
             Query result
         """
@@ -452,7 +456,7 @@ class GraphQLClient:
                 variable_values=variables or {}
             )
             return result
-    
+
     async def mutate(
         self,
         mutation: str,
@@ -502,11 +506,11 @@ from typing import Dict, Any
 
 class StripeIntegration:
     """Stripe Payment-API Integration."""
-    
+
     def __init__(self):
         stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
         self.webhook_secret = os.getenv("STRIPE_WEBHOOK_SECRET")
-    
+
     async def create_customer(
         self,
         email: str,
@@ -518,7 +522,7 @@ class StripeIntegration:
             name=name
         )
         return customer.to_dict()
-    
+
     async def create_payment_intent(
         self,
         amount: int,
@@ -532,7 +536,7 @@ class StripeIntegration:
             customer=customer_id
         )
         return intent.to_dict()
-    
+
     async def validate_webhook(
         self,
         payload: bytes,
@@ -556,17 +560,17 @@ class StripeIntegration:
 @router.post("/webhook/stripe")
 async def handle_stripe_webhook(request: Request):
     stripe_integration = StripeIntegration()
-    
+
     payload = await request.body()
     signature = request.headers.get("Stripe-Signature")
-    
+
     event = await stripe_integration.validate_webhook(payload, signature)
-    
+
     # Process event
     if event["type"] == "payment_intent.succeeded":
         # Handle successful payment
         await process_payment_success(event["data"]["object"])
-    
+
     return {"status": "received"}
 ```
 
@@ -578,12 +582,12 @@ from sendgrid.helpers.mail import Mail
 
 class SendGridIntegration:
     """SendGrid Email-API Integration."""
-    
+
     def __init__(self):
         self.api_key = os.getenv("SENDGRID_API_KEY")
         self.client = SendGridAPIClient(self.api_key)
         self.from_email = os.getenv("SENDGRID_FROM_EMAIL")
-    
+
     async def send_email(
         self,
         to_email: str,
@@ -597,9 +601,9 @@ class SendGridIntegration:
             subject=subject,
             html_content=html_content
         )
-        
+
         response = self.client.send(message)
-        
+
         return {
             "status_code": response.status_code,
             "body": response.body,
@@ -623,16 +627,16 @@ import googlemaps
 
 class GoogleMapsIntegration:
     """Google Maps API Integration."""
-    
+
     def __init__(self):
         api_key = os.getenv("GOOGLE_MAPS_API_KEY")
         self.client = googlemaps.Client(key=api_key)
-    
+
     async def geocode_address(self, address: str) -> Dict[str, Any]:
         """Geocode address to coordinates."""
         result = self.client.geocode(address)
         return result[0] if result else {}
-    
+
     async def get_directions(
         self,
         origin: str,
@@ -660,16 +664,16 @@ import shopify
 
 class ShopifyIntegration:
     """Shopify API Integration."""
-    
+
     def __init__(self):
         shop_url = os.getenv("SHOPIFY_SHOP_URL")
         api_key = os.getenv("SHOPIFY_API_KEY")
         password = os.getenv("SHOPIFY_PASSWORD")
-        
+
         shopify.ShopifyResource.set_site(
             f"https://{api_key}:{password}@{shop_url}/admin"
         )
-    
+
     async def create_product(
         self,
         title: str,
@@ -683,14 +687,14 @@ class ShopifyIntegration:
         product.variants = [
             shopify.Variant({"price": price})
         ]
-        
+
         success = product.save()
-        
+
         if success:
             return product.to_dict()
         else:
             raise ValueError(product.errors.full_messages())
-    
+
     async def get_orders(
         self,
         status: str = "any"
@@ -728,14 +732,14 @@ async def test_rest_api_client():
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"id": 1, "name": "Test"}
-        
+
         mock_client.return_value.__aenter__.return_value.request = \
             Mock(return_value=mock_response)
-        
+
         # Test client
         client = RESTAPIClient("https://api.example.com")
         result = await client.get("/users/1")
-        
+
         assert result["id"] == 1
         assert result["name"] == "Test"
 
@@ -746,11 +750,11 @@ async def test_webhook_signature_validation():
     mock_request = Mock()
     mock_request.headers.get.return_value = "valid_signature"
     mock_request.body = Mock(return_value=b'{"event": "test"}')
-    
+
     # Test validation
     secret = "test_secret"
     result = await validate_webhook_signature(mock_request, secret)
-    
+
     # Signature should be validated
     assert result is True or isinstance(result, bool)
 ```
@@ -762,13 +766,13 @@ async def test_webhook_signature_validation():
 async def test_stripe_integration():
     """Test Stripe-Integration."""
     stripe_integration = StripeIntegration()
-    
+
     # Create test customer
     customer = await stripe_integration.create_customer(
         email="test@example.com",
         name="Test User"
     )
-    
+
     assert customer["email"] == "test@example.com"
     assert "id" in customer
 
@@ -785,14 +789,14 @@ async def test_option2_flow_external_api():
                 "context": {"api": "stripe", "action": "create_customer"}
             }
         )
-        
+
         assert response.status_code == 200
-        
+
         # 2. Verify Safepoint
         safepoints = await client.get(
             "http://127.0.0.1:12345/archiv/last?n=1"
         )
-        
+
         data = safepoints.json()
         assert len(data) > 0
         assert data[0]["kind"] in ["CMD", "RESP"]
@@ -844,6 +848,7 @@ EXTERNAL_WEBHOOK_SECRET=...
 ## 📖 Best Practices
 
 ### 1. Rate Limiting
+
 ```python
 import asyncio
 from collections import deque
@@ -851,28 +856,28 @@ from datetime import datetime, timedelta
 
 class RateLimiter:
     """Rate limiter for API calls."""
-    
+
     def __init__(self, max_calls: int, time_window: float):
         self.max_calls = max_calls
         self.time_window = time_window
         self.calls = deque()
-    
+
     async def acquire(self):
         """Wait until rate limit allows call."""
         now = datetime.now()
-        
+
         # Remove old calls
         while self.calls and \
               (now - self.calls[0]) > timedelta(seconds=self.time_window):
             self.calls.popleft()
-        
+
         # Wait if limit reached
         if len(self.calls) >= self.max_calls:
             wait_time = (
                 self.calls[0] + timedelta(seconds=self.time_window) - now
             ).total_seconds()
             await asyncio.sleep(max(0, wait_time))
-        
+
         # Record call
         self.calls.append(datetime.now())
 
@@ -885,6 +890,7 @@ async def call_api():
 ```
 
 ### 2. Circuit Breaker
+
 ```python
 from enum import Enum
 from datetime import datetime, timedelta
@@ -896,7 +902,7 @@ class CircuitState(Enum):
 
 class CircuitBreaker:
     """Circuit breaker pattern for API calls."""
-    
+
     def __init__(
         self,
         failure_threshold: int = 5,
@@ -907,7 +913,7 @@ class CircuitBreaker:
         self.failure_count = 0
         self.last_failure_time = None
         self.state = CircuitState.CLOSED
-    
+
     async def call(self, func, *args, **kwargs):
         """Execute function with circuit breaker."""
         if self.state == CircuitState.OPEN:
@@ -917,24 +923,24 @@ class CircuitBreaker:
                 self.state = CircuitState.HALF_OPEN
             else:
                 raise Exception("Circuit breaker is OPEN")
-        
+
         try:
             result = await func(*args, **kwargs)
-            
+
             # Reset on success
             if self.state == CircuitState.HALF_OPEN:
                 self.state = CircuitState.CLOSED
                 self.failure_count = 0
-            
+
             return result
-            
+
         except Exception as e:
             self.failure_count += 1
             self.last_failure_time = datetime.now()
-            
+
             if self.failure_count >= self.failure_threshold:
                 self.state = CircuitState.OPEN
-            
+
             raise e
 
 # Verwendung
@@ -944,6 +950,7 @@ result = await breaker.call(client.get, "/endpoint")
 ```
 
 ### 3. Response Caching
+
 ```python
 from functools import wraps
 import hashlib
@@ -951,11 +958,11 @@ import json
 
 class ResponseCache:
     """Simple in-memory response cache."""
-    
+
     def __init__(self, ttl: int = 300):
         self.cache = {}
         self.ttl = ttl  # Time to live in seconds
-    
+
     def _make_key(self, func_name: str, args, kwargs) -> str:
         """Generate cache key."""
         key_data = {
@@ -966,27 +973,27 @@ class ResponseCache:
         return hashlib.md5(
             json.dumps(key_data, sort_keys=True).encode()
         ).hexdigest()
-    
+
     def cached(self, func):
         """Decorator for caching async functions."""
         @wraps(func)
         async def wrapper(*args, **kwargs):
             key = self._make_key(func.__name__, args, kwargs)
-            
+
             # Check cache
             if key in self.cache:
                 data, timestamp = self.cache[key]
                 if datetime.now() - timestamp < timedelta(seconds=self.ttl):
                     return data
-            
+
             # Call function
             result = await func(*args, **kwargs)
-            
+
             # Store in cache
             self.cache[key] = (result, datetime.now())
-            
+
             return result
-        
+
         return wrapper
 
 # Verwendung
@@ -1020,7 +1027,7 @@ async def get_user_data(user_id: int):
 
 ---
 
-**Maintainer:** Danijel Jokic (ELION Team)  
-**Letzte Aktualisierung:** 21. Dezember 2025  
-**Version:** 1.0.0  
+**Maintainer:** Danijel Jokic (ELION Team)
+**Letzte Aktualisierung:** 21. Dezember 2025
+**Version:** 1.0.0
 **Status:** ✅ Production Ready

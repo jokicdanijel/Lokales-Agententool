@@ -21,8 +21,9 @@ Expected: 11/11 tests pass
 
 import os
 import sys
+from datetime import UTC, datetime
+
 import requests
-from datetime import datetime, timezone
 
 # ──────────────────────────────────────────────────────────────────────────────
 # CONFIG
@@ -35,10 +36,7 @@ if not BEARER_TOKEN:
     print("⚠️  WARNING: BEARER_TOKEN nicht gesetzt")
     print("   Setze mit: export BEARER_TOKEN=$(grep BEARER_TOKEN ../.env | cut -d= -f2)")
 
-HEADERS = {
-    "Authorization": f"Bearer {BEARER_TOKEN}",
-    "Content-Type": "application/json"
-}
+HEADERS = {"Authorization": f"Bearer {BEARER_TOKEN}", "Content-Type": "application/json"}
 
 # Colors
 GREEN = "\033[92m"
@@ -50,6 +48,7 @@ RESET = "\033[0m"
 # ──────────────────────────────────────────────────────────────────────────────
 # TESTS
 # ──────────────────────────────────────────────────────────────────────────────
+
 
 def test_health():
     """Test: Health-Check"""
@@ -71,7 +70,7 @@ def test_root():
     data = resp.json()
     print(f"   Root: {data}")
     assert resp.status_code == 200, f"Expected 200, got {resp.status_code}"
-    assert data["kuerzel"] == "calltrackp", f"Expected kuerzel=calltrackp"
+    assert data["kuerzel"] == "calltrackp", "Expected kuerzel=calltrackp"
     assert "capabilities" in data, "Expected capabilities field"
     assert "events/ingest" in data["capabilities"], "Expected events/ingest capability"
     print(f"{GREEN}✅ Root OK{RESET}")
@@ -80,15 +79,12 @@ def test_root():
 def test_command():
     """Test: Command-Endpoint"""
     print(f"\n{BLUE}TEST: Command-Endpoint{RESET}")
-    payload = {
-        "command": "test_command",
-        "params": {"test": "value"}
-    }
+    payload = {"command": "test_command", "params": {"test": "value"}}
     resp = requests.post(f"{BASE_URL}/command", json=payload, headers=HEADERS)
     data = resp.json()
     print(f"   Command: {data}")
     assert resp.status_code == 200, f"Expected 200, got {resp.status_code}"
-    assert data["status"] == "executed", f"Expected status=executed"
+    assert data["status"] == "executed", "Expected status=executed"
     print(f"{GREEN}✅ Command OK{RESET}")
 
 
@@ -98,13 +94,13 @@ def test_campaign_create():
     payload = {
         "campaign_id": f"test_campaign_{int(datetime.now().timestamp())}",
         "name": "Test Campaign",
-        "description": "Automated test campaign"
+        "description": "Automated test campaign",
     }
     resp = requests.post(f"{BASE_URL}/campaigns/create", json=payload, headers=HEADERS)
     data = resp.json()
     print(f"   Campaign Created: {data}")
     assert resp.status_code == 200, f"Expected 200, got {resp.status_code}"
-    assert data["status"] == "success", f"Expected status=success"
+    assert data["status"] == "success", "Expected status=success"
     assert "campaign" in data, "Expected campaign field"
     print(f"{GREEN}✅ Campaign Create OK{RESET}")
     return data["campaign"]["campaign_id"]
@@ -127,13 +123,13 @@ def test_tracking_number_create(campaign_id):
     payload = {
         "number": f"+491234{int(datetime.now().timestamp()) % 1000000}",
         "campaign_id": campaign_id,
-        "description": "Test tracking number"
+        "description": "Test tracking number",
     }
     resp = requests.post(f"{BASE_URL}/tracking_numbers/create", json=payload, headers=HEADERS)
     data = resp.json()
     print(f"   Tracking Number Created: {data}")
     assert resp.status_code == 200, f"Expected 200, got {resp.status_code}"
-    assert data["status"] == "success", f"Expected status=success"
+    assert data["status"] == "success", "Expected status=success"
     print(f"{GREEN}✅ Tracking Number Create OK{RESET}")
     return data["tracking_number"]["number"]
 
@@ -158,14 +154,14 @@ def test_event_ingest(tracking_number):
         "caller_number": "+491234567890",
         "duration_seconds": 120,
         "status": "completed",
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "metadata": {"test": "value"}
+        "timestamp": datetime.now(UTC).isoformat(),
+        "metadata": {"test": "value"},
     }
     resp = requests.post(f"{BASE_URL}/events/ingest", json=payload, headers=HEADERS)
     data = resp.json()
     print(f"   Event Ingested: {data}")
     assert resp.status_code == 200, f"Expected 200, got {resp.status_code}"
-    assert data["status"] == "success", f"Expected status=success"
+    assert data["status"] == "success", "Expected status=success"
     assert "event_id" in data, "Expected event_id field"
     print(f"{GREEN}✅ Event Ingest OK{RESET}")
 
@@ -196,11 +192,7 @@ def test_stats_by_campaign(campaign_id):
 def test_strict_json():
     """Test: Strict JSON Validation (extra='forbid')"""
     print(f"\n{BLUE}TEST: Strict JSON Validation{RESET}")
-    payload = {
-        "command": "test",
-        "params": {},
-        "extra_field": "should_fail"  # Not allowed
-    }
+    payload = {"command": "test", "params": {}, "extra_field": "should_fail"}  # Not allowed
     resp = requests.post(f"{BASE_URL}/command", json=payload, headers=HEADERS)
     print(f"   Strict JSON: Extra fields korrekt rejected ({resp.status_code})")
     assert resp.status_code == 422, f"Expected 422 (validation error), got {resp.status_code}"
@@ -210,6 +202,7 @@ def test_strict_json():
 # ──────────────────────────────────────────────────────────────────────────────
 # MAIN
 # ──────────────────────────────────────────────────────────────────────────────
+
 
 def main():
     print("=" * 60)
@@ -227,7 +220,7 @@ def main():
         "Event Ingest": False,
         "Stats Summary": False,
         "Stats by Campaign": False,
-        "Strict JSON": False
+        "Strict JSON": False,
     }
 
     campaign_id = None

@@ -11,7 +11,7 @@ core_services:
     port: 12344
     role: coordinator
     description: Central route registry + dispatcher
-    
+
   archivator:
     program_target: archivp
     port: 12345
@@ -29,7 +29,7 @@ scalable_services:
     role: messaging
     description: Telegram bot integration
     enabled: true
-    
+
   inference:
     program_target: infer
     port: 12348
@@ -37,119 +37,119 @@ scalable_services:
     description: llama-stack + Ollama inference gateway
     enabled: true
 
-# Services 12349-12365 (17 additional slots for Phase 15 scale)
+  # Services 12349-12365 (17 additional slots for Phase 15 scale)
   browser:
     program_target: browsp
     port: 12349
     role: agent
     description: Browser automation agent
     enabled: false
-    
+
   vscode:
     program_target: vscop
     port: 12350
     role: agent
     description: VS Code integration agent
     enabled: false
-    
+
   email:
     program_target: emailp
     port: 12351
     role: agent
     description: Email client agent
     enabled: false
-    
+
   whatsapp:
     program_target: whatp
     port: 12352
     role: agent
     description: WhatsApp messaging agent
     enabled: false
-    
+
   phone:
     program_target: phonep
     port: 12353
     role: agent
     description: Telephone/calling agent
     enabled: false
-    
+
   calendar:
     program_target: kalp
     port: 12354
     role: agent
     description: Calendar management agent
     enabled: false
-    
+
   social_media:
     program_target: somep
     port: 12355
     role: agent
     description: Social media integration agent
     enabled: false
-    
+
   shop:
     program_target: shopp
     port: 12356
     role: agent
     description: E-commerce shop agent
     enabled: false
-    
+
   html_creator:
     program_target: htmlp
     port: 12357
     role: agent
     description: HTML/web content creator agent
     enabled: false
-    
+
   homepage_creator:
     program_target: homep
     port: 12358
     role: agent
     description: Homepage builder agent
     enabled: false
-    
+
   stocks_crypto:
     program_target: aktienp
     port: 12359
     role: agent
     description: Stocks & crypto tracker agent
     enabled: false
-    
+
   influencer:
     program_target: infmep
     port: 12360
     role: agent
     description: Influencer/brand management agent
     enabled: false
-    
+
   unlock_master:
     program_target: onlockp
     port: 12361
     role: agent
     description: Authentication/unlock master agent
     enabled: false
-    
+
   local_archiv:
     program_target: locp
     port: 12362
     role: agent
     description: Local archive/file agent
     enabled: false
-    
+
   custom_1:
     program_target: cust1
     port: 12363
     role: agent
     description: Custom service 1 (reserved)
     enabled: false
-    
+
   custom_2:
     program_target: cust2
     port: 12364
     role: agent
     description: Custom service 2 (reserved)
     enabled: false
-    
+
   custom_3:
     program_target: cust3
     port: 12365
@@ -165,7 +165,7 @@ coordinator:
   host: 127.0.0.1
   port: 12344
   program_target: kordp
-  registry_strategy: in_memory  # TODO: Upgrade to Redis for persistence
+  registry_strategy: in_memory # TODO: Upgrade to Redis for persistence
   route_ttl_seconds: 300
   max_routes: 100
   dispatch_timeout_seconds: 30
@@ -182,7 +182,7 @@ archivator:
   storage_type: file_jsonl
   storage_path: 1.opena1&2_portier/archivp_store
   index_file: index.jsonl
-  partition_strategy: daily  # YYYY/MM/DD structure
+  partition_strategy: daily # YYYY/MM/DD structure
   rotation_days: 30
 
 # ────────────────────────────────────────────────────────────────────
@@ -192,7 +192,7 @@ archivator:
 load_balancing:
   strategy: round_robin
   health_check_enabled: true
-  circuit_breaker_threshold: 5  # Fail after 5 consecutive errors
+  circuit_breaker_threshold: 5 # Fail after 5 consecutive errors
   circuit_breaker_timeout_seconds: 30
   fallback_strategy: next_available
 
@@ -212,7 +212,7 @@ monitoring:
     - MESSAGE_IN
     - MESSAGE_OUT
     - ECHO
-  
+
 # ────────────────────────────────────────────────────────────────────
 # Legacy Program Targets (Reference Only)
 # ────────────────────────────────────────────────────────────────────

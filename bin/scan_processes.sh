@@ -47,9 +47,9 @@ print_banner() {
 # Prozesse nach Namen scannen
 scan_processes_by_name() {
     local count=0
-    
+
     log "INFO" "Scanne nach Prozessen: ${PROCESS_NAMES[*]}"
-    
+
     for proc in "${PROCESS_NAMES[@]}"; do
         local pids=$(pgrep -f "$proc" 2>/dev/null || true)
         if [[ -n "$pids" ]]; then
@@ -61,16 +61,16 @@ scan_processes_by_name() {
             done
         fi
     done
-    
+
     echo "$count"
 }
 
 # Ports scannen
 scan_ports() {
     local count=0
-    
+
     log "INFO" "Scanne Ports: ${PORTS[*]}"
-    
+
     for port in "${PORTS[@]}"; do
         if lsof -i ":$port" -sTCP:LISTEN -t >/dev/null 2>&1; then
             local pid=$(lsof -i ":$port" -sTCP:LISTEN -t 2>/dev/null | head -1)
@@ -80,23 +80,23 @@ scan_ports() {
             count=$((count + 1))
         fi
     done
-    
+
     echo "$count"
 }
 
 # Prozess-Details anzeigen
 show_process_details() {
     local pid="$1"
-    
+
     echo -e "${BLUE}┌─ Prozess-Details für PID $pid ─────────────────────────────┐${NC}"
-    
+
     if ps -p "$pid" >/dev/null 2>&1; then
         echo -e "${BLUE}│${NC} Command:    $(ps -p "$pid" -o cmd= 2>/dev/null)"
         echo -e "${BLUE}│${NC} User:       $(ps -p "$pid" -o user= 2>/dev/null)"
         echo -e "${BLUE}│${NC} CPU:        $(ps -p "$pid" -o %cpu= 2>/dev/null)%"
         echo -e "${BLUE}│${NC} Memory:     $(ps -p "$pid" -o %mem= 2>/dev/null)%"
         echo -e "${BLUE}│${NC} Start Time: $(ps -p "$pid" -o lstart= 2>/dev/null)"
-        
+
         # Ports des Prozesses
         local ports=$(lsof -Pan -p "$pid" -i 2>/dev/null | grep LISTEN | awk '{print $9}' | cut -d: -f2 | sort -u | tr '\n' ',' | sed 's/,$//')
         if [[ -n "$ports" ]]; then
@@ -105,7 +105,7 @@ show_process_details() {
     else
         echo -e "${BLUE}│${NC} ${RED}Prozess nicht mehr vorhanden${NC}"
     fi
-    
+
     echo -e "${BLUE}└────────────────────────────────────────────────────────────┘${NC}"
 }
 
@@ -123,7 +123,7 @@ pause_interactive() {
     echo -e "  ${GREEN}[4]${NC} Abbrechen"
     echo ""
     read -p "Ihre Wahl [1-4]: " choice
-    
+
     case "$choice" in
         1)
             echo ""
@@ -152,7 +152,7 @@ pause_interactive() {
 # Alle Prozesse auflisten
 list_all_processes() {
     echo -e "${BLUE}┌─ Laufende ELION-Prozesse ──────────────────────────────────┐${NC}"
-    
+
     for proc in "${PROCESS_NAMES[@]}"; do
         local pids=$(pgrep -f "$proc" 2>/dev/null || true)
         if [[ -n "$pids" ]]; then
@@ -161,10 +161,10 @@ list_all_processes() {
             done
         fi
     done
-    
+
     echo ""
     echo -e "${BLUE}┌─ Belegte Ports ─────────────────────────────────────────────┐${NC}"
-    
+
     for port in "${PORTS[@]}"; do
         if lsof -i ":$port" -sTCP:LISTEN -t >/dev/null 2>&1; then
             local pid=$(lsof -i ":$port" -sTCP:LISTEN -t 2>/dev/null | head -1)
@@ -173,7 +173,7 @@ list_all_processes() {
             echo -e "${BLUE}│${NC}   → $cmd"
         fi
     done
-    
+
     echo -e "${BLUE}└────────────────────────────────────────────────────────────┘${NC}"
 }
 
@@ -181,14 +181,14 @@ list_all_processes() {
 stop_all_processes() {
     echo ""
     echo -e "${YELLOW}⏸️  Stoppe alle ELION-Prozesse...${NC}"
-    
+
     if [[ -f "bin/ops.sh" ]]; then
         log "INFO" "Führe bin/ops.sh stop aus"
         bash bin/ops.sh stop
-        
+
         # Warte und verifiziere
         sleep 2
-        
+
         local remaining=$(scan_processes_by_name)
         if [[ "$remaining" -eq 0 ]]; then
             echo -e "${GREEN}✓ Alle Prozesse erfolgreich gestoppt.${NC}"
@@ -215,9 +215,9 @@ kill_remaining_processes() {
             done
         fi
     done
-    
+
     sleep 1
-    
+
     local final_count=$(scan_processes_by_name)
     if [[ "$final_count" -eq 0 ]]; then
         echo -e "${GREEN}✓ Alle Prozesse erfolgreich beendet.${NC}"
@@ -230,34 +230,34 @@ kill_remaining_processes() {
 # Hauptfunktion
 main() {
     print_banner
-    
+
     log "INFO" "Starte Prozess-Scan..."
-    
+
     # Scan durchführen
     echo -e "${BLUE}🔍 Scanne nach laufenden Prozessen...${NC}"
     echo ""
-    
+
     local proc_count=$(scan_processes_by_name)
     echo ""
-    
+
     echo -e "${BLUE}🔍 Scanne nach belegten Ports...${NC}"
     echo ""
-    
+
     local port_count=$(scan_ports)
     echo ""
-    
+
     # Ergebnis
     local total_findings=$((proc_count + port_count))
-    
+
     echo -e "${BLUE}╔════════════════════════════════════════════════════════════════╗${NC}"
     echo -e "${BLUE}║${NC}  Scan-Ergebnisse:"
     echo -e "${BLUE}║${NC}    • Prozesse gefunden:    ${YELLOW}$proc_count${NC}"
     echo -e "${BLUE}║${NC}    • Ports belegt:         ${YELLOW}$port_count${NC}"
     echo -e "${BLUE}║${NC}    • Gesamt:               ${YELLOW}$total_findings${NC}"
     echo -e "${BLUE}╚════════════════════════════════════════════════════════════════╝${NC}"
-    
+
     log "INFO" "Scan abgeschlossen: $total_findings Findings"
-    
+
     if [[ "$total_findings" -gt 0 ]]; then
         pause_interactive
     else
@@ -265,7 +265,7 @@ main() {
         echo -e "${GREEN}✓ Keine laufenden ELION-Prozesse gefunden.${NC}"
         log "INFO" "System sauber - keine Prozesse gefunden"
     fi
-    
+
     echo ""
     echo -e "${BLUE}Log gespeichert: $LOG_FILE${NC}"
 }

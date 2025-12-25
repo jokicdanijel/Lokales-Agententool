@@ -11,6 +11,7 @@
 ## 📋 Tools Overview
 
 ### 1. 📝 **write_file** - Dateien erstellen/schreiben [🔗 Öffnen](http://localhost:8000/tools.html?tool=write_file)
+
 - **Zweck:** Erstelle oder überschreibe Dateien mit beliebigem Inhalt
 - **Parameter:**
   - `filename` - Ziel-Dateiname/Pfad
@@ -28,6 +29,7 @@
 ---
 
 ### 2. 📖 **read_file** - Dateien auslesen [🔗 Öffnen](http://localhost:8000/tools.html?tool=read_file)
+
 - **Zweck:** Lese Datei-Inhalte
 - **Parameter:**
   - `filename` - Dateiname/Pfad
@@ -45,6 +47,7 @@
 ---
 
 ### 3. 🗑️ **delete_file** - Dateien löschen [🔗 Öffnen](http://localhost:8000/tools.html?tool=delete_file)
+
 - **Zweck:** Lösche Dateien oder Verzeichnisse
 - **Parameter:**
   - `path` - Datei/Verzeichnis-Pfad
@@ -62,6 +65,7 @@
 ---
 
 ### 4. 💻 **shell_exec** - Shell-Befehle ausführen [🔗 Öffnen](http://localhost:8000/tools.html?tool=shell_exec)
+
 - **Zweck:** Führe Terminal-Befehle aus
 - **Parameter:**
   - `command` - Shell-Befehl
@@ -85,6 +89,7 @@
 ---
 
 ### 5. 🌐 **fetch_webpage** - Webseiten abrufen [🔗 Öffnen](http://localhost:8000/tools.html?tool=fetch_webpage)
+
 - **Zweck:** Rufe HTTP-Inhalte ab und parse sie
 - **Parameter:**
   - `url` - Web-URL
@@ -108,6 +113,7 @@
 ---
 
 ### 6. 📊 **execute_query** - Datenbank-Abfragen [🔗 Öffnen](http://localhost:8000/tools.html?tool=execute_query)
+
 - **Zweck:** Führe SQL/JSON-Abfragen aus
 - **Parameter:**
   - `query_type` - SQL|JSON|CSV
@@ -131,6 +137,7 @@
 ---
 
 ### 7. 🔍 **list_directory** - Verzeichnis auflisten [🔗 Öffnen](http://localhost:8000/tools.html?tool=list_directory)
+
 - **Zweck:** Zeige Verzeichnis-Inhalte mit Metadaten
 - **Parameter:**
   - `path` - Verzeichnis-Pfad
@@ -150,6 +157,7 @@
 ---
 
 ### 8. ⚡ **execute_function** - Funktionen ausführen [🔗 Öffnen](http://localhost:8000/tools.html?tool=execute_function)
+
 - **Zweck:** Führe Python/JavaScript Code aus
 - **Parameter:**
   - `language` - Python|JavaScript
@@ -174,6 +182,7 @@
 ## 🌐 Web Interface
 
 ### Hauptdashboard
+
 - **URL:** http://localhost:8000
 - **Features:**
   - Service-Status
@@ -183,6 +192,7 @@
   - Quick Tools
 
 ### Tools Panel
+
 - **URL:** http://localhost:8000/tools.html
 - **Features:**
   - Vollständige Tool-Suite
@@ -196,23 +206,28 @@
 ## 🔒 Security Features
 
 ✅ **Sandbox-Isolation**
+
 - Alle Tools laufen in isolierter Umgebung
 - Datei-Operationen auf `/localagent_sandbox` begrenzt
 
 ✅ **Command Whitelisting**
+
 - Nur sichere Shell-Befehle erlaubt
 - Blacklist für gefährliche Operationen
 
 ✅ **Request Deduplication**
+
 - Verhindert Doppelausführung
 - MD5-Hashing von Anfragen
 
 ✅ **Timeout Protection**
+
 - Shell-Befehle: max 30s
 - HTTP-Requests: max 20s
 - Query-Execution: max 60s
 
 ✅ **Input Validation**
+
 - Pfad-Sanitization
 - Command-Escaping
 - URL-Validation
@@ -222,6 +237,7 @@
 ## 📊 Metrics & Monitoring
 
 ### Verfügbare Metriken
+
 ```
 http_requests_total         - HTTP Requests pro Endpoint
 sandbox_files              - Dateien im Sandbox
@@ -230,6 +246,7 @@ errors_total               - Fehler pro Tool
 ```
 
 ### Prometheus Endpoint
+
 ```
 GET /metrics
 ```
@@ -239,22 +256,26 @@ GET /metrics
 ## 🚀 Quick Start
 
 ### 1. Dashboard öffnen
+
 ```
 http://localhost:8000
 ```
 
 ### 2. Tools Panel öffnen
+
 ```
 http://localhost:8000/tools.html
 ```
 
 ### 3. Tool verwenden
+
 - Wähle Tool-Card
 - Füge Parameter ein
 - Klick "Ausführen"
 - Ergebnis anzeigen
 
 ### 4. API Direct
+
 ```bash
 curl -X POST http://127.0.0.1:8001/v1/chat/completions \
   -H "Content-Type: application/json" \
@@ -280,36 +301,42 @@ LocalAgent-Pro ist voll kompatibel mit OpenWebUI:
 
 ## 📈 Performance Characteristics
 
-| Tool | Avg. Response | Max Timeout | Status |
-|------|---|---|---|
-| write_file | 50ms | 5s | ✅ Fast |
-| read_file | 100ms | 10s | ✅ Fast |
-| delete_file | 50ms | 5s | ✅ Fast |
-| shell_exec | 500ms | 30s | ✅ Normal |
-| fetch_webpage | 2000ms | 20s | ⚠️ Slow |
-| execute_query | 200ms | 60s | ✅ Normal |
-| list_directory | 100ms | 10s | ✅ Fast |
-| execute_function | 300ms | 30s | ✅ Normal |
+| Tool             | Avg. Response | Max Timeout | Status    |
+| ---------------- | ------------- | ----------- | --------- |
+| write_file       | 50ms          | 5s          | ✅ Fast   |
+| read_file        | 100ms         | 10s         | ✅ Fast   |
+| delete_file      | 50ms          | 5s          | ✅ Fast   |
+| shell_exec       | 500ms         | 30s         | ✅ Normal |
+| fetch_webpage    | 2000ms        | 20s         | ⚠️ Slow   |
+| execute_query    | 200ms         | 60s         | ✅ Normal |
+| list_directory   | 100ms         | 10s         | ✅ Fast   |
+| execute_function | 300ms         | 30s         | ✅ Normal |
 
 ---
 
 ## 🐛 Troubleshooting
 
 ### Ollama Connection Error
+
 **Problem:** Tools geben Ollama-Fehler
 **Solution:**
+
 - Docker Network Restart: `docker compose restart`
 - Check Ollama: `curl http://localhost:11434/api/tags`
 
 ### File Not Found
+
 **Problem:** read_file gibt Fehler
 **Solution:**
+
 - Pfad prüfen: `list_directory(".")`
 - Absolute Pfade verwenden
 
 ### Timeout
+
 **Problem:** Befehl läuft zu lange
 **Solution:**
+
 - Timeout erhöhen
 - Befehl optimieren
 - Hintergrund-Job verwenden
@@ -319,6 +346,7 @@ LocalAgent-Pro ist voll kompatibel mit OpenWebUI:
 ## 📝 Examples
 
 ### Beispiel 1: Datei erstellen und lesen
+
 ```javascript
 // Erstelle Datei
 await executeWriteFile("test.txt", "Hello World");
@@ -328,6 +356,7 @@ await executeReadFile("test.txt");
 ```
 
 ### Beispiel 2: Shell-Befehle
+
 ```javascript
 // System-Info
 await executeShellCommand("uname -a");
@@ -337,6 +366,7 @@ await executeShellCommand("ls -la /home");
 ```
 
 ### Beispiel 3: Webseite abrufen
+
 ```javascript
 // JSON API
 await executeFetchWebpage("https://api.example.com/users", "json");
@@ -346,6 +376,7 @@ await executeFetchWebpage("https://example.com", "html");
 ```
 
 ### Beispiel 4: Python-Code
+
 ```javascript
 const code = `
 def fibonacci(n):

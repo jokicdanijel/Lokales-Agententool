@@ -59,11 +59,11 @@ python scripts/workspace_evaluation.py --output my_report.json
 
 ### Command-Line Options
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `--root` | Project root directory | Current directory (`.`) |
-| `--no-save` | Don't save report to file | Reports are saved by default |
-| `--output` | Output report filename | `workspace_evaluation_report.json` |
+| Option      | Description               | Default                            |
+| ----------- | ------------------------- | ---------------------------------- |
+| `--root`    | Project root directory    | Current directory (`.`)            |
+| `--no-save` | Don't save report to file | Reports are saved by default       |
+| `--output`  | Output report filename    | `workspace_evaluation_report.json` |
 
 ### Exit Codes
 
@@ -81,9 +81,10 @@ The framework provides color-coded console output:
 - 🔴 **RED** - Failed checks
 
 Example:
+
 ```
 ======================================================================
-                      File Structure Evaluation                       
+                      File Structure Evaluation
 ======================================================================
 
 ✓ PASS Scripts directory
@@ -121,12 +122,12 @@ The framework generates a detailed JSON report with:
 
 ### Status Levels
 
-| Status | Score Range | Description |
-|--------|-------------|-------------|
-| **Excellent** | ≥ 90% | Workspace is in optimal condition |
-| **Good** | 75-89% | Minor issues detected |
-| **Fair** | 60-74% | Several issues need attention |
-| **Poor** | < 60% | Critical issues detected |
+| Status        | Score Range | Description                       |
+| ------------- | ----------- | --------------------------------- |
+| **Excellent** | ≥ 90%       | Workspace is in optimal condition |
+| **Good**      | 75-89%      | Minor issues detected             |
+| **Fair**      | 60-74%      | Several issues need attention     |
+| **Poor**      | < 60%       | Critical issues detected          |
 
 ## Integration
 
@@ -142,27 +143,27 @@ on:
     branches: [main, develop]
   pull_request:
   schedule:
-    - cron: '0 0 * * *'  # Daily at midnight
+    - cron: "0 0 * * *" # Daily at midnight
 
 jobs:
   evaluate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-      
+          python-version: "3.12"
+
       - name: Install dependencies
         run: |
           pip install pyyaml
-      
+
       - name: Run workspace evaluation
         run: |
           python scripts/workspace_evaluation.py
-      
+
       - name: Upload evaluation report
         uses: actions/upload-artifact@v4
         if: always()
@@ -221,11 +222,11 @@ To add a new evaluation category:
 def evaluate_custom_category(self) -> Dict:
     """Evaluate custom aspect of workspace"""
     self.print_header("Custom Category Evaluation")
-    
+
     results = {"passed": 0, "failed": 0, "details": []}
-    
+
     # Your evaluation logic here
-    
+
     self.results["evaluations"]["custom_category"] = results
     return results
 ```
@@ -258,18 +259,21 @@ critical_paths = {
 ### Common Issues
 
 **Issue**: `ModuleNotFoundError: No module named 'yaml'`
+
 ```bash
 # Solution: Install PyYAML
 pip install pyyaml
 ```
 
 **Issue**: Permission denied when running script
+
 ```bash
 # Solution: Make script executable
 chmod +x scripts/workspace_evaluation.py
 ```
 
 **Issue**: All service ports show as "in use"
+
 ```bash
 # Solution: Stop services or verify ports
 ./scripts/stop_all.sh
@@ -337,5 +341,6 @@ Danijel Jokic - PORTIER 3.0 Platform
 ## Support
 
 For issues or questions, please refer to:
+
 - Project documentation in `docs/`
 - GitHub Issues: [jokicdanijel/Gesamtprojekt-start](https://github.com/jokicdanijel/Gesamtprojekt-start)

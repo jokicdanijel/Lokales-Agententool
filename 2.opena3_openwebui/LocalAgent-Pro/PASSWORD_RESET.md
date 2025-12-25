@@ -48,6 +48,7 @@ docker ps | grep openwebui
 ```
 
 Ausgabe:
+
 ```
 abc123def456  ghcr.io/open-webui/open-webui:main  Up 2 hours  0.0.0.0:3000->8080/tcp
 ```
@@ -78,6 +79,7 @@ print(password_hash.decode('utf-8'))
 ```
 
 Ausgabe:
+
 ```
 $2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOP
 ```
@@ -159,39 +161,39 @@ def reset_password(db_path, user_id=1):
     # Neues Passwort eingeben
     new_password = input("Enter new password: ")
     confirm_password = input("Confirm password: ")
-    
+
     if new_password != confirm_password:
         print("❌ Passwords don't match!")
         sys.exit(1)
-    
+
     # Bcrypt-Hash erstellen
     password_hash = bcrypt.hashpw(
         new_password.encode('utf-8'),
         bcrypt.gensalt()
     ).decode('utf-8')
-    
+
     # Datenbank aktualisieren
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
-    
+
     cursor.execute(
         "UPDATE auth SET password = ? WHERE id = ?",
         (password_hash, user_id)
     )
-    
+
     conn.commit()
     conn.close()
-    
+
     print(f"✅ Password updated successfully!")
     print(f"New hash: {password_hash}")
 
 if __name__ == '__main__':
     # Docker Volume Pfad
     db_path = input("Database path (default: /var/lib/docker/volumes/localagent-pro_openwebui-data/_data/webui.db): ").strip()
-    
+
     if not db_path:
         db_path = "/var/lib/docker/volumes/localagent-pro_openwebui-data/_data/webui.db"
-    
+
     reset_password(db_path)
 ```
 
@@ -207,12 +209,14 @@ sudo python3 reset_password.py
 ## Passwort-Anforderungen
 
 **Empfohlen:**
+
 - Mindestens 12 Zeichen
 - Groß- und Kleinbuchstaben
 - Zahlen und Sonderzeichen
 - Keine Wörterbuch-Wörter
 
 **Beispiel:**
+
 ```
 SecureP@ssw0rd2025!
 MyLocalAgent#2025
@@ -372,6 +376,7 @@ curl -X POST http://localhost:3000/api/auth/reset-password \
 ## Beispiel-Skripte
 
 Siehe:
+
 - `update_openwebui_password.sh` - Automatisches Reset-Skript
 - `examples/password_reset_example.sh` - Weitere Beispiele
 

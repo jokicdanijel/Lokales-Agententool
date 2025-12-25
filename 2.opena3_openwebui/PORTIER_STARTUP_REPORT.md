@@ -1,22 +1,26 @@
 # 🚀 PORTIER 3.0 - Startup Report
+
 **Date:** 2025-11-24 23:20 UTC
 
 ## ✅ Stack Status
 
 ### Agents Running
+
 - **Total:** 17/20 processes confirmed
 - **Status:** STARTING (Health checks running)
 
 ### Critical Agents
-| Agent | Port | Role | Status |
-|-------|------|------|--------|
-| opena1 | 12345 | Coordinator | 🟡 INITIALIZING |
-| opena2 | 12346 | Archivator | 🟡 INITIALIZING |
-| opena3 | 12347 | Gateway | ✅ ONLINE |
-| opena6 | 12350 | Browser Agent | ✅ ONLINE |
-| opena20 | 8000/12364 | Dashboard | ✅ ONLINE |
+
+| Agent   | Port       | Role          | Status          |
+| ------- | ---------- | ------------- | --------------- |
+| opena1  | 12345      | Coordinator   | 🟡 INITIALIZING |
+| opena2  | 12346      | Archivator    | 🟡 INITIALIZING |
+| opena3  | 12347      | Gateway       | ✅ ONLINE       |
+| opena6  | 12350      | Browser Agent | ✅ ONLINE       |
+| opena20 | 8000/12364 | Dashboard     | ✅ ONLINE       |
 
 ### Compute Agents (opena4-opena19)
+
 - **Status:** All 16 processes running
 - **Health:** Checking...
 
@@ -25,6 +29,7 @@
 ## 🎯 Quick Start
 
 ### Health Check All Agents
+
 ```bash
 for port in {12345..12364}; do
   curl -s http://0.0.0.0:$port/health | jq . 2>/dev/null && echo "Port $port: ✅" || echo "Port $port: ❌"
@@ -32,11 +37,13 @@ done
 ```
 
 ### View Dashboard
+
 ```
 http://0.0.0.0:8000
 ```
 
 ### Test Browser Agent
+
 ```bash
 curl -X POST http://0.0.0.0:12350/execute \
   -H "Authorization: Bearer sk_opena6_browser_v3_production" \
@@ -45,6 +52,7 @@ curl -X POST http://0.0.0.0:12350/execute \
 ```
 
 ### View Logs
+
 ```bash
 tail -f logs/opena1.log      # Coordinator
 tail -f logs/opena2.log      # Archivator

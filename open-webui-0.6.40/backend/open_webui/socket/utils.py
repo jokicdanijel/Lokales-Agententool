@@ -1,9 +1,8 @@
 import json
 import uuid
-from open_webui.utils.redis import get_redis_connection
+
 from open_webui.env import REDIS_KEY_PREFIX
-from typing import Optional, List, Tuple
-import pycrdt as Y
+from open_webui.utils.redis import get_redis_connection
 
 
 class RedisLock:
@@ -15,7 +14,6 @@ class RedisLock:
         redis_sentinels=[],
         redis_cluster=False,
     ):
-
         self.lock_name = lock_name
         self.lock_id = str(uuid.uuid4())
         self.timeout_secs = timeout_secs
@@ -29,16 +27,12 @@ class RedisLock:
 
     def aquire_lock(self):
         # nx=True will only set this key if it _hasn't_ already been set
-        self.lock_obtained = self.redis.set(
-            self.lock_name, self.lock_id, nx=True, ex=self.timeout_secs
-        )
+        self.lock_obtained = self.redis.set(self.lock_name, self.lock_id, nx=True, ex=self.timeout_secs)
         return self.lock_obtained
 
     def renew_lock(self):
         # xx=True will only set this key if it _has_ already been set
-        return self.redis.set(
-            self.lock_name, self.lock_id, xx=True, ex=self.timeout_secs
-        )
+        return self.redis.set(self.lock_name, self.lock_id, xx=True, ex=self.timeout_secs)
 
     def release_lock(self):
         lock_value = self.redis.get(self.lock_name)
@@ -129,7 +123,7 @@ class YdocManager:
                 self._updates[document_id] = []
             self._updates[document_id].append(update)
 
-    async def get_updates(self, document_id: str) -> List[bytes]:
+    async def get_updates(self, document_id: str) -> list[bytes]:
         document_id = document_id.replace(":", "_")
 
         if self._redis:
@@ -148,7 +142,7 @@ class YdocManager:
         else:
             return document_id in self._updates
 
-    async def get_users(self, document_id: str) -> List[str]:
+    async def get_users(self, document_id: str) -> list[str]:
         document_id = document_id.replace(":", "_")
 
         if self._redis:

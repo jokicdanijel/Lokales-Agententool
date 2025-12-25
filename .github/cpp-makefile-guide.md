@@ -2,13 +2,14 @@
 
 ## 1. Project Overview
 
-**Projekt:** ELION Hyper-Dashboard  
-**Typ:** C++ / Multi-Language Microservices  
-**Build System:** GNU Make + Custom Scripts  
-**Primary Language:** C++ (utilities) + Python (services)  
-**Target OS:** Linux (Ubuntu 25.04)  
+**Projekt:** ELION Hyper-Dashboard
+**Typ:** C++ / Multi-Language Microservices
+**Build System:** GNU Make + Custom Scripts
+**Primary Language:** C++ (utilities) + Python (services)
+**Target OS:** Linux (Ubuntu 25.04)
 
 ### Key Architecture
+
 - **Core:** Makefile-based build orchestration
 - **Services:** 20+ Python-based agents (FastAPI, nohup-managed)
 - **Monitoring:** Prometheus + Grafana (port 3001)
@@ -20,6 +21,7 @@
 ## 2. Build System Fundamentals
 
 ### Makefile Structure
+
 ```makefile
 # Location: /path/to/Gesamtprojekt/Makefile
 # Root orchestrator for all build, test, deploy operations
@@ -35,6 +37,7 @@ make docker-down        # Stop all services
 ```
 
 ### Standard Targets Pattern
+
 ```makefile
 .PHONY: target-name
 target-name:
@@ -43,6 +46,7 @@ target-name:
 ```
 
 ### Variable Definitions
+
 ```makefile
 # Common patterns
 SHELL := /bin/bash
@@ -57,6 +61,7 @@ VENV := venv313
 ## 3. Build Commands
 
 ### Full Build Cycle
+
 ```bash
 # From project root
 make clean                 # Remove build artifacts
@@ -66,6 +71,7 @@ make install               # Install binaries to bin/
 ```
 
 ### Component Builds
+
 ```bash
 # Build specific service group
 make build-services        # Rebuild all 20 services
@@ -78,6 +84,7 @@ make build-connectors      # Connector modules
 ```
 
 ### Testing
+
 ```bash
 # Test patterns
 make test                  # All tests
@@ -95,6 +102,7 @@ g++ -std=c++17 -Wall tests/test_portier.cpp -o /tmp/test_portier && /tmp/test_po
 ## 4. Makefile Patterns & Conventions
 
 ### Variable Scoping
+
 ```makefile
 # Global variables (top of file)
 VERSION := 1.0.0
@@ -108,6 +116,7 @@ target-name:
 ```
 
 ### Conditional Logic
+
 ```makefile
 # Check if variable set
 ifeq ($(VAR),)
@@ -128,6 +137,7 @@ endif
 ```
 
 ### Include Pattern
+
 ```makefile
 # Include other Makefiles
 -include make/rules.mk
@@ -138,6 +148,7 @@ endif
 ```
 
 ### Phony Targets
+
 ```makefile
 # Declare non-file targets
 .PHONY: clean build test install deploy
@@ -149,6 +160,7 @@ endif
 ## 5. Python Integration
 
 ### Python in Makefile
+
 ```makefile
 # Using Python for complex tasks
 test-python:
@@ -164,6 +176,7 @@ check-python:
 ```
 
 ### Virtual Environment Pattern
+
 ```makefile
 # In ELION Dashboard context
 setup-venv:
@@ -181,6 +194,7 @@ run-service:
 ## 6. Docker Integration
 
 ### Docker Targets
+
 ```makefile
 # Build patterns
 docker-build:
@@ -201,6 +215,7 @@ docker-logs-service:
 ```
 
 ### Health Checks in Makefile
+
 ```makefile
 docker-health:
 	@for port in 12344 12345 12346 12348 12399; do \
@@ -214,6 +229,7 @@ docker-health:
 ## 7. Critical Workflows
 
 ### Full Stack Deployment
+
 ```makefile
 # Production deployment workflow
 deploy-prod: clean build test docker-build docker-up verify
@@ -226,6 +242,7 @@ verify:
 ```
 
 ### Development Workflow
+
 ```makefile
 # Quick rebuild + restart
 dev-rebuild: clean build
@@ -235,6 +252,7 @@ dev-rebuild: clean build
 ```
 
 ### Continuous Integration Pattern
+
 ```makefile
 ci: clean build test lint security-check
 	@echo "✓ CI checks passed"
@@ -251,6 +269,7 @@ security-check:
 ## 8. Debugging & Troubleshooting
 
 ### Makefile Debugging
+
 ```bash
 # Show variables
 make -n build                    # Dry-run (show commands, don't execute)
@@ -265,6 +284,7 @@ make --debug=b 2>&1 | grep VARIABLE
 ```
 
 ### Common Issues
+
 ```makefile
 # Issue: "missing separator" error
 # Cause: Leading spaces instead of TAB in target commands
@@ -282,11 +302,12 @@ clean:
 ```
 
 ### Conditional Output
+
 ```makefile
 # Suppress output
 target-name:
 	@command_here             # @ suppresses echo of command
-	
+
 # Show only on failure
 target-name:
 	@command_here > /tmp/out 2>&1 || (cat /tmp/out && exit 1)
@@ -307,20 +328,22 @@ deploy:
 ## 9. VS Code C++ Setup
 
 ### Required Extensions
+
 ```json
 {
   "recommendations": [
-    "ms-vscode.cpptools",           // Microsoft C++ extension
-    "ms-vscode.makefile-tools",     // Makefile support
-    "ms-vscode-remote.remote-ssh",  // Remote development
-    "GitHub.copilot",                // GitHub Copilot
-    "GitHub.copilot-chat",           // Copilot chat
-    "eamodio.gitlens"               // Git integration
+    "ms-vscode.cpptools", // Microsoft C++ extension
+    "ms-vscode.makefile-tools", // Makefile support
+    "ms-vscode-remote.remote-ssh", // Remote development
+    "GitHub.copilot", // GitHub Copilot
+    "GitHub.copilot-chat", // Copilot chat
+    "eamodio.gitlens" // Git integration
   ]
 }
 ```
 
 ### settings.json (C++ Makefile Project)
+
 ```json
 {
   // C++ Extension Configuration
@@ -331,7 +354,7 @@ deploy:
     "editor.tabSize": 4,
     "editor.insertSpaces": true
   },
-  
+
   // Makefile Tools
   "makefile.configureOnOpen": true,
   "makefile.configureOnSave": true,
@@ -349,12 +372,12 @@ deploy:
   "C_Cpp.intelliSenseEngineFallback": "Disabled",
   "C_Cpp.codeAnalysis.enabled": true,
   "C_Cpp.codeAnalysis.clangTidy.enabled": true,
-  
+
   // Build/Debug
   "code-runner.executorMap": {
     "cpp": "cd $dir && make build && ./bin/portier"
   },
-  
+
   // Python Integration (for mixed projects)
   "[python]": {
     "editor.defaultFormatter": "ms-python.python",
@@ -362,12 +385,12 @@ deploy:
     "editor.tabSize": 4
   },
   "python.analysis.typeCheckingMode": "strict",
-  
+
   // Git Configuration
   "git.autorefresh": true,
   "git.autofetch": true,
   "git.ignoreLimitWarning": true,
-  
+
   // General Settings
   "editor.wordWrap": "on",
   "editor.rulers": [80, 120],
@@ -389,6 +412,7 @@ deploy:
 ```
 
 ### launch.json (C++ Debugging)
+
 ```json
 {
   "version": "0.2.0",
@@ -429,6 +453,7 @@ deploy:
 ```
 
 ### tasks.json (Build Tasks)
+
 ```json
 {
   "version": "2.0.0",
@@ -482,6 +507,7 @@ deploy:
 ## 10. Testing & Code Quality
 
 ### Testing Patterns
+
 ```bash
 # Unit testing (C++)
 g++ -std=c++17 -Wall tests/test_portier.cpp -o /tmp/test && /tmp/test
@@ -497,6 +523,7 @@ python3 -m pytest tests/ --cov=src --cov-report=html
 ```
 
 ### Code Quality Tools
+
 ```bash
 # C++ linting
 clang-tidy src/*.cpp -- -std=c++17
@@ -515,15 +542,15 @@ python3 -m bandit -r src/ -q
 
 ## 11. Key Files Reference
 
-| File | Purpose | Type |
-|------|---------|------|
-| `Makefile` | Root build orchestrator | Build |
-| `docker-compose.prod.yml` | Service stack definition | Config |
-| `bin/ops.sh` | Central operations script | Script |
-| `src/services/agenda_api.py` | Agenda API service | Python |
-| `.github/copilot-instructions.md` | Completion checklist | Docs |
-| `requirements.txt` | Python dependencies | Config |
-| `Dockerfile.openwebui` | OpenWebUI container | Config |
+| File                              | Purpose                   | Type   |
+| --------------------------------- | ------------------------- | ------ |
+| `Makefile`                        | Root build orchestrator   | Build  |
+| `docker-compose.prod.yml`         | Service stack definition  | Config |
+| `bin/ops.sh`                      | Central operations script | Script |
+| `src/services/agenda_api.py`      | Agenda API service        | Python |
+| `.github/copilot-instructions.md` | Completion checklist      | Docs   |
+| `requirements.txt`                | Python dependencies       | Config |
+| `Dockerfile.openwebui`            | OpenWebUI container       | Config |
 
 ---
 
@@ -556,16 +583,19 @@ curl http://127.0.0.1:12349/api/status/all | jq .
 ## 13. Integration Points
 
 ### Portier (API Gateway)
+
 - **Port:** 12344
 - **Endpoints:** `/health`, `/metrics`
 - **Makefile:** `make docker-health` to check
 
 ### Prometheus Metrics
+
 - **Port:** 9090
 - **Configuration:** `prometheus.yml`
 - **Scrape Targets:** 22 configured
 
 ### Grafana Dashboards
+
 - **Port:** 3001
 - **Credentials:** admin/250886
 - **Dashboards:** 6 configured (IDs 1-6)
@@ -585,6 +615,6 @@ curl http://127.0.0.1:12349/api/status/all | jq .
 
 ---
 
-**Last Updated:** 2025-11-11  
-**Project:** ELION Hyper-Dashboard  
+**Last Updated:** 2025-11-11
+**Project:** ELION Hyper-Dashboard
 **Status:** ✅ Active Development

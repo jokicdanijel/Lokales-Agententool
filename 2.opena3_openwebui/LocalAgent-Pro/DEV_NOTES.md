@@ -6,20 +6,20 @@
 
 ### INVENTORY Ergebnis
 
-| Eigenschaft | Wert |
-|-------------|------|
-| **Framework** | Flask (flask, flask-cors) |
+| Eigenschaft          | Wert                                 |
+| -------------------- | ------------------------------------ |
+| **Framework**        | Flask (flask, flask-cors)            |
 | **Pydantic-Modelle** | ❌ Keine (nur Python-Dicts + typing) |
-| **BaseSettings** | ❌ Nicht verwendet |
-| **Konfiguration** | `config/config.yaml` (YAML) |
+| **BaseSettings**     | ❌ Nicht verwendet                   |
+| **Konfiguration**    | `config/config.yaml` (YAML)          |
 
 ### Migrationsaktionen
 
-| Phase | Anwendbar? | Aktion |
-|-------|------------|--------|
-| **Phase 1 (Pydantic V2)** | ❌ NEIN | Keine Pydantic-Klassen vorhanden |
-| **Phase 2 (Framework)** | ❌ NEIN | Flask hat kein `@app.on_event` – kein Äquivalent zu migrieren |
-| **Phase 3 (Sanity-Check)** | ✅ JA | Tests ausgeführt, Endpoints geprüft |
+| Phase                      | Anwendbar? | Aktion                                                        |
+| -------------------------- | ---------- | ------------------------------------------------------------- |
+| **Phase 1 (Pydantic V2)**  | ❌ NEIN    | Keine Pydantic-Klassen vorhanden                              |
+| **Phase 2 (Framework)**    | ❌ NEIN    | Flask hat kein `@app.on_event` – kein Äquivalent zu migrieren |
+| **Phase 3 (Sanity-Check)** | ✅ JA      | Tests ausgeführt, Endpoints geprüft                           |
 
 ### Test-Status
 
@@ -31,7 +31,7 @@ pytest tests/test_api.py tests/test_security.py tests/test_web_fetch_binary.py
 
 ### Fazit
 
-**Keine Migration nötig.**  
+**Keine Migration nötig.**
 LocalAgent-Pro verwendet:
 
 - **Flask** (ohne Deprecations)
@@ -55,7 +55,7 @@ API-Signaturen, Business-Logik und Sandbox-Verhalten **unverändert**.
 ```json
 {
   "model": "llama3.1:8b",
-  "messages": [{"role": "user", "content": "..."}],
+  "messages": [{ "role": "user", "content": "..." }],
   "stream": false
 }
 ```
@@ -83,30 +83,30 @@ API-Signaturen, Business-Logik und Sandbox-Verhalten **unverändert**.
 
 ### Healthcheck-Ergebnisse
 
-| Endpoint | Host | Status | Details |
-|----------|------|--------|---------|
-| `/health` | 127.0.0.1 | ✅ OK | `status: healthy`, sandbox: `/home/danijel-jd/localagent_sandbox` |
-| `/health` | 192.168.0.70 | ✅ OK | LAN-Zugriff funktioniert |
-| `/v1/models` | 127.0.0.1 | ✅ OK | Modelle: `llama3.1:8b` |
-| `/v1/chat/completions` | 127.0.0.1 | ✅ OK | Testprompt → Antwort erhalten |
+| Endpoint               | Host         | Status | Details                                                           |
+| ---------------------- | ------------ | ------ | ----------------------------------------------------------------- |
+| `/health`              | 127.0.0.1    | ✅ OK  | `status: healthy`, sandbox: `/home/danijel-jd/localagent_sandbox` |
+| `/health`              | 192.168.0.70 | ✅ OK  | LAN-Zugriff funktioniert                                          |
+| `/v1/models`           | 127.0.0.1    | ✅ OK  | Modelle: `llama3.1:8b`                                            |
+| `/v1/chat/completions` | 127.0.0.1    | ✅ OK  | Testprompt → Antwort erhalten                                     |
 
 ### OpenWebUI-Integration
 
-| Parameter | Wert |
-|-----------|------|
-| **Base URL** | `http://192.168.0.70:8001/v1` (oder `http://127.0.0.1:8001/v1`) |
-| **Model** | `llama3.1:8b` |
-| **Content-Type** | `application/json` |
-| **Host-Binding** | `0.0.0.0:8001` (alle Interfaces) |
+| Parameter        | Wert                                                            |
+| ---------------- | --------------------------------------------------------------- |
+| **Base URL**     | `http://192.168.0.70:8001/v1` (oder `http://127.0.0.1:8001/v1`) |
+| **Model**        | `llama3.1:8b`                                                   |
+| **Content-Type** | `application/json`                                              |
+| **Host-Binding** | `0.0.0.0:8001` (alle Interfaces)                                |
 
 ### Bekannte Fehlerquellen
 
-| Fehler | HTTP-Code | Ursache | Lösung |
-|--------|-----------|---------|--------|
-| Duplicate Request | 429 | Identischer Request innerhalb kurzer Zeit | Cache leert sich automatisch |
-| Bad Request | 400 | Falsches JSON-Format | Payload prüfen |
-| Unsupported Media Type | 415 | Kein `Content-Type: application/json` | Header setzen |
-| 500 in OpenWebUI | – | Base URL oder Model falsch | Siehe Checkliste unten |
+| Fehler                 | HTTP-Code | Ursache                                   | Lösung                       |
+| ---------------------- | --------- | ----------------------------------------- | ---------------------------- |
+| Duplicate Request      | 429       | Identischer Request innerhalb kurzer Zeit | Cache leert sich automatisch |
+| Bad Request            | 400       | Falsches JSON-Format                      | Payload prüfen               |
+| Unsupported Media Type | 415       | Kein `Content-Type: application/json`     | Header setzen                |
+| 500 in OpenWebUI       | –         | Base URL oder Model falsch                | Siehe Checkliste unten       |
 
 ### OpenWebUI-Fehler-Checkliste
 
@@ -125,6 +125,7 @@ Wenn "500: WebUI öffnen: Serververbindungsfehler" auftritt:
 ### Ziel der Sandbox
 
 Der Ordner `/home/danijel-jd/localagent_sandbox` dient als **Arbeits- und Spielwiese** für LocalAgent-Pro:
+
 - temporäre Dateien
 - Tool-Outputs
 - Test-Dateien
@@ -138,14 +139,15 @@ Die Sandbox darf **belastungsfrei aufgeräumt** werden – aber nur nach klaren 
 
 Folgende Dateien/Ordner gelten als **betriebsrelevant** und dürfen weder gelöscht noch umbenannt werden:
 
-- `LocalAgent-Pro/`  
-- `downloads/`  
-- `home/`  
-- `config.yaml`  
-- `localagent-actions.log`  
+- `LocalAgent-Pro/`
+- `downloads/`
+- `home/`
+- `config.yaml`
+- `localagent-actions.log`
 
-**Policy:**  
-- Diese Einträge sind für den Agent und die Systemintegration **read-only**.  
+**Policy:**
+
+- Diese Einträge sind für den Agent und die Systemintegration **read-only**.
 - Cleanup-Skripte und Tools müssen diese Pfade explizit ausnehmen.
 
 ---
@@ -154,19 +156,20 @@ Folgende Dateien/Ordner gelten als **betriebsrelevant** und dürfen weder gelös
 
 In der Vergangenheit wurden durch Tools/Tests Dateien mit problematischen Namen erzeugt, z. B.:
 
-- `Task:`  
-- `History:`  
-- `lesen:`  
-- `soll:`  
-- `-`  
+- `Task:`
+- `History:`
+- `lesen:`
+- `soll:`
+- `-`
 - `(Linux-Mint-optimiert)`
 
 Diese Dateinamen sind:
+
 - für viele Tools unpraktisch (Doppelpunkt, Klammern, Ein-Buchstaben-Namen)
 - nicht Teil des produktiven Workflows
 - rein aus Testläufen / Experimenten entstanden
 
-**Status (Stand 2025-12-01):**  
+**Status (Stand 2025-12-01):**
 Diese Altlasten wurden **entfernt**.
 
 ---
@@ -186,17 +189,18 @@ Wenn ein Agent oder ein Script einen Sandbox-Cleanup durchführt, gilt:
 
 Eine Datei darf automatisiert gelöscht werden, wenn **alle** folgenden Bedingungen erfüllt sind:
 
-1. Sie ist **nicht** in der PROTECTED-Liste und  
+1. Sie ist **nicht** in der PROTECTED-Liste und
 2. **Mindestens eine** der folgenden Heuristiken trifft zu:
 
-- Dateiname endet auf `:`  
+- Dateiname endet auf `:`
   - Beispiele: `Task:`, `History:`, `lesen:`, `soll:`
 - Dateiname ist exakt `-`
 - Dateiname ist exakt `(Linux-Mint-optimiert)`
-- Dateiname entspricht einem rein temporären Testmuster  
+- Dateiname entspricht einem rein temporären Testmuster
   - z. B. `*_test.txt`, `*_legacy_*.txt`, wenn sie nicht in DEV_NOTES dokumentiert sind
 
-**Empfehlung:**  
+**Empfehlung:**
+
 - Bei größeren Dateien (> 100 KB) optional einmal `head`/`tail` prüfen, bevor sie automatisiert gelöscht werden.
 
 #### 3.3. Ausführung (Beispiel-Befehle)
@@ -239,16 +243,17 @@ Jeder Agent, der in der Sandbox arbeitet (z. B. LocalAgent-Pro, Portier-Agents, 
 
 Alle historisch problematischen Dateinamen wurden bereinigt:
 
-| Datei | Aktion |
-|-------|--------|
-| `Task:` | umbenannt → entfernt |
-| `History:` | entfernt |
-| `lesen:` | entfernt |
-| `soll:` | entfernt |
-| `(Linux-Mint-optimiert)` | entfernt |
-| `-` | entfernt |
+| Datei                    | Aktion               |
+| ------------------------ | -------------------- |
+| `Task:`                  | umbenannt → entfernt |
+| `History:`               | entfernt             |
+| `lesen:`                 | entfernt             |
+| `soll:`                  | entfernt             |
+| `(Linux-Mint-optimiert)` | entfernt             |
+| `-`                      | entfernt             |
 
 **Sandbox ist aktuell sauber und konsistent:**
+
 - Kritische Verzeichnisse & Files sind vorhanden
 - Keine „Sonderzeichen-Leichen" mehr im Root der Sandbox
 

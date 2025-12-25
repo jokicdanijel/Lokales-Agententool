@@ -1,9 +1,9 @@
 # 🏠 opena17 - Homepage Creator Agent
 
-**Agent-ID:** `opena17`  
-**Port:** 12362  
-**Kürzel:** `hpcreatep`  
-**Version:** 1.0  
+**Agent-ID:** `opena17`
+**Port:** 12362
+**Kürzel:** `hpcreatep`
+**Version:** 1.0
 **Status:** ✅ RUNNING (PID: 1786434)
 
 ---
@@ -266,5 +266,5 @@ tail -f data/homepage_history.jsonl | jq .
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 27. November 2025

@@ -4,15 +4,15 @@
 
 ## 1. Projekt-Metadaten
 
-| Feld | Wert |
-|------|------|
+| Feld             | Wert                      |
+| ---------------- | ------------------------- |
 | **Projekt-Name** | ELION Hyper-Dashboard 2.0 |
-| **Projekt-ID** | elion-dashboard-2025 |
-| **Version** | 2.0.0 |
-| **PDI-Version** | 1.0.0 |
-| **Erstellt** | 2025-11-09 |
-| **Author** | Danijel (ELION Team) |
-| **Status** | ACTIVE |
+| **Projekt-ID**   | elion-dashboard-2025      |
+| **Version**      | 2.0.0                     |
+| **PDI-Version**  | 1.0.0                     |
+| **Erstellt**     | 2025-11-09                |
+| **Author**       | Danijel (ELION Team)      |
+| **Status**       | ACTIVE                    |
 
 ---
 
@@ -20,14 +20,14 @@
 
 Alle generierten Inhalte müssen diese Module durchlaufen **in dieser Reihenfolge**:
 
-| # | Modul | Zweck | Gatekeeper |
-|---|-------|-------|-----------|
-| 1 | **LINGUISTIC** | Verständlichkeit, Klarheit | Native Speaker / Dokumentation |
-| 2 | **TECHNICAL** | Schnittstellen, Datenflüsse | Architect |
-| 3 | **CORRECTION** | Normen, Lint, Standards | Code Reviewer |
-| 4 | **ANALYTICS** | Funktionsbäume, Abhängigkeiten | QA |
-| 5 | **CONTROL** | Gates, Rollbacks, Richtlinien | Project Manager |
-| 6 | **GITHUB** | Copilot-Checks (Syntax, Logic, Runtime, Security) | CI/CD |
+| #   | Modul          | Zweck                                             | Gatekeeper                     |
+| --- | -------------- | ------------------------------------------------- | ------------------------------ |
+| 1   | **LINGUISTIC** | Verständlichkeit, Klarheit                        | Native Speaker / Dokumentation |
+| 2   | **TECHNICAL**  | Schnittstellen, Datenflüsse                       | Architect                      |
+| 3   | **CORRECTION** | Normen, Lint, Standards                           | Code Reviewer                  |
+| 4   | **ANALYTICS**  | Funktionsbäume, Abhängigkeiten                    | QA                             |
+| 5   | **CONTROL**    | Gates, Rollbacks, Richtlinien                     | Project Manager                |
+| 6   | **GITHUB**     | Copilot-Checks (Syntax, Logic, Runtime, Security) | CI/CD                          |
 
 ---
 
@@ -109,6 +109,7 @@ Jede freigegeben Datei (Code, Docs, Config) beginnt mit:
 ```
 
 ### Beispiel (Python):
+
 ```python
 """
 [PDI-ACTIVE: TRUE | VALIDATED | GITHUB-CHECK: PASS]
@@ -120,6 +121,7 @@ Beschreibung des Moduls...
 ```
 
 ### Beispiel (Bash):
+
 ```bash
 #!/usr/bin/env bash
 # [PDI-ACTIVE: TRUE | VALIDATED | GITHUB-CHECK: PASS]
@@ -128,12 +130,14 @@ Beschreibung des Moduls...
 ```
 
 ### Beispiel (Markdown):
+
 ```markdown
 [PDI-ACTIVE: TRUE | VALIDATED | GITHUB-CHECK: PASS]
 [MODULES: LINGUISTIC | TECHNICAL]
 [GATES: 2,3,4 ✓]
 
 # Dokumentation
+
 ...
 ```
 
@@ -215,12 +219,14 @@ pdi.get_validation_report() → PDI_VALIDATION_REPORT.json
 ## 6. Systemverankerung
 
 ### Regel 1: PDI ist dauerhaft aktiv
+
 ```
 Der PDI-Prompt ist in jedem Projekt dauerhaft aktiv.
 Kein Generator (Mensch oder KI) darf Inhalte ohne ihn ausgeben.
 ```
 
 ### Regel 2: Vor jeder Ausgabe automatisch prüfen
+
 ```
 1. Syntaxprüfung
 2. Lintprüfung
@@ -231,12 +237,14 @@ Kein Generator (Mensch oder KI) darf Inhalte ohne ihn ausgeben.
 ```
 
 ### Regel 3: Freigabe nur mit Header
+
 ```
 Nur Dateien mit [PDI-ACTIVE: TRUE | VALIDATED | GITHUB-CHECK: PASS]
 gelten als freigegeben, funktional und systemkonform.
 ```
 
 ### Regel 4: Validierungs-Log speichern
+
 ```
 Jedes Validation-Event wird geloggt:
 - Timestamp
@@ -252,6 +260,7 @@ Jedes Validation-Event wird geloggt:
 ## 7. Integrations-Schnittstellen
 
 ### 1. CLI-Integration
+
 ```bash
 # Datei validieren
 pdi validate <file>
@@ -264,6 +273,7 @@ pdi report <project-id>
 ```
 
 ### 2. CI/CD-Integration
+
 ```yaml
 # .github/workflows/pdi-check.yml
 - name: PDI Validation
@@ -273,6 +283,7 @@ pdi report <project-id>
 ```
 
 ### 3. Git-Hook Integration
+
 ```bash
 # .git/hooks/pre-commit
 #!/bin/bash
@@ -323,16 +334,16 @@ python pdi_core.py validate --staged
 
 ## 9. FAQs
 
-**F: Was passiert wenn ein Gate fehlschlägt?**  
+**F: Was passiert wenn ein Gate fehlschlägt?**
 A: Artifact geht zurück zu Gate 1 mit Feedback (Errors + Suggestions)
 
-**F: Kann ich Gate-Anforderungen überschreiben?**  
+**F: Kann ich Gate-Anforderungen überschreiben?**
 A: Nein. Alle Gates sind Pflicht. Keine Shortcuts.
 
-**F: Wie lange dauert PDI für ein Projekt?**  
+**F: Wie lange dauert PDI für ein Projekt?**
 A: Ca. 15–20 Minuten pro Kapitel (5–8 Gates parallel möglich)
 
-**F: Kann ich PDI-Module selbst erweitern?**  
+**F: Kann ich PDI-Module selbst erweitern?**
 A: Ja. Neue Module bitte als Subclass von PDIModule registrieren.
 
 ---
@@ -353,15 +364,15 @@ A: Ja. Neue Module bitte als Subclass von PDIModule registrieren.
 
 ## 11. Support & Eskalation
 
-| Problem | Lösung |
-|---------|--------|
-| Gate 1 (Syntax) fehlt | → pdi fix:syntax <file> |
-| Gate 3 (Lint) fehlt | → Linter ausführen: flake8, black, etc. |
-| Gate 6 (Security) fehlt | → Security-Review mit Sicherheits-Team |
-| Unklare Errors | → pdi explain <validation-id> |
+| Problem                 | Lösung                                  |
+| ----------------------- | --------------------------------------- |
+| Gate 1 (Syntax) fehlt   | → pdi fix:syntax <file>                 |
+| Gate 3 (Lint) fehlt     | → Linter ausführen: flake8, black, etc. |
+| Gate 6 (Security) fehlt | → Security-Review mit Sicherheits-Team  |
+| Unklare Errors          | → pdi explain <validation-id>           |
 
 ---
 
-**Status:** [PDI-ACTIVE: TRUE | MANIFEST-STABLE | READY-FOR-USE]  
-**Last Updated:** 2025-11-09  
+**Status:** [PDI-ACTIVE: TRUE | MANIFEST-STABLE | READY-FOR-USE]
+**Last Updated:** 2025-11-09
 **Maintained by:** ELION Team

@@ -347,18 +347,18 @@ nohup python3 web_dashboard.py > web_dashboard.log 2>&1 &
 
 ## API Endpoints (Quick Reference)
 
-| Method | Endpoint | Purpose |
-|---|---|---|
-| GET | `/` | Dashboard HTML |
-| GET | `/api/status` | System status |
-| GET | `/api/programs` | List programs |
-| GET | `/api/tools` | List tools |
-| GET | `/api/file/list` | List files |
-| POST | `/api/file/read` | Read file |
-| POST | `/api/file/write` | Write file |
-| POST | `/api/file/delete` | Delete file |
-| POST | `/api/shell/exec` | Run command |
-| POST | `/api/program/start` | Start program |
+| Method | Endpoint             | Purpose        |
+| ------ | -------------------- | -------------- |
+| GET    | `/`                  | Dashboard HTML |
+| GET    | `/api/status`        | System status  |
+| GET    | `/api/programs`      | List programs  |
+| GET    | `/api/tools`         | List tools     |
+| GET    | `/api/file/list`     | List files     |
+| POST   | `/api/file/read`     | Read file      |
+| POST   | `/api/file/write`    | Write file     |
+| POST   | `/api/file/delete`   | Delete file    |
+| POST   | `/api/shell/exec`    | Run command    |
+| POST   | `/api/program/start` | Start program  |
 
 ---
 

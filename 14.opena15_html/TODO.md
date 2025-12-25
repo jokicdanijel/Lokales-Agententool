@@ -1,7 +1,7 @@
 # TODO – opena15 HTML Creator Agent
 
-**Port:** 12360  
-**Status:** 🟡 Planned  
+**Port:** 12360
+**Status:** 🟡 Planned
 **Kürzel:** `htmlp`
 
 ---
@@ -95,5 +95,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena3 OpenWebUI Terminal Agent
 
-**Agent-ID:** opena3  
-**Port:** 12347  
-**Status:** ✅ Running  
-**Kürzel:** `owuip`  
+**Agent-ID:** opena3
+**Port:** 12347
+**Status:** ✅ Running
+**Kürzel:** `owuip`
 **Domäne:** Terminal-Interaktion, OpenWebUI-Integration
 
 ---
@@ -45,6 +45,7 @@ Du bist der **Co-Pilot für opena3**, verantwortlich für die vollständige Ausf
 ### 4. Berichte & Artefakte
 
 Generiere/aktualisiere:
+
 - `rename_map.csv` (falls Umstrukturierung nötig)
 - `path_index.json` (Pfad-Registry)
 - `violations_report.md` (Regelbrüche dokumentieren)
@@ -60,6 +61,7 @@ Generiere/aktualisiere:
 ### 6. Dry-Run
 
 Führe Simulation durch:
+
 - Gib detaillierten Plan aus (betroffene Dateien, Änderungen)
 - **Keine Änderungen durchführen**
 - Validiere OpenWebUI-Adapter-Kommunikation (Port 12350)
@@ -67,6 +69,7 @@ Führe Simulation durch:
 ### 7. Apply
 
 Falls Dry-Run erfolgreich:
+
 - ✅ Änderungen anwenden
 - ✅ Symlinks erstellen (falls sinnvoll)
 - ✅ PID-File schreiben (`logs/opena3.pid`)
@@ -105,10 +108,7 @@ Falls Dry-Run erfolgreich:
   "health": "ok",
   "safepoints_created": 5,
   "violations": 0,
-  "reports": [
-    "docs/opena3_report.md",
-    "structure_checkpoint.json"
-  ]
+  "reports": ["docs/opena3_report.md", "structure_checkpoint.json"]
 }
 ```
 
@@ -142,11 +142,12 @@ Falls Dry-Run erfolgreich:
 ## 🚀 Verwendung in VSCode Copilot
 
 Kopiere diesen Prompt in:
+
 - **Chat:** Als System-Prompt für Agent-spezifische Aufgaben
 - **Datei:** `2.opena3_openwebui/MASTER_PROMPT.md` (Referenz)
 - **Workflow:** Trigger via `bin/ops.sh opena3:init`
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

@@ -1,7 +1,7 @@
 # TODO – opena6 Browser Automation Agent
 
-**Port:** 12350  
-**Status:** 🟡 Planned (Adapter läuft auf 12350)  
+**Port:** 12350
+**Status:** 🟡 Planned (Adapter läuft auf 12350)
 **Kürzel:** `browsep`
 
 ---
@@ -97,5 +97,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

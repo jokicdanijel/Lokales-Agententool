@@ -7,15 +7,15 @@
 
 ## 🟧 0. SYSTEMIDENTITÄT — ABSOLUT FEST DEFINIERT
 
-| Parameter | Wert |
-|-----------|------|
-| **Projektname** | `Gesamtprojekt` |
-| **Systemtyp** | Reales Multi-Agenten-Service-Netzwerk (Produktiv) |
-| **Zentraler Dispatcher** | `1.opena1&2_portier` |
-| **Ablaufmodell** | Option-2-Flow (deterministisch, dokumentiert) |
-| **Archivierungssystem** | `archivp_store/` (strukturiert nach Datum/Agenten) |
-| **Safepoint-Format** | `SP{TIMESTAMP}_{source}→{dest}_{EVENT}.json` |
-| **Primäres Ziel** | Vollautomatische, deterministische, auditierbare Steuerung |
+| Parameter                | Wert                                                       |
+| ------------------------ | ---------------------------------------------------------- |
+| **Projektname**          | `Gesamtprojekt`                                            |
+| **Systemtyp**            | Reales Multi-Agenten-Service-Netzwerk (Produktiv)          |
+| **Zentraler Dispatcher** | `1.opena1&2_portier`                                       |
+| **Ablaufmodell**         | Option-2-Flow (deterministisch, dokumentiert)              |
+| **Archivierungssystem**  | `archivp_store/` (strukturiert nach Datum/Agenten)         |
+| **Safepoint-Format**     | `SP{TIMESTAMP}_{source}→{dest}_{EVENT}.json`               |
+| **Primäres Ziel**        | Vollautomatische, deterministische, auditierbare Steuerung |
 
 ### Verbindliche Grundregeln (unumstößlich):
 
@@ -84,24 +84,24 @@ Für **jeden** Eingangskanal, **jeden** Agenten, **jede** Aufgabe:
 
 ### 1.2 Alle Agenten (Vollständig, ohne Lücken)
 
-| Agent | Ordner | Primäre Aufgabe | Input-Typ | Output-Typ |
-|-------|--------|-----------------|-----------|-----------|
-| **Portier** | `1.opena1&2_portier` | Routing, Dispatch, Audit | Task-Objekt | Route-Decision |
-| **ELION Indexer** | `2.opena3_openwebui` | Wissensbase-Indexierung | Dokumente | Index-Metadaten |
-| **Dashboard Agent** | `19.opena20_dashboard_agent` | UI/Visualisierung | Query-Objekt | HTML/JSON |
-| **LocalAgent-Pro** | `2.opena3_openwebui/LocalAgent-Pro` | Lokale KI-Verarbeitung | Text-Prompt | Text-Response |
-| **GCPT Koordinator** | Portier-Integration | Globale Koordination | Meta-Events | Koordinations-Tokens |
+| Agent                | Ordner                              | Primäre Aufgabe          | Input-Typ    | Output-Typ           |
+| -------------------- | ----------------------------------- | ------------------------ | ------------ | -------------------- |
+| **Portier**          | `1.opena1&2_portier`                | Routing, Dispatch, Audit | Task-Objekt  | Route-Decision       |
+| **ELION Indexer**    | `2.opena3_openwebui`                | Wissensbase-Indexierung  | Dokumente    | Index-Metadaten      |
+| **Dashboard Agent**  | `19.opena20_dashboard_agent`        | UI/Visualisierung        | Query-Objekt | HTML/JSON            |
+| **LocalAgent-Pro**   | `2.opena3_openwebui/LocalAgent-Pro` | Lokale KI-Verarbeitung   | Text-Prompt  | Text-Response        |
+| **GCPT Koordinator** | Portier-Integration                 | Globale Koordination     | Meta-Events  | Koordinations-Tokens |
 
 ### 1.3 Alle Kanäle (Eingangsquellen)
 
-| Kanal | Quelle | Protokoll | Parser |
-|-------|--------|-----------|--------|
-| **Discord** | Discord API | WebSocket/REST | `discord_parser` |
-| **Slack** | Slack API | WebSocket/Events | `slack_parser` |
-| **Web-UI** | HTTP POST | REST | `web_parser` |
-| **CLI** | Shell/Terminal | Stdin | `cli_parser` |
-| **Direct-API** | HTTP Endpoint | REST/JSON | `api_parser` |
-| **Scheduled Tasks** | Cron/Timer | Internal | `scheduler_parser` |
+| Kanal               | Quelle         | Protokoll        | Parser             |
+| ------------------- | -------------- | ---------------- | ------------------ |
+| **Discord**         | Discord API    | WebSocket/REST   | `discord_parser`   |
+| **Slack**           | Slack API      | WebSocket/Events | `slack_parser`     |
+| **Web-UI**          | HTTP POST      | REST             | `web_parser`       |
+| **CLI**             | Shell/Terminal | Stdin            | `cli_parser`       |
+| **Direct-API**      | HTTP Endpoint  | REST/JSON        | `api_parser`       |
+| **Scheduled Tasks** | Cron/Timer     | Internal         | `scheduler_parser` |
 
 ### 1.4 Archivp_Store Struktur (Die Audit-Quelle der Wahrheit)
 
@@ -124,6 +124,7 @@ archivp_store/
 ```
 
 **Jeder Safepoint enthält:**
+
 ```json
 {
   "timestamp": "2025-11-21T14:23:06.123Z",
@@ -133,7 +134,9 @@ archivp_store/
   "event_type": "DISPATCH",
   "task_id": "TASK-20251121-001",
   "status": "success|pending|error",
-  "data": { /* Event-spezifische Daten */ },
+  "data": {
+    /* Event-spezifische Daten */
+  },
   "metadata": {
     "duration_ms": 142,
     "error_code": null,
@@ -149,6 +152,7 @@ archivp_store/
 ### 2.1 `1.opena1&2_portier` (Der Dispatcher, Die Zentrale)
 
 **Primäre Verantwortung:**
+
 - Empfängt ALLE Eingaben (egal welcher Kanal)
 - Klassifiziert Aufgaben anhand vordefinierter Regeln
 - Wählt korrekten Agenten
@@ -157,6 +161,7 @@ archivp_store/
 - Archiviert jeden Step
 
 **Eingangs-API:**
+
 ```python
 def dispatch_task(task: Task) -> DispatchResult:
     """
@@ -179,6 +184,7 @@ def dispatch_task(task: Task) -> DispatchResult:
 ```
 
 **Klassifizierungs-Regeln (Hart-Codiert):**
+
 ```
 IF task.type == 'index':
     → Agent = 'elion_indexer'
@@ -198,6 +204,7 @@ DEFAULT:
 ```
 
 **Safepoint-Verhalten:**
+
 - `SP{TS}_channel→portier_INPUT_RECEIVED` (beim Empfang)
 - `SP{TS}_portier→agent_DISPATCH` (vor Dispatch)
 - `SP{TS}_portier→agent_TIMEOUT` (bei Timeout nach 30min)
@@ -209,12 +216,14 @@ DEFAULT:
 ### 2.2 `2.opena3_openwebui/elion_indexer` (Wissensbase-Agent)
 
 **Primäre Verantwortung:**
+
 - Indiziert Dokumente in die KB
 - Erzeugt Embeddings via Sentence-Transformers
 - Aktualisiert Vector-Store
 - Rückmelding an Portier
 
 **Eingangs-API:**
+
 ```python
 def index_documents(documents: List[Document]) -> IndexResult:
     """
@@ -235,6 +244,7 @@ def index_documents(documents: List[Document]) -> IndexResult:
 ```
 
 **Safepoint-Verhalten:**
+
 - `SP{TS}_portier→indexer_DISPATCH`
 - `SP{TS}_indexer→processor_INDEXING_START`
 - `SP{TS}_indexer→processor_EMBEDDING_GENERATED` (periodisch)
@@ -245,12 +255,14 @@ def index_documents(documents: List[Document]) -> IndexResult:
 ### 2.3 `19.opena20_dashboard_agent` (UI/Visualisierungs-Agent)
 
 **Primäre Verantwortung:**
+
 - Generiert HTML/JSON-Visualisierungen
 - Rendert live Dashboards
 - Präsentiert Aggregated Data
 - Responsive UI
 
 **Eingangs-API:**
+
 ```python
 def render_dashboard(query: DashboardQuery) -> DashboardHTML:
     """
@@ -268,12 +280,14 @@ def render_dashboard(query: DashboardQuery) -> DashboardHTML:
 ### 2.4 `2.opena3_openwebui/LocalAgent-Pro` (Lokale KI-Verarbeitung)
 
 **Primäre Verantwortung:**
+
 - Verarbeitet Text-Prompts lokal (kein API-Call)
 - Nutzt ollama/LocalAI
 - Schnelle Inferenz
 - Fallback für externe APIs
 
 **Eingangs-API:**
+
 ```python
 def process_prompt(prompt: str, context: dict = None) -> TextResponse:
     """
@@ -292,12 +306,14 @@ def process_prompt(prompt: str, context: dict = None) -> TextResponse:
 ### 2.5 `GCPT Koordinator` (Koordinations-Orchestrator)
 
 **Primäre Verantwortung:**
+
 - Koordiniert Multi-Agent-Flows
 - Managed Abhängigkeiten zwischen Agenten
 - Erzeugt Koordinations-Tokens
 - Detektiert Deadlocks
 
 **Koordinations-Protokoll:**
+
 ```
 GCPT sendet Meta-Tokens an alle Agenten:
 {
@@ -335,7 +351,9 @@ Nach Synchronisation:
   "priority": "high|normal|low",
   "payload": {
     "action": "specific-operation",
-    "parameters": { /* je nach Agent */ }
+    "parameters": {
+      /* je nach Agent */
+    }
   },
   "safepoint_chain": [
     "SP1763740986_channel→portier_INPUT_RECEIVED",
@@ -354,7 +372,9 @@ Nach Synchronisation:
   "task_id": "TASK-20251121-001",
   "agent": "agent-name",
   "status": "success|pending|error|timeout",
-  "result": { /* Agent-spezifisches Ergebnis */ },
+  "result": {
+    /* Agent-spezifisches Ergebnis */
+  },
   "error": null,
   "metrics": {
     "duration_ms": 1234,
@@ -372,14 +392,14 @@ Nach Synchronisation:
 
 ### 4.1 Error-Klassifizierung
 
-| Code | Typ | Recovery | Max-Retries |
-|------|-----|----------|------------|
-| `E001` | Timeout | Retry mit Back-off | 3 |
-| `E002` | Agent-Crash | Restart + Retry | 2 |
-| `E003` | Invalid-Input | Error → User | 0 |
-| `E004` | Resource-Exhausted | Queue + Retry später | 5 |
-| `E005` | DB-Error | Transaction-Rollback | 3 |
-| `E006` | Network-Error | Exponential Back-off | 5 |
+| Code   | Typ                | Recovery             | Max-Retries |
+| ------ | ------------------ | -------------------- | ----------- |
+| `E001` | Timeout            | Retry mit Back-off   | 3           |
+| `E002` | Agent-Crash        | Restart + Retry      | 2           |
+| `E003` | Invalid-Input      | Error → User         | 0           |
+| `E004` | Resource-Exhausted | Queue + Retry später | 5           |
+| `E005` | DB-Error           | Transaction-Rollback | 3           |
+| `E006` | Network-Error      | Exponential Back-off | 5           |
 
 ### 4.2 Recovery-Flow (bei Agent-Fehler)
 
@@ -419,10 +439,26 @@ Nach Synchronisation:
   },
   "agents": {
     "portier": { "status": "healthy", "queue_size": 12, "cpu_percent": 5.2 },
-    "elion_indexer": { "status": "healthy", "queue_size": 0, "cpu_percent": 12.1 },
-    "dashboard_agent": { "status": "healthy", "queue_size": 1, "cpu_percent": 3.4 },
-    "localagent_pro": { "status": "healthy", "queue_size": 5, "cpu_percent": 45.6 },
-    "gcpt_koordinator": { "status": "healthy", "queue_size": 0, "cpu_percent": 2.1 }
+    "elion_indexer": {
+      "status": "healthy",
+      "queue_size": 0,
+      "cpu_percent": 12.1
+    },
+    "dashboard_agent": {
+      "status": "healthy",
+      "queue_size": 1,
+      "cpu_percent": 3.4
+    },
+    "localagent_pro": {
+      "status": "healthy",
+      "queue_size": 5,
+      "cpu_percent": 45.6
+    },
+    "gcpt_koordinator": {
+      "status": "healthy",
+      "queue_size": 0,
+      "cpu_percent": 2.1
+    }
   },
   "channels": {
     "discord": { "connected": true, "latency_ms": 45 },
@@ -538,6 +574,7 @@ Version N → Version N+1:
 ### 9.1 Audit-Anforderungen
 
 Für JEDEN Task:
+
 - ✅ Wer hat ihn eingegeben? (User-ID, Channel)
 - ✅ Wann eingegeben? (Timestamp)
 - ✅ Was war der Input? (payload)
@@ -584,23 +621,23 @@ Result: Kompletter Flow mit allen Safepoints
 
 ## 🟧 11. GLOSSAR (DEFINITIONEN)
 
-| Term | Definition |
-|------|-----------|
-| **Task** | Diskrete Arbeitseinheit mit ID, Type, Payload, User-Info |
-| **Agent** | Spezialisierter Service, der Tasks eines bestimmten Typs verarbeitet |
-| **Portier** | Zentraler Dispatcher/Router — empfängt alle Inputs |
-| **Dispatcher** | Das Routing-System (identisch mit Portier) |
-| **Safepoint** | Zeitstempel-basierte Event-Dokumentation im archivp_store |
-| **Archivp_Store** | Zentrales Audit-Log (Dateisystem-basiert) |
-| **Option-2-Flow** | Der definierte Multi-Agent-Workflow (7 Phasen) |
-| **Determinismus** | Gleicher Input → garantiert gleicher Output (wo relevant) |
-| **Channel** | Eingangsquelle (Discord, Slack, Web, CLI, API) |
-| **Health-Check** | Periodische Überprüfung aller Agenten (online/offline) |
-| **Retry** | Automatische Wiederholung bei transientem Fehler |
-| **Fallback** | Alternative Agent bei Ausfall des primären |
-| **GCPT** | Global Coordination and Protocol Tracker |
-| **Embedding** | Vektorisierung von Dokumenten via Sentence-Transformers |
-| **Queue** | FIFO-Warteschlange pro Agent |
+| Term              | Definition                                                           |
+| ----------------- | -------------------------------------------------------------------- |
+| **Task**          | Diskrete Arbeitseinheit mit ID, Type, Payload, User-Info             |
+| **Agent**         | Spezialisierter Service, der Tasks eines bestimmten Typs verarbeitet |
+| **Portier**       | Zentraler Dispatcher/Router — empfängt alle Inputs                   |
+| **Dispatcher**    | Das Routing-System (identisch mit Portier)                           |
+| **Safepoint**     | Zeitstempel-basierte Event-Dokumentation im archivp_store            |
+| **Archivp_Store** | Zentrales Audit-Log (Dateisystem-basiert)                            |
+| **Option-2-Flow** | Der definierte Multi-Agent-Workflow (7 Phasen)                       |
+| **Determinismus** | Gleicher Input → garantiert gleicher Output (wo relevant)            |
+| **Channel**       | Eingangsquelle (Discord, Slack, Web, CLI, API)                       |
+| **Health-Check**  | Periodische Überprüfung aller Agenten (online/offline)               |
+| **Retry**         | Automatische Wiederholung bei transientem Fehler                     |
+| **Fallback**      | Alternative Agent bei Ausfall des primären                           |
+| **GCPT**          | Global Coordination and Protocol Tracker                             |
+| **Embedding**     | Vektorisierung von Dokumenten via Sentence-Transformers              |
+| **Queue**         | FIFO-Warteschlange pro Agent                                         |
 
 ---
 

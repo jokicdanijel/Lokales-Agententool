@@ -77,28 +77,28 @@ python src/openwebui_agent_server.py
 
 ### Für Entwickler
 
-| Dokument | Beschreibung |
-|----------|--------------|
-| [LocalAgent-Pro/README.md](LocalAgent-Pro/README.md) | Vollständige Projekt-Dokumentation |
+| Dokument                                                         | Beschreibung                        |
+| ---------------------------------------------------------------- | ----------------------------------- |
+| [LocalAgent-Pro/README.md](LocalAgent-Pro/README.md)             | Vollständige Projekt-Dokumentation  |
 | [LocalAgent-Pro/INSTALLATION.md](LocalAgent-Pro/INSTALLATION.md) | Detaillierte Installationsanleitung |
-| [LocalAgent-Pro/QUICK_START.md](LocalAgent-Pro/QUICK_START.md) | Schnelleinstieg |
-| [LocalAgent-Pro/DOCKER.md](LocalAgent-Pro/DOCKER.md) | Docker-Deployment |
+| [LocalAgent-Pro/QUICK_START.md](LocalAgent-Pro/QUICK_START.md)   | Schnelleinstieg                     |
+| [LocalAgent-Pro/DOCKER.md](LocalAgent-Pro/DOCKER.md)             | Docker-Deployment                   |
 
 ### Für GitHub Copilot
 
-| Dokument | Beschreibung |
-|----------|--------------|
-| [LocalAgent-Pro/COPILOT_SYSTEM_PROMPT.md](LocalAgent-Pro/COPILOT_SYSTEM_PROMPT.md) | System-Prompt für VSCode Copilot |
-| [LocalAgent-Pro/COPILOT_PROMPT.md](LocalAgent-Pro/COPILOT_PROMPT.md) | Copilot-Integration mit OpenWebUI |
-| [.github/copilot-commit-instructions.md](.github/copilot-commit-instructions.md) | Commit-Message-Guidelines |
+| Dokument                                                                           | Beschreibung                      |
+| ---------------------------------------------------------------------------------- | --------------------------------- |
+| [LocalAgent-Pro/COPILOT_SYSTEM_PROMPT.md](LocalAgent-Pro/COPILOT_SYSTEM_PROMPT.md) | System-Prompt für VSCode Copilot  |
+| [LocalAgent-Pro/COPILOT_PROMPT.md](LocalAgent-Pro/COPILOT_PROMPT.md)               | Copilot-Integration mit OpenWebUI |
+| [.github/copilot-commit-instructions.md](.github/copilot-commit-instructions.md)   | Commit-Message-Guidelines         |
 
 ### API & Testing
 
-| Dokument | Beschreibung |
-|----------|--------------|
-| [LocalAgent-Pro/docs/API.md](LocalAgent-Pro/docs/API.md) | API-Dokumentation |
+| Dokument                                                         | Beschreibung       |
+| ---------------------------------------------------------------- | ------------------ |
+| [LocalAgent-Pro/docs/API.md](LocalAgent-Pro/docs/API.md)         | API-Dokumentation  |
 | [LocalAgent-Pro/tests/README.md](LocalAgent-Pro/tests/README.md) | Test-Dokumentation |
-| [LocalAgent-Pro/SECURITY.md](LocalAgent-Pro/SECURITY.md) | Security-Features |
+| [LocalAgent-Pro/SECURITY.md](LocalAgent-Pro/SECURITY.md)         | Security-Features  |
 
 ---
 
@@ -159,13 +159,13 @@ Verbessert: Developer-Onboarding, Copilot-Integration
 
 LocalAgent-Pro erkennt und führt folgende Tools automatisch aus:
 
-| Tool | Beschreibung | Beispiel |
-|------|--------------|----------|
-| `write_file` | Datei in Sandbox erstellen | "Erstelle hello.txt mit Inhalt 'Hello World'" |
-| `read_file` | Datei aus Sandbox lesen | "Lies die Datei config.yaml" |
-| `delete_file` | Datei aus Sandbox löschen | "Lösche test.txt" |
-| `shell_exec` | Shell-Befehl ausführen | "Liste alle Dateien auf" |
-| `fetch_webpage` | Webseite abrufen | "Hole den Inhalt von example.com" |
+| Tool            | Beschreibung               | Beispiel                                      |
+| --------------- | -------------------------- | --------------------------------------------- |
+| `write_file`    | Datei in Sandbox erstellen | "Erstelle hello.txt mit Inhalt 'Hello World'" |
+| `read_file`     | Datei aus Sandbox lesen    | "Lies die Datei config.yaml"                  |
+| `delete_file`   | Datei aus Sandbox löschen  | "Lösche test.txt"                             |
+| `shell_exec`    | Shell-Befehl ausführen     | "Liste alle Dateien auf"                      |
+| `fetch_webpage` | Webseite abrufen           | "Hole den Inhalt von example.com"             |
 
 **Wichtig:** Alle Dateioperationen sind sandbox-isoliert (`~/localagent_sandbox/`)
 

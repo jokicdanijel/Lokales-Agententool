@@ -1,8 +1,8 @@
 import pytest
-import asyncio
 from httpx import AsyncClient
-from app.main import app
+
 from app.db.session import AsyncSessionLocal
+from app.main import app
 
 
 @pytest.fixture

@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena17 Homepage Creator
 
-**Agent-ID:** opena17  
-**Port:** 12362  
-**Status:** 🟡 Planned  
-**Kürzel:** `hpcreatep`  
+**Agent-ID:** opena17
+**Port:** 12362
+**Status:** 🟡 Planned
+**Kürzel:** `hpcreatep`
 **Domäne:** Homepage Creator, Site-Generator, Deployment
 
 ---
@@ -141,5 +141,5 @@ Kopiere diesen Prompt in:
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

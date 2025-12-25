@@ -22,7 +22,7 @@ echo ""
 if [ -f "$SCRIPT_DIR/elion_auto_indexer.py" ]; then
     python3 "$SCRIPT_DIR/elion_auto_indexer.py" --verbose
     INDEX_STATUS=$?
-    
+
     if [ $INDEX_STATUS -eq 0 ]; then
         echo ""
         echo "✓ Auto-Indexierung erfolgreich"
@@ -50,7 +50,7 @@ echo ""
 if [ -f "$SCRIPT_DIR/knowledge_feeder.py" ]; then
     python3 "$SCRIPT_DIR/knowledge_feeder.py" --verbose
     FEED_STATUS=$?
-    
+
     if [ $FEED_STATUS -eq 0 ]; then
         echo ""
         echo "✓ Knowledgebase-Feeding erfolgreich"

@@ -12,17 +12,18 @@ Die Datei `.github/copilot-instructions-openwebui-hardened.md` definiert das Ver
 
 ### Wichtige Unterscheidungen
 
-| Kontext | Datei | Verhalten |
-|---------|-------|-----------|
-| **VSCode** | `.github/copilot-instructions.md` | Normal (unrestricted) |
-| **OpenWebUI** | `.github/copilot-instructions-openwebui-hardened.md` | 🔒 Scan-First (Hardened) |
-| **Browser-Agent (opena6)** | Keine Beschränkungen | ✅ 100% Frei & Unlimitiert |
+| Kontext                    | Datei                                                | Verhalten                  |
+| -------------------------- | ---------------------------------------------------- | -------------------------- |
+| **VSCode**                 | `.github/copilot-instructions.md`                    | Normal (unrestricted)      |
+| **OpenWebUI**              | `.github/copilot-instructions-openwebui-hardened.md` | 🔒 Scan-First (Hardened)   |
+| **Browser-Agent (opena6)** | Keine Beschränkungen                                 | ✅ 100% Frei & Unlimitiert |
 
 ---
 
 ## 🎯 Warum Scan-First?
 
 ### Das Problem (Ohne Scan-First)
+
 ```
 User: „Erstelle einen neuen Agenten"
 Copilot: *Erstellt blind neue Datei, ohne zu prüfen*
@@ -34,6 +35,7 @@ Ergebnis:
 ```
 
 ### Die Lösung (Mit Scan-First)
+
 ```
 User: „Erstelle einen neuen Agenten"
 Copilot: *INVENTORY MODE aktiviert*
@@ -80,6 +82,7 @@ Nach Bestätigung mit „Ja", „Go", „Confirm", etc.:
 ## 📋 INVENTORY CHECK - Was wird geprüft?
 
 ### Strukturelle Elemente
+
 ```
 ✓ Ordnerstrukturen (src/, scripts/, docs/, tests/)
 ✓ Python-Module & Packaging
@@ -90,6 +93,7 @@ Nach Bestätigung mit „Ja", „Go", „Confirm", etc.:
 ```
 
 ### Komponenten-Erkennung
+
 ```
 ✓ Agent-Struktur (opena1-opena20)
 ✓ Tool-Module (Voice-Tools)
@@ -100,6 +104,7 @@ Nach Bestätigung mit „Ja", „Go", „Confirm", etc.:
 ```
 
 ### Kritikalität-Analyse
+
 ```
 🔴 LEBENSNOTWENDIG
    → openwebui_agent_server.py
@@ -133,13 +138,13 @@ Nach Bestätigung mit „Ja", „Go", „Confirm", etc.:
 
 ## 🚫 SCHUTZSCHILDE (Was ist verboten)
 
-| Verboten | Grund | Schutz |
-|----------|-------|--------|
-| Code generieren ohne Prüfung | Könnte Duplikate erzeugen | Inventory erzwingt Prüfung |
-| Kritische Datei überschreiben | Könnte System brechen | Kritische Dateien werden markiert |
-| Unbekannte Dateien ändern | Risiko: Unvorhergesehene Effekte | Nur geprüfte Dateien |
-| Spekulativ handeln | Raten statt wissen | Bei Unsicherheit: Erneut prüfen |
-| Ohne Bestätigung ausführen | User-Intent nicht geklärt | Blockierer vor Phase 2 |
+| Verboten                      | Grund                            | Schutz                            |
+| ----------------------------- | -------------------------------- | --------------------------------- |
+| Code generieren ohne Prüfung  | Könnte Duplikate erzeugen        | Inventory erzwingt Prüfung        |
+| Kritische Datei überschreiben | Könnte System brechen            | Kritische Dateien werden markiert |
+| Unbekannte Dateien ändern     | Risiko: Unvorhergesehene Effekte | Nur geprüfte Dateien              |
+| Spekulativ handeln            | Raten statt wissen               | Bei Unsicherheit: Erneut prüfen   |
+| Ohne Bestätigung ausführen    | User-Intent nicht geklärt        | Blockierer vor Phase 2            |
 
 ---
 
@@ -171,6 +176,7 @@ Alle Aktionen folgen: **Inventory → Bestätigung → Execution**
 ### Wie wird diese Datei genutzt?
 
 1. **In OpenWebUI Chat:**
+
    ```
    User: „Analysiere das Projekt für mich"
 
@@ -187,6 +193,7 @@ Alle Aktionen folgen: **Inventory → Bestätigung → Execution**
    ```
 
 2. **Bei Änderungen:**
+
    ```
    User: „Füge einen neuen Test hinzu"
 
@@ -364,7 +371,7 @@ ZIP: LocalAgent-Pro-Autobuild_20251125_120200.zip (45 MB)
    - ❌ Sofortiges „Ja" ohne Prüfung
 
 4. **Nutze Logs:**
-   - ✅ Prüfe logs/copilot_bridge_*.log nach jeder Aktion
+   - ✅ Prüfe logs/copilot*bridge*\*.log nach jeder Aktion
    - ❌ Ignoriere Logs
 
 ---
@@ -433,14 +440,14 @@ Bitte sag mir:
 
 ## 🎉 ZUSAMMENFASSUNG
 
-| Aspekt | Status |
-|--------|--------|
-| **Audit-Sicherheit** | ✅ Maximal |
-| **User-Kontrolle** | ✅ Vollständig |
-| **Fehler-Vorbeugung** | ✅ Umfassend |
-| **Performance** | ✅ Schnell (Scan ~2-3 Sekunden) |
-| **Integration** | ✅ OpenWebUI-ready |
-| **Dokumentation** | ✅ Vollständig |
+| Aspekt                | Status                          |
+| --------------------- | ------------------------------- |
+| **Audit-Sicherheit**  | ✅ Maximal                      |
+| **User-Kontrolle**    | ✅ Vollständig                  |
+| **Fehler-Vorbeugung** | ✅ Umfassend                    |
+| **Performance**       | ✅ Schnell (Scan ~2-3 Sekunden) |
+| **Integration**       | ✅ OpenWebUI-ready              |
+| **Dokumentation**     | ✅ Vollständig                  |
 
 ---
 

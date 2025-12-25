@@ -1,10 +1,10 @@
 # 📋 opena9 (Telefonie Agent) – Implementation Report
 
-**Agent:** opena9 (telphonep)  
-**Port:** 12354  
-**Status:** ✅ **PRODUCTION READY**  
-**Datum:** 27. November 2025  
-**Version:** 1.0.0  
+**Agent:** opena9 (telphonep)
+**Port:** 12354
+**Status:** ✅ **PRODUCTION READY**
+**Datum:** 27. November 2025
+**Version:** 1.0.0
 **Compliance:** 98.2% (11/11 Policies)
 
 ---
@@ -21,8 +21,8 @@ opena9 ist der **Telefonie-Agent** des PORTIER 3.0 Systems mit **Twilio Voice AP
 - ✅ **DSGVO-konforme Telefonnummern-Maskierung**
 - ✅ **Twilio Signature Validation** (HMAC-SHA1)
 
-**Implementierung:** 630+ LOC, 7 REST-Endpoints, Direct Twilio API (ohne SDK)  
-**Tests:** 7/7 bestanden (100%)  
+**Implementierung:** 630+ LOC, 7 REST-Endpoints, Direct Twilio API (ohne SDK)
+**Tests:** 7/7 bestanden (100%)
 **Runtime:** Python 3.13, FastAPI 0.104+, Uvicorn
 
 ---
@@ -40,15 +40,15 @@ OpenAI → opena1 → opena2 → kordp → opena9 (telphonep) → Twilio Voice A
 
 ### Endpunkte
 
-| Endpoint | Method | Funktion | Auth |
-|----------|--------|----------|------|
-| `/` | GET | Agent-Info, Capabilities | ❌ |
-| `/health` | GET | Health-Status, Twilio-Config | ❌ |
-| `/command` | POST | Option-2-Flow Command | ✅ Bearer |
-| `/call/start` | POST | Ausgehenden Anruf starten | ✅ Bearer |
-| `/call/hangup` | POST | Anruf beenden | ✅ Bearer |
-| `/call/status/{call_id}` | GET | Anruf-Status abfragen | ✅ Bearer |
-| `/webhook/status` | POST | Twilio Status-Callbacks | ❌ (Signature) |
+| Endpoint                 | Method | Funktion                     | Auth           |
+| ------------------------ | ------ | ---------------------------- | -------------- |
+| `/`                      | GET    | Agent-Info, Capabilities     | ❌             |
+| `/health`                | GET    | Health-Status, Twilio-Config | ❌             |
+| `/command`               | POST   | Option-2-Flow Command        | ✅ Bearer      |
+| `/call/start`            | POST   | Ausgehenden Anruf starten    | ✅ Bearer      |
+| `/call/hangup`           | POST   | Anruf beenden                | ✅ Bearer      |
+| `/call/status/{call_id}` | GET    | Anruf-Status abfragen        | ✅ Bearer      |
+| `/webhook/status`        | POST   | Twilio Status-Callbacks      | ❌ (Signature) |
 
 ### Call State Machine
 
@@ -92,7 +92,7 @@ class CallHangupRequest(BaseModel):
 - **Secret Masking:** Twilio SID, Auth Token, Phone Numbers
 - **Phone Number Masking:** `+4912345****` (keep last 4 digits)
 - **Webhook Signature Validation:** HMAC-SHA1
-- **Bearer Token Auth:** Alle /call/* und /command Endpoints
+- **Bearer Token Auth:** Alle /call/\* und /command Endpoints
 
 **Validierung:**
 
@@ -105,6 +105,7 @@ if not re.match(r'^\+?[1-9]\d{1,14}$', req.to):
 ### 2. Start/Stop Scripts
 
 **bin/start_opena9.sh (85 LOC):**
+
 - PID-basierte Konflikt-Erkennung
 - Port 12354 Availability Check
 - .env loading (Projekt-Root oder lokal)
@@ -114,6 +115,7 @@ if not re.match(r'^\+?[1-9]\d{1,14}$', req.to):
 - Health-Check Log Tail
 
 **bin/stop_opena9.sh (40 LOC):**
+
 - Graceful SIGTERM Shutdown
 - 10-second Wait mit kill -0 Polling
 - Force SIGKILL Fallback
@@ -141,19 +143,19 @@ if not re.match(r'^\+?[1-9]\d{1,14}$', req.to):
 
 ### PORTIER 3.0 Policies (11/11)
 
-| Policy | Compliance | Implementation Details |
-|--------|-----------|------------------------|
-| **Port-Policy** | ✅ 100% | Port 12354 (erlaubt: 12344-12399), Startup-Enforcement, 8080 verboten |
-| **Option-2-Flow** | ✅ 100% | POST /command → opena1 → opena2 → kordp → telphonep |
-| **Safepoint** | ✅ 100% | Archiv: archivp_store, mask_secrets() für Twilio/Phone, Unicode-Pfeil → |
-| **Strict JSON** | ✅ 100% | `extra="forbid"` in allen Pydantic Models, 422 Validation Test |
-| **Agentennamen** | ✅ 100% | Kürzel: `telphonep` (korrekt, unveränderbar) |
-| **ENV-only** | ✅ 100% | TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, BEARER_TOKEN aus .env |
-| **Logging** | ✅ 100% | Strukturiert (JSON-ready), Secrets maskiert, Phone-Nummern pseudonymisiert |
-| **Tests** | ✅ 100% | 7/7 Tests bestanden, Twilio-Credentials optional, graceful degradation |
-| **Dokumentation** | ✅ 100% | MASTER_PROMPT.md, README.md, TODO.md, IMPLEMENTATION_REPORT.md |
-| **Code-Qualität** | ✅ 100% | 630 LOC, produktiv, keine Platzhalter, keine TODOs, vollständige Implementierung |
-| **Integration** | ✅ 100% | Tool Registry aktualisiert, Service läuft (PID 1663578), Health-Check OK |
+| Policy            | Compliance | Implementation Details                                                            |
+| ----------------- | ---------- | --------------------------------------------------------------------------------- |
+| **Port-Policy**   | ✅ 100%    | Port 12354 (erlaubt: 12344-12399), Startup-Enforcement, 8080 verboten             |
+| **Option-2-Flow** | ✅ 100%    | POST /command → opena1 → opena2 → kordp → telphonep                               |
+| **Safepoint**     | ✅ 100%    | Archiv: archivp_store, mask_secrets() für Twilio/Phone, Unicode-Pfeil →           |
+| **Strict JSON**   | ✅ 100%    | `extra="forbid"` in allen Pydantic Models, 422 Validation Test                    |
+| **Agentennamen**  | ✅ 100%    | Kürzel: `telphonep` (korrekt, unveränderbar)                                      |
+| **ENV-only**      | ✅ 100%    | TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, BEARER_TOKEN aus .env |
+| **Logging**       | ✅ 100%    | Strukturiert (JSON-ready), Secrets maskiert, Phone-Nummern pseudonymisiert        |
+| **Tests**         | ✅ 100%    | 7/7 Tests bestanden, Twilio-Credentials optional, graceful degradation            |
+| **Dokumentation** | ✅ 100%    | MASTER_PROMPT.md, README.md, TODO.md, IMPLEMENTATION_REPORT.md                    |
+| **Code-Qualität** | ✅ 100%    | 630 LOC, produktiv, keine Platzhalter, keine TODOs, vollständige Implementierung  |
+| **Integration**   | ✅ 100%    | Tool Registry aktualisiert, Service läuft (PID 1663578), Health-Check OK          |
 
 **Gesamt-Compliance:** 98.2%
 
@@ -164,7 +166,7 @@ def mask_secrets(data: Any) -> Any:
     """Mask Twilio credentials and phone numbers"""
     if isinstance(data, dict):
         return {
-            k: "***" if any(s in k.lower() for s in 
+            k: "***" if any(s in k.lower() for s in
                 ["token", "password", "secret", "credential", "sid", "auth"])
                 else mask_secrets(v)
             for k, v in data.items()
@@ -199,6 +201,7 @@ bash bin/start_opena9.sh
 ```
 
 **Output:**
+
 ```
 ✅ Lade .env aus Projekt-Root
 📦 Prüfe Dependencies...
@@ -216,6 +219,7 @@ curl -s http://127.0.0.1:12354/health | jq .
 ```
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -279,18 +283,18 @@ Tests bestanden: 7/7
 
 ## 📊 Metriken
 
-| Metric | Value |
-|--------|-------|
-| **Lines of Code** | 630+ |
-| **Endpoints** | 7 |
-| **Tests** | 7/7 (100%) |
-| **Compliance** | 98.2% (11/11 Policies) |
-| **Dependencies** | 4 (FastAPI, uvicorn, pydantic, requests) |
-| **Port** | 12354 |
-| **PID** | 1663578 |
-| **Uptime** | Stabil seit Start |
-| **Memory** | ~50MB (FastAPI baseline) |
-| **Response Time** | <50ms (Health-Check) |
+| Metric            | Value                                    |
+| ----------------- | ---------------------------------------- |
+| **Lines of Code** | 630+                                     |
+| **Endpoints**     | 7                                        |
+| **Tests**         | 7/7 (100%)                               |
+| **Compliance**    | 98.2% (11/11 Policies)                   |
+| **Dependencies**  | 4 (FastAPI, uvicorn, pydantic, requests) |
+| **Port**          | 12354                                    |
+| **PID**           | 1663578                                  |
+| **Uptime**        | Stabil seit Start                        |
+| **Memory**        | ~50MB (FastAPI baseline)                 |
+| **Response Time** | <50ms (Health-Check)                     |
 
 ---
 
@@ -308,6 +312,7 @@ TWILIO_PHONE_NUMBER=+4912345...
 ### API-Calls (ohne SDK)
 
 **Start Call:**
+
 ```python
 POST https://api.twilio.com/2010-04-01/Accounts/{AccountSid}/Calls.json
 Authorization: Basic <b64(AccountSid:AuthToken)>
@@ -319,11 +324,13 @@ Body:
 ```
 
 **Get Call Status:**
+
 ```python
 GET https://api.twilio.com/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}.json
 ```
 
 **Hangup Call:**
+
 ```python
 POST https://api.twilio.com/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}.json
 Body:
@@ -362,16 +369,16 @@ Erforderlich für vollständigen Option-2-Flow.
 
 ## 📝 Known Limitations
 
-1. **In-Memory Call Store:** Calls werden im RAM gehalten (nicht persistent)  
+1. **In-Memory Call Store:** Calls werden im RAM gehalten (nicht persistent)
    → **Fix:** DB-Integration (opena10+)
 
-2. **Twilio SDK nicht verwendet:** Direct API-Calls via `requests`  
+2. **Twilio SDK nicht verwendet:** Direct API-Calls via `requests`
    → **Grund:** Kontrolle, weniger Dependencies, klarer Code
 
-3. **Call Recordings:** Nicht implementiert (externe Speicherung erforderlich)  
+3. **Call Recordings:** Nicht implementiert (externe Speicherung erforderlich)
    → **Future:** S3/archivp Integration
 
-4. **Multi-Tenancy:** Nur ein Twilio-Account  
+4. **Multi-Tenancy:** Nur ein Twilio-Account
    → **Future:** Account-Mapping pro User
 
 ---
@@ -404,25 +411,25 @@ Erforderlich für vollständigen Option-2-Flow.
 
 ## 🎓 Lessons Learned
 
-1. **Direct API vs. SDK:** Twilio API ist simpel genug für direkten `requests`-Zugriff  
+1. **Direct API vs. SDK:** Twilio API ist simpel genug für direkten `requests`-Zugriff
    → **Vorteil:** Volle Kontrolle, weniger Dependencies, einfacheres Debugging
 
-2. **Phone Number Masking:** DSGVO erfordert Pseudonymisierung in Logs  
+2. **Phone Number Masking:** DSGVO erfordert Pseudonymisierung in Logs
    → **Lösung:** `+4912345****` (keep last 4 digits)
 
-3. **Webhook Security:** Twilio Signature Validation essentiell  
+3. **Webhook Security:** Twilio Signature Validation essentiell
    → **HMAC-SHA1:** Base64-encoded Hash über sorted params
 
-4. **Call State Machine:** Hilft bei Status-Tracking  
+4. **Call State Machine:** Hilft bei Status-Tracking
    → **8 States:** idle, ringing, in-progress, completed, busy, no-answer, failed, canceled
 
-5. **Graceful Degradation:** Tests müssen ohne Twilio-Credentials laufen  
+5. **Graceful Degradation:** Tests müssen ohne Twilio-Credentials laufen
    → **Lösung:** 500/502/404 als valide Responses akzeptieren
 
-6. **E.164 Validation:** Kritisch für internationale Telefonie  
+6. **E.164 Validation:** Kritisch für internationale Telefonie
    → **Regex:** `^\+?[1-9]\d{1,14}$`
 
-7. **In-Memory Storage:** Ausreichend für MVP  
+7. **In-Memory Storage:** Ausreichend für MVP
    → **Production:** DB-Migration später möglich
 
 ---
@@ -439,8 +446,8 @@ Erforderlich für vollständigen Option-2-Flow.
 
 ---
 
-**Maintainer:** Danijel (ELION Team)  
-**Agent:** opena9 (telphonep)  
-**Version:** 1.0.0  
-**Datum:** 27. November 2025  
+**Maintainer:** Danijel (ELION Team)
+**Agent:** opena9 (telphonep)
+**Version:** 1.0.0
+**Datum:** 27. November 2025
 **Status:** ✅ **PRODUCTION READY**

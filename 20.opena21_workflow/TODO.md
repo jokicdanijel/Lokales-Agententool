@@ -1,7 +1,7 @@
 # TODO – opena21 Workflow Engine Agent
 
-**Port:** 12365  
-**Status:** 🟡 Planned  
+**Port:** 12365
+**Status:** 🟡 Planned
 **Kürzel:** `workflowp`
 
 ---
@@ -96,5 +96,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

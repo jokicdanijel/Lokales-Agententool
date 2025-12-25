@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bridge_schema.json",
+  "title": "Bridge Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "bridge_name": {
+      "type": "string",
+      "description": "Human-readable name for the bridge"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version string",
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    },
+    "endpoints": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ingress": { "type": "string", "format": "uri" },
+        "egress": { "type": "string", "format": "uri" }
+      }
+    }
+  }
+}

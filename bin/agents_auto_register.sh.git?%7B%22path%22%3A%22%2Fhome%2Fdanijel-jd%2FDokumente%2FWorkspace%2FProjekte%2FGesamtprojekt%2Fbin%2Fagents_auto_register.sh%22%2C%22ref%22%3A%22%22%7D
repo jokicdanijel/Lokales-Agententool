@@ -18,7 +18,7 @@ DASHBOARD_URL="http://127.0.0.1:12349"
 # Agent definitions
 declare -A AGENTS=(
     ["opena1"]="12344"
-    ["opena2"]="12345" 
+    ["opena2"]="12345"
     ["kordp"]="12346"
     ["opena3"]="8080"
 )
@@ -28,13 +28,13 @@ echo "Auto-registering agents with dashboard..."
 for agent_id in "${!AGENTS[@]}"; do
     port="${AGENTS[$agent_id]}"
     endpoint="http://127.0.0.1:$port"
-    
+
     # Check if agent is running
     if ! curl -s --connect-timeout 2 "$endpoint/health" > /dev/null 2>&1; then
         echo "⚠️  $agent_id ($endpoint) - not running, skipping"
         continue
     fi
-    
+
     # Register agent
     response=$(curl -s -w "%{http_code}" \
         -H "Authorization: Bearer $TOK" \
@@ -43,9 +43,9 @@ for agent_id in "${!AGENTS[@]}"; do
         -d "{\"agent_id\":\"$agent_id\",\"endpoint\":\"$endpoint\"}" \
         "$DASHBOARD_URL/api/agent/register" \
         -o /tmp/register_response.json)
-    
+
     http_code="${response: -3}"
-    
+
     if [[ "$http_code" == "200" ]]; then
         echo "✅ $agent_id registered successfully"
     else

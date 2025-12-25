@@ -7,13 +7,13 @@ LOCATION: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2
 
 import json
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import httpx
 from fastapi import APIRouter, HTTPException
 from pydantic import ValidationError
 
-from schemas import Request71, ErrorSchema83, Decision72
+from schemas import Decision72, ErrorSchema83, Request71
 
 router = APIRouter(prefix="/log", tags=["opena1"])
 logger = logging.getLogger("opena1.koordinator")
@@ -23,7 +23,7 @@ ARCHIVATOR_URL = "http://127.0.0.1:12345/finalize/opena2"
 
 def utc():
     """Generate UTC timestamp with Z suffix."""
-    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    return datetime.now(UTC).isoformat().replace("+00:00", "Z")
 
 
 def error(code, msg, details=None, req_id="unknown"):
@@ -48,7 +48,7 @@ def build_cmd(req: Request71, tool: str, reason: str):
             "tool": tool,
             "reason": reason,
             "payload": req.payload,
-            "routing": req.routing.model_dump() if hasattr(req.routing, 'model_dump') else req.routing,
+            "routing": req.routing.model_dump() if hasattr(req.routing, "model_dump") else req.routing,
             "project": req.project.model_dump(),
         },
         "strict": True,
@@ -71,16 +71,19 @@ def select_tool(req: Request71):
 async def log_opena1(body: dict):
     """Main opena1 endpoint - validate, select tool, forward to archivator."""
     req_id = body.get("request_id", "unknown")
-    
+
     # Validate 7.1 schema
     try:
         req = Request71(**body)
         logger.info(f"[7.1 VALID] {req.request_id}")
     except ValidationError as ve:
         errs = [{"field": ".".join(map(str, e["loc"])), "error": e["msg"]} for e in ve.errors()]
-        raise HTTPException(400, detail=json.loads(error(
-            "SCHEMA_71_INVALID", "Schema mismatch", {"validation_errors": errs}, req_id
-        ).model_dump_json()))
+        raise HTTPException(
+            400,
+            detail=json.loads(
+                error("SCHEMA_71_INVALID", "Schema mismatch", {"validation_errors": errs}, req_id).model_dump_json()
+            ),
+        )
 
     # Tool selection
     tool, reason = select_tool(req)
@@ -97,9 +100,9 @@ async def log_opena1(body: dict):
             raise Exception(r.text)
     except Exception as ex:
         logger.error(f"[FORWARD_ERROR] {ex}")
-        raise HTTPException(500, detail=json.loads(error(
-            "FORWARD_ERROR", str(ex), req_id=req.request_id
-        ).model_dump_json()))
+        raise HTTPException(
+            500, detail=json.loads(error("FORWARD_ERROR", str(ex), req_id=req.request_id).model_dump_json())
+        )
 
     # Build 7.2 decision response
     decision = Decision72(
@@ -109,12 +112,12 @@ async def log_opena1(body: dict):
         decision={
             "selected_tool": tool,
             "reason": reason,
-            "resolved_path": req.routing.resolved_path if hasattr(req.routing, 'resolved_path') else None,
+            "resolved_path": req.routing.resolved_path if hasattr(req.routing, "resolved_path") else None,
         },
         archivator_forward={"endpoint": ARCHIVATOR_URL, "status": "sent"},
         status="FORWARDED",
         strict=True,
     )
-    
+
     logger.info(f"[7.2 OUT] {req.request_id}")
     return decision.model_dump()

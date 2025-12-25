@@ -105,16 +105,19 @@ LocalAgent-Pro/
 Each agent includes:
 
 1. **Health Check Endpoint**
+
    ```
    GET /health → {"status": "online", "service": "opena4", "port": 12348}
    ```
 
 2. **Metrics Endpoint**
+
    ```
    GET /metrics → Prometheus format metrics
    ```
 
 3. **API Endpoints**
+
    ```
    POST /compute → Execute sandboxed computation
    POST /process → Task processing
@@ -227,12 +230,12 @@ done
 
 ### Performance Metrics
 
-| Setting | Single Agent | Cluster (16x) | Cluster (32x) |
-|---------|-------------|---------------|---------------|
-| Requests/sec | 100 | 1600 | 3200 |
-| Latency (P95) | 100ms | 50ms | 30ms |
-| Memory (per) | 50MB | 50MB | 50MB |
-| Total Memory | 50MB | 800MB | 1.6GB |
+| Setting       | Single Agent | Cluster (16x) | Cluster (32x) |
+| ------------- | ------------ | ------------- | ------------- |
+| Requests/sec  | 100          | 1600          | 3200          |
+| Latency (P95) | 100ms        | 50ms          | 30ms          |
+| Memory (per)  | 50MB         | 50MB          | 50MB          |
+| Total Memory  | 50MB         | 800MB         | 1.6GB         |
 
 ---
 
@@ -335,7 +338,7 @@ class RateLimiter:
 ### docker-compose-cluster.yml
 
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
   # Core services
@@ -396,13 +399,13 @@ services:
 
 ## 🎯 Performance Targets
 
-| Metric | Target | Current | Status |
-|--------|--------|---------|--------|
-| Agent Startup Time | < 5s | ~2s | ✅ |
-| Response Time (P95) | < 100ms | ~50ms | ✅ |
-| Error Rate | < 0.1% | 0% | ✅ |
-| Availability | 99.9% | 100% | ✅ |
-| Cluster Throughput | > 1000 req/s | ~1600 req/s | ✅ |
+| Metric              | Target       | Current     | Status |
+| ------------------- | ------------ | ----------- | ------ |
+| Agent Startup Time  | < 5s         | ~2s         | ✅     |
+| Response Time (P95) | < 100ms      | ~50ms       | ✅     |
+| Error Rate          | < 0.1%       | 0%          | ✅     |
+| Availability        | 99.9%        | 100%        | ✅     |
+| Cluster Throughput  | > 1000 req/s | ~1600 req/s | ✅     |
 
 ---
 

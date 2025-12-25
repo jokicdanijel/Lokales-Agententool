@@ -29,7 +29,6 @@ except ImportError:
     print("⚠️  python-dotenv not installed (optional)")
     print("   Install with: pip install python-dotenv")
     # Continue without dotenv
-    pass
 else:
     # Load environment variables from .env
     env_file = PROJECT_ROOT / ".env"
@@ -51,24 +50,21 @@ def mask_api_key(key: str) -> str:
 
 def test_api_connection() -> bool:
     """Test connection to GitHub Copilot MCP API.
-    
+
     Returns:
         bool: True if connection successful, False otherwise
     """
     print("=" * 44)
     print("🧪 GitHub Copilot MCP API Test (Python)")
     print("=" * 44)
-    
+
     # Get configuration from environment
     api_key = os.getenv("GITHUB_COPILOT_API_KEY")
-    endpoint = os.getenv(
-        "GITHUB_COPILOT_MCP_ENDPOINT", 
-        "https://api.githubcopilot.com/mcp/"
-    )
-    
+    endpoint = os.getenv("GITHUB_COPILOT_MCP_ENDPOINT", "https://api.githubcopilot.com/mcp/")
+
     print(f"Endpoint: {endpoint}")
     print()
-    
+
     # Validate API key
     if not api_key:
         print("❌ GITHUB_COPILOT_API_KEY not set in .env")
@@ -81,28 +77,20 @@ def test_api_connection() -> bool:
         print("  2. Generate new token with 'copilot' scope")
         print("  3. Add to .env file")
         return False
-    
+
     print(f"API Key: {mask_api_key(api_key)}")
     print()
-    
+
     # Prepare request
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Accept": "application/json",
-        "User-Agent": "ELION-MCP-Server/1.0"
-    }
-    
+    headers = {"Authorization": f"Bearer {api_key}", "Accept": "application/json", "User-Agent": "ELION-MCP-Server/1.0"}
+
     try:
         print("🔍 Testing API connection...")
-        response = requests.get(
-            endpoint, 
-            headers=headers, 
-            timeout=10
-        )
-        
+        response = requests.get(endpoint, headers=headers, timeout=10)
+
         print()
         print(f"Response Code: {response.status_code}")
-        
+
         if response.status_code == 200:
             print("✅ API connection successful")
             print()
@@ -111,6 +99,7 @@ def test_api_connection() -> bool:
                 try:
                     data = response.json()
                     import json
+
                     print(json.dumps(data, indent=2))
                 except Exception:
                     print(response.text[:500])
@@ -119,7 +108,7 @@ def test_api_connection() -> bool:
             print()
             print("Your GitHub Copilot MCP API key is valid and working.")
             return True
-            
+
         elif response.status_code == 401:
             print("❌ Authentication failed")
             print()
@@ -131,14 +120,14 @@ def test_api_connection() -> bool:
             print("Please regenerate your API key at:")
             print("  https://github.com/settings/tokens")
             return False
-            
+
         elif response.status_code == 404:
             print("⚠️  Endpoint not found")
             print()
             print("The API endpoint may have changed or is incorrect.")
             print("Please check the GitHub Copilot documentation.")
             return False
-            
+
         else:
             print(f"⚠️  Received HTTP {response.status_code}")
             print()
@@ -148,14 +137,14 @@ def test_api_connection() -> bool:
             print("Unexpected response from API.")
             print("Please check the endpoint and API key.")
             return False
-            
+
     except requests.exceptions.Timeout:
         print("❌ Request timeout")
         print()
         print("The API did not respond within 10 seconds.")
         print("Please check your internet connection.")
         return False
-        
+
     except requests.exceptions.ConnectionError as e:
         print("❌ Connection failed")
         print()
@@ -164,7 +153,7 @@ def test_api_connection() -> bool:
         print("Could not connect to the API endpoint.")
         print("Please check your internet connection.")
         return False
-        
+
     except Exception as e:
         print(f"❌ Unexpected error: {e}")
         return False

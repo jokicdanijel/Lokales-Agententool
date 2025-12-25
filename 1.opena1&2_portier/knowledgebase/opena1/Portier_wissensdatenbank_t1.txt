@@ -381,16 +381,16 @@ Alles klar — hier kommt **Schritt 4** in voller Länge: die komplette Dokume
 ## 1) Topologie (Webhook‑Push)
 
 ```
-Internet (Telegram) ──HTTPS──▶ NGINX (TLS) ──proxy_pass──▶ 127.0.0.1:12347 (opena4_webhook)  
-                                                  │  
-                                                  ▼  
-                                       archivp/... (opena2)  
-                                                  │  
-                                                  ▼  
-                                       Koordination (opena1)  
-                                                  │  
-                                                  ▼  
-                                       UI (opena3, 8080 Loopback)  
+Internet (Telegram) ──HTTPS──▶ NGINX (TLS) ──proxy_pass──▶ 127.0.0.1:12347 (opena4_webhook)
+                                                  │
+                                                  ▼
+                                       archivp/... (opena2)
+                                                  │
+                                                  ▼
+                                       Koordination (opena1)
+                                                  │
+                                                  ▼
+                                       UI (opena3, 8080 Loopback)
 ```
 
 **Hinweis:** 8080 bleibt **ausschließlich** opena3 vorbehalten. Der Webhook‑Endpunkt läuft **nicht** auf 8080, sondern typischerweise auf einem Port im Pool (z. B. 12347).
@@ -537,7 +537,7 @@ Wichtige Endpunkte:
     "action":"receive_update",
     "chat_id":"123456",
     "message_id":"7890",
-    "update": { … } 
+    "update": { … }
   },
   "integrity": {
     "sha256":"<hex>",
@@ -970,8 +970,3 @@ Dieses Projekt zielt darauf ab, ein durchgängig auditierbares Agenten‑System 
 ---
 
 Wenn du möchtest, kann ich **eine sofort ausfüllbare Markdown‑Datei** liefern für Schritt 1, inkl. Platzhaltern (Datum, Verantwortliche etc.), die du direkt in dein `docs/`‑Verzeichnis legen kannst. Soll ich die generieren? 🔧
-
-
-
-
-

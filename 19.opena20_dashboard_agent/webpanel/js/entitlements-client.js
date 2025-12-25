@@ -15,7 +15,7 @@
  */
 
 class EntitlementsClient {
-  constructor(entitlementsUrl = '/build/entitlements.json') {
+  constructor(entitlementsUrl = "/build/entitlements.json") {
     this.entitlementsUrl = entitlementsUrl;
     this.data = null;
     this.loaded = false;
@@ -32,10 +32,10 @@ class EntitlementsClient {
       }
       this.data = await response.json();
       this.loaded = true;
-      console.log('✓ Entitlements loaded:', this.data.version);
+      console.log("✓ Entitlements loaded:", this.data.version);
       return true;
     } catch (error) {
-      console.error('✗ Failed to load entitlements:', error);
+      console.error("✗ Failed to load entitlements:", error);
       return false;
     }
   }
@@ -97,7 +97,7 @@ class EntitlementsClient {
   getReason(planId, agentId) {
     this._ensureLoaded();
     const agent = this._getAgent(planId, agentId);
-    return agent ? agent.reason : 'unknown';
+    return agent ? agent.reason : "unknown";
   }
 
   /**
@@ -110,8 +110,8 @@ class EntitlementsClient {
     const plan = this.data.plans[planId];
     if (!plan) return [];
 
-    return Object.keys(plan.agents).filter(agentId =>
-      plan.agents[agentId].clickable
+    return Object.keys(plan.agents).filter(
+      (agentId) => plan.agents[agentId].clickable,
     );
   }
 
@@ -125,8 +125,8 @@ class EntitlementsClient {
     const plan = this.data.plans[planId];
     if (!plan) return [];
 
-    return Object.keys(plan.agents).filter(agentId =>
-      plan.agents[agentId].gates.includes('requires_upgrade')
+    return Object.keys(plan.agents).filter((agentId) =>
+      plan.agents[agentId].gates.includes("requires_upgrade"),
     );
   }
 
@@ -138,7 +138,7 @@ class EntitlementsClient {
    */
   hasReadOnlyLogs(planId, agentId) {
     const limits = this.getLimits(planId, agentId);
-    return limits.logs_access === 'read_only';
+    return limits.logs_access === "read_only";
   }
 
   /**
@@ -177,11 +177,10 @@ class EntitlementsClient {
    */
   _ensureLoaded() {
     if (!this.loaded) {
-      throw new Error('Entitlements not loaded. Call load() first.');
+      throw new Error("Entitlements not loaded. Call load() first.");
     }
   }
 }
-
 
 // ============================================================================
 // BEISPIEL-INTEGRATION IN DASHBOARD
@@ -197,11 +196,11 @@ async function renderAgentCards() {
   const userPlan = getUserPlan(); // z.B. 'basic'
   const agents = getAllAgentIds(); // z.B. ['opena1', 'opena2', ...]
 
-  const container = document.getElementById('agent-grid');
+  const container = document.getElementById("agent-grid");
 
-  agents.forEach(agentId => {
-    const card = document.createElement('div');
-    card.className = 'agent-card';
+  agents.forEach((agentId) => {
+    const card = document.createElement("div");
+    card.className = "agent-card";
 
     const visible = entitlements.isVisible(userPlan, agentId);
     const clickable = entitlements.canClick(userPlan, agentId);
@@ -216,19 +215,19 @@ async function renderAgentCards() {
 
     // Sichtbarkeit
     if (!visible) {
-      card.style.display = 'none';
+      card.style.display = "none";
       return;
     }
 
     // Klickbarkeit und Gates
     if (!clickable) {
-      card.classList.add('disabled');
+      card.classList.add("disabled");
 
-      if (gates.includes('requires_upgrade')) {
+      if (gates.includes("requires_upgrade")) {
         // Upgrade-Badge anzeigen
-        const badge = document.createElement('div');
-        badge.className = 'upgrade-badge';
-        badge.textContent = '⬆ Upgrade';
+        const badge = document.createElement("div");
+        badge.className = "upgrade-badge";
+        badge.textContent = "⬆ Upgrade";
         badge.onclick = () => showUpgradeModal(agentId);
         card.appendChild(badge);
       }
@@ -242,16 +241,16 @@ async function renderAgentCards() {
       card.onclick = () => openAgent(agentId);
 
       // Limits anzeigen
-      if (limits.logs_access === 'read_only') {
-        const logsInfo = document.createElement('div');
-        logsInfo.className = 'info-badge';
-        logsInfo.textContent = '📖 Read-only Logs';
+      if (limits.logs_access === "read_only") {
+        const logsInfo = document.createElement("div");
+        logsInfo.className = "info-badge";
+        logsInfo.textContent = "📖 Read-only Logs";
         card.appendChild(logsInfo);
       }
 
       if (limits.workflow_limit && limits.workflow_limit > 0) {
-        const workflowInfo = document.createElement('div');
-        workflowInfo.className = 'info-badge';
+        const workflowInfo = document.createElement("div");
+        workflowInfo.className = "info-badge";
         workflowInfo.textContent = `🔄 Max ${limits.workflow_limit} Workflows`;
         card.appendChild(workflowInfo);
       }
@@ -265,8 +264,8 @@ async function renderAgentCards() {
  * Beispiel: Upgrade-Modal anzeigen
  */
 function showUpgradeModal(agentId) {
-  const modal = document.createElement('div');
-  modal.className = 'upgrade-modal';
+  const modal = document.createElement("div");
+  modal.className = "upgrade-modal";
   modal.innerHTML = `
     <div class="modal-content">
       <h2>Upgrade erforderlich</h2>
@@ -291,19 +290,19 @@ async function setupLogViewer(agentId) {
 
   if (readOnly) {
     // Editing-Buttons deaktivieren
-    document.querySelectorAll('.log-edit-btn').forEach(btn => {
+    document.querySelectorAll(".log-edit-btn").forEach((btn) => {
       btn.disabled = true;
-      btn.title = 'Nur-Lese-Zugriff im Basic Plan';
+      btn.title = "Nur-Lese-Zugriff im Basic Plan";
     });
 
     // Info-Banner anzeigen
-    const banner = document.createElement('div');
-    banner.className = 'info-banner';
-    banner.innerHTML = '📖 Nur-Lese-Modus. <a href="/upgrade">Upgraden</a> für vollen Zugriff.';
-    document.querySelector('.log-viewer').prepend(banner);
+    const banner = document.createElement("div");
+    banner.className = "info-banner";
+    banner.innerHTML =
+      '📖 Nur-Lese-Modus. <a href="/upgrade">Upgraden</a> für vollen Zugriff.';
+    document.querySelector(".log-viewer").prepend(banner);
   }
 }
-
 
 // ============================================================================
 // UTILITY-FUNKTIONEN
@@ -312,31 +311,31 @@ async function setupLogViewer(agentId) {
 // Diese Funktionen müssen in Ihrer Anwendung implementiert werden
 function getUserPlan() {
   // Von Session/Auth holen
-  return localStorage.getItem('user_plan') || 'basic';
+  return localStorage.getItem("user_plan") || "basic";
 }
 
 function getAllAgentIds() {
   // Von Agent-Registry holen
-  return ['opena1', 'opena2', 'opena3', /* ... */];
+  return ["opena1", "opena2", "opena3" /* ... */];
 }
 
 function getAgentIcon(agentId) {
   // Icon-Mapping
   const icons = {
-    opena1: '🚪',
-    opena2: '📦',
-    opena3: '💬',
+    opena1: "🚪",
+    opena2: "📦",
+    opena3: "💬",
     // ...
   };
-  return icons[agentId] || '🤖';
+  return icons[agentId] || "🤖";
 }
 
 function getAgentName(agentId) {
   // Name-Mapping
   const names = {
-    opena1: 'Portier',
-    opena2: 'Archivar',
-    opena3: 'OpenWebUI',
+    opena1: "Portier",
+    opena2: "Archivar",
+    opena3: "OpenWebUI",
     // ...
   };
   return names[agentId] || agentId;
@@ -346,7 +345,6 @@ function openAgent(agentId) {
   window.location = `/agent/${agentId}`;
 }
 
-
 // ============================================================================
 // EXPORT
 // ============================================================================
@@ -355,6 +353,6 @@ function openAgent(agentId) {
 // export default EntitlementsClient;
 
 // Für Browser Global
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   window.EntitlementsClient = EntitlementsClient;
 }

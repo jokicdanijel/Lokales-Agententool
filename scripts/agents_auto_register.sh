@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ════════════════════════════════════════════════════════════════════════════
 # agents_auto_register.sh – Self-Healing Auto-Discovery & Registration
-# 
+#
 # Liest echte Servicenamen aus /health, registriert nur laufende Agenten,
 # validiert JSON-Responses, und gibt sichere Übersicht.
 # ════════════════════════════════════════════════════════════════════════════
@@ -24,12 +24,12 @@ if [ -z "${TOKEN:-}" ]; then
   if [ -f ".env" ]; then
     TOKEN=$(grep "^DASHBOARD_ADMIN_TOKEN=" .env 2>/dev/null | cut -d= -f2 || true)
   fi
-  
+
   # Fallback: erster Wert in .env
   if [ -z "$TOKEN" ] && [ -f ".env" ]; then
     TOKEN=$(head -1 .env | cut -d= -f2 || true)
   fi
-  
+
   # Ultimate fallback
   if [ -z "$TOKEN" ]; then
     TOKEN="MEIN_SUPER_TOKEN_123"
@@ -75,7 +75,7 @@ declare -A FOUND_ENDPOINTS
 for PORT in "${PORTS[@]}"; do
   # Try /health with 2s timeout (was 1s, too aggressive)
   HEALTH_RESPONSE=$(curl -sS --max-time 2 "http://127.0.0.1:${PORT}/health" 2>/dev/null || true)
-  
+
   # Empty response = not listening
   if [ -z "$HEALTH_RESPONSE" ]; then
     echo -e "${YELLOW}•${NC} Port ${PORT}: no response"
@@ -85,7 +85,7 @@ for PORT in "${PORTS[@]}"; do
 
   # Extract service name safely (handle JSON errors gracefully)
   SERVICE_NAME=$(echo "$HEALTH_RESPONSE" | jq -r '.service // empty' 2>/dev/null || true)
-  
+
   if [ -z "$SERVICE_NAME" ]; then
     echo -e "${YELLOW}•${NC} Port ${PORT}: invalid or missing .service"
     ((SKIPPED_COUNT++))
@@ -94,10 +94,10 @@ for PORT in "${PORTS[@]}"; do
 
   # Normalize agent_id: lowercase, replace spaces/slashes with _
   AGENT_ID=$(echo "$SERVICE_NAME" | tr '[:upper:]' '[:lower:]' | tr '[:space:]/' '_' | sed 's/_$//')
-  
+
   # Store for batch registration
   FOUND_ENDPOINTS["$AGENT_ID"]="http://127.0.0.1:${PORT}"
-  
+
   echo -e "${GREEN}✓${NC} Port ${PORT}: ${SERVICE_NAME} → agent_id='${AGENT_ID}'"
 done
 
@@ -110,16 +110,16 @@ echo ""
 # Register each endpoint
 for AGENT_ID in "${!FOUND_ENDPOINTS[@]}"; do
   ENDPOINT="${FOUND_ENDPOINTS[$AGENT_ID]}"
-  
+
   # POST /api/agent/register
   REGISTER_RESPONSE=$(curl -sS -X POST "${DASHBOARD_URL}/api/agent/register" \
     -H "Authorization: Bearer ${TOKEN}" \
     -H "Content-Type: application/json" \
     -d "{\"agent_id\":\"${AGENT_ID}\",\"endpoint\":\"${ENDPOINT}\"}" 2>/dev/null || true)
-  
+
   # Validate response
   REGISTERED_AGENT=$(safe_jq "$REGISTER_RESPONSE" '.agent // empty')
-  
+
   if [ -n "$REGISTERED_AGENT" ]; then
     echo -e "${GREEN}✓${NC} Registered: ${AGENT_ID} → ${ENDPOINT}"
     ((REGISTERED_COUNT++))

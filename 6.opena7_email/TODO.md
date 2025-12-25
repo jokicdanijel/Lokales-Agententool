@@ -1,7 +1,7 @@
 # TODO – opena7 E-Mail Client Agent
 
-**Port:** 12352  
-**Status:** 🟡 Planned  
+**Port:** 12352
+**Status:** 🟡 Planned
 **Kürzel:** `emailp`
 
 ---
@@ -98,5 +98,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

@@ -19,20 +19,20 @@ FIX_COUNT=0
 
 for script in $SCRIPTS; do
   echo "Processing: $script"
-  
+
   # Backup erstellen
   cp "$script" "$script.bak"
-  
+
   # Ersetze: source "../.env" oder source "../../.env" etc.
   # Mit einer Routine, die die Keys mit sed ausliest
-  
+
   # Regex für verschiedene Variationen:
   # source "../.env"
   # source "../../.env"
   # source ".env"
   # . ../.env
   # . ../../.env
-  
+
   # Neue Methode: sed + export
   REPLACEMENT='# Robustes .env-Parsing (multiline-safe mit sed)
 if [ -f "$(dirname "$0")/../.env" ]; then
@@ -51,16 +51,16 @@ elif [ -f "../../.env" ]; then
     fi
   done < "$ENV_FILE"
 fi'
-  
+
   # Ersetze alle source-Varianten
   sed -i '/^[[:space:]]*source[[:space:]]*"\?.*\.env"\?$/d' "$script"
   sed -i "/^[[:space:]]*\.[[:space:]]*\.\.*\/\.env$/d" "$script"
-  
+
   # Füge neue .env-Parsing-Routine nach dem "set -e" ein
   sed -i "/^set -euo pipefail$/a\\
 \\
 $REPLACEMENT" "$script" || true
-  
+
   echo "  ✅ Fixed: $script"
   ((FIX_COUNT++))
 done

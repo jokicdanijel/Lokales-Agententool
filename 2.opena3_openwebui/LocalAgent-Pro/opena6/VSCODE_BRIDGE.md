@@ -132,11 +132,11 @@ Ctrl+Shift+P → "Tasks: Run Task"
 
 ### Keyboard Shortcuts
 
-| Shortcut | Aktion |
-|----------|--------|
-| `Ctrl+Shift+B` | Health Check |
-| `Ctrl+Shift+D` | Open Dashboard |
-| `Ctrl+Alt+T` | Start Tool Server |
+| Shortcut       | Aktion            |
+| -------------- | ----------------- |
+| `Ctrl+Shift+B` | Health Check      |
+| `Ctrl+Shift+D` | Open Dashboard    |
+| `Ctrl+Alt+T`   | Start Tool Server |
 
 ---
 

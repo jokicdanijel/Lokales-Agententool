@@ -1,8 +1,8 @@
 # Schritt 4 – Vollständige 20-Agent-Integration (Finale Architektur)
 
-**Status:** Planning & Specification  
-**Version:** 1.0.0  
-**Datum:** 2025-11-10  
+**Status:** Planning & Specification
+**Version:** 1.0.0
+**Datum:** 2025-11-10
 **Abhängig von:** Schritt 2 ✅ + Schritt 3 ✅
 
 ---
@@ -67,60 +67,65 @@
 
 ## 2. Dienst-Mapping & Port-Zuordnung
 
-| # | Agent | Port | Kategorie | Status | Implementiert |
-|---|---|---|---|---|---|
-| 1 | opena1 (Koordinator) | 12344 | Infrastruktur | ✅ Aktiv | Ja |
-| 2 | opena2 (Archivator) | 12345 | Infrastruktur | ✅ Aktiv | Ja |
-| 3 | opena3 (OpenWebUI) | 8080* | Kommunikation | ✅ Aktiv | Ja |
-| 4 | opena4 (Telegram) | 12347 | Kommunikation | ✅ Aktiv | Ja |
-| 5 | opena5 (VS Code) | 12348 | Kommunikation | 🟡 Geplant | Nein |
-| 6 | opena6 (Browser) | 12349 | Kommunikation | 🔴 Pending | Nein |
-| 7 | opena7 (Email Chatbot) | 12350 | Chatbot | 🔴 Pending | Nein |
-| 8 | opena8 (WhatsApp) | 12351 | Chatbot | 🔴 Pending | Nein |
-| 9 | opena9 (Call Answer) | 12352 | Chatbot | 🔴 Pending | Nein |
-| 10 | opena10 (Call Initiate) | 12353 | Chatbot | 🔴 Pending | Nein |
-| 11 | opena11 (Unlock Master) | 12354 | Funktional | 🔴 Pending | Nein |
-| 12 | opena12 (Social Media) | 12355 | Funktional | 🔴 Pending | Nein |
-| 13 | opena13 (Influencer) | 12356 | Funktional | 🔴 Pending | Nein |
-| 14 | opena14 (Calendar) | 12357 | Funktional | 🔴 Pending | Nein |
-| 15 | opena15 (HTML Creator) | 12358 | Content | 🔴 Pending | Nein |
-| 16 | opena16 (Shop Creator) | 12359 | Content | 🔴 Pending | Nein |
-| 17 | opena17 (Homepage) | 12360 | Content | 🔴 Pending | Nein |
-| 18 | opena18 (Local Archive) | 12361 | Data | 🔴 Pending | Nein |
-| 19 | opena19 (Trading) | 12362 | Data | 🔴 Pending | Nein |
-| 20 | opena20 (Dashboard) | 12363 | Data | ✅ Aktiv | Ja |
+| #   | Agent                   | Port   | Kategorie     | Status     | Implementiert |
+| --- | ----------------------- | ------ | ------------- | ---------- | ------------- |
+| 1   | opena1 (Koordinator)    | 12344  | Infrastruktur | ✅ Aktiv   | Ja            |
+| 2   | opena2 (Archivator)     | 12345  | Infrastruktur | ✅ Aktiv   | Ja            |
+| 3   | opena3 (OpenWebUI)      | 8080\* | Kommunikation | ✅ Aktiv   | Ja            |
+| 4   | opena4 (Telegram)       | 12347  | Kommunikation | ✅ Aktiv   | Ja            |
+| 5   | opena5 (VS Code)        | 12348  | Kommunikation | 🟡 Geplant | Nein          |
+| 6   | opena6 (Browser)        | 12349  | Kommunikation | 🔴 Pending | Nein          |
+| 7   | opena7 (Email Chatbot)  | 12350  | Chatbot       | 🔴 Pending | Nein          |
+| 8   | opena8 (WhatsApp)       | 12351  | Chatbot       | 🔴 Pending | Nein          |
+| 9   | opena9 (Call Answer)    | 12352  | Chatbot       | 🔴 Pending | Nein          |
+| 10  | opena10 (Call Initiate) | 12353  | Chatbot       | 🔴 Pending | Nein          |
+| 11  | opena11 (Unlock Master) | 12354  | Funktional    | 🔴 Pending | Nein          |
+| 12  | opena12 (Social Media)  | 12355  | Funktional    | 🔴 Pending | Nein          |
+| 13  | opena13 (Influencer)    | 12356  | Funktional    | 🔴 Pending | Nein          |
+| 14  | opena14 (Calendar)      | 12357  | Funktional    | 🔴 Pending | Nein          |
+| 15  | opena15 (HTML Creator)  | 12358  | Content       | 🔴 Pending | Nein          |
+| 16  | opena16 (Shop Creator)  | 12359  | Content       | 🔴 Pending | Nein          |
+| 17  | opena17 (Homepage)      | 12360  | Content       | 🔴 Pending | Nein          |
+| 18  | opena18 (Local Archive) | 12361  | Data          | 🔴 Pending | Nein          |
+| 19  | opena19 (Trading)       | 12362  | Data          | 🔴 Pending | Nein          |
+| 20  | opena20 (Dashboard)     | 12363  | Data          | ✅ Aktiv   | Ja            |
 
-*Port 8080 ist exklusiv reserviert (Docker/OpenWebUI)
+\*Port 8080 ist exklusiv reserviert (Docker/OpenWebUI)
 
 ---
 
 ## 3. Integration-Fases (Phased Rollout)
 
 ### Phase 4A: Basis-Integration (NOW)
+
 - ✅ Schritt 2 (Tool-Registry) – Deployed
 - ✅ Schritt 3 (Dedupe-Engine) – Deployed
 - 🟡 Routing-Tests für existierende Agenten
 - 🟡 Port-Policy Compliance Check (alle 20 Ports)
 
 ### Phase 4B: Kommunikations-Agenten
+
 - opena3 (OpenWebUI) – Already deployed
 - opena4 (Telegram) – Already deployed
 - opena5 (VS Code) – Implementation (Schritt 5)
 - opena6 (Browser) – New implementation
 
 ### Phase 4C: Chatbot-Agenten
+
 - opena7 (Email) – New implementation
 - opena8 (WhatsApp) – New implementation
 - opena9 (Call Answer) – New implementation
 - opena10 (Call Initiate) – New implementation
 
 ### Phase 4D: Funktional-Agenten
+
 - opena11 (Unlock) – New implementation
 - opena12 (Social Media) – New implementation
 - opena13 (Influencer) – New implementation
 - opena14 (Calendar) – New implementation
 
 ### Phase 4E: Content + Data Agenten
+
 - opena15 (HTML) – New implementation
 - opena16 (Shop) – New implementation
 - opena17 (Homepage) – New implementation
@@ -169,6 +174,7 @@ Authorization: Bearer $TOKEN
 ```
 
 **opena1 macht:**
+
 1. Validate Token ✓
 2. Parse tool_name="telep" ✓
 3. Lookup registry.get_agent_by_tool("telep") → opena4 @ port 12347
@@ -204,7 +210,7 @@ infrastructure:
   kordinator:
     agent_id: "opena1"
     port: 12344
-    
+
   archivator:
     agent_id: "opena2"
     port: 12345
@@ -216,7 +222,7 @@ communication:
     endpoints:
       - path: "/telegram/send"
         method: "POST"
-  
+
   # ... (alle 20)
 ```
 
@@ -233,7 +239,7 @@ async def dispatch(req: DispatchRequest):
     agent = registry.get_agent_by_tool(req.tool_name)
     if not agent:
         raise HTTPException(404, "Tool not found")
-    
+
     # Create safepoint
     sp = await manager.create_safepoint(
         source="opena1",
@@ -241,14 +247,14 @@ async def dispatch(req: DispatchRequest):
         kind="REQUEST",
         payload=req.dict()
     )
-    
+
     # Forward to agent
     url = f"http://127.0.0.1:{agent.port}{agent.endpoint}"
     response = await forward_to_agent(url, req.dict())
-    
+
     # Write safepoint
     await manager.write_safepoint(sp)
-    
+
     return response
 ```
 
@@ -280,6 +286,7 @@ Jeder Agent-Aufruf speichert Request/Response als Safepoint:
 **Speicherort:** `archivp/2025/11/10/index.jsonl`
 
 **Deduplication (automatisch):**
+
 - SHA-256 hash des Payloads
 - Wenn hash bereits existiert: `dedupe_count += 1`
 - Redundante Verarbeitung vermieden
@@ -302,10 +309,10 @@ def validate_port_policy(port: int):
     if port in FORBIDDEN_PORTS:
         logger.error(f"❌ FATAL: Port {port} is forbidden by policy")
         sys.exit(1)
-    
+
     if port < ALLOWED_PORT_RANGE[0] or port > ALLOWED_PORT_RANGE[1]:
         logger.warning(f"⚠️  Port {port} outside [12344-12369]")
-    
+
     return True
 ```
 
@@ -336,10 +343,10 @@ async def test_telegram_routing():
         user_id="test_user",
         text="Hello"
     )
-    
+
     # 2. Verify response
     assert response["status"] == "ok"
-    
+
     # 3. Check safepoint in opena2
     safepoints = await get_last_safepoints(n=1)
     assert safepoints[0]["destination"] == "opena4"
@@ -354,15 +361,15 @@ async def test_safepoint_chain():
     # 1. Execute 5 operations
     for i in range(5):
         await dispatch(tool_name="kalp", ...)
-    
+
     # 2. Verify all safepoints in archive
     safepoints = await get_last_safepoints(n=5)
     assert len(safepoints) == 5
-    
+
     # 3. Verify HEADS.json chain
     heads = await get_heads()
     assert len(heads) == 5
-    
+
     # 4. Verify INTEGRITY.json
     integrity = await verify_integrity()
     assert integrity["status"] == "ok"
@@ -373,24 +380,28 @@ async def test_safepoint_chain():
 ## 9. Implementierungs-Checkliste
 
 ### Phase 4A: Basis-Integration
+
 - [ ] Prüfe tool_registry.py (alle 20 Agenten registriert)
 - [ ] Prüfe port-policy enforcement in allen Services
 - [ ] Starte Health-Check-Test Suite
 - [ ] Verifiziere Routing-Logik opena1 → Ziel-Agent
 
 ### Phase 4B: Kommunikations-Agenten
+
 - [ ] opena3 (OpenWebUI) – Health check
 - [ ] opena4 (Telegram) – Health check
 - [ ] opena5 (VS Code) – Startup test
 - [ ] opena6 (Browser) – Startup test
 
 ### Phase 4C–4E: Remaining Agents
+
 - [ ] Implementiere template für neue Agenten
 - [ ] Port-Policy validation für alle Ports
 - [ ] Routing test für jedes neue Service
 - [ ] Safepoint test (write/read/dedupe)
 
 ### Final Integration Tests
+
 - [ ] End-to-End dispatch flow (opena1 → opena[N])
 - [ ] Error handling (schema 8.3 compliance)
 - [ ] Safepoint chain integrity (HEADS.json + INTEGRITY.json)
@@ -402,14 +413,14 @@ async def test_safepoint_chain():
 
 ### 10.1 Fehler-Kategorien
 
-| Code | Fehler | Behandlung |
-|---|---|---|
-| 400 | Invalid request schema | Return schema 8.3 error + log |
-| 401 | Missing Authorization | Reject + 401 response |
-| 403 | Invalid token | Reject + 403 response |
-| 404 | Tool not found | Return 404 + suggest alternatives |
-| 500 | Agent internal error | Retry logic (backoff) |
-| 503 | Agent unavailable | Circuit breaker |
+| Code | Fehler                 | Behandlung                        |
+| ---- | ---------------------- | --------------------------------- |
+| 400  | Invalid request schema | Return schema 8.3 error + log     |
+| 401  | Missing Authorization  | Reject + 401 response             |
+| 403  | Invalid token          | Reject + 403 response             |
+| 404  | Tool not found         | Return 404 + suggest alternatives |
+| 500  | Agent internal error   | Retry logic (backoff)             |
+| 503  | Agent unavailable      | Circuit breaker                   |
 
 ### 10.2 Retry-Logik
 
@@ -418,7 +429,7 @@ async def test_safepoint_chain():
 async def dispatch_with_retry(tool_name: str, payload: dict):
     max_retries = 3
     backoff_ms = 500
-    
+
     for attempt in range(max_retries):
         try:
             response = await forward_to_agent(...)
@@ -466,25 +477,25 @@ logger.error(f"Agent error: {e}")
 
 ## 12. Abhängigkeiten & Next Steps
 
-**Schritt 2:** ✅ Tool-Registry (committed 2025-11-10)  
-**Schritt 3:** ✅ Safepoint Dedupe (committed 2025-11-10)  
-**Schritt 4:** 🟡 **THIS DOCUMENT** – Spec ready, implementation starting  
+**Schritt 2:** ✅ Tool-Registry (committed 2025-11-10)
+**Schritt 3:** ✅ Safepoint Dedupe (committed 2025-11-10)
+**Schritt 4:** 🟡 **THIS DOCUMENT** – Spec ready, implementation starting
 **Schritt 5:** 🔴 VS Code Bridge (blocked by Schritt 4)
 
 ---
 
 ## 13. Erfolgs-Kriterien
 
-✅ Alle 20 Agenten in `tool_registry.py` registriert  
-✅ Port-Policy [12344-12369] durchgesetzt  
-✅ Routing opena1 → opena[N] getestet  
-✅ Safepoint write/read/dedupe funktional  
-✅ Health-Checks für alle Services grün  
-✅ E2E-Tests bestanden (≥ 80% coverage)  
-✅ Documentation vollständig  
-✅ Commits to main branch gepusht  
+✅ Alle 20 Agenten in `tool_registry.py` registriert
+✅ Port-Policy [12344-12369] durchgesetzt
+✅ Routing opena1 → opena[N] getestet
+✅ Safepoint write/read/dedupe funktional
+✅ Health-Checks für alle Services grün
+✅ E2E-Tests bestanden (≥ 80% coverage)
+✅ Documentation vollständig
+✅ Commits to main branch gepusht
 
 ---
 
-**Dokumentation:** Danijel – ELION Gesamtprojekt  
+**Dokumentation:** Danijel – ELION Gesamtprojekt
 **Letztes Update:** 2025-11-10T12:45:00Z

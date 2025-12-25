@@ -1,21 +1,15 @@
-import json
 import logging
 import time
-from typing import Optional
 import uuid
 
-from open_webui.internal.db import Base, get_db
 from open_webui.env import SRC_LOG_LEVELS
-
+from open_webui.internal.db import Base, get_db
 from open_webui.models.files import FileMetadataResponse
 from open_webui.models.groups import Groups
-from open_webui.models.users import Users, UserResponse
-
-
-from pydantic import BaseModel, ConfigDict
-from sqlalchemy import BigInteger, Column, String, Text, JSON
-
+from open_webui.models.users import UserResponse, Users
 from open_webui.utils.access_control import has_access
+from pydantic import BaseModel, ConfigDict
+from sqlalchemy import JSON, BigInteger, Column, Text
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MODELS"])
@@ -67,10 +61,10 @@ class KnowledgeModel(BaseModel):
     name: str
     description: str
 
-    data: Optional[dict] = None
-    meta: Optional[dict] = None
+    data: dict | None = None
+    meta: dict | None = None
 
-    access_control: Optional[dict] = None
+    access_control: dict | None = None
 
     created_at: int  # timestamp in epoch
     updated_at: int  # timestamp in epoch
@@ -82,28 +76,26 @@ class KnowledgeModel(BaseModel):
 
 
 class KnowledgeUserModel(KnowledgeModel):
-    user: Optional[UserResponse] = None
+    user: UserResponse | None = None
 
 
 class KnowledgeResponse(KnowledgeModel):
-    files: Optional[list[FileMetadataResponse | dict]] = None
+    files: list[FileMetadataResponse | dict] | None = None
 
 
 class KnowledgeUserResponse(KnowledgeUserModel):
-    files: Optional[list[FileMetadataResponse | dict]] = None
+    files: list[FileMetadataResponse | dict] | None = None
 
 
 class KnowledgeForm(BaseModel):
     name: str
     description: str
-    data: Optional[dict] = None
-    access_control: Optional[dict] = None
+    data: dict | None = None
+    access_control: dict | None = None
 
 
 class KnowledgeTable:
-    def insert_new_knowledge(
-        self, user_id: str, form_data: KnowledgeForm
-    ) -> Optional[KnowledgeModel]:
+    def insert_new_knowledge(self, user_id: str, form_data: KnowledgeForm) -> KnowledgeModel | None:
         with get_db() as db:
             knowledge = KnowledgeModel(
                 **{
@@ -129,9 +121,7 @@ class KnowledgeTable:
 
     def get_knowledge_bases(self) -> list[KnowledgeUserModel]:
         with get_db() as db:
-            all_knowledge = (
-                db.query(Knowledge).order_by(Knowledge.updated_at.desc()).all()
-            )
+            all_knowledge = db.query(Knowledge).order_by(Knowledge.updated_at.desc()).all()
 
             user_ids = list(set(knowledge.user_id for knowledge in all_knowledge))
 
@@ -160,21 +150,17 @@ class KnowledgeTable:
         user_group_ids = {group.id for group in Groups.get_groups_by_member_id(user_id)}
         return has_access(user_id, permission, knowledge.access_control, user_group_ids)
 
-    def get_knowledge_bases_by_user_id(
-        self, user_id: str, permission: str = "write"
-    ) -> list[KnowledgeUserModel]:
+    def get_knowledge_bases_by_user_id(self, user_id: str, permission: str = "write") -> list[KnowledgeUserModel]:
         knowledge_bases = self.get_knowledge_bases()
         user_group_ids = {group.id for group in Groups.get_groups_by_member_id(user_id)}
         return [
             knowledge_base
             for knowledge_base in knowledge_bases
             if knowledge_base.user_id == user_id
-            or has_access(
-                user_id, permission, knowledge_base.access_control, user_group_ids
-            )
+            or has_access(user_id, permission, knowledge_base.access_control, user_group_ids)
         ]
 
-    def get_knowledge_by_id(self, id: str) -> Optional[KnowledgeModel]:
+    def get_knowledge_by_id(self, id: str) -> KnowledgeModel | None:
         try:
             with get_db() as db:
                 knowledge = db.query(Knowledge).filter_by(id=id).first()
@@ -184,7 +170,7 @@ class KnowledgeTable:
 
     def update_knowledge_by_id(
         self, id: str, form_data: KnowledgeForm, overwrite: bool = False
-    ) -> Optional[KnowledgeModel]:
+    ) -> KnowledgeModel | None:
         try:
             with get_db() as db:
                 knowledge = self.get_knowledge_by_id(id=id)
@@ -200,9 +186,7 @@ class KnowledgeTable:
             log.exception(e)
             return None
 
-    def update_knowledge_data_by_id(
-        self, id: str, data: dict
-    ) -> Optional[KnowledgeModel]:
+    def update_knowledge_data_by_id(self, id: str, data: dict) -> KnowledgeModel | None:
         try:
             with get_db() as db:
                 knowledge = self.get_knowledge_by_id(id=id)

@@ -1,7 +1,7 @@
 # TODO – opena18 CRM Agent
 
-**Port:** 12363  
-**Status:** 🟡 Planned  
+**Port:** 12363
+**Status:** 🟡 Planned
 **Kürzel:** `crmp`
 
 ---
@@ -96,5 +96,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

@@ -1,8 +1,9 @@
 import logging
+from collections.abc import Generator, Sequence
+from typing import Any
+from urllib.parse import parse_qs, urlparse
 from xml.etree.ElementTree import ParseError
 
-from typing import Any, Dict, Generator, List, Optional, Sequence, Union
-from urllib.parse import parse_qs, urlparse
 from langchain_core.documents import Document
 from open_webui.env import SRC_LOG_LEVELS
 
@@ -20,7 +21,7 @@ ALLOWED_NETLOCS = {
 }
 
 
-def _parse_video_id(url: str) -> Optional[str]:
+def _parse_video_id(url: str) -> str | None:
     """Parse a YouTube URL and return the video ID if valid, otherwise None."""
     parsed_url = urlparse(url)
 
@@ -56,8 +57,8 @@ class YoutubeLoader:
     def __init__(
         self,
         video_id: str,
-        language: Union[str, Sequence[str]] = "en",
-        proxy_url: Optional[str] = None,
+        language: str | Sequence[str] = "en",
+        proxy_url: str | None = None,
     ):
         """Initialize with YouTube video ID."""
         _video_id = _parse_video_id(video_id)
@@ -75,14 +76,10 @@ class YoutubeLoader:
         if "en" not in self.language:
             self.language.append("en")
 
-    def load(self) -> List[Document]:
+    def load(self) -> list[Document]:
         """Load YouTube transcripts into `Document` objects."""
         try:
-            from youtube_transcript_api import (
-                NoTranscriptFound,
-                TranscriptsDisabled,
-                YouTubeTranscriptApi,
-            )
+            from youtube_transcript_api import NoTranscriptFound, TranscriptsDisabled, YouTubeTranscriptApi
             from youtube_transcript_api.proxies import GenericProxyConfig
         except ImportError:
             raise ImportError(
@@ -91,9 +88,7 @@ class YoutubeLoader:
             )
 
         if self.proxy_url:
-            youtube_proxies = GenericProxyConfig(
-                http_url=self.proxy_url, https_url=self.proxy_url
-            )
+            youtube_proxies = GenericProxyConfig(http_url=self.proxy_url, https_url=self.proxy_url)
             log.debug(f"Using proxy URL: {self.proxy_url[:14]}...")
         else:
             youtube_proxies = None
@@ -101,7 +96,7 @@ class YoutubeLoader:
         transcript_api = YouTubeTranscriptApi(proxy_config=youtube_proxies)
         try:
             transcript_list = transcript_api.list(self.video_id)
-        except Exception as e:
+        except Exception:
             log.exception("Loading YouTube transcript failed")
             return []
 
@@ -112,19 +107,14 @@ class YoutubeLoader:
                 if transcript.is_generated:
                     log.debug(f"Found generated transcript for language '{lang}'")
                     try:
-                        transcript = transcript_list.find_manually_created_transcript(
-                            [lang]
-                        )
+                        transcript = transcript_list.find_manually_created_transcript([lang])
                         log.debug(f"Found manual transcript for language '{lang}'")
                     except NoTranscriptFound:
-                        log.debug(
-                            f"No manual transcript found for language '{lang}', using generated"
-                        )
-                        pass
+                        log.debug(f"No manual transcript found for language '{lang}', using generated")
 
                 log.debug(f"Found transcript for language '{lang}'")
                 try:
-                    transcript_pieces: List[Dict[str, Any]] = transcript.fetch()
+                    transcript_pieces: list[dict[str, Any]] = transcript.fetch()
                 except ParseError:
                     log.debug(f"Empty or invalid transcript for language '{lang}'")
                     continue
@@ -136,9 +126,7 @@ class YoutubeLoader:
                 transcript_text = " ".join(
                     map(
                         lambda transcript_piece: (
-                            transcript_piece.text.strip(" ")
-                            if hasattr(transcript_piece, "text")
-                            else ""
+                            transcript_piece.text.strip(" ") if hasattr(transcript_piece, "text") else ""
                         ),
                         transcript_pieces,
                     )

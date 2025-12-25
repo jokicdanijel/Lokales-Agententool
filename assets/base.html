@@ -178,7 +178,7 @@
         // Basis-Funktionalität für Event-Stream
         function connectEventStream() {
             const events = new EventSource('/api/events/live');
-            
+
             events.onmessage = (event) => {
                 const data = JSON.parse(event.data);
                 updateDashboard(data);

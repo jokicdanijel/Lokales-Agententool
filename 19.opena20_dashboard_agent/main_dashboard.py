@@ -12,32 +12,27 @@ Central Dashboard für ELION/Portier System
 - Integration mit opena15 (htmlp) für Dashboard-Seiten
 """
 
-import os
-import sys
-import time
 import json
 import logging
-import asyncio
+import os
+import time
 from contextlib import asynccontextmanager
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import List, Optional, Dict, Any, Callable, cast
+from typing import Any, cast
 
-from fastapi import FastAPI, HTTPException, Depends, Security, Request
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi.responses import HTMLResponse, StreamingResponse, PlainTextResponse
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
-from fastapi.middleware.cors import CORSMiddleware
-
-from pydantic import BaseModel, Field, ConfigDict
-import uvicorn
 import aiohttp
-
+import uvicorn
+from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from fastapi.staticfiles import StaticFiles
 
 # =============================================================================
 # SAFEPOINT-WRITER 3.0 (Portier 3.0 Spezifikation)
 # =============================================================================
+
 
 class SafepointWriter30:
     """SAFEPOINT-WRITER 3.0 - Production Grade nach Portier 3.0 Norm"""
@@ -59,31 +54,24 @@ class SafepointWriter30:
     def _mask_secrets(self, data: Any) -> Any:
         """Maskiert Secrets rekursiv nach Portier 3.0 Spezifikation"""
         if isinstance(data, dict):
-            data_dict = cast(Dict[str, Any], data)
+            data_dict = cast(dict[str, Any], data)
             return {
-                k: "***" if any(secret in k.lower() for secret in self.SECRET_KEYS)
-                else self._mask_secrets(v)
+                k: "***" if any(secret in k.lower() for secret in self.SECRET_KEYS) else self._mask_secrets(v)
                 for k, v in data_dict.items()
             }
         elif isinstance(data, list):
-            data_list = cast(List[Any], data)
+            data_list = cast(list[Any], data)
             return [self._mask_secrets(item) for item in data_list]
         return data
 
     def write_safepoint(
-        self,
-        source: str,
-        destination: str,
-        category: str,
-        request_id: str,
-        payload: Dict[str, Any]
+        self, source: str, destination: str, category: str, request_id: str, payload: dict[str, Any]
     ) -> str:
-
         if category not in self.CATEGORIES:
             raise ValueError(f"Invalid category: {category}. Must be one of {self.CATEGORIES}")
 
         sp_timestamp = int(time.time())
-        iso_timestamp = datetime.now(timezone.utc).isoformat()
+        iso_timestamp = datetime.now(UTC).isoformat()
 
         now = datetime.now()
         date_path = self.archivp_root / now.strftime("%Y") / now.strftime("%m") / now.strftime("%d")
@@ -92,7 +80,7 @@ class SafepointWriter30:
         filename = f"SP{sp_timestamp}_{source}→{destination}_{category}.json"
         filepath = date_path / filename
 
-        safepoint_obj: Dict[str, Any] = {
+        safepoint_obj: dict[str, Any] = {
             "timestamp": iso_timestamp,
             "sp_timestamp": sp_timestamp,
             "source": source,
@@ -100,21 +88,17 @@ class SafepointWriter30:
             "category": category,
             "request_id": request_id,
             "payload": self._mask_secrets(payload),
-            "strict": True
+            "strict": True,
         }
 
         try:
-            filepath.write_text(
-                json.dumps(safepoint_obj, ensure_ascii=False, separators=(",", ":")),
-                encoding="utf-8"
-            )
+            filepath.write_text(json.dumps(safepoint_obj, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         except Exception as e:
             for attempt in range(3):
                 try:
                     time.sleep(0.1 * (attempt + 1))
                     filepath.write_text(
-                        json.dumps(safepoint_obj, ensure_ascii=False, separators=(",", ":")),
-                        encoding="utf-8"
+                        json.dumps(safepoint_obj, ensure_ascii=False, separators=(",", ":")), encoding="utf-8"
                     )
                     break
                 except Exception:
@@ -127,7 +111,7 @@ class SafepointWriter30:
             "category": category,
             "source": source,
             "destination": destination,
-            "request_id": request_id
+            "request_id": request_id,
         }
 
         try:
@@ -144,8 +128,8 @@ class SafepointWriter30:
                 "event_type": "safepoint",
                 "agent": agent,
                 "category": category,
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-                "file": filename
+                "timestamp": datetime.now(UTC).isoformat(),
+                "file": filename,
             }
             logging.info(f"SSE Event: {event_data}")
         except Exception as e:
@@ -180,25 +164,25 @@ LOGS_DIR.mkdir(exist_ok=True)
 # AGENT REGISTRY
 # =============================================================================
 
-AGENT_REGISTRY: List[Dict[str, Any]] = [
-    {"id": "opena3",  "name": "OpenWebUI Terminal",        "kuerzel": "owuip",      "port": 12347},
-    {"id": "opena4",  "name": "Telegram Agent",            "kuerzel": "telep",      "port": 12348},
-    {"id": "opena5",  "name": "VS Code Agent",             "kuerzel": "vscop",      "port": 12351},
-    {"id": "opena6",  "name": "Browser Agent",             "kuerzel": "browsep",    "port": 12352},
-    {"id": "opena7",  "name": "Email Agent",               "kuerzel": "emailp",     "port": 12353},
-    {"id": "opena8",  "name": "WhatsApp Agent",            "kuerzel": "whatsappp",  "port": 12354},
-    {"id": "opena9",  "name": "Telefonie Agent",           "kuerzel": "telphonep",  "port": 12355},
-    {"id": "opena10", "name": "Call Tracking Agent",       "kuerzel": "calltrackp", "port": 12356},
-    {"id": "opena11", "name": "Unlock Agent",              "kuerzel": "unlockp",    "port": 12357},
-    {"id": "opena12", "name": "Social Media Agent",        "kuerzel": "smp",        "port": 12358},
-    {"id": "opena13", "name": "Influencer Agent",          "kuerzel": "influp",     "port": 12359},
-    {"id": "opena14", "name": "Calendar Agent",            "kuerzel": "calp",       "port": 12360},
-    {"id": "opena15", "name": "HTML Creator",              "kuerzel": "htmlp",      "port": 12361},
-    {"id": "opena16", "name": "Shop Agent",                "kuerzel": "shopp",      "port": 12362},
-    {"id": "opena17", "name": "Homepage Creator",          "kuerzel": "hpcreatep",  "port": 12363},
-    {"id": "opena18", "name": "CRM Agent",                 "kuerzel": "crmp",       "port": 12363},
-    {"id": "opena19", "name": "Stocks & Crypto",           "kuerzel": "stockcryptop","port": 12365},
-    {"id": "opena21", "name": "Workflow Engine",           "kuerzel": "workflowp",  "port": 12367},
+AGENT_REGISTRY: list[dict[str, Any]] = [
+    {"id": "opena3", "name": "OpenWebUI Terminal", "kuerzel": "owuip", "port": 12347},
+    {"id": "opena4", "name": "Telegram Agent", "kuerzel": "telep", "port": 12348},
+    {"id": "opena5", "name": "VS Code Agent", "kuerzel": "vscop", "port": 12351},
+    {"id": "opena6", "name": "Browser Agent", "kuerzel": "browsep", "port": 12352},
+    {"id": "opena7", "name": "Email Agent", "kuerzel": "emailp", "port": 12353},
+    {"id": "opena8", "name": "WhatsApp Agent", "kuerzel": "whatsappp", "port": 12354},
+    {"id": "opena9", "name": "Telefonie Agent", "kuerzel": "telphonep", "port": 12355},
+    {"id": "opena10", "name": "Call Tracking Agent", "kuerzel": "calltrackp", "port": 12356},
+    {"id": "opena11", "name": "Unlock Agent", "kuerzel": "unlockp", "port": 12357},
+    {"id": "opena12", "name": "Social Media Agent", "kuerzel": "smp", "port": 12358},
+    {"id": "opena13", "name": "Influencer Agent", "kuerzel": "influp", "port": 12359},
+    {"id": "opena14", "name": "Calendar Agent", "kuerzel": "calp", "port": 12360},
+    {"id": "opena15", "name": "HTML Creator", "kuerzel": "htmlp", "port": 12361},
+    {"id": "opena16", "name": "Shop Agent", "kuerzel": "shopp", "port": 12362},
+    {"id": "opena17", "name": "Homepage Creator", "kuerzel": "hpcreatep", "port": 12363},
+    {"id": "opena18", "name": "CRM Agent", "kuerzel": "crmp", "port": 12363},
+    {"id": "opena19", "name": "Stocks & Crypto", "kuerzel": "stockcryptop", "port": 12365},
+    {"id": "opena21", "name": "Workflow Engine", "kuerzel": "workflowp", "port": 12367},
 ]
 
 
@@ -206,7 +190,7 @@ AGENT_REGISTRY: List[Dict[str, Any]] = [
 # FASTAPI APP
 # =============================================================================
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
 security = HTTPBearer()
@@ -230,12 +214,13 @@ app = FastAPI(
     title="opena20 Dashboard Agent",
     description="Central Dashboard for ELION/Portier System",
     version="3.0",
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 # Optional tracing: initialize if environment and packages permit
 try:
     from pkg.observability import init_tracing
+
     init_tracing(app, service_name=AGENT_ID)
 except Exception as _e:
     logger.debug("Tracing not initialized or not available: %s", _e)
@@ -253,12 +238,14 @@ static_dir = Path(__file__).parent / "static"
 if not static_dir.exists():
     static_dir.mkdir(parents=True, exist_ok=True)
     # Create placeholder index if it doesn't exist
-    (static_dir / "index.html").write_text("""
+    (static_dir / "index.html").write_text(
+        """
     <!doctype html>
     <html><head><title>ELION Dashboard</title></head>
     <body><h1>Dashboard Loading...</h1></body>
     </html>
-    """)
+    """
+    )
 
 try:
     app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
@@ -275,8 +262,8 @@ async def health():
         "agent": AGENT_ID,
         "kuerzel": KUERZEL,
         "port": PORT,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "registered_agents": len(AGENT_REGISTRY)
+        "timestamp": datetime.now(UTC).isoformat(),
+        "registered_agents": len(AGENT_REGISTRY),
     }
 
 
@@ -291,30 +278,36 @@ async def status_all():
                 async with session.get(url, timeout=aiohttp.ClientTimeout(total=2)) as resp:
                     if resp.status == 200:
                         data = await resp.json()
-                        results.append({
-                            "id": agent["id"],
-                            "name": agent["name"],
-                            "port": agent["port"],
-                            "status": "online",
-                            "health": data
-                        })
+                        results.append(
+                            {
+                                "id": agent["id"],
+                                "name": agent["name"],
+                                "port": agent["port"],
+                                "status": "online",
+                                "health": data,
+                            }
+                        )
                     else:
-                        results.append({
-                            "id": agent["id"],
-                            "name": agent["name"],
-                            "port": agent["port"],
-                            "status": "error",
-                            "error": f"HTTP {resp.status}"
-                        })
+                        results.append(
+                            {
+                                "id": agent["id"],
+                                "name": agent["name"],
+                                "port": agent["port"],
+                                "status": "error",
+                                "error": f"HTTP {resp.status}",
+                            }
+                        )
             except Exception as e:
-                results.append({
-                    "id": agent["id"],
-                    "name": agent["name"],
-                    "port": agent["port"],
-                    "status": "offline",
-                    "error": str(e)
-                })
-    return {"agents": results, "total": len(results), "timestamp": datetime.now(timezone.utc).isoformat()}
+                results.append(
+                    {
+                        "id": agent["id"],
+                        "name": agent["name"],
+                        "port": agent["port"],
+                        "status": "offline",
+                        "error": str(e),
+                    }
+                )
+    return {"agents": results, "total": len(results), "timestamp": datetime.now(UTC).isoformat()}
 
 
 @app.get("/api/agents")
@@ -350,9 +343,4 @@ async def root():
 if __name__ == "__main__":
     PORT = int(os.getenv("OPENA20_PORT", "12349"))
     print(f"🚀 opena20 Dashboard Agent startet auf Port {PORT}")
-    uvicorn.run(
-        "main_dashboard:app",
-        host="127.0.0.1",
-        port=PORT,
-        log_level="info"
-    )
+    uvicorn.run("main_dashboard:app", host="127.0.0.1", port=PORT, log_level="info")

@@ -25,15 +25,15 @@ AGENTS=(
 
 for agent in "${AGENTS[@]}"; do
   IFS='|' read -r name port desc <<< "$agent"
-  
+
   # Create directory structure
   mkdir -p "$name"/{bin,config,tests,logs,docs,data,api,cache}
-  
+
   # Create README
   cat > "$name/README.md" << AGENT_README
 # $name
 
-**Port:** $port  
+**Port:** $port
 **Description:** $desc
 
 ## Quick Start

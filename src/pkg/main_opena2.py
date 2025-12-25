@@ -9,16 +9,16 @@ ELION Archivator (opena2)
     GET  /archiv/get?path=... (optional: Inhalt anzeigen)
 """
 
-from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel
-from typing import Optional, List, Any
-from pathlib import Path
-from datetime import datetime, timezone
 import json
-import os
-import uvicorn
 import logging
+import os
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
+
+import uvicorn
+from fastapi import FastAPI, HTTPException, Query
+from pydantic import BaseModel
 
 # --- Basis ---
 app = FastAPI(title="ELION Archivator (opena2)", version="1.0")
@@ -31,15 +31,18 @@ logging.basicConfig(
 ARCHIV_ROOT = Path(os.environ.get("ARCHIV_ROOT", "./ARCHIV")).resolve()
 ARCHIV_ROOT.mkdir(parents=True, exist_ok=True)
 
+
 # --- Models ---
 class WriteOp(BaseModel):
-    op: Optional[str] = "WRITE"
-    path: Optional[str] = None  # z.B. "2025/11/06/SP176214xxxx_kordp→opena2_CMD.json"
+    op: str | None = "WRITE"
+    path: str | None = None  # z.B. "2025/11/06/SP176214xxxx_kordp→opena2_CMD.json"
     content: Any
+
 
 # --- Helpers ---
 def _utcnow_iso() -> str:
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(UTC).isoformat()
+
 
 def _safe_join(root: Path, rel_path: str) -> Path:
     # keine traversal-Angriffe zulassen
@@ -48,13 +51,16 @@ def _safe_join(root: Path, rel_path: str) -> Path:
         raise HTTPException(status_code=400, detail="Invalid path")
     return p
 
+
 def _ensure_parent(p: Path) -> None:
     p.parent.mkdir(parents=True, exist_ok=True)
+
 
 # --- Routes ---
 @app.get("/health")
 def health():
     return {"service": "opena2", "status": "healthy", "strict": True, "timestamp": _utcnow_iso()}
+
 
 @app.post("/store/archivp")
 def store_archivp(payload: dict):
@@ -96,22 +102,26 @@ def store_archivp(payload: dict):
 
     raise HTTPException(status_code=400, detail="Unsupported payload format")
 
+
 @app.get("/archiv/last")
 def archiv_last(n: int = Query(5, ge=1, le=100)):
     """Liste die letzten n Dateien nach mtime (desc)"""
-    files: List[Path] = []
+    files: list[Path] = []
     for p in ARCHIV_ROOT.rglob("*.json"):
         files.append(p)
     files.sort(key=lambda p: p.stat().st_mtime, reverse=True)
     out = []
     for p in files[:n]:
         st = p.stat()
-        out.append({
-            "path": str(p.relative_to(ARCHIV_ROOT)),
-            "size": st.st_size,
-            "mtime": datetime.fromtimestamp(st.st_mtime, tz=timezone.utc).isoformat(),
-        })
+        out.append(
+            {
+                "path": str(p.relative_to(ARCHIV_ROOT)),
+                "size": st.st_size,
+                "mtime": datetime.fromtimestamp(st.st_mtime, tz=UTC).isoformat(),
+            }
+        )
     return {"strict": True, "count": len(out), "items": out}
+
 
 @app.get("/archiv/get")
 def archiv_get(path: str):
@@ -127,7 +137,7 @@ def archiv_get(path: str):
         data = p.read_text(encoding="utf-8", errors="replace")
     return {"strict": True, "path": path, "content": data}
 
+
 if __name__ == "__main__":
     # Starte fix auf 12345
     uvicorn.run("main_opena2:app", host="127.0.0.1", port=12345, reload=False)
-

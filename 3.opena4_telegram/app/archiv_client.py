@@ -1,8 +1,10 @@
 import httpx
+
 from .config import get_settings
 from .models import Safepoint
 
 settings = get_settings()
+
 
 async def write_safepoint(sp: Safepoint) -> None:
     url = f"{settings.OPENA2_URL}/store/archivp"

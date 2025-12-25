@@ -29,25 +29,24 @@ PORTIER 3.0 Policies:
 ✅ Logging: Structured, JSON-ready, secret masking
 """
 
+import json
+import logging
 import os
 import sys
 import time
-import json
-import logging
-from pathlib import Path
-from datetime import datetime, timezone, timedelta
-from typing import Optional, List, Dict, Any
 from contextlib import asynccontextmanager
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
 
-from fastapi import FastAPI, HTTPException, Depends, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field, ConfigDict, field_validator
-from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, Boolean, ForeignKey, Index, text
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session, relationship
-from sqlalchemy.sql import func
 import uvicorn
+from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Index, Integer, String, create_engine, text
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Session, relationship, sessionmaker
+from sqlalchemy.sql import func
 
 # ──────────────────────────────────────────────────────────────────────────────
 # CONSTANTS & CONFIG
@@ -82,11 +81,7 @@ LOG_DIR = Path("logs")
 LOG_DIR.mkdir(exist_ok=True)
 
 logging.basicConfig(
-    level=logging.INFO,
-    format='[%(levelname)s] %(name)s – %(message)s',
-    handlers=[
-        logging.StreamHandler()
-    ]
+    level=logging.INFO, format="[%(levelname)s] %(name)s – %(message)s", handlers=[logging.StreamHandler()]
 )
 logger = logging.getLogger(AGENT_ID)
 
@@ -99,6 +94,7 @@ Base = declarative_base()
 
 class Campaign(Base):
     """Campaign Model - Marketing campaigns with tracking numbers"""
+
     __tablename__ = "campaigns"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -116,6 +112,7 @@ class Campaign(Base):
 
 class TrackingNumber(Base):
     """Tracking Number Model - Phone numbers assigned to campaigns"""
+
     __tablename__ = "tracking_numbers"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -129,13 +126,12 @@ class TrackingNumber(Base):
     campaign = relationship("Campaign", back_populates="tracking_numbers")
     call_events = relationship("CallEvent", back_populates="tracking_number_obj")
 
-    __table_args__ = (
-        Index("idx_tracking_campaign", "campaign_id"),
-    )
+    __table_args__ = (Index("idx_tracking_campaign", "campaign_id"),)
 
 
 class CallEvent(Base):
     """Call Event Model - Individual call records"""
+
     __tablename__ = "call_events"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -187,17 +183,19 @@ def get_db():
 # PYDANTIC MODELS (Strict JSON - extra="forbid")
 # ──────────────────────────────────────────────────────────────────────────────
 
+
 class CallEventIngest(BaseModel):
     """Model for ingesting call events from opena9 or external sources"""
+
     model_config = ConfigDict(extra="forbid")
 
     call_id: str = Field(..., description="Unique call ID from telephony provider")
     tracking_number: str = Field(..., description="Tracking phone number (E.164 format)")
-    caller_number: Optional[str] = Field(None, description="Caller phone number (masked)")
-    duration_seconds: Optional[int] = Field(None, ge=0, description="Call duration in seconds")
+    caller_number: str | None = Field(None, description="Caller phone number (masked)")
+    duration_seconds: int | None = Field(None, ge=0, description="Call duration in seconds")
     status: str = Field(..., description="Call status: completed, busy, no-answer, failed")
     timestamp: str = Field(..., description="ISO 8601 timestamp (UTC)")
-    metadata: Optional[Dict[str, Any]] = Field(default_factory=dict, description="Additional metadata")
+    metadata: dict[str, Any] | None = Field(default_factory=dict, description="Additional metadata")
 
     @field_validator("status")
     @classmethod
@@ -210,28 +208,31 @@ class CallEventIngest(BaseModel):
 
 class TrackingNumberCreate(BaseModel):
     """Model for creating tracking numbers"""
+
     model_config = ConfigDict(extra="forbid")
 
     number: str = Field(..., description="Phone number in E.164 format")
     campaign_id: str = Field(..., description="Campaign ID to assign this number to")
-    description: Optional[str] = Field(None, max_length=300, description="Optional description")
+    description: str | None = Field(None, max_length=300, description="Optional description")
 
 
 class CampaignCreate(BaseModel):
     """Model for creating campaigns"""
+
     model_config = ConfigDict(extra="forbid")
 
     campaign_id: str = Field(..., max_length=100, description="Unique campaign identifier")
     name: str = Field(..., max_length=200, description="Campaign name")
-    description: Optional[str] = Field(None, max_length=500, description="Campaign description")
+    description: str | None = Field(None, max_length=500, description="Campaign description")
 
 
 class CommandRequest(BaseModel):
     """Generic command request for Option-2-Flow integration"""
+
     model_config = ConfigDict(extra="forbid")
 
     command: str = Field(..., description="Command to execute")
-    params: Dict[str, Any] = Field(default_factory=dict, description="Command parameters")
+    params: dict[str, Any] = Field(default_factory=dict, description="Command parameters")
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -246,10 +247,7 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
     if not BEARER_TOKEN:
         return True  # Security disabled if no token configured
     if credentials.credentials != BEARER_TOKEN:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication token"
-        )
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication token")
     return True
 
 
@@ -257,10 +255,11 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
 # SAFEPOINT ARCHIVING
 # ──────────────────────────────────────────────────────────────────────────────
 
-def write_safepoint(direction: str, data: Dict[str, Any], sp_type: str):
+
+def write_safepoint(direction: str, data: dict[str, Any], sp_type: str):
     """Write safepoint to archivp_store (append-only, YYYY/MM/DD structure)"""
     try:
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         date_path = now.strftime("%Y/%m/%d")
         ts = int(now.timestamp() * 1000)
 
@@ -278,7 +277,7 @@ def write_safepoint(direction: str, data: Dict[str, Any], sp_type: str):
             "source": AGENT_ID,
             "destination": direction,
             "type": sp_type,
-            "data": data
+            "data": data,
         }
 
         with open(file_path, "w", encoding="utf-8") as f:
@@ -319,13 +318,14 @@ app = FastAPI(
     title=f"{AGENT_ID} (Call Tracking Agent)",
     description="Call Tracking, SQLAlchemy-Models, Campaign-Tracking",
     version="1.0.0",
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 
 # ──────────────────────────────────────────────────────────────────────────────
 # ROUTES
 # ──────────────────────────────────────────────────────────────────────────────
+
 
 @app.get("/")
 async def root():
@@ -342,12 +342,12 @@ async def root():
             "tracking_numbers/list",
             "tracking_numbers/create",
             "campaigns/create",
-            "campaigns/list"
+            "campaigns/list",
         ],
         "database": {
             "type": "sqlite" if "sqlite" in DB_URL else "postgresql",
-            "url": DB_URL.replace(os.getenv("DB_PASSWORD", ""), "***") if "DB_PASSWORD" in os.environ else DB_URL
-        }
+            "url": DB_URL.replace(os.getenv("DB_PASSWORD", ""), "***") if "DB_PASSWORD" in os.environ else DB_URL,
+        },
     }
 
 
@@ -361,7 +361,7 @@ async def health(db: Session = Depends(get_db)):
         db.execute(text("SELECT 1"))
         db_status = "connected"
     except Exception as e:
-        db_status = f"error: {str(e)}"
+        db_status = f"error: {e!s}"
 
     return {
         "status": "ok",
@@ -369,7 +369,7 @@ async def health(db: Session = Depends(get_db)):
         "port": PORT,
         "kuerzel": KUERZEL,
         "uptime": round(uptime, 2),
-        "database": db_status
+        "database": db_status,
     }
 
 
@@ -377,7 +377,7 @@ async def health(db: Session = Depends(get_db)):
 async def command(req: CommandRequest, _auth: bool = Depends(verify_token), db: Session = Depends(get_db)):
     """
     Generic command endpoint for Option-2-Flow integration
-    
+
     Receives commands from opena1 → opena2 → kordp
     """
     write_safepoint("opena2", {"command": req.command, "params": req.params}, "CMD")
@@ -386,7 +386,7 @@ async def command(req: CommandRequest, _auth: bool = Depends(verify_token), db: 
         "status": "executed",
         "command": req.command,
         "agent": AGENT_ID,
-        "result": "Command received (use specific endpoints for call tracking operations)"
+        "result": "Command received (use specific endpoints for call tracking operations)",
     }
 
     write_safepoint("opena2", result, "RESP")
@@ -398,7 +398,7 @@ async def command(req: CommandRequest, _auth: bool = Depends(verify_token), db: 
 async def ingest_event(event: CallEventIngest, _auth: bool = Depends(verify_token), db: Session = Depends(get_db)):
     """
     Ingest call event from opena9 or external telephony system
-    
+
     Creates CallEvent record linked to tracking number and campaign
     """
     write_safepoint("opena9", event.model_dump(), "CMD")
@@ -428,7 +428,7 @@ async def ingest_event(event: CallEventIngest, _auth: bool = Depends(verify_toke
         duration_seconds=event.duration_seconds,
         status=event.status,
         timestamp=timestamp,
-        extra_data=json.dumps(event.metadata) if event.metadata else None
+        extra_data=json.dumps(event.metadata) if event.metadata else None,
     )
 
     db.add(call_event)
@@ -440,7 +440,7 @@ async def ingest_event(event: CallEventIngest, _auth: bool = Depends(verify_toke
         "event_id": call_event.id,
         "call_id": call_event.call_id,
         "campaign_id": tracking_num.campaign.campaign_id,
-        "ingested_at": call_event.ingested_at.isoformat()
+        "ingested_at": call_event.ingested_at.isoformat(),
     }
 
     write_safepoint("opena9", result, "RESP")
@@ -452,7 +452,7 @@ async def ingest_event(event: CallEventIngest, _auth: bool = Depends(verify_toke
 async def stats_summary(_auth: bool = Depends(verify_token), db: Session = Depends(get_db)):
     """
     Get overall call statistics
-    
+
     Returns total calls, avg duration, success rate
     """
     write_safepoint("opena1", {"endpoint": "stats/summary"}, "CMD")
@@ -467,7 +467,7 @@ async def stats_summary(_auth: bool = Depends(verify_token), db: Session = Depen
         "total_calls": total_calls,
         "avg_duration_seconds": round(avg_duration, 2),
         "completed_calls": completed_calls,
-        "success_rate_percent": round(success_rate, 2)
+        "success_rate_percent": round(success_rate, 2),
     }
 
     write_safepoint("opena1", result, "RESP")
@@ -476,22 +476,28 @@ async def stats_summary(_auth: bool = Depends(verify_token), db: Session = Depen
 
 
 @app.get("/stats/by_campaign")
-async def stats_by_campaign(campaign_id: Optional[str] = None, _auth: bool = Depends(verify_token), db: Session = Depends(get_db)):
+async def stats_by_campaign(
+    campaign_id: str | None = None, _auth: bool = Depends(verify_token), db: Session = Depends(get_db)
+):
     """
     Get statistics by campaign
-    
+
     If campaign_id provided, returns stats for that campaign only
     Otherwise returns stats for all campaigns
     """
     write_safepoint("opena1", {"endpoint": "stats/by_campaign", "campaign_id": campaign_id}, "CMD")
 
-    query = db.query(
-        Campaign.campaign_id,
-        Campaign.name,
-        func.count(CallEvent.id).label("total_calls"),
-        func.avg(CallEvent.duration_seconds).label("avg_duration"),
-        func.count(CallEvent.id).filter(CallEvent.status == "completed").label("completed_calls")
-    ).join(CallEvent, Campaign.id == CallEvent.campaign_id, isouter=True).group_by(Campaign.id)
+    query = (
+        db.query(
+            Campaign.campaign_id,
+            Campaign.name,
+            func.count(CallEvent.id).label("total_calls"),
+            func.avg(CallEvent.duration_seconds).label("avg_duration"),
+            func.count(CallEvent.id).filter(CallEvent.status == "completed").label("completed_calls"),
+        )
+        .join(CallEvent, Campaign.id == CallEvent.campaign_id, isouter=True)
+        .group_by(Campaign.id)
+    )
 
     if campaign_id:
         query = query.filter(Campaign.campaign_id == campaign_id)
@@ -504,14 +510,16 @@ async def stats_by_campaign(campaign_id: Optional[str] = None, _auth: bool = Dep
         completed = row.completed_calls or 0
         success_rate = (completed / total * 100) if total > 0 else 0
 
-        campaigns_stats.append({
-            "campaign_id": row.campaign_id,
-            "campaign_name": row.name,
-            "total_calls": total,
-            "avg_duration_seconds": round(row.avg_duration or 0, 2),
-            "completed_calls": completed,
-            "success_rate_percent": round(success_rate, 2)
-        })
+        campaigns_stats.append(
+            {
+                "campaign_id": row.campaign_id,
+                "campaign_name": row.name,
+                "total_calls": total,
+                "avg_duration_seconds": round(row.avg_duration or 0, 2),
+                "completed_calls": completed,
+                "success_rate_percent": round(success_rate, 2),
+            }
+        )
 
     result = {"campaigns": campaigns_stats}
 
@@ -535,7 +543,7 @@ async def list_tracking_numbers(_auth: bool = Depends(verify_token), db: Session
                 "campaign_name": tn.campaign.name,
                 "description": tn.description,
                 "active": tn.active,
-                "created_at": tn.created_at.isoformat()
+                "created_at": tn.created_at.isoformat(),
             }
             for tn in tracking_nums
         ]
@@ -547,7 +555,9 @@ async def list_tracking_numbers(_auth: bool = Depends(verify_token), db: Session
 
 
 @app.post("/tracking_numbers/create")
-async def create_tracking_number(req: TrackingNumberCreate, _auth: bool = Depends(verify_token), db: Session = Depends(get_db)):
+async def create_tracking_number(
+    req: TrackingNumberCreate, _auth: bool = Depends(verify_token), db: Session = Depends(get_db)
+):
     """Create a new tracking number assigned to a campaign"""
     write_safepoint("opena1", req.model_dump(), "CMD")
 
@@ -562,11 +572,7 @@ async def create_tracking_number(req: TrackingNumberCreate, _auth: bool = Depend
         raise HTTPException(status_code=404, detail=f"Campaign {req.campaign_id} not found")
 
     # Create tracking number
-    tracking_num = TrackingNumber(
-        number=req.number,
-        campaign_id=campaign.id,
-        description=req.description
-    )
+    tracking_num = TrackingNumber(number=req.number, campaign_id=campaign.id, description=req.description)
 
     db.add(tracking_num)
     db.commit()
@@ -579,8 +585,8 @@ async def create_tracking_number(req: TrackingNumberCreate, _auth: bool = Depend
             "number": tracking_num.number,
             "campaign_id": campaign.campaign_id,
             "description": tracking_num.description,
-            "created_at": tracking_num.created_at.isoformat()
-        }
+            "created_at": tracking_num.created_at.isoformat(),
+        },
     }
 
     write_safepoint("opena1", result, "RESP")
@@ -599,11 +605,7 @@ async def create_campaign(req: CampaignCreate, _auth: bool = Depends(verify_toke
         raise HTTPException(status_code=409, detail=f"Campaign {req.campaign_id} already exists")
 
     # Create campaign
-    campaign = Campaign(
-        campaign_id=req.campaign_id,
-        name=req.name,
-        description=req.description
-    )
+    campaign = Campaign(campaign_id=req.campaign_id, name=req.name, description=req.description)
 
     db.add(campaign)
     db.commit()
@@ -616,8 +618,8 @@ async def create_campaign(req: CampaignCreate, _auth: bool = Depends(verify_toke
             "campaign_id": campaign.campaign_id,
             "name": campaign.name,
             "description": campaign.description,
-            "created_at": campaign.created_at.isoformat()
-        }
+            "created_at": campaign.created_at.isoformat(),
+        },
     }
 
     write_safepoint("opena1", result, "RESP")
@@ -639,7 +641,7 @@ async def list_campaigns(_auth: bool = Depends(verify_token), db: Session = Depe
                 "name": c.name,
                 "description": c.description,
                 "active": c.active,
-                "created_at": c.created_at.isoformat()
+                "created_at": c.created_at.isoformat(),
             }
             for c in campaigns
         ]
@@ -655,9 +657,4 @@ async def list_campaigns(_auth: bool = Depends(verify_token), db: Session = Depe
 # ──────────────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    uvicorn.run(
-        app,
-        host="127.0.0.1",
-        port=PORT,
-        log_level="info"
-    )
+    uvicorn.run(app, host="127.0.0.1", port=PORT, log_level="info")

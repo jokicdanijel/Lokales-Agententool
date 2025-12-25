@@ -1,6 +1,6 @@
 # LocalAgent-Pro – Binary-Handling Fix (githubcli-archive-keyring.gpg Problem)
 
-**Datum:** 2025-12-01  
+**Datum:** 2025-12-01
 **Status:** ✅ Implementiert
 
 ---
@@ -8,6 +8,7 @@
 ## 1. Problembeschreibung
 
 ### IST-Zustand (vor dem Fix)
+
 Wenn LocalAgent-Pro eine URL mit **Binärdaten** abrief (z.B. GPG-Keys, ZIP-Dateien, Bilder), wurde der **rohe Binärinhalt als Text in den Chat** ausgegeben. Das führte zu:
 
 - Unlesbarem "Zeichensalat" (kryptische Zeichen, Base64-artiger Müll)
@@ -16,6 +17,7 @@ Wenn LocalAgent-Pro eine URL mit **Binärdaten** abrief (z.B. GPG-Keys, ZIP-Date
 - Potentiellen Encoding-Problemen
 
 **Beispiel-URL mit Problem:**
+
 ```
 https://cli.github.com/packages/githubcli-archive-keyring.gpg
 ```
@@ -26,13 +28,14 @@ https://cli.github.com/packages/githubcli-archive-keyring.gpg
 
 ### Neues Verhalten
 
-| Content-Type | Behandlung |
-|--------------|------------|
-| `text/*`, `*html*` | Inhalt als Text ausgeben (max. 8000 Zeichen) |
-| `application/json` | JSON hübsch formatiert ausgeben |
+| Content-Type              | Behandlung                                   |
+| ------------------------- | -------------------------------------------- |
+| `text/*`, `*html*`        | Inhalt als Text ausgeben (max. 8000 Zeichen) |
+| `application/json`        | JSON hübsch formatiert ausgeben              |
 | **Alles andere (Binary)** | Datei lokal speichern, nur Metadaten im Chat |
 
 ### Binary-Download Ausgabe (neu)
+
 ```
 🌐 Binary-Download erfolgreich
 
@@ -49,35 +52,41 @@ Hinweis: Das ist eine Binärdatei. Der Inhalt wurde lokal gespeichert und nicht 
 
 ## 3. Geänderte Dateien
 
-| Datei | Änderung |
-|-------|----------|
-| `src/openwebui_agent_server.py` | `classify_content_type()` hinzugefügt |
-| `src/openwebui_agent_server.py` | `get_filename_from_response()` hinzugefügt |
-| `src/openwebui_agent_server.py` | `format_file_size()` hinzugefügt |
-| `src/openwebui_agent_server.py` | `fetch_webpage()` komplett überarbeitet |
-| `src/openwebui_agent_server.py` | `format_tool_result()` hinzugefügt |
-| `src/openwebui_agent_server.py` | `chat_completions()` Response-Formatting angepasst |
-| `config/config.yaml` | Domain-Whitelist erweitert um `cli.github.com`, `github.com` |
-| `tests/test_web_fetch_binary.py` | **NEU:** Unit-Tests für Binary-Handling |
+| Datei                            | Änderung                                                     |
+| -------------------------------- | ------------------------------------------------------------ |
+| `src/openwebui_agent_server.py`  | `classify_content_type()` hinzugefügt                        |
+| `src/openwebui_agent_server.py`  | `get_filename_from_response()` hinzugefügt                   |
+| `src/openwebui_agent_server.py`  | `format_file_size()` hinzugefügt                             |
+| `src/openwebui_agent_server.py`  | `fetch_webpage()` komplett überarbeitet                      |
+| `src/openwebui_agent_server.py`  | `format_tool_result()` hinzugefügt                           |
+| `src/openwebui_agent_server.py`  | `chat_completions()` Response-Formatting angepasst           |
+| `config/config.yaml`             | Domain-Whitelist erweitert um `cli.github.com`, `github.com` |
+| `tests/test_web_fetch_binary.py` | **NEU:** Unit-Tests für Binary-Handling                      |
 
 ---
 
 ## 4. Neue Funktionen
 
 ### `classify_content_type(content_type: str) -> str`
+
 Klassifiziert Content-Type in `"text"`, `"json"` oder `"binary"`.
 
 ### `get_filename_from_response(response, url: str) -> str`
+
 Extrahiert Dateinamen aus:
+
 1. `Content-Disposition` Header (falls vorhanden)
 2. URL-Pfad (Fallback)
 3. Timestamp-basierter Name (letzter Fallback)
 
 ### `format_file_size(size_bytes: int) -> str`
+
 Formatiert Dateigröße menschenlesbar (B, KB, MB).
 
 ### `format_tool_result(tool_result: dict) -> str`
+
 Intelligenter Formatter für Tool-Ergebnisse:
+
 - Binary: Nur saubere Zusammenfassung
 - JSON: Hübsch formatiert mit Syntax-Highlighting
 - Text: Standard mit Metadaten
@@ -100,6 +109,7 @@ Intelligenter Formatter für Tool-Ergebnisse:
 ## 6. Tests
 
 ### Unit-Tests
+
 ```bash
 cd LocalAgent-Pro
 pytest tests/test_web_fetch_binary.py -v
@@ -108,12 +118,14 @@ pytest tests/test_web_fetch_binary.py -v
 ### Manuelle Verifikation
 
 **Vorher (IST):**
+
 ```
 User: Hole https://cli.github.com/packages/githubcli-archive-keyring.gpg
 Agent: Tool executed: {"status": "success", "content": "¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿...[unlesbarer Müll]"}
 ```
 
 **Nachher (SOLL):**
+
 ```
 User: Hole https://cli.github.com/packages/githubcli-archive-keyring.gpg
 Agent: 🌐 Binary-Download erfolgreich
@@ -142,11 +154,11 @@ Hinweis: Das ist eine Binärdatei. Der Inhalt wurde lokal gespeichert und nicht 
 
 ## 8. Limitierungen
 
-| Limitation | Beschreibung |
-|------------|--------------|
-| Große Dateien | Keine spezielle Behandlung für >100MB Downloads |
-| Streaming | Downloads erfolgen komplett in Memory vor dem Speichern |
-| Cleanup | Keine automatische Bereinigung alter Downloads |
+| Limitation    | Beschreibung                                            |
+| ------------- | ------------------------------------------------------- |
+| Große Dateien | Keine spezielle Behandlung für >100MB Downloads         |
+| Streaming     | Downloads erfolgen komplett in Memory vor dem Speichern |
+| Cleanup       | Keine automatische Bereinigung alter Downloads          |
 
 ---
 
@@ -163,6 +175,6 @@ python src/openwebui_agent_server.py
 
 ---
 
-**Autor:** GitHub Copilot  
-**Review:** Pending  
+**Autor:** GitHub Copilot
+**Review:** Pending
 **Version:** 1.0.0

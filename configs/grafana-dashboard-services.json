@@ -9,45 +9,115 @@
       {
         "title": "Portier (12344)",
         "type": "stat",
-        "gridPos": {"h": 4, "w": 3, "x": 0, "y": 0},
-        "targets": [{"expr": "elion_service_up{service=\"portier\"}", "refId": "A"}],
-        "options": {"colorMode": "background", "graphMode": "none"},
-        "fieldConfig": {"defaults": {"mappings": [{"type": "value", "options": {"1": {"text": "✓ UP", "color": "green"}, "0": {"text": "✗ DOWN", "color": "red"}}}]}}
+        "gridPos": { "h": 4, "w": 3, "x": 0, "y": 0 },
+        "targets": [
+          { "expr": "elion_service_up{service=\"portier\"}", "refId": "A" }
+        ],
+        "options": { "colorMode": "background", "graphMode": "none" },
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              {
+                "type": "value",
+                "options": {
+                  "1": { "text": "✓ UP", "color": "green" },
+                  "0": { "text": "✗ DOWN", "color": "red" }
+                }
+              }
+            ]
+          }
+        }
       },
       {
         "title": "OpenA2 (12345)",
         "type": "stat",
-        "gridPos": {"h": 4, "w": 3, "x": 3, "y": 0},
-        "targets": [{"expr": "elion_service_up{service=\"opena2\"}", "refId": "A"}],
-        "fieldConfig": {"defaults": {"mappings": [{"type": "value", "options": {"1": {"text": "✓ UP", "color": "green"}, "0": {"text": "✗ DOWN", "color": "red"}}}]}}
+        "gridPos": { "h": 4, "w": 3, "x": 3, "y": 0 },
+        "targets": [
+          { "expr": "elion_service_up{service=\"opena2\"}", "refId": "A" }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              {
+                "type": "value",
+                "options": {
+                  "1": { "text": "✓ UP", "color": "green" },
+                  "0": { "text": "✗ DOWN", "color": "red" }
+                }
+              }
+            ]
+          }
+        }
       },
       {
         "title": "Telegram (12346)",
         "type": "stat",
-        "gridPos": {"h": 4, "w": 3, "x": 6, "y": 0},
-        "targets": [{"expr": "elion_service_up{service=\"telegram\"}", "refId": "A"}],
-        "fieldConfig": {"defaults": {"mappings": [{"type": "value", "options": {"1": {"text": "✓ UP", "color": "green"}, "0": {"text": "✗ DOWN", "color": "red"}}}]}}
+        "gridPos": { "h": 4, "w": 3, "x": 6, "y": 0 },
+        "targets": [
+          { "expr": "elion_service_up{service=\"telegram\"}", "refId": "A" }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              {
+                "type": "value",
+                "options": {
+                  "1": { "text": "✓ UP", "color": "green" },
+                  "0": { "text": "✗ DOWN", "color": "red" }
+                }
+              }
+            ]
+          }
+        }
       },
       {
         "title": "Inference (12348)",
         "type": "stat",
-        "gridPos": {"h": 4, "w": 3, "x": 9, "y": 0},
-        "targets": [{"expr": "elion_service_up{service=\"inference\"}", "refId": "A"}],
-        "fieldConfig": {"defaults": {"mappings": [{"type": "value", "options": {"1": {"text": "✓ UP", "color": "green"}, "0": {"text": "✗ DOWN", "color": "red"}}}]}}
+        "gridPos": { "h": 4, "w": 3, "x": 9, "y": 0 },
+        "targets": [
+          { "expr": "elion_service_up{service=\"inference\"}", "refId": "A" }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              {
+                "type": "value",
+                "options": {
+                  "1": { "text": "✓ UP", "color": "green" },
+                  "0": { "text": "✗ DOWN", "color": "red" }
+                }
+              }
+            ]
+          }
+        }
       },
       {
         "title": "Service Request Count",
         "type": "barchart",
-        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
-        "targets": [{"expr": "increase(elion_service_requests_total[5m])", "refId": "A", "legendFormat": "{{service}}"}],
-        "options": {"orientation": "auto", "xTickLabelRotation": 0}
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+        "targets": [
+          {
+            "expr": "increase(elion_service_requests_total[5m])",
+            "refId": "A",
+            "legendFormat": "{{service}}"
+          }
+        ],
+        "options": { "orientation": "auto", "xTickLabelRotation": 0 }
       },
       {
         "title": "Service Error Rate %",
         "type": "timeseries",
-        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
-        "targets": [{"expr": "(sum by (service) (rate(elion_service_requests_total{status!=\"200\"}[1m])) / sum by (service) (rate(elion_service_requests_total[1m]))) * 100", "refId": "A", "legendFormat": "{{service}}"}],
-        "fieldConfig": {"defaults": {"unit": "percent", "custom": {"lineWidth": 2}}}
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+        "targets": [
+          {
+            "expr": "(sum by (service) (rate(elion_service_requests_total{status!=\"200\"}[1m])) / sum by (service) (rate(elion_service_requests_total[1m]))) * 100",
+            "refId": "A",
+            "legendFormat": "{{service}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": { "unit": "percent", "custom": { "lineWidth": 2 } }
+        }
       }
     ],
     "schemaVersion": 38,

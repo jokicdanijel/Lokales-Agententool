@@ -127,14 +127,35 @@
           "type": "array",
           "items": {
             "type": "string",
-            "enum": ["de", "en", "fr", "es", "it", "pt", "nl", "ja"]
+            "enum": [
+              "de",
+              "en",
+              "fr",
+              "es",
+              "it",
+              "pt",
+              "nl",
+              "ja"
+            ]
           },
-          "default": ["de", "en"],
+          "default": [
+            "de",
+            "en"
+          ],
           "description": "Supported languages for voice recognition"
         },
         "voiceInput.defaultLanguage": {
           "type": "string",
-          "enum": ["de", "en", "fr", "es", "it", "pt", "nl", "ja"],
+          "enum": [
+            "de",
+            "en",
+            "fr",
+            "es",
+            "it",
+            "pt",
+            "nl",
+            "ja"
+          ],
           "default": "de",
           "description": "Default language for speech recognition"
         },
@@ -174,7 +195,10 @@
         },
         "voiceInput.statusBarPosition": {
           "type": "string",
-          "enum": ["left", "right"],
+          "enum": [
+            "left",
+            "right"
+          ],
           "default": "right",
           "description": "Status bar position"
         },

@@ -20,24 +20,24 @@ found=0
 
 ss -ltnp 2>/dev/null | awk 'NR>1{print $4, $6}' | while read -r addr proc; do
   port="${addr##*:}"
-  
+
   # Nicht numerisch? Skip
   [[ "$port" =~ ^[0-9]+$ ]] || continue
-  
+
   # 8080 ist sakrosankt
   if [[ "$port" -eq "$FORBID_PORT" ]]; then
     echo "  ℹ️  Port :${FORBID_PORT} reserved (OpenWebUI) – not touching"
     continue
   fi
-  
+
   # Im Pool? OK, nicht anfassen
   if [[ "$port" -ge $POOL_START && "$port" -le $POOL_END ]]; then
     continue
   fi
-  
+
   # Rogue port! PID extrahieren
   pid="$(echo "$proc" | sed -n 's/.*pid=\([0-9]\+\).*/\1/p')"
-  
+
   if [[ -n "$pid" ]]; then
     echo "  ⚠️  Kill pid $pid on rogue port :$port"
     kill "$pid" 2>/dev/null || echo "    (already gone)"

@@ -1,7 +1,7 @@
 # OpenWebUI Integration Manual
 
-**Status:** 🟢 OpenWebUI läuft auf Port 3000 (extern erreichbar)  
-**Last Updated:** 2025-11-09  
+**Status:** 🟢 OpenWebUI läuft auf Port 3000 (extern erreichbar)
+**Last Updated:** 2025-11-09
 **P0-Compliance:** ✅ Port 3000 ist ERLAUBT (nur 8080 forbidden für externe Services)
 
 ---
@@ -10,13 +10,13 @@
 
 Die P0-Port-Policy hat eine **kritische Exception** für externe WebUI-Systeme:
 
-| Service | Port | Policy | Notes |
-|---------|------|--------|-------|
-| Core Services (opena1, kordp, archivp) | 12344–12399 | **REQUIRED** | Muss in dieser Range sein |
-| External OpenWebUI | 3000 | **ALLOWED** | Externe Docker/Venv-Instanz |
-| Dashboard (19.dashboard_agent) | 12349 | **REQUIRED** | Falls aktiviert |
-| **Forbidden Global** | 80, 443, 5000, 5432, 6379, 8000-8009 | **BLOCKED** | Nie verwenden |
-| **Special Forbidden** | 8080 | **BLOCKED** | Nur für interne OpenWebUI-Container (nicht in Code) |
+| Service                                | Port                                 | Policy       | Notes                                               |
+| -------------------------------------- | ------------------------------------ | ------------ | --------------------------------------------------- |
+| Core Services (opena1, kordp, archivp) | 12344–12399                          | **REQUIRED** | Muss in dieser Range sein                           |
+| External OpenWebUI                     | 3000                                 | **ALLOWED**  | Externe Docker/Venv-Instanz                         |
+| Dashboard (19.dashboard_agent)         | 12349                                | **REQUIRED** | Falls aktiviert                                     |
+| **Forbidden Global**                   | 80, 443, 5000, 5432, 6379, 8000-8009 | **BLOCKED**  | Nie verwenden                                       |
+| **Special Forbidden**                  | 8080                                 | **BLOCKED**  | Nur für interne OpenWebUI-Container (nicht in Code) |
 
 ---
 
@@ -45,6 +45,7 @@ Die aktuelle Workflow-Validierung muss **OpenWebUI-Referenzen** ausschließen:
 **File:** `.github/workflows/portier-ci.yml`
 
 **Current problematic step:**
+
 ```bash
 if grep -r ":8080" . --include="*.py" --include="*.sh" --include="*.yml" --include="*.yaml" 2>/dev/null \
    | grep -v "2.openwebui" | grep -v ".git" | grep -v "__pycache__"; then
@@ -54,6 +55,7 @@ fi
 ```
 
 **Fixed step (allow OpenWebUI internal references):**
+
 ```bash
 if grep -r ":8080" . --include="*.py" --include="*.sh" --include="*.yml" --include="*.yaml" 2>/dev/null \
    | grep -v "2.openwebui" \
@@ -67,7 +69,8 @@ fi
 ```
 
 **Rationale:**
-- `grep -v "openwebui_"` – Exclude all openwebui_*.py files
+
+- `grep -v "openwebui_"` – Exclude all openwebui\_\*.py files
 - `grep -v "OPENWEBUI"` – Exclude env variable references
 - `grep -v "docker-compose"` – Exclude container port mappings
 
@@ -114,13 +117,13 @@ curl -s $OPENWEBUI_URL/health | jq .
 
 ```yaml
 # File: 2.openwebui/docker-compose.yml
-version: '3.8'
+version: "3.8"
 
 services:
   openwebui:
     image: ghcr.io/open-webui/open-webui:latest
     ports:
-      - "3000:8080"  # External:Internal mapping
+      - "3000:8080" # External:Internal mapping
     environment:
       - OPENWEBUI_BASE_URL=http://127.0.0.1:3000
     volumes:
@@ -128,6 +131,7 @@ services:
 ```
 
 **Run:**
+
 ```bash
 cd 2.openwebui
 docker-compose up -d
@@ -158,6 +162,7 @@ curl -X POST http://127.0.0.1:12349/api/agent/register \
 ### ALLOWED Port Patterns (Won't fail CI)
 
 ✅ **These will NOT trigger CI failure:**
+
 ```
 # Docker-compose port mappings
 "${HOST_PORT:-3000}:8080"
@@ -173,6 +178,7 @@ OPENWEBUI_URL="http://127.0.0.1:8080"
 ```
 
 ❌ **These WILL trigger CI failure:**
+
 ```
 # Raw port references in core services
 PORT = 8080
@@ -223,6 +229,7 @@ port=8080
 **Root Cause:** Grep pattern is too strict
 
 **Fix:** Update `.github/workflows/portier-ci.yml`:
+
 ```bash
 # Replace this:
 grep -v "2.openwebui" | grep -v ".git"
@@ -232,6 +239,7 @@ grep -v "2.openwebui\|openwebui_\|OPENWEBUI\|docker-compose" | grep -v ".git"
 ```
 
 **Test locally:**
+
 ```bash
 grep -r ":8080" . --include="*.py" \
   | grep -v "2.openwebui\|openwebui_\|OPENWEBUI" \
@@ -242,6 +250,7 @@ grep -r ":8080" . --include="*.py" \
 ### Issue: OpenWebUI not accessible at http://127.0.0.1:3000
 
 **Checklist:**
+
 1. Is Docker running? `docker ps | grep openwebui`
 2. Is service bound to 3000? `netstat -tlnp | grep 3000`
 3. Firewall blocking? `sudo ufw allow 3000`
@@ -252,6 +261,7 @@ grep -r ":8080" . --include="*.py" \
 **Cause:** GitHub Actions runs in different environment
 
 **Fix:**
+
 1. Clone repo locally (fresh state)
 2. Run exact workflow commands
 3. Check file encodings (Windows CRLF vs Unix LF)
@@ -293,13 +303,13 @@ grep -r ":8080" 3.opena1_coordinator 5.kordp_scheduler 4.opena2_archivator 2>/de
 
 This integration follows **P0 Production Hardening** principles:
 
-| Principle | OpenWebUI Compliance |
-|-----------|---------------------|
-| **P0.1 Port-Policy** | ✅ Uses external 3000, not in core range |
-| **P0.2 venv312** | ✅ Can use same venv as core or separate |
-| **P0.3 Endpoints** | ✅ Exposes /health, REST API |
-| **P0.4 Health-Checks** | ✅ GET /health returns service status |
-| **P0.5 Root-Hardening** | ✅ No special chars in filenames |
+| Principle               | OpenWebUI Compliance                     |
+| ----------------------- | ---------------------------------------- |
+| **P0.1 Port-Policy**    | ✅ Uses external 3000, not in core range |
+| **P0.2 venv312**        | ✅ Can use same venv as core or separate |
+| **P0.3 Endpoints**      | ✅ Exposes /health, REST API             |
+| **P0.4 Health-Checks**  | ✅ GET /health returns service status    |
+| **P0.5 Root-Hardening** | ✅ No special chars in filenames         |
 
 ---
 
@@ -314,9 +324,9 @@ This integration follows **P0 Production Hardening** principles:
 ---
 
 **Next Steps:**
+
 1. ✅ Update `.github/workflows/portier-ci.yml` with OpenWebUI grep exclusions
 2. ✅ Test CI locally: `bash .github/workflows/portier-ci.yml` (or use `act`)
 3. ✅ Verify OpenWebUI accessibility: `curl http://127.0.0.1:3000`
 4. ✅ Run full P0 compliance check: `make validate`
 5. ✅ Push to GitHub: `git push origin main`
-

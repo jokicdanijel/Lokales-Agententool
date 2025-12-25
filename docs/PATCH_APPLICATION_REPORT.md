@@ -1,7 +1,7 @@
 # Patch Application Report – Port-Policy Standardization
 
-**Date:** 2025-11-09 UTC  
-**Status:** ✅ COMPLETE – Selective Application  
+**Date:** 2025-11-09 UTC
+**Status:** ✅ COMPLETE – Selective Application
 **Scope:** Port-Policy enforcement, .gitignore wildcard expansion
 
 ---
@@ -11,6 +11,7 @@
 All four core services (**opena1**, **kordp**, **archivp**, **opena2**) are already **modernized** with `PortierServiceBase` and proper port-policy configuration. Patches 1-4 (Health-endpoint updates) are **not required** as the code already implements the standardized format.
 
 **Action Taken:**
+
 - ✅ Patch 5: .gitignore wildcard patterns applied
 - ⏭️ Patches 1-4: Skipped (already implemented in PortierServiceBase)
 - ✅ Documentation: This report confirms standardization status
@@ -20,6 +21,7 @@ All four core services (**opena1**, **kordp**, **archivp**, **opena2**) are alre
 ## Discovery: Service Modernization Status
 
 ### Service 1: opena1 (Port 12344)
+
 **File:** `3.opena1_coordinator/main.py`
 
 ```python
@@ -34,6 +36,7 @@ config = PortierServiceConfig(
 ```
 
 **Status:** ✅ **Already Compliant**
+
 - Port window: [12344, 12399]
 - Health-endpoint: Delegated to `service_base.setup_health_endpoint(app)` (PortierServiceBase)
 - Forbidden ports: [8080] (enforced via PortPolicyMiddleware)
@@ -41,6 +44,7 @@ config = PortierServiceConfig(
 ---
 
 ### Service 2: kordp (Port 12346)
+
 **File:** `5.kordp_scheduler/main.py`
 
 ```python
@@ -55,6 +59,7 @@ config = PortierServiceConfig(
 ```
 
 **Status:** ✅ **Already Compliant**
+
 - Port window: [12344, 12399]
 - Health-endpoint: Delegated to PortierServiceBase
 - Forbidden ports: [8080] (enforced)
@@ -62,6 +67,7 @@ config = PortierServiceConfig(
 ---
 
 ### Service 3: archivp (Port 12348)
+
 **File:** `4.opena2_archivator/main.py`
 
 ```python
@@ -76,6 +82,7 @@ config = PortierServiceConfig(
 ```
 
 **Status:** ✅ **Already Compliant**
+
 - Port window: [12344, 12399]
 - Health-endpoint: Delegated to PortierServiceBase
 - Forbidden ports: [8080] (enforced)
@@ -83,6 +90,7 @@ config = PortierServiceConfig(
 ---
 
 ### Service 4: opena2 (Port 12348)
+
 **File:** `4.opena2_archivator/main.py` (same as archivp)
 
 **Status:** ✅ **Already Compliant**
@@ -157,6 +165,7 @@ async def health():
 ```
 
 **Purpose:**
+
 - `backups/` – Entire directory excluded
 - `backups/**/*.zip` – Recursive zip files in subdirs
 - `backups/**/*.tar.gz` – Recursive tar.gz files
@@ -231,12 +240,15 @@ grep -A 7 "Large files (wildcard" .gitignore
 ## Recommendations
 
 ### 1. No Manual Patches Needed
+
 All four core services already implement the required standardization via `PortierServiceBase`. Focus on:
+
 - Monitoring health-endpoints for compliance
 - Extending .gitignore as needed for new file types
 - Enforcing Port-Policy via middleware
 
 ### 2. Future Services
+
 When creating new services, use the template:
 
 ```python
@@ -254,24 +266,27 @@ service_base.setup_health_endpoint(app)
 ```
 
 This automatically provides:
+
 - Correct health-endpoint format
 - Port-policy enforcement
 - Safepoints logging
 
 ### 3. .gitignore Maintenance
+
 Review `.gitignore` regularly for:
+
 - New backup file extensions
 - New archival directories
-- Large dependencies (node_modules, __pycache__ already excluded)
+- Large dependencies (node_modules, **pycache** already excluded)
 
 ---
 
 ## Commit Log
 
-| Commit | Message |
-|--------|---------|
-| `897e6d3` | docs: add compliance documentation for large-file cleanup |
-| `9091c3b` | chore: add .gitignore for large files (>100MB) |
+| Commit        | Message                                                               |
+| ------------- | --------------------------------------------------------------------- |
+| `897e6d3`     | docs: add compliance documentation for large-file cleanup             |
+| `9091c3b`     | chore: add .gitignore for large files (>100MB)                        |
 | (this commit) | chore: expand .gitignore wildcard patterns + patch application report |
 
 ---
@@ -287,6 +302,7 @@ Review `.gitignore` regularly for:
 - ✅ No manual patches required – PortierServiceBase handles all compliance
 
 **Next Actions:**
+
 1. Run health-checks to confirm all endpoints return correct format
 2. Monitor for large file uploads (git pre-commit hook recommended)
 3. Document any deviations from standard port-window [12344, 12399]
@@ -295,6 +311,6 @@ Review `.gitignore` regularly for:
 
 ---
 
-**Status:** ✅ READY FOR PRODUCTION  
-**Last Updated:** 2025-11-09 UTC  
+**Status:** ✅ READY FOR PRODUCTION
+**Last Updated:** 2025-11-09 UTC
 **Maintainer:** Senior Auditor & Fixer

@@ -1,9 +1,9 @@
 # 💼 opena18 - CRM Agent
 
-**Agent-ID:** `opena18`  
-**Port:** 12363  
-**Kürzel:** `crmp`  
-**Version:** 1.0  
+**Agent-ID:** `opena18`
+**Port:** 12363
+**Kürzel:** `crmp`
+**Version:** 1.0
 **Status:** ✅ RUNNING (PID: 1799881)
 
 ---
@@ -293,5 +293,5 @@ tail -f data/crm_history.jsonl | jq .
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 27. November 2025

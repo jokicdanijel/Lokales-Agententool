@@ -1,12 +1,12 @@
-import requests
-import logging, os
-from typing import Iterator, List, Union
+import logging
+import os
 from urllib.parse import quote
 
+import requests
 from langchain_core.document_loaders import BaseLoader
 from langchain_core.documents import Document
-from open_webui.utils.headers import include_user_info_headers
 from open_webui.env import SRC_LOG_LEVELS
+from open_webui.utils.headers import include_user_info_headers
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["RAG"])
@@ -30,7 +30,7 @@ class ExternalDocumentLoader(BaseLoader):
 
         self.user = user
 
-    def load(self) -> List[Document]:
+    def load(self) -> list[Document]:
         with open(self.file_path, "rb") as f:
             data = f.read()
 
@@ -60,7 +60,6 @@ class ExternalDocumentLoader(BaseLoader):
             raise Exception(f"Error connecting to endpoint: {e}")
 
         if response.ok:
-
             response_data = response.json()
             if response_data:
                 if isinstance(response_data, dict):
@@ -86,6 +85,4 @@ class ExternalDocumentLoader(BaseLoader):
             else:
                 raise Exception("Error loading document: No content returned")
         else:
-            raise Exception(
-                f"Error loading document: {response.status_code} {response.text}"
-            )
+            raise Exception(f"Error loading document: {response.status_code} {response.text}")

@@ -1,6 +1,6 @@
 # ✅ ELION Admin Dashboard - Deployment Checklist
 
-**Datum:** 21. November 2025  
+**Datum:** 21. November 2025
 **Status:** ✅ **PRODUKTIONSBEREIT**
 
 ---
@@ -11,12 +11,12 @@ Das **ELION Admin Dashboard** ist vollständig implementiert und einsatzbereit.
 
 ### ✅ Erstellte Komponenten
 
-| Komponente | Pfad | Status |
-|------------|------|--------|
-| **Admin UI** | `19.opena20_dashboard_agent/static/admin.html` | ✅ Erstellt |
-| **Dashboard Starter** | `bin/start_dashboard.sh` | ✅ Erstellt |
-| **Operations CLI** | `bin/ops.sh` | ✅ Neu geschrieben |
-| **Backend Route** | `src/pkg/main_dashboard.py` (+ `/admin` Route) | ✅ Erweitert |
+| Komponente            | Pfad                                           | Status             |
+| --------------------- | ---------------------------------------------- | ------------------ |
+| **Admin UI**          | `19.opena20_dashboard_agent/static/admin.html` | ✅ Erstellt        |
+| **Dashboard Starter** | `bin/start_dashboard.sh`                       | ✅ Erstellt        |
+| **Operations CLI**    | `bin/ops.sh`                                   | ✅ Neu geschrieben |
+| **Backend Route**     | `src/pkg/main_dashboard.py` (+ `/admin` Route) | ✅ Erweitert       |
 
 ---
 
@@ -119,14 +119,14 @@ Services (opena1-opena21)
 
 ### Service-Liste (Core)
 
-| Service | Port | Rolle | Status |
-|---------|------|-------|--------|
-| **opena1** | 12344 | Koordinator | ✅ Running |
-| **opena2** | 12345 | Archivator | ✅ Running |
-| **kordp** | 12346 | Scheduler | ⚪ On-Demand |
-| **opena3** | 12347 | OpenWebUI Bridge | ✅ Running |
-| **dashboard** | 12349 | Dashboard Backend | ✅ Running |
-| **adapter** | 12350 | OpenWebUI Adapter | ⏳ Optional |
+| Service       | Port  | Rolle             | Status       |
+| ------------- | ----- | ----------------- | ------------ |
+| **opena1**    | 12344 | Koordinator       | ✅ Running   |
+| **opena2**    | 12345 | Archivator        | ✅ Running   |
+| **kordp**     | 12346 | Scheduler         | ⚪ On-Demand |
+| **opena3**    | 12347 | OpenWebUI Bridge  | ✅ Running   |
+| **dashboard** | 12349 | Dashboard Backend | ✅ Running   |
+| **adapter**   | 12350 | OpenWebUI Adapter | ⏳ Optional  |
 
 ### Dateipfade
 
@@ -373,6 +373,6 @@ Falls dennoch Fehler: Browser-Cache leeren (Ctrl+Shift+R).
 
 ---
 
-**Status:** ✅ **ALLES BEREIT**  
-**Maintainer:** Danijel (ELION Team)  
+**Status:** ✅ **ALLES BEREIT**
+**Maintainer:** Danijel (ELION Team)
 **Letzte Aktualisierung:** 21. November 2025

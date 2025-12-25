@@ -7,14 +7,12 @@ Startet und verwaltet alle Komponenten
 - API Services
 """
 
-import os
-import sys
-import subprocess
-import time
 import signal
-import threading
-from pathlib import Path
+import subprocess
+import sys
+import time
 from datetime import datetime
+from pathlib import Path
 
 
 class OpenA3Master:
@@ -28,21 +26,16 @@ class OpenA3Master:
     def log(self, level, message):
         """Ausgabe mit Timestamp"""
         timestamp = datetime.now().strftime("%H:%M:%S")
-        icons = {
-            "INFO": "ℹ️ ",
-            "OK": "✅",
-            "ERROR": "❌",
-            "WARNING": "⚠️ ",
-            "START": "🚀"
-        }
+        icons = {"INFO": "ℹ️ ", "OK": "✅", "ERROR": "❌", "WARNING": "⚠️ ", "START": "🚀"}
         icon = icons.get(level, "•")
         print(f"[{timestamp}] {icon} {message}")
 
     def check_port(self, port):
         """Prüfe ob Port verfügbar ist"""
         import socket
+
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        result = sock.connect_ex(('0.0.0.0', port))
+        result = sock.connect_ex(("0.0.0.0", port))
         sock.close()
         return result != 0
 
@@ -56,12 +49,7 @@ class OpenA3Master:
 
         try:
             cmd = [sys.executable, str(self.base_path / "web_dashboard.py")]
-            proc = subprocess.Popen(
-                cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                cwd=str(self.base_path)
-            )
+            proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=str(self.base_path))
             self.processes.append(("Dashboard", proc))
             time.sleep(1)
             self.log("OK", "Web Dashboard erfolgreich gestartet")
@@ -137,9 +125,9 @@ class OpenA3Master:
 
     def show_status(self):
         """Zeige System Status"""
-        print("\n" + "="*70)
+        print("\n" + "=" * 70)
         print("  🤖 OpenA3 SYSTEM STATUS")
-        print("="*70)
+        print("=" * 70)
 
         print("\n📡 WEB DASHBOARD:")
         print("   URL: http://0.0.0.0:8000/")
@@ -166,9 +154,9 @@ class OpenA3Master:
         print("   • 5 API Tools")
         print("   • Gesamt: 1.781 Codezeilen")
 
-        print("\n" + "="*70)
+        print("\n" + "=" * 70)
         print("  🚀 SYSTEM BEREIT - Alle Komponenten einsatzbereit")
-        print("="*70 + "\n")
+        print("=" * 70 + "\n")
 
     def signal_handler(self, sig, frame):
         """Handle CTRL+C"""
@@ -188,9 +176,9 @@ class OpenA3Master:
 
     def run(self):
         """Starte alle Komponenten"""
-        print("\n" + "="*70)
+        print("\n" + "=" * 70)
         print("  🤖 OpenA3 Master Integration")
-        print("="*70 + "\n")
+        print("=" * 70 + "\n")
 
         # Signal Handler
         signal.signal(signal.SIGINT, self.signal_handler)

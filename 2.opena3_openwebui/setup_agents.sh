@@ -67,14 +67,14 @@ async def verify_bearer_token(request: Request) -> str:
     auth_header = request.headers.get("Authorization")
     if not auth_header:
         raise HTTPException(status_code=401, detail="Missing Authorization header")
-    
+
     if not auth_header.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Invalid Authorization format (use: Bearer <token>)")
-    
+
     token = auth_header[7:]
     if token not in TOKEN_TO_CLIENT:
         raise HTTPException(status_code=401, detail="Invalid bearer token")
-    
+
     return TOKEN_TO_CLIENT[token]
 AUTHEOF
 
@@ -84,11 +84,11 @@ echo "✅ Shared auth module erstellt"
 for agent_spec in "${AGENTS[@]}"; do
     IFS=':' read -r agent_name agent_function port token <<< "$agent_spec"
     agent_lower="${agent_name,,}-${agent_function,,}"
-    
+
     echo "📦 Erstelle $agent_name ($agent_lower) auf Port $port..."
-    
+
     mkdir -p "$BASE_DIR/$agent_name"
-    
+
     # Create config.json
     cat > "$BASE_DIR/$agent_name/config.json" << CONFIGEOF
 {
@@ -196,7 +196,7 @@ if __name__ == "__main__":
 PYEOF
 
     chmod +x "$BASE_DIR/$agent_name/main.py"
-    
+
     # Create requirements.txt
     cat > "$BASE_DIR/$agent_name/requirements.txt" << REQEOF
 fastapi==0.104.1
@@ -208,7 +208,7 @@ REQEOF
 
     # Create __init__.py
     touch "$BASE_DIR/$agent_name/__init__.py"
-    
+
     echo "  ✅ $agent_name setup complete"
 done
 

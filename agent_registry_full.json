@@ -3,11 +3,7 @@
     "name": "Koordinator Agent",
     "port": 12344,
     "endpoint": "http://127.0.0.1:12344",
-    "capabilities": [
-      "coordination",
-      "routing",
-      "command_dispatch"
-    ],
+    "capabilities": ["coordination", "routing", "command_dispatch"],
     "directory": "1.opena1&2_portier",
     "script": "main_opena1.py",
     "status": "core",
@@ -17,11 +13,7 @@
     "name": "Archivator Agent",
     "port": 12345,
     "endpoint": "http://127.0.0.1:12345",
-    "capabilities": [
-      "archiving",
-      "safepoints",
-      "data_persistence"
-    ],
+    "capabilities": ["archiving", "safepoints", "data_persistence"],
     "directory": "1.opena1&2_portier",
     "script": "main_opena2.py",
     "status": "core",
@@ -31,11 +23,7 @@
     "name": "OpenWebUI Terminal Agent",
     "port": 12347,
     "endpoint": "http://127.0.0.1:12347",
-    "capabilities": [
-      "openwebui",
-      "chat",
-      "conversation_management"
-    ],
+    "capabilities": ["openwebui", "chat", "conversation_management"],
     "directory": "2.opena3_openwebui",
     "script": "main_opena3.py",
     "status": "active",
@@ -90,12 +78,7 @@
     "name": "Email Chatbot Agent",
     "port": 12352,
     "endpoint": "http://127.0.0.1:12352",
-    "capabilities": [
-      "email",
-      "smtp",
-      "imap",
-      "auto_response"
-    ],
+    "capabilities": ["email", "smtp", "imap", "auto_response"],
     "directory": "6.opena7_email",
     "script": "main_opena7.py",
     "status": "planned",
@@ -105,11 +88,7 @@
     "name": "WhatsApp Chatbot Agent",
     "port": 12353,
     "endpoint": "http://127.0.0.1:12353",
-    "capabilities": [
-      "whatsapp",
-      "messaging",
-      "media_sharing"
-    ],
+    "capabilities": ["whatsapp", "messaging", "media_sharing"],
     "directory": "7.opena8_whatsapp",
     "script": "main_opena8.py",
     "status": "planned",
@@ -119,11 +98,7 @@
     "name": "Phone Answer Agent",
     "port": 12354,
     "endpoint": "http://127.0.0.1:12354",
-    "capabilities": [
-      "phone",
-      "voice",
-      "call_handling"
-    ],
+    "capabilities": ["phone", "voice", "call_handling"],
     "directory": "8.opena9_phone_answer",
     "script": "main_opena9.py",
     "status": "planned",
@@ -133,11 +108,7 @@
     "name": "Phone Call Agent",
     "port": 12355,
     "endpoint": "http://127.0.0.1:12355",
-    "capabilities": [
-      "phone",
-      "voice",
-      "outbound_calls"
-    ],
+    "capabilities": ["phone", "voice", "outbound_calls"],
     "directory": "9.opena10_phone_call",
     "script": "main_opena10.py",
     "status": "planned",
@@ -147,11 +118,7 @@
     "name": "Door Unlock Decode Agent",
     "port": 12356,
     "endpoint": "http://127.0.0.1:12356",
-    "capabilities": [
-      "security",
-      "door_control",
-      "access_management"
-    ],
+    "capabilities": ["security", "door_control", "access_management"],
     "directory": "10.opena11_door_unlock",
     "script": "main_opena11.py",
     "status": "planned",
@@ -161,12 +128,7 @@
     "name": "Social Media Automation Agent",
     "port": 12357,
     "endpoint": "http://127.0.0.1:12357",
-    "capabilities": [
-      "social_media",
-      "automation",
-      "posting",
-      "scheduling"
-    ],
+    "capabilities": ["social_media", "automation", "posting", "scheduling"],
     "directory": "11.opena12_social_automation",
     "script": "main_opena12.py",
     "status": "planned",
@@ -190,12 +152,7 @@
     "name": "Calendar Agent",
     "port": 12359,
     "endpoint": "http://127.0.0.1:12359",
-    "capabilities": [
-      "calendar",
-      "scheduling",
-      "reminders",
-      "meetings"
-    ],
+    "capabilities": ["calendar", "scheduling", "reminders", "meetings"],
     "directory": "13.opena14_calendar",
     "script": "main_opena14.py",
     "status": "planned",
@@ -205,11 +162,7 @@
     "name": "Shop Creator & Service Agent",
     "port": 12360,
     "endpoint": "http://127.0.0.1:12360",
-    "capabilities": [
-      "ecommerce",
-      "shop_creation",
-      "product_management"
-    ],
+    "capabilities": ["ecommerce", "shop_creation", "product_management"],
     "directory": "14.opena16_shop",
     "script": "main_opena16.py",
     "status": "planned",
@@ -264,13 +217,7 @@
     "name": "Dashboard Agent",
     "port": 12349,
     "endpoint": "http://127.0.0.1:12349",
-    "capabilities": [
-      "dashboard",
-      "ui",
-      "api",
-      "monitoring",
-      "self_cleaning"
-    ],
+    "capabilities": ["dashboard", "ui", "api", "monitoring", "self_cleaning"],
     "directory": "19.opena20_dashboard_agent",
     "script": "main_dashboard_agent.py",
     "status": "core",
@@ -280,12 +227,7 @@
     "name": "Portier Browse Agent",
     "port": 12370,
     "endpoint": "http://127.0.0.1:12370",
-    "capabilities": [
-      "portier",
-      "browse",
-      "web_scraping",
-      "safepoint"
-    ],
+    "capabilities": ["portier", "browse", "web_scraping", "safepoint"],
     "directory": "6.browsep_portier",
     "script": "main_browsep.py",
     "status": "planned",
@@ -295,12 +237,7 @@
     "name": "Workflow Engine Agent",
     "port": 12364,
     "endpoint": "http://127.0.0.1:12364",
-    "capabilities": [
-      "workflow",
-      "orchestration",
-      "automation",
-      "scheduling"
-    ],
+    "capabilities": ["workflow", "orchestration", "automation", "scheduling"],
     "directory": "20.opena21_workflow",
     "script": "main_opena21.py",
     "status": "planned",

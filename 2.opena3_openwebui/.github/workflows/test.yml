@@ -2,14 +2,14 @@ name: LocalAgent-Pro CI/CD
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths:
-      - 'LocalAgent-Pro/**'
-      - '.github/workflows/test.yml'
+      - "LocalAgent-Pro/**"
+      - ".github/workflows/test.yml"
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths:
-      - 'LocalAgent-Pro/**'
+      - "LocalAgent-Pro/**"
 
 permissions:
   contents: read
@@ -22,44 +22,44 @@ jobs:
       contents: read
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-        cache: 'pip'
-        cache-dependency-path: |
-          ./LocalAgent-Pro/requirements.txt
-          ./LocalAgent-Pro/requirements-dev.txt
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: |
+            ./LocalAgent-Pro/requirements.txt
+            ./LocalAgent-Pro/requirements-dev.txt
 
-    - name: Install dependencies
-      working-directory: ./LocalAgent-Pro
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
+      - name: Install dependencies
+        working-directory: ./LocalAgent-Pro
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
 
-    - name: Run Black (Code Formatting)
-      working-directory: ./LocalAgent-Pro
-      run: |
-        black --check src/ tests/
+      - name: Run Black (Code Formatting)
+        working-directory: ./LocalAgent-Pro
+        run: |
+          black --check src/ tests/
 
-    - name: Run isort (Import Sorting)
-      working-directory: ./LocalAgent-Pro
-      run: |
-        isort --check-only src/ tests/
+      - name: Run isort (Import Sorting)
+        working-directory: ./LocalAgent-Pro
+        run: |
+          isort --check-only src/ tests/
 
-    - name: Run Flake8 (Linting)
-      working-directory: ./LocalAgent-Pro
-      run: |
-        flake8 src/ tests/ --max-line-length=120 --extend-ignore=E203,W503
+      - name: Run Flake8 (Linting)
+        working-directory: ./LocalAgent-Pro
+        run: |
+          flake8 src/ tests/ --max-line-length=120 --extend-ignore=E203,W503
 
-    - name: Run MyPy (Type Checking)
-      working-directory: ./LocalAgent-Pro
-      continue-on-error: true
-      run: |
-        mypy src/ --ignore-missing-imports
+      - name: Run MyPy (Type Checking)
+        working-directory: ./LocalAgent-Pro
+        continue-on-error: true
+        run: |
+          mypy src/ --ignore-missing-imports
 
   test:
     name: Unit & Integration Tests
@@ -69,55 +69,55 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.10', '3.11', '3.12']
+        python-version: ["3.10", "3.11", "3.12"]
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
-        cache: 'pip'
-        cache-dependency-path: |
-          ./LocalAgent-Pro/requirements.txt
-          ./LocalAgent-Pro/requirements-dev.txt
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+          cache-dependency-path: |
+            ./LocalAgent-Pro/requirements.txt
+            ./LocalAgent-Pro/requirements-dev.txt
 
-    - name: Install system dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y curl
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl
 
-    - name: Install Python dependencies
-      working-directory: ./LocalAgent-Pro
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
+      - name: Install Python dependencies
+        working-directory: ./LocalAgent-Pro
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
 
-    - name: Create sandbox directory
-      run: |
-        mkdir -p /tmp/localagent_sandbox
-        chmod 755 /tmp/localagent_sandbox
+      - name: Create sandbox directory
+        run: |
+          mkdir -p /tmp/localagent_sandbox
+          chmod 755 /tmp/localagent_sandbox
 
-    - name: Run Unit Tests
-      working-directory: ./LocalAgent-Pro
-      run: |
-        pytest tests/unit/ -v --cov=src --cov-report=xml --cov-report=term-missing -m unit
+      - name: Run Unit Tests
+        working-directory: ./LocalAgent-Pro
+        run: |
+          pytest tests/unit/ -v --cov=src --cov-report=xml --cov-report=term-missing -m unit
 
-    - name: Run Integration Tests
-      working-directory: ./LocalAgent-Pro
-      run: |
-        pytest tests/integration/ -v -m integration
+      - name: Run Integration Tests
+        working-directory: ./LocalAgent-Pro
+        run: |
+          pytest tests/integration/ -v -m integration
 
-    - name: Upload Coverage to Codecov
-      uses: codecov/codecov-action@v4
-      if: matrix.python-version == '3.12'
-      with:
-        file: ./LocalAgent-Pro/coverage.xml
-        flags: unittests
-        name: codecov-umbrella
-        fail_ci_if_error: false
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v4
+        if: matrix.python-version == '3.12'
+        with:
+          file: ./LocalAgent-Pro/coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
 
   security:
     name: Security Audit
@@ -126,49 +126,49 @@ jobs:
       contents: read
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-        cache: 'pip'
-        cache-dependency-path: |
-          ./LocalAgent-Pro/requirements.txt
-          ./LocalAgent-Pro/requirements-dev.txt
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: |
+            ./LocalAgent-Pro/requirements.txt
+            ./LocalAgent-Pro/requirements-dev.txt
 
-    - name: Install dependencies
-      working-directory: ./LocalAgent-Pro
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install bandit safety pip-audit
+      - name: Install dependencies
+        working-directory: ./LocalAgent-Pro
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install bandit safety pip-audit
 
-    - name: Run Bandit (Security Linter)
-      working-directory: ./LocalAgent-Pro
-      continue-on-error: true
-      run: |
-        bandit -r src/ -ll -f json -o bandit-report.json
-        bandit -r src/ -ll
+      - name: Run Bandit (Security Linter)
+        working-directory: ./LocalAgent-Pro
+        continue-on-error: true
+        run: |
+          bandit -r src/ -ll -f json -o bandit-report.json
+          bandit -r src/ -ll
 
-    - name: Run Safety (Dependency Vulnerability Check)
-      working-directory: ./LocalAgent-Pro
-      continue-on-error: true
-      run: |
-        safety check --json || true
+      - name: Run Safety (Dependency Vulnerability Check)
+        working-directory: ./LocalAgent-Pro
+        continue-on-error: true
+        run: |
+          safety check --json || true
 
-    - name: Run pip-audit
-      working-directory: ./LocalAgent-Pro
-      continue-on-error: true
-      run: |
-        pip-audit || true
+      - name: Run pip-audit
+        working-directory: ./LocalAgent-Pro
+        continue-on-error: true
+        run: |
+          pip-audit || true
 
-    - name: Upload Bandit Report
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: bandit-security-report
-        path: ./LocalAgent-Pro/bandit-report.json
+      - name: Upload Bandit Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bandit-security-report
+          path: ./LocalAgent-Pro/bandit-report.json
 
   docker:
     name: Docker Build Test
@@ -177,20 +177,20 @@ jobs:
       contents: read
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-    - name: Build Docker Image
-      working-directory: ./LocalAgent-Pro
-      run: |
-        docker build -t localagent-pro:test .
+      - name: Build Docker Image
+        working-directory: ./LocalAgent-Pro
+        run: |
+          docker build -t localagent-pro:test .
 
-    - name: Test Docker Image
-      working-directory: ./LocalAgent-Pro
-      run: |
-        docker run --rm localagent-pro:test python --version
+      - name: Test Docker Image
+        working-directory: ./LocalAgent-Pro
+        run: |
+          docker run --rm localagent-pro:test python --version
 
   summary:
     name: Test Summary
@@ -201,20 +201,20 @@ jobs:
       contents: read
 
     steps:
-    - name: Check Test Results
-      run: |
-        echo "## Test Summary" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "- Lint: ${{ needs.lint.result }}" >> $GITHUB_STEP_SUMMARY
-        echo "- Tests: ${{ needs.test.result }}" >> $GITHUB_STEP_SUMMARY
-        echo "- Security: ${{ needs.security.result }}" >> $GITHUB_STEP_SUMMARY
-        echo "- Docker: ${{ needs.docker.result }}" >> $GITHUB_STEP_SUMMARY
+      - name: Check Test Results
+        run: |
+          echo "## Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Lint: ${{ needs.lint.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Tests: ${{ needs.test.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Security: ${{ needs.security.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Docker: ${{ needs.docker.result }}" >> $GITHUB_STEP_SUMMARY
 
-        if [ "${{ needs.lint.result }}" != "success" ] || [ "${{ needs.test.result }}" != "success" ]; then
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "❌ **Required checks failed**" >> $GITHUB_STEP_SUMMARY
-          exit 1
-        else
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "✅ **All required checks passed**" >> $GITHUB_STEP_SUMMARY
-        fi
+          if [ "${{ needs.lint.result }}" != "success" ] || [ "${{ needs.test.result }}" != "success" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "❌ **Required checks failed**" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          else
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "✅ **All required checks passed**" >> $GITHUB_STEP_SUMMARY
+          fi

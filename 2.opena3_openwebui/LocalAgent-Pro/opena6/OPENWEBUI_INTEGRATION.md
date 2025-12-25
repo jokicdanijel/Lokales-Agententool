@@ -57,34 +57,35 @@ bash register_with_openwebui.sh status
 ## 📦 Tool-Definition
 
 ### Tool-ID
+
 ```
 opena6_browser_tool
 ```
 
 ### Verfügbare Aktionen
 
-| Aktion | Parameter | Beschreibung |
-|--------|-----------|-------------|
-| `open` | url | Öffne eine Webseite |
-| `click` | url, selector | Klicke auf ein Element |
-| `type` | url, selector, text | Gib Text in Formular ein |
-| `extract_text` | url, selector | Extrahiere Textinhalt |
-| `extract_html` | url, selector | Extrahiere HTML-Code |
-| `query_selector` | url, selector | Analysiere DOM-Struktur |
-| `screenshot` | url | Mache einen Screenshot |
-| `scroll` | url, selector | Scrolle durch Seite |
-| `wait_for` | url, selector, wait_ms | Warte auf Element |
+| Aktion           | Parameter              | Beschreibung             |
+| ---------------- | ---------------------- | ------------------------ |
+| `open`           | url                    | Öffne eine Webseite      |
+| `click`          | url, selector          | Klicke auf ein Element   |
+| `type`           | url, selector, text    | Gib Text in Formular ein |
+| `extract_text`   | url, selector          | Extrahiere Textinhalt    |
+| `extract_html`   | url, selector          | Extrahiere HTML-Code     |
+| `query_selector` | url, selector          | Analysiere DOM-Struktur  |
+| `screenshot`     | url                    | Mache einen Screenshot   |
+| `scroll`         | url, selector          | Scrolle durch Seite      |
+| `wait_for`       | url, selector, wait_ms | Warte auf Element        |
 
 ### Input-Schema
 
 ```json
 {
-  "action": "string",           // Erforderlich - siehe Tabelle oben
-  "url": "string",              // Erforderlich - Zielseite
-  "selector": "string",         // Optional - CSS/XPath Selektor
-  "text": "string",             // Optional - Text zum eingeben
-  "wait_ms": "integer",         // Optional - Wartezeit (default: 500)
-  "return_format": "string"     // Optional - text|html|json|raw (default: text)
+  "action": "string", // Erforderlich - siehe Tabelle oben
+  "url": "string", // Erforderlich - Zielseite
+  "selector": "string", // Optional - CSS/XPath Selektor
+  "text": "string", // Optional - Text zum eingeben
+  "wait_ms": "integer", // Optional - Wartezeit (default: 500)
+  "return_format": "string" // Optional - text|html|json|raw (default: text)
 }
 ```
 
@@ -92,10 +93,10 @@ opena6_browser_tool
 
 ```json
 {
-  "status": "string",           // success|error
-  "data": "object",             // Resultatdaten
-  "timestamp": "string",        // ISO 8601 Timestamp
-  "session_id": "string"        // Browser Session ID
+  "status": "string", // success|error
+  "data": "object", // Resultatdaten
+  "timestamp": "string", // ISO 8601 Timestamp
+  "session_id": "string" // Browser Session ID
 }
 ```
 
@@ -141,11 +142,13 @@ manager.register_tool()
 ### Beispiel 1: Text-Extraktion
 
 **Prompt in OpenWebUI:**
+
 ```
 Gib mir einen Überblick über die aktuellen Nachrichten auf https://www.bbc.com/news
 ```
 
 **Intern (Modell-Generiert):**
+
 ```json
 {
   "action": "extract_text",
@@ -156,6 +159,7 @@ Gib mir einen Überblick über die aktuellen Nachrichten auf https://www.bbc.com
 ```
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -170,11 +174,13 @@ Gib mir einen Überblick über die aktuellen Nachrichten auf https://www.bbc.com
 ### Beispiel 2: Form-Ausfüllung
 
 **Prompt:**
+
 ```
 Fülle das Suchformular auf Google aus mit "climate change" und schicke es ab
 ```
 
 **Intern:**
+
 ```json
 [
   {
@@ -203,11 +209,13 @@ Fülle das Suchformular auf Google aus mit "climate change" und schicke es ab
 ### Beispiel 3: Screenshot
 
 **Prompt:**
+
 ```
 Zeige mir einen Screenshot der Microsoft-Homepage
 ```
 
 **Intern:**
+
 ```json
 {
   "action": "screenshot",
@@ -216,6 +224,7 @@ Zeige mir einen Screenshot der Microsoft-Homepage
 ```
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -244,12 +253,14 @@ Alle OpenWebUI-Anfragen enthalten diesen Token automatisch.
 ### Sicherheitsregeln
 
 ✅ **ERLAUBT:**
+
 - HTTP/HTTPS Requests zu öffentlichen Websites
 - DOM-Manipulation (Click, Type, Scroll)
 - Text/HTML-Extraktion
 - Screenshots
 
 ❌ **VERBOTEN:**
+
 - Zugriff auf localhost/interne Services
 - Dateioperationen
 - Beliebiger JavaScript-Code
@@ -258,6 +269,7 @@ Alle OpenWebUI-Anfragen enthalten diesen Token automatisch.
 ### Validierung
 
 OpenWebUI validiert automatisch:
+
 - Bearer Token
 - URL-Format und Sicherheit
 - Aktion-Parameter
@@ -280,6 +292,7 @@ bash register_with_openwebui.sh status
 ```
 
 Output:
+
 ```
 ℹ️  Tool-Status:
    openwebui_available: True
@@ -310,6 +323,7 @@ bash register_with_openwebui.sh health
 ```
 
 Output:
+
 ```
 ℹ️  Browser Agent: ONLINE (http://localhost:12350)
 ℹ️  OpenWebUI: ONLINE (http://localhost:8080)
@@ -401,13 +415,13 @@ curl -X POST http://localhost:12350/execute \
 
 ### Häufige Fehler
 
-| Fehler | Ursache | Lösung |
-|--------|--------|--------|
-| Connection refused | Agent/OpenWebUI läuft nicht | `bash register_with_openwebui.sh health` |
-| 401 Unauthorized | Falscher Bearer Token | Token in `register_with_openwebui.sh` prüfen |
-| Tool not callable | Tool nicht registriert | `bash register_with_openwebui.sh register` |
-| Selector not found | CSS Selektor ungültig | Selektor im Browser Inspector prüfen |
-| Timeout | Seite lädt zu lange | `wait_ms` Parameter erhöhen |
+| Fehler             | Ursache                     | Lösung                                       |
+| ------------------ | --------------------------- | -------------------------------------------- |
+| Connection refused | Agent/OpenWebUI läuft nicht | `bash register_with_openwebui.sh health`     |
+| 401 Unauthorized   | Falscher Bearer Token       | Token in `register_with_openwebui.sh` prüfen |
+| Tool not callable  | Tool nicht registriert      | `bash register_with_openwebui.sh register`   |
+| Selector not found | CSS Selektor ungültig       | Selektor im Browser Inspector prüfen         |
+| Timeout            | Seite lädt zu lange         | `wait_ms` Parameter erhöhen                  |
 
 ---
 

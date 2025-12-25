@@ -5,10 +5,12 @@ Diese 8 Scanner implementieren die **1000% Compliance**-Anforderungen des EDEN/P
 ## 📋 Scanner-Übersicht
 
 ### 1. Ports & IDs Compliance Scanner
+
 **Datei:** `ports_ids_compliance_scanner.py`
 **Zweck:** 1000% Enforcement von Port- und Agent-ID-Richtlinien
 
 **Prüft:**
+
 - Exakt opena1-opena21 existieren (keine Variationen)
 - Port-Einzigartigkeit und Baseline-Matching
 - Verbotene Ports (8080, 3000)
@@ -16,6 +18,7 @@ Diese 8 Scanner implementieren die **1000% Compliance**-Anforderungen des EDEN/P
 - Port-Range-Policy (12344-12399)
 
 **Exit 1 bei:**
+
 - Fehlende oder zusätzliche Agents
 - Port-Duplikate oder Abweichungen
 - Verbotene Port-Nutzung
@@ -23,16 +26,19 @@ Diese 8 Scanner implementieren die **1000% Compliance**-Anforderungen des EDEN/P
 ---
 
 ### 2. Folder Coverage Scanner
+
 **Datei:** `folder_coverage_scanner.py`
 **Zweck:** Vollständige rekursive Ordneranalyse verifizieren
 
 **Prüft:**
+
 - Jeder Agent-Ordner existiert und ist nicht leer
 - Rekursive File-Enumeration durchgeführt (count > 0)
 - Inventory enthält File-Hashes (Beweis der Analyse)
 - Stabile Sortierung (deterministische Scans)
 
 **Exit 1 bei:**
+
 - Leere oder fehlende Agent-Ordner
 - Unvollständige Inventardaten
 - Fehlende File-Hashes
@@ -40,16 +46,19 @@ Diese 8 Scanner implementieren die **1000% Compliance**-Anforderungen des EDEN/P
 ---
 
 ### 3. Secrets & Vault Scanner
+
 **Datei:** `secrets_vault_scanner.py`
 **Zweck:** Cleartext-Secrets außerhalb opena11 erkennen
 
 **Prüft:**
+
 - KEINE Cleartext-Secrets außerhalb opena11
 - KEINE API-Keys, Tokens, Private Keys in Non-Vault-Code
 - KEINE plaintext/decrypted Endpoints außerhalb opena11
 - Vault-Endpoints existieren NUR unter opena11
 
 **Detection-Patterns:**
+
 - API Keys (api_key, apikey, API_KEY)
 - Tokens (token, access_token, auth_token)
 - Private Keys (BEGIN PRIVATE KEY)
@@ -57,16 +66,19 @@ Diese 8 Scanner implementieren die **1000% Compliance**-Anforderungen des EDEN/P
 - SMTP/DB Passwords
 
 **Exit 1 bei:**
+
 - Secrets außerhalb Vault gefunden
 - Vault-Policy-Verstöße
 
 ---
 
 ### 4. HTML Contract Scanner
+
 **Datei:** `html_contract_scanner.py`
 **Zweck:** Strikte HTML-Vertrags-Regeln durchsetzen
 
 **Prüft:**
+
 - KEINE `<script>` Tags
 - KEINE inline `style=""` Attribute
 - KEINE `<link rel="stylesheet">` (CSS-Dateien)
@@ -75,6 +87,7 @@ Diese 8 Scanner implementieren die **1000% Compliance**-Anforderungen des EDEN/P
 - Error-Pages existieren (403.html, 404.html, 500.html)
 
 **Exit 1 bei:**
+
 - CSS/JS in HTML gefunden
 - Fehlende semantische Struktur
 - Ungültige Form-Contracts
@@ -82,10 +95,12 @@ Diese 8 Scanner implementieren die **1000% Compliance**-Anforderungen des EDEN/P
 ---
 
 ### 5. Public Website Scanner
+
 **Datei:** `public_website_scanner.py`
 **Zweck:** hyperdashboard-one.de Vollständigkeit prüfen
 
 **Prüft:**
+
 - Alle erforderlichen Routes existieren
 - Content-Density (Mindestwortanzahl)
   - Landing: 800+ Wörter
@@ -95,12 +110,14 @@ Diese 8 Scanner implementieren die **1000% Compliance**-Anforderungen des EDEN/P
 - Landing-Page Sections vorhanden
 
 **Erforderliche Routes:**
+
 - Root: `/` (Landing)
 - Auth: `/login`, `/register`, `/forgot-password`
 - Plans: `/basic`, `/pro`, `/premium`, `/ultimum`
 - Legal: `/legal/privacy`, `/legal/terms`, `/legal/imprint`
 
 **Exit 1 bei:**
+
 - Fehlende Routes
 - Zu wenig Content
 - Zu ähnliche Plan-Pages (>85%)
@@ -108,10 +125,12 @@ Diese 8 Scanner implementieren die **1000% Compliance**-Anforderungen des EDEN/P
 ---
 
 ### 6. Entitlements Consistency Scanner
+
 **Datei:** `entitlements_consistency_scanner.py`
 **Zweck:** HTML enthält KEINE hardcoded Entitlement-Logik
 
 **Prüft:**
+
 - KEINE hardcoded Plan-Logik in HTML (z.B. `if plan=="basic"`)
 - KEINE inline Agent enable/disable
 - Basic Plan: Exakt 4 clickable via entitlements.json
@@ -119,6 +138,7 @@ Diese 8 Scanner implementieren die **1000% Compliance**-Anforderungen des EDEN/P
 - KEINE Agent-Unlock-Logik in JS/HTML
 
 **Exit 1 bei:**
+
 - Hardcoded Plan-Checks gefunden
 - Agent-Enable/Disable-Logik in Code
 - Clickable-Array-Definitionen
@@ -126,10 +146,12 @@ Diese 8 Scanner implementieren die **1000% Compliance**-Anforderungen des EDEN/P
 ---
 
 ### 7. API Binding Scanner
+
 **Datei:** `api_binding_scanner.py`
 **Zweck:** KEINE direkten agent:PORT Calls in HTML/JS
 
 **Prüft:**
+
 - KEINE direkten URLs wie `http://localhost:12345`
 - KEINE `agent:PORT` hardcoded Endpoints
 - ALLE API-Calls gehen durch Control-Plane (opena1)
@@ -137,26 +159,31 @@ Diese 8 Scanner implementieren die **1000% Compliance**-Anforderungen des EDEN/P
 - Koordination via opena1 ONLY
 
 **Akzeptable Patterns:**
+
 - `/api/*` (geroutet via Control-Plane)
 - Relative Paths: `/status`, `/health`
 - `data-api` Attribute
 
 **Verbotene Patterns:**
+
 - `http://localhost:12344`
 - `agent://opena5:12348`
 - Direkte Port-Referenzen
 
 **Exit 1 bei:**
+
 - Direkte Bindings gefunden
 - Bypass des Control-Planes
 
 ---
 
 ### 8. Preflight Gate Scanner
+
 **Datei:** `preflight_gate_scanner.py`
 **Zweck:** Exakte Schritt-Reihenfolge und Blocking-Verhalten prüfen
 
 **Prüft:**
+
 - Alle 8 Scanner werden in Preflight aufgerufen
 - EXAKTE ORDER enforced (kein Parallel, kein Reordering)
 - Jeder Scanner MUSS blocken bei Failure (exit 1)
@@ -164,6 +191,7 @@ Diese 8 Scanner implementieren die **1000% Compliance**-Anforderungen des EDEN/P
 - CI-Config ruft preflight.sh auf
 
 **Erwartete Order:**
+
 1. ports_ids_compliance_scanner.py
 2. folder_coverage_scanner.py
 3. secrets_vault_scanner.py
@@ -174,6 +202,7 @@ Diese 8 Scanner implementieren die **1000% Compliance**-Anforderungen des EDEN/P
 8. preflight_gate_scanner.py (Self-Check)
 
 **Exit 1 bei:**
+
 - Fehlende Scanner-Dateien
 - Falsche Reihenfolge
 - Fehlendes Blocking (`|| exit 1`)
@@ -213,7 +242,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Install dependencies
         run: |
@@ -231,11 +260,13 @@ jobs:
 Jeder Scanner generiert **zwei Reports**:
 
 ### JSON Report
+
 `artifacts/scans/<scanner_name>_scan.json`
 
 Maschinelles Format für weitere Verarbeitung.
 
 ### Markdown Report
+
 `artifacts/scans/<scanner_name>_scan.md`
 
 Menschenlesbares Format mit Details zu Verstößen.
@@ -317,16 +348,16 @@ artifacts/
 
 ## 🎯 Compliance-Matrix
 
-| Scanner                | Compliance-Bereich       | Kritisch für |
-|------------------------|-------------------------|--------------|
-| Ports & IDs            | Foundation              | Baseline     |
-| Folder Coverage        | Completeness            | Discovery    |
-| Secrets & Vault        | Security                | Production   |
-| HTML Contract          | Structure               | Generation   |
-| Public Website         | Content                 | Marketing    |
-| Entitlements           | Logic                   | Monetization |
-| API Binding            | Routing                 | Architecture |
-| Preflight Gate         | CI/CD                   | Deployment   |
+| Scanner         | Compliance-Bereich | Kritisch für |
+| --------------- | ------------------ | ------------ |
+| Ports & IDs     | Foundation         | Baseline     |
+| Folder Coverage | Completeness       | Discovery    |
+| Secrets & Vault | Security           | Production   |
+| HTML Contract   | Structure          | Generation   |
+| Public Website  | Content            | Marketing    |
+| Entitlements    | Logic              | Monetization |
+| API Binding     | Routing            | Architecture |
+| Preflight Gate  | CI/CD              | Deployment   |
 
 ---
 

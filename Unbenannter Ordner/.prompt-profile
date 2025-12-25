@@ -215,7 +215,7 @@ runtime:
   os: "Ubuntu 25.04"
   venv: "venv313"
   framework: "FastAPI"
-  
+
 ports:
   backend_range: "12344-12399"
   ui_exclusive: 8080

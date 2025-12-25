@@ -6,7 +6,6 @@ Use ports: core (1-2) = 12344-12345, dashboard = 12349, agents 3-21 = 12347-1234
 
 import os
 import re
-import sys
 
 os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -33,72 +32,76 @@ PORT_MAP = {
     "opena21": 12366,
 }
 
+
 def fix_file(filepath, agent_name):
     """Fix PORT in a Python file."""
     if not os.path.exists(filepath):
         return False
-    
-    with open(filepath, 'r') as f:
+
+    with open(filepath) as f:
         content = f.read()
-    
+
     port = PORT_MAP.get(agent_name, 12367)
-    
+
     # Replace PORT = <number>
-    content = re.sub(r'PORT = \d{5}', f'PORT = {port}', content)
-    
+    content = re.sub(r"PORT = \d{5}", f"PORT = {port}", content)
+
     # Replace PORT = int(os.getenv(..., "<number>"))
     content = re.sub(
         r'PORT = int\(os\.getenv\([^)]*,\s*"?\d{5}"?\)',
         f'PORT = int(os.getenv("OPENA{agent_name[5:]}_PORT", "{port}"))',
-        content
+        content,
     )
-    
-    with open(filepath, 'w') as f:
+
+    with open(filepath, "w") as f:
         f.write(content)
-    
+
     return True
+
 
 def fix_bash_script(filepath, agent_name):
     """Fix PORT in a bash start script."""
     if not os.path.exists(filepath):
         return False
-    
-    with open(filepath, 'r') as f:
+
+    with open(filepath) as f:
         content = f.read()
-    
+
     port = PORT_MAP.get(agent_name, 12367)
-    
+
     # Replace PORT=<number>
-    content = re.sub(r'PORT=\d{5}', f'PORT={port}', content)
-    
-    with open(filepath, 'w') as f:
+    content = re.sub(r"PORT=\d{5}", f"PORT={port}", content)
+
+    with open(filepath, "w") as f:
         f.write(content)
-    
+
     return True
+
 
 print("🔧 Fixing PORT conflicts...\n")
 
 for agent in sorted(PORT_MAP.keys()):
     port = PORT_MAP[agent]
     num = agent[5:]  # "opena3" -> "3"
-    
+
     # Find agent directory
-    agent_dirs = [d for d in os.listdir('.') if d.lower().endswith(f'opena{num}_') or f'_opena{num}' in d.lower()]
+    agent_dirs = [d for d in os.listdir(".") if d.lower().endswith(f"opena{num}_") or f"_opena{num}" in d.lower()]
     if not agent_dirs:
         print(f"⏭️  {agent}: Directory not found")
         continue
-    
+
     agent_dir = agent_dirs[0]
-    
+
     # Fix main Python files
-    main_py = os.path.join(agent_dir, f'main_*.py')
+    main_py = os.path.join(agent_dir, "main_*.py")
     import glob
+
     for py_file in glob.glob(main_py):
         if fix_file(py_file, agent):
             print(f"✅ {agent}: Fixed {py_file} -> PORT {port}")
-    
+
     # Fix start scripts
-    start_script = os.path.join(agent_dir, 'bin', f'start_opena{num}.sh')
+    start_script = os.path.join(agent_dir, "bin", f"start_opena{num}.sh")
     if fix_bash_script(start_script, agent):
         print(f"✅ {agent}: Fixed {start_script} -> PORT {port}")
 

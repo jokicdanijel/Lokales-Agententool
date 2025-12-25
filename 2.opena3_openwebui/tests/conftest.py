@@ -2,8 +2,9 @@
 """
 Pytest Fixtures für opena3 Tests
 """
-import sys
+
 import os
+import sys
 from pathlib import Path
 
 import pytest
@@ -24,15 +25,14 @@ def setup_test_environment():
     # Logs-Verzeichnis erstellen
     logs_dir = project_root / "logs"
     logs_dir.mkdir(exist_ok=True)
-    
+
     # Data-Verzeichnis erstellen
     data_dir = project_root / "data"
     data_dir.mkdir(exist_ok=True)
-    
-    yield
-    
+
+    return
+
     # Cleanup (optional)
-    pass
 
 
 @pytest.fixture

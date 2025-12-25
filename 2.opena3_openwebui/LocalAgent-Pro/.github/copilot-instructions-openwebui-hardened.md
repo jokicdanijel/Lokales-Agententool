@@ -86,16 +86,16 @@ Die obligatorische Bestandsanalyse muss folgende Punkte prüfen:
 
 ## 🚫 DU DARFST NICHT
 
-| Aktion | Grund | Konsequenz |
-|--------|-------|-----------|
-| Code generieren, bevor du prüfst | Risiko: Duplikate, unnötiger Code | Halt vor Ausführung |
-| Datei erzeugen, die bereits existiert | Risiko: Überschreiben | Prüfung vor dem Erstellen |
-| Kritische Datei überschreiben | Risiko: Systemausfall | Sperrung kritischer Dateien |
-| Code hinzufügen, der nicht gebraucht wird | Risiko: Bloat, Komplexität | Frage nach Zweck |
-| Projektstruktur ändern ohne Prüfung | Risiko: Breakage | Inventory-Check erforderlich |
-| Spekulativ handeln | Risiko: Fehler | Bei Unsicherheit: Nachfragen |
-| Import-Strukturen blind ändern | Risiko: Module funktionieren nicht | Vollständige Dependency-Analyse |
-| Konfiguration ohne Verständnis ändern | Risiko: Funktionalität bricht | Dokumentation lesen zuerst |
+| Aktion                                    | Grund                              | Konsequenz                      |
+| ----------------------------------------- | ---------------------------------- | ------------------------------- |
+| Code generieren, bevor du prüfst          | Risiko: Duplikate, unnötiger Code  | Halt vor Ausführung             |
+| Datei erzeugen, die bereits existiert     | Risiko: Überschreiben              | Prüfung vor dem Erstellen       |
+| Kritische Datei überschreiben             | Risiko: Systemausfall              | Sperrung kritischer Dateien     |
+| Code hinzufügen, der nicht gebraucht wird | Risiko: Bloat, Komplexität         | Frage nach Zweck                |
+| Projektstruktur ändern ohne Prüfung       | Risiko: Breakage                   | Inventory-Check erforderlich    |
+| Spekulativ handeln                        | Risiko: Fehler                     | Bei Unsicherheit: Nachfragen    |
+| Import-Strukturen blind ändern            | Risiko: Module funktionieren nicht | Vollständige Dependency-Analyse |
+| Konfiguration ohne Verständnis ändern     | Risiko: Funktionalität bricht      | Dokumentation lesen zuerst      |
 
 **Wenn Info fehlt → Du schätzt NICHT → Du prüfst erneut.**
 
@@ -257,22 +257,22 @@ Die obligatorische Bestandsanalyse muss folgende Punkte prüfen:
 
 Diese Aktionen darfst du durchführen:
 
-| Aktion | Auswirkung | Requires Inventory |
-|--------|-----------|-------------------|
-| „Analysiere das Projekt" | Scanne & zeige Struktur | ✅ Ja (Auto) |
-| „Gib mir eine Übersicht" | Zeige Komponenten-Übersicht | ✅ Ja (Auto) |
-| „Zeige kritische Dateien" | Markiere LEBENSNOTWENDIG | ✅ Ja (Auto) |
-| „Generiere Tests" | Triggere Option 1 | ✅ Ja (Auto) |
-| „Reorganisiere Struktur" | Triggere Option 2 | ✅ Ja (Auto) |
-| „ZIP Export" | Triggere Option 3 | ✅ Ja (Auto) |
-| „Starte VSCode Bridge" | Öffne VSCode | ✅ Ja (Auto) |
-| „Öffne Datei X" | Zeige/Open Datei | ✅ Ja (Auto) |
-| „Finde Datei X" | Suche in Projekt | ✅ Ja (Auto) |
-| „Zeige Problemstellen" | Identifiziere Risiken | ✅ Ja (Auto) |
-| „Erstelle Fix für Datei X" | Modify (nur nach Prüfung) | ✅ Ja (Auto) |
-| „Alles ausführen" | Run 1+2+3+6 | ✅ Ja (Auto + Manual) |
-| „Health-Check" | Triggere Option 6 | ✅ Ja (Auto) |
-| „Debugging" | Analyse & Repair | ✅ Ja (Auto) |
+| Aktion                     | Auswirkung                  | Requires Inventory    |
+| -------------------------- | --------------------------- | --------------------- |
+| „Analysiere das Projekt"   | Scanne & zeige Struktur     | ✅ Ja (Auto)          |
+| „Gib mir eine Übersicht"   | Zeige Komponenten-Übersicht | ✅ Ja (Auto)          |
+| „Zeige kritische Dateien"  | Markiere LEBENSNOTWENDIG    | ✅ Ja (Auto)          |
+| „Generiere Tests"          | Triggere Option 1           | ✅ Ja (Auto)          |
+| „Reorganisiere Struktur"   | Triggere Option 2           | ✅ Ja (Auto)          |
+| „ZIP Export"               | Triggere Option 3           | ✅ Ja (Auto)          |
+| „Starte VSCode Bridge"     | Öffne VSCode                | ✅ Ja (Auto)          |
+| „Öffne Datei X"            | Zeige/Open Datei            | ✅ Ja (Auto)          |
+| „Finde Datei X"            | Suche in Projekt            | ✅ Ja (Auto)          |
+| „Zeige Problemstellen"     | Identifiziere Risiken       | ✅ Ja (Auto)          |
+| „Erstelle Fix für Datei X" | Modify (nur nach Prüfung)   | ✅ Ja (Auto)          |
+| „Alles ausführen"          | Run 1+2+3+6                 | ✅ Ja (Auto + Manual) |
+| „Health-Check"             | Triggere Option 6           | ✅ Ja (Auto)          |
+| „Debugging"                | Analyse & Repair            | ✅ Ja (Auto)          |
 
 ---
 

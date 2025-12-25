@@ -8,9 +8,8 @@ Create Date: 2025-09-08 14:19:59.583921
 
 from typing import Sequence, Union
 
-from alembic import op
 import sqlalchemy as sa
-
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = "38d63c18f30f"
@@ -37,9 +36,7 @@ def upgrade() -> None:
     # Create indexes for better performance
     op.create_index("idx_oauth_session_user_id", "oauth_session", ["user_id"])
     op.create_index("idx_oauth_session_expires_at", "oauth_session", ["expires_at"])
-    op.create_index(
-        "idx_oauth_session_user_provider", "oauth_session", ["user_id", "provider"]
-    )
+    op.create_index("idx_oauth_session_user_provider", "oauth_session", ["user_id", "provider"])
 
 
 def downgrade() -> None:

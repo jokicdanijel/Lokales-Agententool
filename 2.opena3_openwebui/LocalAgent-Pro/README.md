@@ -68,17 +68,17 @@ python src/openwebui_agent_server.py
 
 ## 📚 Dokumentation
 
-| Dokument | Beschreibung |
-|----------|--------------|
-| [INSTALLATION.md](INSTALLATION.md) | Detaillierte Installationsanleitung |
-| [QUICK_START.md](QUICK_START.md) | Schnelleinstieg für neue Nutzer |
-| [COPILOT_SYSTEM_PROMPT.md](COPILOT_SYSTEM_PROMPT.md) | GitHub Copilot System-Prompt |
-| [COPILOT_PROMPT.md](COPILOT_PROMPT.md) | Copilot OpenWebUI-Integration |
-| [PASSWORD_RESET.md](PASSWORD_RESET.md) | OpenWebUI Passwort-Reset-Guide |
-| [OPENWEBUI_INTEGRATION.md](OPENWEBUI_INTEGRATION.md) | OpenWebUI Integration |
-| [SECURITY.md](SECURITY.md) | Sicherheitsfunktionen |
-| [docs/API.md](docs/API.md) | API-Dokumentation |
-| [tests/README.md](tests/README.md) | Test-Dokumentation |
+| Dokument                                             | Beschreibung                        |
+| ---------------------------------------------------- | ----------------------------------- |
+| [INSTALLATION.md](INSTALLATION.md)                   | Detaillierte Installationsanleitung |
+| [QUICK_START.md](QUICK_START.md)                     | Schnelleinstieg für neue Nutzer     |
+| [COPILOT_SYSTEM_PROMPT.md](COPILOT_SYSTEM_PROMPT.md) | GitHub Copilot System-Prompt        |
+| [COPILOT_PROMPT.md](COPILOT_PROMPT.md)               | Copilot OpenWebUI-Integration       |
+| [PASSWORD_RESET.md](PASSWORD_RESET.md)               | OpenWebUI Passwort-Reset-Guide      |
+| [OPENWEBUI_INTEGRATION.md](OPENWEBUI_INTEGRATION.md) | OpenWebUI Integration               |
+| [SECURITY.md](SECURITY.md)                           | Sicherheitsfunktionen               |
+| [docs/API.md](docs/API.md)                           | API-Dokumentation                   |
+| [tests/README.md](tests/README.md)                   | Test-Dokumentation                  |
 
 ---
 
@@ -86,13 +86,13 @@ python src/openwebui_agent_server.py
 
 LocalAgent-Pro bietet folgende Tools über die Chat-API:
 
-| Tool | Beschreibung | Beispiel |
-|------|--------------|----------|
-| `write_file` | Datei in Sandbox erstellen | "Erstelle hello.txt mit 'Hello World'" |
-| `read_file` | Datei aus Sandbox lesen | "Lies config.yaml" |
-| `delete_file` | Datei aus Sandbox löschen | "Lösche test.txt" |
-| `shell_exec` | Shell-Befehl ausführen | "Liste alle Dateien auf" |
-| `fetch_webpage` | Webseite abrufen | "Hole Inhalt von example.com" |
+| Tool            | Beschreibung               | Beispiel                               |
+| --------------- | -------------------------- | -------------------------------------- |
+| `write_file`    | Datei in Sandbox erstellen | "Erstelle hello.txt mit 'Hello World'" |
+| `read_file`     | Datei aus Sandbox lesen    | "Lies config.yaml"                     |
+| `delete_file`   | Datei aus Sandbox löschen  | "Lösche test.txt"                      |
+| `shell_exec`    | Shell-Befehl ausführen     | "Liste alle Dateien auf"               |
+| `fetch_webpage` | Webseite abrufen           | "Hole Inhalt von example.com"          |
 
 **Wichtig:** Alle Dateioperationen sind sandbox-isoliert (`~/localagent_sandbox/`)
 

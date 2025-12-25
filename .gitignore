@@ -187,3 +187,22 @@ __pycache__/
 */dist/dist/*
 */dist/*/dist/*
 */dist/*/dist/*/dist/*
+1.opena1&2_portier/archivp_store/
+# runtime artifacts
+archivp_store/
+
+# python caches
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# node
+node_modules/
+
+# Vendor / local envs
+open-webui-0.6.40/
+.venv-precommit/
+.venv-detectsecrets/

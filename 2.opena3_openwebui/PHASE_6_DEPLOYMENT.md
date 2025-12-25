@@ -172,7 +172,7 @@ CMD ["python3", "opena${AGENT_ID}/main.py"]
 #### docker-compose.yml
 
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
   opena1:

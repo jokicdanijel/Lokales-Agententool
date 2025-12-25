@@ -1,7 +1,7 @@
 # TODO – opena14 Calendar Agent
 
-**Port:** 12359  
-**Status:** 🟡 Planned  
+**Port:** 12359
+**Status:** 🟡 Planned
 **Kürzel:** `calp`
 
 ---
@@ -96,5 +96,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

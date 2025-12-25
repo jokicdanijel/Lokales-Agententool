@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena16 Shop Agent
 
-**Agent-ID:** opena16  
-**Port:** 12361  
-**Status:** 🟡 Planned  
-**Kürzel:** `shopp`  
+**Agent-ID:** opena16
+**Port:** 12361
+**Status:** 🟡 Planned
+**Kürzel:** `shopp`
 **Domäne:** Shop Agent, Shopify, WooCommerce, Product-Sync
 
 ---
@@ -141,5 +141,5 @@ Kopiere diesen Prompt in:
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

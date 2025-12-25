@@ -79,28 +79,28 @@ Der **Mini-Orchestrator** (`agent_server`) ist ein **integriertes Subsystem** de
 
 ### Core-Module
 
-| Datei | Verantwortlich für | Zeilen | Status |
-|-------|-------------------|--------|--------|
-| `agent_server.py` | FastAPI Entry-Point, Startup, Shutdown, API-Routes | ~320 | ✅ |
-| `agents/agent_base.py` | Basisklasse für alle Agents (Interface) | ~180 | ✅ |
-| `agents/agent_manager.py` | Registry, Lifecycle, Command-Routing, Health | ~280 | ✅ |
-| `agents/memory_system.py` | Shared Storage, Persistence, TTL | ~330 | ✅ |
-| `agents/agent_api.py` | HTTP-Client zum Dashboard (Registration, SSE) | ~310 | ✅ |
+| Datei                     | Verantwortlich für                                 | Zeilen | Status |
+| ------------------------- | -------------------------------------------------- | ------ | ------ |
+| `agent_server.py`         | FastAPI Entry-Point, Startup, Shutdown, API-Routes | ~320   | ✅     |
+| `agents/agent_base.py`    | Basisklasse für alle Agents (Interface)            | ~180   | ✅     |
+| `agents/agent_manager.py` | Registry, Lifecycle, Command-Routing, Health       | ~280   | ✅     |
+| `agents/memory_system.py` | Shared Storage, Persistence, TTL                   | ~330   | ✅     |
+| `agents/agent_api.py`     | HTTP-Client zum Dashboard (Registration, SSE)      | ~310   | ✅     |
 
 ### Implementations
 
-| Datei | Agent | Capabilities | Status |
-|-------|-------|--------------|--------|
-| `agents/implementations/mail_agent.py` | MailAgent | EMAIL | ✅ (Beispiel) |
-| `agents/implementations/browser_agent.py` | BrowserAgent | BROWSER | ⏳ TODO |
-| `agents/implementations/workflow_agent.py` | WorkflowAgent | WORKFLOW | ⏳ TODO |
+| Datei                                      | Agent         | Capabilities | Status        |
+| ------------------------------------------ | ------------- | ------------ | ------------- |
+| `agents/implementations/mail_agent.py`     | MailAgent     | EMAIL        | ✅ (Beispiel) |
+| `agents/implementations/browser_agent.py`  | BrowserAgent  | BROWSER      | ⏳ TODO       |
+| `agents/implementations/workflow_agent.py` | WorkflowAgent | WORKFLOW     | ⏳ TODO       |
 
 ### Infrastruktur
 
-| Datei | Zweck |
-|-------|-------|
-| `bin/start_agent_server.sh` | Startup-Skript (Port 12350) |
-| `docs/AGENT_SERVER_ARCHITECTURE.md` | Diese Datei |
+| Datei                               | Zweck                       |
+| ----------------------------------- | --------------------------- |
+| `bin/start_agent_server.sh`         | Startup-Skript (Port 12350) |
+| `docs/AGENT_SERVER_ARCHITECTURE.md` | Diese Datei                 |
 
 ---
 
@@ -112,7 +112,7 @@ Der **Mini-Orchestrator** (`agent_server`) ist ein **integriertes Subsystem** de
 sequenceDiagram
     participant AS as Agent Server (12350)
     participant DB as Dashboard (12349)
-    
+
     AS->>AS: Load Memory from Disk
     AS->>AS: Register Internal Agents (MailAgent, ...)
     AS->>DB: POST /api/agent/register
@@ -129,7 +129,7 @@ sequenceDiagram
     participant DB as Dashboard (12349)
     participant AS as Agent Server (12350)
     participant MA as MailAgent (Internal)
-    
+
     UI->>DB: POST /api/command<br/>{agent_id: "opena_mini_orchestrator", command: "send_mail"}
     DB->>AS: POST /command<br/>{command: "send_mail", params: {...}}
     AS->>AS: Route to MailAgent (Capability: EMAIL)
@@ -149,7 +149,7 @@ sequenceDiagram
     participant DB as Dashboard (12349)
     participant AS as Agent Server (12350)
     participant MA as MailAgent
-    
+
     DB->>AS: GET /health
     AS->>MA: health_check()
     MA-->>AS: {status: "healthy", details: {...}}
@@ -163,6 +163,7 @@ sequenceDiagram
 ### `GET /health`
 
 **Response:**
+
 ```json
 {
   "status": "healthy|degraded|unhealthy",
@@ -188,6 +189,7 @@ sequenceDiagram
 ### `POST /command`
 
 **Request:**
+
 ```json
 {
   "command": "send_mail",
@@ -196,12 +198,13 @@ sequenceDiagram
     "subject": "Test",
     "body": "Hello World"
   },
-  "agent_id": "mail_agent",  // Optional: expliziter Agent
-  "capability": "email"      // Optional: Auto-Routing
+  "agent_id": "mail_agent", // Optional: expliziter Agent
+  "capability": "email" // Optional: Auto-Routing
 }
 ```
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -218,6 +221,7 @@ sequenceDiagram
 ### `GET /agents`
 
 **Response:**
+
 ```json
 [
   {
@@ -235,6 +239,7 @@ sequenceDiagram
 ### `GET /stats`
 
 **Response:**
+
 ```json
 {
   "agent_manager": {
@@ -305,12 +310,12 @@ class BrowserAgent(AgentBase):
             capabilities=[AgentCapability.BROWSER],
             memory_system=memory_system
         )
-    
+
     async def execute(self, command: str, params: dict):
         if command == "browse_url":
             return await self._browse_url(params)
         # ...
-    
+
     async def health_check(self):
         return {"status": "healthy"}
 ```
@@ -441,15 +446,16 @@ curl -X POST http://127.0.0.1:12349/api/command \
 
 ## Zusammenfassung
 
-| Komponente | Rolle | Port | Status |
-|------------|-------|------|--------|
-| **Dashboard** | Top-Level-Orchestrator | 12349 | ✅ Produktiv |
-| **Mini-Orchestrator** | Registriertes Subsystem | 12350 | ✅ Produktiv |
-| **MailAgent** | Interner Worker (EMAIL) | - | ✅ Beispiel |
-| **BrowserAgent** | Interner Worker (BROWSER) | - | ⏳ TODO |
-| **WorkflowAgent** | Interner Worker (WORKFLOW) | - | ⏳ TODO |
+| Komponente            | Rolle                      | Port  | Status       |
+| --------------------- | -------------------------- | ----- | ------------ |
+| **Dashboard**         | Top-Level-Orchestrator     | 12349 | ✅ Produktiv |
+| **Mini-Orchestrator** | Registriertes Subsystem    | 12350 | ✅ Produktiv |
+| **MailAgent**         | Interner Worker (EMAIL)    | -     | ✅ Beispiel  |
+| **BrowserAgent**      | Interner Worker (BROWSER)  | -     | ⏳ TODO      |
+| **WorkflowAgent**     | Interner Worker (WORKFLOW) | -     | ⏳ TODO      |
 
-**Architektur-Prinzip:**  
+**Architektur-Prinzip:**
+
 > Keine neuen Systeme erfinden. Vorhandene Systeme (Dashboard, agent_server) sauber integrieren.
 
 ✅ **Ziel erreicht:** Erweiterbar, wartbar, konform mit bestehender Architektur.

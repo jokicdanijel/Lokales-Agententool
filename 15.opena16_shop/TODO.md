@@ -1,7 +1,7 @@
 # TODO – opena16 Shop Agent
 
-**Port:** 12361  
-**Status:** 🟡 Planned  
+**Port:** 12361
+**Status:** 🟡 Planned
 **Kürzel:** `shopp`
 
 ---
@@ -96,5 +96,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

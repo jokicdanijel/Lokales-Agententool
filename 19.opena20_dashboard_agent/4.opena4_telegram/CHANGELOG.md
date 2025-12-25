@@ -5,6 +5,7 @@ All notable changes to this agent will be documented in this file.
 ## [1.0.0] - 2025-12-23
 
 ### Added
+
 - ✅ Initial release of opena4 (Telegram Agent)
 - ✅ Telegram Bot API integration
 - ✅ Send/receive messages
@@ -28,6 +29,7 @@ All notable changes to this agent will be documented in this file.
 - ✅ Documentation (README.md)
 
 ### Plan Gates
+
 - **Basic Plan:**
   - Send/receive messages ✅
   - Read-only message history ✅
@@ -40,16 +42,19 @@ All notable changes to this agent will be documented in this file.
   - Advanced automation
 
 ### Database Schema
+
 - `telegram_messages` table for message storage
 - `telegram_chats` table for chat tracking
 
 ### Security
+
 - ✅ Environment variables for secrets
 - ✅ Input validation via Pydantic
 - ✅ SQL injection protection (asyncpg)
 - ✅ Rate limiting (Telegram API native)
 
 ### Technical Details
+
 - **Port:** 12346 (canonical)
 - **Plan:** Basic
 - **Dependencies:**
@@ -63,6 +68,7 @@ All notable changes to this agent will be documented in this file.
 ## Future Roadmap
 
 ### [1.1.0] - Planned
+
 - [ ] Media support (photos, documents, voice)
 - [ ] Inline keyboards
 - [ ] Message templates
@@ -71,6 +77,7 @@ All notable changes to this agent will be documented in this file.
 - [ ] Message deletion (Pro+ feature)
 
 ### [1.2.0] - Planned
+
 - [ ] Group management features
 - [ ] Channel posting
 - [ ] Bulk operations
@@ -78,6 +85,7 @@ All notable changes to this agent will be documented in this file.
 - [ ] Export chat history
 
 ### [2.0.0] - Future
+
 - [ ] Multi-bot support
 - [ ] Telegram Mini Apps integration
 - [ ] Payment processing

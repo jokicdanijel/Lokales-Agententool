@@ -6,15 +6,14 @@ Author: LocalAgentPro
 License: MIT
 """
 
-from flask import Flask, render_template_string, jsonify, request
-from flask_cors import CORS
-import json
-import os
-import psutil
 import logging
+import os
 from datetime import datetime
-from typing import Dict, List, Any
-import subprocess
+from typing import Any
+
+import psutil
+from flask import Flask, jsonify, render_template_string
+from flask_cors import CORS
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -29,35 +28,38 @@ CONFIG = {
     "version": "3.0.0",
     "port": 5001,
     "openwebui_port": 3000,
-    "debug": False
+    "debug": False,
 }
 
 # ============================================================================
 # DATA MODELS
 # ============================================================================
 
+
 class DashboardData:
     """Zentrale Datenverwaltung"""
 
     def __init__(self):
-        self.data_dir = "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.opena3_openwebui/OpenWebUI-Portier"
+        self.data_dir = (
+            "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.opena3_openwebui/OpenWebUI-Portier"
+        )
         self.users = []
         self.workflows = []
         self.sessions = []
 
-    def get_system_metrics(self) -> Dict[str, Any]:
+    def get_system_metrics(self) -> dict[str, Any]:
         """Hole System-Metriken"""
         return {
             "cpu": psutil.cpu_percent(interval=1),
             "memory": psutil.virtual_memory().percent,
-            "disk": psutil.disk_usage('/').percent,
-            "uptime": self._get_uptime()
+            "disk": psutil.disk_usage("/").percent,
+            "uptime": self._get_uptime(),
         }
 
     def _get_uptime(self) -> str:
         """Berechne Uptime"""
         try:
-            with open('/proc/uptime', 'r') as f:
+            with open("/proc/uptime") as f:
                 uptime_seconds = int(float(f.readline().split()[0]))
                 days = uptime_seconds // 86400
                 hours = (uptime_seconds % 86400) // 3600
@@ -66,7 +68,7 @@ class DashboardData:
         except:
             return "N/A"
 
-    def get_portier_status(self) -> Dict[str, Any]:
+    def get_portier_status(self) -> dict[str, Any]:
         """Hole Status aller Portier Module"""
         modules = [
             "portier_hyperdashboard_3_0_0.py",
@@ -86,29 +88,31 @@ class DashboardData:
             status[module_name] = {
                 "installed": os.path.exists(path),
                 "size": os.path.getsize(path) if os.path.exists(path) else 0,
-                "path": path
+                "path": path,
             }
 
         return status
 
-    def get_openwebui_status(self) -> Dict[str, Any]:
+    def get_openwebui_status(self) -> dict[str, Any]:
         """Prüfe OpenWebUI Status"""
         try:
             import socket
+
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            result = sock.connect_ex(('localhost', CONFIG["openwebui_port"]))
+            result = sock.connect_ex(("localhost", CONFIG["openwebui_port"]))
             sock.close()
             return {
                 "status": "online" if result == 0 else "offline",
                 "port": CONFIG["openwebui_port"],
-                "url": f"http://localhost:{CONFIG['openwebui_port']}"
+                "url": f"http://localhost:{CONFIG['openwebui_port']}",
             }
         except:
             return {
                 "status": "error",
                 "port": CONFIG["openwebui_port"],
-                "url": f"http://localhost:{CONFIG['openwebui_port']}"
+                "url": f"http://localhost:{CONFIG['openwebui_port']}",
             }
+
 
 dashboard_data = DashboardData()
 
@@ -116,47 +120,42 @@ dashboard_data = DashboardData()
 # ROUTES - API
 # ============================================================================
 
-@app.route('/api/status', methods=['GET'])
+
+@app.route("/api/status", methods=["GET"])
 def api_status():
     """Dashboard API Status"""
-    return jsonify({
-        "status": "online",
-        "version": CONFIG["version"],
-        "timestamp": datetime.now().isoformat(),
-        "dashboard": "HyperDashboard 3.0.0"
-    })
+    return jsonify(
+        {
+            "status": "online",
+            "version": CONFIG["version"],
+            "timestamp": datetime.now().isoformat(),
+            "dashboard": "HyperDashboard 3.0.0",
+        }
+    )
 
-@app.route('/api/metrics', methods=['GET'])
+
+@app.route("/api/metrics", methods=["GET"])
 def api_metrics():
     """System Metriken"""
     metrics = dashboard_data.get_system_metrics()
-    return jsonify({
-        "status": "success",
-        "metrics": metrics,
-        "timestamp": datetime.now().isoformat()
-    })
+    return jsonify({"status": "success", "metrics": metrics, "timestamp": datetime.now().isoformat()})
 
-@app.route('/api/portier/status', methods=['GET'])
+
+@app.route("/api/portier/status", methods=["GET"])
 def api_portier_status():
     """Portier Module Status"""
     status = dashboard_data.get_portier_status()
-    return jsonify({
-        "status": "success",
-        "modules": status,
-        "timestamp": datetime.now().isoformat()
-    })
+    return jsonify({"status": "success", "modules": status, "timestamp": datetime.now().isoformat()})
 
-@app.route('/api/openwebui/status', methods=['GET'])
+
+@app.route("/api/openwebui/status", methods=["GET"])
 def api_openwebui_status():
     """OpenWebUI Status"""
     status = dashboard_data.get_openwebui_status()
-    return jsonify({
-        "status": "success",
-        "openwebui": status,
-        "timestamp": datetime.now().isoformat()
-    })
+    return jsonify({"status": "success", "openwebui": status, "timestamp": datetime.now().isoformat()})
 
-@app.route('/api/health', methods=['GET'])
+
+@app.route("/api/health", methods=["GET"])
 def api_health():
     """Health Check - vollständig"""
     portier_status = dashboard_data.get_portier_status()
@@ -164,22 +163,25 @@ def api_health():
     metrics = dashboard_data.get_system_metrics()
 
     # Zähle Module
-    installed = sum(1 for m in portier_status.values() if m['installed'])
+    installed = sum(1 for m in portier_status.values() if m["installed"])
     total = len(portier_status)
 
-    return jsonify({
-        "status": "healthy",
-        "dashboard": "online",
-        "portier_modules": f"{installed}/{total}",
-        "openwebui": openwebui_status["status"],
-        "system": {
-            "cpu": metrics["cpu"],
-            "memory": metrics["memory"],
-            "disk": metrics["disk"],
-            "uptime": metrics["uptime"]
-        },
-        "timestamp": datetime.now().isoformat()
-    })
+    return jsonify(
+        {
+            "status": "healthy",
+            "dashboard": "online",
+            "portier_modules": f"{installed}/{total}",
+            "openwebui": openwebui_status["status"],
+            "system": {
+                "cpu": metrics["cpu"],
+                "memory": metrics["memory"],
+                "disk": metrics["disk"],
+                "uptime": metrics["uptime"],
+            },
+            "timestamp": datetime.now().isoformat(),
+        }
+    )
+
 
 # ============================================================================
 # ROUTES - HTML/UI
@@ -622,15 +624,18 @@ HTML_TEMPLATE = """
 </html>
 """
 
-@app.route('/')
+
+@app.route("/")
 def index():
     """Hauptdashboard"""
     return render_template_string(HTML_TEMPLATE)
 
-@app.route('/health')
+
+@app.route("/health")
 def health():
     """Health Check Seite"""
-    return render_template_string("""
+    return render_template_string(
+        """
     <!DOCTYPE html>
     <html>
     <head>
@@ -653,14 +658,17 @@ def health():
         </script>
     </body>
     </html>
-    """)
+    """
+    )
+
 
 # ============================================================================
 # MAIN
 # ============================================================================
 
-if __name__ == '__main__':
-    print(f"""
+if __name__ == "__main__":
+    print(
+        f"""
     ╔════════════════════════════════════════════════════════════════╗
     ║         🟣 Portier HyperDashboard 3.0.0                       ║
     ║              Standalone Web Server                             ║
@@ -672,13 +680,17 @@ if __name__ == '__main__':
     📋 Health Page:  http://localhost:{CONFIG['port']}/health
 
     ⏹️  Stoppen: Ctrl+C
-    """)
+    """
+    )
 
     logger.info(f"🚀 Starting Portier HyperDashboard on port {CONFIG['port']}")
-    app.run(host='0.0.0.0', port=CONFIG['port'], debug=CONFIG['debug'])
+    app.run(host="0.0.0.0", port=CONFIG["port"], debug=CONFIG["debug"])
 
-@app.route('/docs')
+
+@app.route("/docs")
 def docs():
     """Technische Dokumentation"""
-    with open('/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.opena3_openwebui/PORTIER_TECHNICAL_DOCS.html', 'r') as f:
+    with open(
+        "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.opena3_openwebui/PORTIER_TECHNICAL_DOCS.html",
+    ) as f:
         return f.read()

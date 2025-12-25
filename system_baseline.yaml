@@ -1,4 +1,4 @@
-agents:
+agents_list:
 - id: opena1
   port: 12345
   role: coordinator
@@ -126,11 +126,6 @@ agents:
   visibility: system
   description: System agent 21
 
-plans:
-  basic: {}
-  pro: {}
-  premium: {}
-  ultimum: {}
 
 core_agents:
 - opena1

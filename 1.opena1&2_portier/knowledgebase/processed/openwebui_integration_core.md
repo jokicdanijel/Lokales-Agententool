@@ -3,11 +3,13 @@
 ## 1. Architecture
 
 ### Flow
+
 ```
 User → OpenWebUI (8080) → Adapter (12350) → opena3 (12347) → Option-2-Flow
 ```
 
 ### Components
+
 - **OpenWebUI UI** - Port 8080 (Docker)
 - **Adapter** - Port 12350 (HTTP-Forwarder)
 - **opena3 Agent** - Port 12347 (FastAPI)
@@ -16,6 +18,7 @@ User → OpenWebUI (8080) → Adapter (12350) → opena3 (12347) → Option-2-Fl
 ## 2. Adapter Pattern
 
 ### openwebui_adapter.py
+
 ```python
 # Port 12350
 # Forwardet HTTP-Requests von Dashboard → OpenWebUI
@@ -31,6 +34,7 @@ async def chat(request: ChatRequest):
 ```
 
 ### Responsibilities
+
 - HTTP-Forwarding
 - Request-Transformation
 - Response-Mapping
@@ -39,6 +43,7 @@ async def chat(request: ChatRequest):
 ## 3. Port 8080 - UI Only
 
 ### Docker-Container
+
 ```yaml
 services:
   openwebui:
@@ -50,6 +55,7 @@ services:
 ```
 
 ### Restrictions
+
 - **NUR Frontend-Assets**
 - Keine Backend-Logik
 - Keine API-Routes (ausser UI)
@@ -57,6 +63,7 @@ services:
 - Keine Agent-Kommunikation
 
 ### Enforcement
+
 ```python
 # Port-Policy prueft:
 if port == 8080 and service_type == "backend":
@@ -66,6 +73,7 @@ if port == 8080 and service_type == "backend":
 ## 4. opena3 Agent
 
 ### main_openwebui_agent.py
+
 ```python
 # Port 12347
 # Agent-Wrapper um OpenWebUI-Terminal
@@ -86,6 +94,7 @@ async def invoke(action: Action):
 ```
 
 ### Responsibilities
+
 - Command-Handling
 - OpenWebUI-Integration
 - Option-2-Flow-Compliance
@@ -94,6 +103,7 @@ async def invoke(action: Action):
 ## 5. Endpoints
 
 ### Dashboard-Endpoints
+
 ```python
 # In main_dashboard.py (Port 12349)
 
@@ -113,6 +123,7 @@ async def openwebui_chat(request: ChatRequest):
 ```
 
 ### opena3-Endpoints
+
 ```python
 # main_openwebui_agent.py (Port 12347)
 
@@ -122,6 +133,7 @@ POST /invoke           # Tool-Invocation
 ```
 
 ### Adapter-Endpoints
+
 ```python
 # openwebui_adapter.py (Port 12350)
 
@@ -132,6 +144,7 @@ GET  /openwebui/health # Health-Check
 ## 6. Integration Flow
 
 ### Chat-Request
+
 1. User → Dashboard UI (12349)
 2. Dashboard → opena3 (12347)
 3. opena3 → opena1 (12344) - Option-2
@@ -140,6 +153,7 @@ GET  /openwebui/health # Health-Check
 6. opena3 → Dashboard → User
 
 ### Health-Check
+
 1. Dashboard → GET /api/openwebui/status
 2. Dashboard → opena3 /health
 3. opena3 → 200 OK
@@ -148,21 +162,25 @@ GET  /openwebui/health # Health-Check
 ## 7. Security
 
 ### Bearer-Token
-- Alle /api/openwebui/* Routen
+
+- Alle /api/openwebui/\* Routen
 - Token aus .env
 - localStorage im UI
 
 ### Rate-Limiting
+
 - 5 req/min fuer /api/openwebui/chat
 - slowapi Middleware
 
 ### CORS
+
 - Nur von 127.0.0.1:12349
 - Credentials allowed
 
 ## 8. Error-Handling
 
 ### 502 Bad Gateway
+
 ```json
 {
   "error": "OPENWEBUI_UNREACHABLE",
@@ -172,6 +190,7 @@ GET  /openwebui/health # Health-Check
 ```
 
 ### 504 Gateway Timeout
+
 ```json
 {
   "error": "OPENWEBUI_TIMEOUT",
@@ -181,6 +200,7 @@ GET  /openwebui/health # Health-Check
 ```
 
 ### 401 Unauthorized
+
 ```json
 {
   "error": "INVALID_TOKEN",
@@ -191,11 +211,13 @@ GET  /openwebui/health # Health-Check
 ## 9. Testing
 
 ### Health-Check
+
 ```bash
 curl -s http://127.0.0.1:12347/health | jq .
 ```
 
 ### Chat-Request
+
 ```bash
 curl -X POST http://127.0.0.1:12349/api/openwebui/chat \
   -H "Authorization: Bearer $BEARER_TOKEN" \
@@ -204,6 +226,7 @@ curl -X POST http://127.0.0.1:12349/api/openwebui/chat \
 ```
 
 ### Status-Check
+
 ```bash
 curl -s http://127.0.0.1:12349/api/openwebui/status \
   -H "Authorization: Bearer $BEARER_TOKEN" | jq .

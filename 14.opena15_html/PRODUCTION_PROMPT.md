@@ -1,8 +1,8 @@
 # 🚀 OPENA15 HTML Creator - Production Prompt
 
-**Version:** 1.0  
-**Datum:** 27. November 2025  
-**Status:** ✅ PRODUCTION-READY  
+**Version:** 1.0
+**Datum:** 27. November 2025
+**Status:** ✅ PRODUCTION-READY
 **Architektur:** Option-2-Flow konform
 
 ---
@@ -10,6 +10,7 @@
 ## 🎯 Systemübersicht
 
 **opena15** ist ein **FastAPI-basierter HTML-Generator-Service**, der:
+
 - **Jinja2-Templates** rendert
 - **CSS-Frameworks** integriert (Bootstrap, Tailwind, Bulma)
 - **HTML validiert** (BeautifulSoup4)
@@ -29,6 +30,7 @@ GET http://127.0.0.1:12360/health
 ```
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -52,6 +54,7 @@ Authorization: Bearer c899b90d-faf8-485b-afa4-078357cf5313
 ```
 
 **Request Body (strict Schema):**
+
 ```json
 {
   "template_name": "agent_dashboard.html.j2",
@@ -70,6 +73,7 @@ Authorization: Bearer c899b90d-faf8-485b-afa4-078357cf5313
 ```
 
 **Response:**
+
 ```json
 {
   "html": "<!DOCTYPE html>...",
@@ -82,6 +86,7 @@ Authorization: Bearer c899b90d-faf8-485b-afa4-078357cf5313
 ```
 
 **Schema-Regeln (STRIKT):**
+
 - `template_name`: **Pflicht**, max 200 Zeichen, muss in `data/templates/` existieren
 - `variables`: **Optional**, Dict mit beliebigen Variablen
 - `css_framework`: **Optional**, Enum: `none|bootstrap|tailwind|bulma|custom`
@@ -102,6 +107,7 @@ Authorization: Bearer c899b90d-faf8-485b-afa4-078357cf5313
 ```
 
 **Request:**
+
 ```json
 {
   "html": "<!DOCTYPE html><html><head><title>Test</title></head><body><h1>Test</h1></body></html>",
@@ -110,6 +116,7 @@ Authorization: Bearer c899b90d-faf8-485b-afa4-078357cf5313
 ```
 
 **Response:**
+
 ```json
 {
   "valid": true,
@@ -134,6 +141,7 @@ Authorization: Bearer c899b90d-faf8-485b-afa4-078357cf5313
 ```
 
 **Response:**
+
 ```json
 {
   "templates": [
@@ -164,24 +172,28 @@ cp my_template.html.j2 /path/to/14.opena15_html/data/templates/
 ```
 
 **Template-Beispiel (Jinja2):**
+
 ```html
 <!DOCTYPE html>
 <html lang="de">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>{{ title }}</title>
     {% if css_framework == 'bootstrap' %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     {% endif %}
-</head>
-<body>
+  </head>
+  <body>
     <h1>{{ heading }}</h1>
     <ul>
-    {% for item in items %}
-        <li>{{ item }}</li>
-    {% endfor %}
+      {% for item in items %}
+      <li>{{ item }}</li>
+      {% endfor %}
     </ul>
-</body>
+  </body>
 </html>
 ```
 
@@ -217,6 +229,7 @@ curl -X POST http://127.0.0.1:12360/generate \
 ```
 
 **Resultat:**
+
 - ✅ HTML generiert
 - ✅ Bootstrap eingebunden
 - ✅ Variablen gerendert
@@ -261,7 +274,7 @@ HEADERS = {
 def generate_html(template_name: str, variables: dict, **kwargs):
     """
     Generiere HTML via opena15 /generate Endpoint
-    
+
     Args:
         template_name: Template-Dateiname (in data/templates/)
         variables: Dict mit Jinja2-Variablen
@@ -272,14 +285,14 @@ def generate_html(template_name: str, variables: dict, **kwargs):
         "variables": variables,
         **kwargs
     }
-    
+
     response = requests.post(
         f"{OPENA15_URL}/generate",
         json=payload,
         headers=HEADERS,
         timeout=10
     )
-    
+
     if response.status_code == 200:
         result = response.json()
         print(f"✅ HTML generiert: {result['file_path']}")
@@ -364,15 +377,15 @@ BEARER_TOKEN = "c899b90d-faf8-485b-afa4-078357cf5313"
 def batch_generate(tasks: list):
     """
     Generiere mehrere HTML-Dateien in einem Batch
-    
+
     Args:
         tasks: Liste von Dicts mit {template_name, variables, ...}
     """
     results = []
-    
+
     for i, task in enumerate(tasks, 1):
         print(f"[{i}/{len(tasks)}] Generiere {task['template_name']}...", end=" ")
-        
+
         try:
             response = requests.post(
                 f"{OPENA15_URL}/generate",
@@ -383,7 +396,7 @@ def batch_generate(tasks: list):
                 },
                 timeout=10
             )
-            
+
             if response.status_code == 200:
                 result = response.json()
                 print(f"✅ {Path(result['file_path']).name}")
@@ -391,19 +404,19 @@ def batch_generate(tasks: list):
             else:
                 print(f"❌ HTTP {response.status_code}")
                 results.append({"task": task, "success": False, "error": response.text})
-        
+
         except Exception as e:
             print(f"❌ Fehler: {e}")
             results.append({"task": task, "success": False, "error": str(e)})
-        
+
         time.sleep(0.05)  # Rate limiting
-    
+
     # Zusammenfassung
     success = sum(1 for r in results if r["success"])
     print(f"\n{'='*60}")
     print(f"✅ Erfolgreich: {success}/{len(tasks)}")
     print(f"❌ Fehler: {len(tasks) - success}/{len(tasks)}")
-    
+
     return results
 
 # Production Tasks
@@ -586,6 +599,7 @@ python3 -m http.server 8000
 **Ursache:** Schema-Validierung fehlgeschlagen
 
 **Lösung:**
+
 ```python
 # Prüfe Payload gegen Schema
 payload = {
@@ -600,6 +614,7 @@ payload = {
 **Ursache:** Template nicht in `data/templates/`
 
 **Lösung:**
+
 ```bash
 ls 14.opena15_html/data/templates/
 cp my_template.j2 14.opena15_html/data/templates/
@@ -610,6 +625,7 @@ cp my_template.j2 14.opena15_html/data/templates/
 **Ursache:** Service nicht gestartet
 
 **Lösung:**
+
 ```bash
 ./bin/start_opena15.sh
 curl http://127.0.0.1:12360/health
@@ -620,17 +636,20 @@ curl http://127.0.0.1:12360/health
 ## 🎓 Zusammenfassung
 
 **opena15 ist:**
+
 - ✅ FastAPI-Service mit strict Endpoints
 - ✅ Jinja2-Template-Renderer
 - ✅ HTML-Validator
 - ✅ API-basiert (kein File-Scanner)
 
 **opena15 ist NICHT:**
+
 - ❌ Autonomer File-Browser
 - ❌ Selbst-modifizierendes System
 - ❌ Symlink-Generator
 
 **Production Workflow:**
+
 1. Template in `data/templates/` ablegen
 2. POST zu `/generate` mit strict Schema
 3. HTML wird in `data/output/` gespeichert
@@ -640,6 +659,6 @@ curl http://127.0.0.1:12360/health
 
 ---
 
-**Erstellt:** 27. November 2025  
-**Version:** 1.0  
+**Erstellt:** 27. November 2025
+**Version:** 1.0
 **Autor:** ELION/Portier System

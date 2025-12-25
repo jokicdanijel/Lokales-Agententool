@@ -278,7 +278,7 @@ async def validate_port_policy(request, call_next):
     if not (12344 <= port <= 12399):
         logger.error(f"Port {port} außerhalb des erlaubten Bereichs")
         raise HTTPException(
-            status_code=403, 
+            status_code=403,
             detail="Port muss zwischen 12344 und 12399 liegen"
         )
     return await call_next(request)
@@ -329,7 +329,7 @@ async def execute_command(
             status_code=401,
             detail="Ungültiger Token"
         )
-    
+
     try:
         result = await agent_registry.execute_command(agent, command)
         await sse_bus.publish({
@@ -363,7 +363,7 @@ async def event_stream():
                 "data": event["data"],
                 "retry": 3000
             }
-    
+
     return EventSourceResponse(event_generator())
 
 @app.post("/api/safepoints/query")
@@ -378,7 +378,7 @@ async def query_safepoints(
             status_code=401,
             detail="Ungültiger Token"
         )
-    
+
     try:
         safepoints = await safepoint_manager.query(query)
         return {
@@ -404,7 +404,7 @@ async def download_safepoint(
             status_code=401,
             detail="Ungültiger Token"
         )
-    
+
     try:
         content = await safepoint_manager.get_content(path)
         return {
@@ -840,7 +840,7 @@ danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/1
 bash: venv313/bin/activate: Datei oder Verzeichnis nicht gefunden
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$ curl http://127.0.0.1:12349/health
 {"service":"opena19","status":"healthy","strict":true,"timestamp":"2025-11-05T14:09:59.065624"}danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dacurl http://127.0.0.1:12349/api/status/all/api/status/all
-{"detail":"Token erforderlich"}danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$ 
+{"detail":"Token erforderlich"}danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$
 
 
 
@@ -990,12 +990,12 @@ logger = logging.getLogger(__name__)
 
 class RateLimiter:
     """Implementiert Rate-Limiting pro Token"""
-    
+
     def __init__(self, requests_per_minute: int = 60):
         self.rate_limit = requests_per_minute
         self.window_size = 60  # Sekunden
         self._requests: Dict[str, list] = {}
-        
+
     def _cleanup_old_requests(self, token: str):
         """Entfernt alte Requests aus dem Tracking"""
         now = time.time()
@@ -1004,29 +1004,29 @@ class RateLimiter:
                 ts for ts in self._requests[token]
                 if now - ts < self.window_size
             ]
-            
+
     def is_allowed(self, token: str) -> bool:
         """Prüft, ob ein Request erlaubt ist"""
         self._cleanup_old_requests(token)
-        
+
         now = time.time()
         if token not in self._requests:
             self._requests[token] = []
-            
+
         if len(self._requests[token]) >= self.rate_limit:
             return False
-            
+
         self._requests[token].append(now)
         return True
-        
+
     def limit(self):
         """Decorator für Rate-Limiting"""
         from functools import wraps
         from fastapi import HTTPException, Security
         from fastapi.security import HTTPBearer
-        
+
         security = HTTPBearer()
-        
+
         def decorator(func):
             @wraps(func)
             async def wrapper(*args, **kwargs):
@@ -1037,19 +1037,19 @@ class RateLimiter:
                         if isinstance(arg, HTTPAuthorizationCredentials):
                             token = arg.credentials
                             break
-                            
+
                 if not token:
                     raise HTTPException(
                         status_code=401,
                         detail="Token erforderlich"
                     )
-                    
+
                 if not self.is_allowed(token):
                     raise HTTPException(
                         status_code=429,
                         detail="Rate limit überschritten"
                     )
-                    
+
                 return await func(*args, **kwargs)
             return wrapper
         return decorator
@@ -1071,20 +1071,20 @@ def generate_token() -> str:
 
 class SecurityLog:
     """Protokolliert Sicherheitsereignisse"""
-    
+
     def __init__(self):
         self.logger = logging.getLogger("security")
         self.logger.addHandler(
             logging.FileHandler("logs/security.log")
         )
-        
+
     def log_access(self, token: str, endpoint: str, allowed: bool):
         """Protokolliert einen Zugriffsversuch"""
         self.logger.info(
             f"Access attempt: token={token[:8]}... "
             f"endpoint={endpoint} allowed={allowed}"
         )
-        
+
     def log_violation(self, details: str):
         """Protokolliert eine Sicherheitsverletzung"""
         self.logger.warning(f"Security violation: {details}")
@@ -1272,7 +1272,7 @@ mit Audit-Logs unter logs/security.log und logs/access.log.
 Du:
 tprojekt/19.dashboard_agent$ ZWQm3Jz4LCzqmf64xUZgC9u1T2mxxklPTeX2hTxU-aE
 ZWQm3Jz4LCzqmf64xUZgC9u1T2mxxklPTeX2hTxU-aE: Befehl nicht gefunden.
-(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$ 
+(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$
 
 
 
@@ -2005,7 +2005,7 @@ Du:
 mente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$ ps aux | grep main_dps aux | grep main_dashboard
 danijel+  745752  0.1  0.1 162900 49344 pts/2    Sl+  15:06   0:02 python main_dashboard.py
 danijel+  772397  0.0  0.0   9544  2276 pts/1    S+   15:35   0:00 grep --color=auto main_dashboard
-(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$ 
+(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$
 ChatGPT:
 
 Genau — da läuft also noch dein alter Prozess:
@@ -2044,7 +2044,7 @@ Wenn alles sauber läuft, sollte die Ausgabe jetzt lauten:
 Du:
 tprojekt/19.dashboard_agent$ ps aux | grep main_dashboard
 danijel+  773836  0.0  0.0   9544  2268 pts/1    S+   15:37   0:00 grep --color=auto main_dashboard
-(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$ 
+(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$
 ChatGPT:
 
 Perfekt — jetzt ist der alte Prozess weg, der Port ist frei.

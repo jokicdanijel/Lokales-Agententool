@@ -1,10 +1,10 @@
 # 🤖 opena9 - Telefonie Agent
 
-**Agent-ID:** `opena9`  
-**Port:** 12355  
-**Kürzel:** `telephonep`  
-**Version:** 3.0  
-**Status:** 🟡 **Planned** (PORTIER 3.0 Architecture Ready)  
+**Agent-ID:** `opena9`
+**Port:** 12355
+**Kürzel:** `telephonep`
+**Version:** 3.0
+**Status:** 🟡 **Planned** (PORTIER 3.0 Architecture Ready)
 **Letzte Aktualisierung:** 29. November 2025
 
 ---
@@ -166,8 +166,8 @@ curl http://127.0.0.1:12355/metrics
 
 ---
 
-**Maintainer:** Danijel Jokic (ELION Team)  
-**Letzte Aktualisierung:** 29. November 2025  
+**Maintainer:** Danijel Jokic (ELION Team)
+**Letzte Aktualisierung:** 29. November 2025
 **Status:** 🟡 **Architecture Ready** (Implementation Pending)
 
 ## 📖 Überblick
@@ -206,6 +206,7 @@ Client/UI
 ## 📡 API-Endpoints
 
 ### `GET /health`
+
 Health-Check des Agents.
 
 ```bash
@@ -213,6 +214,7 @@ curl http://127.0.0.1:12355/health | jq .
 ```
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -224,6 +226,7 @@ curl http://127.0.0.1:12355/health | jq .
 ```
 
 ### `POST /invoke`
+
 Service-spezifische Aktion ausführen.
 
 ```bash
@@ -346,5 +349,5 @@ curl http://127.0.0.1:12351/metrics
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 21. November 2025

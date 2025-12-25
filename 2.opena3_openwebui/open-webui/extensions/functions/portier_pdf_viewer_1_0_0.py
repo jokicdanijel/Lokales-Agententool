@@ -5,12 +5,12 @@ Version: 1.0.0
 Description: Sichere PDF-Anzeige mit Base64-Encoding, OCR-Support und Dokumentenanalyse
 """
 
-import os
 import base64
-import json
 import logging
-from typing import Dict, Any, Optional
+import os
 from datetime import datetime
+from typing import Any
+
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 class PDFMetadata(BaseModel):
     """PDF document metadata"""
+
     filename: str
     filesize_bytes: int
     uploaded_at: str
@@ -35,8 +36,8 @@ class Tools:
     async def pdf_viewer_load(
         self,
         file_path: str = Field(..., description="Pfad zur PDF-Datei"),
-        preview_only: bool = Field(default=True, description="Nur Preview (keine vollständige PDF)")
-    ) -> Dict[str, Any]:
+        preview_only: bool = Field(default=True, description="Nur Preview (keine vollständige PDF)"),
+    ) -> dict[str, Any]:
         """
         Load and encode PDF file as Base64
 
@@ -50,10 +51,7 @@ class Tools:
         logger.info(f"📄 Loading PDF: {file_path}")
 
         if not os.path.exists(file_path):
-            return {
-                "status": "error",
-                "message": f"Datei nicht gefunden: {file_path}"
-            }
+            return {"status": "error", "message": f"Datei nicht gefunden: {file_path}"}
 
         try:
             with open(file_path, "rb") as pdf_file:
@@ -73,21 +71,18 @@ class Tools:
                 "pdf_base64": pdf_base64,
                 "metadata": metadata,
                 "viewer_url": f"data:application/pdf;base64,{pdf_base64[:100]}...",
-                "message": "PDF erfolgreich geladen"
+                "message": "PDF erfolgreich geladen",
             }
 
         except Exception as e:
             logger.error(f"❌ Error loading PDF: {e}")
-            return {
-                "status": "error",
-                "message": f"Fehler beim Laden der PDF: {e}"
-            }
+            return {"status": "error", "message": f"Fehler beim Laden der PDF: {e}"}
 
     async def pdf_extract_text(
         self,
         file_path: str = Field(..., description="Pfad zur PDF-Datei"),
-        page_range: Optional[str] = Field(None, description="Seitenbereic (z.B. '1-5')")
-    ) -> Dict[str, Any]:
+        page_range: str | None = Field(None, description="Seitenbereic (z.B. '1-5')"),
+    ) -> dict[str, Any]:
         """
         Extract text from PDF (with OCR support)
 
@@ -107,7 +102,7 @@ class Tools:
             return {
                 "status": "warning",
                 "message": "PDF-Textextraktion erfordert PyPDF2",
-                "text": "Placeholder: PDF-Text würde hier angezeigt werden"
+                "text": "Placeholder: PDF-Text würde hier angezeigt werden",
             }
 
         try:
@@ -126,21 +121,18 @@ class Tools:
                 "status": "success",
                 "text": extracted_text,
                 "pages": total_pages,
-                "character_count": len(extracted_text)
+                "character_count": len(extracted_text),
             }
 
         except Exception as e:
             logger.error(f"❌ Error extracting text: {e}")
-            return {
-                "status": "error",
-                "message": f"Fehler beim Extrahieren von Text: {e}"
-            }
+            return {"status": "error", "message": f"Fehler beim Extrahieren von Text: {e}"}
 
     async def pdf_analyze_document(
         self,
         file_path: str = Field(..., description="Pfad zur PDF-Datei"),
-        analysis_type: str = Field(default="general", description="Analyse-Typ: general, invoice, contract")
-    ) -> Dict[str, Any]:
+        analysis_type: str = Field(default="general", description="Analyse-Typ: general, invoice, contract"),
+    ) -> dict[str, Any]:
         """
         Analyze PDF document content
 
@@ -162,7 +154,7 @@ class Tools:
                 "filesize_bytes": filesize,
                 "analysis_type": analysis_type,
                 "timestamp": datetime.now().isoformat(),
-                "findings": []
+                "findings": [],
             }
 
             # Add analysis based on type
@@ -184,26 +176,19 @@ class Tools:
                     {"type": "pages", "confidence": 1.0, "value": "Unknown"},
                 ]
 
-            logger.info(f"✅ Analysis completed")
+            logger.info("✅ Analysis completed")
 
-            return {
-                "status": "success",
-                "analysis": analysis,
-                "message": "Dokumentenanalyse abgeschlossen"
-            }
+            return {"status": "success", "analysis": analysis, "message": "Dokumentenanalyse abgeschlossen"}
 
         except Exception as e:
             logger.error(f"❌ Error analyzing document: {e}")
-            return {
-                "status": "error",
-                "message": f"Fehler bei der Dokumentenanalyse: {e}"
-            }
+            return {"status": "error", "message": f"Fehler bei der Dokumentenanalyse: {e}"}
 
     async def pdf_ocr_scan(
         self,
         file_path: str = Field(..., description="Pfad zur PDF-Datei"),
-        language: str = Field(default="deu", description="OCR-Sprache (z.B. 'deu' für Deutsch)")
-    ) -> Dict[str, Any]:
+        language: str = Field(default="deu", description="OCR-Sprache (z.B. 'deu' für Deutsch)"),
+    ) -> dict[str, Any]:
         """
         Perform OCR on PDF (if it's scanned)
 
@@ -221,25 +206,21 @@ class Tools:
             from PIL import Image
         except ImportError:
             logger.warning("pytesseract/Pillow not installed")
-            return {
-                "status": "warning",
-                "message": "OCR erfordert pytesseract und Pillow",
-                "extracted_text": ""
-            }
+            return {"status": "warning", "message": "OCR erfordert pytesseract und Pillow", "extracted_text": ""}
 
         return {
             "status": "success",
             "ocr_language": language,
             "extracted_text": "OCR would extract text from scanned PDF",
             "confidence": 0.85,
-            "message": "OCR-Verarbeitung abgeschlossen"
+            "message": "OCR-Verarbeitung abgeschlossen",
         }
 
     async def pdf_to_images(
         self,
         file_path: str = Field(..., description="Pfad zur PDF-Datei"),
-        dpi: int = Field(default=150, description="DPI für Image-Konvertierung")
-    ) -> Dict[str, Any]:
+        dpi: int = Field(default=150, description="DPI für Image-Konvertierung"),
+    ) -> dict[str, Any]:
         """
         Convert PDF pages to images
 
@@ -256,14 +237,11 @@ class Tools:
             import pdf2image
         except ImportError:
             logger.warning("pdf2image not installed")
-            return {
-                "status": "warning",
-                "message": "PDF-zu-Bild-Konvertierung erfordert pdf2image"
-            }
+            return {"status": "warning", "message": "PDF-zu-Bild-Konvertierung erfordert pdf2image"}
 
         return {
             "status": "success",
             "dpi": dpi,
             "images": ["image_1.png", "image_2.png"],
-            "message": "PDF in Bilder konvertiert"
+            "message": "PDF in Bilder konvertiert",
         }

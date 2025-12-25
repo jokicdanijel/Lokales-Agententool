@@ -1,15 +1,10 @@
 import logging
-from typing import Optional, List
 
 import requests
-
 from fastapi import Request
-
 from open_webui.env import SRC_LOG_LEVELS
-
 from open_webui.retrieval.web.main import SearchResult, get_filtered_results
 from open_webui.utils.headers import include_user_info_headers
-
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["RAG"])
@@ -21,9 +16,9 @@ def search_external(
     external_api_key: str,
     query: str,
     count: int,
-    filter_list: Optional[List[str]] = None,
+    filter_list: list[str] | None = None,
     user=None,
-) -> List[SearchResult]:
+) -> list[SearchResult]:
     try:
         headers = {
             "User-Agent": "Open WebUI (https://github.com/open-webui/open-webui) RAG Bot",

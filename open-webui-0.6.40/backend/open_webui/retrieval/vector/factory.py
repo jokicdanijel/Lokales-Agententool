@@ -1,14 +1,9 @@
+from open_webui.config import ENABLE_MILVUS_MULTITENANCY_MODE, ENABLE_QDRANT_MULTITENANCY_MODE, VECTOR_DB
 from open_webui.retrieval.vector.main import VectorDBBase
 from open_webui.retrieval.vector.type import VectorType
-from open_webui.config import (
-    VECTOR_DB,
-    ENABLE_QDRANT_MULTITENANCY_MODE,
-    ENABLE_MILVUS_MULTITENANCY_MODE,
-)
 
 
 class Vector:
-
     @staticmethod
     def get_vector(vector_type: str) -> VectorDBBase:
         """
@@ -17,9 +12,7 @@ class Vector:
         match vector_type:
             case VectorType.MILVUS:
                 if ENABLE_MILVUS_MULTITENANCY_MODE:
-                    from open_webui.retrieval.vector.dbs.milvus_multitenancy import (
-                        MilvusClient,
-                    )
+                    from open_webui.retrieval.vector.dbs.milvus_multitenancy import MilvusClient
 
                     return MilvusClient()
                 else:
@@ -28,9 +21,7 @@ class Vector:
                     return MilvusClient()
             case VectorType.QDRANT:
                 if ENABLE_QDRANT_MULTITENANCY_MODE:
-                    from open_webui.retrieval.vector.dbs.qdrant_multitenancy import (
-                        QdrantClient,
-                    )
+                    from open_webui.retrieval.vector.dbs.qdrant_multitenancy import QdrantClient
 
                     return QdrantClient()
                 else:
@@ -54,9 +45,7 @@ class Vector:
 
                 return PgvectorClient()
             case VectorType.ELASTICSEARCH:
-                from open_webui.retrieval.vector.dbs.elasticsearch import (
-                    ElasticsearchClient,
-                )
+                from open_webui.retrieval.vector.dbs.elasticsearch import ElasticsearchClient
 
                 return ElasticsearchClient()
             case VectorType.CHROMA:

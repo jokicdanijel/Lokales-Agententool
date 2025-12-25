@@ -4,12 +4,12 @@ PORTIER 3.0 - Scalable Services Generator
 Generate opena4-opena19 agents automatically
 """
 
-import os
 import json
-import shutil
+import os
 import sys
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
+
 
 class AgentGenerator:
     def __init__(self, base_dir, start_id=4, end_id=19, base_port=12348):
@@ -35,23 +35,12 @@ class AgentGenerator:
             "logging": {
                 "level": "INFO",
                 "file": f"logs/opena{agent_id}.log",
-                "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+                "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
             },
-            "health_check": {
-                "interval": 30,
-                "timeout": 5,
-                "enabled": True
-            },
-            "safepoint": {
-                "interval": 300,
-                "enabled": True
-            },
+            "health_check": {"interval": 30, "timeout": 5, "enabled": True},
+            "safepoint": {"interval": 300, "enabled": True},
             "created": datetime.now().isoformat(),
-            "cluster": {
-                "enable_scaling": True,
-                "enable_routing": True,
-                "enable_discovery": True
-            }
+            "cluster": {"enable_scaling": True, "enable_routing": True, "enable_discovery": True},
         }
         return config_dict
 
@@ -204,7 +193,7 @@ pydantic>=1.9.0
     def generate_all(self):
         """Generate all agents"""
         print(f"\n{'='*70}")
-        print(f"  PORTIER 3.0 - Agent Cluster Generator")
+        print("  PORTIER 3.0 - Agent Cluster Generator")
         print(f"{'='*70}\n")
 
         success_count = 0
@@ -231,7 +220,7 @@ pydantic>=1.9.0
             port = self.base_port + (i - self.start_id)
             commands.append(f"python3 LocalAgent-Pro/opena{i}/main.py > LocalAgent-Pro/logs/opena{i}.log 2>&1 &")
 
-        script_content = f'''#!/bin/bash
+        script_content = f"""#!/bin/bash
 # PORTIER 3.0 - Start All Scalable Agents (opena4-opena19)
 
 echo "🚀 Starting Agent Cluster (opena4-opena19)..."
@@ -250,7 +239,7 @@ echo "🔍 Verify with:"
 for port in {{{{12348..12364}}}}; do
   curl -s http://127.0.0.1:$port/health > /dev/null && echo "✅ Port $port online" || echo "❌ Port $port offline"
 done
-'''
+"""
 
         with open(script_path, "w") as f:
             f.write(script_content)
@@ -268,37 +257,24 @@ done
             services[f"opena{i}"] = {
                 "build": f"./LocalAgent-Pro/opena{i}",
                 "ports": [f"{port}:80"],
-                "environment": {
-                    "SERVICE_NAME": f"opena{i}",
-                    "PORT": "80"
-                },
+                "environment": {"SERVICE_NAME": f"opena{i}", "PORT": "80"},
                 "restart": "unless-stopped",
-                "networks": ["portier-network"]
+                "networks": ["portier-network"],
             }
 
-        compose_data = {
-            "version": "3.8",
-            "services": services,
-            "networks": {
-                "portier-network": {"driver": "bridge"}
-            }
-        }
+        compose_data = {"version": "3.8", "services": services, "networks": {"portier-network": {"driver": "bridge"}}}
 
-        import yaml
         with open(compose_path, "w") as f:
             json.dump(compose_data, f, indent=2)
 
         return compose_path
 
+
 def main():
     """Main entry point"""
     base_dir = Path(__file__).parent.parent
 
-    parser_args = {
-        "--start": 4,
-        "--end": 19,
-        "--base-port": 12348
-    }
+    parser_args = {"--start": 4, "--end": 19, "--base-port": 12348}
 
     # Parse arguments
     for arg, default in parser_args.items():
@@ -314,10 +290,7 @@ def main():
                     parser_args[arg] = int(value)
 
     generator = AgentGenerator(
-        base_dir,
-        start_id=parser_args["--start"],
-        end_id=parser_args["--end"],
-        base_port=parser_args["--base-port"]
+        base_dir, start_id=parser_args["--start"], end_id=parser_args["--end"], base_port=parser_args["--base-port"]
     )
 
     # Generate all agents
@@ -330,9 +303,10 @@ def main():
     # Summary
     print(f"\n{'='*70}")
     print(f"  ✅ Generated {success} agents successfully!")
-    print(f"  🚀 Start them with: bash bin/start_agents.sh")
-    print(f"  📊 Check status: curl http://127.0.0.1:12348/health")
+    print("  🚀 Start them with: bash bin/start_agents.sh")
+    print("  📊 Check status: curl http://127.0.0.1:12348/health")
     print(f"{'='*70}\n")
+
 
 if __name__ == "__main__":
     main()

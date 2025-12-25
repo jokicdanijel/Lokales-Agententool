@@ -1,56 +1,26 @@
-import logging
-import sys
+import asyncio
 import inspect
 import json
-import asyncio
+import logging
+import sys
+from collections.abc import AsyncGenerator, Generator, Iterator
 
+from fastapi import Request
 from pydantic import BaseModel
-from typing import AsyncGenerator, Generator, Iterator
-from fastapi import (
-    Depends,
-    FastAPI,
-    File,
-    Form,
-    HTTPException,
-    Request,
-    UploadFile,
-    status,
-)
-from starlette.responses import Response, StreamingResponse
+from starlette.responses import StreamingResponse
 
-
-from open_webui.constants import ERROR_MESSAGES
-from open_webui.socket.main import (
-    get_event_call,
-    get_event_emitter,
-)
-
-
-from open_webui.models.users import UserModel
+from open_webui.env import GLOBAL_LOG_LEVEL, SRC_LOG_LEVELS
 from open_webui.models.functions import Functions
 from open_webui.models.models import Models
-
-from open_webui.utils.plugin import (
-    load_function_module_by_id,
-    get_function_module_from_cache,
-)
-from open_webui.utils.tools import get_tools
-from open_webui.utils.access_control import has_access
-
-from open_webui.env import SRC_LOG_LEVELS, GLOBAL_LOG_LEVEL
-
+from open_webui.models.users import UserModel
+from open_webui.socket.main import get_event_call, get_event_emitter
 from open_webui.utils.misc import (
-    add_or_update_system_message,
-    get_last_user_message,
-    prepend_to_first_user_message_content,
     openai_chat_chunk_message_template,
     openai_chat_completion_message_template,
 )
-from open_webui.utils.payload import (
-    apply_model_params_to_body_openai,
-    apply_system_prompt_to_body,
-)
-
+from open_webui.utils.payload import apply_model_params_to_body_openai, apply_system_prompt_to_body
+from open_webui.utils.plugin import get_function_module_from_cache
+from open_webui.utils.tools import get_tools
 
 logging.basicConfig(stream=sys.stdout, level=GLOBAL_LOG_LEVEL)
 log = logging.getLogger(__name__)
@@ -66,9 +36,7 @@ def get_function_module_by_id(request: Request, pipe_id: str):
 
         if valves:
             try:
-                function_module.valves = Valves(
-                    **{k: v for k, v in valves.items() if v is not None}
-                )
+                function_module.valves = Valves(**{k: v for k, v in valves.items() if v is not None})
             except Exception as e:
                 log.exception(f"Error loading valves for function {pipe_id}: {e}")
                 raise e
@@ -107,9 +75,7 @@ async def get_function_models(request):
                     log.exception(e)
                     sub_pipes = []
 
-                log.debug(
-                    f"get_function_models: function '{pipe.id}' is a manifold of {sub_pipes}"
-                )
+                log.debug(f"get_function_models: function '{pipe.id}' is a manifold of {sub_pipes}")
 
                 for p in sub_pipes:
                     sub_pipe_id = f'{pipe.id}.{p["id"]}'
@@ -156,9 +122,7 @@ async def get_function_models(request):
     return pipe_models
 
 
-async def generate_function_chat_completion(
-    request, form_data, user, models: dict = {}
-):
+async def generate_function_chat_completion(request, form_data, user, models: dict = {}):
     async def execute_pipe(pipe, params):
         if inspect.iscoroutinefunction(pipe):
             return await pipe(**params)
@@ -205,9 +169,7 @@ async def generate_function_chat_completion(
 
         # Get the signature of the function
         sig = inspect.signature(function_module.pipe)
-        params = {"body": form_data} | {
-            k: v for k, v in extra_params.items() if k in sig.parameters
-        }
+        params = {"body": form_data} | {k: v for k, v in extra_params.items() if k in sig.parameters}
 
         if "__user__" in params and hasattr(function_module, "UserValves"):
             user_valves = Functions.get_user_valves_by_id_and_user_id(pipe_id, user.id)
@@ -328,9 +290,7 @@ async def generate_function_chat_completion(
                     yield process_line(form_data, line)
 
             if isinstance(res, str) or isinstance(res, Generator):
-                finish_message = openai_chat_chunk_message_template(
-                    form_data["model"], ""
-                )
+                finish_message = openai_chat_chunk_message_template(form_data["model"], "")
                 finish_message["choices"][0]["finish_reason"] = "stop"
                 yield f"data: {json.dumps(finish_message)}\n\n"
                 yield "data: [DONE]"

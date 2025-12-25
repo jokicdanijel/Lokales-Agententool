@@ -74,6 +74,7 @@ docker-compose.tracing.yml      # Full stack (OTEL + Jaeger + Prometheus + Grafa
 ## 📊 Was wird getrackt?
 
 ### Automatisch (agent-framework):
+
 - ✅ FastAPI request/response lifecycle
 - ✅ Agent invocations
 - ✅ Workflow steps
@@ -81,6 +82,7 @@ docker-compose.tracing.yml      # Full stack (OTEL + Jaeger + Prometheus + Grafa
 - ✅ Error traces & exceptions
 
 ### Manuell (Optional):
+
 ```python
 from src.observability.tracing_config import TracingContext
 
@@ -95,16 +97,19 @@ with TracingContext("agent_dispatch", {"agent_id": "opena1"}):
 ## 🎯 Use Cases
 
 ### 1. Multi-Agent Workflow Visualization
+
 - Siehe alle Agenten-Interaktionen im DAG
 - Latenz-Analyse pro Agent
 - Fehler-Tracking durch die Chain
 
 ### 2. Performance Monitoring
+
 - Request Latency (p50, p95, p99)
 - Service Health
 - Error Rates
 
 ### 3. Debugging
+
 - Vollständige Request Traces
 - Prompts & Completions (wenn enabled)
 - Stack Traces für Errors
@@ -125,6 +130,7 @@ if _TRACING_AVAILABLE:
 ```
 
 **Result:**
+
 - ✅ Alle Dashboard-Requests werden automatisch getraced
 - ✅ Agent Registry Operationen sind sichtbar
 - ✅ SSE Events haben Trace IDs
@@ -188,16 +194,19 @@ Tag: error=true
 ## 🛠️ Troubleshooting
 
 ### OTEL Collector startet nicht
+
 ```bash
 docker-compose -f docker-compose.tracing.yml logs otel-collector
 ```
 
 ### Traces nicht in Jaeger sichtbar
+
 1. Prüfe OTLP Endpoint: `curl http://localhost:4317`
 2. Prüfe Collector Logs
 3. Verifiziere `ENABLE_TRACING=true` in `.env`
 
 ### Performance-Impact
+
 - Tracing hat minimal overhead (~1-2%)
 - Mit `TRACE_SAMPLE_RATE=0.1` auf 10% reduzieren für große Scale
 

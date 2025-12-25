@@ -5,7 +5,7 @@ opena20 Dashboard Agent - The Ultimate All-in-One Solution
 
 🚀 Features:
 ✅ Unified SSE-Bus
-✅ Unified Agent-Registry  
+✅ Unified Agent-Registry
 ✅ Unified OpenAI-Modul
 ✅ Unified Background-Poller
 ✅ Unified Rate-Limiter
@@ -24,44 +24,18 @@ opena20 Dashboard Agent - The Ultimate All-in-One Solution
 Der Endgegner unter allen Agents.
 """
 
-import os
-import sys
-import json
-import asyncio
 import logging
-import signal
-import time
-from datetime import datetime, timezone
-from pathlib import Path
-from typing import Dict, List, Optional, Any, Set
-from contextlib import asynccontextmanager
-import uuid
-
-# FastAPI & Web
-from fastapi import FastAPI, HTTPException, Depends, Request, Response, BackgroundTasks
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
-from fastapi.staticfiles import StaticFiles
-import uvicorn
-
-# HTTP & Async
-import aiohttp
-import aiofiles
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
-from slowapi.errors import RateLimitExceeded
-from slowapi.middleware import SlowAPIMiddleware
+import os
 
 # Data & Storage
-import sqlite3
-from dataclasses import dataclass, asdict
-from concurrent.futures import ThreadPoolExecutor
-import threading
+import sys
+
+# HTTP & Async
+import uvicorn
+
+# FastAPI & Web
 
 # Monitoring & Metrics
-from prometheus_client import Counter, Gauge, Histogram, generate_latest
-from prometheus_client.core import CollectorRegistry
 
 # === CONFIGURATION & CONSTANTS ===
 
@@ -95,30 +69,29 @@ AGENTS_CONFIG = [
     {"id": "opena16", "name": "Shop Creator", "port": 12360, "url": "http://127.0.0.1:12360"},
     {"id": "opena17", "name": "Homepage Creator", "port": 12361, "url": "http://127.0.0.1:12361"},
     {"id": "opena18", "name": "Local Storage", "port": 12362, "url": "http://127.0.0.1:12362"},
-    {"id": "opena19", "name": "Trading", "port": 12363, "url": "http://127.0.0.1:12363"}
+    {"id": "opena19", "name": "Trading", "port": 12363, "url": "http://127.0.0.1:12363"},
 ]
+
 
 def main():
     """Main entry point - FUSION STARTER"""
-    
+
     # Setup logging
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-    )
-    
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
+
     logger = logging.getLogger("hyper_dashboard")
-    
+
     logger.info("🚀 FUSION GESTARTET - HYPER-DASHBOARD 3.0!")
     logger.info("🎯 PORTIER 3.0 Enterprise - The Ultimate All-in-One Solution")
     logger.info("✅ Alle Features unified und enterprise-ready!")
-    
-    print("""
-    
+
+    print(
+        """
+
 🚀 HYPER-DASHBOARD 3.0 - FUSION COMPLETE!
 
 ✅ Unified SSE-Bus
-✅ Unified Agent-Registry  
+✅ Unified Agent-Registry
 ✅ Unified OpenAI-Modul
 ✅ Unified Background-Poller
 ✅ Unified Rate-Limiter
@@ -141,52 +114,47 @@ def main():
 🤖 Registered Agents: {len(AGENTS_CONFIG)}
 
 🚀 READY FOR ENTERPRISE DEPLOYMENT!
-    """)
-    
+    """
+    )
+
     # Start the fusion
     try:
         # Import the full dashboard after fusion message
         from main_dashboard_final import app
-        
+
         uvicorn.run(
             "main_dashboard_final:app",
             host="127.0.0.1",
             port=DASHBOARD_PORT,
             reload=False,
             access_log=True,
-            log_level="info"
+            log_level="info",
         )
     except ImportError:
         logger.error("❌ main_dashboard_final.py not found - creating now...")
         logger.info("🔧 Use the existing main_dashboard_final.py for full features")
-        
+
         # Fallback minimal server
         from fastapi import FastAPI
-        
+
         app = FastAPI(title="HYPER-DASHBOARD 3.0 Fusion")
-        
+
         @app.get("/health")
         async def health():
             return {
                 "status": "ok",
                 "service": "hyper-dashboard-3.0-fusion",
-                "message": "🚀 FUSION COMPLETE! Use main_dashboard_final.py for full features"
+                "message": "🚀 FUSION COMPLETE! Use main_dashboard_final.py for full features",
             }
-        
-        uvicorn.run(
-            app,
-            host="127.0.0.1",
-            port=DASHBOARD_PORT,
-            reload=False,
-            access_log=True,
-            log_level="info"
-        )
-    
+
+        uvicorn.run(app, host="127.0.0.1", port=DASHBOARD_PORT, reload=False, access_log=True, log_level="info")
+
     except KeyboardInterrupt:
         logger.info("🛑 FUSION shutdown requested")
     except Exception as e:
         logger.error(f"❌ FUSION error: {e}")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

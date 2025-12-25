@@ -3,16 +3,15 @@ opena4_VSCode: Remote VS Code Integration Agent
 Orchestrates file operations and terminal execution via SSH
 """
 
-from fastapi import FastAPI, HTTPException, Header
-from pydantic import BaseModel
-import logging
-import asyncio
 import json
-import urllib.request
-from datetime import datetime
-from typing import Optional, List
+import logging
 import os
 import sys
+import urllib.request
+from datetime import datetime
+
+from fastapi import FastAPI, Header, HTTPException
+from pydantic import BaseModel
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(__file__))
@@ -23,11 +22,7 @@ from vscode_ssh import VSCodeSSH, init_ssh
 # CONFIGURATION
 # ============================================================================
 
-app = FastAPI(
-    title="opena4_VSCode",
-    version="1.0.0",
-    description="Remote VS Code Integration Agent"
-)
+app = FastAPI(title="opena4_VSCode", version="1.0.0", description="Remote VS Code Integration Agent")
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -42,7 +37,7 @@ SSH_USER = os.getenv("SSH_USER", "root")
 SSH_KEY_PATH = os.getenv("SSH_KEY_PATH", "/root/.ssh/id_rsa")
 
 # Global SSH instance
-ssh: Optional[VSCodeSSH] = None
+ssh: VSCodeSSH | None = None
 
 # ============================================================================
 # DATA MODELS
@@ -51,7 +46,7 @@ ssh: Optional[VSCodeSSH] = None
 
 class FileReadRequest(BaseModel):
     path: str
-    lines: Optional[tuple[int, int]] = None
+    lines: tuple[int, int] | None = None
 
 
 class FileWriteRequest(BaseModel):
@@ -103,11 +98,11 @@ async def shutdown():
 # ============================================================================
 
 
-def _validate_token(auth_header: Optional[str]):
+def _validate_token(auth_header: str | None):
     """Validate Bearer token"""
     if not auth_header or not auth_header.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing or invalid authorization header")
-    
+
     token = auth_header.replace("Bearer ", "").strip()
     if token != TOKEN:
         raise HTTPException(status_code=403, detail="Invalid token")
@@ -120,19 +115,16 @@ async def _archive(payload: dict) -> dict:
             "src": "opena4_vscode",
             "dst": "opena2",
             "kind": "FILE_OP",
-            "payload": {
-                **payload,
-                "ts": datetime.utcnow().isoformat() + "Z"
-            }
+            "payload": {**payload, "ts": datetime.utcnow().isoformat() + "Z"},
         }
-        
+
         req = urllib.request.Request(
             f"http://127.0.0.1:{ARCHIVE_PORT}/store/archivp",
-            data=json.dumps(data).encode('utf-8'),
+            data=json.dumps(data).encode("utf-8"),
             headers={"Content-Type": "application/json"},
-            method="POST"
+            method="POST",
         )
-        
+
         with urllib.request.urlopen(req, timeout=5) as r:
             result = json.loads(r.read().decode())
             logger.info(f"✅ Archived: {payload.get('op')}")
@@ -155,7 +147,7 @@ async def health():
         "service": "opena4_VSCode",
         "port": PORT,
         "ssh_connected": ssh.is_connected() if ssh else False,
-        "ts": datetime.utcnow().isoformat() + "Z"
+        "ts": datetime.utcnow().isoformat() + "Z",
     }
 
 
@@ -163,33 +155,28 @@ async def health():
 async def read_file(req: FileReadRequest, authorization: str = Header(None)):
     """Read file from remote server"""
     _validate_token(authorization)
-    
+
     if not ssh or not ssh.is_connected():
         raise HTTPException(status_code=503, detail="SSH connection not available")
-    
+
     try:
         content = await ssh.read_file(req.path)
-        
+
         # Apply line filtering if requested
         if req.lines:
             start, end = req.lines
-            lines = content.split('\n')
-            content = '\n'.join(lines[start-1:end])
-        
+            lines = content.split("\n")
+            content = "\n".join(lines[start - 1 : end])
+
         # Archive
-        await _archive({
-            "op": "FILE_READ",
-            "path": req.path,
-            "bytes": len(content),
-            "lines": len(content.split('\n'))
-        })
-        
+        await _archive({"op": "FILE_READ", "path": req.path, "bytes": len(content), "lines": len(content.split("\n"))})
+
         return {
             "strict": True,
             "path": req.path,
             "content": content,
             "bytes": len(content),
-            "ts": datetime.utcnow().isoformat() + "Z"
+            "ts": datetime.utcnow().isoformat() + "Z",
         }
     except Exception as e:
         logger.error(f"❌ File read failed: {e}")
@@ -200,27 +187,22 @@ async def read_file(req: FileReadRequest, authorization: str = Header(None)):
 async def write_file(req: FileWriteRequest, authorization: str = Header(None)):
     """Write file to remote server"""
     _validate_token(authorization)
-    
+
     if not ssh or not ssh.is_connected():
         raise HTTPException(status_code=503, detail="SSH connection not available")
-    
+
     try:
         success = await ssh.write_file(req.path, req.content)
-        
+
         # Archive
-        await _archive({
-            "op": "FILE_WRITE",
-            "path": req.path,
-            "bytes": len(req.content),
-            "success": success
-        })
-        
+        await _archive({"op": "FILE_WRITE", "path": req.path, "bytes": len(req.content), "success": success})
+
         return {
             "strict": True,
             "written": success,
             "path": req.path,
             "bytes": len(req.content),
-            "ts": datetime.utcnow().isoformat() + "Z"
+            "ts": datetime.utcnow().isoformat() + "Z",
         }
     except Exception as e:
         logger.error(f"❌ File write failed: {e}")
@@ -231,26 +213,17 @@ async def write_file(req: FileWriteRequest, authorization: str = Header(None)):
 async def delete_file(req: FileDeleteRequest, authorization: str = Header(None)):
     """Delete file from remote server"""
     _validate_token(authorization)
-    
+
     if not ssh or not ssh.is_connected():
         raise HTTPException(status_code=503, detail="SSH connection not available")
-    
+
     try:
         success = await ssh.delete_file(req.path)
-        
+
         # Archive
-        await _archive({
-            "op": "FILE_DELETE",
-            "path": req.path,
-            "success": success
-        })
-        
-        return {
-            "strict": True,
-            "deleted": success,
-            "path": req.path,
-            "ts": datetime.utcnow().isoformat() + "Z"
-        }
+        await _archive({"op": "FILE_DELETE", "path": req.path, "success": success})
+
+        return {"strict": True, "deleted": success, "path": req.path, "ts": datetime.utcnow().isoformat() + "Z"}
     except Exception as e:
         logger.error(f"❌ File delete failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -260,26 +233,22 @@ async def delete_file(req: FileDeleteRequest, authorization: str = Header(None))
 async def list_directory(req: DirectoryListRequest, authorization: str = Header(None)):
     """List directory contents"""
     _validate_token(authorization)
-    
+
     if not ssh or not ssh.is_connected():
         raise HTTPException(status_code=503, detail="SSH connection not available")
-    
+
     try:
         items = await ssh.list_dir(req.path)
-        
+
         # Archive
-        await _archive({
-            "op": "DIR_LIST",
-            "path": req.path,
-            "count": len(items)
-        })
-        
+        await _archive({"op": "DIR_LIST", "path": req.path, "count": len(items)})
+
         return {
             "strict": True,
             "path": req.path,
             "items": items,
             "count": len(items),
-            "ts": datetime.utcnow().isoformat() + "Z"
+            "ts": datetime.utcnow().isoformat() + "Z",
         }
     except Exception as e:
         logger.error(f"❌ Directory list failed: {e}")
@@ -290,29 +259,31 @@ async def list_directory(req: DirectoryListRequest, authorization: str = Header(
 async def exec_terminal(req: TerminalExecRequest, authorization: str = Header(None)):
     """Execute terminal command on remote server"""
     _validate_token(authorization)
-    
+
     if not ssh or not ssh.is_connected():
         raise HTTPException(status_code=503, detail="SSH connection not available")
-    
+
     try:
         output = await ssh.exec_cmd(req.cmd, timeout=req.timeout_sec)
-        
+
         # Archive
-        await _archive({
-            "op": "TERMINAL_EXEC",
-            "cmd": req.cmd,
-            "result_lines": len(output.splitlines()),
-            "timeout_sec": req.timeout_sec
-        })
-        
+        await _archive(
+            {
+                "op": "TERMINAL_EXEC",
+                "cmd": req.cmd,
+                "result_lines": len(output.splitlines()),
+                "timeout_sec": req.timeout_sec,
+            }
+        )
+
         return {
             "strict": True,
             "cmd": req.cmd,
             "output": output,
             "lines": len(output.splitlines()),
-            "ts": datetime.utcnow().isoformat() + "Z"
+            "ts": datetime.utcnow().isoformat() + "Z",
         }
-    except asyncio.TimeoutError:
+    except TimeoutError:
         logger.error(f"❌ Command timeout: {req.cmd}")
         raise HTTPException(status_code=504, detail=f"Command timeout after {req.timeout_sec}s")
     except Exception as e:
@@ -324,7 +295,7 @@ async def exec_terminal(req: TerminalExecRequest, authorization: str = Header(No
 async def status(authorization: str = Header(None)):
     """Get agent status"""
     _validate_token(authorization)
-    
+
     return {
         "service": "opena4_VSCode",
         "version": "1.0.0",
@@ -332,7 +303,7 @@ async def status(authorization: str = Header(None)):
         "ssh_host": SSH_HOST,
         "ssh_connected": ssh.is_connected() if ssh else False,
         "endpoints": 6,
-        "ts": datetime.utcnow().isoformat() + "Z"
+        "ts": datetime.utcnow().isoformat() + "Z",
     }
 
 
@@ -343,13 +314,8 @@ async def status(authorization: str = Header(None)):
 
 if __name__ == "__main__":
     import uvicorn
-    
+
     logger.info(f"🚀 Starting opena4_VSCode on port {PORT}")
     logger.info(f"SSH Target: {SSH_USER}@{SSH_HOST}")
-    
-    uvicorn.run(
-        app,
-        host="127.0.0.1",
-        port=PORT,
-        log_level="info"
-    )
+
+    uvicorn.run(app, host="127.0.0.1", port=PORT, log_level="info")

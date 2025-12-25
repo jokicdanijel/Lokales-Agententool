@@ -1,4 +1,5 @@
 # 🧠 LocalAgent-Pro VSCode Copilot Bridge
+
 ## Automation & Deployment Suite
 
 **Version:** 1.0 (Produktionsreif)
@@ -21,11 +22,13 @@ Automatisiertes Bridge-System, das LocalAgent-Pro mit VSCode Copilot verbindet f
 ## 🚀 Installation & Verwendung
 
 ### Schritt 1: Skript ausführbar machen
+
 ```bash
 chmod +x LocalAgent-Pro/scripts/vscode_copilot_bridge.sh
 ```
 
 ### Schritt 2: Starten
+
 ```bash
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.opena3_openwebui/LocalAgent-Pro
 
@@ -33,6 +36,7 @@ cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.opena3_openwebu
 ```
 
 ### Schritt 3: Aktion wählen
+
 ```
 1️⃣  TEST-Generierung
 2️⃣  Projektstruktur reorganisieren
@@ -48,12 +52,14 @@ cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.opena3_openwebu
 ## 🧪 Aktion 1: Test-Generierung
 
 **Was wird gemacht:**
+
 - Erstellt vollständige Test-Struktur
 - Generiert `pytest.ini` + `.coveragerc`
 - Erstellt `tests/conftest.py` mit Fixtures
 - Generiert Beispiel Unit-Tests
 
 **Resultat:**
+
 ```
 tests/
 ├── unit/
@@ -68,6 +74,7 @@ tests/
 ```
 
 **Ausführen:**
+
 ```bash
 pytest -v --cov=src
 ```
@@ -77,6 +84,7 @@ pytest -v --cov=src
 ## 📁 Aktion 2: Projektstruktur
 
 **Neue Struktur:**
+
 ```
 src/
 ├── core/              # Core-Funktionalität
@@ -95,6 +103,7 @@ docs/
 ```
 
 **Import-Korrekturen:**
+
 - Alle relativen Imports werden automatisch angepasst
 - `PROJECT_MAP.md` wird generiert
 
@@ -103,17 +112,20 @@ docs/
 ## 📦 Aktion 3: ZIP Export
 
 **Ausgabe:**
+
 ```
 ~/Desktop/LocalAgent-Pro-Autobuild_20251125_120200.zip
 ~/Desktop/LocalAgent-Pro-Autobuild_20251125_120200_MANIFEST.txt
 ```
 
 **Ausgeschlossene Verzeichnisse:**
+
 - `.git/`, `.venv/`, `venv/`
 - `__pycache__/`, `*.pyc`
 - `.pytest_cache/`, `htmlcov/`
 
 **Manifest enthält:**
+
 - Generierungs-Timestamp
 - Archiv-Größe
 - Installations-Anleitung
@@ -124,14 +136,16 @@ docs/
 ## 📊 Logging
 
 Alle Aktionen werden geloggt in:
+
 ```
 logs/copilot_bridge_YYYYMMDD_HHMMSS.log
 ```
 
 **Log-Level:**
+
 - ✅ `log_success()` - Erfolgreiche Operationen
 - ❌ `log_error()` - Fehler
-- ⚠️  `log_warning()` - Warnungen
+- ⚠️ `log_warning()` - Warnungen
 - 📋 `log()` - Info-Meldungen
 
 ---
@@ -144,6 +158,7 @@ logs/copilot_bridge_YYYYMMDD_HHMMSS.log
 ```
 
 **Prüft:**
+
 - VSCode Installation
 - Python3 Version
 - Git Verfügbarkeit
@@ -182,6 +197,7 @@ export_dir="${HOME}/Desktop"
 ## 🎯 Workflow-Beispiel
 
 ### Schneller Workflow:
+
 ```bash
 # 1. Tests generieren
 ./scripts/vscode_copilot_bridge.sh
@@ -201,6 +217,7 @@ pytest -v
 ```
 
 ### Nur Tests:
+
 ```bash
 ./scripts/vscode_copilot_bridge.sh
 # Wähle: 1
@@ -213,6 +230,7 @@ pytest -v --cov=src
 ## 🐛 Troubleshooting
 
 **Problem:** "VSCode nicht gefunden"
+
 ```bash
 # Lösung:
 VSCODE_CMD="/usr/bin/code" ./scripts/vscode_copilot_bridge.sh
@@ -221,6 +239,7 @@ which code
 ```
 
 **Problem:** "Keine Berechtigung"
+
 ```bash
 # Lösung:
 chmod +x scripts/vscode_copilot_bridge.sh
@@ -228,6 +247,7 @@ chmod +x scripts/health/*.sh
 ```
 
 **Problem:** "ZIP Erstellung fehlgeschlagen"
+
 ```bash
 # Prüfe:
 - Festplatte hat genug Platz
@@ -243,7 +263,7 @@ Das Skript bereitet Prompts vor für:
 
 1. **Automatische Test-Generierung**
    - Prompt: `Generiere Unit-Tests für [Modul]`
-   - Copilot erstellt: test_*.py + Fixtures
+   - Copilot erstellt: test\_\*.py + Fixtures
 
 2. **Code-Reorganisation**
    - Prompt: `Reorganisiere Struktur zu src/...`
@@ -267,6 +287,7 @@ Das Skript bereitet Prompts vor für:
 ## 📞 Support
 
 **Fehler-Reports:**
+
 ```bash
 # Log-Datei ansehen:
 tail -f logs/copilot_bridge_*.log

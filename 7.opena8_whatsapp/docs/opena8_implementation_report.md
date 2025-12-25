@@ -1,9 +1,9 @@
 # 📋 opena8 Implementation Report
 
-**Datum:** 27. November 2025  
-**Agent:** opena8 (WhatsApp Business Cloud API Agent)  
-**Kürzel:** whatsappp  
-**Port:** 12353  
+**Datum:** 27. November 2025
+**Agent:** opena8 (WhatsApp Business Cloud API Agent)
+**Kürzel:** whatsappp
+**Port:** 12353
 **Status:** ✅ **DEPLOYED & OPERATIONAL**
 
 ---
@@ -16,13 +16,13 @@ opena8 wurde erfolgreich als **WhatsApp Business Cloud API Agent** implementiert
 
 ## 📦 Erstellte Artefakte
 
-| # | Datei | Zeilen | Beschreibung |
-|---|-------|--------|--------------|
-| 1 | `main_whatsapp_agent.py` | 580 | FastAPI-Service (Port 12353) mit WhatsApp Cloud API-Integration |
-| 2 | `bin/start_opena8.sh` | 80 | Start-Skript mit PID/Port-Check |
-| 3 | `bin/stop_opena8.sh` | 40 | Stop-Skript mit Graceful Shutdown |
-| 4 | `test_opena8.py` | 255 | Test-Suite (7 Tests) |
-| 5 | `docs/opena8_implementation_report.md` | - | Dieser Report |
+| #   | Datei                                  | Zeilen | Beschreibung                                                    |
+| --- | -------------------------------------- | ------ | --------------------------------------------------------------- |
+| 1   | `main_whatsapp_agent.py`               | 580    | FastAPI-Service (Port 12353) mit WhatsApp Cloud API-Integration |
+| 2   | `bin/start_opena8.sh`                  | 80     | Start-Skript mit PID/Port-Check                                 |
+| 3   | `bin/stop_opena8.sh`                   | 40     | Stop-Skript mit Graceful Shutdown                               |
+| 4   | `test_opena8.py`                       | 255    | Test-Suite (7 Tests)                                            |
+| 5   | `docs/opena8_implementation_report.md` | -      | Dieser Report                                                   |
 
 **Gesamt:** 5 Dateien | ~955 LOC
 
@@ -32,15 +32,15 @@ opena8 wurde erfolgreich als **WhatsApp Business Cloud API Agent** implementiert
 
 **Status:** ✅ **7/7 Tests bestanden** (100%)
 
-| Test | Ergebnis | Beschreibung |
-|------|----------|--------------|
-| **Health-Check** | ✅ PASS | Health-Endpoint liefert korrekte Daten |
-| **Root-Endpoint** | ✅ PASS | Agent-Info mit `kuerzel: whatsappp` |
-| **Command-Endpoint** | ✅ PASS | Generischer Command mit Bearer-Auth |
-| **Send Text** | ✅ PASS | 500 erwartet (Credentials nicht konfiguriert) |
-| **Send Template** | ✅ PASS | 500 erwartet (Credentials nicht konfiguriert) |
-| **Webhook Verify** | ✅ PASS | Webhook-Verification korrekt (403 bei Invalid Token) |
-| **Strict JSON** | ✅ PASS | Extra Fields werden mit 422 rejected |
+| Test                 | Ergebnis | Beschreibung                                         |
+| -------------------- | -------- | ---------------------------------------------------- |
+| **Health-Check**     | ✅ PASS  | Health-Endpoint liefert korrekte Daten               |
+| **Root-Endpoint**    | ✅ PASS  | Agent-Info mit `kuerzel: whatsappp`                  |
+| **Command-Endpoint** | ✅ PASS  | Generischer Command mit Bearer-Auth                  |
+| **Send Text**        | ✅ PASS  | 500 erwartet (Credentials nicht konfiguriert)        |
+| **Send Template**    | ✅ PASS  | 500 erwartet (Credentials nicht konfiguriert)        |
+| **Webhook Verify**   | ✅ PASS  | Webhook-Verification korrekt (403 bei Invalid Token) |
+| **Strict JSON**      | ✅ PASS  | Extra Fields werden mit 422 rejected                 |
 
 **Hinweis:** Send-Tests validieren korrekte 500-Responses wenn WhatsApp-API-Credentials fehlen. In Production würden `META_ACCESS_TOKEN`, `META_PHONE_NUMBER_ID` und `META_VERIFY_TOKEN` konfiguriert und Tests würden echte WhatsApp-Operationen ausführen.
 
@@ -50,38 +50,38 @@ opena8 wurde erfolgreich als **WhatsApp Business Cloud API Agent** implementiert
 
 **Status:** ✅ **100% COMPLIANCE** (11/11 Policies)
 
-| Policy | Status | Details |
-|--------|--------|---------|
-| ✅ **Option-2-Flow** | Erfüllt | `whatsappp → kordp` via `/command` |
-| ✅ **Port-Policy** | Erfüllt | Port 12353 (Bereich 12344-12399) |
-| ✅ **Port 8080 Verboten** | Erfüllt | Nicht verwendet (nur UI) |
-| ✅ **Safepoint-Format** | Erfüllt | `SP<ts>_src→dst_{CMD\|RESP}.json` |
-| ✅ **Unicode-Pfeil** | Erfüllt | `→` (U+2192) in allen Safepoints |
-| ✅ **Strict JSON** | Erfüllt | `extra="forbid"` in allen Pydantic-Models |
-| ✅ **ENV-only Secrets** | Erfüllt | `META_ACCESS_TOKEN`, `BEARER_TOKEN` aus `.env` |
-| ✅ **Secret-Masking** | Erfüllt | `mask_secrets()` für Tokens/Phone Numbers |
-| ✅ **Max Depth** | Erfüllt | 2 Ebenen (whatsappp → kordp → tool) |
-| ✅ **PID-Management** | Erfüllt | `logs/opena8.pid` |
-| ✅ **Nohup-Logging** | Erfüllt | `logs/opena8.nohup.log` |
+| Policy                    | Status  | Details                                        |
+| ------------------------- | ------- | ---------------------------------------------- |
+| ✅ **Option-2-Flow**      | Erfüllt | `whatsappp → kordp` via `/command`             |
+| ✅ **Port-Policy**        | Erfüllt | Port 12353 (Bereich 12344-12399)               |
+| ✅ **Port 8080 Verboten** | Erfüllt | Nicht verwendet (nur UI)                       |
+| ✅ **Safepoint-Format**   | Erfüllt | `SP<ts>_src→dst_{CMD\|RESP}.json`              |
+| ✅ **Unicode-Pfeil**      | Erfüllt | `→` (U+2192) in allen Safepoints               |
+| ✅ **Strict JSON**        | Erfüllt | `extra="forbid"` in allen Pydantic-Models      |
+| ✅ **ENV-only Secrets**   | Erfüllt | `META_ACCESS_TOKEN`, `BEARER_TOKEN` aus `.env` |
+| ✅ **Secret-Masking**     | Erfüllt | `mask_secrets()` für Tokens/Phone Numbers      |
+| ✅ **Max Depth**          | Erfüllt | 2 Ebenen (whatsappp → kordp → tool)            |
+| ✅ **PID-Management**     | Erfüllt | `logs/opena8.pid`                              |
+| ✅ **Nohup-Logging**      | Erfüllt | `logs/opena8.nohup.log`                        |
 
-**Violations:** 0  
+**Violations:** 0
 **Compliance Score:** 💯 **100%**
 
 ---
 
 ## 📊 Deployment-Statistik
 
-| Metrik | Wert |
-|--------|------|
-| **Lines of Code** | 580 (main) + 375 (scripts/tests) = 955 |
-| **Endpoints** | 8 (/, /health, /command, /send/text, /send/template, /webhook GET/POST) |
-| **Port** | 12353 |
-| **PID** | 1653803 |
-| **Uptime** | 15+ Sekunden |
-| **Health** | <http://127.0.0.1:12353/health> |
-| **WhatsApp API Version** | v18.0 |
-| **Phone Number ID** | NOT CONFIGURED |
-| **Access Token** | NOT CONFIGURED |
+| Metrik                   | Wert                                                                    |
+| ------------------------ | ----------------------------------------------------------------------- |
+| **Lines of Code**        | 580 (main) + 375 (scripts/tests) = 955                                  |
+| **Endpoints**            | 8 (/, /health, /command, /send/text, /send/template, /webhook GET/POST) |
+| **Port**                 | 12353                                                                   |
+| **PID**                  | 1653803                                                                 |
+| **Uptime**               | 15+ Sekunden                                                            |
+| **Health**               | <http://127.0.0.1:12353/health>                                         |
+| **WhatsApp API Version** | v18.0                                                                   |
+| **Phone Number ID**      | NOT CONFIGURED                                                          |
+| **Access Token**         | NOT CONFIGURED                                                          |
 
 ---
 
@@ -111,7 +111,7 @@ opena8 wurde erfolgreich als **WhatsApp Business Cloud API Agent** implementiert
 
 - ✅ **Bearer-Token-Auth** (ENV-only)
 - ✅ **Secret-Masking** in Logs/Safepoints (ACCESS_TOKEN, APP_SECRET)
-- ✅ **Phone-Number-Masking** (keep last 4 digits: +4912345****)
+- ✅ **Phone-Number-Masking** (keep last 4 digits: +4912345\*\*\*\*)
 - ✅ **Content-Truncation** (Text > 500 chars)
 - ✅ **Webhook-Signature-Validation** (HMAC-SHA256)
 - ✅ **500 Error** wenn Credentials fehlen (keine Default-Values)
@@ -307,9 +307,9 @@ if not META_ACCESS_TOKEN:
 - ✅ **Graceful Degradation** (funktioniert ohne Credentials, klare Errors)
 - ✅ **Production-Ready** (PID-Management, Logging, Error-Handling, Webhook-Security)
 
-**Deployment-Status:** ✅ **OPERATIONAL**  
-**PID:** 1653803  
-**Port:** 12353  
+**Deployment-Status:** ✅ **OPERATIONAL**
+**PID:** 1653803
+**Port:** 12353
 **Health:** <http://127.0.0.1:12353/health>
 
 ---
@@ -318,14 +318,14 @@ if not META_ACCESS_TOKEN:
 
 **Implementierte Agenten:** 6/21
 
-| Agent | Port | Kürzel | Status | Compliance |
-|-------|------|--------|--------|------------|
-| **opena3** | 12347 | owuip | ✅ Running | 💯 100% |
-| **opena4** | 12348 | telep | ✅ Running | 91% |
-| **opena5** | 12351 | vscop | ✅ Running | 💯 100% |
-| **opena6** | 12350 | browsep | ✅ Running | 💯 100% |
-| **opena7** | 12352 | emailp | ✅ Running | 💯 100% |
-| **opena8** | 12353 | whatsappp | ✅ Running | 💯 100% |
+| Agent      | Port  | Kürzel    | Status     | Compliance |
+| ---------- | ----- | --------- | ---------- | ---------- |
+| **opena3** | 12347 | owuip     | ✅ Running | 💯 100%    |
+| **opena4** | 12348 | telep     | ✅ Running | 91%        |
+| **opena5** | 12351 | vscop     | ✅ Running | 💯 100%    |
+| **opena6** | 12350 | browsep   | ✅ Running | 💯 100%    |
+| **opena7** | 12352 | emailp    | ✅ Running | 💯 100%    |
+| **opena8** | 12353 | whatsappp | ✅ Running | 💯 100%    |
 
 **Verbleibend:** opena9-opena21 (15 Agenten)
 
@@ -333,6 +333,6 @@ if not META_ACCESS_TOKEN:
 
 ---
 
-**Erstellt:** 27. November 2025  
-**Maintainer:** Danijel Jokic (ELION Team)  
+**Erstellt:** 27. November 2025
+**Maintainer:** Danijel Jokic (ELION Team)
 **Version:** 1.0.0

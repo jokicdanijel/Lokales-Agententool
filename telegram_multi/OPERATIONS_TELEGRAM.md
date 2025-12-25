@@ -17,6 +17,7 @@ Telegram Multi-Bot ist ein FastAPI-basiertes System zur Verwaltung mehrerer Tele
 ## Quick Start
 
 ### Prerequisites
+
 - Docker & Docker-Compose
 - Python 3.11+ (falls lokal laufen soll)
 - Telegram Bot Token(s) von [@BotFather](https://t.me/BotFather)
@@ -64,12 +65,14 @@ bash scripts/register_bots.sh https://api.your-domain.com
 ## API Endpoints
 
 ### Health & Status
+
 ```bash
 GET /health
 GET /
 ```
 
 ### Admin (X-Admin-Key required)
+
 ```bash
 # Register a bot
 POST /admin/register-bot?bot_key={bot_key}&token={token}
@@ -79,6 +82,7 @@ POST /admin/set-webhooks?webhook_base_url={base_url}
 ```
 
 ### Webhook (Telegram-only)
+
 ```bash
 POST /telegram/webhook/{bot_key}
 # Telegram sends updates here (from setWebhook)
@@ -101,6 +105,7 @@ docker-compose -f docker-compose.otel.yml up -d
 ```
 
 This starts a local OTLP-compatible collector (Grafana LGTM) on:
+
 - Port **4317** (gRPC)
 - Port **4318** (HTTP OTLP)
 - Port **3000** (Grafana UI - if available)
@@ -130,6 +135,7 @@ python3 tracing/check_tracing.py
 ```
 
 Output should show:
+
 ```
 Tracing enabled: True
 ```
@@ -137,10 +143,12 @@ Tracing enabled: True
 ### Accessing Traces
 
 If Grafana is available (from docker-compose.otel.yml):
+
 - **Grafana UI:** http://localhost:3000
 - **Tempo Traces:** http://localhost:3000/explore (select Tempo datasource)
 
 Manual OTLP verification:
+
 ```bash
 # Check if OTLP endpoint is receiving data
 curl -v http://127.0.0.1:4318/v1/traces
@@ -210,12 +218,12 @@ LOG_LEVEL=DEBUG
 
 ## Docker-Compose Services
 
-| Service | Port | Image | Purpose |
-|---------|------|-------|---------|
-| **api** | 8000 | `telegram_multi_api` | FastAPI application |
-| **postgres** | 5432 | `postgres:16-alpine` | SQLModel persistence |
-| **redis** | 6379 | `redis:7-alpine` | Job queue backend |
-| **worker** | - | `telegram_multi_worker` | RQ background jobs |
+| Service      | Port | Image                   | Purpose              |
+| ------------ | ---- | ----------------------- | -------------------- |
+| **api**      | 8000 | `telegram_multi_api`    | FastAPI application  |
+| **postgres** | 5432 | `postgres:16-alpine`    | SQLModel persistence |
+| **redis**    | 6379 | `redis:7-alpine`        | Job queue backend    |
+| **worker**   | -    | `telegram_multi_worker` | RQ background jobs   |
 
 ---
 
@@ -251,26 +259,26 @@ telegram_multi/
 
 ### Required
 
-| Variable | Default | Purpose |
-|----------|---------|---------|
-| `ADMIN_KEY` | (none) | Header value for admin endpoints |
-| `BOT_TOKENS_MAPPING` | `{}` | JSON mapping: `{"bot_key": "token"}` |
+| Variable             | Default | Purpose                              |
+| -------------------- | ------- | ------------------------------------ |
+| `ADMIN_KEY`          | (none)  | Header value for admin endpoints     |
+| `BOT_TOKENS_MAPPING` | `{}`    | JSON mapping: `{"bot_key": "token"}` |
 
 ### Optional
 
-| Variable | Default | Purpose |
-|----------|---------|---------|
-| `API_PORT` | 8000 | FastAPI listen port |
-| `API_HOST` | 0.0.0.0 | FastAPI bind address |
-| `DEBUG` | false | Enable debug mode |
-| `BEARER_TOKEN` | (default) | Auth token for bot operations |
-| `WEBHOOK_SECRET` | (default) | Telegram webhook secret token |
-| `TELEGRAM_API_TIMEOUT` | 30 | Seconds timeout for Telegram API calls |
-| `LOG_LEVEL` | INFO | Python logging level |
-| `LOG_FILE` | logs/telegram_multi.log | Log file path |
-| `OTEL_ENABLED` | false | Enable OpenTelemetry tracing |
-| `OTEL_EXPORTER_OTLP_ENDPOINT` | http://localhost:4318 | OTLP collector endpoint |
-| `OTEL_SERVICE_NAME` | telegram_multi | Service name for traces |
+| Variable                      | Default                 | Purpose                                |
+| ----------------------------- | ----------------------- | -------------------------------------- |
+| `API_PORT`                    | 8000                    | FastAPI listen port                    |
+| `API_HOST`                    | 0.0.0.0                 | FastAPI bind address                   |
+| `DEBUG`                       | false                   | Enable debug mode                      |
+| `BEARER_TOKEN`                | (default)               | Auth token for bot operations          |
+| `WEBHOOK_SECRET`              | (default)               | Telegram webhook secret token          |
+| `TELEGRAM_API_TIMEOUT`        | 30                      | Seconds timeout for Telegram API calls |
+| `LOG_LEVEL`                   | INFO                    | Python logging level                   |
+| `LOG_FILE`                    | logs/telegram_multi.log | Log file path                          |
+| `OTEL_ENABLED`                | false                   | Enable OpenTelemetry tracing           |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | http://localhost:4318   | OTLP collector endpoint                |
+| `OTEL_SERVICE_NAME`           | telegram_multi          | Service name for traces                |
 
 ---
 
@@ -387,6 +395,6 @@ LLEN rq:queue:default
 
 ---
 
-**Last Updated:** 2025-12-17  
-**Version:** 1.0.0  
+**Last Updated:** 2025-12-17
+**Version:** 1.0.0
 **Status:** Production Ready ✅

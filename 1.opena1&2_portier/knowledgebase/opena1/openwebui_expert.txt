@@ -1325,4 +1325,3 @@ Wenn Sie vor diesem Update Eingabeaufforderungen erstellt haben, funktionieren d
 Alle vorhandenen Variablen werden jetzt standardmäßig als optional behandelt
 Wenn Sie das erforderliche Verhalten für kritische Felder beibehalten möchten, bearbeiten Sie Ihre Eingabeaufforderungen, um :requireddiesen Variablen das Flag hinzuzufügen
 Diese Änderung bietet eine bessere Benutzererfahrung, indem sie die flexible Verwendung von Eingabevorlagen ermöglicht
-

@@ -1,524 +1,448 @@
 import asyncio
-import inspect
 import json
 import logging
 import mimetypes
 import os
-import shutil
+import re
 import sys
 import time
-import random
-import re
-from uuid import uuid4
-
-
 from contextlib import asynccontextmanager
-from urllib.parse import urlencode, parse_qs, urlparse
-from pydantic import BaseModel
-from sqlalchemy import text
+from urllib.parse import parse_qs, urlencode, urlparse
 
-from typing import Optional
-from aiocache import cached
 import aiohttp
 import anyio.to_thread
 import requests
-from redis import Redis
-
-
 from fastapi import (
     Depends,
     FastAPI,
-    File,
-    Form,
     HTTPException,
     Request,
-    UploadFile,
-    status,
     applications,
-    BackgroundTasks,
+    status,
 )
-from fastapi.openapi.docs import get_swagger_ui_html
-
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
-
-from starlette_compress import CompressMiddleware
-
+from pydantic import BaseModel
+from sqlalchemy import text
+from starlette.datastructures import Headers
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.sessions import SessionMiddleware
-from starlette.responses import Response, StreamingResponse
-from starlette.datastructures import Headers
-
-from starsessions import (
-    SessionMiddleware as StarSessionsMiddleware,
-    SessionAutoloadMiddleware,
-)
+from starlette.responses import Response
+from starlette_compress import CompressMiddleware
+from starsessions import SessionAutoloadMiddleware
+from starsessions import SessionMiddleware as StarSessionsMiddleware
 from starsessions.stores.redis import RedisStore
 
-from open_webui.utils import logger
-from open_webui.utils.audit import AuditLevel, AuditLoggingMiddleware
-from open_webui.utils.logger import start_logger
-from open_webui.socket.main import (
-    app as socket_app,
-    periodic_usage_pool_cleanup,
-    get_event_emitter,
-    get_models_in_use,
-    get_active_user_ids,
-)
-from open_webui.routers import (
-    audio,
-    images,
-    ollama,
-    openai,
-    retrieval,
-    pipelines,
-    tasks,
-    auths,
-    channels,
-    chats,
-    notes,
-    folders,
-    configs,
-    groups,
-    files,
-    functions,
-    memories,
-    models,
-    knowledge,
-    prompts,
-    evaluations,
-    tools,
-    users,
-    utils,
-    scim,
-)
-
-from open_webui.routers.retrieval import (
-    get_embedding_function,
-    get_reranking_function,
-    get_ef,
-    get_rf,
-)
-
-from open_webui.internal.db import Session, engine
-
-from open_webui.models.functions import Functions
-from open_webui.models.models import Models
-from open_webui.models.users import UserModel, Users
-from open_webui.models.chats import Chats
-
-from open_webui.config import (
-    # Ollama
-    ENABLE_OLLAMA_API,
-    OLLAMA_BASE_URLS,
-    OLLAMA_API_CONFIGS,
-    # OpenAI
-    ENABLE_OPENAI_API,
-    OPENAI_API_BASE_URLS,
-    OPENAI_API_KEYS,
-    OPENAI_API_CONFIGS,
-    # Direct Connections
-    ENABLE_DIRECT_CONNECTIONS,
-    # Model list
-    ENABLE_BASE_MODELS_CACHE,
-    # Thread pool size for FastAPI/AnyIO
-    THREAD_POOL_SIZE,
-    # Tool Server Configs
-    TOOL_SERVER_CONNECTIONS,
-    # Code Execution
-    ENABLE_CODE_EXECUTION,
-    CODE_EXECUTION_ENGINE,
-    CODE_EXECUTION_JUPYTER_URL,
-    CODE_EXECUTION_JUPYTER_AUTH,
-    CODE_EXECUTION_JUPYTER_AUTH_TOKEN,
-    CODE_EXECUTION_JUPYTER_AUTH_PASSWORD,
-    CODE_EXECUTION_JUPYTER_TIMEOUT,
-    ENABLE_CODE_INTERPRETER,
-    CODE_INTERPRETER_ENGINE,
-    CODE_INTERPRETER_PROMPT_TEMPLATE,
-    CODE_INTERPRETER_JUPYTER_URL,
-    CODE_INTERPRETER_JUPYTER_AUTH,
-    CODE_INTERPRETER_JUPYTER_AUTH_TOKEN,
-    CODE_INTERPRETER_JUPYTER_AUTH_PASSWORD,
-    CODE_INTERPRETER_JUPYTER_TIMEOUT,
-    # Image
-    AUTOMATIC1111_API_AUTH,
-    AUTOMATIC1111_BASE_URL,
-    AUTOMATIC1111_PARAMS,
-    COMFYUI_BASE_URL,
-    COMFYUI_API_KEY,
-    COMFYUI_WORKFLOW,
-    COMFYUI_WORKFLOW_NODES,
-    ENABLE_IMAGE_GENERATION,
-    ENABLE_IMAGE_PROMPT_GENERATION,
-    IMAGE_GENERATION_ENGINE,
-    IMAGE_GENERATION_MODEL,
-    IMAGE_SIZE,
-    IMAGE_STEPS,
-    IMAGES_OPENAI_API_BASE_URL,
-    IMAGES_OPENAI_API_VERSION,
-    IMAGES_OPENAI_API_KEY,
-    IMAGES_OPENAI_API_PARAMS,
-    IMAGES_GEMINI_API_BASE_URL,
-    IMAGES_GEMINI_API_KEY,
-    IMAGES_GEMINI_ENDPOINT_METHOD,
-    ENABLE_IMAGE_EDIT,
-    IMAGE_EDIT_ENGINE,
-    IMAGE_EDIT_MODEL,
-    IMAGE_EDIT_SIZE,
-    IMAGES_EDIT_OPENAI_API_BASE_URL,
-    IMAGES_EDIT_OPENAI_API_KEY,
-    IMAGES_EDIT_OPENAI_API_VERSION,
-    IMAGES_EDIT_GEMINI_API_BASE_URL,
-    IMAGES_EDIT_GEMINI_API_KEY,
-    IMAGES_EDIT_COMFYUI_BASE_URL,
-    IMAGES_EDIT_COMFYUI_API_KEY,
-    IMAGES_EDIT_COMFYUI_WORKFLOW,
-    IMAGES_EDIT_COMFYUI_WORKFLOW_NODES,
-    # Audio
+from open_webui.config import (  # Ollama; OpenAI; Direct Connections; Model list; Thread pool size for FastAPI/AnyIO; Tool Server Configs; Code Execution; Image; Audio; Retrieval; Retrieval (Web Search); WebUI; WebUI (OAuth); WebUI (LDAP); LDAP Group Management; Misc; Admin; Tasks
+    ADMIN_EMAIL,
+    API_KEYS_ALLOWED_ENDPOINTS,
+    AUDIO_STT_AZURE_API_KEY,
+    AUDIO_STT_AZURE_BASE_URL,
+    AUDIO_STT_AZURE_LOCALES,
+    AUDIO_STT_AZURE_MAX_SPEAKERS,
+    AUDIO_STT_AZURE_REGION,
     AUDIO_STT_ENGINE,
+    AUDIO_STT_MISTRAL_API_BASE_URL,
+    AUDIO_STT_MISTRAL_API_KEY,
+    AUDIO_STT_MISTRAL_USE_CHAT_COMPLETIONS,
     AUDIO_STT_MODEL,
-    AUDIO_STT_SUPPORTED_CONTENT_TYPES,
     AUDIO_STT_OPENAI_API_BASE_URL,
     AUDIO_STT_OPENAI_API_KEY,
-    AUDIO_STT_AZURE_API_KEY,
-    AUDIO_STT_AZURE_REGION,
-    AUDIO_STT_AZURE_LOCALES,
-    AUDIO_STT_AZURE_BASE_URL,
-    AUDIO_STT_AZURE_MAX_SPEAKERS,
-    AUDIO_STT_MISTRAL_API_KEY,
-    AUDIO_STT_MISTRAL_API_BASE_URL,
-    AUDIO_STT_MISTRAL_USE_CHAT_COMPLETIONS,
+    AUDIO_STT_SUPPORTED_CONTENT_TYPES,
+    AUDIO_TTS_API_KEY,
+    AUDIO_TTS_AZURE_SPEECH_BASE_URL,
+    AUDIO_TTS_AZURE_SPEECH_OUTPUT_FORMAT,
+    AUDIO_TTS_AZURE_SPEECH_REGION,
     AUDIO_TTS_ENGINE,
     AUDIO_TTS_MODEL,
-    AUDIO_TTS_VOICE,
     AUDIO_TTS_OPENAI_API_BASE_URL,
     AUDIO_TTS_OPENAI_API_KEY,
     AUDIO_TTS_OPENAI_PARAMS,
-    AUDIO_TTS_API_KEY,
     AUDIO_TTS_SPLIT_ON,
-    AUDIO_TTS_AZURE_SPEECH_REGION,
-    AUDIO_TTS_AZURE_SPEECH_BASE_URL,
-    AUDIO_TTS_AZURE_SPEECH_OUTPUT_FORMAT,
-    PLAYWRIGHT_WS_URL,
-    PLAYWRIGHT_TIMEOUT,
-    FIRECRAWL_API_BASE_URL,
-    FIRECRAWL_API_KEY,
-    WEB_LOADER_ENGINE,
-    WEB_LOADER_CONCURRENT_REQUESTS,
-    WHISPER_MODEL,
-    WHISPER_VAD_FILTER,
-    WHISPER_LANGUAGE,
-    DEEPGRAM_API_KEY,
-    WHISPER_MODEL_AUTO_UPDATE,
-    WHISPER_MODEL_DIR,
-    # Retrieval
-    RAG_TEMPLATE,
-    DEFAULT_RAG_TEMPLATE,
-    RAG_FULL_CONTEXT,
+    AUDIO_TTS_VOICE,
+    AUTOCOMPLETE_GENERATION_INPUT_MAX_LENGTH,
+    AUTOCOMPLETE_GENERATION_PROMPT_TEMPLATE,
+    AUTOMATIC1111_API_AUTH,
+    AUTOMATIC1111_BASE_URL,
+    AUTOMATIC1111_PARAMS,
+    BING_SEARCH_V7_ENDPOINT,
+    BING_SEARCH_V7_SUBSCRIPTION_KEY,
+    BOCHA_SEARCH_API_KEY,
+    BRAVE_SEARCH_API_KEY,
+    BYPASS_ADMIN_ACCESS_CONTROL,
     BYPASS_EMBEDDING_AND_RETRIEVAL,
-    RAG_EMBEDDING_MODEL,
-    RAG_EMBEDDING_MODEL_AUTO_UPDATE,
-    RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE,
-    RAG_RERANKING_ENGINE,
-    RAG_RERANKING_MODEL,
-    RAG_EXTERNAL_RERANKER_URL,
-    RAG_EXTERNAL_RERANKER_API_KEY,
-    RAG_RERANKING_MODEL_AUTO_UPDATE,
-    RAG_RERANKING_MODEL_TRUST_REMOTE_CODE,
-    RAG_EMBEDDING_ENGINE,
-    RAG_EMBEDDING_BATCH_SIZE,
-    ENABLE_ASYNC_EMBEDDING,
-    RAG_TOP_K,
-    RAG_TOP_K_RERANKER,
-    RAG_RELEVANCE_THRESHOLD,
-    RAG_HYBRID_BM25_WEIGHT,
-    RAG_ALLOWED_FILE_EXTENSIONS,
-    RAG_FILE_MAX_COUNT,
-    RAG_FILE_MAX_SIZE,
-    FILE_IMAGE_COMPRESSION_WIDTH,
-    FILE_IMAGE_COMPRESSION_HEIGHT,
-    RAG_OPENAI_API_BASE_URL,
-    RAG_OPENAI_API_KEY,
-    RAG_AZURE_OPENAI_BASE_URL,
-    RAG_AZURE_OPENAI_API_KEY,
-    RAG_AZURE_OPENAI_API_VERSION,
-    RAG_OLLAMA_BASE_URL,
-    RAG_OLLAMA_API_KEY,
-    CHUNK_OVERLAP,
-    CHUNK_SIZE,
-    CONTENT_EXTRACTION_ENGINE,
-    DATALAB_MARKER_API_KEY,
-    DATALAB_MARKER_API_BASE_URL,
-    DATALAB_MARKER_ADDITIONAL_CONFIG,
-    DATALAB_MARKER_SKIP_CACHE,
-    DATALAB_MARKER_FORCE_OCR,
-    DATALAB_MARKER_PAGINATE,
-    DATALAB_MARKER_STRIP_EXISTING_OCR,
-    DATALAB_MARKER_DISABLE_IMAGE_EXTRACTION,
-    DATALAB_MARKER_FORMAT_LINES,
-    DATALAB_MARKER_OUTPUT_FORMAT,
-    MINERU_API_MODE,
-    MINERU_API_URL,
-    MINERU_API_KEY,
-    MINERU_PARAMS,
-    DATALAB_MARKER_USE_LLM,
-    EXTERNAL_DOCUMENT_LOADER_URL,
-    EXTERNAL_DOCUMENT_LOADER_API_KEY,
-    TIKA_SERVER_URL,
-    DOCLING_SERVER_URL,
-    DOCLING_API_KEY,
-    DOCLING_PARAMS,
-    DOCUMENT_INTELLIGENCE_ENDPOINT,
-    DOCUMENT_INTELLIGENCE_KEY,
-    MISTRAL_OCR_API_BASE_URL,
-    MISTRAL_OCR_API_KEY,
-    RAG_TEXT_SPLITTER,
-    TIKTOKEN_ENCODING_NAME,
-    PDF_EXTRACT_IMAGES,
-    YOUTUBE_LOADER_LANGUAGE,
-    YOUTUBE_LOADER_PROXY_URL,
-    # Retrieval (Web Search)
-    ENABLE_WEB_SEARCH,
-    WEB_SEARCH_ENGINE,
     BYPASS_WEB_SEARCH_EMBEDDING_AND_RETRIEVAL,
     BYPASS_WEB_SEARCH_WEB_LOADER,
-    WEB_SEARCH_RESULT_COUNT,
-    WEB_SEARCH_CONCURRENT_REQUESTS,
-    WEB_SEARCH_TRUST_ENV,
-    WEB_SEARCH_DOMAIN_FILTER_LIST,
-    OLLAMA_CLOUD_WEB_SEARCH_API_KEY,
+    CACHE_DIR,
+    CHUNK_OVERLAP,
+    CHUNK_SIZE,
+    CODE_EXECUTION_ENGINE,
+    CODE_EXECUTION_JUPYTER_AUTH,
+    CODE_EXECUTION_JUPYTER_AUTH_PASSWORD,
+    CODE_EXECUTION_JUPYTER_AUTH_TOKEN,
+    CODE_EXECUTION_JUPYTER_TIMEOUT,
+    CODE_EXECUTION_JUPYTER_URL,
+    CODE_INTERPRETER_ENGINE,
+    CODE_INTERPRETER_JUPYTER_AUTH,
+    CODE_INTERPRETER_JUPYTER_AUTH_PASSWORD,
+    CODE_INTERPRETER_JUPYTER_AUTH_TOKEN,
+    CODE_INTERPRETER_JUPYTER_TIMEOUT,
+    CODE_INTERPRETER_JUPYTER_URL,
+    CODE_INTERPRETER_PROMPT_TEMPLATE,
+    COMFYUI_API_KEY,
+    COMFYUI_BASE_URL,
+    COMFYUI_WORKFLOW,
+    COMFYUI_WORKFLOW_NODES,
+    CONTENT_EXTRACTION_ENGINE,
+    CORS_ALLOW_ORIGIN,
+    DATALAB_MARKER_ADDITIONAL_CONFIG,
+    DATALAB_MARKER_API_BASE_URL,
+    DATALAB_MARKER_API_KEY,
+    DATALAB_MARKER_DISABLE_IMAGE_EXTRACTION,
+    DATALAB_MARKER_FORCE_OCR,
+    DATALAB_MARKER_FORMAT_LINES,
+    DATALAB_MARKER_OUTPUT_FORMAT,
+    DATALAB_MARKER_PAGINATE,
+    DATALAB_MARKER_SKIP_CACHE,
+    DATALAB_MARKER_STRIP_EXISTING_OCR,
+    DATALAB_MARKER_USE_LLM,
+    DEEPGRAM_API_KEY,
+    DEFAULT_GROUP_ID,
+    DEFAULT_LOCALE,
+    DEFAULT_MODELS,
+    DEFAULT_PINNED_MODELS,
+    DEFAULT_PROMPT_SUGGESTIONS,
+    DEFAULT_USER_ROLE,
+    DOCLING_API_KEY,
+    DOCLING_PARAMS,
+    DOCLING_SERVER_URL,
+    DOCUMENT_INTELLIGENCE_ENDPOINT,
+    DOCUMENT_INTELLIGENCE_KEY,
+    ENABLE_ADMIN_CHAT_ACCESS,
+    ENABLE_ADMIN_EXPORT,
+    ENABLE_API_KEYS,
+    ENABLE_API_KEYS_ENDPOINT_RESTRICTIONS,
+    ENABLE_ASYNC_EMBEDDING,
+    ENABLE_AUTOCOMPLETE_GENERATION,
+    ENABLE_BASE_MODELS_CACHE,
+    ENABLE_CHANNELS,
+    ENABLE_CODE_EXECUTION,
+    ENABLE_CODE_INTERPRETER,
+    ENABLE_COMMUNITY_SHARING,
+    ENABLE_DIRECT_CONNECTIONS,
+    ENABLE_EVALUATION_ARENA_MODELS,
+    ENABLE_FOLLOW_UP_GENERATION,
+    ENABLE_GOOGLE_DRIVE_INTEGRATION,
+    ENABLE_IMAGE_EDIT,
+    ENABLE_IMAGE_GENERATION,
+    ENABLE_IMAGE_PROMPT_GENERATION,
+    ENABLE_LDAP,
+    ENABLE_LDAP_GROUP_CREATION,
+    ENABLE_LDAP_GROUP_MANAGEMENT,
+    ENABLE_LOGIN_FORM,
+    ENABLE_MESSAGE_RATING,
+    ENABLE_NOTES,
+    ENABLE_OAUTH_ROLE_MANAGEMENT,
+    ENABLE_OLLAMA_API,
+    ENABLE_ONEDRIVE_BUSINESS,
+    ENABLE_ONEDRIVE_INTEGRATION,
+    ENABLE_ONEDRIVE_PERSONAL,
+    ENABLE_OPENAI_API,
+    ENABLE_RAG_HYBRID_SEARCH,
+    ENABLE_RAG_HYBRID_SEARCH_ENRICHED_TEXTS,
+    ENABLE_RETRIEVAL_QUERY_GENERATION,
+    ENABLE_SEARCH_QUERY_GENERATION,
+    ENABLE_SIGNUP,
+    ENABLE_TAGS_GENERATION,
+    ENABLE_TITLE_GENERATION,
+    ENABLE_USER_WEBHOOKS,
+    ENABLE_WEB_LOADER_SSL_VERIFICATION,
+    ENABLE_WEB_SEARCH,
+    ENV,
+    EVALUATION_ARENA_MODELS,
+    EXA_API_KEY,
+    EXTERNAL_DOCUMENT_LOADER_API_KEY,
+    EXTERNAL_DOCUMENT_LOADER_URL,
+    EXTERNAL_WEB_LOADER_API_KEY,
+    EXTERNAL_WEB_LOADER_URL,
+    EXTERNAL_WEB_SEARCH_API_KEY,
+    EXTERNAL_WEB_SEARCH_URL,
+    FILE_IMAGE_COMPRESSION_HEIGHT,
+    FILE_IMAGE_COMPRESSION_WIDTH,
+    FIRECRAWL_API_BASE_URL,
+    FIRECRAWL_API_KEY,
+    FOLLOW_UP_GENERATION_PROMPT_TEMPLATE,
+    FRONTEND_BUILD_DIR,
+    GOOGLE_DRIVE_API_KEY,
+    GOOGLE_DRIVE_CLIENT_ID,
+    GOOGLE_PSE_API_KEY,
+    GOOGLE_PSE_ENGINE_ID,
+    IMAGE_EDIT_ENGINE,
+    IMAGE_EDIT_MODEL,
+    IMAGE_EDIT_SIZE,
+    IMAGE_GENERATION_ENGINE,
+    IMAGE_GENERATION_MODEL,
+    IMAGE_PROMPT_GENERATION_PROMPT_TEMPLATE,
+    IMAGE_SIZE,
+    IMAGE_STEPS,
+    IMAGES_EDIT_COMFYUI_API_KEY,
+    IMAGES_EDIT_COMFYUI_BASE_URL,
+    IMAGES_EDIT_COMFYUI_WORKFLOW,
+    IMAGES_EDIT_COMFYUI_WORKFLOW_NODES,
+    IMAGES_EDIT_GEMINI_API_BASE_URL,
+    IMAGES_EDIT_GEMINI_API_KEY,
+    IMAGES_EDIT_OPENAI_API_BASE_URL,
+    IMAGES_EDIT_OPENAI_API_KEY,
+    IMAGES_EDIT_OPENAI_API_VERSION,
+    IMAGES_GEMINI_API_BASE_URL,
+    IMAGES_GEMINI_API_KEY,
+    IMAGES_GEMINI_ENDPOINT_METHOD,
+    IMAGES_OPENAI_API_BASE_URL,
+    IMAGES_OPENAI_API_KEY,
+    IMAGES_OPENAI_API_PARAMS,
+    IMAGES_OPENAI_API_VERSION,
     JINA_API_KEY,
+    JWT_EXPIRES_IN,
+    KAGI_SEARCH_API_KEY,
+    LDAP_APP_DN,
+    LDAP_APP_PASSWORD,
+    LDAP_ATTRIBUTE_FOR_GROUPS,
+    LDAP_ATTRIBUTE_FOR_MAIL,
+    LDAP_ATTRIBUTE_FOR_USERNAME,
+    LDAP_CA_CERT_FILE,
+    LDAP_CIPHERS,
+    LDAP_SEARCH_BASE,
+    LDAP_SEARCH_FILTERS,
+    LDAP_SERVER_HOST,
+    LDAP_SERVER_LABEL,
+    LDAP_SERVER_PORT,
+    LDAP_USE_TLS,
+    LDAP_VALIDATE_CERT,
+    MINERU_API_KEY,
+    MINERU_API_MODE,
+    MINERU_API_URL,
+    MINERU_PARAMS,
+    MISTRAL_OCR_API_BASE_URL,
+    MISTRAL_OCR_API_KEY,
+    MODEL_ORDER_LIST,
+    MOJEEK_SEARCH_API_KEY,
+    OAUTH_ADMIN_ROLES,
+    OAUTH_ALLOWED_ROLES,
+    OAUTH_EMAIL_CLAIM,
+    OAUTH_PICTURE_CLAIM,
+    OAUTH_PROVIDERS,
+    OAUTH_ROLES_CLAIM,
+    OAUTH_USERNAME_CLAIM,
+    OLLAMA_API_CONFIGS,
+    OLLAMA_BASE_URLS,
+    OLLAMA_CLOUD_WEB_SEARCH_API_KEY,
+    ONEDRIVE_CLIENT_ID_BUSINESS,
+    ONEDRIVE_CLIENT_ID_PERSONAL,
+    ONEDRIVE_SHAREPOINT_TENANT_ID,
+    ONEDRIVE_SHAREPOINT_URL,
+    OPENAI_API_BASE_URLS,
+    OPENAI_API_CONFIGS,
+    OPENAI_API_KEYS,
+    PDF_EXTRACT_IMAGES,
+    PENDING_USER_OVERLAY_CONTENT,
+    PENDING_USER_OVERLAY_TITLE,
+    PERPLEXITY_API_KEY,
+    PERPLEXITY_MODEL,
+    PERPLEXITY_SEARCH_API_URL,
+    PERPLEXITY_SEARCH_CONTEXT_USAGE,
+    PLAYWRIGHT_TIMEOUT,
+    PLAYWRIGHT_WS_URL,
+    QUERY_GENERATION_PROMPT_TEMPLATE,
+    RAG_ALLOWED_FILE_EXTENSIONS,
+    RAG_AZURE_OPENAI_API_KEY,
+    RAG_AZURE_OPENAI_API_VERSION,
+    RAG_AZURE_OPENAI_BASE_URL,
+    RAG_EMBEDDING_BATCH_SIZE,
+    RAG_EMBEDDING_ENGINE,
+    RAG_EMBEDDING_MODEL,
+    RAG_EMBEDDING_MODEL_AUTO_UPDATE,
+    RAG_EXTERNAL_RERANKER_API_KEY,
+    RAG_EXTERNAL_RERANKER_URL,
+    RAG_FILE_MAX_COUNT,
+    RAG_FILE_MAX_SIZE,
+    RAG_FULL_CONTEXT,
+    RAG_HYBRID_BM25_WEIGHT,
+    RAG_OLLAMA_API_KEY,
+    RAG_OLLAMA_BASE_URL,
+    RAG_OPENAI_API_BASE_URL,
+    RAG_OPENAI_API_KEY,
+    RAG_RELEVANCE_THRESHOLD,
+    RAG_RERANKING_ENGINE,
+    RAG_RERANKING_MODEL,
+    RAG_RERANKING_MODEL_AUTO_UPDATE,
+    RAG_TEMPLATE,
+    RAG_TEXT_SPLITTER,
+    RAG_TOP_K,
+    RAG_TOP_K_RERANKER,
+    RESPONSE_WATERMARK,
     SEARCHAPI_API_KEY,
     SEARCHAPI_ENGINE,
+    SEARXNG_QUERY_URL,
     SERPAPI_API_KEY,
     SERPAPI_ENGINE,
-    SEARXNG_QUERY_URL,
-    YACY_QUERY_URL,
-    YACY_USERNAME,
-    YACY_PASSWORD,
     SERPER_API_KEY,
     SERPLY_API_KEY,
     SERPSTACK_API_KEY,
     SERPSTACK_HTTPS,
-    TAVILY_API_KEY,
-    TAVILY_EXTRACT_DEPTH,
-    BING_SEARCH_V7_ENDPOINT,
-    BING_SEARCH_V7_SUBSCRIPTION_KEY,
-    BRAVE_SEARCH_API_KEY,
-    EXA_API_KEY,
-    PERPLEXITY_API_KEY,
-    PERPLEXITY_MODEL,
-    PERPLEXITY_SEARCH_CONTEXT_USAGE,
-    PERPLEXITY_SEARCH_API_URL,
+    SHOW_ADMIN_DETAILS,
     SOUGOU_API_SID,
     SOUGOU_API_SK,
-    KAGI_SEARCH_API_KEY,
-    MOJEEK_SEARCH_API_KEY,
-    BOCHA_SEARCH_API_KEY,
-    GOOGLE_PSE_API_KEY,
-    GOOGLE_PSE_ENGINE_ID,
-    GOOGLE_DRIVE_CLIENT_ID,
-    GOOGLE_DRIVE_API_KEY,
-    ENABLE_ONEDRIVE_INTEGRATION,
-    ONEDRIVE_CLIENT_ID_PERSONAL,
-    ONEDRIVE_CLIENT_ID_BUSINESS,
-    ONEDRIVE_SHAREPOINT_URL,
-    ONEDRIVE_SHAREPOINT_TENANT_ID,
-    ENABLE_ONEDRIVE_PERSONAL,
-    ENABLE_ONEDRIVE_BUSINESS,
-    ENABLE_RAG_HYBRID_SEARCH,
-    ENABLE_RAG_HYBRID_SEARCH_ENRICHED_TEXTS,
-    ENABLE_RAG_LOCAL_WEB_FETCH,
-    ENABLE_WEB_LOADER_SSL_VERIFICATION,
-    ENABLE_GOOGLE_DRIVE_INTEGRATION,
-    UPLOAD_DIR,
-    EXTERNAL_WEB_SEARCH_URL,
-    EXTERNAL_WEB_SEARCH_API_KEY,
-    EXTERNAL_WEB_LOADER_URL,
-    EXTERNAL_WEB_LOADER_API_KEY,
-    # WebUI
-    WEBUI_AUTH,
-    WEBUI_NAME,
-    WEBUI_BANNERS,
-    WEBHOOK_URL,
-    ADMIN_EMAIL,
-    SHOW_ADMIN_DETAILS,
-    JWT_EXPIRES_IN,
-    ENABLE_SIGNUP,
-    ENABLE_LOGIN_FORM,
-    ENABLE_API_KEYS,
-    ENABLE_API_KEYS_ENDPOINT_RESTRICTIONS,
-    API_KEYS_ALLOWED_ENDPOINTS,
-    ENABLE_CHANNELS,
-    ENABLE_NOTES,
-    ENABLE_COMMUNITY_SHARING,
-    ENABLE_MESSAGE_RATING,
-    ENABLE_USER_WEBHOOKS,
-    ENABLE_EVALUATION_ARENA_MODELS,
-    BYPASS_ADMIN_ACCESS_CONTROL,
-    USER_PERMISSIONS,
-    DEFAULT_USER_ROLE,
-    DEFAULT_GROUP_ID,
-    PENDING_USER_OVERLAY_CONTENT,
-    PENDING_USER_OVERLAY_TITLE,
-    DEFAULT_PROMPT_SUGGESTIONS,
-    DEFAULT_MODELS,
-    DEFAULT_PINNED_MODELS,
-    DEFAULT_ARENA_MODEL,
-    MODEL_ORDER_LIST,
-    EVALUATION_ARENA_MODELS,
-    # WebUI (OAuth)
-    ENABLE_OAUTH_ROLE_MANAGEMENT,
-    OAUTH_ROLES_CLAIM,
-    OAUTH_EMAIL_CLAIM,
-    OAUTH_PICTURE_CLAIM,
-    OAUTH_USERNAME_CLAIM,
-    OAUTH_ALLOWED_ROLES,
-    OAUTH_ADMIN_ROLES,
-    # WebUI (LDAP)
-    ENABLE_LDAP,
-    LDAP_SERVER_LABEL,
-    LDAP_SERVER_HOST,
-    LDAP_SERVER_PORT,
-    LDAP_ATTRIBUTE_FOR_MAIL,
-    LDAP_ATTRIBUTE_FOR_USERNAME,
-    LDAP_SEARCH_FILTERS,
-    LDAP_SEARCH_BASE,
-    LDAP_APP_DN,
-    LDAP_APP_PASSWORD,
-    LDAP_USE_TLS,
-    LDAP_CA_CERT_FILE,
-    LDAP_VALIDATE_CERT,
-    LDAP_CIPHERS,
-    # LDAP Group Management
-    ENABLE_LDAP_GROUP_MANAGEMENT,
-    ENABLE_LDAP_GROUP_CREATION,
-    LDAP_ATTRIBUTE_FOR_GROUPS,
-    # Misc
-    ENV,
-    CACHE_DIR,
     STATIC_DIR,
-    FRONTEND_BUILD_DIR,
-    CORS_ALLOW_ORIGIN,
-    DEFAULT_LOCALE,
-    OAUTH_PROVIDERS,
-    WEBUI_URL,
-    RESPONSE_WATERMARK,
-    # Admin
-    ENABLE_ADMIN_CHAT_ACCESS,
-    BYPASS_ADMIN_ACCESS_CONTROL,
-    ENABLE_ADMIN_EXPORT,
-    # Tasks
+    TAGS_GENERATION_PROMPT_TEMPLATE,
     TASK_MODEL,
     TASK_MODEL_EXTERNAL,
-    ENABLE_TAGS_GENERATION,
-    ENABLE_TITLE_GENERATION,
-    ENABLE_FOLLOW_UP_GENERATION,
-    ENABLE_SEARCH_QUERY_GENERATION,
-    ENABLE_RETRIEVAL_QUERY_GENERATION,
-    ENABLE_AUTOCOMPLETE_GENERATION,
+    TAVILY_API_KEY,
+    TAVILY_EXTRACT_DEPTH,
+    THREAD_POOL_SIZE,
+    TIKA_SERVER_URL,
+    TIKTOKEN_ENCODING_NAME,
     TITLE_GENERATION_PROMPT_TEMPLATE,
-    FOLLOW_UP_GENERATION_PROMPT_TEMPLATE,
-    TAGS_GENERATION_PROMPT_TEMPLATE,
-    IMAGE_PROMPT_GENERATION_PROMPT_TEMPLATE,
+    TOOL_SERVER_CONNECTIONS,
     TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE,
+    USER_PERMISSIONS,
     VOICE_MODE_PROMPT_TEMPLATE,
-    QUERY_GENERATION_PROMPT_TEMPLATE,
-    AUTOCOMPLETE_GENERATION_PROMPT_TEMPLATE,
-    AUTOCOMPLETE_GENERATION_INPUT_MAX_LENGTH,
+    WEB_LOADER_CONCURRENT_REQUESTS,
+    WEB_LOADER_ENGINE,
+    WEB_SEARCH_CONCURRENT_REQUESTS,
+    WEB_SEARCH_DOMAIN_FILTER_LIST,
+    WEB_SEARCH_ENGINE,
+    WEB_SEARCH_RESULT_COUNT,
+    WEB_SEARCH_TRUST_ENV,
+    WEBHOOK_URL,
+    WEBUI_AUTH,
+    WEBUI_BANNERS,
+    WEBUI_NAME,
+    WEBUI_URL,
+    WHISPER_MODEL,
+    WHISPER_VAD_FILTER,
+    YACY_PASSWORD,
+    YACY_QUERY_URL,
+    YACY_USERNAME,
+    YOUTUBE_LOADER_LANGUAGE,
+    YOUTUBE_LOADER_PROXY_URL,
     AppConfig,
     reset_config,
 )
-from open_webui.env import (
-    LICENSE_KEY,
+from open_webui.constants import ERROR_MESSAGES
+from open_webui.env import (  # SCIM
+    AIOHTTP_CLIENT_SESSION_SSL,
     AUDIT_EXCLUDED_PATHS,
     AUDIT_LOG_LEVEL,
+    BYPASS_MODEL_ACCESS_CONTROL,
     CHANGELOG,
-    REDIS_URL,
+    DEPLOYMENT_ID,
+    ENABLE_COMPRESSION_MIDDLEWARE,
+    ENABLE_OTEL,
+    ENABLE_SCIM,
+    ENABLE_SIGNUP_PASSWORD_CONFIRMATION,
+    ENABLE_STAR_SESSIONS_MIDDLEWARE,
+    ENABLE_VERSION_UPDATE_CHECK,
+    ENABLE_WEBSOCKET_SUPPORT,
+    EXTERNAL_PWA_MANIFEST_URL,
+    GLOBAL_LOG_LEVEL,
+    INSTANCE_ID,
+    LICENSE_KEY,
+    MAX_BODY_LOG_SIZE,
     REDIS_CLUSTER,
     REDIS_KEY_PREFIX,
     REDIS_SENTINEL_HOSTS,
     REDIS_SENTINEL_PORT,
-    GLOBAL_LOG_LEVEL,
-    MAX_BODY_LOG_SIZE,
+    REDIS_URL,
+    RESET_CONFIG_ON_START,
     SAFE_MODE,
+    SCIM_TOKEN,
     SRC_LOG_LEVELS,
     VERSION,
-    DEPLOYMENT_ID,
-    INSTANCE_ID,
+    WEBUI_AUTH_SIGNOUT_REDIRECT_URL,
+    WEBUI_AUTH_TRUSTED_EMAIL_HEADER,
+    WEBUI_AUTH_TRUSTED_NAME_HEADER,
     WEBUI_BUILD_HASH,
     WEBUI_SECRET_KEY,
     WEBUI_SESSION_COOKIE_SAME_SITE,
     WEBUI_SESSION_COOKIE_SECURE,
-    ENABLE_SIGNUP_PASSWORD_CONFIRMATION,
-    WEBUI_AUTH_TRUSTED_EMAIL_HEADER,
-    WEBUI_AUTH_TRUSTED_NAME_HEADER,
-    WEBUI_AUTH_SIGNOUT_REDIRECT_URL,
-    # SCIM
-    ENABLE_SCIM,
-    SCIM_TOKEN,
-    ENABLE_COMPRESSION_MIDDLEWARE,
-    ENABLE_WEBSOCKET_SUPPORT,
-    BYPASS_MODEL_ACCESS_CONTROL,
-    RESET_CONFIG_ON_START,
-    ENABLE_VERSION_UPDATE_CHECK,
-    ENABLE_OTEL,
-    EXTERNAL_PWA_MANIFEST_URL,
-    AIOHTTP_CLIENT_SESSION_SSL,
-    ENABLE_STAR_SESSIONS_MIDDLEWARE,
 )
-
-
-from open_webui.utils.models import (
-    get_all_models,
-    get_all_base_models,
-    check_model_access,
-    get_filtered_models,
+from open_webui.internal.db import Session, engine
+from open_webui.models.chats import Chats
+from open_webui.models.functions import Functions
+from open_webui.models.models import Models
+from open_webui.models.users import Users
+from open_webui.routers import (
+    audio,
+    auths,
+    channels,
+    chats,
+    configs,
+    evaluations,
+    files,
+    folders,
+    functions,
+    groups,
+    images,
+    knowledge,
+    memories,
+    models,
+    notes,
+    ollama,
+    openai,
+    pipelines,
+    prompts,
+    retrieval,
+    scim,
+    tasks,
+    tools,
+    users,
+    utils,
 )
-from open_webui.utils.chat import (
-    generate_chat_completion as chat_completion_handler,
-    chat_completed as chat_completed_handler,
-    chat_action as chat_action_handler,
+from open_webui.routers.retrieval import get_ef, get_embedding_function, get_reranking_function, get_rf
+from open_webui.socket.main import app as socket_app
+from open_webui.socket.main import (
+    get_active_user_ids,
+    get_event_emitter,
+    get_models_in_use,
+    periodic_usage_pool_cleanup,
 )
-from open_webui.utils.embeddings import generate_embeddings
-from open_webui.utils.middleware import process_chat_payload, process_chat_response
-from open_webui.utils.access_control import has_access
-
+from open_webui.tasks import (  # Import from tasks.py
+    create_task,
+    list_task_ids_by_item_id,
+    list_tasks,
+    redis_task_command_listener,
+    stop_task,
+)
+from open_webui.utils import logger
+from open_webui.utils.audit import AuditLevel, AuditLoggingMiddleware
 from open_webui.utils.auth import (
-    get_license_data,
-    get_http_authorization_cred,
     decode_token,
     get_admin_user,
+    get_http_authorization_cred,
+    get_license_data,
     get_verified_user,
 )
-from open_webui.utils.plugin import install_tool_and_function_dependencies
+from open_webui.utils.chat import chat_action as chat_action_handler
+from open_webui.utils.chat import chat_completed as chat_completed_handler
+from open_webui.utils.chat import generate_chat_completion as chat_completion_handler
+from open_webui.utils.embeddings import generate_embeddings
+from open_webui.utils.logger import start_logger
+from open_webui.utils.middleware import process_chat_payload, process_chat_response
+from open_webui.utils.models import check_model_access, get_all_base_models, get_all_models, get_filtered_models
 from open_webui.utils.oauth import (
-    get_oauth_client_info_with_dynamic_client_registration,
-    encrypt_data,
-    decrypt_data,
-    OAuthManager,
-    OAuthClientManager,
     OAuthClientInformationFull,
+    OAuthClientManager,
+    OAuthManager,
+    decrypt_data,
+    encrypt_data,
+    get_oauth_client_info_with_dynamic_client_registration,
 )
+from open_webui.utils.plugin import install_tool_and_function_dependencies
+from open_webui.utils.redis import get_redis_connection, get_sentinels_from_env
 from open_webui.utils.security_headers import SecurityHeadersMiddleware
-from open_webui.utils.redis import get_redis_connection
-
-from open_webui.tasks import (
-    redis_task_command_listener,
-    list_task_ids_by_item_id,
-    create_task,
-    stop_task,
-    list_tasks,
-)  # Import from tasks.py
-
-from open_webui.utils.redis import get_sentinels_from_env
-
-
-from open_webui.constants import ERROR_MESSAGES
-
 
 if SAFE_MODE:
     print("SAFE MODE ENABLED")
@@ -579,17 +503,13 @@ async def lifespan(app: FastAPI):
 
     app.state.redis = get_redis_connection(
         redis_url=REDIS_URL,
-        redis_sentinels=get_sentinels_from_env(
-            REDIS_SENTINEL_HOSTS, REDIS_SENTINEL_PORT
-        ),
+        redis_sentinels=get_sentinels_from_env(REDIS_SENTINEL_HOSTS, REDIS_SENTINEL_PORT),
         redis_cluster=REDIS_CLUSTER,
         async_mode=True,
     )
 
     if app.state.redis is not None:
-        app.state.redis_task_command_listener = asyncio.create_task(
-            redis_task_command_listener(app)
-        )
+        app.state.redis_task_command_listener = asyncio.create_task(redis_task_command_listener(app))
 
     if THREAD_POOL_SIZE and THREAD_POOL_SIZE > 0:
         limiter = anyio.to_thread.current_default_thread_limiter()
@@ -737,9 +657,7 @@ app.state.config.ENABLE_SIGNUP = ENABLE_SIGNUP
 app.state.config.ENABLE_LOGIN_FORM = ENABLE_LOGIN_FORM
 
 app.state.config.ENABLE_API_KEYS = ENABLE_API_KEYS
-app.state.config.ENABLE_API_KEYS_ENDPOINT_RESTRICTIONS = (
-    ENABLE_API_KEYS_ENDPOINT_RESTRICTIONS
-)
+app.state.config.ENABLE_API_KEYS_ENDPOINT_RESTRICTIONS = ENABLE_API_KEYS_ENDPOINT_RESTRICTIONS
 app.state.config.API_KEYS_ALLOWED_ENDPOINTS = API_KEYS_ALLOWED_ENDPOINTS
 
 app.state.config.JWT_EXPIRES_IN = JWT_EXPIRES_IN
@@ -842,9 +760,7 @@ app.state.config.FILE_IMAGE_COMPRESSION_HEIGHT = FILE_IMAGE_COMPRESSION_HEIGHT
 app.state.config.RAG_FULL_CONTEXT = RAG_FULL_CONTEXT
 app.state.config.BYPASS_EMBEDDING_AND_RETRIEVAL = BYPASS_EMBEDDING_AND_RETRIEVAL
 app.state.config.ENABLE_RAG_HYBRID_SEARCH = ENABLE_RAG_HYBRID_SEARCH
-app.state.config.ENABLE_RAG_HYBRID_SEARCH_ENRICHED_TEXTS = (
-    ENABLE_RAG_HYBRID_SEARCH_ENRICHED_TEXTS
-)
+app.state.config.ENABLE_RAG_HYBRID_SEARCH_ENRICHED_TEXTS = ENABLE_RAG_HYBRID_SEARCH_ENRICHED_TEXTS
 app.state.config.ENABLE_WEB_LOADER_SSL_VERIFICATION = ENABLE_WEB_LOADER_SSL_VERIFICATION
 
 app.state.config.CONTENT_EXTRACTION_ENGINE = CONTENT_EXTRACTION_ENGINE
@@ -855,9 +771,7 @@ app.state.config.DATALAB_MARKER_SKIP_CACHE = DATALAB_MARKER_SKIP_CACHE
 app.state.config.DATALAB_MARKER_FORCE_OCR = DATALAB_MARKER_FORCE_OCR
 app.state.config.DATALAB_MARKER_PAGINATE = DATALAB_MARKER_PAGINATE
 app.state.config.DATALAB_MARKER_STRIP_EXISTING_OCR = DATALAB_MARKER_STRIP_EXISTING_OCR
-app.state.config.DATALAB_MARKER_DISABLE_IMAGE_EXTRACTION = (
-    DATALAB_MARKER_DISABLE_IMAGE_EXTRACTION
-)
+app.state.config.DATALAB_MARKER_DISABLE_IMAGE_EXTRACTION = DATALAB_MARKER_DISABLE_IMAGE_EXTRACTION
 app.state.config.DATALAB_MARKER_FORMAT_LINES = DATALAB_MARKER_FORMAT_LINES
 app.state.config.DATALAB_MARKER_USE_LLM = DATALAB_MARKER_USE_LLM
 app.state.config.DATALAB_MARKER_OUTPUT_FORMAT = DATALAB_MARKER_OUTPUT_FORMAT
@@ -920,9 +834,7 @@ app.state.config.WEB_LOADER_ENGINE = WEB_LOADER_ENGINE
 app.state.config.WEB_LOADER_CONCURRENT_REQUESTS = WEB_LOADER_CONCURRENT_REQUESTS
 
 app.state.config.WEB_SEARCH_TRUST_ENV = WEB_SEARCH_TRUST_ENV
-app.state.config.BYPASS_WEB_SEARCH_EMBEDDING_AND_RETRIEVAL = (
-    BYPASS_WEB_SEARCH_EMBEDDING_AND_RETRIEVAL
-)
+app.state.config.BYPASS_WEB_SEARCH_EMBEDDING_AND_RETRIEVAL = BYPASS_WEB_SEARCH_EMBEDDING_AND_RETRIEVAL
 app.state.config.BYPASS_WEB_SEARCH_WEB_LOADER = BYPASS_WEB_SEARCH_WEB_LOADER
 
 app.state.config.ENABLE_GOOGLE_DRIVE_INTEGRATION = ENABLE_GOOGLE_DRIVE_INTEGRATION
@@ -984,10 +896,7 @@ try:
         app.state.config.RAG_EMBEDDING_MODEL,
         RAG_EMBEDDING_MODEL_AUTO_UPDATE,
     )
-    if (
-        app.state.config.ENABLE_RAG_HYBRID_SEARCH
-        and not app.state.config.BYPASS_EMBEDDING_AND_RETRIEVAL
-    ):
+    if app.state.config.ENABLE_RAG_HYBRID_SEARCH and not app.state.config.BYPASS_EMBEDDING_AND_RETRIEVAL:
         app.state.rf = get_rf(
             app.state.config.RAG_RERANKING_ENGINE,
             app.state.config.RAG_RERANKING_MODEL,
@@ -999,7 +908,6 @@ try:
         app.state.rf = None
 except Exception as e:
     log.error(f"Error updating models: {e}")
-    pass
 
 
 app.state.EMBEDDING_FUNCTION = get_embedding_function(
@@ -1049,9 +957,7 @@ app.state.config.CODE_EXECUTION_ENGINE = CODE_EXECUTION_ENGINE
 app.state.config.CODE_EXECUTION_JUPYTER_URL = CODE_EXECUTION_JUPYTER_URL
 app.state.config.CODE_EXECUTION_JUPYTER_AUTH = CODE_EXECUTION_JUPYTER_AUTH
 app.state.config.CODE_EXECUTION_JUPYTER_AUTH_TOKEN = CODE_EXECUTION_JUPYTER_AUTH_TOKEN
-app.state.config.CODE_EXECUTION_JUPYTER_AUTH_PASSWORD = (
-    CODE_EXECUTION_JUPYTER_AUTH_PASSWORD
-)
+app.state.config.CODE_EXECUTION_JUPYTER_AUTH_PASSWORD = CODE_EXECUTION_JUPYTER_AUTH_PASSWORD
 app.state.config.CODE_EXECUTION_JUPYTER_TIMEOUT = CODE_EXECUTION_JUPYTER_TIMEOUT
 
 app.state.config.ENABLE_CODE_INTERPRETER = ENABLE_CODE_INTERPRETER
@@ -1060,12 +966,8 @@ app.state.config.CODE_INTERPRETER_PROMPT_TEMPLATE = CODE_INTERPRETER_PROMPT_TEMP
 
 app.state.config.CODE_INTERPRETER_JUPYTER_URL = CODE_INTERPRETER_JUPYTER_URL
 app.state.config.CODE_INTERPRETER_JUPYTER_AUTH = CODE_INTERPRETER_JUPYTER_AUTH
-app.state.config.CODE_INTERPRETER_JUPYTER_AUTH_TOKEN = (
-    CODE_INTERPRETER_JUPYTER_AUTH_TOKEN
-)
-app.state.config.CODE_INTERPRETER_JUPYTER_AUTH_PASSWORD = (
-    CODE_INTERPRETER_JUPYTER_AUTH_PASSWORD
-)
+app.state.config.CODE_INTERPRETER_JUPYTER_AUTH_TOKEN = CODE_INTERPRETER_JUPYTER_AUTH_TOKEN
+app.state.config.CODE_INTERPRETER_JUPYTER_AUTH_PASSWORD = CODE_INTERPRETER_JUPYTER_AUTH_PASSWORD
 app.state.config.CODE_INTERPRETER_JUPYTER_TIMEOUT = CODE_INTERPRETER_JUPYTER_TIMEOUT
 
 ########################################
@@ -1141,9 +1043,7 @@ app.state.config.AUDIO_STT_AZURE_MAX_SPEAKERS = AUDIO_STT_AZURE_MAX_SPEAKERS
 
 app.state.config.AUDIO_STT_MISTRAL_API_KEY = AUDIO_STT_MISTRAL_API_KEY
 app.state.config.AUDIO_STT_MISTRAL_API_BASE_URL = AUDIO_STT_MISTRAL_API_BASE_URL
-app.state.config.AUDIO_STT_MISTRAL_USE_CHAT_COMPLETIONS = (
-    AUDIO_STT_MISTRAL_USE_CHAT_COMPLETIONS
-)
+app.state.config.AUDIO_STT_MISTRAL_USE_CHAT_COMPLETIONS = AUDIO_STT_MISTRAL_USE_CHAT_COMPLETIONS
 
 app.state.config.TTS_ENGINE = AUDIO_TTS_ENGINE
 
@@ -1189,23 +1089,13 @@ app.state.config.ENABLE_FOLLOW_UP_GENERATION = ENABLE_FOLLOW_UP_GENERATION
 
 app.state.config.TITLE_GENERATION_PROMPT_TEMPLATE = TITLE_GENERATION_PROMPT_TEMPLATE
 app.state.config.TAGS_GENERATION_PROMPT_TEMPLATE = TAGS_GENERATION_PROMPT_TEMPLATE
-app.state.config.IMAGE_PROMPT_GENERATION_PROMPT_TEMPLATE = (
-    IMAGE_PROMPT_GENERATION_PROMPT_TEMPLATE
-)
-app.state.config.FOLLOW_UP_GENERATION_PROMPT_TEMPLATE = (
-    FOLLOW_UP_GENERATION_PROMPT_TEMPLATE
-)
+app.state.config.IMAGE_PROMPT_GENERATION_PROMPT_TEMPLATE = IMAGE_PROMPT_GENERATION_PROMPT_TEMPLATE
+app.state.config.FOLLOW_UP_GENERATION_PROMPT_TEMPLATE = FOLLOW_UP_GENERATION_PROMPT_TEMPLATE
 
-app.state.config.TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE = (
-    TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE
-)
+app.state.config.TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE = TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE
 app.state.config.QUERY_GENERATION_PROMPT_TEMPLATE = QUERY_GENERATION_PROMPT_TEMPLATE
-app.state.config.AUTOCOMPLETE_GENERATION_PROMPT_TEMPLATE = (
-    AUTOCOMPLETE_GENERATION_PROMPT_TEMPLATE
-)
-app.state.config.AUTOCOMPLETE_GENERATION_INPUT_MAX_LENGTH = (
-    AUTOCOMPLETE_GENERATION_INPUT_MAX_LENGTH
-)
+app.state.config.AUTOCOMPLETE_GENERATION_PROMPT_TEMPLATE = AUTOCOMPLETE_GENERATION_PROMPT_TEMPLATE
+app.state.config.AUTOCOMPLETE_GENERATION_INPUT_MAX_LENGTH = AUTOCOMPLETE_GENERATION_INPUT_MAX_LENGTH
 app.state.config.VOICE_MODE_PROMPT_TEMPLATE = VOICE_MODE_PROMPT_TEMPLATE
 
 
@@ -1280,9 +1170,7 @@ class APIKeyRestrictionMiddleware(BaseHTTPMiddleware):
             if request.app.state.config.ENABLE_API_KEYS_ENDPOINT_RESTRICTIONS:
                 allowed_paths = [
                     path.strip()
-                    for path in str(
-                        request.app.state.config.API_KEYS_ALLOWED_ENDPOINTS
-                    ).split(",")
+                    for path in str(request.app.state.config.API_KEYS_ALLOWED_ENDPOINTS).split(",")
                     if path.strip()
                 ]
 
@@ -1290,16 +1178,13 @@ class APIKeyRestrictionMiddleware(BaseHTTPMiddleware):
 
                 # Match exact path or prefix path
                 is_allowed = any(
-                    request_path == allowed or request_path.startswith(allowed + "/")
-                    for allowed in allowed_paths
+                    request_path == allowed or request_path.startswith(allowed + "/") for allowed in allowed_paths
                 )
 
                 if not is_allowed:
                     return JSONResponse(
                         status_code=status.HTTP_403_FORBIDDEN,
-                        content={
-                            "detail": "API key not allowed to access this endpoint."
-                        },
+                        content={"detail": "API key not allowed to access this endpoint."},
                     )
 
         response = await call_next(request)
@@ -1320,9 +1205,7 @@ async def commit_session_after_request(request: Request, call_next):
 @app.middleware("http")
 async def check_url(request: Request, call_next):
     start_time = int(time.time())
-    request.state.token = get_http_authorization_cred(
-        request.headers.get("Authorization")
-    )
+    request.state.token = get_http_authorization_cred(request.headers.get("Authorization"))
 
     request.state.enable_api_keys = app.state.config.ENABLE_API_KEYS
     response = await call_next(request)
@@ -1333,10 +1216,7 @@ async def check_url(request: Request, call_next):
 
 @app.middleware("http")
 async def inspect_websocket(request: Request, call_next):
-    if (
-        "/ws/socket.io" in request.url.path
-        and request.query_params.get("transport") == "websocket"
-    ):
+    if "/ws/socket.io" in request.url.path and request.query_params.get("transport") == "websocket":
         upgrade = (request.headers.get("Upgrade") or "").lower()
         connection = (request.headers.get("Connection") or "").lower().split(",")
         # Check that there's the correct headers for an upgrade, else reject the connection
@@ -1393,9 +1273,7 @@ app.include_router(folders.router, prefix="/api/v1/folders", tags=["folders"])
 app.include_router(groups.router, prefix="/api/v1/groups", tags=["groups"])
 app.include_router(files.router, prefix="/api/v1/files", tags=["files"])
 app.include_router(functions.router, prefix="/api/v1/functions", tags=["functions"])
-app.include_router(
-    evaluations.router, prefix="/api/v1/evaluations", tags=["evaluations"]
-)
+app.include_router(evaluations.router, prefix="/api/v1/evaluations", tags=["evaluations"])
 app.include_router(utils.router, prefix="/api/v1/utils", tags=["utils"])
 
 # SCIM 2.0 API for identity management
@@ -1425,9 +1303,7 @@ if audit_level != AuditLevel.NONE:
 
 @app.get("/api/models")
 @app.get("/api/v1/models")  # Experimental: Compatibility with OpenAI API
-async def get_models(
-    request: Request, refresh: bool = False, user=Depends(get_verified_user)
-):
+async def get_models(request: Request, refresh: bool = False, user=Depends(get_verified_user)):
     all_models = await get_all_models(request, refresh=refresh, user=user)
 
     models = []
@@ -1441,10 +1317,7 @@ async def get_models(
             model["info"]["meta"].pop("profile_image_url", None)
 
         try:
-            model_tags = [
-                tag.get("name")
-                for tag in model.get("info", {}).get("meta", {}).get("tags", [])
-            ]
+            model_tags = [tag.get("name") for tag in model.get("info", {}).get("meta", {}).get("tags", [])]
             tags = [tag.get("name") for tag in model.get("tags", [])]
 
             tags = list(set(model_tags + tags))
@@ -1452,7 +1325,6 @@ async def get_models(
         except Exception as e:
             log.debug(f"Error processing model tags: {e}")
             model["tags"] = []
-            pass
 
         models.append(model)
 
@@ -1488,9 +1360,7 @@ async def get_base_models(request: Request, user=Depends(get_admin_user)):
 
 @app.post("/api/embeddings")
 @app.post("/api/v1/embeddings")  # Experimental: Compatibility with OpenAI API
-async def embeddings(
-    request: Request, form_data: dict, user=Depends(get_verified_user)
-):
+async def embeddings(request: Request, form_data: dict, user=Depends(get_verified_user)):
     """
     OpenAI-compatible embeddings endpoint.
 
@@ -1537,9 +1407,7 @@ async def chat_completion(
             model_info = Models.get_model_by_id(model_id)
 
             # Check if user has access to the model
-            if not BYPASS_MODEL_ACCESS_CONTROL and (
-                user.role != "admin" or not BYPASS_ADMIN_ACCESS_CONTROL
-            ):
+            if not BYPASS_MODEL_ACCESS_CONTROL and (user.role != "admin" or not BYPASS_ADMIN_ACCESS_CONTROL):
                 try:
                     check_model_access(user, model)
                 except Exception as e:
@@ -1551,14 +1419,10 @@ async def chat_completion(
             request.state.direct = True
             request.state.model = model
 
-        model_info_params = (
-            model_info.params.model_dump() if model_info and model_info.params else {}
-        )
+        model_info_params = model_info.params.model_dump() if model_info and model_info.params else {}
 
         # Chat Params
-        stream_delta_chunk_size = form_data.get("params", {}).get(
-            "stream_delta_chunk_size"
-        )
+        stream_delta_chunk_size = form_data.get("params", {}).get("stream_delta_chunk_size")
         reasoning_tags = form_data.get("params", {}).get("reasoning_tags")
 
         # Model Params
@@ -1619,9 +1483,7 @@ async def chat_completion(
 
     async def process_chat(request, form_data, user, metadata, model):
         try:
-            form_data, metadata, events = await process_chat_payload(
-                request, form_data, user, metadata, model
-            )
+            form_data, metadata, events = await process_chat_payload(request, form_data, user, metadata, model)
 
             response = await chat_completion_handler(request, form_data, user)
             if metadata.get("chat_id") and metadata.get("message_id"):
@@ -1637,9 +1499,7 @@ async def chat_completion(
                 except:
                     pass
 
-            return await process_chat_response(
-                request, response, form_data, user, metadata, model, events, tasks
-            )
+            return await process_chat_response(request, response, form_data, user, metadata, model, events, tasks)
         except asyncio.CancelledError:
             log.info("Chat processing was cancelled")
             try:
@@ -1649,7 +1509,7 @@ async def chat_completion(
                         {"type": "chat:tasks:cancel"},
                     )
                 )
-            except Exception as e:
+            except Exception:
                 pass
             finally:
                 raise  # re-raise to ensure proper task cancellation handling
@@ -1687,13 +1547,8 @@ async def chat_completion(
                         await client.disconnect()
             except Exception as e:
                 log.debug(f"Error cleaning up: {e}")
-                pass
 
-    if (
-        metadata.get("session_id")
-        and metadata.get("chat_id")
-        and metadata.get("message_id")
-    ):
+    if metadata.get("session_id") and metadata.get("chat_id") and metadata.get("message_id"):
         # Asynchronous Chat Processing
         task_id, _ = await create_task(
             request.app.state.redis,
@@ -1711,9 +1566,7 @@ generate_chat_completion = chat_completion
 
 
 @app.post("/api/chat/completed")
-async def chat_completed(
-    request: Request, form_data: dict, user=Depends(get_verified_user)
-):
+async def chat_completed(request: Request, form_data: dict, user=Depends(get_verified_user)):
     try:
         model_item = form_data.pop("model_item", {})
 
@@ -1730,9 +1583,7 @@ async def chat_completed(
 
 
 @app.post("/api/chat/actions/{action_id}")
-async def chat_action(
-    request: Request, action_id: str, form_data: dict, user=Depends(get_verified_user)
-):
+async def chat_action(request: Request, action_id: str, form_data: dict, user=Depends(get_verified_user)):
     try:
         model_item = form_data.pop("model_item", {})
 
@@ -1749,9 +1600,7 @@ async def chat_action(
 
 
 @app.post("/api/tasks/stop/{task_id}")
-async def stop_task_endpoint(
-    request: Request, task_id: str, user=Depends(get_verified_user)
-):
+async def stop_task_endpoint(request: Request, task_id: str, user=Depends(get_verified_user)):
     try:
         result = await stop_task(request.app.state.redis, task_id)
         return result
@@ -1765,9 +1614,7 @@ async def list_tasks_endpoint(request: Request, user=Depends(get_verified_user))
 
 
 @app.get("/api/tasks/chat/{chat_id}")
-async def list_tasks_by_chat_id_endpoint(
-    request: Request, chat_id: str, user=Depends(get_verified_user)
-):
+async def list_tasks_by_chat_id_endpoint(request: Request, chat_id: str, user=Depends(get_verified_user)):
     chat = Chats.get_chat_by_id(chat_id)
     if chat is None or chat.user_id != user.id:
         return {"task_ids": []}
@@ -1823,12 +1670,7 @@ async def get_app_config(request: Request):
         "name": app.state.WEBUI_NAME,
         "version": VERSION,
         "default_locale": str(DEFAULT_LOCALE),
-        "oauth": {
-            "providers": {
-                name: config.get("name", name)
-                for name, config in OAUTH_PROVIDERS.items()
-            }
-        },
+        "oauth": {"providers": {name: config.get("name", name) for name, config in OAUTH_PROVIDERS.items()}},
         "features": {
             "auth": WEBUI_AUTH,
             "auth_trusted_header": bool(app.state.AUTH_TRUSTED_EMAIL_HEADER),
@@ -1936,12 +1778,8 @@ async def get_app_config(request: Request):
                 **(
                     {
                         "metadata": {
-                            "login_footer": app.state.LICENSE_METADATA.get(
-                                "login_footer", ""
-                            ),
-                            "auth_logo_position": app.state.LICENSE_METADATA.get(
-                                "auth_logo_position", ""
-                            ),
+                            "login_footer": app.state.LICENSE_METADATA.get("login_footer", ""),
+                            "auth_logo_position": app.state.LICENSE_METADATA.get("auth_logo_position", ""),
                         }
                     }
                     if app.state.LICENSE_METADATA
@@ -1981,9 +1819,7 @@ async def get_app_version():
 @app.get("/api/version/updates")
 async def get_app_latest_release_version(user=Depends(get_verified_user)):
     if not ENABLE_VERSION_UPDATE_CHECK:
-        log.debug(
-            f"Version update check is disabled, returning current version as latest version"
-        )
+        log.debug("Version update check is disabled, returning current version as latest version")
         return {"current": VERSION, "latest": VERSION}
     try:
         timeout = aiohttp.ClientTimeout(total=1)
@@ -2033,9 +1869,7 @@ if len(app.state.config.TOOL_SERVER_CONNECTIONS) > 0:
             auth_type = tool_server_connection.get("auth_type", "none")
 
             if server_id and auth_type == "oauth_2.1":
-                oauth_client_info = tool_server_connection.get("info", {}).get(
-                    "oauth_client_info", ""
-                )
+                oauth_client_info = tool_server_connection.get("info", {}).get("oauth_client_info", "")
 
                 try:
                     oauth_client_info = decrypt_data(oauth_client_info)
@@ -2044,10 +1878,7 @@ if len(app.state.config.TOOL_SERVER_CONNECTIONS) > 0:
                         OAuthClientInformationFull(**oauth_client_info),
                     )
                 except Exception as e:
-                    log.error(
-                        f"Error adding OAuth client for MCP tool server {server_id}: {e}"
-                    )
-                    pass
+                    log.error(f"Error adding OAuth client for MCP tool server {server_id}: {e}")
 
 try:
     if ENABLE_STAR_SESSIONS_MIDDLEWARE:
@@ -2067,7 +1898,7 @@ try:
         log.info("Using Redis for session")
     else:
         raise ValueError("No Redis URL provided")
-except Exception as e:
+except Exception:
     app.add_middleware(
         SessionMiddleware,
         secret_key=WEBUI_SECRET_KEY,
@@ -2092,22 +1923,18 @@ async def register_client(self, request, client_id: str) -> bool:
                 break
 
     if connection is None or connection_idx is None:
-        log.warning(
-            f"Unable to locate MCP tool server configuration for client {client_id} during re-registration"
-        )
+        log.warning(f"Unable to locate MCP tool server configuration for client {client_id} during re-registration")
         return False
 
     server_url = connection.get("url")
     oauth_server_key = (connection.get("config") or {}).get("oauth_server_key")
 
     try:
-        oauth_client_info = (
-            await get_oauth_client_info_with_dynamic_client_registration(
-                request,
-                client_id,
-                server_url,
-                oauth_server_key,
-            )
+        oauth_client_info = await get_oauth_client_info_with_dynamic_client_registration(
+            request,
+            client_id,
+            server_url,
+            oauth_server_key,
         )
     except Exception as e:
         log.error(f"Dynamic client re-registration failed for {client_id}: {e}")
@@ -2118,15 +1945,11 @@ async def register_client(self, request, client_id: str) -> bool:
             **connection,
             "info": {
                 **connection.get("info", {}),
-                "oauth_client_info": encrypt_data(
-                    oauth_client_info.model_dump(mode="json")
-                ),
+                "oauth_client_info": encrypt_data(oauth_client_info.model_dump(mode="json")),
             },
         }
     except Exception as e:
-        log.error(
-            f"Failed to persist updated OAuth client info for tool server {client_id}: {e}"
-        )
+        log.error(f"Failed to persist updated OAuth client info for tool server {client_id}: {e}")
         return False
 
     oauth_client_manager.remove_client(client_id)
@@ -2169,9 +1992,7 @@ async def oauth_client_authorize(
                 detail="OAuth client unavailable after re-registration",
             )
 
-        if not await oauth_client_manager._preflight_authorization_url(
-            client, client_info
-        ):
+        if not await oauth_client_manager._preflight_authorization_url(client, client_info):
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="OAuth client registration is still invalid after re-registration",
@@ -2309,6 +2130,4 @@ if os.path.exists(FRONTEND_BUILD_DIR):
         name="spa-static-files",
     )
 else:
-    log.warning(
-        f"Frontend build directory not found at '{FRONTEND_BUILD_DIR}'. Serving API only."
-    )
+    log.warning(f"Frontend build directory not found at '{FRONTEND_BUILD_DIR}'. Serving API only.")

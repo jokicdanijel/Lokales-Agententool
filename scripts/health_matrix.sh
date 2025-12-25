@@ -7,10 +7,10 @@ set -euo pipefail
 check(){
   local port="$1" name="$2"
   local status
-  
+
   status=$(timeout 1 curl -fsS "http://127.0.0.1:${port}/health" 2>/dev/null \
     | sed -E 's/.*"status":"?([^",}]+).*/\1/' || echo "down")
-  
+
   if [[ "$status" =~ healthy|ok ]]; then
     printf "  ✅ %-12s :%-5s  %s\n" "$name" "$port" "$status"
   else

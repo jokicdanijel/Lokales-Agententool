@@ -1,11 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException, Header
+import logging
+
+import requests
+from fastapi import APIRouter, Depends, Header, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
-from app.db.session import get_db
-from app.db.models import Bot
+
 from app.config import settings
-import requests
-import logging
+from app.db.models import Bot
+from app.db.session import get_db
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/admin", tags=["admin"])
@@ -34,21 +36,21 @@ async def register_bot(
             timeout=settings.telegram_api_timeout,
         )
         data = resp.json()
-        
+
         if not data.get("ok"):
             raise HTTPException(status_code=400, detail="Invalid token")
-        
+
         bot_info = data.get("result", {})
         bot_id = str(bot_info.get("id", ""))
         bot_name = bot_name or bot_info.get("username", "unknown")
-        
+
         # Check if exists
         stmt = select(Bot).where(Bot.bot_key == bot_key)
         existing = (await db.execute(stmt)).scalars().first()
-        
+
         if existing:
             raise HTTPException(status_code=409, detail="Bot already registered")
-        
+
         # Create bot
         bot = Bot(
             bot_key=bot_key,
@@ -59,10 +61,10 @@ async def register_bot(
         db.add(bot)
         await db.commit()
         await db.refresh(bot)
-        
+
         logger.info(f"Bot registered: {bot_key}")
         return {"status": "ok", "bot_key": bot_key, "bot_id": bot_id}
-    
+
     except Exception as e:
         logger.error(f"Register bot error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -77,12 +79,12 @@ async def set_webhooks(
     """Set webhooks for all bots (admin-only)"""
     stmt = select(Bot)
     bots = (await db.execute(stmt)).scalars().all()
-    
+
     results = []
-    
+
     for bot in bots:
         webhook_url = f"{webhook_base_url}/telegram/webhook/{bot.bot_key}"
-        
+
         try:
             resp = requests.post(
                 f"https://api.telegram.org/bot{bot.token}/setWebhook",
@@ -92,18 +94,18 @@ async def set_webhooks(
                 },
                 timeout=settings.telegram_api_timeout,
             )
-            
+
             if resp.json().get("ok"):
                 bot.webhook_url = webhook_url
                 bot.webhook_registered = True
                 results.append({"bot_key": bot.bot_key, "status": "ok"})
             else:
                 results.append({"bot_key": bot.bot_key, "status": "error"})
-        
+
         except Exception as e:
             logger.error(f"Webhook error for {bot.bot_key}: {e}")
             results.append({"bot_key": bot.bot_key, "status": "error"})
-    
+
     await db.commit()
     return {"webhooks_set": results}
 

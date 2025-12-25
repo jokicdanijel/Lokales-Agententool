@@ -23,34 +23,30 @@ Reduction: ~48% fewer lines, clearer structure
 Note: Uses Pydantic V2 ConfigDict style for consistency with opena6 browser agent.
 """
 
+import logging
 import os
 import sys
 import time
-import logging
+from dataclasses import asdict, dataclass
+from datetime import UTC
 from pathlib import Path
-from typing import Optional, List
-from dataclasses import dataclass, asdict
 
-from fastapi import FastAPI, Depends
-from pydantic import BaseModel, Field, ConfigDict
 import uvicorn
+from fastapi import Depends, FastAPI
+from pydantic import BaseModel, ConfigDict, Field
 
 # ============================================================================
 # IMPORT SHARED MODULES (NEW!)
 # ============================================================================
-from src.pkg.shared import (
-    # Authentication
-    load_bearer_token_from_env,
-    create_token_verifier,
-    # Base Models
+from src.pkg.shared import (  # Authentication; Base Models; Persistence; Configuration
+    AuditLog,
+    BaseDataStore,
     CommandRequest,
     create_health_response,
     create_service_info,
-    # Persistence
-    BaseDataStore,
-    AuditLog,
-    # Configuration
+    create_token_verifier,
     get_port_from_env,
+    load_bearer_token_from_env,
 )
 
 # ============================================================================
@@ -79,7 +75,7 @@ HOST = os.getenv("EXAMPLE_HOST", "127.0.0.1")
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-    handlers=[logging.StreamHandler(sys.stdout)]
+    handlers=[logging.StreamHandler(sys.stdout)],
 )
 logger = logging.getLogger(SERVICE_NAME)
 
@@ -87,9 +83,11 @@ logger = logging.getLogger(SERVICE_NAME)
 # DOMAIN MODELS
 # ============================================================================
 
+
 @dataclass
 class ExampleItem:
     """Example business domain model."""
+
     id: str
     name: str
     value: int
@@ -101,17 +99,18 @@ class ExampleItem:
 # PERSISTENCE LAYER (Using Shared BaseDataStore)
 # ============================================================================
 
+
 class ExampleItemStore(BaseDataStore[ExampleItem]):
     """
     Store for example items.
-    
+
     Only need to implement serialization methods - everything else inherited!
     """
-    
+
     def _serialize(self, item: ExampleItem) -> dict:
         """Convert ExampleItem to dictionary."""
         return asdict(item)
-    
+
     def _deserialize(self, data: dict) -> ExampleItem:
         """Convert dictionary to ExampleItem."""
         return ExampleItem(**data)
@@ -121,18 +120,21 @@ class ExampleItemStore(BaseDataStore[ExampleItem]):
 # REQUEST/RESPONSE MODELS
 # ============================================================================
 
+
 class CreateItemRequest(BaseModel):
     """Request to create a new item."""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     name: str = Field(..., min_length=1, max_length=200)
     value: int = Field(..., ge=0)
 
 
 class ItemResponse(BaseModel):
     """Response with item data."""
+
     model_config = ConfigDict(extra="forbid")
-    
+
     id: str
     name: str
     value: int
@@ -147,7 +149,7 @@ class ItemResponse(BaseModel):
 app = FastAPI(
     title=f"{SERVICE_NAME} - Example Refactored Agent",
     description="Reference implementation using shared modules",
-    version=VERSION
+    version=VERSION,
 )
 
 # Initialize stores using shared classes
@@ -164,6 +166,7 @@ START_TIME = time.time()
 # ENDPOINTS
 # ============================================================================
 
+
 @app.get("/")
 async def root():
     """Root endpoint - service information."""
@@ -174,7 +177,7 @@ async def root():
         description="Example refactored agent using shared modules",
         port=PORT,
         version=VERSION,
-        endpoints=["/health", "/items", "/items/create", "/command"]
+        endpoints=["/health", "/items", "/items/create", "/command"],
     )
 
 
@@ -189,18 +192,18 @@ async def health():
         start_time=START_TIME,
         # Extra service-specific info
         items_count=item_store.count(),
-        audit_entries=audit_log.count()
+        audit_entries=audit_log.count(),
     )
 
 
-@app.get("/items", response_model=List[ItemResponse])
+@app.get("/items", response_model=list[ItemResponse])
 async def list_items(active_only: bool = True, user: str = Depends(verify_token)):
     """List all items (authenticated)."""
     # Load and filter
     items = item_store.load()
     if active_only:
         items = [item for item in items if item.active]
-    
+
     return [ItemResponse(**asdict(item)) for item in items]
 
 
@@ -208,20 +211,20 @@ async def list_items(active_only: bool = True, user: str = Depends(verify_token)
 async def create_item(req: CreateItemRequest, user: str = Depends(verify_token)):
     """Create a new item (authenticated)."""
     import uuid
-    from datetime import datetime, timezone
-    
+    from datetime import datetime
+
     # Create item
     item = ExampleItem(
         id=str(uuid.uuid4()),
         name=req.name,
         value=req.value,
-        created_at=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        active=True
+        created_at=datetime.now(UTC).isoformat().replace("+00:00", "Z"),
+        active=True,
     )
-    
+
     # Save using inherited method
     item_store.add(item)
-    
+
     # Audit using shared AuditLog
     audit_log.log(
         operation="CREATE_ITEM",
@@ -229,9 +232,9 @@ async def create_item(req: CreateItemRequest, user: str = Depends(verify_token))
         resource_type="item",
         resource_id=item.id,
         result="success",
-        details={"name": item.name, "value": item.value}
+        details={"name": item.name, "value": item.value},
     )
-    
+
     logger.info(f"Created item {item.id}: {item.name}")
     return ItemResponse(**asdict(item))
 
@@ -240,30 +243,27 @@ async def create_item(req: CreateItemRequest, user: str = Depends(verify_token))
 async def handle_command(req: CommandRequest, user: str = Depends(verify_token)):
     """
     Handle generic command (Option-2-Flow compatibility).
-    
+
     Uses shared CommandRequest model!
     """
     cmd = req.command.lower()
-    
+
     if cmd == "list":
         items = await list_items(active_only=True, user=user)
         return {"status": "success", "command": cmd, "result": items}
-    
+
     elif cmd == "create":
         create_req = CreateItemRequest(**req.params)
         item = await create_item(create_req, user)
         return {"status": "success", "command": cmd, "result": item}
-    
+
     elif cmd == "stats":
         return {
             "status": "success",
             "command": cmd,
-            "result": {
-                "total_items": item_store.count(),
-                "audit_entries": audit_log.count()
-            }
+            "result": {"total_items": item_store.count(), "audit_entries": audit_log.count()},
         }
-    
+
     else:
         return {"status": "error", "message": f"Unknown command: {cmd}"}
 
@@ -272,17 +272,18 @@ async def handle_command(req: CommandRequest, user: str = Depends(verify_token))
 # STARTUP
 # ============================================================================
 
+
 @app.on_event("startup")
 async def startup_event():
     """Initialize on startup."""
     # Load data
     item_store.load()
-    
+
     logger.info(f"🚀 {SERVICE_NAME} ({KUERZEL}) started on {HOST}:{PORT}")
     logger.info(f"📁 Data directory: {DATA_DIR}")
     logger.info(f"📦 Items loaded: {item_store.count()}")
     logger.info(f"📜 Audit entries: {audit_log.count()}")
-    
+
     if not BEARER_TOKEN:
         logger.warning("⚠️  BEARER_TOKEN not set - authentication disabled!")
 

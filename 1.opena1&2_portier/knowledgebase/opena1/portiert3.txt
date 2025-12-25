@@ -54,7 +54,7 @@ python bootstrap_starter.py --all
 # ✅ Systemausgabe:
 # 🚀 Bootstrap: Starte alle Tools...
 # ✅ Archivator (opena2) gestartet (PID: 12345) - Port 12344
-# ✅ KORDP Dispatcher gestartet (PID: 12346) - Port 12346  
+# ✅ KORDP Dispatcher gestartet (PID: 12346) - Port 12346
 # ✅ File Searcher gestartet (PID: 12347) - Port 12347
 # ✅ Project Analyzer gestartet (PID: 12348) - Port 12348
 # ✅ Filesystem Manager gestartet (PID: 12349) - Port 12349
@@ -91,7 +91,7 @@ curl http://127.0.0.1:12348/health  # Project Analyzer
 # Nur Archivator starten (Core-Service, Port 12344)
 python bootstrap_starter.py --tool archivator
 
-# Nur KORDP starten (Dispatcher, Port 12346)  
+# Nur KORDP starten (Dispatcher, Port 12346)
 python bootstrap_starter.py --tool kordp
 
 # Nur Project Analyzer (Analysis-Service, Port 12348)
@@ -126,7 +126,7 @@ from pathlib import Path
 
 # 7.1 Schema laden und validieren
 schema_71 = json.loads(Path('schemas/7.1-request.json').read_text())
-request = json.loads(Path('example_7_1.json').read_text()) 
+request = json.loads(Path('example_7_1.json').read_text())
 jsonschema.validate(request, schema_71)
 print('✅ 7.1 Schema-Validierung erfolgreich')
 "
@@ -176,7 +176,7 @@ filesystem_manager	Filesystem Manager	12349	✅ Active	CRUD-Operationen auf Date
 
 graph LR
     A[OpenAI] --> B[opena1:12344]
-    B --> C[opena2:12345] 
+    B --> C[opena2:12345]
     C --> D[kordp:12346]
     D --> E[Tool:12347-12349]
     E --> D
@@ -244,7 +244,7 @@ portier-openai/                   # 🏢 ENTERPRISE-ROOT
 │  └─ opena1_archivator_client.py # 🎯 opena1↔opena2 Bridge (INTEGRATED) ✅
 ├─ 🛠️ tools/                      # Complete Tool Suite (6/6 IMPLEMENTED)
 │  ├─ filesystem_manager.py       # Port 12349 - CRUD Operations ✅
-│  ├─ project_analyzer.py         # Port 12348 - Structure Analysis ✅  
+│  ├─ project_analyzer.py         # Port 12348 - Structure Analysis ✅
 │  ├─ tool_file_searcher.py       # Port 12347 - Intelligent Search ✅
 │  └─ kordp.py                    # Port 12346 - Command Dispatcher ✅
 ├─ 🚀 bootstrap_starter.py        # 🎯 ENTERPRISE ORCHESTRATOR (FINAL) ✅
@@ -324,7 +324,7 @@ source venv313/bin/activate
 pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 
-# 3) Service-Spezifische Dependencies 
+# 3) Service-Spezifische Dependencies
 pip install -r archivator/requirements.txt
 
 # 4) Umgebungsvariablen setzen (Production Environment)
@@ -344,7 +344,7 @@ python bootstrap_starter.py --status
 🎯 Core-Stack (requirements.txt):
 
 requests>=2.31.0          # HTTP-Client für Inter-Service Communication ✅
-jsonschema>=4.19.0        # JSON-Schema Validation (Draft 2020-12) ✅  
+jsonschema>=4.19.0        # JSON-Schema Validation (Draft 2020-12) ✅
 openai>=1.0.0             # OpenAI-API Integration (Optional) ✅
 aiofiles>=23.0.0          # Async File-Operations für Performance ✅
 pydantic>=2.0.0           # Data-Validation & Serialization ✅
@@ -429,7 +429,7 @@ print(f'✅ Virtual Environment: {sys.prefix}')
 
 # 4) Tool-Importierbarkeit testen
 python -c "
-tools = ['archivator.archivator', 'tools.kordp', 'tools.project_analyzer', 
+tools = ['archivator.archivator', 'tools.kordp', 'tools.project_analyzer',
          'tools.tool_file_searcher', 'tools.filesystem_manager']
 for tool in tools:
     try:
@@ -602,7 +602,7 @@ Konfiguration & Registry
 config/registry.json (ZENTRAL) Port-Management und Tool-Registry:
 {
   "tools": {
-    "opena1": {"port": 12344}, 
+    "opena1": {"port": 12344},
     "opena2": {"port": 12345},
     "kordp": {"port": 12346},
     "tool_file_searcher": {"port": 12347},
@@ -687,14 +687,14 @@ Abnahmekriterien (Kurzcheck):
   Error Rate: ZERO ERRORS (All Import/Syntax/Lint Issues Resolved)
   Test Coverage: Critical Path Functions Validated
   Documentation: 100% Complete & Executable
-  
+
 🚀 BOOTSTRAP ORCHESTRATOR:
   Multi-Service Start: ✅ 6/6 Tools Successfully Started
   Graceful Shutdown: ✅ SIGINT/SIGTERM Handling Implemented
   Health Monitoring: ✅ /health Endpoints Active
   Auto-Recovery: ✅ Process-Death Detection & Restart
   Port Policy: ✅ Centralized Registry Enforcement
-  
+
 🏗️ ENTERPRISE ARCHITECTURE:
   Service Pattern: ✅ Microservice with FastAPI/Uvicorn
   Schema Validation: ✅ JSON Schema Draft 2020-12 (Strict Mode)
@@ -708,7 +708,7 @@ time python bootstrap_starter.py --all
 # Expected Output:
 # 🚀 Bootstrap: Starte alle Tools...
 # ✅ Archivator (opena2) gestartet (PID: xxxxx) - Port 12344
-# ✅ KORDP Dispatcher gestartet (PID: xxxxx) - Port 12346  
+# ✅ KORDP Dispatcher gestartet (PID: xxxxx) - Port 12346
 # ✅ File Searcher gestartet (PID: xxxxx) - Port 12347
 # ✅ Project Analyzer gestartet (PID: xxxxx) - Port 12348
 # ✅ Filesystem Manager gestartet (PID: xxxxx) - Port 12349

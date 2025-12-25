@@ -7,24 +7,15 @@ NOTE: This is an experimental implementation and may not fully comply with SCIM 
 
 import logging
 import uuid
-import time
-from typing import Optional, List, Dict, Any
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, Request, Query, Header, status
+from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request, status
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field, ConfigDict
-
-from open_webui.models.users import Users, UserModel
-from open_webui.models.groups import Groups, GroupModel
-from open_webui.utils.auth import (
-    get_admin_user,
-    get_current_user,
-    decode_token,
-    get_verified_user,
-)
-from open_webui.constants import ERROR_MESSAGES
 from open_webui.env import SRC_LOG_LEVELS
+from open_webui.models.groups import GroupModel, Groups
+from open_webui.models.users import UserModel, Users
+from pydantic import BaseModel, ConfigDict, Field
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MAIN"])
@@ -42,7 +33,7 @@ SCIM_RESOURCE_TYPE_USER = "User"
 SCIM_RESOURCE_TYPE_GROUP = "Group"
 
 
-def scim_error(status_code: int, detail: str, scim_type: Optional[str] = None):
+def scim_error(status_code: int, detail: str, scim_type: str | None = None):
     """Create a SCIM-compliant error response"""
     error_body = {
         "schemas": [SCIM_ERROR_SCHEMA],
@@ -65,10 +56,10 @@ def scim_error(status_code: int, detail: str, scim_type: Optional[str] = None):
 class SCIMError(BaseModel):
     """SCIM Error Response"""
 
-    schemas: List[str] = [SCIM_ERROR_SCHEMA]
+    schemas: list[str] = [SCIM_ERROR_SCHEMA]
     status: str
-    scimType: Optional[str] = None
-    detail: Optional[str] = None
+    scimType: str | None = None
+    detail: str | None = None
 
 
 class SCIMMeta(BaseModel):
@@ -77,46 +68,46 @@ class SCIMMeta(BaseModel):
     resourceType: str
     created: str
     lastModified: str
-    location: Optional[str] = None
-    version: Optional[str] = None
+    location: str | None = None
+    version: str | None = None
 
 
 class SCIMName(BaseModel):
     """SCIM User Name"""
 
-    formatted: Optional[str] = None
-    familyName: Optional[str] = None
-    givenName: Optional[str] = None
-    middleName: Optional[str] = None
-    honorificPrefix: Optional[str] = None
-    honorificSuffix: Optional[str] = None
+    formatted: str | None = None
+    familyName: str | None = None
+    givenName: str | None = None
+    middleName: str | None = None
+    honorificPrefix: str | None = None
+    honorificSuffix: str | None = None
 
 
 class SCIMEmail(BaseModel):
     """SCIM Email"""
 
     value: str
-    type: Optional[str] = "work"
+    type: str | None = "work"
     primary: bool = True
-    display: Optional[str] = None
+    display: str | None = None
 
 
 class SCIMPhoto(BaseModel):
     """SCIM Photo"""
 
     value: str
-    type: Optional[str] = "photo"
+    type: str | None = "photo"
     primary: bool = True
-    display: Optional[str] = None
+    display: str | None = None
 
 
 class SCIMGroupMember(BaseModel):
     """SCIM Group Member"""
 
     value: str  # User ID
-    ref: Optional[str] = Field(None, alias="$ref")
-    type: Optional[str] = "User"
-    display: Optional[str] = None
+    ref: str | None = Field(None, alias="$ref")
+    type: str | None = "User"
+    display: str | None = None
 
 
 class SCIMUser(BaseModel):
@@ -124,16 +115,16 @@ class SCIMUser(BaseModel):
 
     model_config = ConfigDict(populate_by_name=True)
 
-    schemas: List[str] = [SCIM_USER_SCHEMA]
+    schemas: list[str] = [SCIM_USER_SCHEMA]
     id: str
-    externalId: Optional[str] = None
+    externalId: str | None = None
     userName: str
-    name: Optional[SCIMName] = None
+    name: SCIMName | None = None
     displayName: str
-    emails: List[SCIMEmail]
+    emails: list[SCIMEmail]
     active: bool = True
-    photos: Optional[List[SCIMPhoto]] = None
-    groups: Optional[List[Dict[str, str]]] = None
+    photos: list[SCIMPhoto] | None = None
+    groups: list[dict[str, str]] | None = None
     meta: SCIMMeta
 
 
@@ -142,15 +133,15 @@ class SCIMUserCreateRequest(BaseModel):
 
     model_config = ConfigDict(populate_by_name=True)
 
-    schemas: List[str] = [SCIM_USER_SCHEMA]
-    externalId: Optional[str] = None
+    schemas: list[str] = [SCIM_USER_SCHEMA]
+    externalId: str | None = None
     userName: str
-    name: Optional[SCIMName] = None
+    name: SCIMName | None = None
     displayName: str
-    emails: List[SCIMEmail]
+    emails: list[SCIMEmail]
     active: bool = True
-    password: Optional[str] = None
-    photos: Optional[List[SCIMPhoto]] = None
+    password: str | None = None
+    photos: list[SCIMPhoto] | None = None
 
 
 class SCIMUserUpdateRequest(BaseModel):
@@ -158,15 +149,15 @@ class SCIMUserUpdateRequest(BaseModel):
 
     model_config = ConfigDict(populate_by_name=True)
 
-    schemas: List[str] = [SCIM_USER_SCHEMA]
-    id: Optional[str] = None
-    externalId: Optional[str] = None
-    userName: Optional[str] = None
-    name: Optional[SCIMName] = None
-    displayName: Optional[str] = None
-    emails: Optional[List[SCIMEmail]] = None
-    active: Optional[bool] = None
-    photos: Optional[List[SCIMPhoto]] = None
+    schemas: list[str] = [SCIM_USER_SCHEMA]
+    id: str | None = None
+    externalId: str | None = None
+    userName: str | None = None
+    name: SCIMName | None = None
+    displayName: str | None = None
+    emails: list[SCIMEmail] | None = None
+    active: bool | None = None
+    photos: list[SCIMPhoto] | None = None
 
 
 class SCIMGroup(BaseModel):
@@ -174,10 +165,10 @@ class SCIMGroup(BaseModel):
 
     model_config = ConfigDict(populate_by_name=True)
 
-    schemas: List[str] = [SCIM_GROUP_SCHEMA]
+    schemas: list[str] = [SCIM_GROUP_SCHEMA]
     id: str
     displayName: str
-    members: Optional[List[SCIMGroupMember]] = []
+    members: list[SCIMGroupMember] | None = []
     meta: SCIMMeta
 
 
@@ -186,9 +177,9 @@ class SCIMGroupCreateRequest(BaseModel):
 
     model_config = ConfigDict(populate_by_name=True)
 
-    schemas: List[str] = [SCIM_GROUP_SCHEMA]
+    schemas: list[str] = [SCIM_GROUP_SCHEMA]
     displayName: str
-    members: Optional[List[SCIMGroupMember]] = []
+    members: list[SCIMGroupMember] | None = []
 
 
 class SCIMGroupUpdateRequest(BaseModel):
@@ -196,39 +187,37 @@ class SCIMGroupUpdateRequest(BaseModel):
 
     model_config = ConfigDict(populate_by_name=True)
 
-    schemas: List[str] = [SCIM_GROUP_SCHEMA]
-    displayName: Optional[str] = None
-    members: Optional[List[SCIMGroupMember]] = None
+    schemas: list[str] = [SCIM_GROUP_SCHEMA]
+    displayName: str | None = None
+    members: list[SCIMGroupMember] | None = None
 
 
 class SCIMListResponse(BaseModel):
     """SCIM List Response"""
 
-    schemas: List[str] = [SCIM_LIST_RESPONSE_SCHEMA]
+    schemas: list[str] = [SCIM_LIST_RESPONSE_SCHEMA]
     totalResults: int
     itemsPerPage: int
     startIndex: int
-    Resources: List[Any]
+    Resources: list[Any]
 
 
 class SCIMPatchOperation(BaseModel):
     """SCIM Patch Operation"""
 
     op: str  # "add", "replace", "remove"
-    path: Optional[str] = None
-    value: Optional[Any] = None
+    path: str | None = None
+    value: Any | None = None
 
 
 class SCIMPatchRequest(BaseModel):
     """SCIM Patch Request"""
 
-    schemas: List[str] = ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
-    Operations: List[SCIMPatchOperation]
+    schemas: list[str] = ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+    Operations: list[SCIMPatchOperation]
 
 
-def get_scim_auth(
-    request: Request, authorization: Optional[str] = Header(None)
-) -> bool:
+def get_scim_auth(request: Request, authorization: str | None = Header(None)) -> bool:
     """
     Verify SCIM authentication
     Checks for SCIM-specific bearer token configured in the system
@@ -257,9 +246,7 @@ def get_scim_auth(
 
         # Check if SCIM is enabled
         enable_scim = getattr(request.app.state, "ENABLE_SCIM", False)
-        log.info(
-            f"SCIM auth check - raw ENABLE_SCIM: {enable_scim}, type: {type(enable_scim)}"
-        )
+        log.info(f"SCIM auth check - raw ENABLE_SCIM: {enable_scim}, type: {type(enable_scim)}")
 
         # Handle both PersistentConfig and direct value
         if hasattr(enable_scim, "value"):
@@ -328,20 +315,12 @@ def user_to_scim(user: UserModel, request: Request) -> SCIMUser:
         displayName=user.name,
         emails=[SCIMEmail(value=user.email)],
         active=user.role != "pending",
-        photos=(
-            [SCIMPhoto(value=user.profile_image_url)]
-            if user.profile_image_url
-            else None
-        ),
+        photos=([SCIMPhoto(value=user.profile_image_url)] if user.profile_image_url else None),
         groups=groups if groups else None,
         meta=SCIMMeta(
             resourceType=SCIM_RESOURCE_TYPE_USER,
-            created=datetime.fromtimestamp(
-                user.created_at, tz=timezone.utc
-            ).isoformat(),
-            lastModified=datetime.fromtimestamp(
-                user.updated_at, tz=timezone.utc
-            ).isoformat(),
+            created=datetime.fromtimestamp(user.created_at, tz=UTC).isoformat(),
+            lastModified=datetime.fromtimestamp(user.updated_at, tz=UTC).isoformat(),
             location=f"{request.base_url}api/v1/scim/v2/Users/{user.id}",
         ),
     )
@@ -369,12 +348,8 @@ def group_to_scim(group: GroupModel, request: Request) -> SCIMGroup:
         members=members,
         meta=SCIMMeta(
             resourceType=SCIM_RESOURCE_TYPE_GROUP,
-            created=datetime.fromtimestamp(
-                group.created_at, tz=timezone.utc
-            ).isoformat(),
-            lastModified=datetime.fromtimestamp(
-                group.updated_at, tz=timezone.utc
-            ).isoformat(),
+            created=datetime.fromtimestamp(group.created_at, tz=UTC).isoformat(),
+            lastModified=datetime.fromtimestamp(group.updated_at, tz=UTC).isoformat(),
             location=f"{request.base_url}api/v1/scim/v2/Groups/{group.id}",
         ),
     )
@@ -483,7 +458,7 @@ async def get_users(
     request: Request,
     startIndex: int = Query(1, ge=1),
     count: int = Query(20, ge=1, le=100),
-    filter: Optional[str] = None,
+    filter: str | None = None,
     _: bool = Depends(get_scim_auth),
 ):
     """List SCIM Users"""
@@ -528,9 +503,7 @@ async def get_user(
     """Get SCIM User by ID"""
     user = Users.get_user_by_id(user_id)
     if not user:
-        return scim_error(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"User {user_id} not found"
-        )
+        return scim_error(status_code=status.HTTP_404_NOT_FOUND, detail=f"User {user_id} not found")
 
     return user_to_scim(user, request)
 
@@ -612,9 +585,7 @@ async def update_user(
         if user_data.name.formatted:
             update_data["name"] = user_data.name.formatted
         elif user_data.name.givenName or user_data.name.familyName:
-            update_data["name"] = (
-                f"{user_data.name.givenName or ''} {user_data.name.familyName or ''}".strip()
-            )
+            update_data["name"] = f"{user_data.name.givenName or ''} {user_data.name.familyName or ''}".strip()
 
     if user_data.emails and len(user_data.emails) > 0:
         update_data["email"] = user_data.emails[0].value
@@ -714,7 +685,7 @@ async def get_groups(
     request: Request,
     startIndex: int = Query(1, ge=1),
     count: int = Query(20, ge=1, le=100),
-    filter: Optional[str] = None,
+    filter: str | None = None,
     _: bool = Depends(get_scim_auth),
 ):
     """List SCIM Groups"""
@@ -879,9 +850,7 @@ async def patch_group(
                 update_form.name = value
             elif path == "members":
                 # Replace all members
-                Groups.set_group_user_ids_by_id(
-                    group_id, [member["value"] for member in value]
-                )
+                Groups.set_group_user_ids_by_id(group_id, [member["value"] for member in value])
 
         elif op == "add":
             if path == "members":

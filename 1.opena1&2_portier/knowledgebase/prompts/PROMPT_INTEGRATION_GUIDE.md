@@ -1,7 +1,7 @@
 # PORTIER 3.0 – Prompt Integration Guide
 
-**Version:** 1.0  
-**Datum:** 27. November 2025  
+**Version:** 1.0
+**Datum:** 27. November 2025
 **Zweck:** Anleitung zur Integration der Master-Prompts in verschiedene AI-Systeme
 
 ---
@@ -100,6 +100,7 @@ Für vollständige Systemkenntnis der Kern-Services siehe:
 - **opena2 (Archivator):** `1.opena1&2_portier/knowledge/prompts/MASTER_PROMPT_OPENA2.md`
 
 Diese Prompts definieren:
+
 - Option-2-Flow (OpenAI → opena1 → opena2 → kordp → Tools)
 - Port-Policy (12344–12399 Backend, 8080 UI-only)
 - Safepoint-Pflicht (CMD/RESP mit Unicode-Pfeil →)
@@ -201,6 +202,7 @@ Bevor du Code schreibst, lies diese Dokumente:
 4. **Knowledgebase Index:** `knowledge/processed/master_prompts_core.md`
 
 Diese Dokumente definieren:
+
 - Deine Rolle im System
 - Erlaubte/verbotene Patterns
 - Option-2-Flow
@@ -269,21 +271,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Check Master Prompt opena1
         run: |
           if [ ! -f "1.opena1&2_portier/knowledge/prompts/MASTER_PROMPT_OPENA1.md" ]; then
             echo "❌ MASTER_PROMPT_OPENA1.md missing"
             exit 1
           fi
-          
+
       - name: Check Master Prompt opena2
         run: |
           if [ ! -f "1.opena1&2_portier/knowledge/prompts/MASTER_PROMPT_OPENA2.md" ]; then
             echo "❌ MASTER_PROMPT_OPENA2.md missing"
             exit 1
           fi
-          
+
       - name: Validate Unicode Arrow
         run: |
           grep -q "→" 1.opena1&2_portier/knowledge/prompts/MASTER_PROMPT_OPENA*.md || {
@@ -315,9 +317,11 @@ Bei Updates:
 ## [1.1.0] - 2025-12-01
 
 ### Added
+
 - KB_COMFYUI_INTEGRATION_2025-12-01.md zu Referenzen hinzugefügt
 
 ### Changed
+
 - Port-Policy erweitert: ComfyUI Adapter auf Port 12351
 ```
 
@@ -391,7 +395,7 @@ Nach erfolgreicher Integration:
 
 ---
 
-**Ende Integration Guide**  
-**Maintainer:** PORTIER 3.0 Team  
-**Kontakt:** Siehe `PORTIER_3.0_RELEASE.md`  
+**Ende Integration Guide**
+**Maintainer:** PORTIER 3.0 Team
+**Kontakt:** Siehe `PORTIER_3.0_RELEASE.md`
 **Status:** ✅ Production-Ready

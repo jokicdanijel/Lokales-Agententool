@@ -5,6 +5,7 @@ This guide explains how to migrate an agent from duplicated local files to the c
 ## Overview
 
 The following files can be replaced with shared libraries:
+
 - `safepoint_client.py` → `src.pkg.shared.safepoint_client`
 - `sse_client.py` → `src.pkg.shared.sse_client`
 - `security.py` → `src.pkg.shared.security`
@@ -15,6 +16,7 @@ The following files can be replaced with shared libraries:
 ### 1. Update Imports
 
 #### Before (using local files):
+
 ```python
 from safepoint_client import SafepointClient
 from sse_client import SSEClient, get_sse_client
@@ -22,6 +24,7 @@ from security import verify_token, mask_secrets
 ```
 
 #### After (using shared libraries):
+
 ```python
 from src.pkg.shared.safepoint_client import SafepointClient
 from src.pkg.shared.sse_client import SSEClient, create_sse_client
@@ -33,6 +36,7 @@ from src.pkg.shared.security import verify_token, mask_secrets
 The new SSE client uses factory functions for better agent-specific configuration.
 
 #### Before:
+
 ```python
 # In sse_client.py - hardcoded agent name
 class SafepointClient:
@@ -49,6 +53,7 @@ def get_sse_client():
 ```
 
 #### After:
+
 ```python
 from src.pkg.shared.sse_client import create_sse_client, create_safepoint_client
 
@@ -62,6 +67,7 @@ safepoint_client = create_safepoint_client(source_agent="opena4")
 If your agent uses a custom config, you can now inherit from `BaseAgentConfig`.
 
 #### Before (opena4/config.py):
+
 ```python
 from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings
@@ -79,6 +85,7 @@ class ServiceConfig(BaseSettings):
 ```
 
 #### After (opena4/config.py):
+
 ```python
 from pydantic import Field
 from src.pkg.shared.config_base import BaseAgentConfig, PortPolicy
@@ -89,12 +96,12 @@ class ServiceConfig(BaseAgentConfig):
     # - bearer_token, opena1_url, opena2_url, opena20_url
     # - log_level, log_format
     # - base_dir, data_dir, logs_dir properties
-    
+
     # Override defaults
     service_name: str = "opena4"
     kuerzel: str = "tgap"
     port: int = 12346
-    
+
     # Add agent-specific fields only
     telegram_bot_token: str = Field(default="", alias="TELEGRAM_BOT_TOKEN")
     telegram_allowed_users: List[int] = Field(default_factory=list)
@@ -103,11 +110,13 @@ class ServiceConfig(BaseAgentConfig):
 ### 4. Update Security Imports
 
 #### Before:
+
 ```python
 from security import verify_token, mask_secrets, RateLimiter
 ```
 
 #### After:
+
 ```python
 from src.pkg.shared.security import verify_token, mask_secrets, RateLimiter
 ```
@@ -117,10 +126,11 @@ No code changes needed - the API is identical!
 ### 5. Remove Duplicated Files
 
 After migration and testing:
+
 ```bash
 # From agent directory (e.g., 3.opena4_telegram/)
 rm safepoint_client.py  # If using shared version
-rm sse_client.py        # If using shared version  
+rm sse_client.py        # If using shared version
 rm security.py          # If using shared version
 # Keep config.py but simplify it using BaseAgentConfig
 ```
@@ -128,6 +138,7 @@ rm security.py          # If using shared version
 ## Complete Example: Migrating opena4
 
 ### Before Structure:
+
 ```
 3.opena4_telegram/
 ├── main_telegram_agent.py
@@ -139,6 +150,7 @@ rm security.py          # If using shared version
 ```
 
 ### After Structure:
+
 ```
 3.opena4_telegram/
 ├── main_telegram_agent.py   ← Updated imports
@@ -151,7 +163,7 @@ rm security.py          # If using shared version
 ```python
 # Old imports
 # from safepoint_client import SafepointClient
-# from sse_client import get_sse_client, get_safepoint_client  
+# from sse_client import get_sse_client, get_safepoint_client
 # from security import verify_token, mask_secrets
 
 # New imports
@@ -175,11 +187,11 @@ class ServiceConfig(BaseAgentConfig):
     service_name: str = "opena4"
     kuerzel: str = "tgap"
     port: int = 12346
-    
+
     # Agent-specific fields
     telegram_bot_token: str = Field(default="", alias="TELEGRAM_BOT_TOKEN")
     telegram_allowed_users: List[int] = Field(default_factory=list)
-    
+
     @field_validator("telegram_allowed_users", mode="before")
     @classmethod
     def parse_allowed_users(cls, v):
@@ -190,7 +202,7 @@ class ServiceConfig(BaseAgentConfig):
         if isinstance(v, str):
             return [int(x.strip()) for x in v.split(",") if x.strip()]
         return []
-    
+
     def to_dict(self) -> dict:
         """Override to add telegram-specific fields."""
         base_dict = super().to_dict(mask_secrets=True)
@@ -204,11 +216,13 @@ class ServiceConfig(BaseAgentConfig):
 ## Testing After Migration
 
 1. **Import Test**: Verify imports work
+
    ```bash
    python3 -c "from src.pkg.shared import SafepointClient; print('✅ OK')"
    ```
 
 2. **Agent Test**: Start the agent and verify functionality
+
    ```bash
    cd 3.opena4_telegram
    python3 main_telegram_agent.py
@@ -227,6 +241,7 @@ class ServiceConfig(BaseAgentConfig):
 ## Rollback
 
 If issues occur, you can temporarily revert:
+
 ```bash
 git checkout HEAD -- safepoint_client.py sse_client.py security.py
 ```
@@ -241,14 +256,14 @@ git checkout HEAD -- safepoint_client.py sse_client.py security.py
 
 ## FAQ
 
-**Q: Do I need to change my agent's functionality?**  
+**Q: Do I need to change my agent's functionality?**
 A: No. The shared libraries provide the same API.
 
-**Q: What if my agent has customizations?**  
+**Q: What if my agent has customizations?**
 A: Keep the customizations in the agent's directory. Only common code goes to shared.
 
-**Q: Can I still use environment variables?**  
+**Q: Can I still use environment variables?**
 A: Yes. The shared modules read from the same environment variables.
 
-**Q: What about backward compatibility?**  
+**Q: What about backward compatibility?**
 A: The factory functions (`create_sse_client`, `create_safepoint_client`) provide backward compatibility.

@@ -5,10 +5,10 @@ Local execution, no actual browser control until you add the engine
 """
 
 import logging
-from typing import Dict, Any, Optional
 from datetime import datetime
+from typing import Any
 
-logger = logging.getLogger('browser_engine')
+logger = logging.getLogger("browser_engine")
 
 
 class BrowserEngineWrapper:
@@ -21,24 +21,24 @@ class BrowserEngineWrapper:
     - No actual browser control (not allowed in this context)
     """
 
-    def __init__(self, config: Dict[str, Any] = None):
+    def __init__(self, config: dict[str, Any] = None):
         """Initialize browser engine wrapper"""
         self.config = config or {}
-        self.headless = self.config.get('headless', True)
-        self.default_wait_ms = self.config.get('default_wait_ms', 500)
-        self.timeout_ms = self.config.get('timeout_ms', 15000)
+        self.headless = self.config.get("headless", True)
+        self.default_wait_ms = self.config.get("default_wait_ms", 500)
+        self.timeout_ms = self.config.get("timeout_ms", 15000)
 
         # These would hold actual browser instances when plugged in
         self.browser = None
         self.page = None
 
-        logger.info(f"✅ BrowserEngineWrapper initialized (Skeleton Mode)")
+        logger.info("✅ BrowserEngineWrapper initialized (Skeleton Mode)")
 
     # ========================================================================
     # PUBLIC API - Action Methods
     # ========================================================================
 
-    def open_url(self, url: str, wait_ms: int = None) -> Dict[str, Any]:
+    def open_url(self, url: str, wait_ms: int = None) -> dict[str, Any]:
         """Open URL in browser
 
         PLUG-IN TEMPLATE:
@@ -60,19 +60,14 @@ class BrowserEngineWrapper:
             logger.info(f"[STUB] Opening URL: {url}")
 
             return {
-                'status': 'success',
-                'data': {
-                    'url': url,
-                    'loaded': True,
-                    'wait_ms': wait_ms,
-                    'timestamp': datetime.utcnow().isoformat()
-                }
+                "status": "success",
+                "data": {"url": url, "loaded": True, "wait_ms": wait_ms, "timestamp": datetime.utcnow().isoformat()},
             }
         except Exception as e:
             logger.error(f"Error opening URL: {e}")
-            return {'status': 'error', 'message': str(e)}
+            return {"status": "error", "message": str(e)}
 
-    def click_element(self, url: str, selector: str) -> Dict[str, Any]:
+    def click_element(self, url: str, selector: str) -> dict[str, Any]:
         """Click on element matching selector
 
         PLUG-IN TEMPLATE:
@@ -89,18 +84,14 @@ class BrowserEngineWrapper:
             logger.info(f"[STUB] Clicking element: {selector} on {url}")
 
             return {
-                'status': 'success',
-                'data': {
-                    'selector': selector,
-                    'clicked': True,
-                    'timestamp': datetime.utcnow().isoformat()
-                }
+                "status": "success",
+                "data": {"selector": selector, "clicked": True, "timestamp": datetime.utcnow().isoformat()},
             }
         except Exception as e:
             logger.error(f"Error clicking element: {e}")
-            return {'status': 'error', 'message': str(e)}
+            return {"status": "error", "message": str(e)}
 
-    def type_text(self, url: str, selector: str, text: str) -> Dict[str, Any]:
+    def type_text(self, url: str, selector: str, text: str) -> dict[str, Any]:
         """Type text into input field
 
         PLUG-IN TEMPLATE:
@@ -116,19 +107,19 @@ class BrowserEngineWrapper:
             logger.info(f"[STUB] Typing text in {selector}: {len(text)} chars")
 
             return {
-                'status': 'success',
-                'data': {
-                    'selector': selector,
-                    'text_length': len(text),
-                    'typed': True,
-                    'timestamp': datetime.utcnow().isoformat()
-                }
+                "status": "success",
+                "data": {
+                    "selector": selector,
+                    "text_length": len(text),
+                    "typed": True,
+                    "timestamp": datetime.utcnow().isoformat(),
+                },
             }
         except Exception as e:
             logger.error(f"Error typing text: {e}")
-            return {'status': 'error', 'message': str(e)}
+            return {"status": "error", "message": str(e)}
 
-    def extract_text(self, url: str, selector: str) -> Dict[str, Any]:
+    def extract_text(self, url: str, selector: str) -> dict[str, Any]:
         """Extract text content from element
 
         PLUG-IN TEMPLATE:
@@ -147,19 +138,19 @@ class BrowserEngineWrapper:
             logger.info(f"[STUB] Extracting text from {selector}")
 
             return {
-                'status': 'success',
-                'data': {
-                    'selector': selector,
-                    'text': '[stub extracted text]',
-                    'found': True,
-                    'timestamp': datetime.utcnow().isoformat()
-                }
+                "status": "success",
+                "data": {
+                    "selector": selector,
+                    "text": "[stub extracted text]",
+                    "found": True,
+                    "timestamp": datetime.utcnow().isoformat(),
+                },
             }
         except Exception as e:
             logger.error(f"Error extracting text: {e}")
-            return {'status': 'error', 'message': str(e)}
+            return {"status": "error", "message": str(e)}
 
-    def extract_html(self, url: str, selector: str) -> Dict[str, Any]:
+    def extract_html(self, url: str, selector: str) -> dict[str, Any]:
         """Extract HTML content from element
 
         PLUG-IN TEMPLATE:
@@ -175,19 +166,19 @@ class BrowserEngineWrapper:
             logger.info(f"[STUB] Extracting HTML from {selector}")
 
             return {
-                'status': 'success',
-                'data': {
-                    'selector': selector,
-                    'html': '<html>[stub extracted html]</html>',
-                    'found': True,
-                    'timestamp': datetime.utcnow().isoformat()
-                }
+                "status": "success",
+                "data": {
+                    "selector": selector,
+                    "html": "<html>[stub extracted html]</html>",
+                    "found": True,
+                    "timestamp": datetime.utcnow().isoformat(),
+                },
             }
         except Exception as e:
             logger.error(f"Error extracting HTML: {e}")
-            return {'status': 'error', 'message': str(e)}
+            return {"status": "error", "message": str(e)}
 
-    def query_selector(self, url: str, selector: str) -> Dict[str, Any]:
+    def query_selector(self, url: str, selector: str) -> dict[str, Any]:
         """Query DOM for matching elements
 
         PLUG-IN TEMPLATE:
@@ -203,18 +194,14 @@ class BrowserEngineWrapper:
             logger.info(f"[STUB] Querying selector: {selector}")
 
             return {
-                'status': 'success',
-                'data': {
-                    'selector': selector,
-                    'elements': 5,
-                    'timestamp': datetime.utcnow().isoformat()
-                }
+                "status": "success",
+                "data": {"selector": selector, "elements": 5, "timestamp": datetime.utcnow().isoformat()},
             }
         except Exception as e:
             logger.error(f"Error querying selector: {e}")
-            return {'status': 'error', 'message': str(e)}
+            return {"status": "error", "message": str(e)}
 
-    def screenshot(self, url: str) -> Dict[str, Any]:
+    def screenshot(self, url: str) -> dict[str, Any]:
         """Take screenshot of page
 
         PLUG-IN TEMPLATE:
@@ -228,21 +215,17 @@ class BrowserEngineWrapper:
         ```
         """
         try:
-            logger.info(f"[STUB] Taking screenshot")
+            logger.info("[STUB] Taking screenshot")
 
             return {
-                'status': 'success',
-                'data': {
-                    'path': '/tmp/screenshot_stub.png',
-                    'saved': True,
-                    'timestamp': datetime.utcnow().isoformat()
-                }
+                "status": "success",
+                "data": {"path": "/tmp/screenshot_stub.png", "saved": True, "timestamp": datetime.utcnow().isoformat()},
             }
         except Exception as e:
             logger.error(f"Error taking screenshot: {e}")
-            return {'status': 'error', 'message': str(e)}
+            return {"status": "error", "message": str(e)}
 
-    def scroll(self, url: str, wait_ms: int = None) -> Dict[str, Any]:
+    def scroll(self, url: str, wait_ms: int = None) -> dict[str, Any]:
         """Scroll page
 
         PLUG-IN TEMPLATE:
@@ -258,21 +241,17 @@ class BrowserEngineWrapper:
         """
         try:
             wait_ms = wait_ms or self.default_wait_ms
-            logger.info(f"[STUB] Scrolling page")
+            logger.info("[STUB] Scrolling page")
 
             return {
-                'status': 'success',
-                'data': {
-                    'scrolled': True,
-                    'wait_ms': wait_ms,
-                    'timestamp': datetime.utcnow().isoformat()
-                }
+                "status": "success",
+                "data": {"scrolled": True, "wait_ms": wait_ms, "timestamp": datetime.utcnow().isoformat()},
             }
         except Exception as e:
             logger.error(f"Error scrolling: {e}")
-            return {'status': 'error', 'message': str(e)}
+            return {"status": "error", "message": str(e)}
 
-    def wait_for(self, url: str, selector: str, wait_ms: int = None) -> Dict[str, Any]:
+    def wait_for(self, url: str, selector: str, wait_ms: int = None) -> dict[str, Any]:
         """Wait for element to appear
 
         PLUG-IN TEMPLATE:
@@ -293,17 +272,17 @@ class BrowserEngineWrapper:
             logger.info(f"[STUB] Waiting for selector: {selector}")
 
             return {
-                'status': 'success',
-                'data': {
-                    'selector': selector,
-                    'appeared': True,
-                    'wait_ms': wait_ms,
-                    'timestamp': datetime.utcnow().isoformat()
-                }
+                "status": "success",
+                "data": {
+                    "selector": selector,
+                    "appeared": True,
+                    "wait_ms": wait_ms,
+                    "timestamp": datetime.utcnow().isoformat(),
+                },
             }
         except Exception as e:
             logger.error(f"Error waiting for element: {e}")
-            return {'status': 'error', 'message': str(e)}
+            return {"status": "error", "message": str(e)}
 
     # ========================================================================
     # LIFECYCLE

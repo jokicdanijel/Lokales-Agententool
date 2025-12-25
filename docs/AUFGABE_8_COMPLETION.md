@@ -8,6 +8,7 @@
 ## 🎯 Ziel erreicht
 
 Das **vollständige Preflight- und CI/CD-System** stellt sicher, dass:
+
 - ✅ Kein Agent vergessen wird
 - ✅ Kein falscher Port verwendet wird
 - ✅ Kein HTML unvollständig ist
@@ -19,31 +20,38 @@ Das **vollständige Preflight- und CI/CD-System** stellt sicher, dass:
 ## 📦 Deliverables
 
 ### 1. `scripts/preflight_check.py`
+
 **Vollständiges Preflight-System (850+ Zeilen)**
 
 #### Validierungsschritte:
+
 1. ✅ **STEP 1:** Agent Folder Full Scan (21 Agenten)
 2. ✅ **STEP 2:** Capability Extraction & Manifest Generation
 
 ### 2. `.github/workflows/preflight.yml`
+
 **GitHub Actions CI/CD Pipeline**
 
 #### Workflow-Trigger:
+
 - Push zu `main`, `develop`, oder `ci/*` branches
 - Pull Requests
 - Nightly Builds (2 AM UTC)
 - Manuell (workflow_dispatch)
 
 #### Jobs:
+
 - **preflight:** Vollständige Preflight-Validierung
 - **validate-baseline:** System-Baseline-Check
 - **security-scan:** Security-Scan mit Bandit
 - **deploy-check:** Deployment-Bereitschaft
 
 ### 3. `bin/deploy.sh`
+
 **Produktions-Deployment-Script**
 
 #### Deployment-Schritte:
+
 1. Preflight Check
 2. Baseline Validation
 3. Agent Discovery
@@ -52,6 +60,7 @@ Das **vollständige Preflight- und CI/CD-System** stellt sicher, dass:
 6. Health Check aller Services
 
 ### 4. `bin/start_opena21.sh`
+
 **Workflow-Orchestrator Start-Script**
 
 ---
@@ -60,13 +69,27 @@ Das **vollständige Preflight- und CI/CD-System** stellt sicher, dass:
 
 ```json
 {
-  "opena1": 12344,   "opena2": 12345,   "opena3": 12347,
-  "opena4": 12346,   "opena5": 12351,   "opena6": 12352,
-  "opena7": 12350,   "opena8": 12354,   "opena9": 12355,
-  "opena10": 12356,  "opena11": 12357,  "opena12": 12358,
-  "opena13": 12359,  "opena14": 12360,  "opena15": 12361,
-  "opena16": 12362,  "opena17": 12366,  "opena18": 12363,
-  "opena19": 12367,  "opena20": 12349,  "opena21": 12368
+  "opena1": 12344,
+  "opena2": 12345,
+  "opena3": 12347,
+  "opena4": 12346,
+  "opena5": 12351,
+  "opena6": 12352,
+  "opena7": 12350,
+  "opena8": 12354,
+  "opena9": 12355,
+  "opena10": 12356,
+  "opena11": 12357,
+  "opena12": 12358,
+  "opena13": 12359,
+  "opena14": 12360,
+  "opena15": 12361,
+  "opena16": 12362,
+  "opena17": 12366,
+  "opena18": 12363,
+  "opena19": 12367,
+  "opena20": 12349,
+  "opena21": 12368
 }
 ```
 
@@ -170,8 +193,9 @@ bin/deploy.sh
 ### STEP 1: Agent Folder Full Scan
 
 **Prüft:**
+
 - ✅ Alle 21 Agenten-Ordner existieren
-- ✅ Namen exakt (openaX_*)
+- ✅ Namen exakt (openaX\_\*)
 - ✅ Ports korrekt deklariert
 - ✅ Keine verbotenen Ports (8080, 3000)
 - ✅ main.py vorhanden
@@ -179,6 +203,7 @@ bin/deploy.sh
 - ✅ README vorhanden
 
 **Ausgabe:**
+
 ```
 ✅ opena1   | Port 12344 | main, deps(15), readme, 8 endpoints
 ✅ opena2   | Port 12345 | main, deps(12), readme, 6 endpoints
@@ -203,11 +228,7 @@ bin/deploy.sh
         "settings": true,
         "workflows": false
       },
-      "endpoints": [
-        "GET /health",
-        "POST /route/update",
-        "GET /routes"
-      ],
+      "endpoints": ["GET /health", "POST /route/update", "GET /routes"],
       "dependencies": ["fastapi", "httpx", "pydantic"]
     }
   }
@@ -219,12 +240,14 @@ bin/deploy.sh
 ## ❌ Fail-Fast-Prinzip
 
 Bei **jedem** Verstoß:
+
 - ❌ Preflight-Script beendet mit Exit Code 1
 - ❌ GitHub Actions Workflow scheitert
 - ❌ Deployment wird abgebrochen
 - ❌ Violations werden detailliert ausgegeben
 
 **Beispiel-Violation:**
+
 ```
 ❌ opena7: Port mismatch! Canonical=12350, Declared=12352
 ❌ opena12: Forbidden ports found: {8080}
@@ -264,19 +287,19 @@ Bei **jedem** Verstoß:
 
 ## 🎉 SYSTEM-STATUS NACH AUFGABE 8
 
-| Bereich | Status |
-|---------|--------|
-| Produkt | ✅ Vollständig definiert |
-| Website | ✅ Produktionsreif |
-| Dashboard | ✅ Generiert aus Daten |
-| Agenten | ✅ 21/21 dokumentiert |
-| Workflows | ✅ Orchestriert (opena21) |
-| Auth & Trial | ✅ Vollständig |
-| Billing | ✅ Plan-Gates aktiv |
-| Monetarisierung | ✅ Verkaufbar |
-| CI/CD | ✅ Automatisiert |
-| Copilot | ✅ Deterministisch |
-| Deployment | ✅ Ein-Kommando |
+| Bereich         | Status                    |
+| --------------- | ------------------------- |
+| Produkt         | ✅ Vollständig definiert  |
+| Website         | ✅ Produktionsreif        |
+| Dashboard       | ✅ Generiert aus Daten    |
+| Agenten         | ✅ 21/21 dokumentiert     |
+| Workflows       | ✅ Orchestriert (opena21) |
+| Auth & Trial    | ✅ Vollständig            |
+| Billing         | ✅ Plan-Gates aktiv       |
+| Monetarisierung | ✅ Verkaufbar             |
+| CI/CD           | ✅ Automatisiert          |
+| Copilot         | ✅ Deterministisch        |
+| Deployment      | ✅ Ein-Kommando           |
 
 ---
 

@@ -21,6 +21,7 @@ GET /health
 ```
 
 **Response (200):**
+
 ```json
 {
   "status": "healthy",
@@ -37,6 +38,7 @@ GET /api/status
 ```
 
 **Response (200):**
+
 ```json
 {
   "status": "operational",
@@ -65,10 +67,12 @@ GET /api/papers?page=1&per_page=20
 ```
 
 **Parameters:**
+
 - `page` (int, optional): Page number (default: 1)
 - `per_page` (int, optional): Items per page (default: 20)
 
 **Response (200):**
+
 ```json
 {
   "data": [
@@ -103,6 +107,7 @@ GET /api/papers/<paper_id>
 ```
 
 **Response (200):**
+
 ```json
 {
   "id": 1,
@@ -117,8 +122,9 @@ GET /api/papers/<paper_id>
 ```
 
 **Error (404):**
+
 ```json
-{"error": "Paper not found"}
+{ "error": "Paper not found" }
 ```
 
 ### Create Paper
@@ -143,6 +149,7 @@ Content-Type: application/json
 ```
 
 **Response (201):**
+
 ```json
 {
   "id": 1,
@@ -167,6 +174,7 @@ Content-Type: application/json
 ```
 
 **Response (200):**
+
 ```json
 {
   "id": 1,
@@ -182,8 +190,9 @@ DELETE /api/papers/<paper_id>
 ```
 
 **Response (200):**
+
 ```json
-{"message": "Paper deleted"}
+{ "message": "Paper deleted" }
 ```
 
 ---
@@ -197,10 +206,12 @@ GET /api/search?q=machine%20learning&category=cs.AI
 ```
 
 **Parameters:**
+
 - `q` (string): Search query
 - `category` (string, optional): Filter by category
 
 **Response (200):**
+
 ```json
 {
   "query": "machine learning",
@@ -216,11 +227,13 @@ GET /api/arxiv/search?q=neural%20networks&category=cs.AI&max_results=50
 ```
 
 **Parameters:**
+
 - `q` (string): Search query
 - `category` (string, optional): arXiv category
 - `max_results` (int, optional): Max results (default: 50)
 
 **Response (200):**
+
 ```json
 {
   "query": "neural networks",
@@ -253,6 +266,7 @@ Content-Type: application/json
 ```
 
 **Response (201):** Paper imported successfully
+
 ```json
 {
   "id": 1,
@@ -262,6 +276,7 @@ Content-Type: application/json
 ```
 
 **Response (200):** Paper already exists
+
 ```json
 {
   "message": "Paper already imported",
@@ -270,8 +285,9 @@ Content-Type: application/json
 ```
 
 **Error (404):**
+
 ```json
-{"error": "Paper not found on arXiv"}
+{ "error": "Paper not found on arXiv" }
 ```
 
 ### Parse arXiv ID
@@ -286,13 +302,15 @@ Content-Type: application/json
 ```
 
 **Response (200):**
+
 ```json
-{"arxiv_id": "2505.09388"}
+{ "arxiv_id": "2505.09388" }
 ```
 
 **Error (404):**
+
 ```json
-{"error": "No valid arXiv ID found"}
+{ "error": "No valid arXiv ID found" }
 ```
 
 ---
@@ -311,6 +329,7 @@ Content-Type: application/json
 ```
 
 **Response (201):**
+
 ```json
 {
   "id": 42,
@@ -321,8 +340,9 @@ Content-Type: application/json
 ```
 
 **Response (200):** Tag already exists
+
 ```json
-{"message": "Tag already exists"}
+{ "message": "Tag already exists" }
 ```
 
 ---
@@ -336,6 +356,7 @@ GET /api/collections
 ```
 
 **Response (200):**
+
 ```json
 [
   {
@@ -362,6 +383,7 @@ Content-Type: application/json
 ```
 
 **Response (201):**
+
 ```json
 {
   "id": 1,

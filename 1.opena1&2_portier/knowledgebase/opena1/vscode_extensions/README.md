@@ -1,11 +1,9 @@
 <div align="center">
 
-
 <h3>Bring real icons to your <a href="https://code.visualstudio.com" target="_blank">Visual Studio Code</a></h3>
 <p style="font-size:10px;">minimum supported version: <b>1.82.0</b></p>
 
 </div>
-
 
 <br/>
 
@@ -37,8 +35,8 @@ Once installed and after reloading `vscode`, you will be presented with a messag
 
 In case this doesn't happen, navigate to:
 
-* `Linux` & `Windows` `=>` **File > Preferences > Theme > File Icon Theme > VSCode Icons**.
-* `MacOS` `=>` **Code > Preferences > File Icon Theme > VSCode Icons**.
+- `Linux` & `Windows` `=>` **File > Preferences > Theme > File Icon Theme > VSCode Icons**.
+- `MacOS` `=>` **Code > Preferences > File Icon Theme > VSCode Icons**.
 
 ## Features
 
@@ -68,9 +66,9 @@ In our [wiki](https://github.com/vscode-icons/vscode-icons/wiki) you can find mo
 
 Some examples:
 
-* [Extension's History](https://github.com/vscode-icons/vscode-icons/wiki/History)
-* [Supported file icons](https://github.com/vscode-icons/vscode-icons/wiki/ListOfFiles).
-* [Supported folder icons](https://github.com/vscode-icons/vscode-icons/wiki/ListOfFolders).
+- [Extension's History](https://github.com/vscode-icons/vscode-icons/wiki/History)
+- [Supported file icons](https://github.com/vscode-icons/vscode-icons/wiki/ListOfFiles).
+- [Supported folder icons](https://github.com/vscode-icons/vscode-icons/wiki/ListOfFolders).
 
 ## Globalization
 
@@ -114,11 +112,11 @@ You can check out all our changes in our [change log](https://github.com/vscode-
 
 We like to express our "Special Thanks" to:
 
-* All users that made us their favorite **Icons** theme. We wouldn't be where we are without you.
+- All users that made us their favorite **Icons** theme. We wouldn't be where we are without you.
 
 ## Related extensions
 
-* [vscode-icons for GitHub](https://github.com/dderevjanik/github-vscode-icons) by [@dderevjanik](https://github.com/dderevjanik) will allow you to see all `GitHub`'s files with `vscode-icons` icons.
-* [vscode-icons-js](https://github.com/dderevjanik/vscode-icons-js) by [@dderevjanik](https://github.com/dderevjanik) get file/folder specific icon from `vscode-icons` icons.
+- [vscode-icons for GitHub](https://github.com/dderevjanik/github-vscode-icons) by [@dderevjanik](https://github.com/dderevjanik) will allow you to see all `GitHub`'s files with `vscode-icons` icons.
+- [vscode-icons-js](https://github.com/dderevjanik/vscode-icons-js) by [@dderevjanik](https://github.com/dderevjanik) get file/folder specific icon from `vscode-icons` icons.
 
 **Enjoy!**

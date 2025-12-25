@@ -3,15 +3,15 @@ opena7_WhatsApp: WhatsApp Integration Agent
 Twilio-based messaging
 """
 
-from fastapi import FastAPI, HTTPException, Header
-from pydantic import BaseModel
-import logging
 import json
-import urllib.request
-from datetime import datetime
-from typing import Optional
+import logging
 import os
 import sys
+import urllib.request
+from datetime import datetime
+
+from fastapi import FastAPI, Header, HTTPException
+from pydantic import BaseModel
 
 sys.path.insert(0, os.path.dirname(__file__))
 
@@ -19,11 +19,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 # CONFIGURATION
 # ============================================================================
 
-app = FastAPI(
-    title="opena7_WhatsApp",
-    version="1.0.0",
-    description="WhatsApp Integration Agent (Twilio)"
-)
+app = FastAPI(title="opena7_WhatsApp", version="1.0.0", description="WhatsApp Integration Agent (Twilio)")
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -50,7 +46,7 @@ class WhatsAppMessageRequest(BaseModel):
 class WhatsAppMediaRequest(BaseModel):
     to: str
     media_url: str
-    caption: Optional[str] = None
+    caption: str | None = None
 
 
 class WhatsAppGroupRequest(BaseModel):
@@ -63,11 +59,11 @@ class WhatsAppGroupRequest(BaseModel):
 # ============================================================================
 
 
-def _validate_token(auth_header: Optional[str]):
+def _validate_token(auth_header: str | None):
     """Validate Bearer token"""
     if not auth_header or not auth_header.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing token")
-    
+
     token = auth_header.replace("Bearer ", "").strip()
     if token != TOKEN:
         raise HTTPException(status_code=403, detail="Invalid token")
@@ -80,16 +76,16 @@ async def _archive(payload: dict):
             "src": "opena7_whatsapp",
             "dst": "opena2",
             "kind": "WHATSAPP_OP",
-            "payload": {**payload, "ts": datetime.utcnow().isoformat() + "Z"}
+            "payload": {**payload, "ts": datetime.utcnow().isoformat() + "Z"},
         }
-        
+
         req = urllib.request.Request(
             f"http://127.0.0.1:{ARCHIVE_PORT}/store/archivp",
-            data=json.dumps(data).encode('utf-8'),
+            data=json.dumps(data).encode("utf-8"),
             headers={"Content-Type": "application/json"},
-            method="POST"
+            method="POST",
         )
-        
+
         with urllib.request.urlopen(req, timeout=5) as r:
             return json.loads(r.read().decode())
     except Exception as e:
@@ -110,7 +106,7 @@ async def health():
         "service": "opena7_WhatsApp",
         "port": PORT,
         "twilio_configured": bool(TWILIO_ACCOUNT_SID),
-        "ts": datetime.utcnow().isoformat() + "Z"
+        "ts": datetime.utcnow().isoformat() + "Z",
     }
 
 
@@ -118,23 +114,25 @@ async def health():
 async def send_message(req: WhatsAppMessageRequest, authorization: str = Header(None)):
     """Send WhatsApp message"""
     _validate_token(authorization)
-    
+
     try:
         logger.info(f"💬 WhatsApp to {req.to}: {req.message[:50]}")
-        
-        await _archive({
-            "op": "SEND_MESSAGE",
-            "to": req.to,
-            "message_length": len(req.message),
-            "timestamp": datetime.utcnow().isoformat()
-        })
-        
+
+        await _archive(
+            {
+                "op": "SEND_MESSAGE",
+                "to": req.to,
+                "message_length": len(req.message),
+                "timestamp": datetime.utcnow().isoformat(),
+            }
+        )
+
         return {
             "strict": True,
             "sent": True,
             "to": req.to,
             "message_id": f"msg_{datetime.utcnow().timestamp()}",
-            "ts": datetime.utcnow().isoformat() + "Z"
+            "ts": datetime.utcnow().isoformat() + "Z",
         }
     except Exception as e:
         logger.error(f"❌ Send failed: {e}")
@@ -145,23 +143,18 @@ async def send_message(req: WhatsAppMessageRequest, authorization: str = Header(
 async def upload_media(req: WhatsAppMediaRequest, authorization: str = Header(None)):
     """Upload media (photo/video)"""
     _validate_token(authorization)
-    
+
     try:
         logger.info(f"📸 Media to {req.to}: {req.media_url}")
-        
-        await _archive({
-            "op": "UPLOAD_MEDIA",
-            "to": req.to,
-            "media_url": req.media_url,
-            "caption": req.caption
-        })
-        
+
+        await _archive({"op": "UPLOAD_MEDIA", "to": req.to, "media_url": req.media_url, "caption": req.caption})
+
         return {
             "strict": True,
             "uploaded": True,
             "to": req.to,
             "media_url": req.media_url,
-            "ts": datetime.utcnow().isoformat() + "Z"
+            "ts": datetime.utcnow().isoformat() + "Z",
         }
     except Exception as e:
         logger.error(f"❌ Upload failed: {e}")
@@ -172,23 +165,19 @@ async def upload_media(req: WhatsAppMediaRequest, authorization: str = Header(No
 async def create_group(req: WhatsAppGroupRequest, authorization: str = Header(None)):
     """Create WhatsApp group"""
     _validate_token(authorization)
-    
+
     try:
         logger.info(f"👥 Creating group: {req.name} ({len(req.participants)} members)")
-        
-        await _archive({
-            "op": "CREATE_GROUP",
-            "name": req.name,
-            "participant_count": len(req.participants)
-        })
-        
+
+        await _archive({"op": "CREATE_GROUP", "name": req.name, "participant_count": len(req.participants)})
+
         return {
             "strict": True,
             "created": True,
             "group_name": req.name,
             "group_id": f"grp_{datetime.utcnow().timestamp()}",
             "members": len(req.participants),
-            "ts": datetime.utcnow().isoformat() + "Z"
+            "ts": datetime.utcnow().isoformat() + "Z",
         }
     except Exception as e:
         logger.error(f"❌ Group creation failed: {e}")
@@ -199,14 +188,14 @@ async def create_group(req: WhatsAppGroupRequest, authorization: str = Header(No
 async def status(authorization: str = Header(None)):
     """Get agent status"""
     _validate_token(authorization)
-    
+
     return {
         "service": "opena7_WhatsApp",
         "version": "1.0.0",
         "port": PORT,
         "twilio_configured": bool(TWILIO_ACCOUNT_SID),
         "endpoints": 5,
-        "ts": datetime.utcnow().isoformat() + "Z"
+        "ts": datetime.utcnow().isoformat() + "Z",
     }
 
 
@@ -217,12 +206,7 @@ async def status(authorization: str = Header(None)):
 
 if __name__ == "__main__":
     import uvicorn
-    
+
     logger.info(f"🚀 Starting opena7_WhatsApp on port {PORT}")
-    
-    uvicorn.run(
-        app,
-        host="127.0.0.1",
-        port=PORT,
-        log_level="info"
-    )
+
+    uvicorn.run(app, host="127.0.0.1", port=PORT, log_level="info")

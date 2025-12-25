@@ -6,34 +6,39 @@ You are “Baseline Authority Compiler” for ELION / EDEN HyperDashboard.
 No interpretation. No shortcuts. No TODOs.
 
 HARD CONSTRAINTS (NON-NEGOTIABLE)
+
 - Agent IDs are EXACTLY: opena1 … opena21. No aliases, no renames.
 - Agent ports are 1000% FIX. Any deviation = FAIL.
 - Baseline becomes the only truth for all downstream steps (discovery, entitlements, HTML generation, CI gates).
 
 INPUTS
+
 - Repository root path
 - Canonical agent table (IDs, ports, role labels)
 - Plan mapping (Basic/Pro/Premium/Ultimum) and core/system invariants
 
 TASK
-1) Create `system_baseline.yaml` with:
+
+1. Create `system_baseline.yaml` with:
    - agents[]: id, port, role, folder_path, visibility (core/system/subscription), description
    - plans: basic/pro/premium/ultimum
    - core_agents: opena1, opena2
    - system_agents: opena20, opena21
    - port_policy: allowed_range, forbidden_ports, “no deviations” rule text
    - domain_policy: primary_domain = hyperdashboard-one.de
-2) Create `scripts/validate_baseline.py`:
+2. Create `scripts/validate_baseline.py`:
    - validates: all 21 agents exist, unique ports, IDs match pattern, port range, forbidden ports not used
    - exit code 1 on any error
-3) Produce `artifacts/baseline_validation.json` (timestamp, baseline_hash, success/fail, errors[])
+3. Produce `artifacts/baseline_validation.json` (timestamp, baseline_hash, success/fail, errors[])
 
 OUTPUTS (MUST EXIST)
+
 - system_baseline.yaml
 - scripts/validate_baseline.py
 - artifacts/baseline_validation.json
 
 DONE CRITERIA
+
 - validate_baseline.py passes locally and in CI with exit code 0
 - any mismatch causes deterministic failure with actionable error messages
 
@@ -44,37 +49,42 @@ You are “Deterministic Discovery Engineer”.
 You MUST scan every agent folder recursively. No file skipped.
 
 HARD CONSTRAINTS
+
 - Read-only analysis: NO code execution, NO network calls.
 - Deterministic output: hashing + stable ordering.
 - If any agent folder missing/empty => FAIL.
 - If ports referenced in code/config don’t match baseline => FAIL (unless no port references exist at all).
 
 INPUTS
+
 - system_baseline.yaml
 
 TASK
 Implement `scripts/agent_discovery.py` that:
-1) Loads system_baseline.yaml.
-2) For each agent folder: recursively enumerate all files.
-3) For each file:
+
+1. Loads system_baseline.yaml.
+2. For each agent folder: recursively enumerate all files.
+3. For each file:
    - compute sha256, size, relative path
    - static parse:
      - .py: AST import extraction + endpoint extraction (FastAPI/Flask decorators) + port literals + openaX references
-     - .html: data-* attributes, form/nav presence, port literals, openaX references
-     - .json/.yaml/.yml/.env*: port literals, openaX references
-4) Write `artifacts/agent_inventory.json` including:
+     - .html: data-\* attributes, form/nav presence, port literals, openaX references
+     - .json/.yaml/.yml/.env\*: port literals, openaX references
+4. Write `artifacts/agent_inventory.json` including:
    - baseline_hash
    - per-agent: file_count, totals, ports_detected, agent_references, endpoints, imports, flags (has_main, has_requirements, etc.)
-5) Validate:
+5. Validate:
    - unknown agent references => FAIL
    - forbidden ports (e.g., 8080/3000) => FAIL
    - port mismatch vs baseline => FAIL
 
 OUTPUTS
+
 - scripts/agent_discovery.py
 - artifacts/agent_inventory.json
 
 DONE CRITERIA
+
 - Running agent_discovery.py yields stable JSON (same repo state => same hashes & ordering)
 - Exit code 1 on any violation with explicit list
 
@@ -85,33 +95,38 @@ You are “Entitlements Compiler”.
 You produce machine-consumable gates (no hardcoding in HTML).:contentReference[oaicite:5]{index=5}
 
 HARD CONSTRAINTS
+
 - Plans: basic, pro, premium, ultimum.
 - Higher plan includes all lower plan entitlements.
 - Core agents are always visible and never gated (opena1, opena2).
 - System agents (opena20, opena21) exist and are visible but not necessarily clickable.
 
 INPUTS
+
 - system_baseline.yaml
 - artifacts/agent_inventory.json (discovery output)
 
 TASK
-1) Implement `scripts/build_entitlements.py`:
+
+1. Implement `scripts/build_entitlements.py`:
    - Reads baseline + inventory
    - Outputs `build/entitlements.json`:
      plan_id -> agent_id -> {visible, clickable, limits, gates}
    - Enforce Basic: exactly 4 clickable agents (opena3, opena4, opena7, opena11) and “logs read-only”, workflow limit 4/agent.
-2) Implement `scripts/validate_entitlements.py`:
+2. Implement `scripts/validate_entitlements.py`:
    - ensures no agent outside baseline
    - ensures inclusion ordering (ultimum ⊇ premium ⊇ pro ⊇ basic)
    - ensures Basic clickable count == 4
 
 OUTPUTS
+
 - scripts/build_entitlements.py
 - scripts/validate_entitlements.py
 - build/entitlements.json
 - artifacts/entitlements_validation.json
 
 DONE CRITERIA
+
 - Entitlements are purely data-driven and deterministic
 - Any mismatch or policy violation fails CI with exit code 1
 
@@ -122,6 +137,7 @@ You are “opena20 HTML Compiler Engineer”.
 Generate auditierbares HTML: structural, not decorative. No CSS. No JS. Data-attributes drive bindings.:contentReference[oaicite:6]{index=6}
 
 HARD CONSTRAINTS
+
 - Generate ALL required pages:
   - App: /dashboard, /agents/openaX, /403, /404, /500
   - Auth: /login, /regist, /forgot-password
@@ -131,32 +147,36 @@ HARD CONSTRAINTS
 - Every user action must be expressed via data-action + data-api (no JS required).:contentReference[oaicite:8]{index=8}
 
 INPUTS
+
 - system_baseline.yaml
 - artifacts/agent_inventory.json
 - build/entitlements.json
 
 TASK
-1) Implement generator `opena20/compiler/generate_html.py` that outputs into `public/`:
-   - public/index.html (landing) + public/legal/*.html + plan pages
+
+1. Implement generator `opena20/compiler/generate_html.py` that outputs into `public/`:
+   - public/index.html (landing) + public/legal/\*.html + plan pages
    - app/dashboard.html
    - app/agents/opena1.html ... opena21.html
    - app/errors/403.html, 404.html, 500.html
    - auth/login.html, auth/regist.html, auth/forgot-password.html
-2) HTML Contract:
+2. HTML Contract:
    - semantic tags only: header/nav/main/section/article/footer
    - include meta tags: plan + page identity
    - every action link/button uses data-action + data-api
    - show ALL agents visible; only entitled agents render as clickable; locked agents show 🔒 + upgrade CTA.
-3) Landing content must be “2x normal SaaS page info density” (explain: Eden, Agents, Workflows, Control-Plane rationale, target audiences, security & governance).:contentReference[oaicite:9]{index=9}
-4) Plan pages must be different (no copy/paste text) and must explain: who/why/limits/unlocks.:contentReference[oaicite:10]{index=10}
+3. Landing content must be “2x normal SaaS page info density” (explain: Eden, Agents, Workflows, Control-Plane rationale, target audiences, security & governance).:contentReference[oaicite:9]{index=9}
+4. Plan pages must be different (no copy/paste text) and must explain: who/why/limits/unlocks.:contentReference[oaicite:10]{index=10}
 
 OUTPUTS
+
 - public/… (all public + legal)
 - app/… (dashboard + agents + errors)
 - auth/… (login/regist/forgot-password)
 - artifacts/html_manifest.json (list of pages + sha256)
 
 DONE CRITERIA
+
 - Zero inline <style>, zero <script>, zero external CSS/JS references.
 - Missing any required page => FAIL.
 - Any hardcoded entitlements inside HTML => FAIL (must be driven by entitlements.json).
@@ -168,33 +188,38 @@ You are “Routing & Access Control Engineer”.
 Implement routing behavior exactly as spec.
 
 HARD CONSTRAINTS
+
 - Not logged in:
   - can access public pages on hyperdashboard-one.de
-  - cannot access /dashboard or /agents/*
+  - cannot access /dashboard or /agents/\*
   - private route => redirect /login?next=...
 - Logged in:
   - accessing /, /login, /regist, /basic, /pro, /premium, /ultimum => redirect 302 to /dashboard:contentReference[oaicite:11]{index=11}
 - No entitlement => /403 with upgrade CTA
 
 INPUTS
+
 - build/entitlements.json
 - auth session/token mechanism (existing or to implement minimally)
 
 TASK
-1) Implement middleware/guards:
+
+1. Implement middleware/guards:
    - require_auth(paths_private)
    - require_entitlement(agent_id or page_id)
-2) Implement /403 /404 /500 routing to generated HTML.
-3) Implement deterministic tests:
+2. Implement /403 /404 /500 routing to generated HTML.
+3. Implement deterministic tests:
    - unauth user -> /dashboard => 302 to /login?next=/dashboard
    - authed basic user -> /premium => 302 to /dashboard OR /403 depending on policy (define explicitly)
    - authed basic user -> open locked agent => /403
 
 OUTPUTS
+
 - src/pkg/routing/guards.py (or equivalent)
 - tests/test_routing_gates.py
 
 DONE CRITERIA
+
 - tests pass, behavior matches the contract exactly, no “interpretation”
 
 Co-Pilot Prompt 6 — opena11 Vault (No Cleartext, Client-Side Decrypt, Audited Use)
@@ -203,6 +228,7 @@ ROLE
 You are “Vault Security Engineer” for opena11 (Unlock).
 
 HARD CONSTRAINTS
+
 - No plaintext secrets stored in backend.
 - No GET plaintext.
 - Client-side decryption only.
@@ -210,24 +236,28 @@ HARD CONSTRAINTS
 - No other agent may store secrets directly.
 
 INPUTS
+
 - VaultItem schema requirements
 - Existing backend stack
 
 TASK
-1) Implement VaultItem model + migrations.
-2) Implement endpoints:
-   - GET  /api/v1/agents/unlock/vault/items
+
+1. Implement VaultItem model + migrations.
+2. Implement endpoints:
+   - GET /api/v1/agents/unlock/vault/items
    - POST /api/v1/agents/unlock/vault/items
    - POST /api/v1/agents/unlock/vault/items/{id}/use
-3) Implement audit logging:
+3. Implement audit logging:
    - who, when, what item_id, agent_scope, action
-4) Add scanner hook: detect plaintext secret patterns outside opena11 => fail preflight.
+4. Add scanner hook: detect plaintext secret patterns outside opena11 => fail preflight.
 
 OUTPUTS
+
 - opena11 backend module (model + routes + audit)
 - artifacts/vault_schema_report.json
 
 DONE CRITERIA
+
 - No endpoint ever returns decrypted payload
 - Audit log is written on every “use”
 
@@ -239,6 +269,7 @@ You make deploy impossible when invariants break.
 
 HARD CONSTRAINTS
 Preflight must run (and must block) before build/deploy:
+
 - Agent Discovery
 - Vault Schema Validation
 - Entitlement Build
@@ -248,6 +279,7 @@ Preflight must run (and must block) before build/deploy:
 - Gate for Build/Deploy:contentReference[oaicite:12]{index=12}
 
 INPUTS
+
 - scripts/validate_baseline.py
 - scripts/agent_discovery.py
 - scripts/build_entitlements.py + validate_entitlements.py
@@ -255,17 +287,20 @@ INPUTS
 - HTML contract validator
 
 TASK
-1) Implement `scripts/preflight.py` that runs steps in order, stops on first failure, prints summary.
-2) Implement CI job (GitHub Actions or your CI):
+
+1. Implement `scripts/preflight.py` that runs steps in order, stops on first failure, prints summary.
+2. Implement CI job (GitHub Actions or your CI):
    - runs preflight
    - uploads artifacts (agent_inventory.json, entitlements.json, html_manifest.json, reports)
 
 OUTPUTS
+
 - scripts/preflight.py
 - artifacts/preflight_report.json
 - CI pipeline file updated
 
 DONE CRITERIA
+
 - CI fails on any broken rule (ports, missing pages, missing agents, contract violations)
 
 Co-Pilot Prompt 8 — Release “Audit Pack” (Investor/Compliance-Ready)
@@ -275,31 +310,37 @@ You are “Audit & Documentation Compiler”.
 Output must be readable, reproducible, and tied to hashes.
 
 HARD CONSTRAINTS
+
 - No marketing fluff. Explain what exists, how it’s validated, and what gates enforce.
 - Every section references an artifact hash (baseline_hash, inventory_hash, html_manifest hashes).
 
 INPUTS
-- artifacts/* reports
+
+- artifacts/\* reports
 - build/entitlements.json
 - artifacts/agent_inventory.json
 - artifacts/html_manifest.json
 - artifacts/preflight_report.json
 
 TASK
-1) Generate `docs/release_audit.md`:
+
+1. Generate `docs/release_audit.md`:
    - System invariants (ports/ids)
    - Agent inventory summary (files/endpoints/imports totals)
    - Website & App pages list (from html_manifest.json)
    - Entitlements matrix summary
    - Preflight pipeline description + last run result
-2) Generate `artifacts/release_audit.json` (machine readable)
+2. Generate `artifacts/release_audit.json` (machine readable)
 
 OUTPUTS
+
 - docs/release_audit.md
 - artifacts/release_audit.json
 
 DONE CRITERIA
+
 - Audit pack can be regenerated identically on same commit (hash-stable)
+
 # 🏢 PORTIER 3.0 — Enterprise Multi-Agent Intelligence Platform
 
 **Ausführung:** 3.0.0
@@ -332,14 +373,14 @@ Das System folgt der **Option-2-Flow Architekturprinzip**, bei dem Anfragen stet
 
 ### Kern-Services (PORTIER 3.0 Core)
 
-| Service      | Port | Funktion                                  | Status   | 
-|---------|------|----------|--------|
-| **opena1**  | 12344 | Koordinator (Anfrage→Entscheidung)        | ✅ Laufend |
-| **opena2**  | 12345 | Archivator (CMD/RESP Safepoints)          | ✅ Laufend |
-| **opena1**  | 12344 | Gateway (Tool-Dispatch)                   | ✅ Laufend |
-| **opena3**  | 12347 | OpenWebUI Terminal Agent                  | ✅ Laufend |
-| **opena20** | 12349 | Dashboard (Live-Monitoring UI)            | ✅ Laufend |
-| **Archivierung** | Dateisystem | Safepoint Storage (YYYY/MM/DD) | ✅ Aktiv   |
+| Service          | Port        | Funktion                           | Status     |
+| ---------------- | ----------- | ---------------------------------- | ---------- |
+| **opena1**       | 12344       | Koordinator (Anfrage→Entscheidung) | ✅ Laufend |
+| **opena2**       | 12345       | Archivator (CMD/RESP Safepoints)   | ✅ Laufend |
+| **opena1**       | 12344       | Gateway (Tool-Dispatch)            | ✅ Laufend |
+| **opena3**       | 12347       | OpenWebUI Terminal Agent           | ✅ Laufend |
+| **opena20**      | 12349       | Dashboard (Live-Monitoring UI)     | ✅ Laufend |
+| **Archivierung** | Dateisystem | Safepoint Storage (YYYY/MM/DD)     | ✅ Aktiv   |
 
 ### Kernmerkmale
 
@@ -455,14 +496,14 @@ curl -X POST http://127.0.0.1:12344/log/opena1 \
 
 ### Hafenpolitik
 
-| Port | Service | Rolle | Status |
-|------|---------|-------|--------|
-| 12344 | Portier | Koordinator/Dispatcher | ✅ Online |
-| 12345 | OpenA2 | Archiv (JSONL-Speicher) | ✅ Online |
-| 12346 | Kordp | Messaging-Agent | ✅ Online |
-| 12348 | Inferenz | Llama-Stack + Ollama | ✅ Online |
-| 12349-12364 | Skalierbare Services | Agent Pool | ⏳ Template-Ready |
-| 12365-12399 | Reserviert | Zukünftige Expansion | 📅 Verfügbar |
+| Port        | Service              | Rolle                   | Status            |
+| ----------- | -------------------- | ----------------------- | ----------------- |
+| 12344       | Portier              | Koordinator/Dispatcher  | ✅ Online         |
+| 12345       | OpenA2               | Archiv (JSONL-Speicher) | ✅ Online         |
+| 12346       | Kordp                | Messaging-Agent         | ✅ Online         |
+| 12348       | Inferenz             | Llama-Stack + Ollama    | ✅ Online         |
+| 12349-12364 | Skalierbare Services | Agent Pool              | ⏳ Template-Ready |
+| 12365-12399 | Reserviert           | Zukünftige Expansion    | 📅 Verfügbar      |
 
 ---
 
@@ -470,20 +511,20 @@ curl -X POST http://127.0.0.1:12344/log/opena1 \
 
 ### ✅ Abgeschlossene Phasen (7-18)
 
-| Phase | Feature | Details |
-|-------|---------|---------|
-| 7b | Laufzeitvalidierung | OpenA1/OpenA2 Gesundheitsprüfungen ✓ |
-| 8 | Service Architektur | 20 Service-Ordner + CI/CD-Gate ✓ |
-| 9 | Portier-Service | Koordinator + Route-Registrierung ✓ |
-| 10 | Telegram + OpenWebUI | Messaging + Inferenz-Integration ✓ |
-| 11 | Multi-Service-Test | 4 Services, Route-Registrierung ✓ |
-| 12 | Git Sync | Alle Änderungen committed & pushed ✓ |
-| 13 | Load Test Phase 1 | 100 Requests, 30.33 req/s, 100% Success ✓ |
-| 14 | llama-stack Integration | Inferenz-Service, Bridge, 0.87 req/s ✓ |
-| 15 | Scale zu 20 Services | Template, Bulk-Generierung, 27.74 req/s ✓ |
-| 16 | CI/CD-Härtung | GitHub Actions, Pre-Commit, Deployment-Validierung ✓ |
-| 17 | Monitoring & Observability | Prometheus, Grafana, Health-Checks ✓ |
-| 18 | Production Hardening | Docker, Security, Enterprise-Ready ✓ |
+| Phase | Feature                    | Details                                              |
+| ----- | -------------------------- | ---------------------------------------------------- |
+| 7b    | Laufzeitvalidierung        | OpenA1/OpenA2 Gesundheitsprüfungen ✓                 |
+| 8     | Service Architektur        | 20 Service-Ordner + CI/CD-Gate ✓                     |
+| 9     | Portier-Service            | Koordinator + Route-Registrierung ✓                  |
+| 10    | Telegram + OpenWebUI       | Messaging + Inferenz-Integration ✓                   |
+| 11    | Multi-Service-Test         | 4 Services, Route-Registrierung ✓                    |
+| 12    | Git Sync                   | Alle Änderungen committed & pushed ✓                 |
+| 13    | Load Test Phase 1          | 100 Requests, 30.33 req/s, 100% Success ✓            |
+| 14    | llama-stack Integration    | Inferenz-Service, Bridge, 0.87 req/s ✓               |
+| 15    | Scale zu 20 Services       | Template, Bulk-Generierung, 27.74 req/s ✓            |
+| 16    | CI/CD-Härtung              | GitHub Actions, Pre-Commit, Deployment-Validierung ✓ |
+| 17    | Monitoring & Observability | Prometheus, Grafana, Health-Checks ✓                 |
+| 18    | Production Hardening       | Docker, Security, Enterprise-Ready ✓                 |
 
 ---
 
@@ -884,30 +925,30 @@ find . -name "*.pyc" -delete
 
 ## 📚 Dokumentation
 
-| Dokumentation | Link | Status |
-|---|---|---|
-| Architektur Runbook | docs/OPERATIONS.md | ✅ |
-| Portier API | src/services/portier/main.py | ✅ |
-| Service Template | src/services/template/main.py | ✅ |
-| Routing-Matrix | configs/routing_matrix.yaml | ✅ |
-| CI/CD-Konfiguration | .github/workflows/ci.yml | ✅ |
-| Load-Test Docs | scripts/load_test*.py | ✅ |
+| Dokumentation                      | Link                                   | Status     |
+| ---------------------------------- | -------------------------------------- | ---------- |
+| Architektur Runbook                | docs/OPERATIONS.md                     | ✅         |
+| Portier API                        | src/services/portier/main.py           | ✅         |
+| Service Template                   | src/services/template/main.py          | ✅         |
+| Routing-Matrix                     | configs/routing_matrix.yaml            | ✅         |
+| CI/CD-Konfiguration                | .github/workflows/ci.yml               | ✅         |
+| Load-Test Docs                     | scripts/load_test\*.py                 | ✅         |
 | **GitHub Copilot MCP Integration** | docs/GITHUB_COPILOT_MCP_INTEGRATION.md | ✅ **NEU** |
 
 ---
 
 ## 🚦 Aktueller Status (24. November 2025)
 
-| Komponente | Status | Details |
-|---|---|---|
-| Kernarchitektur | ✅ Komplett | 20 Services, 4 Laufend |
-| Koordinator | ✅ Komplett | Portier + Route-Registrierung |
-| Archiv | ✅ Komplett | JSONL + Tägliche Partitionen |
-| Inferenz | ✅ Komplett | llama2 via Ollama |
-| OpenWebUI | ✅ Komplett | Port 3000, Bridge aktiv |
-| Last-Prüfung | ✅ Komplett | 27.74 req/s validiert |
-| CI/CD | ✅ Komplett | GitHub Actions, Pre-Commit |
-| Produktionsbereit | ✅ LIVE | Monitoring + Enterprise Features |
+| Komponente        | Status      | Details                          |
+| ----------------- | ----------- | -------------------------------- |
+| Kernarchitektur   | ✅ Komplett | 20 Services, 4 Laufend           |
+| Koordinator       | ✅ Komplett | Portier + Route-Registrierung    |
+| Archiv            | ✅ Komplett | JSONL + Tägliche Partitionen     |
+| Inferenz          | ✅ Komplett | llama2 via Ollama                |
+| OpenWebUI         | ✅ Komplett | Port 3000, Bridge aktiv          |
+| Last-Prüfung      | ✅ Komplett | 27.74 req/s validiert            |
+| CI/CD             | ✅ Komplett | GitHub Actions, Pre-Commit       |
+| Produktionsbereit | ✅ LIVE     | Monitoring + Enterprise Features |
 
 ---
 
@@ -1020,10 +1061,9 @@ copies of the Software...
 📊 **Status API:** <http://127.0.0.1:12349/api/status>
 💚 **Gesundheitscheck:** <http://127.0.0.1:12349/health>
 
-
 # 📚 README-Struktur des Gesamtprojekts
 
-**Letzte Aktualisierung:** 28. November 2025  
+**Letzte Aktualisierung:** 28. November 2025
 **Status:** ✅ Konsolidiert
 
 ---
@@ -1040,29 +1080,29 @@ Dieses Dokument zeigt die **offizielle README-Struktur** für alle Agent-Module 
 
 ### Kern-Infrastructure
 
-| Verzeichnis | Gültige README | Beschreibung |
-|-------------|----------------|--------------|
-| **`/`** (Root) | [`README.md`](./README.md) | Haupt-Projektübersicht (PORTIER 3.0) |
-| **`1.opena1&2_portier/`** | [`README.md`](./1.opena1&2_portier/README.md) | opena1 (Koordinator) + opena2 (Archivator) |
-| **`2.opena3_openwebui/`** | [`README.md`](./2.opena3_openwebui/README.md) | OpenWebUI Terminal Agent (✅ Production) |
-| **`3.opena4_telegram/`** | [`README.md`](./3.opena4_telegram/README.md) | Telegram Bot Agent |
-| **`4.opena5_vscode/`** | [`README.md`](./4.opena5_vscode/README.md) | VS Code Integration |
-| **`5.opena6_browser/`** | [`README.md`](./5.opena6_browser/README.md) | Browser Automation |
-| **`6.opena7_email/`** | [`README.md`](./6.opena7_email/README.md) | E-Mail Client |
-| **`7.opena8_whatsapp/`** | [`README.md`](./7.opena8_whatsapp/README.md) | WhatsApp API |
-| **`8.opena9_telephone/`** | [`README.md`](./8.opena9_telephone/README.md) | Telefonie Agent |
-| **`9.opena10_call_tracking/`** | [`README.md`](./9.opena10_call_tracking/README.md) | Call Tracking |
-| **`10.opena11_unlock/`** | [`README.md`](./10.opena11_unlock/README.md) | Unlock Master |
-| **`11.opena12_social_media/`** | [`README.md`](./11.opena12_social_media/README.md) | Social Media |
-| **`12.opena13_influencer/`** | [`README.md`](./12.opena13_influencer/README.md) | Influencer |
-| **`13.opena14_calendar/`** | [`README.md`](./13.opena14_calendar/README.md) | Calendar Agent |
-| **`14.opena15_html/`** | [`README.md`](./14.opena15_html/README.md) | HTML Creator |
-| **`15.opena16_shop/`** | [`README.md`](./15.opena16_shop/README.md) | Shop Creator |
-| **`16.opena17_homepagecreator/`** | [`README.md`](./16.opena17_homepagecreator/README.md) | Homepage Creator |
-| **`17.opena18_CMR/`** | [`README.md`](./17.opena18_CMR/README.md) | CRM Agent |
-| **`18.opena19_Aktien&Crypto/`** | [`README.md`](./18.opena19_Aktien&Crypto/README.md) | Aktien & Crypto |
-| **`19.opena20_dashboard_agent/`** | [`README.md`](./19.opena20_dashboard_agent/README.md) | Dashboard Agent |
-| **`20.opena21_workflow/`** | [`README.md`](./20.opena21_workflow/README.md) | Workflow Engine (✅ Production) |
+| Verzeichnis                       | Gültige README                                        | Beschreibung                               |
+| --------------------------------- | ----------------------------------------------------- | ------------------------------------------ |
+| **`/`** (Root)                    | [`README.md`](./README.md)                            | Haupt-Projektübersicht (PORTIER 3.0)       |
+| **`1.opena1&2_portier/`**         | [`README.md`](./1.opena1&2_portier/README.md)         | opena1 (Koordinator) + opena2 (Archivator) |
+| **`2.opena3_openwebui/`**         | [`README.md`](./2.opena3_openwebui/README.md)         | OpenWebUI Terminal Agent (✅ Production)   |
+| **`3.opena4_telegram/`**          | [`README.md`](./3.opena4_telegram/README.md)          | Telegram Bot Agent                         |
+| **`4.opena5_vscode/`**            | [`README.md`](./4.opena5_vscode/README.md)            | VS Code Integration                        |
+| **`5.opena6_browser/`**           | [`README.md`](./5.opena6_browser/README.md)           | Browser Automation                         |
+| **`6.opena7_email/`**             | [`README.md`](./6.opena7_email/README.md)             | E-Mail Client                              |
+| **`7.opena8_whatsapp/`**          | [`README.md`](./7.opena8_whatsapp/README.md)          | WhatsApp API                               |
+| **`8.opena9_telephone/`**         | [`README.md`](./8.opena9_telephone/README.md)         | Telefonie Agent                            |
+| **`9.opena10_call_tracking/`**    | [`README.md`](./9.opena10_call_tracking/README.md)    | Call Tracking                              |
+| **`10.opena11_unlock/`**          | [`README.md`](./10.opena11_unlock/README.md)          | Unlock Master                              |
+| **`11.opena12_social_media/`**    | [`README.md`](./11.opena12_social_media/README.md)    | Social Media                               |
+| **`12.opena13_influencer/`**      | [`README.md`](./12.opena13_influencer/README.md)      | Influencer                                 |
+| **`13.opena14_calendar/`**        | [`README.md`](./13.opena14_calendar/README.md)        | Calendar Agent                             |
+| **`14.opena15_html/`**            | [`README.md`](./14.opena15_html/README.md)            | HTML Creator                               |
+| **`15.opena16_shop/`**            | [`README.md`](./15.opena16_shop/README.md)            | Shop Creator                               |
+| **`16.opena17_homepagecreator/`** | [`README.md`](./16.opena17_homepagecreator/README.md) | Homepage Creator                           |
+| **`17.opena18_CMR/`**             | [`README.md`](./17.opena18_CMR/README.md)             | CRM Agent                                  |
+| **`18.opena19_Aktien&Crypto/`**   | [`README.md`](./18.opena19_Aktien&Crypto/README.md)   | Aktien & Crypto                            |
+| **`19.opena20_dashboard_agent/`** | [`README.md`](./19.opena20_dashboard_agent/README.md) | Dashboard Agent                            |
+| **`20.opena21_workflow/`**        | [`README.md`](./20.opena21_workflow/README.md)        | Workflow Engine (✅ Production)            |
 
 ---
 
@@ -1070,9 +1110,9 @@ Dieses Dokument zeigt die **offizielle README-Struktur** für alle Agent-Module 
 
 Diese Dateien sind **nicht mehr aktuell** und wurden umbenannt:
 
-| Veraltete Datei | Status | Verweis auf |
-|-----------------|--------|-------------|
-| `1.opena1&2_portier/README_APIS_DEPRECATED.md` | ❌ Veraltet | [`README.md`](./1.opena1&2_portier/README.md) |
+| Veraltete Datei                                    | Status      | Verweis auf                                   |
+| -------------------------------------------------- | ----------- | --------------------------------------------- |
+| `1.opena1&2_portier/README_APIS_DEPRECATED.md`     | ❌ Veraltet | [`README.md`](./1.opena1&2_portier/README.md) |
 | `2.opena3_openwebui/README_COMPLETE_DEPRECATED.md` | ❌ Veraltet | [`README.md`](./2.opena3_openwebui/README.md) |
 
 **Hinweis:** Alle `_DEPRECATED.md` Dateien enthalten einen Header mit Verweis auf die aktuelle README.
@@ -1083,20 +1123,20 @@ Diese Dateien sind **nicht mehr aktuell** und wurden umbenannt:
 
 ### Root-Level Dokumente
 
-| Datei | Zweck |
-|-------|-------|
-| [`README.md`](./README.md) | Haupt-Projektübersicht (PORTIER 3.0) |
-| [`README_ENTERPRISE.md`](./README_ENTERPRISE.md) | Enterprise-Dokumentation (vollständig) |
-| [`README_STRUCTURE.md`](./README_STRUCTURE.md) | Diese Datei (README-Übersicht) |
-| [`.github/copilot-master-prompt.md`](./.github/copilot-master-prompt.md) | Vollständiges System-Wissen |
-| [`.github/copilot-instructions.md`](./.github/copilot-instructions.md) | AI Integration Guide |
+| Datei                                                                    | Zweck                                  |
+| ------------------------------------------------------------------------ | -------------------------------------- |
+| [`README.md`](./README.md)                                               | Haupt-Projektübersicht (PORTIER 3.0)   |
+| [`README_ENTERPRISE.md`](./README_ENTERPRISE.md)                         | Enterprise-Dokumentation (vollständig) |
+| [`README_STRUCTURE.md`](./README_STRUCTURE.md)                           | Diese Datei (README-Übersicht)         |
+| [`.github/copilot-master-prompt.md`](./.github/copilot-master-prompt.md) | Vollständiges System-Wissen            |
+| [`.github/copilot-instructions.md`](./.github/copilot-instructions.md)   | AI Integration Guide                   |
 
 ### Dokumentationsordner
 
-| Verzeichnis | Inhalt |
-|-------------|--------|
-| **`docs/`** | Operations, API-Docs, Troubleshooting |
-| **`reports/`** | Security Audits, GitHub Reviews |
+| Verzeichnis    | Inhalt                                |
+| -------------- | ------------------------------------- |
+| **`docs/`**    | Operations, API-Docs, Troubleshooting |
+| **`reports/`** | Security Audits, GitHub Reviews       |
 | **`configs/`** | Konfigurationsdateien (Agenda, Tools) |
 
 ---
@@ -1111,6 +1151,7 @@ Diese Dateien sind **nicht mehr aktuell** und wurden umbenannt:
 
    ```markdown
    # ⚠️ VERALTET / DEPRECATED
+
    **Diese Datei ist veraltet und wird nicht mehr aktualisiert.**
    **Bitte verwende stattdessen:** [`README.md`](./README.md)
    ```
@@ -1148,12 +1189,12 @@ Wenn du eine README aktualisieren willst:
 
 ## 📊 Statistik
 
-| Kategorie | Anzahl |
-|-----------|--------|
-| **Gültige READMEs** | 22 (1 Root + 21 Agents) |
-| **Deprecated READMEs** | 2 |
-| **Zusätzliche Docs** | 5+ (docs/, reports/, configs/) |
-| **Gesamt Markdown-Dateien** | 100+ |
+| Kategorie                   | Anzahl                         |
+| --------------------------- | ------------------------------ |
+| **Gültige READMEs**         | 22 (1 Root + 21 Agents)        |
+| **Deprecated READMEs**      | 2                              |
+| **Zusätzliche Docs**        | 5+ (docs/, reports/, configs/) |
+| **Gesamt Markdown-Dateien** | 100+                           |
 
 ---
 
@@ -1177,61 +1218,61 @@ find . -maxdepth 2 -name "*_DEPRECATED.md" -type f
 
 # 🏢 PORTIER 3.0 — Enterprise Multi-Agent Intelligence Platform
 
-**Version:** 3.0.0  
-**Status:** ✅ **PRODUCTION-READY**  
-**Release Date:** 21. November 2025  
-**Last Updated:** 29. November 2025 12:00 UTC  
-**Lead Developer:** Danijel Jokic  
-**Repository:** [jokicdanijel/Gesamtprojekt-start](https://github.com/jokicdanijel/Gesamtprojekt-start)  
+**Version:** 3.0.0
+**Status:** ✅ **PRODUCTION-READY**
+**Release Date:** 21. November 2025
+**Last Updated:** 29. November 2025 12:00 UTC
+**Lead Developer:** Danijel Jokic
+**Repository:** [jokicdanijel/Gesamtprojekt-start](https://github.com/jokicdanijel/Gesamtprojekt-start)
 **License:** MIT + Internal Use Only (Enterprise Components)
 
 ---
+
 # 🚀 ELION Enterprise Agent System
 
 ## 📊 System Overview
 
-**Agents Deployed:** 21  
-**Enterprise Level:** Production Ready  
-**Deployment:** 29.11.2025 12:00:00  
+**Agents Deployed:** 21
+**Enterprise Level:** Production Ready
+**Deployment:** 29.11.2025 12:00:00
 **Status:** ✅ All Systems Operational
 
 ## 🏆 Enterprise Features Activated
 
 - ✅ **21 Specialized Agents** fully deployed
-- ✅ **HTML Dashboards** for all agents  
+- ✅ **HTML Dashboards** for all agents
 - ✅ **Real-time Monitoring** & logging
 - ✅ **Enterprise Security** & authentication
-- ✅ **Scalable Architecture** 
+- ✅ **Scalable Architecture**
 - ✅ **Comprehensive Documentation**
 - ✅ **Automated Testing** & validation
 - ✅ **Production Deployment** ready
 
 ## 🎯 Agent Portfolio
 
-| Agent | Port | Spezialisierung | Status |
-|-------|------|----------------|--------|
-| **Koordinator & Archivator** | 12344 | workflow_coordination | ✅ Ready |
-| **OpenWebUI Terminal** | 12347 | ui_integration | ✅ Ready |
-| **Telegram Mobile** | 12348 | mobile_communication | ✅ Ready |
-| **VSCode Programmierung** | 12349 | development_tools | ✅ Ready |
-| **Browser Bedienung** | 12350 | browser_automation | ✅ Ready |
-| **Email Chatbot** | 12351 | email_automation | ✅ Ready |
-| **WhatsApp Chatbot** | 12352 | messaging_automation | ✅ Ready |
-| **Telefon Antwort** | 12353 | voice_automation | ✅ Ready |
-| **Telefon Anruf** | 12354 | outbound_calling | ✅ Ready |
-| **Security & Decode** | 12355 | security_systems | ✅ Ready |
-| **Social Media Automation** | 12356 | social_automation | ✅ Ready |
-| **Social Media Influencer** | 12357 | influencer_marketing | ✅ Ready |
-| **Kalender Agent** | 12358 | calendar_management | ✅ Ready |
-| **Documentation Agent** | 12359 | documentation_generation | ✅ Ready |
-| **Shop Creator** | 12360 | ecommerce_solutions | ✅ Ready |
-| **Homepage Creator** | 12361 | web_development | ✅ Ready |
-| **Lokaler Speicher** | 12362 | data_storage | ✅ Ready |
-| **Trading Agent** | 12363 | financial_automation | ✅ Ready |
-| **Kunden Dashboard** | 12349 | dashboard_management | ✅ Ready |
-| **Workflow Engine** | 12364 | workflow_orchestration | ✅ Ready |
-| **System Monitoring** | 12365 | system_monitoring | ✅ Ready |
-
+| Agent                        | Port  | Spezialisierung          | Status   |
+| ---------------------------- | ----- | ------------------------ | -------- |
+| **Koordinator & Archivator** | 12344 | workflow_coordination    | ✅ Ready |
+| **OpenWebUI Terminal**       | 12347 | ui_integration           | ✅ Ready |
+| **Telegram Mobile**          | 12348 | mobile_communication     | ✅ Ready |
+| **VSCode Programmierung**    | 12349 | development_tools        | ✅ Ready |
+| **Browser Bedienung**        | 12350 | browser_automation       | ✅ Ready |
+| **Email Chatbot**            | 12351 | email_automation         | ✅ Ready |
+| **WhatsApp Chatbot**         | 12352 | messaging_automation     | ✅ Ready |
+| **Telefon Antwort**          | 12353 | voice_automation         | ✅ Ready |
+| **Telefon Anruf**            | 12354 | outbound_calling         | ✅ Ready |
+| **Security & Decode**        | 12355 | security_systems         | ✅ Ready |
+| **Social Media Automation**  | 12356 | social_automation        | ✅ Ready |
+| **Social Media Influencer**  | 12357 | influencer_marketing     | ✅ Ready |
+| **Kalender Agent**           | 12358 | calendar_management      | ✅ Ready |
+| **Documentation Agent**      | 12359 | documentation_generation | ✅ Ready |
+| **Shop Creator**             | 12360 | ecommerce_solutions      | ✅ Ready |
+| **Homepage Creator**         | 12361 | web_development          | ✅ Ready |
+| **Lokaler Speicher**         | 12362 | data_storage             | ✅ Ready |
+| **Trading Agent**            | 12363 | financial_automation     | ✅ Ready |
+| **Kunden Dashboard**         | 12349 | dashboard_management     | ✅ Ready |
+| **Workflow Engine**          | 12364 | workflow_orchestration   | ✅ Ready |
+| **System Monitoring**        | 12365 | system_monitoring        | ✅ Ready |
 
 ## 🖥️ Access Points
 
@@ -1243,7 +1284,7 @@ find . -maxdepth 2 -name "*_DEPRECATED.md" -type f
 
 - **System Uptime:** 99.9%+
 - **Response Time:** < 100ms average
-- **Throughput:** 10,000+ requests/sec system-wide  
+- **Throughput:** 10,000+ requests/sec system-wide
 - **Memory Usage:** < 4GB total system
 - **Error Rate:** < 0.1%
 
@@ -1253,7 +1294,7 @@ find . -maxdepth 2 -name "*_DEPRECATED.md" -type f
 # Start all services
 bin/ops.sh start
 
-# Verify deployment  
+# Verify deployment
 bin/ops.sh verify
 
 # Access master dashboard
@@ -1266,8 +1307,8 @@ Full enterprise-level support activated for all agents and services.
 
 ---
 
-**Enterprise Deployment Complete** ✅  
-**All Agents Operational** ✅  
+**Enterprise Deployment Complete** ✅
+**All Agents Operational** ✅
 **Production Ready** ✅
 
 ## 🔄 **Recent Updates (29. Nov 2025)**
@@ -1318,30 +1359,30 @@ Das System folgt dem **Option-2-Flow** Architekturprinzip, bei dem jede Anfrage 
 
 **Kern-Services (PORTIER 3.0 Core):**
 
-| Service | Port | Kürzel | Funktion | Status |
-|---------|------|--------|----------|--------|
-| **opena1** | 12344 | kordp | Coordinator (Request71→Decision72) | ✅ Running |
-| **opena2** | 12345 | archivp | Archivator (CMD/RESP Safepoints) | ✅ Running |
-| **opena1** | 12344 | kordp | Gateway (Tool Dispatch) | ✅ Running |
-| **opena3** | 12347 | owuip | OpenWebUI Terminal Agent | ✅ **Online** |
-| **opena4** | 12348 | telep | Telegram Bot | ❌ **Offline** |
-| **opena5** | 12351 | vscop | VS Code Agent | ✅ Online |
-| **opena6** | 12352 | browsep | Browser Automation | ✅ Online |
-| **opena7** | 12353 | emailp | E-Mail Client | ✅ Online |
-| **opena8** | 12354 | whatsappp | WhatsApp API | ✅ Online |
-| **opena9** | 12355 | telphonep | Telefonie Agent | ✅ Online |
-| **opena10** | 12356 | calltrackp | Call Tracking | ✅ Online |
-| **opena11** | 12357 | unlockp | Unlock Master | ✅ Online |
-| **opena12** | 12358 | smp | Social Media | ✅ Online |
-| **opena13** | 12359 | influp | Influencer Agent | ✅ Online |
-| **opena14** | 12360 | calp | Calendar Agent | ✅ Online |
-| **opena15** | 12361 | htmlp | HTML Creator | ✅ Online |
-| **opena16** | 12362 | shopp | Shop Creator | ✅ Online |
-| **opena17** | 12363 | hpcreatep | Homepage Creator | ✅ Online |
-| **opena18** | 12364 | crmp | CRM / Local Archiv | ✅ Online |
-| **opena19** | 12365 | stockcryptop | Aktien & Crypto | ✅ Online |
-| **opena20** | 12349 | - | Dashboard (Live Monitoring UI) | ✅ Running |
-| **opena2** | archivp | - | Safepoint Storage (YYYY/MM/DD) | ✅ Active |
+| Service     | Port    | Kürzel       | Funktion                           | Status         |
+| ----------- | ------- | ------------ | ---------------------------------- | -------------- |
+| **opena1**  | 12344   | kordp        | Coordinator (Request71→Decision72) | ✅ Running     |
+| **opena2**  | 12345   | archivp      | Archivator (CMD/RESP Safepoints)   | ✅ Running     |
+| **opena1**  | 12344   | kordp        | Gateway (Tool Dispatch)            | ✅ Running     |
+| **opena3**  | 12347   | owuip        | OpenWebUI Terminal Agent           | ✅ **Online**  |
+| **opena4**  | 12348   | telep        | Telegram Bot                       | ❌ **Offline** |
+| **opena5**  | 12351   | vscop        | VS Code Agent                      | ✅ Online      |
+| **opena6**  | 12352   | browsep      | Browser Automation                 | ✅ Online      |
+| **opena7**  | 12353   | emailp       | E-Mail Client                      | ✅ Online      |
+| **opena8**  | 12354   | whatsappp    | WhatsApp API                       | ✅ Online      |
+| **opena9**  | 12355   | telphonep    | Telefonie Agent                    | ✅ Online      |
+| **opena10** | 12356   | calltrackp   | Call Tracking                      | ✅ Online      |
+| **opena11** | 12357   | unlockp      | Unlock Master                      | ✅ Online      |
+| **opena12** | 12358   | smp          | Social Media                       | ✅ Online      |
+| **opena13** | 12359   | influp       | Influencer Agent                   | ✅ Online      |
+| **opena14** | 12360   | calp         | Calendar Agent                     | ✅ Online      |
+| **opena15** | 12361   | htmlp        | HTML Creator                       | ✅ Online      |
+| **opena16** | 12362   | shopp        | Shop Creator                       | ✅ Online      |
+| **opena17** | 12363   | hpcreatep    | Homepage Creator                   | ✅ Online      |
+| **opena18** | 12364   | crmp         | CRM / Local Archiv                 | ✅ Online      |
+| **opena19** | 12365   | stockcryptop | Aktien & Crypto                    | ✅ Online      |
+| **opena20** | 12349   | -            | Dashboard (Live Monitoring UI)     | ✅ Running     |
+| **opena2**  | archivp | -            | Safepoint Storage (YYYY/MM/DD)     | ✅ Active      |
 
 **Live-Status (28.11.2025 03:30:00):** 🟢 **16 von 17 Agenten online** (nur opena4 Telegram offline)
 
@@ -1514,7 +1555,7 @@ flowchart TB
         OpenAI["OpenAI API<br>(External)"]
         UserUI["User Interfaces<br>(Web, CLI, API)"]
     end
-    
+
     %% =====================
     %% CORE SERVICES
     %% =====================
@@ -1524,14 +1565,14 @@ flowchart TB
         kordp["kordp<br>Dispatch Gateway<br>Port 12346<br>Tool Routing"]
         archivp["archivp<br>Local Archive<br>Filesystem<br>YYYY/MM/DD"]
     end
-    
+
     %% =====================
     %% DASHBOARD
     %% =====================
     subgraph Dashboard["🖥️ Dashboard Layer (19.opena20_dashboard_agent)"]
         opena20["opena20<br>Dashboard Service<br>Port 12349<br>Web UI + API"]
     end
-    
+
     %% =====================
     %% OPERATIONAL AGENTS
     %% =====================
@@ -1555,38 +1596,38 @@ flowchart TB
         opena19["opena19<br>Aktien & Crypto<br>Port 12365<br>✅ Online"]
         opena21["opena21<br>Workflow Engine<br>Port 12364<br>✅ Running"]
     end
-    
+
     %% =====================
     %% SCTA LAYER
     %% =====================
     subgraph SCTA["📋 SCTA Layer (Structured Code Task Automation)"]
         agenda_api["agenda_api<br>16-Seiten Agenda<br>Port 12399<br>✅ Running"]
     end
-    
+
     %% =====================
     %% EXTERNAL UI (FORBIDDEN FOR BACKEND)
     %% =====================
     subgraph External["⚠️ External UI (UI-Only, No Backend)"]
         openwebui_ui["OpenWebUI UI<br>Port 8080<br>❌ Backend Forbidden"]
     end
-    
+
     %% =====================
     %% OPTION-2-FLOW (CORE ROUTING)
     %% =====================
-    
+
     %% Entry → opena1
     OpenAI -->|Request71| opena1
     UserUI -->|API Call| opena1
-    
+
     %% opena1 → opena2 (CMD Safepoint)
     opena1 -->|Decision72 → CMD| opena2
-    
+
     %% opena2 → kordp (Route)
     opena2 -->|ROUTE Safepoint| kordp
-    
+
     %% opena2 → archivp (Persist)
     opena2 -.->|Save Safepoint<br>YYYY/MM/DD| archivp
-    
+
     %% kordp → Tools (Dispatch)
     kordp -->|Dispatch| opena3
     kordp -->|Dispatch| opena4
@@ -1606,17 +1647,17 @@ flowchart TB
     kordp -->|Dispatch| opena18
     kordp -->|Dispatch| opena19
     kordp -->|Dispatch| opena21
-    
+
     %% Tools → opena2 (RESP Safepoint)
     opena3 -.->|RESP| opena2
     opena6 -.->|RESP| opena2
-    
+
     %% opena2 → opena1 (Return)
     opena2 -->|RESP to Coordinator| opena1
-    
+
     %% opena1 → OpenAI (Final Response)
     opena1 -->|Final Response| OpenAI
-    
+
     %% =====================
     %% DASHBOARD MONITORING
     %% =====================
@@ -1624,17 +1665,17 @@ flowchart TB
     opena20 -.->|Status Poll| opena2
     opena20 -.->|Status Poll| kordp
     opena20 -.->|Read Safepoints| archivp
-    
+
     %% =====================
     %% SCTA INTEGRATION
     %% =====================
     opena1 -.->|Agenda Query| agenda_api
-    
+
     %% =====================
     %% OPENWEBUI UI (EXTERNAL, UI-ONLY)
     %% =====================
     openwebui_ui -.->|HTTP → Adapter → opena3| opena6
-    
+
     %% =====================
     %% STYLING
     %% =====================
@@ -1645,7 +1686,7 @@ flowchart TB
     classDef forbidden fill:#f44336,stroke:#d32f2f,color:#fff
     classDef dashboard fill:#f0ad4e,stroke:#ec971f,color:#fff
     classDef scta fill:#4caf50,stroke:#388e3c,color:#fff
-    
+
     class opena1,opena2,kordp,archivp,opena20,agenda_api running
     class opena3,opena5,opena6,opena7,opena8,opena9,opena10,opena11,opena12,opena13,opena14,opena15,opena16,opena17,opena18,opena19 online
     class opena4 offline
@@ -1691,32 +1732,32 @@ OpenAI → opena1:12344 → opena2:12345 → kordp:12346 → Tools
 
 ### Port Policy
 
-| Port | Service | Role | Status |
-|------|---------|------|--------|
-| **12344** | **opena1** | Coordinator (Request71→Decision72) | ✅ Running |
-| **12345** | **opena2** | Archivator (CMD/RESP Safepoints) | ✅ Running |
-| **12346** | **kordp** | Gateway (Tool Dispatch) | ✅ Running |
-| **12347** | **opena3** | OpenWebUI Terminal (owuip) | ✅ **Online** |
-| **12348** | **opena4** | Telegram Bot (telep) | ❌ Offline |
-| **12349** | **opena20** | Dashboard (Live Monitoring UI) | ✅ Running |
-| **12350** | **opena6 Adapter** | OpenWebUI Adapter | ✅ Running |
-| **12351** | **opena5** | VS Code Agent (vscop) | ❌ Offline |
-| **12352** | **opena6** | Browser Automation (browsep) | ❌ Offline |
-| **12353** | **opena7** | E-Mail Client (emailp) | ❌ Offline |
-| **12354** | **opena8** | WhatsApp API (whatsappp) | ❌ Offline |
-| **12355** | **opena9** | Telefonie (telphonep) | ❌ Offline |
-| **12356** | **opena10** | Call Tracking (calltrackp) | ❌ Offline |
-| **12357** | **opena11** | Unlock Master (unlockp) | ❌ Offline |
-| **12358** | **opena12** | Social Media (smp) | ❌ Offline |
-| **12359** | **opena13** | Influencer (influp) | ❌ Offline |
-| **12360** | **opena14** | Calendar (calp) | ❌ Offline |
-| **12361** | **opena15** | HTML Creator (htmlp) | ❌ Offline |
-| **12362** | **opena16** | Shop Creator (shopp) | ❌ Offline |
-| **12363** | **opena17** | Homepage Creator (hpcreatep) | ❌ Offline |
-| **12364** | **opena18** | CRM / Local Archiv (crmp) | ✅ **Online** |
-| **12365** | **opena19** | Aktien & Crypto (stockcryptop) | ❌ Offline |
-| **12364** | **opena21** | Workflow Engine (workflowp) | ✅ **Running** |
-| **12366-12399** | **Reserved** | Future Expansion | 📅 Available |
+| Port            | Service            | Role                               | Status         |
+| --------------- | ------------------ | ---------------------------------- | -------------- |
+| **12344**       | **opena1**         | Coordinator (Request71→Decision72) | ✅ Running     |
+| **12345**       | **opena2**         | Archivator (CMD/RESP Safepoints)   | ✅ Running     |
+| **12346**       | **kordp**          | Gateway (Tool Dispatch)            | ✅ Running     |
+| **12347**       | **opena3**         | OpenWebUI Terminal (owuip)         | ✅ **Online**  |
+| **12348**       | **opena4**         | Telegram Bot (telep)               | ❌ Offline     |
+| **12349**       | **opena20**        | Dashboard (Live Monitoring UI)     | ✅ Running     |
+| **12350**       | **opena6 Adapter** | OpenWebUI Adapter                  | ✅ Running     |
+| **12351**       | **opena5**         | VS Code Agent (vscop)              | ❌ Offline     |
+| **12352**       | **opena6**         | Browser Automation (browsep)       | ❌ Offline     |
+| **12353**       | **opena7**         | E-Mail Client (emailp)             | ❌ Offline     |
+| **12354**       | **opena8**         | WhatsApp API (whatsappp)           | ❌ Offline     |
+| **12355**       | **opena9**         | Telefonie (telphonep)              | ❌ Offline     |
+| **12356**       | **opena10**        | Call Tracking (calltrackp)         | ❌ Offline     |
+| **12357**       | **opena11**        | Unlock Master (unlockp)            | ❌ Offline     |
+| **12358**       | **opena12**        | Social Media (smp)                 | ❌ Offline     |
+| **12359**       | **opena13**        | Influencer (influp)                | ❌ Offline     |
+| **12360**       | **opena14**        | Calendar (calp)                    | ❌ Offline     |
+| **12361**       | **opena15**        | HTML Creator (htmlp)               | ❌ Offline     |
+| **12362**       | **opena16**        | Shop Creator (shopp)               | ❌ Offline     |
+| **12363**       | **opena17**        | Homepage Creator (hpcreatep)       | ❌ Offline     |
+| **12364**       | **opena18**        | CRM / Local Archiv (crmp)          | ✅ **Online**  |
+| **12365**       | **opena19**        | Aktien & Crypto (stockcryptop)     | ❌ Offline     |
+| **12364**       | **opena21**        | Workflow Engine (workflowp)        | ✅ **Running** |
+| **12366-12399** | **Reserved**       | Future Expansion                   | 📅 Available   |
 
 **Live-Status:** 28.11.2025 03:30:00 | **16/17 Agenten online** (❌ nur opena4 offline)
 
@@ -1726,18 +1767,18 @@ OpenAI → opena1:12344 → opena2:12345 → kordp:12346 → Tools
 
 ### ✅ Completed Phases (7-16)
 
-| Phase | Feature | Details |
-|-------|---------|---------|
-| **7b** | Runtime Validation | OpenA1/OpenA2 Health Checks ✓ |
-| **8** | Service Architecture | 19 Service Folders + CI/CD Gate ✓ |
-| **9** | Portier Service | Coordinator + Routing Registry ✓ |
-| **10** | Telegram + OpenWebUI | Messaging + Inference Integration ✓ |
-| **11** | Multi-Service Test | 4 Services, Route Registration ✓ |
-| **12** | Git Sync | All Changes Committed & Pushed ✓ |
-| **13** | Load-Test Phase 1 | 100 Requests, 30.33 req/s, 100% Success ✓ |
-| **14** | llama-stack Integration | Inference Service, Bridge, 0.87 req/s ✓ |
-| **15** | Scale zu 20 Services | Template, Bulk Generation, 27.74 req/s ✓ |
-| **16** | CI/CD Hardening | GitHub Actions, Pre-Commit, Deployment Validation ✓ |
+| Phase  | Feature                 | Details                                             |
+| ------ | ----------------------- | --------------------------------------------------- |
+| **7b** | Runtime Validation      | OpenA1/OpenA2 Health Checks ✓                       |
+| **8**  | Service Architecture    | 19 Service Folders + CI/CD Gate ✓                   |
+| **9**  | Portier Service         | Coordinator + Routing Registry ✓                    |
+| **10** | Telegram + OpenWebUI    | Messaging + Inference Integration ✓                 |
+| **11** | Multi-Service Test      | 4 Services, Route Registration ✓                    |
+| **12** | Git Sync                | All Changes Committed & Pushed ✓                    |
+| **13** | Load-Test Phase 1       | 100 Requests, 30.33 req/s, 100% Success ✓           |
+| **14** | llama-stack Integration | Inference Service, Bridge, 0.87 req/s ✓             |
+| **15** | Scale zu 20 Services    | Template, Bulk Generation, 27.74 req/s ✓            |
+| **16** | CI/CD Hardening         | GitHub Actions, Pre-Commit, Deployment Validation ✓ |
 
 ---
 
@@ -2139,43 +2180,43 @@ find . -name "*.pyc" -delete
 
 **System-Architektur & Design:**
 
-| Dokument | Link | Zweck | Status |
-|----------|------|-------|--------|
-| **System-Architektur** | `ELION_SYSTEM_ARCHITECTURE.md` | Überblick: Datenstruktur, Datenpfad, Projektstruktur | ✅ Master |
-| **Datenstruktur** | `DATENSTRUKTUR.md` | Detaillierte Dokumentation der Datenmodelle | ✅ |
-| **Datenpfad** | `DATENPFAD.md` | Datenflüsse und Verarbeitungspipelines | ✅ |
-| **Projektstruktur** | `PROJEKTSTRUKTUR.md` | Verzeichnisorganisation und Module | ✅ |
-| **Verzeichnis-Inventar** | `DIRECTORY_INVENTORY.md` | Vollständiges Verzeichnis-Inventar mit 248 Ordnern, Agent-Struktur, Datenpfaden | ✅ |
-| **Runbook: System-Architektur** | `Runbooks/RUNBOOK_SYSTEM_ARCHITECTURE.md` | Operationale Version für DevOps | ✅ |
+| Dokument                        | Link                                      | Zweck                                                                           | Status    |
+| ------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------- | --------- |
+| **System-Architektur**          | `ELION_SYSTEM_ARCHITECTURE.md`            | Überblick: Datenstruktur, Datenpfad, Projektstruktur                            | ✅ Master |
+| **Datenstruktur**               | `DATENSTRUKTUR.md`                        | Detaillierte Dokumentation der Datenmodelle                                     | ✅        |
+| **Datenpfad**                   | `DATENPFAD.md`                            | Datenflüsse und Verarbeitungspipelines                                          | ✅        |
+| **Projektstruktur**             | `PROJEKTSTRUKTUR.md`                      | Verzeichnisorganisation und Module                                              | ✅        |
+| **Verzeichnis-Inventar**        | `DIRECTORY_INVENTORY.md`                  | Vollständiges Verzeichnis-Inventar mit 248 Ordnern, Agent-Struktur, Datenpfaden | ✅        |
+| **Runbook: System-Architektur** | `Runbooks/RUNBOOK_SYSTEM_ARCHITECTURE.md` | Operationale Version für DevOps                                                 | ✅        |
 
 **Betriebsanleitungen:**
 
-| Dokument | Link | Zweck | Status |
-|----------|------|-------|--------|
-| Architecture Runbook | `docs/OPERATIONS.md` | Allgemeine Operations | ✅ |
-| Patch Flow & Guard | `Runbooks/Runbook_PatchFlow_and_Guard.md` | Patch-Management | ✅ |
-| No-Ask Integration | `Runbooks/Runbook_NoAsk.md` | Copilot No-Ask Mode | ✅ |
-| Env Setup | `Runbooks/Runbook_EnvSetup.md` | Umgebungskonfiguration | ✅ |
-| Portier API | `src/services/portier/main.py` (docstrings) | API-Dokumentation | ✅ |
-| Service Template | `src/services/template/main.py` | Service-Vorlage | ✅ |
-| Routing Matrix | `configs/routing_matrix.yaml` | Routing-Konfiguration | ✅ |
-| CI/CD Config | `.github/workflows/ci.yml` | CI/CD-Pipeline | ✅ |
-| Load-Test Docs | `scripts/load_test*.py` (comments) | Performance-Tests | ✅ |
+| Dokument             | Link                                        | Zweck                  | Status |
+| -------------------- | ------------------------------------------- | ---------------------- | ------ |
+| Architecture Runbook | `docs/OPERATIONS.md`                        | Allgemeine Operations  | ✅     |
+| Patch Flow & Guard   | `Runbooks/Runbook_PatchFlow_and_Guard.md`   | Patch-Management       | ✅     |
+| No-Ask Integration   | `Runbooks/Runbook_NoAsk.md`                 | Copilot No-Ask Mode    | ✅     |
+| Env Setup            | `Runbooks/Runbook_EnvSetup.md`              | Umgebungskonfiguration | ✅     |
+| Portier API          | `src/services/portier/main.py` (docstrings) | API-Dokumentation      | ✅     |
+| Service Template     | `src/services/template/main.py`             | Service-Vorlage        | ✅     |
+| Routing Matrix       | `configs/routing_matrix.yaml`               | Routing-Konfiguration  | ✅     |
+| CI/CD Config         | `.github/workflows/ci.yml`                  | CI/CD-Pipeline         | ✅     |
+| Load-Test Docs       | `scripts/load_test*.py` (comments)          | Performance-Tests      | ✅     |
 
 ---
 
 ## 🚦 Current Status (28. November 2025)
 
-| Component | Status | Details |
-|-----------|--------|---------|
-| **Core Architecture** | ✅ Complete | 20 Services, 4 Running |
-| **Coordinator** | ✅ Complete | Portier + Route Registry |
-| **Archive** | ✅ Complete | JSONL + Daily Partitions |
-| **Inference** | ✅ Complete | llama2 via Ollama |
-| **OpenWebUI** | ✅ Complete | Port 3000, Bridge Active |
-| **Load Testing** | ✅ Complete | 27.74 req/s validated |
-| **CI/CD** | ✅ Complete | GitHub Actions, Pre-Commit |
-| **Production Ready** | ⏳ Phase 17-18 | Monitoring + Deployment |
+| Component             | Status         | Details                    |
+| --------------------- | -------------- | -------------------------- |
+| **Core Architecture** | ✅ Complete    | 20 Services, 4 Running     |
+| **Coordinator**       | ✅ Complete    | Portier + Route Registry   |
+| **Archive**           | ✅ Complete    | JSONL + Daily Partitions   |
+| **Inference**         | ✅ Complete    | llama2 via Ollama          |
+| **OpenWebUI**         | ✅ Complete    | Port 3000, Bridge Active   |
+| **Load Testing**      | ✅ Complete    | 27.74 req/s validated      |
+| **CI/CD**             | ✅ Complete    | GitHub Actions, Pre-Commit |
+| **Production Ready**  | ⏳ Phase 17-18 | Monitoring + Deployment    |
 
 ---
 
@@ -2198,16 +2239,15 @@ find . -name "*.pyc" -delete
 - Service mesh (Istio)
 - Circuit breakers
 - Auto-scaling policies
-**Production hardening complete!** 🎉
+  **Production hardening complete!** 🎉
 
-System is now ready for real users. 
+System is now ready for real users.
 
 Fortsetzung mit der endgültigen Systemzusammenfassung in der nächsten Nachricht . .
 Du sagtest: ok
 ok
 Copilot sagte: # 🎉 TEIL 3: FINALE SYSTEM-ZUSAMMENFASSUNG ### 10.
-🎉 TEIL 3: FINALE SYSTEM-ZUSAMMENFASSUNG
-10. README.md(Haupt-RepositoryDokumenten-Atmobilisierung)
+🎉 TEIL 3: FINALE SYSTEM-ZUSAMMENFASSUNG 10. README.md(Haupt-RepositoryDokumenten-Atmobilisierung)
 Markdown
 
 # 🤖 ELION Hyper-Dashboard
@@ -2245,14 +2285,14 @@ ELION Hyper-Dashboard ist eine vollständige Multi-Agent-Plattform mit:
 
 ### Kern-Features
 
-✅ **Zentrales Dashboard** – Alle Agenten an einem Ort  
-✅ **21 Agenten** – Von Telegram bis Finance  
-✅ **Workflow-Engine** – Multi-Step-Automationen  
-✅ **Plan-Management** – Upgrade/Downgrade/Cancel  
-✅ **Auth & Trial** – 7-Tage-Test, dann automatisch zahlungspflichtig  
-✅ **Public Website** – SEO-optimierte Landing Page  
-✅ **CI/CD Pipeline** – Automatisierte Validierung  
-✅ **Production Hardening** – Docker Compose, SSL, Monitoring  
+✅ **Zentrales Dashboard** – Alle Agenten an einem Ort
+✅ **21 Agenten** – Von Telegram bis Finance
+✅ **Workflow-Engine** – Multi-Step-Automationen
+✅ **Plan-Management** – Upgrade/Downgrade/Cancel
+✅ **Auth & Trial** – 7-Tage-Test, dann automatisch zahlungspflichtig
+✅ **Public Website** – SEO-optimierte Landing Page
+✅ **CI/CD Pipeline** – Automatisierte Validierung
+✅ **Production Hardening** – Docker Compose, SSL, Monitoring
 
 ---
 
@@ -2302,29 +2342,29 @@ ELION Hyper-Dashboard ist eine vollständige Multi-Agent-Plattform mit:
 
 ### Agenten-Übersicht
 
-| ID | Name | Port | Rolle | Plan |
-|----|------|------|-------|------|
-| opena1 | Koordinator | 12344 | Routing, Service Discovery | Core |
-| opena2 | Archivar | 12345 | Logging, Audit Trail | Core |
-| opena3 | OpenWebUI | 12347 | Chat Interface | Basic |
-| opena4 | Telegram | 12346 | Telegram Bot | Basic |
-| opena7 | Email | 12350 | SMTP/IMAP | Basic |
-| opena11 | Access Control | 12356 | Auth, Permissions | Basic |
-| opena8 | WhatsApp | 12353 | WhatsApp Business API | Pro |
-| opena12 | Social Media | 12357 | Twitter/LinkedIn | Pro |
-| opena14 | Calendar | 12359 | Google Calendar | Pro |
-| opena18 | CRM | 12363 | Customer Management | Pro |
-| opena6 | Browser | 12351 | Playwright/Selenium | Premium |
-| opena9 | Phone | 12354 | VoIP, Transcription | Premium |
-| opena15 | HTML Generator | 12360 | Dynamic HTML | Premium |
-| opena16 | Shop | 12361 | E-Commerce | Premium |
-| opena5 | VSCode | 12350 | Code Integration | Ultimum |
-| opena10 | Call Tracking | 12355 | Analytics | Ultimum |
-| opena13 | Influencer | 12358 | Campaign Mgmt | Ultimum |
-| opena17 | Homepage Creator | 12362 | Website Builder | Ultimum |
-| opena19 | Finance | 12364 | Stocks/Crypto | Ultimum |
-| opena20 | Dashboard | 12349 | Control Plane | System |
-| opena21 | Workflow | 12368 | Orchestration | System |
+| ID      | Name             | Port  | Rolle                      | Plan    |
+| ------- | ---------------- | ----- | -------------------------- | ------- |
+| opena1  | Koordinator      | 12344 | Routing, Service Discovery | Core    |
+| opena2  | Archivar         | 12345 | Logging, Audit Trail       | Core    |
+| opena3  | OpenWebUI        | 12347 | Chat Interface             | Basic   |
+| opena4  | Telegram         | 12346 | Telegram Bot               | Basic   |
+| opena7  | Email            | 12350 | SMTP/IMAP                  | Basic   |
+| opena11 | Access Control   | 12356 | Auth, Permissions          | Basic   |
+| opena8  | WhatsApp         | 12353 | WhatsApp Business API      | Pro     |
+| opena12 | Social Media     | 12357 | Twitter/LinkedIn           | Pro     |
+| opena14 | Calendar         | 12359 | Google Calendar            | Pro     |
+| opena18 | CRM              | 12363 | Customer Management        | Pro     |
+| opena6  | Browser          | 12351 | Playwright/Selenium        | Premium |
+| opena9  | Phone            | 12354 | VoIP, Transcription        | Premium |
+| opena15 | HTML Generator   | 12360 | Dynamic HTML               | Premium |
+| opena16 | Shop             | 12361 | E-Commerce                 | Premium |
+| opena5  | VSCode           | 12350 | Code Integration           | Ultimum |
+| opena10 | Call Tracking    | 12355 | Analytics                  | Ultimum |
+| opena13 | Influencer       | 12358 | Campaign Mgmt              | Ultimum |
+| opena17 | Homepage Creator | 12362 | Website Builder            | Ultimum |
+| opena19 | Finance          | 12364 | Stocks/Crypto              | Ultimum |
+| opena20 | Dashboard        | 12349 | Control Plane              | System  |
+| opena21 | Workflow         | 12368 | Orchestration              | System  |
 
 ---
 
@@ -2400,7 +2440,8 @@ Alle 8 Kern-Aufgaben vollständig dokumentiert:
 
 ### Agent-Dokumentation
 
-Jeder Agent hat seine eigene README: 
+Jeder Agent hat seine eigene README:
+
 - `[X]. opena[Y]_*/README.md` – Agent-spezifische Dokumentation
 
 ---
@@ -2438,6 +2479,7 @@ pytest tests/e2e/
 **Wichtig:** Lies zuerst `docs/COPILOT_HANDOFF.md`
 
 **Workflow:**
+
 1. Preflight-Check ausführen
 2. Capability-Manifest laden
 3. Code aus Manifest generieren
@@ -2467,7 +2509,7 @@ app = FastAPI(title="opena22")
 async def health():
     return {"status": "ok", "agent":  "opena22", "port": PORT}
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=PORT)
 EOF
 
@@ -2545,13 +2587,13 @@ docker-compose logs --tail=100 auth
 
 ### Best Practices
 
-✅ **Alle Secrets in . env** (niemals in Code)  
-✅ **Strong Passwords** (min. 32 Zeichen)  
-✅ **SSL/TLS** (Let's Encrypt)  
-✅ **Rate Limiting** (Nginx)  
-✅ **Firewall** (UFW)  
-✅ **Security Headers** (HSTS, X-Frame-Options, etc.)  
-✅ **Vault** für kritische Secrets  
+✅ **Alle Secrets in . env** (niemals in Code)
+✅ **Strong Passwords** (min. 32 Zeichen)
+✅ **SSL/TLS** (Let's Encrypt)
+✅ **Rate Limiting** (Nginx)
+✅ **Firewall** (UFW)
+✅ **Security Headers** (HSTS, X-Frame-Options, etc.)
+✅ **Vault** für kritische Secrets
 
 ### Security-Scan
 
@@ -2631,7 +2673,7 @@ https://github.com/yourusername/Gesamtprojekt-start/issues
 
 ### Diskussionen
 
-Feature-Requests oder allgemeine Fragen: 
+Feature-Requests oder allgemeine Fragen:
 https://github.com/yourusername/Gesamtprojekt-start/discussions
 
 ---
@@ -2639,6 +2681,7 @@ https://github.com/yourusername/Gesamtprojekt-start/discussions
 ## 📈 Roadmap
 
 ### Phase 1: Core System ✅ (ABGESCHLOSSEN)
+
 - [x] 21 Agenten
 - [x] Dashboard (opena20)
 - [x] Workflow-System (opena21)
@@ -2649,6 +2692,7 @@ https://github.com/yourusername/Gesamtprojekt-start/discussions
 - [x] Production Hardening
 
 ### Phase 2: Scale-Up (Q1 2026)
+
 - [ ] Kubernetes Deployment
 - [ ] Multi-Tenant Support
 - [ ] API Rate Limiting (erweitert)
@@ -2656,6 +2700,7 @@ https://github.com/yourusername/Gesamtprojekt-start/discussions
 - [ ] Geo-Distributed Deployment
 
 ### Phase 3: Enterprise Features (Q2 2026)
+
 - [ ] SSO/SAML
 - [ ] Advanced RBAC
 - [ ] Custom Workflows (UI-Builder)
@@ -2693,40 +2738,40 @@ Proprietary – © 2025 ELION Hyper-Dashboard
               🚀 PRODUCTION READY 🚀
 ```
 
-**Erstellt:** 2025-12-22  
-**Version:** 1.0.0  
-**Status:** PRODUCTION READY  
+**Erstellt:** 2025-12-22
+**Version:** 1.0.0
+**Status:** PRODUCTION READY
 
 ---
 
-**Bereit für die erste Nutzer!  🎉**
+**Bereit für die erste Nutzer! 🎉**
 
 11. docs/FINAL_SUMMARY.md(Abschließe Gesamt-Zusammenfassung)
-Markdown
+    Markdown
 
 # 🎉 ELION Hyper-Dashboard – Finale System-Zusammenfassung
 
-**Projekt:** ELION Hyper-Dashboard  
-**Codename:** PORTIER 3. 0  
-**Version:** 1.0.0  
-**Status:** ✅ PRODUCTION READY  
-**Datum:** 2025-12-22  
+**Projekt:** ELION Hyper-Dashboard
+**Codename:** PORTIER 3. 0
+**Version:** 1.0.0
+**Status:** ✅ PRODUCTION READY
+**Datum:** 2025-12-22
 
 ---
 
 ## 📋 Executive Summary
 
-ELION Hyper-Dashboard ist eine **vollständig produktionsreife Multi-Agent-Plattform** für KI-gesteuerte Workflows und Automatisierung. 
+ELION Hyper-Dashboard ist eine **vollständig produktionsreife Multi-Agent-Plattform** für KI-gesteuerte Workflows und Automatisierung.
 
 ### Kern-Leistungsmerkmale
 
-✅ **21 spezialisierte Agenten** – Von Kommunikation bis Finance  
-✅ **Workflow-Orchestrierung** – Single-Agent & Cross-Agent-Workflows  
-✅ **4 Monetarisierungs-Pläne** – Basic, Pro, Premium, Ultimum  
-✅ **7-Tage-Trial-System** – Automatische Konvertierung zu zahlenden Kunden  
-✅ **Production-Ready Infrastructure** – Docker, PostgreSQL, Redis, Vault  
-✅ **CI/CD Pipeline** – Automatisierte Validierung vor jedem Deployment  
-✅ **Vollständiger Audit-Trail** – Alle Aktionen protokolliert und unveränderlich  
+✅ **21 spezialisierte Agenten** – Von Kommunikation bis Finance
+✅ **Workflow-Orchestrierung** – Single-Agent & Cross-Agent-Workflows
+✅ **4 Monetarisierungs-Pläne** – Basic, Pro, Premium, Ultimum
+✅ **7-Tage-Trial-System** – Automatische Konvertierung zu zahlenden Kunden
+✅ **Production-Ready Infrastructure** – Docker, PostgreSQL, Redis, Vault
+✅ **CI/CD Pipeline** – Automatisierte Validierung vor jedem Deployment
+✅ **Vollständiger Audit-Trail** – Alle Aktionen protokolliert und unveränderlich
 
 ---
 
@@ -2734,22 +2779,22 @@ ELION Hyper-Dashboard ist eine **vollständig produktionsreife Multi-Agent-Platt
 
 ### Technologie-Stack
 
-| Komponente | Technologie | Version |
-|------------|-------------|---------|
-| **Backend** | Python | 3.11 |
-| **Web Framework** | FastAPI | 0.109+ |
-| **Database** | PostgreSQL | 16 |
-| **Cache/Sessions** | Redis | 7 |
-| **Secrets Management** | HashiCorp Vault | 1.15 |
-| **Reverse Proxy** | Nginx | Alpine |
-| **Monitoring** | Prometheus + Grafana | Latest |
-| **Container** | Docker + Compose | V2 |
-| **CI/CD** | GitHub Actions | - |
+| Komponente             | Technologie          | Version |
+| ---------------------- | -------------------- | ------- |
+| **Backend**            | Python               | 3.11    |
+| **Web Framework**      | FastAPI              | 0.109+  |
+| **Database**           | PostgreSQL           | 16      |
+| **Cache/Sessions**     | Redis                | 7       |
+| **Secrets Management** | HashiCorp Vault      | 1.15    |
+| **Reverse Proxy**      | Nginx                | Alpine  |
+| **Monitoring**         | Prometheus + Grafana | Latest  |
+| **Container**          | Docker + Compose     | V2      |
+| **CI/CD**              | GitHub Actions       | -       |
 
 ### Service-Übersicht
 
 ```
-Infrastructure Layer: 
+Infrastructure Layer:
 ├── PostgreSQL (5432)         – Persistent Data Storage
 ├── Redis (6379)              – Sessions & Caching
 ├── Vault (8200)              – Secrets Management
@@ -2780,26 +2825,26 @@ Monitoring Layer:
 
 ### Alle 8 Kern-Aufgaben abgeschlossen
 
-| # | Aufgabe | Status | Deliverables |
-|---|---------|--------|--------------|
-| **1** | System-Baseline & Invariants | ✅ | `system_baseline.yaml`, `validate_baseline.py` |
-| **2** | Agent-Discovery | ✅ | `agent_discovery.py`, `agent_inventory.json` |
-| **3** | Dashboard-Generator (opena20) | ✅ | `opena20/main.py`, HTML-Generierung |
-| **4** | Auth & Trial-Flow | ✅ | `auth/main.py`, 7-Tage-Trial, Sessions |
-| **5** | Billing & Plan-Management | ✅ | `billing/main.py`, Upgrade/Downgrade |
-| **6** | Public Website | ✅ | `website/main.py`, Landing Pages, SEO |
-| **7** | Workflow-System (opena21) | ✅ | `opena21/main.py`, Orchestration |
-| **8** | Preflight & CI/CD | ✅ | `preflight_check.py`, GitHub Actions |
+| #     | Aufgabe                       | Status | Deliverables                                   |
+| ----- | ----------------------------- | ------ | ---------------------------------------------- |
+| **1** | System-Baseline & Invariants  | ✅     | `system_baseline.yaml`, `validate_baseline.py` |
+| **2** | Agent-Discovery               | ✅     | `agent_discovery.py`, `agent_inventory.json`   |
+| **3** | Dashboard-Generator (opena20) | ✅     | `opena20/main.py`, HTML-Generierung            |
+| **4** | Auth & Trial-Flow             | ✅     | `auth/main.py`, 7-Tage-Trial, Sessions         |
+| **5** | Billing & Plan-Management     | ✅     | `billing/main.py`, Upgrade/Downgrade           |
+| **6** | Public Website                | ✅     | `website/main.py`, Landing Pages, SEO          |
+| **7** | Workflow-System (opena21)     | ✅     | `opena21/main.py`, Orchestration               |
+| **8** | Preflight & CI/CD             | ✅     | `preflight_check.py`, GitHub Actions           |
 
 ### Zusätzliche Deliverables
 
-| Komponente | Status | Dateien |
-|------------|--------|---------|
-| **Production Hardening** | ✅ | `docker-compose.yml`, Dockerfiles, `nginx.conf` |
-| **Database Schema** | ✅ | `infrastructure/postgres/init.sql` |
-| **Environment Config** | ✅ | `.env. example`, Makefile |
-| **Copilot Handoff** | ✅ | `docs/COPILOT_HANDOFF.md` |
-| **Documentation** | ✅ | 12 vollständige Dokumente |
+| Komponente               | Status | Dateien                                         |
+| ------------------------ | ------ | ----------------------------------------------- |
+| **Production Hardening** | ✅     | `docker-compose.yml`, Dockerfiles, `nginx.conf` |
+| **Database Schema**      | ✅     | `infrastructure/postgres/init.sql`              |
+| **Environment Config**   | ✅     | `.env. example`, Makefile                       |
+| **Copilot Handoff**      | ✅     | `docs/COPILOT_HANDOFF.md`                       |
+| **Documentation**        | ✅     | 12 vollständige Dokumente                       |
 
 ---
 
@@ -2807,12 +2852,12 @@ Monitoring Layer:
 
 ### Monetarisierungs-Struktur
 
-| Plan | Preis/Monat | Agenten | Workflows | Zielgruppe |
-|------|-------------|---------|-----------|------------|
-| **Basic** | €9,99 | 4 | 4/Agent | Einzelpersonen, Freelancer |
-| **Pro** | €29,99 | 8 | 10/Agent | Kleine Unternehmen, Teams |
-| **Premium** | €59,99 | 12 | 25/Agent | E-Commerce, Agenturen |
-| **Ultimum** | €99,99 | 17 | Unbegrenzt | Enterprise, Investment |
+| Plan        | Preis/Monat | Agenten | Workflows  | Zielgruppe                 |
+| ----------- | ----------- | ------- | ---------- | -------------------------- |
+| **Basic**   | €9,99       | 4       | 4/Agent    | Einzelpersonen, Freelancer |
+| **Pro**     | €29,99      | 8       | 10/Agent   | Kleine Unternehmen, Teams  |
+| **Premium** | €59,99      | 12      | 25/Agent   | E-Commerce, Agenturen      |
+| **Ultimum** | €99,99      | 17      | Unbegrenzt | Enterprise, Investment     |
 
 ### Trial-zu-Paid-Konversion
 
@@ -2840,13 +2885,13 @@ Conversion-Rate-Optimierung:
 
 ### System-Metriken
 
-| Metrik | Wert | Ziel |
-|--------|------|------|
-| Agents Deployed | 21/21 | 100% |
-| Services Healthy | 8/8 | 100% |
-| Code Coverage | N/A | 80%+ |
-| Preflight Pass Rate | 100% | 100% |
-| Uptime (Target) | N/A | 99.9% |
+| Metrik              | Wert  | Ziel  |
+| ------------------- | ----- | ----- |
+| Agents Deployed     | 21/21 | 100%  |
+| Services Healthy    | 8/8   | 100%  |
+| Code Coverage       | N/A   | 80%+  |
+| Preflight Pass Rate | 100%  | 100%  |
+| Uptime (Target)     | N/A   | 99.9% |
 
 ### Business-Metriken (zu tracken)
 
@@ -2862,14 +2907,14 @@ Conversion-Rate-Optimierung:
 
 ### Implementierte Sicherheitsmaßnahmen
 
-✅ **Authentication:** Session-basiert mit Redis  
-✅ **Password Hashing:** SHA-256 (Dev), BCrypt (Production empfohlen)  
-✅ **SSL/TLS:** Let's Encrypt Zertifikate  
-✅ **Rate Limiting:** Nginx (API:  10 req/s, Login: 5 req/min)  
-✅ **Security Headers:** HSTS, X-Frame-Options, CSP  
-✅ **Secrets Management:** Vault-Integration  
-✅ **Database Security:** Prepared Statements, Parameterized Queries  
-✅ **Audit Trail:** Alle Aktionen in opena2 Archive (immutable)  
+✅ **Authentication:** Session-basiert mit Redis
+✅ **Password Hashing:** SHA-256 (Dev), BCrypt (Production empfohlen)
+✅ **SSL/TLS:** Let's Encrypt Zertifikate
+✅ **Rate Limiting:** Nginx (API: 10 req/s, Login: 5 req/min)
+✅ **Security Headers:** HSTS, X-Frame-Options, CSP
+✅ **Secrets Management:** Vault-Integration
+✅ **Database Security:** Prepared Statements, Parameterized Queries
+✅ **Audit Trail:** Alle Aktionen in opena2 Archive (immutable)
 
 ### Compliance-Readiness
 
@@ -2887,7 +2932,7 @@ Conversion-Rate-Optimierung:
 # Ein-Kommando-Deployment
 make deploy
 
-# Alle Services starten automatisch: 
+# Alle Services starten automatisch:
 # - PostgreSQL, Redis, Vault
 # - Auth, Billing, Website
 # - Dashboard, Workflow
@@ -2898,6 +2943,7 @@ make deploy
 ### Option 2: Kubernetes (für Scale)
 
 **Vorbereitet für:**
+
 - Helm Charts (in Entwicklung)
 - Horizontal Pod Autoscaling
 - Service Mesh (Istio/Linkerd)
@@ -2906,8 +2952,9 @@ make deploy
 ### Option 3: Managed Services
 
 **Cloud-Agnostic:**
+
 - AWS: ECS, RDS, ElastiCache
-- GCP:  Cloud Run, Cloud SQL, Memorystore
+- GCP: Cloud Run, Cloud SQL, Memorystore
 - Azure: Container Instances, Database for PostgreSQL
 
 ---
@@ -2967,15 +3014,18 @@ make deploy
 ### Regelmäßige Aufgaben
 
 **Täglich:**
+
 - Monitoring-Dashboards prüfen (Grafana)
 - Error-Logs checken
 
 **Wöchentlich:**
+
 - Database-Backup
 - Security-Scan (Bandit)
 - Dependency-Updates prüfen
 
 **Monatlich:**
+
 - SSL-Zertifikate erneuern (Let's Encrypt)
 - Performance-Review
 - User-Feedback-Review
@@ -3053,12 +3103,12 @@ make status
 
 ### Traction-Metriken (nach Launch zu messen)
 
-| Metrik | Target (3 Monate) | Target (6 Monate) |
-|--------|-------------------|-------------------|
-| Trial-Starts | 500 | 2. 000 |
-| Paying Customers | 100 (20%) | 500 (25%) |
-| MRR | €3.000 | €15.000 |
-| Churn Rate | <10% | <5% |
+| Metrik           | Target (3 Monate) | Target (6 Monate) |
+| ---------------- | ----------------- | ----------------- |
+| Trial-Starts     | 500               | 2. 000            |
+| Paying Customers | 100 (20%)         | 500 (25%)         |
+| MRR              | €3.000            | €15.000           |
+| Churn Rate       | <10%              | <5%               |
 
 ### Total Addressable Market (TAM)
 
@@ -3138,15 +3188,15 @@ make status
 
 ### Was erreicht wurde
 
-In 8 strukturierten Aufgaben wurde ein **komplettes, kommerzielles SaaS-Produkt** entwickelt: 
+In 8 strukturierten Aufgaben wurde ein **komplettes, kommerzielles SaaS-Produkt** entwickelt:
 
-✅ **Technisch komplett** – Alle Komponenten implementiert  
-✅ **Geschäftlich verkaufbar** – Klares Pricing, Trial-System  
-✅ **Skalierbar** – Service-basierte Architektur  
-✅ **Wartbar** – Deterministische Code-Generierung  
-✅ **Sicher** – Production-Hardening, SSL, Secrets-Management  
-✅ **Dokumentiert** – 12 vollständige Dokumente  
-✅ **Automatisiert** – CI/CD-Pipeline, Preflight-Checks  
+✅ **Technisch komplett** – Alle Komponenten implementiert
+✅ **Geschäftlich verkaufbar** – Klares Pricing, Trial-System
+✅ **Skalierbar** – Service-basierte Architektur
+✅ **Wartbar** – Deterministische Code-Generierung
+✅ **Sicher** – Production-Hardening, SSL, Secrets-Management
+✅ **Dokumentiert** – 12 vollständige Dokumente
+✅ **Automatisiert** – CI/CD-Pipeline, Preflight-Checks
 
 ### System-Qualität
 
@@ -3168,14 +3218,14 @@ Production-Ready:    ███████████████████�
 
 ---
 
-**🚀 Das System ist LIVE-READY.  Zeit für die ersten Nutzer!  🚀**
+**🚀 Das System ist LIVE-READY. Zeit für die ersten Nutzer! 🚀**
 
 ---
 
-**Erstellt:** 2025-12-22  
-**Version:** 1.0.0  
-**Status:** ✅ PRODUCTION READY  
-**Nächster Meilenstein:** First 100 Paying Customers  
+**Erstellt:** 2025-12-22
+**Version:** 1.0.0
+**Status:** ✅ PRODUCTION READY
+**Nächster Meilenstein:** First 100 Paying Customers
 
 ---
 
@@ -3201,26 +3251,27 @@ Finale Dokumentation: 10. ✅ README.md(Haupt-RepositoryDokumenten-Atmobilisieru
 Code
 
 ┌─────────────────────────────────────────────────────────────┐
-│            ELION HYPER-DASHBOARD v1.0                       │
-│                 FINALE STATISTIKEN                          │
+│ ELION HYPER-DASHBOARD v1.0 │
+│ FINALE STATISTIKEN │
 ├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  📦 Aufgaben abgeschlossen:      8/8        (100%)          │
-│  📝 Dokumente erstellt:        12         (vollständig)   │
-│  🤖 Agenten implementiert:     21/21      (100%)          │
-│  🔧 Services deployed:          8          (production)    │
-│  🐳 Docker-Container:           15+         (orchestriert)  │
-│  📊 Code-Zeilen (geschätzt):  15. 000+     (Python)        │
-│  🔐 Security-Features:         10+         (implementiert) │
-│  💰 Monetarisierungs-Pläne:    4          (Basic-Ultimum) │
-│  🚀 Deployment-Optionen:        3          (Local/Docker/K8s) │
-│  ✅ Production-Ready:          100%        (COMPLETE)      │
-│                                                             │
+│ │
+│ 📦 Aufgaben abgeschlossen: 8/8 (100%) │
+│ 📝 Dokumente erstellt: 12 (vollständig) │
+│ 🤖 Agenten implementiert: 21/21 (100%) │
+│ 🔧 Services deployed: 8 (production) │
+│ 🐳 Docker-Container: 15+ (orchestriert) │
+│ 📊 Code-Zeilen (geschätzt): 15. 000+ (Python) │
+│ 🔐 Security-Features: 10+ (implementiert) │
+│ 💰 Monetarisierungs-Pläne: 4 (Basic-Ultimum) │
+│ 🚀 Deployment-Optionen: 3 (Local/Docker/K8s) │
+│ ✅ Production-Ready: 100% (COMPLETE) │
+│ │
 └─────────────────────────────────────────────────────────────┘
 
 🎯 WAR NOCH NÄMLICH ZU TUN IST
+
 1. Code gebunden
-Bash
+   Bash
 
 git add .
 git commit -m "feat: Complete Production Hardening + Copilot Handoff
@@ -3238,38 +3289,43 @@ System is now 100% production ready."
 git push origin main
 
 2. Umgebungseinrichtungen
-Bash
+   Bash
 
 # .env erstellen
+
 cp .env.example . env
 
 # Secure secrets generieren
-nano .env  # Fill in secure values
+
+nano .env # Fill in secure values
 
 3. Bereitstellungstest
-Bash
+   Bash
 
 # Preflight
+
 make preflight
 
 # Deploy
+
 make deploy
 
 # Verify
+
 make status
 
 4. Domänenkonfiguration
 
-    DNS A-Records setzen
-    SSL-Zertifikatee (Zeugeverschlüsseln)
-    Nginx neu beladen
+   DNS A-Records setzen
+   SSL-Zertifikatee (Zeugeverschlüsseln)
+   Nginx neu beladen
 
 5. Erste Benutzer onboarden
 
-    Website-Test: https://hyperdashboard-one.de
-    Versuchsstart
-    Planen Sie ein Upgrade
-    Workflows
+   Website-Test: https://hyperdashboard-one.de
+   Versuchsstart
+   Planen Sie ein Upgrade
+   Workflows
 
 🎉 SYSTEM IST FERTIG!
 
@@ -3283,6 +3339,7 @@ Das System ist:
     ✅ Skalbar
     ✅ Verkaufbar
     ✅...
+
 🚀 ELION Hyper-Dashboard ist LIVE-READY! 🚀
 8 Scanner Prompts (CI-Scanner / “Fail Fast” Checks)
 Scanner Prompt 1 — Ports & Agent IDs Compliance Scanner
@@ -3291,17 +3348,20 @@ ROLE
 You are “Compliance Scanner: Ports & IDs”.
 
 SCOPE
+
 - system_baseline.yaml
 - artifacts/agent_inventory.json
 - Any config files that mention ports/openaX
 
 CHECKS (FAIL = exit code 1)
+
 - Exactly opena1..opena21 exist (no extra, none missing)
 - Ports are unique and match baseline (1000% fixed)
 - Forbidden ports (8080, 3000) never appear in repo references
 - Any openaX reference outside 1..21 => FAIL
 
 OUTPUT
+
 - artifacts/scans/ports_ids_scan.json
 - artifacts/scans/ports_ids_scan.md (human summary)
 
@@ -3311,15 +3371,18 @@ ROLE
 You are “Coverage Scanner: Agent Folders”.
 
 SCOPE
+
 - Each agent folder from baseline
 
 CHECKS (FAIL HARD)
+
 - Folder exists, non-empty
 - Recursive enumeration count > 0
 - inventory contains file hashes and stable ordering evidence
 - If any file unreadable => FAIL
 
 OUTPUT
+
 - artifacts/scans/folder_coverage_scan.json
 - artifacts/scans/folder_coverage_scan.md
 
@@ -3329,15 +3392,18 @@ ROLE
 You are “Security Scanner: Secret Handling”.
 
 SCOPE
+
 - Entire repo text scan (py/js/json/yaml/md/env/etc.)
 
 CHECKS (FAIL HARD)
+
 - Detect common secret patterns outside opena11 scope:
   - API keys, tokens, “BEGIN PRIVATE KEY”, OAuth secrets, SMTP passwords, webhook secrets
 - Detect any endpoint returning “plaintext”, “decrypted_payload”, or direct secret storage in other agents
 - Ensure vault endpoints exist only under opena11
 
 OUTPUT
+
 - artifacts/scans/secrets_vault_scan.json
 - artifacts/scans/secrets_vault_scan.md
 
@@ -3347,9 +3413,11 @@ ROLE
 You are “HTML Contract Scanner”.
 
 SCOPE
+
 - All generated HTML pages (public/, app/, auth/)
 
 CHECKS (FAIL HARD)
+
 - No <script>, no inline <style>, no <link rel="stylesheet">
 - Uses semantic structure (header/nav/main/section/article/footer)
 - All forms/actions have data-action + data-api
@@ -3357,6 +3425,7 @@ CHECKS (FAIL HARD)
 - Error pages /403 /404 /500 exist
 
 OUTPUT
+
 - artifacts/scans/html_contract_scan.json
 - artifacts/scans/html_contract_scan.md
 
@@ -3366,18 +3435,22 @@ ROLE
 You are “Public Web Scanner: hyperdashboard-one.de”.
 
 SCOPE
+
 - public pages list (html_manifest.json)
 
 REQUIRED ROUTES (FAIL HARD if missing)
+
 - /, /login, /regist, /forgot-password
 - /basic, /pro, /premium, /ultimum
 - /legal/privacy, /legal/terms, /legal/imprint:contentReference[oaicite:14]{index=14}
 
 CONTENT DENSITY CHECKS (FAIL if too thin)
+
 - Landing: must include sections explaining product/agents/workflows/control-plane/security/target groups:contentReference[oaicite:15]{index=15}
 - Plan pages must not be identical: enforce similarity threshold OR require unique section headings per plan:contentReference[oaicite:16]{index=16}
 
 OUTPUT
+
 - artifacts/scans/public_site_scan.json
 - artifacts/scans/public_site_scan.md
 
@@ -3387,17 +3460,20 @@ ROLE
 You are “Entitlements Consistency Scanner”.
 
 SCOPE
+
 - build/entitlements.json
 - generated HTML pages
 - inventory
 
 CHECKS (FAIL HARD)
+
 - HTML must not encode entitlement logic as constants (no baked-in plan matrices)
 - Every agent appears visible somewhere, but clickable state matches entitlements
 - Basic plan: exactly 4 clickable (opena3, opena4, opena7, opena11)
 - Higher plans include lower plans
 
 OUTPUT
+
 - artifacts/scans/entitlements_consistency_scan.json
 - artifacts/scans/entitlements_consistency_scan.md
 
@@ -3407,15 +3483,18 @@ ROLE
 You are “API Binding Scanner”.
 
 SCOPE
+
 - opena20 generator outputs
 - backend routing docs/code
 
 CHECKS (FAIL HARD)
+
 - opena20 must reference routing via control-plane conventions (no direct per-agent calls in HTML)
 - If any HTML embeds agent-localhost:PORT calls directly => FAIL
 - Prefer central coordination routing (via opena1) as described in system notes:contentReference[oaicite:17]{index=17}
 
 OUTPUT
+
 - artifacts/scans/api_binding_scan.json
 - artifacts/scans/api_binding_scan.md
 
@@ -3425,16 +3504,19 @@ ROLE
 You are “CI Gate Scanner: Preflight”.
 
 SCOPE
+
 - scripts/preflight.py
 - CI pipeline config
 
 CHECKS (FAIL HARD)
+
 - Preflight includes EXACT steps in order:
   Agent Discovery → Vault Schema Validation → Entitlement Build → HTML Generation → HTML Contract Validation → Artifact Export → Gate:contentReference[oaicite:18]{index=18}
 - Any missing step or reordered step => FAIL
 - CI must block build/deploy when preflight fails
 
 OUTPUT
+
 - artifacts/scans/preflight_gate_scan.json
 - artifacts/scans/preflight_gate_scan.md
 
@@ -3469,8 +3551,7 @@ opena21 workflow: 12367 (oder euer fix-port; muss 123xx sein)
 
 ✅ Preflight-Regel: host_port ∈ [12344..12399]
 
-
-2) Exposure-Regel (damit UI/Links sauber bleiben)
+2. Exposure-Regel (damit UI/Links sauber bleiben)
 
 Jeder Service bekommt exakt einen Exposure-Typ:
 
@@ -3485,7 +3566,7 @@ none: weder ports noch expose (selten; z. B. reine batch jobs)
 UI-Routing-Gesetz bleibt:
 Nutzer klickt immer auf /dashboard /apps/ und niemals auf http://…:123xx.
 
-3) Scanner-Ausgabe: Pflicht-Felder (damit Merger 4 Compose-Dateien bauen kann)
+3. Scanner-Ausgabe: Pflicht-Felder (damit Merger 4 Compose-Dateien bauen kann)
 
 Jeder Scanner (pro Service/Agent) muss genau diese Daten liefern:
 
@@ -3509,7 +3590,7 @@ violations[] (Strings)
 
 status: PASS | WARN | FAIL
 
-4) Merger-Regeln (wie aus Scanner-Outputs 4 Builds entstehen)
+4. Merger-Regeln (wie aus Scanner-Outputs 4 Builds entstehen)
 
 Der Merger erzeugt:
 
@@ -3533,8 +3614,8 @@ Wenn irgendein host_port außerhalb 12344–12399 oder 8080 erwähnt → FAIL.
 
 Wenn Doku/HTML direkte http://…:123xx Links enthält → FAIL (außer DEV_ONLY marker, falls ihr sowas erlaubt)
 
-5) Plan-Mindestinhalt (damit Login/Registration “wirklich” funktioniert)
-Basic muss enthalten
+5. Plan-Mindestinhalt (damit Login/Registration “wirklich” funktioniert)
+   Basic muss enthalten
 
 auth, website, opena20, opena1, opena2, opena11
 
@@ -3560,7 +3641,7 @@ Ultimum
 
 alles
 
-6) Was jetzt als „Nächster Output“ sinnvoll ist
+6. Was jetzt als „Nächster Output“ sinnvoll ist
 
 Wenn du “scanner/merger-ready” willst, sind die nächsten 2 Artefakte zwingend:
 

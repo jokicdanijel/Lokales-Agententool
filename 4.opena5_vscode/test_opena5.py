@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 opena5 Test Suite (VS Code Agent)
 Tests für Health, Root, Command, File-Operations, Search
@@ -8,7 +7,6 @@ Tests für Health, Root, Command, File-Operations, Search
 import json
 import os
 import sys
-from pathlib import Path
 
 import requests
 

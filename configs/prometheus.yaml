@@ -7,7 +7,7 @@ global:
   scrape_interval: 30s
   evaluation_interval: 15s
   external_labels:
-    monitor: 'elion-monitoring'
+    monitor: "elion-monitoring"
 
 alerting:
   alertmanagers: []
@@ -17,83 +17,83 @@ rule_files:
 
 scrape_configs:
   # Prometheus itself
-  - job_name: 'prometheus'
+  - job_name: "prometheus"
     static_configs:
-      - targets: ['localhost:9090']
+      - targets: ["localhost:9090"]
 
   # LocalAgent-Pro (NEU!)
-  - job_name: 'localagent-pro'
-    metrics_path: '/metrics'
+  - job_name: "localagent-pro"
+    metrics_path: "/metrics"
     scrape_interval: 15s
     scrape_timeout: 10s
     static_configs:
-      - targets: ['172.17.0.1:8001']
+      - targets: ["172.17.0.1:8001"]
         labels:
-          service: 'localagent-pro'
-          environment: 'production'
+          service: "localagent-pro"
+          environment: "production"
 
   # Dashboard/Coordinator (Portier)
-  - job_name: 'portier'
-    metrics_path: '/metrics'
+  - job_name: "portier"
+    metrics_path: "/metrics"
     scrape_interval: 30s
     static_configs:
-      - targets: ['localhost:12344']
+      - targets: ["localhost:12344"]
     relabel_configs:
       - source_labels: [__address__]
         target_label: service
-        replacement: 'portier'
+        replacement: "portier"
 
   # Archive Service (OpenA2)
-  - job_name: 'opena2'
-    metrics_path: '/metrics'
+  - job_name: "opena2"
+    metrics_path: "/metrics"
     scrape_interval: 30s
     static_configs:
-      - targets: ['localhost:12345']
+      - targets: ["localhost:12345"]
 
   # Telegram Agent
-  - job_name: 'telegram'
-    metrics_path: '/metrics'
+  - job_name: "telegram"
+    metrics_path: "/metrics"
     scrape_interval: 30s
     static_configs:
-      - targets: ['localhost:12346']
+      - targets: ["localhost:12346"]
 
   # Inference Service
-  - job_name: 'inference'
-    metrics_path: '/metrics'
+  - job_name: "inference"
+    metrics_path: "/metrics"
     scrape_interval: 30s
     static_configs:
-      - targets: ['localhost:12348']
+      - targets: ["localhost:12348"]
 
   # Generic services
-  - job_name: 'generic_services'
-    metrics_path: '/metrics'
+  - job_name: "generic_services"
+    metrics_path: "/metrics"
     scrape_interval: 60s
     static_configs:
       - targets:
-          - 'localhost:12349'
-          - 'localhost:12350'
-          - 'localhost:12351'
-          - 'localhost:12352'
-          - 'localhost:12353'
-          - 'localhost:12354'
-          - 'localhost:12355'
-          - 'localhost:12356'
-          - 'localhost:12357'
-          - 'localhost:12358'
-          - 'localhost:12359'
-          - 'localhost:12360'
-          - 'localhost:12361'
-          - 'localhost:12362'
-          - 'localhost:12363'
-          - 'localhost:12364'
-          - 'localhost:12365'
+          - "localhost:12349"
+          - "localhost:12350"
+          - "localhost:12351"
+          - "localhost:12352"
+          - "localhost:12353"
+          - "localhost:12354"
+          - "localhost:12355"
+          - "localhost:12356"
+          - "localhost:12357"
+          - "localhost:12358"
+          - "localhost:12359"
+          - "localhost:12360"
+          - "localhost:12361"
+          - "localhost:12362"
+          - "localhost:12363"
+          - "localhost:12364"
+          - "localhost:12365"
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
       - source_labels: [__scheme__, __address__]
-        separator: ':'
+        separator: ":"
         target_label: __param_target
       - target_label: __address__
-        replacement: 'localhost:9090'
+        replacement: "localhost:9090"
       - source_labels: [__param_target]
         target_label: instance

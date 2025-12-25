@@ -9,7 +9,6 @@ Verhindert: last_health = null, veraltete Status, tote Endpoints
 
 import asyncio
 import logging
-from typing import Optional
 from datetime import datetime
 
 # Globals (werden vom main_dashboard.py gesetzt)
@@ -22,10 +21,11 @@ _logger = logging.getLogger("background_poller")
 # Public API
 # ────────────────────────────────────────────────────────────────────────────
 
+
 def set_registry(registry):
     """
     Registriere die Agent-Registry für Poller-Zugriff.
-    
+
     Erwartet: registry mit Methoden:
       - get_all_status() → dict mit agent_id → {status, last_health, ...}
       - update_health(agent_id, is_alive, last_health_timestamp)
@@ -38,16 +38,16 @@ def set_registry(registry):
 async def start_polling(interval_sec: int = 5):
     """
     Starte Background-Poller mit konfigurierbarem Interval (Default: 5s).
-    
+
     Sollte vom @app.on_event("startup") aufgerufen werden.
     """
     global _poll_interval_sec, _poller_task
     _poll_interval_sec = interval_sec
-    
+
     if _poller_task is not None:
         _logger.warning("Poller already running")
         return
-    
+
     _logger.info(f"Starting background poller (interval: {interval_sec}s)")
     _poller_task = asyncio.create_task(_poll_loop())
 
@@ -70,13 +70,14 @@ def is_running() -> bool:
 # Internal Loop
 # ────────────────────────────────────────────────────────────────────────────
 
+
 async def _poll_loop():
     """
     Endlosschleife: Rufe alle registrierten Agenten auf, aktualisiere Health.
     Fehlertoleranz: Timeouts und Fehler loggen, aber nicht stoppen.
     """
     _logger.info("Poll loop started")
-    
+
     while True:
         try:
             await _poll_all_agents()
@@ -85,7 +86,7 @@ async def _poll_loop():
             raise
         except Exception as e:
             _logger.error(f"Poll loop exception: {e}", exc_info=True)
-        
+
         # Warte bis zum nächsten Interval
         try:
             await asyncio.sleep(_poll_interval_sec)
@@ -102,18 +103,17 @@ async def _poll_all_agents():
     if _registry is None:
         _logger.warning("Registry not set, skipping poll")
         return
-    
+
     try:
         status = await _registry.get_all_status()
-        
+
         # Kurz loggen (nur wenn sich was ändert oder je 10. Mal)
         up_count = sum(1 for s in status.values() if s.get("status") == "up")
         down_count = sum(1 for s in status.values() if s.get("status") == "down")
-        
+
         # Log nur gelegentlich (noise reduction)
-        _logger.debug(f"Poll: {up_count} up, {down_count} down, "
-                     f"last_poll={datetime.now().isoformat()}")
-        
+        _logger.debug(f"Poll: {up_count} up, {down_count} down, " f"last_poll={datetime.now().isoformat()}")
+
     except Exception as e:
         _logger.error(f"Error during poll_all_agents: {e}", exc_info=True)
 
@@ -121,6 +121,7 @@ async def _poll_all_agents():
 # ────────────────────────────────────────────────────────────────────────────
 # Lifecycle Hooks (für main_dashboard.py)
 # ────────────────────────────────────────────────────────────────────────────
+
 
 async def on_startup():
     """Rufe vom @app.on_event("startup") auf."""
@@ -141,6 +142,7 @@ async def on_shutdown():
 # ────────────────────────────────────────────────────────────────────────────
 # Diagnostics
 # ────────────────────────────────────────────────────────────────────────────
+
 
 def get_status() -> dict:
     """

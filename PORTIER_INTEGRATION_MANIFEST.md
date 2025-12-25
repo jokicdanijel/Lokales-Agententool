@@ -1,7 +1,7 @@
 # 🔗 PORTIER 3.0 — Integration Manifest
 
-**Version:** 3.0.0  
-**Date:** 21. November 2025  
+**Version:** 3.0.0
+**Date:** 21. November 2025
 **Purpose:** Complete integration guide for all PORTIER 3.0 components
 
 ---
@@ -24,6 +24,7 @@ opena20 Dashboard (Port 12349)
 ```
 
 **Involvierte Ordner:**
+
 - `19.opena20_dashboard_agent/` — Dashboard UI & API
 - `.github/` — Bearer Token in Secrets
 
@@ -39,11 +40,13 @@ opena1 (Port 12344)
 ```
 
 **Involvierte Ordner:**
+
 - `1.opena1&2_portier/opena1/` — Coordinator Service
 - `1.opena1&2_portier/bin/` — Start/Stop Scripts
 - `configs/` — Port Policy, Tool Registry
 
 **Datenfluss:**
+
 1. Request71 → opena1:12344/log/opena1
 2. Coordinator validiert Schema (Pydantic `extra="forbid"`)
 3. Decision72 generiert (selected_tool, reasoning)
@@ -62,16 +65,19 @@ archivp_store/YYYY/MM/DD/
 ```
 
 **Involvierte Ordner:**
+
 - `1.opena1&2_portier/opena2/` — Archivator Service
 - `1.opena1&2_portier/archivp_store/` — Safepoint Storage
 - `archivp/` — Legacy Archive (konsolidiert mit archivp_store/)
 
 **Safepoint Format:**
+
 ```
 SP<timestamp>_opena1→archivp_CMD.json
 ```
 
 **Policies:**
+
 - ✅ Append-only (no overwrites)
 - ✅ Unicode → (U+2192) mandatory
 - ✅ YYYY/MM/DD structure
@@ -90,10 +96,12 @@ Tool (opena4-opena21)
 ```
 
 **Involvierte Ordner:**
+
 - `1.opena1&2_portier/kordp/` — Gateway Service
 - `configs/tools_registry.json` — Tool Mappings
 
 **Tool Registry Example:**
+
 ```json
 {
   "tool_file_manager": "http://127.0.0.1:12351",
@@ -116,12 +124,14 @@ RESP Payload
 ```
 
 **Involvierte Ordner:**
+
 - `2.opena3_openwebui/` — OpenWebUI Terminal (12347) ✅
 - `3.opena4_telegram/` — Telegram Bot (12348) 🟡
 - `4.opena5_vscode/` — VS Code Integration (12349→12365) 🟡
 - `5-21.opena6-opena21/` — 16 weitere Agenten 🟡
 
 **Status:**
+
 - ✅ Running: opena3
 - 🟡 Planned: opena4-opena21
 
@@ -140,11 +150,13 @@ User Browser
 ```
 
 **Involvierte Ordner:**
+
 - `19.opena20_dashboard_agent/` — Dashboard Service
 - `19.opena20_dashboard_agent/templates/` — Jinja2 UI
 - `19.opena20_dashboard_agent/static/` — CSS/JS Assets
 
 **Features:**
+
 - Live Status Grid
 - E2E Test Trigger
 - Safepoint Inspector
@@ -175,6 +187,7 @@ src/
 ```
 
 **Integration:**
+
 - Alle Agenten importieren `src.pkg.shared.config`
 - Shared Schemas in `src.pkg.shared.schemas`
 - Agenda API als separater Service (Port 12399)
@@ -191,6 +204,7 @@ configs/
 ```
 
 **Integration:**
+
 - `agenda_api.py` lädt `agenda_pages.json`
 - `kordp` lädt `tools_registry.json`
 - `opena1` enforcement via Port Policy
@@ -207,11 +221,13 @@ tests/
 ```
 
 **Integration:**
+
 - Pytest-Suite testet Option-2-Flow E2E
 - Mocking via `httpx.MockTransport`
 - Fixtures in `conftest.py`
 
 **Test Ausführung:**
+
 ```bash
 cd 1.opena1&2_portier
 pytest tests/test_portier_stack.py -v
@@ -230,6 +246,7 @@ scripts/
 ```
 
 **Integration:**
+
 - `register_agents.py` sendet POST zu kordp:12346/route/update
 - `test_openwebui.py` prüft opena3:12347/health
 - `seed_openwebui.py` sendet Chat-Requests
@@ -254,11 +271,13 @@ bin/
 ```
 
 **Integration:**
+
 - `ops.sh` delegiert zu `1.opena1&2_portier/bin/start_stack.sh`
 - Ports 12344-12350 werden validiert
 - PID-Files in `.runtime/pids/`
 
 **Usage:**
+
 ```bash
 bin/ops.sh start    # Startet opena1, opena2, kordp, opena3, opena20
 bin/ops.sh status   # JSON-Status aller Services
@@ -272,34 +291,35 @@ bin/ops.sh logs     # Tail alle Logs
 
 ### **Port-Mapping (Vollständig)**
 
-| Port | Service | Ordner | Status |
-|------|---------|--------|--------|
-| **12344** | opena1 (Coordinator) | 1.opena1&2_portier/opena1/ | ✅ Running |
-| **12345** | opena2 (Archivator) | 1.opena1&2_portier/opena2/ | ✅ Running |
-| **12346** | kordp (Gateway) | 1.opena1&2_portier/kordp/ | ✅ Running |
-| **12347** | opena3 (OpenWebUI) | 2.opena3_openwebui/ | ✅ Running |
-| **12348** | opena4 (Telegram) | 3.opena4_telegram/ | 🟡 Planned |
-| **12349** | opena20 (Dashboard) | 19.opena20_dashboard_agent/ | ✅ Running |
-| **12350** | OpenWebUI Adapter | 2.opena3_openwebui/ | ✅ Running |
-| **12351** | opena7 (E-Mail) | 6.opena7_email/ | 🟡 Planned |
-| **12352** | opena8 (WhatsApp) | 7.opena8_whatsapp/ | 🟡 Planned |
-| **12353** | opena9 (Telefon) | 8.opena9_telephone/ | 🟡 Planned |
-| **12354** | opena10 (Call Tracking) | 9.opena10_call_tracking/ | 🟡 Planned |
-| **12355** | opena11 (Unlock) | 10.opena11_unlock/ | 🟡 Planned |
-| **12356** | opena12 (Social Media) | 11.opena12_social_media/ | 🟡 Planned |
-| **12357** | opena13 (Influencer) | 12.opena13_influencer/ | 🟡 Planned |
-| **12358** | opena14 (Calendar) | 13.opena14_calendar/ | 🟡 Planned |
-| **12359** | opena15 (HTML) | 14.opena15_html/ | 🟡 Planned |
-| **12360** | opena16 (Shop) | 15.opena16_shop/ | 🟡 Planned |
-| **12361** | opena17 (Homepage Creator) | 16.opena17_homepagecreator/ | 🟡 Planned |
-| **12362** | opena18 (CRM) | 17.opena18_CMR/ | 🟡 Planned |
-| **12363** | opena19 (Aktien/Crypto) | 18.opena19_Aktien&Crypto/ | 🟡 Planned |
-| **12364** | opena21 (Workflow) | 20.opena21_workflow/ | 🟡 Planned |
-| **12365** | opena5 (VS Code) (verschoben) | 4.opena5_vscode/ | 🟡 Planned |
-| **12399** | Agenda API | src/services/agenda_api.py | ✅ Running |
-| **8080** | OpenWebUI UI (verboten für Backend) | Docker | ✅ Running |
+| Port      | Service                             | Ordner                      | Status     |
+| --------- | ----------------------------------- | --------------------------- | ---------- |
+| **12344** | opena1 (Coordinator)                | 1.opena1&2_portier/opena1/  | ✅ Running |
+| **12345** | opena2 (Archivator)                 | 1.opena1&2_portier/opena2/  | ✅ Running |
+| **12346** | kordp (Gateway)                     | 1.opena1&2_portier/kordp/   | ✅ Running |
+| **12347** | opena3 (OpenWebUI)                  | 2.opena3_openwebui/         | ✅ Running |
+| **12348** | opena4 (Telegram)                   | 3.opena4_telegram/          | 🟡 Planned |
+| **12349** | opena20 (Dashboard)                 | 19.opena20_dashboard_agent/ | ✅ Running |
+| **12350** | OpenWebUI Adapter                   | 2.opena3_openwebui/         | ✅ Running |
+| **12351** | opena7 (E-Mail)                     | 6.opena7_email/             | 🟡 Planned |
+| **12352** | opena8 (WhatsApp)                   | 7.opena8_whatsapp/          | 🟡 Planned |
+| **12353** | opena9 (Telefon)                    | 8.opena9_telephone/         | 🟡 Planned |
+| **12354** | opena10 (Call Tracking)             | 9.opena10_call_tracking/    | 🟡 Planned |
+| **12355** | opena11 (Unlock)                    | 10.opena11_unlock/          | 🟡 Planned |
+| **12356** | opena12 (Social Media)              | 11.opena12_social_media/    | 🟡 Planned |
+| **12357** | opena13 (Influencer)                | 12.opena13_influencer/      | 🟡 Planned |
+| **12358** | opena14 (Calendar)                  | 13.opena14_calendar/        | 🟡 Planned |
+| **12359** | opena15 (HTML)                      | 14.opena15_html/            | 🟡 Planned |
+| **12360** | opena16 (Shop)                      | 15.opena16_shop/            | 🟡 Planned |
+| **12361** | opena17 (Homepage Creator)          | 16.opena17_homepagecreator/ | 🟡 Planned |
+| **12362** | opena18 (CRM)                       | 17.opena18_CMR/             | 🟡 Planned |
+| **12363** | opena19 (Aktien/Crypto)             | 18.opena19_Aktien&Crypto/   | 🟡 Planned |
+| **12364** | opena21 (Workflow)                  | 20.opena21_workflow/        | 🟡 Planned |
+| **12365** | opena5 (VS Code) (verschoben)       | 4.opena5_vscode/            | 🟡 Planned |
+| **12399** | Agenda API                          | src/services/agenda_api.py  | ✅ Running |
+| **8080**  | OpenWebUI UI (verboten für Backend) | Docker                      | ✅ Running |
 
 **Port Policy:**
+
 - **Allowed:** 12344-12399 (Backend Services)
 - **Forbidden:** 8080 (UI-only, kein Backend)
 
@@ -367,6 +387,7 @@ bin/ops.sh logs     # Tail alle Logs
 ```
 
 **Involvierte Ordner:**
+
 - `1.opena1&2_portier/opena1/` — Step 2
 - `1.opena1&2_portier/opena2/` — Steps 3, 6
 - `1.opena1&2_portier/kordp/` — Step 4
@@ -388,6 +409,7 @@ bin/env_bootstrap.sh  # Generates .env with UUID
 ```
 
 **Integration:**
+
 - Dashboard API (opena20) requires Bearer Token
 - Token in `.env` (gitignored via `.gitignore`)
 - `.env.example` als Template
@@ -408,6 +430,7 @@ app.add_middleware(
 ```
 
 **Integration:**
+
 - `src/pkg/shared/config.py` — Port Policy Definition
 - Alle Services importieren & erzwingen
 
@@ -423,8 +446,9 @@ def redact_secrets(data: dict) -> dict:
 ```
 
 **Integration:**
+
 - Alle Safepoints redaktieren Secrets
-- Logs maskieren API Keys (*** statt sk-...)
+- Logs maskieren API Keys (\*\*\* statt sk-...)
 
 ---
 
@@ -440,6 +464,7 @@ repos:
 ```
 
 **Integration:**
+
 - `.github/workflows/ci.yml` führt Pre-Commit aus
 - Blockiert Secrets im Repo
 
@@ -460,6 +485,7 @@ curl -X POST http://127.0.0.1:12344/log/opena1 \
 ```
 
 **Integration:**
+
 - `tests/test_portier_stack.py` — E2E Flow validiert
 - Dashboard API `/api/e2e` triggert Test
 - Pytest-Suite läuft via `bin/ops.sh test`
@@ -485,6 +511,7 @@ docs/OPENWEBUI_INTEGRATION.md    ← opena3 Specs
 ```
 
 **Integration:**
+
 - Alle Dokumente verlinken sich gegenseitig
 - `.github/copilot-instructions.md` verweist auf Master-Prompt
 - README als Einstiegspunkt
@@ -507,6 +534,7 @@ v3.0.0 (PORTIER 3.0 Release)
 ```
 
 **Integration:**
+
 - `.github/workflows/ci.yml` — GitHub Actions
 - Pre-Commit Hooks
 - Pull Request Template
@@ -517,7 +545,7 @@ v3.0.0 (PORTIER 3.0 Release)
 
 ```yaml
 # docker-compose.prod.yml
-version: '3.8'
+version: "3.8"
 services:
   opena1:
     build: ./1.opena1&2_portier
@@ -531,6 +559,7 @@ services:
 ```
 
 **Integration:**
+
 - `Dockerfile` in jedem Service-Ordner (geplant)
 - `docker-compose.prod.yml` orchestriert Stack
 - `.dockerignore` blockiert Secrets
@@ -553,6 +582,7 @@ jobs:
 ```
 
 **Integration:**
+
 - GitHub Actions führt Tests aus
 - Pre-Commit validiert Code
 - Tag-basierte Releases
@@ -585,6 +615,7 @@ cd 1.opena1&2_portier
 ```
 
 **Integration:**
+
 - `bin/ops.sh` delegiert zu `1.opena1&2_portier/bin/start_stack.sh`
 - PID-Files in `.runtime/pids/`
 - Logs in `logs/`
@@ -598,12 +629,12 @@ cd 1.opena1&2_portier
 ```javascript
 // dashboard.js
 async function fetchStatus() {
-  const response = await fetch('/api/status');
+  const response = await fetch("/api/status");
   const data = await response.json();
-  
+
   // Update Status Grid
   updateStatusGrid(data);
-  
+
   // Update Activity Log
   logActivity(`Fetched status for ${Object.keys(data).length} services`);
 }
@@ -613,6 +644,7 @@ setInterval(fetchStatus, 5000);
 ```
 
 **Integration:**
+
 - `19.opena20_dashboard_agent/static/js/dashboard.js`
 - Ruft `/api/status` ab (alle Services)
 - Displays Live Grid in UI
@@ -624,15 +656,16 @@ setInterval(fetchStatus, 5000);
 ```yaml
 # prometheus.yml (geplant)
 scrape_configs:
-  - job_name: 'portier'
+  - job_name: "portier"
     static_configs:
       - targets:
-        - '127.0.0.1:12344'  # opena1
-        - '127.0.0.1:12345'  # opena2
-        - '127.0.0.1:12346'  # kordp
+          - "127.0.0.1:12344" # opena1
+          - "127.0.0.1:12345" # opena2
+          - "127.0.0.1:12346" # kordp
 ```
 
 **Integration:**
+
 - Metrics-Endpoints in jedem Service (geplant)
 - Grafana Dashboards (geplant)
 - Alerts via Alertmanager (geplant)
@@ -656,6 +689,6 @@ scrape_configs:
 
 ---
 
-**Last Updated:** 21. November 2025  
-**Version:** 3.0.0  
+**Last Updated:** 21. November 2025
+**Version:** 3.0.0
 **Maintainer:** Danijel Jokic (ELION Team)

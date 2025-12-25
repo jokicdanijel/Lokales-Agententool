@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena4 Telegram Agent
 
-**Agent-ID:** opena4  
-**Port:** 12348  
-**Status:** 🟡 Planned  
-**Kürzel:** `telep`  
+**Agent-ID:** opena4
+**Port:** 12348
+**Status:** 🟡 Planned
+**Kürzel:** `telep`
 **Domäne:** Telegram Bot API, Webhook, Message Queue
 
 ---
@@ -47,6 +47,7 @@ Du bist der **Co-Pilot für opena4**, verantwortlich für die vollständige Ausf
 ### 4. Berichte & Artefakte
 
 Generiere/aktualisiere:
+
 - `rename_map.csv` (Bot-Command-Mapping)
 - `path_index.json` (Webhook-Pfad-Registry)
 - `violations_report.md` (Ungültige Updates, Rate-Limit-Fehler)
@@ -63,6 +64,7 @@ Generiere/aktualisiere:
 ### 6. Dry-Run
 
 Führe Simulation durch:
+
 - Gib Plan aus (Webhook-Registrierung, Message-Queue-Setup)
 - **Keine Änderungen durchführen**
 - Validiere Telegram API-Verfügbarkeit
@@ -70,6 +72,7 @@ Führe Simulation durch:
 ### 7. Apply
 
 Falls Dry-Run erfolgreich:
+
 - ✅ Webhook registrieren (`setWebhook`)
 - ✅ Message-Queue starten
 - ✅ PID-File schreiben (`logs/opena4.pid`)
@@ -142,11 +145,12 @@ Falls Dry-Run erfolgreich:
 ## 🚀 Verwendung in VSCode Copilot
 
 Kopiere diesen Prompt in:
+
 - **Chat:** Als System-Prompt für Agent-spezifische Aufgaben
 - **Datei:** `3.opena4_telegram/MASTER_PROMPT.md` (Referenz)
 - **Workflow:** Trigger via `bin/ops.sh opena4:init`
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

@@ -713,8 +713,12 @@
   --button-invisible-bgColor-active: var(--control-transparent-bgColor-active);
   --button-invisible-bgColor-hover: var(--control-transparent-bgColor-hover);
   --button-invisible-bgColor-rest: var(--control-transparent-bgColor-rest);
-  --button-invisible-borderColor-hover: var(--control-transparent-borderColor-hover);
-  --button-invisible-borderColor-rest: var(--control-transparent-borderColor-rest);
+  --button-invisible-borderColor-hover: var(
+    --control-transparent-borderColor-hover
+  );
+  --button-invisible-borderColor-rest: var(
+    --control-transparent-borderColor-rest
+  );
   --button-invisible-iconColor-hover: var(--fgColor-muted);
   --button-invisible-iconColor-rest: var(--fgColor-muted);
   --button-outline-fgColor-active: #ffffff;
@@ -727,18 +731,34 @@
   --buttonCounter-danger-fgColor-rest: var(--fgColor-danger);
   --buttonCounter-invisible-bgColor-rest: var(--bgColor-neutral-muted);
   --buttonCounter-outline-bgColor-disabled: #1f6feb0d;
-  --buttonKeybindingHint-danger-bgColor-rest: var(--buttonKeybindingHint-default-bgColor-rest);
-  --buttonKeybindingHint-danger-borderColor-active: var(--buttonKeybindingHint-danger-borderColor-hover);
-  --buttonKeybindingHint-default-bgColor-disabled: var(--buttonKeybindingHint-default-bgColor-rest);
+  --buttonKeybindingHint-danger-bgColor-rest: var(
+    --buttonKeybindingHint-default-bgColor-rest
+  );
+  --buttonKeybindingHint-danger-borderColor-active: var(
+    --buttonKeybindingHint-danger-borderColor-hover
+  );
+  --buttonKeybindingHint-default-bgColor-disabled: var(
+    --buttonKeybindingHint-default-bgColor-rest
+  );
   --buttonKeybindingHint-default-fgColor-rest: var(--fgColor-muted);
   --buttonKeybindingHint-inactive-fgColor: var(--button-inactive-fgColor);
-  --buttonKeybindingHint-invisible-bgColor-active: var(--control-transparent-bgColor-active);
-  --buttonKeybindingHint-invisible-bgColor-disabled: var(--button-invisible-bgColor-disabled);
-  --buttonKeybindingHint-invisible-bgColor-hover: var(--control-transparent-bgColor-hover);
-  --buttonKeybindingHint-invisible-bgColor-rest: var(--buttonKeybindingHint-default-bgColor-rest);
+  --buttonKeybindingHint-invisible-bgColor-active: var(
+    --control-transparent-bgColor-active
+  );
+  --buttonKeybindingHint-invisible-bgColor-disabled: var(
+    --button-invisible-bgColor-disabled
+  );
+  --buttonKeybindingHint-invisible-bgColor-hover: var(
+    --control-transparent-bgColor-hover
+  );
+  --buttonKeybindingHint-invisible-bgColor-rest: var(
+    --buttonKeybindingHint-default-bgColor-rest
+  );
   --buttonKeybindingHint-invisible-fgColor-rest: var(--fgColor-muted);
   --buttonKeybindingHint-primary-bgColor-disabled: #04260f1a;
-  --buttonKeybindingHint-primary-bgColor-rest: var(--buttonCounter-primary-bgColor-rest);
+  --buttonKeybindingHint-primary-bgColor-rest: var(
+    --buttonCounter-primary-bgColor-rest
+  );
   --buttonKeybindingHint-primary-borderColor-rest: #04260f1a;
   --card-bgColor: var(--bgColor-muted);
   --codeMirror-activeline-bgColor: var(--bgColor-neutral-muted);
@@ -753,10 +773,18 @@
   --codeMirror-matchingBracket-fgColor: var(--fgColor-default);
   --codeMirror-selection-bgColor: var(--borderColor-accent-muted);
   --color-ansi-white-bright: #ffffff;
-  --contribution-default-borderColor-1: var(--contribution-default-borderColor-0);
-  --contribution-default-borderColor-2: var(--contribution-default-borderColor-0);
-  --contribution-default-borderColor-3: var(--contribution-default-borderColor-0);
-  --contribution-default-borderColor-4: var(--contribution-default-borderColor-0);
+  --contribution-default-borderColor-1: var(
+    --contribution-default-borderColor-0
+  );
+  --contribution-default-borderColor-2: var(
+    --contribution-default-borderColor-0
+  );
+  --contribution-default-borderColor-3: var(
+    --contribution-default-borderColor-0
+  );
+  --contribution-default-borderColor-4: var(
+    --contribution-default-borderColor-0
+  );
   --control-bgColor-disabled: var(--bgColor-disabled);
   --control-bgColor-selected: var(--control-bgColor-rest);
   --control-borderColor-danger: var(--borderColor-danger-emphasis);
@@ -819,7 +847,8 @@
   --reactionButton-selected-fgColor-rest: var(--fgColor-link);
   --selectMenu-borderColor: var(--borderColor-default);
   --selection-bgColor: #1f6febb3;
-  --shadow-floating-legacy: 0px 6px 12px -3px #01040966, 0px 6px 18px 0px #01040966;
+  --shadow-floating-legacy:
+    0px 6px 12px -3px #01040966, 0px 6px 18px 0px #01040966;
   --shadow-inset: inset 0px 1px 0px 0px #0104093d;
   --shadow-resting-medium: 0px 1px 1px 0px #01040966, 0px 3px 6px 0px #010409cc;
   --shadow-resting-small: 0px 1px 1px 0px #01040999, 0px 1px 3px 0px #01040999;
@@ -852,20 +881,38 @@
   --button-primary-borderColor-rest: var(--borderColor-translucent);
   --button-primary-fgColor-rest: var(--fgColor-white);
   --button-primary-iconColor-rest: var(--fgColor-white);
-  --buttonKeybindingHint-danger-bgColor-disabled: var(--buttonKeybindingHint-default-bgColor-disabled);
+  --buttonKeybindingHint-danger-bgColor-disabled: var(
+    --buttonKeybindingHint-default-bgColor-disabled
+  );
   --buttonKeybindingHint-danger-fgColor-active: var(--fgColor-onEmphasis);
   --buttonKeybindingHint-danger-fgColor-hover: var(--fgColor-onEmphasis);
-  --buttonKeybindingHint-danger-fgColor-rest: var(--buttonKeybindingHint-default-fgColor-rest);
-  --buttonKeybindingHint-default-borderColor-disabled: var(--control-borderColor-disabled);
+  --buttonKeybindingHint-danger-fgColor-rest: var(
+    --buttonKeybindingHint-default-fgColor-rest
+  );
+  --buttonKeybindingHint-default-borderColor-disabled: var(
+    --control-borderColor-disabled
+  );
   --buttonKeybindingHint-default-borderColor-rest: var(--borderColor-muted);
-  --buttonKeybindingHint-default-fgColor-disabled: var(--control-fgColor-disabled);
+  --buttonKeybindingHint-default-fgColor-disabled: var(
+    --control-fgColor-disabled
+  );
   --buttonKeybindingHint-inactive-borderColor: var(--borderColor-muted);
-  --buttonKeybindingHint-invisible-borderColor-disabled: var(--control-borderColor-disabled);
-  --buttonKeybindingHint-invisible-fgColor-disabled: var(--control-fgColor-disabled);
-  --buttonKeybindingHint-primary-borderColor-disabled: var(--control-borderColor-disabled);
-  --buttonKeybindingHint-primary-fgColor-disabled: var(--button-primary-fgColor-disabled);
+  --buttonKeybindingHint-invisible-borderColor-disabled: var(
+    --control-borderColor-disabled
+  );
+  --buttonKeybindingHint-invisible-fgColor-disabled: var(
+    --control-fgColor-disabled
+  );
+  --buttonKeybindingHint-primary-borderColor-disabled: var(
+    --control-borderColor-disabled
+  );
+  --buttonKeybindingHint-primary-fgColor-disabled: var(
+    --button-primary-fgColor-disabled
+  );
   --buttonKeybindingHint-primary-fgColor-rest: var(--fgColor-onEmphasis);
-  --control-checked-borderColor-disabled: var(--control-checked-bgColor-disabled);
+  --control-checked-borderColor-disabled: var(
+    --control-checked-bgColor-disabled
+  );
   --control-checked-borderColor-rest: var(--control-checked-bgColor-rest);
   --control-checked-fgColor-rest: var(--fgColor-onEmphasis);
   --controlKnob-bgColor-disabled: var(--control-bgColor-disabled);
@@ -885,12 +932,23 @@
   --button-default-borderColor-hover: var(--button-default-borderColor-rest);
   --button-primary-borderColor-active: var(--button-primary-borderColor-rest);
   --button-primary-borderColor-hover: var(--button-primary-borderColor-rest);
-  --buttonKeybindingHint-danger-borderColor-disabled: var(--buttonKeybindingHint-default-borderColor-disabled);
-  --buttonKeybindingHint-danger-borderColor-rest: var(--buttonKeybindingHint-default-borderColor-rest);
-  --buttonKeybindingHint-danger-fgColor-disabled: var(--buttonKeybindingHint-default-fgColor-disabled);
+  --buttonKeybindingHint-danger-borderColor-disabled: var(
+    --buttonKeybindingHint-default-borderColor-disabled
+  );
+  --buttonKeybindingHint-danger-borderColor-rest: var(
+    --buttonKeybindingHint-default-borderColor-rest
+  );
+  --buttonKeybindingHint-danger-fgColor-disabled: var(
+    --buttonKeybindingHint-default-fgColor-disabled
+  );
   --shadow-floating-large: 0px 0px 0px 1px #3d444d, 0px 24px 48px 0px #010409;
-  --shadow-floating-medium: 0px 0px 0px 1px #3d444d, 0px 8px 16px -4px #01040966, 0px 4px 32px -4px #01040966, 0px 24px 48px -12px #01040966, 0px 48px 96px -24px #01040966;
-  --shadow-floating-small: 0px 0px 0px 1px #3d444d, 0px 6px 12px -3px #01040966, 0px 6px 18px 0px #01040966;
+  --shadow-floating-medium:
+    0px 0px 0px 1px #3d444d, 0px 8px 16px -4px #01040966,
+    0px 4px 32px -4px #01040966, 0px 24px 48px -12px #01040966,
+    0px 48px 96px -24px #01040966;
+  --shadow-floating-small:
+    0px 0px 0px 1px #3d444d, 0px 6px 12px -3px #01040966,
+    0px 6px 18px 0px #01040966;
   --shadow-floating-xlarge: 0px 0px 0px 1px #3d444d, 0px 32px 64px 0px #010409;
   --underlineNav-borderColor-hover: var(--borderColor-neutral-muted);
   --button-danger-borderColor-active: var(--button-danger-borderColor-hover);
@@ -899,7 +957,8 @@
 }
 @media (prefers-color-scheme: dark) {
   [data-color-mode][data-color-mode="auto"][data-dark-theme="dark_tritanopia"],
-  [data-color-mode][data-color-mode="auto"][data-dark-theme="dark_tritanopia"] ::backdrop {
+  [data-color-mode][data-color-mode="auto"][data-dark-theme="dark_tritanopia"]
+    ::backdrop {
     --bgColor-sponsors-muted: #db61a21a;
     --button-danger-fgColor-rest: #fa5e55;
     --button-outline-bgColor-active: #0d419d;
@@ -1608,11 +1667,17 @@
     --button-default-bgColor-hover: var(--control-bgColor-hover);
     --button-default-bgColor-rest: var(--control-bgColor-rest);
     --button-default-bgColor-selected: var(--control-bgColor-active);
-    --button-invisible-bgColor-active: var(--control-transparent-bgColor-active);
+    --button-invisible-bgColor-active: var(
+      --control-transparent-bgColor-active
+    );
     --button-invisible-bgColor-hover: var(--control-transparent-bgColor-hover);
     --button-invisible-bgColor-rest: var(--control-transparent-bgColor-rest);
-    --button-invisible-borderColor-hover: var(--control-transparent-borderColor-hover);
-    --button-invisible-borderColor-rest: var(--control-transparent-borderColor-rest);
+    --button-invisible-borderColor-hover: var(
+      --control-transparent-borderColor-hover
+    );
+    --button-invisible-borderColor-rest: var(
+      --control-transparent-borderColor-rest
+    );
     --button-invisible-iconColor-hover: var(--fgColor-muted);
     --button-invisible-iconColor-rest: var(--fgColor-muted);
     --button-outline-fgColor-active: #ffffff;
@@ -1625,18 +1690,34 @@
     --buttonCounter-danger-fgColor-rest: var(--fgColor-danger);
     --buttonCounter-invisible-bgColor-rest: var(--bgColor-neutral-muted);
     --buttonCounter-outline-bgColor-disabled: #1f6feb0d;
-    --buttonKeybindingHint-danger-bgColor-rest: var(--buttonKeybindingHint-default-bgColor-rest);
-    --buttonKeybindingHint-danger-borderColor-active: var(--buttonKeybindingHint-danger-borderColor-hover);
-    --buttonKeybindingHint-default-bgColor-disabled: var(--buttonKeybindingHint-default-bgColor-rest);
+    --buttonKeybindingHint-danger-bgColor-rest: var(
+      --buttonKeybindingHint-default-bgColor-rest
+    );
+    --buttonKeybindingHint-danger-borderColor-active: var(
+      --buttonKeybindingHint-danger-borderColor-hover
+    );
+    --buttonKeybindingHint-default-bgColor-disabled: var(
+      --buttonKeybindingHint-default-bgColor-rest
+    );
     --buttonKeybindingHint-default-fgColor-rest: var(--fgColor-muted);
     --buttonKeybindingHint-inactive-fgColor: var(--button-inactive-fgColor);
-    --buttonKeybindingHint-invisible-bgColor-active: var(--control-transparent-bgColor-active);
-    --buttonKeybindingHint-invisible-bgColor-disabled: var(--button-invisible-bgColor-disabled);
-    --buttonKeybindingHint-invisible-bgColor-hover: var(--control-transparent-bgColor-hover);
-    --buttonKeybindingHint-invisible-bgColor-rest: var(--buttonKeybindingHint-default-bgColor-rest);
+    --buttonKeybindingHint-invisible-bgColor-active: var(
+      --control-transparent-bgColor-active
+    );
+    --buttonKeybindingHint-invisible-bgColor-disabled: var(
+      --button-invisible-bgColor-disabled
+    );
+    --buttonKeybindingHint-invisible-bgColor-hover: var(
+      --control-transparent-bgColor-hover
+    );
+    --buttonKeybindingHint-invisible-bgColor-rest: var(
+      --buttonKeybindingHint-default-bgColor-rest
+    );
     --buttonKeybindingHint-invisible-fgColor-rest: var(--fgColor-muted);
     --buttonKeybindingHint-primary-bgColor-disabled: #04260f1a;
-    --buttonKeybindingHint-primary-bgColor-rest: var(--buttonCounter-primary-bgColor-rest);
+    --buttonKeybindingHint-primary-bgColor-rest: var(
+      --buttonCounter-primary-bgColor-rest
+    );
     --buttonKeybindingHint-primary-borderColor-rest: #04260f1a;
     --card-bgColor: var(--bgColor-muted);
     --codeMirror-activeline-bgColor: var(--bgColor-neutral-muted);
@@ -1651,10 +1732,18 @@
     --codeMirror-matchingBracket-fgColor: var(--fgColor-default);
     --codeMirror-selection-bgColor: var(--borderColor-accent-muted);
     --color-ansi-white-bright: #ffffff;
-    --contribution-default-borderColor-1: var(--contribution-default-borderColor-0);
-    --contribution-default-borderColor-2: var(--contribution-default-borderColor-0);
-    --contribution-default-borderColor-3: var(--contribution-default-borderColor-0);
-    --contribution-default-borderColor-4: var(--contribution-default-borderColor-0);
+    --contribution-default-borderColor-1: var(
+      --contribution-default-borderColor-0
+    );
+    --contribution-default-borderColor-2: var(
+      --contribution-default-borderColor-0
+    );
+    --contribution-default-borderColor-3: var(
+      --contribution-default-borderColor-0
+    );
+    --contribution-default-borderColor-4: var(
+      --contribution-default-borderColor-0
+    );
     --control-bgColor-disabled: var(--bgColor-disabled);
     --control-bgColor-selected: var(--control-bgColor-rest);
     --control-borderColor-danger: var(--borderColor-danger-emphasis);
@@ -1717,10 +1806,13 @@
     --reactionButton-selected-fgColor-rest: var(--fgColor-link);
     --selectMenu-borderColor: var(--borderColor-default);
     --selection-bgColor: #1f6febb3;
-    --shadow-floating-legacy: 0px 6px 12px -3px #01040966, 0px 6px 18px 0px #01040966;
+    --shadow-floating-legacy:
+      0px 6px 12px -3px #01040966, 0px 6px 18px 0px #01040966;
     --shadow-inset: inset 0px 1px 0px 0px #0104093d;
-    --shadow-resting-medium: 0px 1px 1px 0px #01040966, 0px 3px 6px 0px #010409cc;
-    --shadow-resting-small: 0px 1px 1px 0px #01040999, 0px 1px 3px 0px #01040999;
+    --shadow-resting-medium:
+      0px 1px 1px 0px #01040966, 0px 3px 6px 0px #010409cc;
+    --shadow-resting-small:
+      0px 1px 1px 0px #01040999, 0px 1px 3px 0px #01040999;
     --shadow-resting-xsmall: 0px 1px 1px 0px #010409cc;
     --tooltip-bgColor: var(--bgColor-emphasis);
     --treeViewItem-leadingVisual-iconColor-rest: var(--fgColor-muted);
@@ -1750,20 +1842,38 @@
     --button-primary-borderColor-rest: var(--borderColor-translucent);
     --button-primary-fgColor-rest: var(--fgColor-white);
     --button-primary-iconColor-rest: var(--fgColor-white);
-    --buttonKeybindingHint-danger-bgColor-disabled: var(--buttonKeybindingHint-default-bgColor-disabled);
+    --buttonKeybindingHint-danger-bgColor-disabled: var(
+      --buttonKeybindingHint-default-bgColor-disabled
+    );
     --buttonKeybindingHint-danger-fgColor-active: var(--fgColor-onEmphasis);
     --buttonKeybindingHint-danger-fgColor-hover: var(--fgColor-onEmphasis);
-    --buttonKeybindingHint-danger-fgColor-rest: var(--buttonKeybindingHint-default-fgColor-rest);
-    --buttonKeybindingHint-default-borderColor-disabled: var(--control-borderColor-disabled);
+    --buttonKeybindingHint-danger-fgColor-rest: var(
+      --buttonKeybindingHint-default-fgColor-rest
+    );
+    --buttonKeybindingHint-default-borderColor-disabled: var(
+      --control-borderColor-disabled
+    );
     --buttonKeybindingHint-default-borderColor-rest: var(--borderColor-muted);
-    --buttonKeybindingHint-default-fgColor-disabled: var(--control-fgColor-disabled);
+    --buttonKeybindingHint-default-fgColor-disabled: var(
+      --control-fgColor-disabled
+    );
     --buttonKeybindingHint-inactive-borderColor: var(--borderColor-muted);
-    --buttonKeybindingHint-invisible-borderColor-disabled: var(--control-borderColor-disabled);
-    --buttonKeybindingHint-invisible-fgColor-disabled: var(--control-fgColor-disabled);
-    --buttonKeybindingHint-primary-borderColor-disabled: var(--control-borderColor-disabled);
-    --buttonKeybindingHint-primary-fgColor-disabled: var(--button-primary-fgColor-disabled);
+    --buttonKeybindingHint-invisible-borderColor-disabled: var(
+      --control-borderColor-disabled
+    );
+    --buttonKeybindingHint-invisible-fgColor-disabled: var(
+      --control-fgColor-disabled
+    );
+    --buttonKeybindingHint-primary-borderColor-disabled: var(
+      --control-borderColor-disabled
+    );
+    --buttonKeybindingHint-primary-fgColor-disabled: var(
+      --button-primary-fgColor-disabled
+    );
     --buttonKeybindingHint-primary-fgColor-rest: var(--fgColor-onEmphasis);
-    --control-checked-borderColor-disabled: var(--control-checked-bgColor-disabled);
+    --control-checked-borderColor-disabled: var(
+      --control-checked-bgColor-disabled
+    );
     --control-checked-borderColor-rest: var(--control-checked-bgColor-rest);
     --control-checked-fgColor-rest: var(--fgColor-onEmphasis);
     --controlKnob-bgColor-disabled: var(--control-bgColor-disabled);
@@ -1783,20 +1893,33 @@
     --button-default-borderColor-hover: var(--button-default-borderColor-rest);
     --button-primary-borderColor-active: var(--button-primary-borderColor-rest);
     --button-primary-borderColor-hover: var(--button-primary-borderColor-rest);
-    --buttonKeybindingHint-danger-borderColor-disabled: var(--buttonKeybindingHint-default-borderColor-disabled);
-    --buttonKeybindingHint-danger-borderColor-rest: var(--buttonKeybindingHint-default-borderColor-rest);
-    --buttonKeybindingHint-danger-fgColor-disabled: var(--buttonKeybindingHint-default-fgColor-disabled);
+    --buttonKeybindingHint-danger-borderColor-disabled: var(
+      --buttonKeybindingHint-default-borderColor-disabled
+    );
+    --buttonKeybindingHint-danger-borderColor-rest: var(
+      --buttonKeybindingHint-default-borderColor-rest
+    );
+    --buttonKeybindingHint-danger-fgColor-disabled: var(
+      --buttonKeybindingHint-default-fgColor-disabled
+    );
     --shadow-floating-large: 0px 0px 0px 1px #3d444d, 0px 24px 48px 0px #010409;
-    --shadow-floating-medium: 0px 0px 0px 1px #3d444d, 0px 8px 16px -4px #01040966, 0px 4px 32px -4px #01040966, 0px 24px 48px -12px #01040966, 0px 48px 96px -24px #01040966;
-    --shadow-floating-small: 0px 0px 0px 1px #3d444d, 0px 6px 12px -3px #01040966, 0px 6px 18px 0px #01040966;
-    --shadow-floating-xlarge: 0px 0px 0px 1px #3d444d, 0px 32px 64px 0px #010409;
+    --shadow-floating-medium:
+      0px 0px 0px 1px #3d444d, 0px 8px 16px -4px #01040966,
+      0px 4px 32px -4px #01040966, 0px 24px 48px -12px #01040966,
+      0px 48px 96px -24px #01040966;
+    --shadow-floating-small:
+      0px 0px 0px 1px #3d444d, 0px 6px 12px -3px #01040966,
+      0px 6px 18px 0px #01040966;
+    --shadow-floating-xlarge:
+      0px 0px 0px 1px #3d444d, 0px 32px 64px 0px #010409;
     --underlineNav-borderColor-hover: var(--borderColor-neutral-muted);
     --button-danger-borderColor-active: var(--button-danger-borderColor-hover);
     --button-outline-borderColor-hover: var(--button-default-borderColor-hover);
-    --button-outline-borderColor-active: var(--button-outline-borderColor-hover);
+    --button-outline-borderColor-active: var(
+      --button-outline-borderColor-hover
+    );
   }
 }
-
 
 /*# sourceMappingURL=dark_tritanopia.scss.map */
 

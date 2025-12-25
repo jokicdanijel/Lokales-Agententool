@@ -22,7 +22,7 @@ Das `scripts/agent_discovery.py` Script führt eine vollständige, deterministis
   - Port-Literale
   - Agent-Referenzen (opena1, opena2, ...)
 - **HTML-Parsing**:
-  - data-* Attribute
+  - data-\* Attribute
   - Form/Nav-Präsenz
   - Port-Literale
   - Agent-Referenzen
@@ -60,6 +60,7 @@ python3 scripts/agent_discovery.py
 **Datei**: `artifacts/agent_inventory.json`
 
 **Struktur**:
+
 ```json
 {
   "baseline_hash": "6dd1fc4c2f638860...",
@@ -138,14 +139,14 @@ Total violations: 61
 
 ### Violations Breakdown
 
-| Agent | Violations | Hauptproblem |
-|-------|-----------|--------------|
-| opena3 | 19 | Viele nicht-konforme Ports (3000, 8080, 5000, ...) |
-| opena4 | 4 | Ports 3000, 8080 |
-| opena5 | 3 | Port 8080, 8000 |
-| opena6 | 3 | Port 8080, 5000 |
-| opena7-opena16 | 2-3 | Port 8080 + Port-Mismatches |
-| opena17-opena19 | 1 | Port-Mismatches |
+| Agent           | Violations | Hauptproblem                                       |
+| --------------- | ---------- | -------------------------------------------------- |
+| opena3          | 19         | Viele nicht-konforme Ports (3000, 8080, 5000, ...) |
+| opena4          | 4          | Ports 3000, 8080                                   |
+| opena5          | 3          | Port 8080, 8000                                    |
+| opena6          | 3          | Port 8080, 5000                                    |
+| opena7-opena16  | 2-3        | Port 8080 + Port-Mismatches                        |
+| opena17-opena19 | 1          | Port-Mismatches                                    |
 
 ## Behebung von Violations
 
@@ -240,6 +241,7 @@ for node in ast.walk(tree):
 ```
 
 Vorteile:
+
 - Kein False-Positive bei Kommentaren
 - Exakte Syntax-Erkennung
 - Fehlertoleranz (SyntaxError → Skip)
@@ -247,10 +249,12 @@ Vorteile:
 ### Endpoint-Erkennung
 
 Unterstützte Frameworks:
+
 - **FastAPI**: `@app.get("/path")`, `@router.post("/path")`
 - **Flask**: `@app.route("/path")`
 
 Pattern:
+
 ```python
 fastapi_pattern = r'@(?:app|router)\.(get|post|put|delete|patch)\(["\']([^"\']+)'
 flask_pattern = r'@app\.route\(["\']([^"\']+)'
@@ -259,6 +263,7 @@ flask_pattern = r'@app\.route\(["\']([^"\']+)'
 ### Port-Erkennung
 
 3 Patterns:
+
 1. `port=12345` (Assignment)
 2. `:12345` in URLs
 3. `PORT = 12345` (Konstante)
@@ -268,6 +273,7 @@ Filter: Nur Ports 1024-65535
 ## Backup
 
 Das alte Script wurde gesichert:
+
 ```bash
 scripts/agent_discovery.py.backup
 ```

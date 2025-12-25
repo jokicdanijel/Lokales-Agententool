@@ -183,7 +183,7 @@ ID, Akteur-ID, Aktion, Zieltyp, Ziel-ID, IP, UA, erstellt am
 ext_api_calls
 ID, Benutzer-ID (nullwertfähig), Methode, Pfad, Status, Dauer in ms, Wiederholungen, Korr.-ID
 User-Stories (mit Gherkin, Auszug)
-Story: Als Mitglied möchte ich mein Passwort zurücksetzen. 
+Story: Als Mitglied möchte ich mein Passwort zurücksetzen.
 Akzeptanzkriterien:
 Gegeben der Nutzer existiert und klickt "Passwort vergessen"
 Wenn er den E-Mail-Link öffnet und ein neues Passwort setzt
@@ -195,15 +195,15 @@ Wenn admin "inactive=true" setzt
 Dann kann sich der Nutzer nicht mehr anmelden
 Und Audit-Log protokolliert admin_action:disable_user
 Jira-Spieltickets (Testleiste)
-    • AUTH-01: Implementiere /auth/register + E-Mail-Verification 
+    • AUTH-01: Implementiere /auth/register + E-Mail-Verification
 AC: 201 bei gültig, 400 bei Duplikat, Mail mit Token, Audit-Event register_request.
-    • AUTH-02: Login + Refresh-Flow (JWT, 15 min/7 Tage) 
+    • AUTH-02: Login + Refresh-Flow (JWT, 15 min/7 Tage)
 AC: p95<150 ms, Lockout nach 5 Fehlversuchen, Rate-Limit greift.
-    • MBR-01: API-Token CRUD (scoped) 
+    • MBR-01: API-Token CRUD (scoped)
 AC: Token nur einmal sichtbar, Hash gespeichert, Revoke sofort wirksam.
-    • ADM-01: Admin User-CRUD + Rollen 
+    • ADM-01: Admin User-CRUD + Rollen
 AC: Nur Admin darf, Audit-Events (create/update/delete, role_assign).
-    • EXT-01: Externe-API-Proxy mit Retry (3x Exponential Backoff, Idempotency-Key) 
+    • EXT-01: Externe-API-Proxy mit Retry (3x Exponential Backoff, Idempotency-Key)
 AC: 429/5xx werden retryed, Korrelation X-Request-ID, vollständiges Logging.
 DoR / DoD (je 6 Punkte)
 Definition von „Bereit“
@@ -248,14 +248,14 @@ Audit-Log-Plan (Ereignisse)
     • auth.register_request, auth.verify_success, auth.login_success/fail, auth.reset_request/reset_success
     • Benutzer.Update_Profil, Token.Erstellen/Widerrufen
     • admin.user_create/update/delete, admin.role_assign/revoke
-    • ext.call_success/fail/retry_exhausted 
+    • ext.call_success/fail/retry_exhausted
 Felder: ts, actor_id, action, target_type/id, ip, ua, corr_id, outcome.
 UAT-Skript (Beispiel)
 Szenario: Mitglied kann Passwort zurücksetzen
     1. Loginseite öffnen → „Passwort vergessen“ klicken
     2. E-Mail-Link öffnen
     3. Neues Passwort setzen
-    4. Login mit neuem Passwort 
+    4. Login mit neuem Passwort
 Erwartung: 200/204, Login ok, Audit-Event geschrieben
 
 Risiken/Entscheidungen
@@ -332,8 +332,8 @@ Nächste Schritte
     8. Auth-Happy-Path: Registrieren → Verifizieren → Anmelden → Aktualisieren → Abmelden inkl. Audit-Events.
     9. Website-Skelett: Landing, Preise, Recht (Impressum/Datenschutz), Kontakt-Formular (Rate-Limit).
     10. Observability: /health, /ready, /metrics + strukturierte JSON-Logs; Dashboard-Baseline.
-Sprint 1 (KW44–45) – Ziele: Auth & Accounts, Website-MVP, Admin User-CRUD, Audit-Log, Observability, Hetzner-Betriebsgrundlagen. 
-Sprint 2 (KW46–47): Member-Dashboard (Nutzung/API-Tokens), Rate-Limiting, Fehlerseiten, A11y-Review, Pricing-Flow. 
+Sprint 1 (KW44–45) – Ziele: Auth & Accounts, Website-MVP, Admin User-CRUD, Audit-Log, Observability, Hetzner-Betriebsgrundlagen.
+Sprint 2 (KW46–47): Member-Dashboard (Nutzung/API-Tokens), Rate-Limiting, Fehlerseiten, A11y-Review, Pricing-Flow.
 Sprint 3 (KW48–49): Ext-API-Stub -> echte Integration (falls Spezifikation da), UAT, Load-Test, Go-Live.
 2 kurze Rückfragen (wesentlich):
     1. Bitte Domain-Schreibweise bestätigen : jd-smart-vision.eu ?
@@ -483,32 +483,32 @@ anzeigen/bearbeiten
 ja
 System
 Jira-Backlog Sprint 1 (Auszug, Testbar)
-    • INFRA-01 Hetzner-VM + Firewall + Docker 
+    • INFRA-01 Hetzner-VM + Firewall + Docker
 AC: Port 80/443 offen, SSH nur Whitelist, docker infook, Labels gesetzt.
-    • DNS-01 DNS-Records & Mail-Sender-Basics 
+    • DNS-01 DNS-Records & Mail-Sender-Basics
 AC: A/AAAA/CNAME/MX/TXT aktiv, SPF pass, ACME erfolgreich.
-    • BE-API-01 OpenAPI v0 + CI Lint 
+    • BE-API-01 OpenAPI v0 + CI Lint
 AC: CI grün, spec-lint 0 Fehler, serverskorrekt.
-    • DB-01 Migration v0 
+    • DB-01 Migration v0
 AC: Tabellen gem. Datenmodell, Rollback möglich, Seed-Admin.
-    • AUTH-01 Register/Verify/Login/Refresh 
+    • AUTH-01 Register/Verify/Login/Refresh
 AC: 201/200/204 wie spez., Audit-Events: auth.*, Lockout ab 5 Fehlversuchen.
-    • WEB-01 Website-Skeleton (Landing/Preise/Recht/Kontakt) 
+    • WEB-01 Website-Skeleton (Landing/Preise/Recht/Kontakt)
 AC: A11y Basic ok, Kontakt-Form Rate-Limit (5/min), Captcha optional.
-    • ADM-01 Admin User-CRUD 
+    • ADM-01 Admin User-CRUD
 AC: Nur admin greift, Audit admin.*.
-    • OBS-01 Health/Ready/Metrics + Logs 
+    • OBS-01 Health/Ready/Metrics + Logs
 AC: /health 200, /ready prüft DB, Metrics p95, error_rate exportiert.
-    • SEC-01 Security-Header + CSP 
+    • SEC-01 Security-Header + CSP
 AC: Header gesetzt, keine CSP-Verstöße im Smoke.
-    • EXT-FF-01 Ext-API-Proxy Stub + Feature-Flag 
+    • EXT-FF-01 Ext-API-Proxy Stub + Feature-Flag
 AC: ext_api=false blockt Calls, Audit bei Versuch, 501 zurück.
 UAT-Skripte (Beispiel, Auth)
 Szenario: E-Mail-Verifikation
-    1. Registrieren • 2) Mail-Link öffnen • 3) Anmelden • 4) Aktualisieren 
+    1. Registrieren • 2) Mail-Link öffnen • 3) Anmelden • 4) Aktualisieren
 Erwartung: Tokens gültig, Audit auth.verify_success, /users/me 200.
 Definition von Ready / Done (Sprint 1 – bestätigt)
-DoR (6): Zweck/Scope/AC klar • UI-Skizze • Security-Implikationen • Datenfelder • Monitoring-Events • Abhängigkeiten/Flags. 
+DoR (6): Zweck/Scope/AC klar • UI-Skizze • Security-Implikationen • Datenfelder • Monitoring-Events • Abhängigkeiten/Flags.
 DoD (6): Tests ≥80 % betroffen • Lint/SCA/Secret-Scan grün • A11y-Check • Security-Header/CSP aktiv • OTEL • UAT bestanden & sichtbar Doku/Changelog aktualisiert.
 Datenschutz/DSG
 Du sagtest:
@@ -617,15 +617,15 @@ POST /ext/proxy/:kind -> guardFF('ext_api') -> rateLimit(user) -> validate(kind 
 -> log({corr_id, endpoint, ms, status}) without payload
 -> return upstream.data
 Jira-Tickets (Testleiste)
-    • EXT-CONF-01 Secrets & Config 
+    • EXT-CONF-01 Secrets & Config
 AC: EXT_API_KEY im Secret Store, FF- ext_api=falseStandard.
-    • EXT-PROXY-01 Proxy-Controller + Allowlist 
+    • EXT-PROXY-01 Proxy-Controller + Allowlist
 AC: Andere Pfade 403; /ext/proxy/chat& /images200 mit Mock-Response bei fehlendem Schlüssel.
-    • EXT-SAFE-01 PII-Stripping Middleware 
+    • EXT-SAFE-01 PII-Stripping Middleware
 AC: E-Mail/Tel./IBAN/Namen werden entfernt (Unit-Tests grün).
-    • EXT-OBS-01 Metriken & Audit 
+    • EXT-OBS-01 Metriken & Audit
 AC: ext_api_calls Metriken sichtbar; Audit-Eintrag je Call (ohne Payload).
-    • EXT-UAT-01 End-to-End Smoke 
+    • EXT-UAT-01 End-to-End Smoke
 AC: Dashboard Prompt → 200, Images → 200, 429 bei Limit, 502 Retrypfad sichtbar.
 DSGVO/OWASP Kurz-Checkliste (12)
     1. Rechtsgrundlage dokumentiert (Art. 6 Abs.1 b/f)
@@ -796,23 +796,23 @@ services:
 networks: { llm-net: { driver: bridge } }
 volumes: { ollama: {} }
 Jira-Backlog (Option D, Testleiste)
-    • LLM-INF-01 VM & Netzwerk 
+    • LLM-INF-01 VM & Netzwerk
 AC: Private Netz-ID, Firewall aktiv, SSH nur über Jump/IP.
-    • LLM-DEP-01 Ollama Container 
+    • LLM-DEP-01 Ollama Container
 AC: Service läuft, GET /api/tags200, Modell defaultgepullt.
     • LLM-API-01 /ext/llm/generate & /embeddings
 AC: JSON-Schema-Validierung, 200/400/429/502 Pfade.
-    • LLM-SEC-01 mTLS/Service-Token + Rate-Limits 
+    • LLM-SEC-01 mTLS/Service-Token + Rate-Limits
 AC: Anrufe ohne Token 401, über Limit 429.
-    • LLM-PII-01 Redaction-Middleware 
+    • LLM-PII-01 Redaction-Middleware
 AC: Ersetzt E-Mail/Tel/Namen (Unit-Tests).
-    • LLM-OBS-01 Metriken/Logs 
+    • LLM-OBS-01 Metriken/Logs
 AC: p95/err_rate sichtbar; keine Prompt-Inhalte in Logs.
-    • LLM-UAT-01 Smoke E2E 
+    • LLM-UAT-01 Smoke E2E
 AC: Dashboard-Eingabeaufforderung → 200, Einbettungen → 200.
-    • LLM-PERF-01 p95-Baseline 
+    • LLM-PERF-01 p95-Baseline
 AC: ≤800 ms bei 256 Tok. auf Dev-Workload (Anhaltswert; protokollieren).
-    • LLM-LIC-01 Lizenzprüfung Modell 
+    • LLM-LIC-01 Lizenzprüfung Modell
 AC: Lizenz/Use-Case dokumentiert, VVT/DPIA-Hinweis ergänzt.
 A11y/Security/Infra-Check (Auszug, 10)
     1. Kein Public-Ingress zum LLM
@@ -829,10 +829,10 @@ UAT-Skript (Beispiel)
 Szenario: Mitglied generierter Text
     1. Dashboard öffnen → Eingabeaufforderung abwesend
     2. Backend ruft /ext/llm/generate(intern)
-    3. Antwort erscheint im UI 
+    3. Antwort erscheint im UI
 Erwartung: 200, Inhalt angezeigt, Audit-Meta vorhanden, keine PII im Log.
 Definition von „Fertig“/„Erledigt“ (Option D)
-DoR (6): Modell & Lizenz benannt • Hardwareplan (CPU/GPU) • Endpunkte & Schemas klar • Secrets/Flags vorhanden • Observability definiert • Sicherheitsmaßnahmen gelistet. 
+DoR (6): Modell & Lizenz benannt • Hardwareplan (CPU/GPU) • Endpunkte & Schemas klar • Secrets/Flags vorhanden • Observability definiert • Sicherheitsmaßnahmen gelistet.
 DoD (6): E2E-Smoke grün • p95-Baseline erfasst • Logs ohne Inhalte • Security-Review bestanden • Rollback möglich • Doku/Changelog aktualisiert.
 
 Risiken/Entscheidungen
@@ -881,11 +881,11 @@ Hetzner EU-Zentrale. Gpt-5-nano wäred des aufbaues danach wechsel
 Projektmanager sagte:
 Nachgedacht für 50s
 Zusammenfassung
-Eingestellt: Hetzner EU Central = NBG1 (Nürnberg) . Gehen Sie zweistufig vor: 
-Phase Build (temporär): externer Mini-Provider „gpt-5-nano“ nur in BUILD/Staging , ohne PII. 
-Phase Prod (Ziel, Option D): Umstieg auf lokales LLM (Ollama) auf Hetzner ; kein Drittlandtransfer. 
+Eingestellt: Hetzner EU Central = NBG1 (Nürnberg) . Gehen Sie zweistufig vor:
+Phase Build (temporär): externer Mini-Provider „gpt-5-nano“ nur in BUILD/Staging , ohne PII.
+Phase Prod (Ziel, Option D): Umstieg auf lokales LLM (Ollama) auf Hetzner ; kein Drittlandtransfer.
 Das Routing erfolgt per Feature-Flag/Provider-Adapter im Backend. Harte Leitplanken: Datenminimierung, interne Proxy-Allowlist, Kill-Switch.
-1 Rückfrage (notwendig): Dürfen in der Build-Phase nicht-personenbezogene Inhalte kurzzeitig an den externen Provider gesendet werden ( ja/nein )? 
+1 Rückfrage (notwendig): Dürfen in der Build-Phase nicht-personenbezogene Inhalte kurzzeitig an den externen Provider gesendet werden ( ja/nein )?
 (Ohne „ja“ bleibt der externe Pfad deaktiviert und wir testen lokal/mock.)
 
 Nächste Schritte
@@ -987,19 +987,19 @@ Hetzner NBG1 – Kurz-Checkliste (10)
     2. Docker rootless / UserNS; 6) Protokolle auf Volume ( nodev,noexec);
     3. Snapshots tgl.; 8) unbeaufsichtigte Upgrades; 9) OTEL Export aktiv; 10) ACME TLS + HSTS (staged).
 Jira-Tickets (Sprint jetzt „Ready“)
-    • LLM-ADP-01 Provider-Adapter & Flags 
+    • LLM-ADP-01 Provider-Adapter & Flags
 AC: Routing per ENV, Unit-Tests (lokal/ext), Kill-Switch greift.
-    • LLM-SEC-02 PII-Redaction 
+    • LLM-SEC-02 PII-Redaction
 AC: E-Mail/Tel/Name/IBAN entfernt (Regex+Tests).
-    • LLM-OBS-03 Metriken/Audit 
+    • LLM-OBS-03 Metriken/Audit
 AC: rps/p95/error_rate/timeout sichtbar; Audit ohne Payload.
-    • LLM-EXT-04 Externer Pfad (optional) 
+    • LLM-EXT-04 Externer Pfad (optional)
 AC: Nur bei ALLOW_EXT_LLM=true, 401 ohne Key, 429 bei Rate-Limit.
-    • LLM-LOC-05 Ollama Bootstrap (NBG1) 
+    • LLM-LOC-05 Ollama Bootstrap (NBG1)
 AC: Container läuft, Modell defaultgeladen, Port nicht öffentlich.
-    • LLM-CUT-06 Cutover-Playbook & Rollback 
+    • LLM-CUT-06 Cutover-Playbook & Rollback
 AC: Dokumentiert, durchgespielt in Staging.
-    • AUTH-MVP-07 Registrieren/Verifizieren/Anmelden/Aktualisieren 
+    • AUTH-MVP-07 Registrieren/Verifizieren/Anmelden/Aktualisieren
 AC: 201/204/200 wie spez., Audit auth.*.
 Risiko-Register (aktualisiert)
 Risiko
@@ -1029,7 +1029,7 @@ Quality-Gate vor Cutover (Ja/Nein):
     • Audit/Observability vollständig?
 
 Risiken/Entscheidungen
-Entscheidung gesetzt: Hetzner NBG1 , „gpt-5-nano“ temporär in Build , Ziel lokal (Ollama) in Prod . 
+Entscheidung gesetzt: Hetzner NBG1 , „gpt-5-nano“ temporär in Build , Ziel lokal (Ollama) in Prod .
 Offen (1 Frage): Nicht-EU Build-Traffic erlaubt? (ja/nein) – dann schalte ich den externen Pfad entsprechend frei oder blocke ihn.
 Du sagtest:
 OLAMA war nie das Ziel. Merkt ihr das? OLAMA war nur ein Zwischenmittel zum Zweck. OLAMA wird auch nicht die Endversion sein. OLAMA ist lediglich ein Platzhalter für mich. Außerdem, das hättest du eigentlich wissen müssen, wird ChatGPT 5.0 Nano verwendet, aber von Azure Account. Dadurch ist es DSGV-konform.
@@ -1180,19 +1180,19 @@ DSGVO/ASVS-Checkliste (12)
     11. Content-Security-Policy/CORS streng
     12. DPIA-Screening aktualisiert (geringe Rest-Risiken)
 Jira-Backlog (Sprint, Testbar)
-    • AZOAI-CONF-01 Azure Endpoint/Deployment/Key in Vault 
+    • AZOAI-CONF-01 Azure Endpoint/Deployment/Key in Vault
 AC: Health-Call 200, Secrets nicht im Repo.
     • AZOAI-ADP-02 Provider-Adapter azure_gpt5nano
 AC: /ext/llm/generate → 200 mit Test-Prompt; Retries/Timeouts greifen.
-    • AZOAI-SEC-03 Egress-Allowlist + TLS Enforce 
+    • AZOAI-SEC-03 Egress-Allowlist + TLS Enforce
 AC: Outbound nur *.openai.azure.com.
-    • AZOAI-PII-04 Redaction-Middleware 
+    • AZOAI-PII-04 Redaction-Middleware
 AC: E-Mail/Tel/Name/IBAN maskiert (Unit-Tests).
-    • AZOAI-OBS-05 Metriken & Audit 
+    • AZOAI-OBS-05 Metriken & Audit
 AC: rps/p95/error_rate sichtbar; keine Inhalte geloggt.
-    • AZOAI-UAT-06 End-to-End Smoke 
+    • AZOAI-UAT-06 End-to-End Smoke
 AC: Dashboard-Eingabeaufforderung → Antwort, 429/502-Pfad testbar.
-    • WEB-AUTH-07 Registrieren/Verifizieren/Anmelden/Aktualisieren (unverändert) 
+    • WEB-AUTH-07 Registrieren/Verifizieren/Anmelden/Aktualisieren (unverändert)
 AC: auth.* Audit-Events vorhanden.
 Abnahme-Check (Ausschnitt)
     • EU-Region + Bereitstellung nachweislich konfiguriert?
@@ -1242,7 +1242,7 @@ Gesetz hast du schon wieder vergessen, aber ist egal, dass was mir bei dir fäll
 Projektmanager sagte:
 Nachgedacht für 47s
 Zusammenfassung
-Verständnis: keine Demos, keine Platzhalter, keine „Fake“-Artefakte . Wir liefern produktionsfähigen Code für die gewählte Integration: Azure OpenAI (GPT-5-nano) über Ihren Azure-Account, EU-Region , auf Hetzner (NBG1) betrieben. 
+Verständnis: keine Demos, keine Platzhalter, keine „Fake“-Artefakte . Wir liefern produktionsfähigen Code für die gewählte Integration: Azure OpenAI (GPT-5-nano) über Ihren Azure-Account, EU-Region , auf Hetzner (NBG1) betrieben.
 Im Paket unten: vollständiger TypeScript-Service (Fastify) mit stärkerer Validierung, Ratenbegrenzung, Timeouts/Retry, PII-Redaction, Sicherheits-Headern, Logging-Redaction, OpenAPI-Schemas sowie Dockerfile (multi-stage, non-root) . Keine Pseudocode-Snippets – direkt einsetzbar.
 
 Nächste Schritte
@@ -1684,20 +1684,20 @@ CMD ["node", "dist/server.js"]
     • CSP/CORS: Frontend/Proxy auf Azure-Endpoint-Whitelisten.
     • Backups & Rollback: Container & Konfiguration reproduzierbar; Hier ist kein Datenspeicher notwendig.
 10) Jira-Tickets (sofort nutzbar, DoR/DoD enthalten)
-    • AZOAI-CONF-01 Azure-Parameter & Secrets hinterlegen 
-DoR: Resource/Region bekannt • Keys vorhanden • IaC/Secrets-Pfad definiert 
+    • AZOAI-CONF-01 Azure-Parameter & Secrets hinterlegen
+DoR: Resource/Region bekannt • Keys vorhanden • IaC/Secrets-Pfad definiert
 DoD: Health-Probe 200 • Secrets nicht im Repo • Review „4-Augen“
-    • AZOAI-ADP-02 Adapter bereitgestellt (Code oben) 
-DoR: Env validiert • Firewall-Regeln gesetzt 
+    • AZOAI-ADP-02 Adapter bereitgestellt (Code oben)
+DoR: Env validiert • Firewall-Regeln gesetzt
 DoD: /health 200 • /ext/llm/generate200 • 429/502 getestet • Logs ohne Inhalte
-    • AZOAI-SEC-03 Outbound-Allowlist + TLS-Enforce 
-DoR: Ziel-FQDNs 
+    • AZOAI-SEC-03 Outbound-Allowlist + TLS-Enforce
+DoR: Ziel-FQDNs
 DoD: Outbound-Scan → nur Azure • TLS-Handshake geprüft
-    • AZOAI-PII-04 Redaction-Tests 
-DoR: Testvektoren (Mail/Tel/IBAN) vorhanden 
+    • AZOAI-PII-04 Redaction-Tests
+DoR: Testvektoren (Mail/Tel/IBAN) vorhanden
 DoD: Tests grün, Manuelle Probe: Log ohne PII
-    • AZOAI-OBS-05 Observability 
-DoR: Log-Pipeline bereit 
+    • AZOAI-OBS-05 Observability
+DoR: Log-Pipeline bereit
 DoD: p95 dokumentiert, Error-Rate <2 % im Smoke
 
 Risiken/Entscheidungen
@@ -1711,4 +1711,3 @@ Entscheidungen (finalisiert):
     • Architektur: Backend-Adapter (keine direkten Browser-Aufrufe), kein Prompt-Logging.
     • Betrieb: Hetzner NBG1 , Outbound Strikt Azure-Only .
 Wenn Sie die Azure-Variablen setzen, ist dieser Dienst produktionsfähig . Debug brauchen wir nicht – nur korrekte Secrets, Firewall und DNS.
-

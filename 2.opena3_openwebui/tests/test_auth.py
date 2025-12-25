@@ -12,11 +12,8 @@ la_pro_path = str(Path(__file__).parent.parent / "LocalAgent-Pro")
 if la_pro_path not in sys.path:
     sys.path.insert(0, la_pro_path)
 
-from shared.auth import (
-    token_validator,
-    rate_limiter,
-    audit_logger,
-)
+from shared.auth import audit_logger, rate_limiter, token_validator
+
 
 def test_token_validation():
     """Test token validation"""

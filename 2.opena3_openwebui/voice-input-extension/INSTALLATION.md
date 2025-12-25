@@ -88,16 +88,16 @@ npm run compile
 
 ### Verfügbare Tastenkombinationen
 
-| Tastenkombination | Aktion | Plattform |
-|---|---|---|
-| Ctrl+Shift+V | Toggle Voice Recognition | Windows/Linux |
-| Cmd+Shift+V | Toggle Voice Recognition | macOS |
-| Ctrl+Shift+L | Sprache wechseln | Windows/Linux |
-| Cmd+Shift+L | Sprache wechseln | macOS |
-| Ctrl+Shift+S | Analytics anzeigen | Windows/Linux |
-| Cmd+Shift+S | Analytics anzeigen | macOS |
-| Ctrl+Shift+E | Analytics exportieren | Windows/Linux |
-| Cmd+Shift+E | Analytics exportieren | macOS |
+| Tastenkombination | Aktion                   | Plattform     |
+| ----------------- | ------------------------ | ------------- |
+| Ctrl+Shift+V      | Toggle Voice Recognition | Windows/Linux |
+| Cmd+Shift+V       | Toggle Voice Recognition | macOS         |
+| Ctrl+Shift+L      | Sprache wechseln         | Windows/Linux |
+| Cmd+Shift+L       | Sprache wechseln         | macOS         |
+| Ctrl+Shift+S      | Analytics anzeigen       | Windows/Linux |
+| Cmd+Shift+S       | Analytics anzeigen       | macOS         |
+| Ctrl+Shift+E      | Analytics exportieren    | Windows/Linux |
+| Cmd+Shift+E       | Analytics exportieren    | macOS         |
 
 ### Verfügbare Befehle
 

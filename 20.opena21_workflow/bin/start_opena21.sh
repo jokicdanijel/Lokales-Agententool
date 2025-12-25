@@ -104,7 +104,7 @@ echo "$PID" > "$PID_FILE"
 sleep 2
 if kill -0 "$PID" 2>/dev/null; then
     log "✅ $SERVICE_NAME gestartet (PID: $PID)"
-    
+
     # Health-Check
     sleep 3
     if command -v curl >/dev/null 2>&1; then

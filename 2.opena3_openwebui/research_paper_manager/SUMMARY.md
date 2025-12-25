@@ -1,9 +1,9 @@
 # 🎯 Research Paper Management System – Projektübersicht
 
-**Datum:** 25. November 2025  
-**Status:** ✅ VOLLSTÄNDIG & EINSATZBEREIT  
-**Version:** 0.1.0-beta  
-**Integriert mit:** LocalAgent-Pro OpenWebUI  
+**Datum:** 25. November 2025
+**Status:** ✅ VOLLSTÄNDIG & EINSATZBEREIT
+**Version:** 0.1.0-beta
+**Integriert mit:** LocalAgent-Pro OpenWebUI
 
 ---
 
@@ -135,21 +135,21 @@ curl "http://localhost:5002/api/papers?author=Bengio"
 
 ## 📚 API Endpoints
 
-| Methode | Endpoint | Beschreibung |
-|---------|----------|-------------|
-| GET | `/health` | Health Check |
-| GET | `/api/papers` | Alle Papers |
-| POST | `/api/papers` | Paper hinzufügen |
-| GET | `/api/papers/<id>` | Paper Details |
-| PUT | `/api/papers/<id>` | Paper updaten |
-| DELETE | `/api/papers/<id>` | Paper löschen |
-| GET | `/api/search` | Lokal suchen |
-| GET | `/api/arxiv/search` | arXiv suchen |
-| POST | `/api/arxiv/fetch` | Von arXiv importieren |
-| POST | `/api/arxiv/parse` | arXiv ID parsen |
-| POST | `/api/papers/<id>/tags` | Tag hinzufügen |
-| GET | `/api/collections` | Sammlungen |
-| POST | `/api/collections` | Sammlung erstellen |
+| Methode | Endpoint                | Beschreibung          |
+| ------- | ----------------------- | --------------------- |
+| GET     | `/health`               | Health Check          |
+| GET     | `/api/papers`           | Alle Papers           |
+| POST    | `/api/papers`           | Paper hinzufügen      |
+| GET     | `/api/papers/<id>`      | Paper Details         |
+| PUT     | `/api/papers/<id>`      | Paper updaten         |
+| DELETE  | `/api/papers/<id>`      | Paper löschen         |
+| GET     | `/api/search`           | Lokal suchen          |
+| GET     | `/api/arxiv/search`     | arXiv suchen          |
+| POST    | `/api/arxiv/fetch`      | Von arXiv importieren |
+| POST    | `/api/arxiv/parse`      | arXiv ID parsen       |
+| POST    | `/api/papers/<id>/tags` | Tag hinzufügen        |
+| GET     | `/api/collections`      | Sammlungen            |
+| POST    | `/api/collections`      | Sammlung erstellen    |
 
 ---
 
@@ -281,13 +281,13 @@ ai:
 
 ## 📈 Performance-Metriken
 
-| Metrik | Wert | Status |
-|--------|------|--------|
-| API Response Time | <200ms | ✅ |
-| Search Performance | <1s (50 papers) | ✅ |
-| arXiv Query | ~5s (first time) | ✅ |
-| Database Size | ~1-5MB/100 papers | ✅ |
-| Memory Usage | ~100-200MB | ✅ |
+| Metrik             | Wert              | Status |
+| ------------------ | ----------------- | ------ |
+| API Response Time  | <200ms            | ✅     |
+| Search Performance | <1s (50 papers)   | ✅     |
+| arXiv Query        | ~5s (first time)  | ✅     |
+| Database Size      | ~1-5MB/100 papers | ✅     |
+| Memory Usage       | ~100-200MB        | ✅     |
 
 ---
 
@@ -326,21 +326,21 @@ curl -s http://localhost:5002/api/papers | jq '.'
 
 ## 🔐 Sicherheits-Features
 
-✅ Input Validation  
-✅ SQL Injection Prevention (ORM)  
-✅ Error Handling  
-✅ CORS Configuration  
-✅ Rate Limiting Ready  
+✅ Input Validation
+✅ SQL Injection Prevention (ORM)
+✅ Error Handling
+✅ CORS Configuration
+✅ Rate Limiting Ready
 
 ---
 
 ## 📞 Support & Dokumentation
 
-| Ressource | Link |
-|-----------|------|
-| README | `research_paper_manager/README.md` |
+| Ressource   | Link                                   |
+| ----------- | -------------------------------------- |
+| README      | `research_paper_manager/README.md`     |
 | Setup Guide | `research_paper_manager/docs/SETUP.md` |
-| API Docs | `research_paper_manager/docs/API.md` |
+| API Docs    | `research_paper_manager/docs/API.md`   |
 
 ---
 
@@ -387,11 +387,11 @@ analysis = ai.analyze_collection(papers)
 
 ## ✨ Besonderheiten
 
-🚀 **Production-Ready** - Vollständig dokumentiert & getestet  
-🔌 **Easy Integration** - REST API, JSON responses  
-🎯 **Extensible** - Modularer Aufbau  
-📊 **Scalable** - SQLite → PostgreSQL  
-🤖 **AI-Ready** - Qwen3-Coder Framework  
+🚀 **Production-Ready** - Vollständig dokumentiert & getestet
+🔌 **Easy Integration** - REST API, JSON responses
+🎯 **Extensible** - Modularer Aufbau
+📊 **Scalable** - SQLite → PostgreSQL
+🤖 **AI-Ready** - Qwen3-Coder Framework
 
 ---
 
@@ -399,13 +399,13 @@ analysis = ai.analyze_collection(papers)
 
 Du hast jetzt ein **vollständiges Research Paper Management System**:
 
-✅ 12 Produktionsdateien  
-✅ 15+ API Endpoints  
-✅ arXiv Integration  
-✅ Datenbank-Verwaltung  
-✅ 3 Umfangreiche Dokumentationen  
-✅ Sicherheits-Features  
-✅ Extensible Architecture  
+✅ 12 Produktionsdateien
+✅ 15+ API Endpoints
+✅ arXiv Integration
+✅ Datenbank-Verwaltung
+✅ 3 Umfangreiche Dokumentationen
+✅ Sicherheits-Features
+✅ Extensible Architecture
 
 **Status: 🚀 READY TO USE**
 
@@ -443,7 +443,7 @@ Viel Erfolg! 🎓
 
 ---
 
-**Erstellt:** 25. November 2025  
-**Autor:** GitHub Copilot  
-**Status:** ✅ SELF-REPAIR COMPLETE  
-**Lizenz:** MIT  
+**Erstellt:** 25. November 2025
+**Autor:** GitHub Copilot
+**Status:** ✅ SELF-REPAIR COMPLETE
+**Lizenz:** MIT

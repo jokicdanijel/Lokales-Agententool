@@ -2,7 +2,7 @@
   "version": "0.1.0",
   "title": "ELION Hyper-Dashboard — Inference Stack",
   "description": "llama-stack configuration for multi-model inference via Ollama",
-  
+
   "models": [
     {
       "id": "llama2",
@@ -36,7 +36,7 @@
       "note": "Download mit: ollama pull mistral"
     }
   ],
-  
+
   "inference_service": {
     "host": "127.0.0.1",
     "port": 12348,

@@ -113,11 +113,11 @@
                     strict: true
                 })
             });
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
+
             const result = await response.json();
             console.log('Command result:', result);
         } catch (error) {
@@ -136,7 +136,7 @@
                 <td>${sp.dst}</td>
                 <td>${sp.kind}</td>
                 <td>
-                    <button class="button small" 
+                    <button class="button small"
                             onclick="downloadSafepoint('${sp.path}')">
                         Download
                     </button>
@@ -150,7 +150,7 @@
         try {
             const response = await fetch(`/api/safepoints/download?path=${encodeURIComponent(path)}`);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            
+
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -169,25 +169,25 @@
     function handleEvent(data) {
         const eventStream = document.getElementById('event-stream');
         const timestamp = new Date().toLocaleTimeString();
-        
+
         eventStream.innerHTML += `<div>[${timestamp}] ${JSON.stringify(data)}</div>`;
         eventStream.scrollTop = eventStream.scrollHeight;
 
         // Status-Updates
         if (data.event === 'agent_status' && data.data.agent === AGENT_NAME) {
-            document.getElementById('agent-status').className = 
+            document.getElementById('agent-status').className =
                 `badge badge-${data.data.status}`;
-            document.getElementById('agent-status').textContent = 
+            document.getElementById('agent-status').textContent =
                 data.data.status;
         }
 
         // Metriken-Updates
         if (data.event === 'agent_metrics' && data.data.agent === AGENT_NAME) {
-            document.getElementById('agent-cpu').textContent = 
+            document.getElementById('agent-cpu').textContent =
                 `${data.data.cpu}%`;
-            document.getElementById('agent-ram').textContent = 
+            document.getElementById('agent-ram').textContent =
                 `${data.data.ram}MB`;
-            document.getElementById('agent-uptime').textContent = 
+            document.getElementById('agent-uptime').textContent =
                 data.data.uptime;
         }
     }
@@ -198,7 +198,7 @@
             // Status laden
             const statusResponse = await fetch(`/api/status/${AGENT_NAME}`);
             const statusData = await statusResponse.json();
-            
+
             // Safepoints laden
             const safepointsResponse = await fetch('/api/safepoints/query', {
                 method: 'POST',
@@ -215,7 +215,7 @@
                 })
             });
             const safepointsData = await safepointsResponse.json();
-            
+
             updateSafepointTable(safepointsData.safepoints);
         } catch (error) {
             console.error('Load error:', error);

@@ -124,10 +124,7 @@
     "sdk_generation": false,
     "webpanel_generation": false
   },
-  "protected_folders": [
-    "1.opena1&2_portier",
-    "20.opena21_workflow"
-  ],
+  "protected_folders": ["1.opena1&2_portier", "20.opena21_workflow"],
   "dashboard": {
     "url": "http://127.0.0.1:12349",
     "html_file": "html/index.html",

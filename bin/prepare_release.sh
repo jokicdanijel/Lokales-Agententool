@@ -53,14 +53,14 @@ cleanup_old_releases() {
 
 copy_essential_directories() {
     log_info "Copying essential service directories..."
-    
+
     # Core agent directories (opena1-opena21)
     for dir in "$ROOT"/*opena*; do
         if [ -d "$dir" ] && [[ ! "$dir" =~ BROKEN ]]; then
             dirname=$(basename "$dir")
             log_info "  → $dirname"
             mkdir -p "$PACKAGE_DIR/$dirname"
-            
+
             # Copy only essential files (exclude venv, cache, logs)
             rsync -a --exclude='.venv' \
                      --exclude='venv' \
@@ -74,16 +74,16 @@ copy_essential_directories() {
                      "$dir/" "$PACKAGE_DIR/$dirname/"
         fi
     done
-    
+
     log_success "Agent directories copied"
 }
 
 copy_core_infrastructure() {
     log_info "Copying core infrastructure..."
-    
+
     # Essential directories
     local essential_dirs=("bin" "scripts" "config" "configs" "schemas" "systemd" "tools" "src")
-    
+
     for dir in "${essential_dirs[@]}"; do
         if [ -d "$ROOT/$dir" ]; then
             log_info "  → $dir/"
@@ -94,16 +94,16 @@ copy_core_infrastructure() {
                      "$ROOT/$dir/" "$PACKAGE_DIR/$dir/"
         fi
     done
-    
+
     # Copy archivp structure (create empty)
     mkdir -p "$PACKAGE_DIR/archivp"
-    
+
     log_success "Core infrastructure copied"
 }
 
 copy_configuration_files() {
     log_info "Copying configuration and setup files..."
-    
+
     # Essential root files
     local essential_files=(
         "README.md"
@@ -116,22 +116,22 @@ copy_configuration_files() {
         "LICENSE"
         "SECURITY.md"
     )
-    
+
     for file in "${essential_files[@]}"; do
         if [ -f "$ROOT/$file" ]; then
             log_info "  → $file"
             cp "$ROOT/$file" "$PACKAGE_DIR/"
         fi
     done
-    
+
     log_success "Configuration files copied"
 }
 
 copy_essential_documentation() {
     log_info "Copying essential documentation..."
-    
+
     mkdir -p "$PACKAGE_DIR/docs"
-    
+
     # Only copy key documentation files
     local essential_docs=(
         "PORTIER_3.0_SYSTEM_ARCHITECTURE.md"
@@ -141,20 +141,20 @@ copy_essential_documentation() {
         "OPERATIONS_COMPLETE.md"
         "PORTIER_3.0_RELEASE.md"
     )
-    
+
     for doc in "${essential_docs[@]}"; do
         if [ -f "$ROOT/$doc" ]; then
             log_info "  → $doc"
             cp "$ROOT/$doc" "$PACKAGE_DIR/docs/"
         fi
     done
-    
+
     log_success "Essential documentation copied"
 }
 
 create_setup_script() {
     log_info "Creating setup script for new repository..."
-    
+
     cat > "$PACKAGE_DIR/setup.sh" << 'EOF'
 #!/usr/bin/env bash
 # Automated setup script for PORTIER 3.0
@@ -243,19 +243,19 @@ echo ""
 echo "For more information, see docs/PORTIER_3.0_SYSTEM_ARCHITECTURE.md"
 echo ""
 EOF
-    
+
     chmod +x "$PACKAGE_DIR/setup.sh"
     log_success "Setup script created"
 }
 
 create_readme_for_release() {
     log_info "Creating README for release package..."
-    
+
     cat > "$PACKAGE_DIR/RELEASE_README.md" << EOF
 # PORTIER 3.0 - Release Package
 
-**Version:** ${VERSION}  
-**Release Date:** $(date +"%Y-%m-%d %H:%M:%S UTC")  
+**Version:** ${VERSION}
+**Release Date:** $(date +"%Y-%m-%d %H:%M:%S UTC")
 **Package:** ${ARCHIVE_NAME}
 
 ## 📦 What's Included
@@ -386,38 +386,38 @@ MIT License - See LICENSE file for details
 
 ---
 
-**Generated:** $(date +"%Y-%m-%d %H:%M:%S UTC")  
-**Package:** ${ARCHIVE_NAME}  
+**Generated:** $(date +"%Y-%m-%d %H:%M:%S UTC")
+**Package:** ${ARCHIVE_NAME}
 **Version:** ${VERSION}
 EOF
-    
+
     log_success "Release README created"
 }
 
 generate_checksums() {
     log_info "Generating checksums..."
-    
+
     cd "$RELEASE_DIR"
-    
+
     # Create tarball
     tar -czf "$ARCHIVE_NAME" "$PACKAGE_NAME"
     log_success "Archive created: $ARCHIVE_NAME"
-    
+
     # Generate SHA256 checksum
     sha256sum "$ARCHIVE_NAME" > "$ARCHIVE_NAME.sha256"
     log_success "Checksum created: $ARCHIVE_NAME.sha256"
-    
+
     # Create a zip version as well
     zip -r "${PACKAGE_NAME}.zip" "$PACKAGE_NAME" > /dev/null 2>&1
     sha256sum "${PACKAGE_NAME}.zip" > "${PACKAGE_NAME}.zip.sha256"
     log_success "ZIP archive created: ${PACKAGE_NAME}.zip"
-    
+
     cd "$ROOT"
 }
 
 create_manifest() {
     log_info "Creating release manifest..."
-    
+
     cat > "$RELEASE_DIR/MANIFEST.txt" << EOF
 PORTIER 3.0 - Release Manifest
 ==============================
@@ -478,7 +478,7 @@ Extraction
 ---
 End of Manifest
 EOF
-    
+
     log_success "Manifest created"
 }
 
@@ -536,7 +536,7 @@ main() {
     echo "Version: ${VERSION}"
     echo "Root: ${ROOT}"
     echo ""
-    
+
     cleanup_old_releases
     copy_essential_directories
     copy_core_infrastructure

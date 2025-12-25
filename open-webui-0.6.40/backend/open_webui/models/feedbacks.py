@@ -1,14 +1,12 @@
 import logging
 import time
 import uuid
-from typing import Optional
-
-from open_webui.internal.db import Base, get_db
-from open_webui.models.users import User
 
 from open_webui.env import SRC_LOG_LEVELS
+from open_webui.internal.db import Base, get_db
+from open_webui.models.users import User
 from pydantic import BaseModel, ConfigDict
-from sqlalchemy import BigInteger, Column, Text, JSON, Boolean
+from sqlalchemy import JSON, BigInteger, Column, Text
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MODELS"])
@@ -37,9 +35,9 @@ class FeedbackModel(BaseModel):
     user_id: str
     version: int
     type: str
-    data: Optional[dict] = None
-    meta: Optional[dict] = None
-    snapshot: Optional[dict] = None
+    data: dict | None = None
+    meta: dict | None = None
+    snapshot: dict | None = None
     created_at: int
     updated_at: int
 
@@ -56,39 +54,39 @@ class FeedbackResponse(BaseModel):
     user_id: str
     version: int
     type: str
-    data: Optional[dict] = None
-    meta: Optional[dict] = None
+    data: dict | None = None
+    meta: dict | None = None
     created_at: int
     updated_at: int
 
 
 class RatingData(BaseModel):
-    rating: Optional[str | int] = None
-    model_id: Optional[str] = None
-    sibling_model_ids: Optional[list[str]] = None
-    reason: Optional[str] = None
-    comment: Optional[str] = None
+    rating: str | int | None = None
+    model_id: str | None = None
+    sibling_model_ids: list[str] | None = None
+    reason: str | None = None
+    comment: str | None = None
     model_config = ConfigDict(extra="allow", protected_namespaces=())
 
 
 class MetaData(BaseModel):
-    arena: Optional[bool] = None
-    chat_id: Optional[str] = None
-    message_id: Optional[str] = None
-    tags: Optional[list[str]] = None
+    arena: bool | None = None
+    chat_id: str | None = None
+    message_id: str | None = None
+    tags: list[str] | None = None
     model_config = ConfigDict(extra="allow")
 
 
 class SnapshotData(BaseModel):
-    chat: Optional[dict] = None
+    chat: dict | None = None
     model_config = ConfigDict(extra="allow")
 
 
 class FeedbackForm(BaseModel):
     type: str
-    data: Optional[RatingData] = None
-    meta: Optional[dict] = None
-    snapshot: Optional[SnapshotData] = None
+    data: RatingData | None = None
+    meta: dict | None = None
+    snapshot: SnapshotData | None = None
     model_config = ConfigDict(extra="allow")
 
 
@@ -106,7 +104,7 @@ class UserResponse(BaseModel):
 
 
 class FeedbackUserResponse(FeedbackResponse):
-    user: Optional[UserResponse] = None
+    user: UserResponse | None = None
 
 
 class FeedbackListResponse(BaseModel):
@@ -115,9 +113,7 @@ class FeedbackListResponse(BaseModel):
 
 
 class FeedbackTable:
-    def insert_new_feedback(
-        self, user_id: str, form_data: FeedbackForm
-    ) -> Optional[FeedbackModel]:
+    def insert_new_feedback(self, user_id: str, form_data: FeedbackForm) -> FeedbackModel | None:
         with get_db() as db:
             id = str(uuid.uuid4())
             feedback = FeedbackModel(
@@ -143,7 +139,7 @@ class FeedbackTable:
                 log.exception(f"Error creating a new feedback: {e}")
                 return None
 
-    def get_feedback_by_id(self, id: str) -> Optional[FeedbackModel]:
+    def get_feedback_by_id(self, id: str) -> FeedbackModel | None:
         try:
             with get_db() as db:
                 feedback = db.query(Feedback).filter_by(id=id).first()
@@ -153,9 +149,7 @@ class FeedbackTable:
         except Exception:
             return None
 
-    def get_feedback_by_id_and_user_id(
-        self, id: str, user_id: str
-    ) -> Optional[FeedbackModel]:
+    def get_feedback_by_id_and_user_id(self, id: str, user_id: str) -> FeedbackModel | None:
         try:
             with get_db() as db:
                 feedback = db.query(Feedback).filter_by(id=id, user_id=user_id).first()
@@ -165,9 +159,7 @@ class FeedbackTable:
         except Exception:
             return None
 
-    def get_feedback_items(
-        self, filter: dict = {}, skip: int = 0, limit: int = 30
-    ) -> FeedbackListResponse:
+    def get_feedback_items(self, filter: dict = {}, skip: int = 0, limit: int = 30) -> FeedbackListResponse:
         with get_db() as db:
             query = db.query(Feedback, User).join(User, Feedback.user_id == User.id)
 
@@ -183,23 +175,15 @@ class FeedbackTable:
                 elif order_by == "model_id":
                     # it's stored in feedback.data['model_id']
                     if direction == "asc":
-                        query = query.order_by(
-                            Feedback.data["model_id"].as_string().asc()
-                        )
+                        query = query.order_by(Feedback.data["model_id"].as_string().asc())
                     else:
-                        query = query.order_by(
-                            Feedback.data["model_id"].as_string().desc()
-                        )
+                        query = query.order_by(Feedback.data["model_id"].as_string().desc())
                 elif order_by == "rating":
                     # it's stored in feedback.data['rating']
                     if direction == "asc":
-                        query = query.order_by(
-                            Feedback.data["rating"].as_string().asc()
-                        )
+                        query = query.order_by(Feedback.data["rating"].as_string().asc())
                     else:
-                        query = query.order_by(
-                            Feedback.data["rating"].as_string().desc()
-                        )
+                        query = query.order_by(Feedback.data["rating"].as_string().desc())
                 elif order_by == "updated_at":
                     if direction == "asc":
                         query = query.order_by(Feedback.updated_at.asc())
@@ -223,9 +207,7 @@ class FeedbackTable:
             for feedback, user in items:
                 feedback_model = FeedbackModel.model_validate(feedback)
                 user_model = UserResponse.model_validate(user)
-                feedbacks.append(
-                    FeedbackUserResponse(**feedback_model.model_dump(), user=user_model)
-                )
+                feedbacks.append(FeedbackUserResponse(**feedback_model.model_dump(), user=user_model))
 
             return FeedbackListResponse(items=feedbacks, total=total)
 
@@ -233,34 +215,24 @@ class FeedbackTable:
         with get_db() as db:
             return [
                 FeedbackModel.model_validate(feedback)
-                for feedback in db.query(Feedback)
-                .order_by(Feedback.updated_at.desc())
-                .all()
+                for feedback in db.query(Feedback).order_by(Feedback.updated_at.desc()).all()
             ]
 
     def get_feedbacks_by_type(self, type: str) -> list[FeedbackModel]:
         with get_db() as db:
             return [
                 FeedbackModel.model_validate(feedback)
-                for feedback in db.query(Feedback)
-                .filter_by(type=type)
-                .order_by(Feedback.updated_at.desc())
-                .all()
+                for feedback in db.query(Feedback).filter_by(type=type).order_by(Feedback.updated_at.desc()).all()
             ]
 
     def get_feedbacks_by_user_id(self, user_id: str) -> list[FeedbackModel]:
         with get_db() as db:
             return [
                 FeedbackModel.model_validate(feedback)
-                for feedback in db.query(Feedback)
-                .filter_by(user_id=user_id)
-                .order_by(Feedback.updated_at.desc())
-                .all()
+                for feedback in db.query(Feedback).filter_by(user_id=user_id).order_by(Feedback.updated_at.desc()).all()
             ]
 
-    def update_feedback_by_id(
-        self, id: str, form_data: FeedbackForm
-    ) -> Optional[FeedbackModel]:
+    def update_feedback_by_id(self, id: str, form_data: FeedbackForm) -> FeedbackModel | None:
         with get_db() as db:
             feedback = db.query(Feedback).filter_by(id=id).first()
             if not feedback:
@@ -278,9 +250,7 @@ class FeedbackTable:
             db.commit()
             return FeedbackModel.model_validate(feedback)
 
-    def update_feedback_by_id_and_user_id(
-        self, id: str, user_id: str, form_data: FeedbackForm
-    ) -> Optional[FeedbackModel]:
+    def update_feedback_by_id_and_user_id(self, id: str, user_id: str, form_data: FeedbackForm) -> FeedbackModel | None:
         with get_db() as db:
             feedback = db.query(Feedback).filter_by(id=id, user_id=user_id).first()
             if not feedback:

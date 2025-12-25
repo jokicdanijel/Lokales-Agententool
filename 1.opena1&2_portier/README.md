@@ -2,9 +2,9 @@
 
 ## 🎯 Überblick
 
-**Agent:** Koordinator & Archivator  
-**Port:** 12344  
-**Spezialisierung:** workflow_coordination  
+**Agent:** Koordinator & Archivator
+**Port:** 12344
+**Spezialisierung:** workflow_coordination
 **Status:** ✅ Enterprise-Ready
 
 Zentrale Koordination und Archivierung
@@ -12,7 +12,7 @@ Zentrale Koordination und Archivierung
 ## 🚀 Features
 
 - **Enterprise-Level Implementation**
-- **Real-time Processing & Monitoring** 
+- **Real-time Processing & Monitoring**
 - **RESTful API Integration**
 - **Comprehensive Logging & Analytics**
 - **Multi-Agent Coordination**
@@ -21,19 +21,21 @@ Zentrale Koordination und Archivierung
 ## 📡 API Endpoints
 
 ### Core Endpoints
+
 - `GET /health` - Health Status Check
 - `GET /status` - Detailed Agent Status
 - `POST /command` - Execute Agent Commands
 - `GET /metrics` - Performance Metrics
 
 ### Specialized Endpoints
+
 - `POST /specialized` - Agent-specific Functions
 - `GET /logs` - Real-time Log Access
 - `GET /config` - Configuration Management
 
 ## 🖥️ Dashboard Access
 
-**HTML Dashboard:** `file:///home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/html/index.html`  
+**HTML Dashboard:** `file:///home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/html/index.html`
 **Web Access:** `http://127.0.0.1:12344/`
 
 ## 🔧 Installation & Setup
@@ -62,7 +64,7 @@ open html/index.html
 Dieser Agent ist Teil des **ELION Hyper-Dashboard 2.0** Systems und integriert sich nahtlos mit:
 
 - **opena1 (Koordinator)** - Zentrale Steuerung
-- **opena2 (Archivator)** - Datenarchivierung  
+- **opena2 (Archivator)** - Datenarchivierung
 - **opena20 (Dashboard)** - Haupt-Dashboard
 - **Weitere Agenten** - Cross-Agent Kommunikation
 
@@ -78,7 +80,7 @@ tail -f logs/error.log
 
 ## 🏆 Enterprise Features
 
-- ✅ **Hochverfügbarkeit** 
+- ✅ **Hochverfügbarkeit**
 - ✅ **Skalierbare Architektur**
 - ✅ **Security & Authentication**
 - ✅ **Performance Monitoring**
@@ -88,7 +90,7 @@ tail -f logs/error.log
 ## 📈 Performance
 
 - **Response Time:** < 100ms
-- **Uptime:** 99.9%+  
+- **Uptime:** 99.9%+
 - **Throughput:** 1000+ requests/sec
 - **Memory Usage:** < 256MB
 
@@ -101,7 +103,7 @@ python3 -m pytest tests/
 # Linting
 flake8 *.py
 
-# Formatting  
+# Formatting
 black *.py
 ```
 
@@ -115,6 +117,6 @@ Bei Fragen oder Problemen:
 
 ---
 
-**Generiert:** 29.11.2025 13:22:43  
-**Version:** Enterprise 2.0  
+**Generiert:** 29.11.2025 13:22:43
+**Version:** Enterprise 2.0
 **Status:** ✅ Production Ready

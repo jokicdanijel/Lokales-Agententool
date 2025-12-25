@@ -19,7 +19,7 @@ echo -e "${YELLOW}🔐 Stopping OPENA11 Unlock Master${NC}"
 
 if [ ! -f "$PID_FILE" ]; then
     echo -e "${YELLOW}⚠️  No PID file found - agent may not be running${NC}"
-    
+
     # Try to find and kill by port
     PID=$(lsof -ti:12357 2>/dev/null || true)
     if [ -n "$PID" ]; then
@@ -34,7 +34,7 @@ PID=$(cat "$PID_FILE")
 if kill -0 "$PID" 2>/dev/null; then
     echo -e "${YELLOW}Sending SIGTERM to PID $PID${NC}"
     kill -TERM "$PID"
-    
+
     # Wait for graceful shutdown
     for i in {1..10}; do
         if ! kill -0 "$PID" 2>/dev/null; then
@@ -42,13 +42,13 @@ if kill -0 "$PID" 2>/dev/null; then
         fi
         sleep 0.5
     done
-    
+
     # Force kill if still running
     if kill -0 "$PID" 2>/dev/null; then
         echo -e "${YELLOW}Force killing...${NC}"
         kill -9 "$PID" 2>/dev/null
     fi
-    
+
     rm -f "$PID_FILE"
     echo -e "${GREEN}✅ OPENA11 Unlock Master stopped${NC}"
 else

@@ -35,7 +35,7 @@ log "🚀 Starting OpenWebUI Integration Server (Port 12347)..."
 # Check if port is already in use
 if lsof -i :$PORT >/dev/null 2>&1; then
     warn "Port $PORT ist bereits belegt"
-    
+
     # Check if it's our service
     if [[ -f "$PID_FILE" ]]; then
         PID=$(cat "$PID_FILE")
@@ -47,7 +47,7 @@ if lsof -i :$PORT >/dev/null 2>&1; then
             rm -f "$PID_FILE"
         fi
     fi
-    
+
     info "Stoppe Prozess auf Port $PORT..."
     pkill -f "openwebui_integration_12347.py" 2>/dev/null || true
     sleep 2
@@ -108,7 +108,7 @@ for i in {1..20}; do
         info "📄 PID: $PID"
         info "📋 Logs: $LOG_FILE"
         info "🔗 Health: http://127.0.0.1:$PORT/health"
-        
+
         # Show service info
         echo ""
         info "🎯 Available Endpoints:"
@@ -118,13 +118,13 @@ for i in {1..20}; do
         echo "  💬 Chat (POST): http://127.0.0.1:$PORT/api/chat"
         echo "  🔄 Workflow (POST): http://127.0.0.1:$PORT/api/workflow/execute"
         echo "  🧪 Integration Test: http://127.0.0.1:$PORT/api/system/integration-test"
-        
+
         # Test integration
         echo ""
         log "🧪 Running integration test..."
         if INTEGRATION_RESULT=$(curl -s "http://127.0.0.1:$PORT/api/system/integration-test" 2>/dev/null); then
             OVERALL_STATUS=$(echo "$INTEGRATION_RESULT" | jq -r '.overall_status' 2>/dev/null || echo "unknown")
-            
+
             if [[ "$OVERALL_STATUS" == "ok" ]]; then
                 log "✅ Integration test passed - all core services online"
             elif [[ "$OVERALL_STATUS" == "partial" ]]; then
@@ -135,7 +135,7 @@ for i in {1..20}; do
         else
             warn "Integration test konnte nicht ausgeführt werden"
         fi
-        
+
         # Port mapping info
         echo ""
         info "🗺️ Port Mapping:"
@@ -143,16 +143,16 @@ for i in {1..20}; do
         echo "  12347: OpenWebUI Integration (this service)"
         echo "  12349: HYPER-DASHBOARD 3.0"
         echo "  8080:  OpenWebUI UI (external)"
-        
+
         exit 0
     fi
-    
+
     if ! ps -p "$PID" >/dev/null 2>&1; then
         error "Service konnte nicht gestartet werden (Prozess beendet)"
         error "Logs: tail -20 '$LOG_FILE'"
         exit 1
     fi
-    
+
     sleep 1
 done
 

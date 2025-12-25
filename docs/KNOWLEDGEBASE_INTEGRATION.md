@@ -1,6 +1,6 @@
 # ✅ Knowledgebase Integration - Deployment Checklist
 
-**Datum:** 21. November 2025  
+**Datum:** 21. November 2025
 **Status:** ✅ **PRODUKTIONSBEREIT**
 
 ---
@@ -11,15 +11,15 @@ Die **Knowledgebase** wurde vollständig ins Admin Dashboard integriert.
 
 ### ✅ Integrierte Funktionen
 
-| Feature | Beschreibung | Status |
-|---------|-------------|--------|
-| **Stats API** | Statistiken (47 Dateien, 116 MB, 8 Typen) | ✅ Funktioniert |
-| **List API** | Liste aller Dateien (sortiert nach Datum) | ✅ Funktioniert |
-| **Search API** | Volltextsuche in Dateinamen + Inhalten | ✅ Funktioniert |
-| **Read API** | Dateiinhalt lesen (max 5MB) | ✅ Funktioniert |
-| **UI Modal** | Admin Dashboard Knowledgebase-Fenster | ✅ Implementiert |
-| **Live Search** | Suchfeld mit Auto-Update | ✅ Implementiert |
-| **File Viewer** | Inline-Anzeige von Dateiinhalten | ✅ Implementiert |
+| Feature         | Beschreibung                              | Status           |
+| --------------- | ----------------------------------------- | ---------------- |
+| **Stats API**   | Statistiken (47 Dateien, 116 MB, 8 Typen) | ✅ Funktioniert  |
+| **List API**    | Liste aller Dateien (sortiert nach Datum) | ✅ Funktioniert  |
+| **Search API**  | Volltextsuche in Dateinamen + Inhalten    | ✅ Funktioniert  |
+| **Read API**    | Dateiinhalt lesen (max 5MB)               | ✅ Funktioniert  |
+| **UI Modal**    | Admin Dashboard Knowledgebase-Fenster     | ✅ Implementiert |
+| **Live Search** | Suchfeld mit Auto-Update                  | ✅ Implementiert |
+| **File Viewer** | Inline-Anzeige von Dateiinhalten          | ✅ Implementiert |
 
 ---
 
@@ -256,6 +256,7 @@ curl -s -H "Authorization: Bearer MEIN_SUPER_TOKEN_123" \
 **Ursache:** Bearer Token fehlt oder ungültig
 
 **Lösung:**
+
 ```bash
 # Token aus .env
 grep BEARER_TOKEN .env
@@ -269,6 +270,7 @@ localStorage.setItem('bearer_token', 'MEIN_SUPER_TOKEN_123');
 **Ursache:** Knowledgebase-Ordner leer oder Pfad falsch
 
 **Lösung:**
+
 ```bash
 # Prüfe Pfad
 ls -la "1.opena1&2_portier/knowledgebase/opena1/" | wc -l
@@ -287,6 +289,7 @@ ls -la "1.opena1&2_portier/knowledgebase/opena1/" | wc -l
 **Ursache:** Query < 2 Zeichen oder kein Match
 
 **Lösung:**
+
 - Mindestens 2 Zeichen eingeben
 - Groß-/Kleinschreibung wird ignoriert
 - Nur .txt, .md, .html werden durchsucht (< 1MB)
@@ -296,16 +299,19 @@ ls -la "1.opena1&2_portier/knowledgebase/opena1/" | wc -l
 ## 📝 TODO / Erweiterungen
 
 ### Kurzfristig
+
 - [ ] **Syntax-Highlighting** - Code-Dateien mit Highlight.js
 - [ ] **Download-Button** - Datei als Download
 - [ ] **Pagination** - Liste in Seiten aufteilen (50 pro Seite)
 
 ### Mittelfristig
+
 - [ ] **Upload-Feature** - Neue Dateien hochladen
 - [ ] **Edit-Feature** - Dateien im Browser bearbeiten
 - [ ] **Delete-Feature** - Dateien löschen (mit Bestätigung)
 
 ### Langfristig
+
 - [ ] **Tagging-System** - Tags zu Dateien hinzufügen
 - [ ] **Version-Control** - Git-Integration für Änderungen
 - [ ] **AI-Search** - Semantische Suche mit Embeddings
@@ -326,8 +332,8 @@ ls -la "1.opena1&2_portier/knowledgebase/opena1/" | wc -l
 
 ---
 
-**Status:** ✅ **VOLLSTÄNDIG INTEGRIERT**  
-**Maintainer:** Danijel (ELION Team)  
+**Status:** ✅ **VOLLSTÄNDIG INTEGRIERT**
+**Maintainer:** Danijel (ELION Team)
 **Letzte Aktualisierung:** 21. November 2025
 
 ---

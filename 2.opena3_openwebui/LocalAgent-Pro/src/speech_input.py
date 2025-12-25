@@ -3,16 +3,15 @@ Speech-to-Text Input Module for LocalAgent-Pro
 Provides voice command recognition and audio processing
 """
 
-import speech_recognition as sr
 import os
-import json
 from datetime import datetime
-from typing import Optional, Tuple, List
-from pathlib import Path
+
+import speech_recognition as sr
 
 # Optional PyAudio import for better microphone support
 try:
     import pyaudio
+
     PYAUDIO_AVAILABLE = True
 except ImportError:
     PYAUDIO_AVAILABLE = False
@@ -35,7 +34,7 @@ class SpeechInput:
         self.recognizer = sr.Recognizer()
         self.language = language
         self.timeout = timeout
-        
+
         try:
             self.microphone = sr.Microphone()
             # Ambient noise calibration
@@ -46,7 +45,7 @@ class SpeechInput:
             self.microphone = sr.Microphone()
             print(f"⚠️  Warning: Microphone initialization: {e}")
 
-    def listen_once(self) -> Optional[str]:
+    def listen_once(self) -> str | None:
         """
         Listen for a single speech input
 
@@ -73,7 +72,7 @@ class SpeechInput:
             print("⏱️  Timeout: No speech detected")
             return None
 
-    def listen_continuous(self, max_iterations: int = 5) -> List[str]:
+    def listen_continuous(self, max_iterations: int = 5) -> list[str]:
         """
         Listen continuously for multiple speech inputs
 
@@ -101,27 +100,19 @@ class SpeechInput:
         Returns:
             Dictionary with microphone info
         """
-        info = {
-            "status": "OK",
-            "timestamp": datetime.now().isoformat(),
-            "microphones": [],
-            "noise_level": None
-        }
+        info = {"status": "OK", "timestamp": datetime.now().isoformat(), "microphones": [], "noise_level": None}
 
         try:
             # List all microphones
             for i, mic_name in enumerate(sr.Microphone.list_microphone_indexes()):
-                info["microphones"].append({
-                    "index": i,
-                    "name": sr.Microphone.list_microphone_indexes()[i]
-                })
+                info["microphones"].append({"index": i, "name": sr.Microphone.list_microphone_indexes()[i]})
 
             # Test default microphone
             with self.microphone as source:
                 print("🎧 Testing microphone...")
                 audio = self.recognizer.listen(source, timeout=2)
                 info["noise_level"] = "OK - Microphone is working"
-                print(f"✅ Microphone test passed")
+                print("✅ Microphone test passed")
 
         except Exception as e:
             info["status"] = "ERROR"
@@ -156,7 +147,7 @@ class SpeechInput:
             print(f"❌ Failed to save audio: {e}")
             return False
 
-    def recognize_from_file(self, filename: str) -> Optional[str]:
+    def recognize_from_file(self, filename: str) -> str | None:
         """
         Recognize speech from audio file
 
@@ -203,25 +194,29 @@ class SpeechInput:
 # Convenience functions
 _speech_input = None
 
+
 def initialize(language: str = "de-DE") -> SpeechInput:
     """Initialize global speech input instance"""
     global _speech_input
     _speech_input = SpeechInput(language=language)
     return _speech_input
 
-def listen() -> Optional[str]:
+
+def listen() -> str | None:
     """Listen for single speech input"""
     global _speech_input
     if _speech_input is None:
         initialize()
     return _speech_input.listen_once()
 
-def listen_continuous(max_iterations: int = 5) -> List[str]:
+
+def listen_continuous(max_iterations: int = 5) -> list[str]:
     """Listen continuously for multiple inputs"""
     global _speech_input
     if _speech_input is None:
         initialize()
     return _speech_input.listen_continuous(max_iterations)
+
 
 def test_mic() -> dict:
     """Test microphone"""

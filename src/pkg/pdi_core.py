@@ -22,18 +22,19 @@ Verpflichtende Regel:
 
 import json
 import logging
-from dataclasses import dataclass, asdict
-from enum import Enum
-from typing import Dict, List, Optional, Any
+from dataclasses import asdict, dataclass
 from datetime import datetime
+from enum import Enum
 from pathlib import Path
 
 # ────────────────────────────────────────────────────────────────────────────
 # Enums
 # ────────────────────────────────────────────────────────────────────────────
 
+
 class ValidationLevel(Enum):
     """Validierungs-Level für PDI-Prozess"""
+
     DRAFT = "DRAFT"
     COMMENTED = "COMMENTED"
     IMPROVED = "IMPROVED"
@@ -44,31 +45,34 @@ class ValidationLevel(Enum):
 
 class ModuleType(Enum):
     """PDI Funktionsmodule"""
-    ANALYTICS = "ANALYTICS"        # Funktions- und Abhängigkeitsbäume
-    LINGUISTIC = "LINGUISTIC"      # Verständlichkeit
-    TECHNICAL = "TECHNICAL"        # Schnittstellen, Datenflüsse
-    CORRECTION = "CORRECTION"      # Normen, Standards, Lint
-    CONTROL = "CONTROL"            # Gates, Rollbacks, Status
-    GITHUB = "GITHUB"              # GitHub Copilot-Prüfung
+
+    ANALYTICS = "ANALYTICS"  # Funktions- und Abhängigkeitsbäume
+    LINGUISTIC = "LINGUISTIC"  # Verständlichkeit
+    TECHNICAL = "TECHNICAL"  # Schnittstellen, Datenflüsse
+    CORRECTION = "CORRECTION"  # Normen, Standards, Lint
+    CONTROL = "CONTROL"  # Gates, Rollbacks, Status
+    GITHUB = "GITHUB"  # GitHub Copilot-Prüfung
 
 
 # ────────────────────────────────────────────────────────────────────────────
 # Data Models
 # ────────────────────────────────────────────────────────────────────────────
 
+
 @dataclass
 class ValidationResult:
     """Ergebnis einer Validierungs-Prüfung"""
+
     module: ModuleType
     level: ValidationLevel
     is_valid: bool
-    errors: List[str]
-    warnings: List[str]
-    suggestions: List[str]
+    errors: list[str]
+    warnings: list[str]
+    suggestions: list[str]
     duration_ms: float
     timestamp: str
 
-    def to_dict(self) -> Dict:
+    def to_dict(self) -> dict:
         result = asdict(self)
         result["module"] = self.module.value
         result["level"] = self.level.value
@@ -78,17 +82,18 @@ class ValidationResult:
 @dataclass
 class PDIManifest:
     """PDI-Manifest für ein Projekt"""
+
     project_name: str
     project_id: str
     version: str
     description: str
-    modules_required: List[ModuleType]
-    validation_gates: List[str]
+    modules_required: list[ModuleType]
+    validation_gates: list[str]
     github_checks_required: bool
     author: str
     created_at: str
 
-    def to_dict(self) -> Dict:
+    def to_dict(self) -> dict:
         result = asdict(self)
         result["modules_required"] = [m.value for m in self.modules_required]
         return result
@@ -97,19 +102,21 @@ class PDIManifest:
 @dataclass
 class ChapterPlan:
     """Kapitelplan für Dokumentation"""
+
     project_id: str
     total_chapters: int
-    chapters: Dict[int, str]  # {number: title}
-    dependencies: Dict[int, List[int]]  # {chapter: [depends_on]}
+    chapters: dict[int, str]  # {number: title}
+    dependencies: dict[int, list[int]]  # {chapter: [depends_on]}
     estimated_total_time: float  # Minuten
 
-    def to_dict(self) -> Dict:
+    def to_dict(self) -> dict:
         return asdict(self)
 
 
 # ────────────────────────────────────────────────────────────────────────────
 # PDI Core Engine
 # ────────────────────────────────────────────────────────────────────────────
+
 
 class PDICore:
     """
@@ -124,10 +131,10 @@ class PDICore:
         self.project_name = project_name
         self.project_id = project_id
         self.logger = logging.getLogger(f"PDI.{project_id}")
-        self.validation_log: List[ValidationResult] = []
-        self.manifest: Optional[PDIManifest] = None
-        self.chapter_plan: Optional[ChapterPlan] = None
-        self.validated_artifacts: Dict[str, Dict] = {}
+        self.validation_log: list[ValidationResult] = []
+        self.manifest: PDIManifest | None = None
+        self.chapter_plan: ChapterPlan | None = None
+        self.validated_artifacts: dict[str, dict] = {}
 
     # ────────────────────────────────────────────────────────────────────────
     # Stage 1: Input Processing
@@ -174,7 +181,7 @@ class PDICore:
                 created_at=datetime.utcnow().isoformat(),
             )
 
-            self.logger.info(f"[STAGE 1] ✓ Input processed, manifest created")
+            self.logger.info("[STAGE 1] ✓ Input processed, manifest created")
             return True
 
         except Exception as e:
@@ -220,7 +227,7 @@ class PDICore:
                 estimated_total_time=num_chapters * 15,  # 15 min per chapter
             )
 
-            self.logger.info(f"[STAGE 2] ✓ Chapter plan created")
+            self.logger.info("[STAGE 2] ✓ Chapter plan created")
             return True
 
         except Exception as e:
@@ -236,8 +243,8 @@ class PDICore:
         artifact_id: str,
         artifact_type: str,  # "code" | "doc" | "config" | "test"
         content: str,
-        run_modules: Optional[List[ModuleType]] = None,
-    ) -> Dict[str, ValidationResult]:
+        run_modules: list[ModuleType] | None = None,
+    ) -> dict[str, ValidationResult]:
         """
         Führe 8-Stufen-Validierungs-Prozess für einen Artefakt durch.
 
@@ -467,7 +474,7 @@ class PDICore:
             timestamp=datetime.utcnow().isoformat(),
         )
 
-    def _module_control(self, artifact_id: str, prior_results: Dict) -> ValidationResult:
+    def _module_control(self, artifact_id: str, prior_results: dict) -> ValidationResult:
         """Modul 5: Kontrollprogramm – Gates, Rollbacks, Status"""
         import time
 
@@ -537,7 +544,7 @@ class PDICore:
     # GitHub Checks (Simulated)
     # ────────────────────────────────────────────────────────────────────────
 
-    def _check_syntax(self, artifact_type: str, content: str) -> Dict:
+    def _check_syntax(self, artifact_type: str, content: str) -> dict:
         """GitHub Check: Syntax Errors"""
         if artifact_type == "code":
             try:
@@ -547,40 +554,40 @@ class PDICore:
                 return {"valid": False, "errors": [str(e)]}
         return {"valid": True, "errors": []}
 
-    def _check_logic(self, artifact_type: str, content: str) -> Dict:
+    def _check_logic(self, artifact_type: str, content: str) -> dict:
         """GitHub Check: Logic Errors"""
         errors = []
-        
+
         # Type-specific logic checks
         if artifact_type == "bash":
             # Bash scripts often have complex bracket patterns (arrays, expansions)
             # Only check for critical syntax errors, not bracket counts
             # (Bash is too dynamic for static bracket counting)
-            
+
             # Check for common Bash pitfalls
             if "rm -rf /" in content:
                 errors.append("Dangerous rm -rf command detected")
-            
+
             if "eval " in content:
                 errors.append("Use of eval() in Bash is dangerous")
-            
+
             return {"valid": len(errors) == 0, "errors": errors}
-        
+
         elif artifact_type == "code" and "python" in content[:100].lower():
             # Python: basic checks
             if content.count("[") != content.count("]"):
                 errors.append("Bracket mismatch in Python code")
-        
+
         return {"valid": len(errors) == 0, "errors": errors}
 
-    def _check_runtime(self, artifact_type: str, content: str) -> Dict:
+    def _check_runtime(self, artifact_type: str, content: str) -> dict:
         """GitHub Check: Runtime Errors"""
         errors = []
         if "open(" in content and "close()" not in content:
             errors.append("File opened but not closed")
         return {"valid": len(errors) == 0, "errors": errors}
 
-    def _check_security(self, artifact_type: str, content: str) -> Dict:
+    def _check_security(self, artifact_type: str, content: str) -> dict:
         """GitHub Check: Security Issues"""
         errors = []
         if "eval(" in content:
@@ -601,7 +608,7 @@ class PDICore:
         level = "✓" if result.is_valid else "✗"
         self.logger.info(f"  [{result.module.value}] {level} {result.level.value}")
 
-    def get_validation_report(self) -> Dict:
+    def get_validation_report(self) -> dict:
         """Generiere Validierungs-Report"""
         total = len(self.validation_log)
         passed = sum(1 for r in self.validation_log if r.is_valid)
@@ -618,7 +625,7 @@ class PDICore:
             "validated_artifacts": self.validated_artifacts,
         }
 
-    def export_manifest(self, filepath: Optional[str] = None) -> str:
+    def export_manifest(self, filepath: str | None = None) -> str:
         """Exportiere Manifest als JSON"""
         if not self.manifest:
             return "{}"
@@ -637,6 +644,6 @@ class PDICore:
             return ""
 
         artifact = self.validated_artifacts[artifact_id]
-        header = "\"\"\"\n[PDI-ACTIVE: TRUE | VALIDATED | GITHUB-CHECK: PASS]\n\"\"\"\n\n"
+        header = '"""\n[PDI-ACTIVE: TRUE | VALIDATED | GITHUB-CHECK: PASS]\n"""\n\n'
 
         return header + artifact["content"]

@@ -12,31 +12,31 @@ Features:
 OpenWebUI Tool Format (production-ready)
 """
 
-import json
 import asyncio
+import json
 import logging
-from datetime import datetime
-from typing import Optional, Dict, List, Any
-from enum import Enum
-from pydantic import BaseModel, Field
 import os
+from datetime import datetime
+from enum import Enum
+from typing import Any
+
+from pydantic import BaseModel, Field
 
 # ============================================================================
 # LOGGING SETUP
 # ============================================================================
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 # ============================================================================
 # DATA MODELS
 # ============================================================================
 
+
 class ActionType(str, Enum):
     """Supported action types in workflow"""
+
     BROWSER_AGENT = "browser_agent"
     LOCAL_AGENT = "local_agent"
     FILE_OPS = "file_ops"
@@ -48,11 +48,12 @@ class ActionType(str, Enum):
 
 class WorkflowStep(BaseModel):
     """Single step in workflow"""
+
     step_id: str
     name: str
     action_type: ActionType
     description: str = ""
-    parameters: Dict[str, Any] = Field(default_factory=dict)
+    parameters: dict[str, Any] = Field(default_factory=dict)
     order: int
     enabled: bool = True
     timeout_seconds: int = 300
@@ -62,37 +63,40 @@ class WorkflowStep(BaseModel):
 
 class WorkflowConfig(BaseModel):
     """Complete workflow configuration"""
+
     workflow_id: str
     name: str
     description: str = ""
-    steps: List[WorkflowStep] = Field(default_factory=list)
-    variables: Dict[str, Any] = Field(default_factory=dict)
+    steps: list[WorkflowStep] = Field(default_factory=list)
+    variables: dict[str, Any] = Field(default_factory=dict)
     enabled: bool = True
     auto_execute: bool = False
-    execute_interval_seconds: Optional[int] = None
+    execute_interval_seconds: int | None = None
     created_at: str = Field(default_factory=lambda: datetime.now().isoformat())
     updated_at: str = Field(default_factory=lambda: datetime.now().isoformat())
 
 
 class ExecutionResult(BaseModel):
     """Result from workflow step execution"""
+
     step_id: str
     status: str  # success, failed, skipped, timeout
-    output: Dict[str, Any] = Field(default_factory=dict)
-    error: Optional[str] = None
+    output: dict[str, Any] = Field(default_factory=dict)
+    error: str | None = None
     duration_ms: float = 0.0
     timestamp: str = Field(default_factory=lambda: datetime.now().isoformat())
 
 
 class ExecutionPlan(BaseModel):
     """Execution plan for workflow"""
+
     plan_id: str
     workflow_id: str
-    steps_order: List[str]
+    steps_order: list[str]
     total_steps: int
     estimated_duration_seconds: float
-    critical_path: List[str]
-    dependencies: Dict[str, List[str]] = Field(default_factory=dict)
+    critical_path: list[str]
+    dependencies: dict[str, list[str]] = Field(default_factory=dict)
     generated_at: str = Field(default_factory=lambda: datetime.now().isoformat())
 
 
@@ -100,34 +104,35 @@ class ExecutionPlan(BaseModel):
 # WORKFLOW ENGINE
 # ============================================================================
 
+
 class WorkflowEngine:
     """Main workflow execution engine"""
 
     def __init__(self):
         """Initialize workflow engine"""
-        self.workflows: Dict[str, WorkflowConfig] = {}
-        self.executions: Dict[str, List[ExecutionResult]] = {}
-        self.data_dir = os.environ.get('PORTIER_DATA_DIR', '/tmp/portier_workflows')
+        self.workflows: dict[str, WorkflowConfig] = {}
+        self.executions: dict[str, list[ExecutionResult]] = {}
+        self.data_dir = os.environ.get("PORTIER_DATA_DIR", "/tmp/portier_workflows")
         os.makedirs(self.data_dir, exist_ok=True)
         logger.info(f"WorkflowEngine initialized. Data dir: {self.data_dir}")
         self._load_workflows()
 
     def _load_workflows(self):
         """Load workflows from storage"""
-        workflows_file = os.path.join(self.data_dir, 'workflows.json')
+        workflows_file = os.path.join(self.data_dir, "workflows.json")
         if os.path.exists(workflows_file):
             try:
-                with open(workflows_file, 'r') as f:
+                with open(workflows_file) as f:
                     workflows_data = json.load(f)
                     for wf_id, wf_data in workflows_data.items():
-                        steps = [WorkflowStep(**step) for step in wf_data.get('steps', [])]
+                        steps = [WorkflowStep(**step) for step in wf_data.get("steps", [])]
                         self.workflows[wf_id] = WorkflowConfig(
                             workflow_id=wf_id,
-                            name=wf_data['name'],
-                            description=wf_data.get('description', ''),
+                            name=wf_data["name"],
+                            description=wf_data.get("description", ""),
                             steps=steps,
-                            variables=wf_data.get('variables', {}),
-                            enabled=wf_data.get('enabled', True)
+                            variables=wf_data.get("variables", {}),
+                            enabled=wf_data.get("enabled", True),
                         )
                 logger.info(f"Loaded {len(self.workflows)} workflows from storage")
             except Exception as e:
@@ -136,31 +141,23 @@ class WorkflowEngine:
     def _save_workflows(self):
         """Save workflows to storage"""
         try:
-            workflows_file = os.path.join(self.data_dir, 'workflows.json')
+            workflows_file = os.path.join(self.data_dir, "workflows.json")
             workflows_data = {}
             for wf_id, workflow in self.workflows.items():
                 workflows_data[wf_id] = workflow.model_dump()
 
-            with open(workflows_file, 'w') as f:
+            with open(workflows_file, "w") as f:
                 json.dump(workflows_data, f, indent=2, default=str)
             logger.info("Workflows saved to storage")
         except Exception as e:
             logger.error(f"Failed to save workflows: {e}")
 
-    async def create_workflow(
-        self,
-        name: str,
-        description: str = "",
-        auto_execute: bool = False
-    ) -> str:
+    async def create_workflow(self, name: str, description: str = "", auto_execute: bool = False) -> str:
         """Create new workflow"""
         workflow_id = f"wf_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
 
         workflow = WorkflowConfig(
-            workflow_id=workflow_id,
-            name=name,
-            description=description,
-            auto_execute=auto_execute
+            workflow_id=workflow_id, name=name, description=description, auto_execute=auto_execute
         )
 
         self.workflows[workflow_id] = workflow
@@ -170,12 +167,7 @@ class WorkflowEngine:
         return workflow_id
 
     async def add_step(
-        self,
-        workflow_id: str,
-        name: str,
-        action_type: ActionType,
-        parameters: Dict[str, Any],
-        description: str = ""
+        self, workflow_id: str, name: str, action_type: ActionType, parameters: dict[str, Any], description: str = ""
     ) -> bool:
         """Add step to workflow"""
         if workflow_id not in self.workflows:
@@ -191,7 +183,7 @@ class WorkflowEngine:
             action_type=action_type,
             description=description,
             parameters=parameters,
-            order=len(workflow.steps)
+            order=len(workflow.steps),
         )
 
         workflow.steps.append(step)
@@ -201,7 +193,7 @@ class WorkflowEngine:
         logger.info(f"Added step {step_id} to workflow {workflow_id}")
         return True
 
-    async def generate_execution_plan(self, workflow_id: str) -> Optional[ExecutionPlan]:
+    async def generate_execution_plan(self, workflow_id: str) -> ExecutionPlan | None:
         """Generate execution plan for workflow"""
         if workflow_id not in self.workflows:
             logger.error(f"Workflow not found: {workflow_id}")
@@ -214,9 +206,7 @@ class WorkflowEngine:
         steps_order = [s.step_id for s in sorted_steps]
 
         # Calculate estimated duration
-        estimated_duration = sum(
-            s.timeout_seconds for s in sorted_steps if s.enabled
-        ) / 2  # Average case
+        estimated_duration = sum(s.timeout_seconds for s in sorted_steps if s.enabled) / 2  # Average case
 
         # Identify critical path (longest chain)
         critical_path = steps_order
@@ -233,17 +223,13 @@ class WorkflowEngine:
             total_steps=len(sorted_steps),
             estimated_duration_seconds=estimated_duration,
             critical_path=critical_path,
-            dependencies=dependencies
+            dependencies=dependencies,
         )
 
         logger.info(f"Generated execution plan {plan_id} for workflow {workflow_id}")
         return plan
 
-    async def execute_workflow(
-        self,
-        workflow_id: str,
-        dry_run: bool = False
-    ) -> Dict[str, Any]:
+    async def execute_workflow(self, workflow_id: str, dry_run: bool = False) -> dict[str, Any]:
         """Execute workflow"""
         if workflow_id not in self.workflows:
             logger.error(f"Workflow not found: {workflow_id}")
@@ -264,10 +250,7 @@ class WorkflowEngine:
             for step in sorted_steps:
                 if not step.enabled:
                     logger.info(f"Skipping disabled step: {step.step_id}")
-                    result = ExecutionResult(
-                        step_id=step.step_id,
-                        status="skipped"
-                    )
+                    result = ExecutionResult(step_id=step.step_id, status="skipped")
                     results.append(result)
                     continue
 
@@ -282,7 +265,7 @@ class WorkflowEngine:
                             "action": step.action_type,
                             "name": step.name,
                             "parameters": step.parameters,
-                            "dry_run": True
+                            "dry_run": True,
                         }
                         status = "success"
                     else:
@@ -293,20 +276,14 @@ class WorkflowEngine:
                     duration_ms = (datetime.now() - step_start).total_seconds() * 1000
 
                     result = ExecutionResult(
-                        step_id=step.step_id,
-                        status=status,
-                        output=output,
-                        duration_ms=duration_ms
+                        step_id=step.step_id, status=status, output=output, duration_ms=duration_ms
                     )
 
                 except Exception as e:
                     logger.error(f"Step execution failed: {e}")
                     duration_ms = (datetime.now() - step_start).total_seconds() * 1000
                     result = ExecutionResult(
-                        step_id=step.step_id,
-                        status="failed",
-                        error=str(e),
-                        duration_ms=duration_ms
+                        step_id=step.step_id, status="failed", error=str(e), duration_ms=duration_ms
                     )
 
                 results.append(result)
@@ -318,7 +295,7 @@ class WorkflowEngine:
                 "status": "failed",
                 "execution_id": execution_id,
                 "error": str(e),
-                "results": [r.model_dump() for r in results]
+                "results": [r.model_dump() for r in results],
             }
 
         total_duration = (datetime.now() - start_time).total_seconds()
@@ -329,14 +306,10 @@ class WorkflowEngine:
             "workflow_id": workflow_id,
             "total_duration_seconds": total_duration,
             "results_count": len(results),
-            "results": [r.model_dump() for r in results]
+            "results": [r.model_dump() for r in results],
         }
 
-    async def _execute_step(
-        self,
-        step: WorkflowStep,
-        workflow: WorkflowConfig
-    ) -> Dict[str, Any]:
+    async def _execute_step(self, step: WorkflowStep, workflow: WorkflowConfig) -> dict[str, Any]:
         """Execute individual step"""
 
         if step.action_type == ActionType.BROWSER_AGENT:
@@ -356,76 +329,64 @@ class WorkflowEngine:
         else:
             raise ValueError(f"Unknown action type: {step.action_type}")
 
-    async def _execute_browser_agent(self, step: WorkflowStep, workflow: WorkflowConfig) -> Dict:
+    async def _execute_browser_agent(self, step: WorkflowStep, workflow: WorkflowConfig) -> dict:
         """Execute BrowserAgent action"""
         params = step.parameters
         return {
             "action": "browser_agent",
-            "instruction": params.get('instruction', ''),
+            "instruction": params.get("instruction", ""),
             "timeout": step.timeout_seconds,
-            "result": "Browser action executed"
+            "result": "Browser action executed",
         }
 
-    async def _execute_local_agent(self, step: WorkflowStep, workflow: WorkflowConfig) -> Dict:
+    async def _execute_local_agent(self, step: WorkflowStep, workflow: WorkflowConfig) -> dict:
         """Execute LocalAgentPro action"""
         params = step.parameters
         return {
             "action": "local_agent",
-            "command": params.get('command', ''),
-            "agent_id": params.get('agent_id', ''),
-            "result": "Agent action executed"
+            "command": params.get("command", ""),
+            "agent_id": params.get("agent_id", ""),
+            "result": "Agent action executed",
         }
 
-    async def _execute_file_ops(self, step: WorkflowStep, workflow: WorkflowConfig) -> Dict:
+    async def _execute_file_ops(self, step: WorkflowStep, workflow: WorkflowConfig) -> dict:
         """Execute file operations"""
         params = step.parameters
         return {
             "action": "file_ops",
-            "operation": params.get('operation', ''),
-            "path": params.get('path', ''),
-            "result": "File operation executed"
+            "operation": params.get("operation", ""),
+            "path": params.get("path", ""),
+            "result": "File operation executed",
         }
 
-    async def _execute_pdf_tools(self, step: WorkflowStep, workflow: WorkflowConfig) -> Dict:
+    async def _execute_pdf_tools(self, step: WorkflowStep, workflow: WorkflowConfig) -> dict:
         """Execute PDF tools"""
         params = step.parameters
         return {
             "action": "pdf_tools",
-            "operation": params.get('operation', ''),
-            "file": params.get('file', ''),
-            "result": "PDF operation executed"
+            "operation": params.get("operation", ""),
+            "file": params.get("file", ""),
+            "result": "PDF operation executed",
         }
 
-    async def _execute_system_cmd(self, step: WorkflowStep, workflow: WorkflowConfig) -> Dict:
+    async def _execute_system_cmd(self, step: WorkflowStep, workflow: WorkflowConfig) -> dict:
         """Execute system command"""
         params = step.parameters
-        return {
-            "action": "system_cmd",
-            "command": params.get('command', ''),
-            "result": "System command executed"
-        }
+        return {"action": "system_cmd", "command": params.get("command", ""), "result": "System command executed"}
 
-    async def _execute_delay(self, step: WorkflowStep, workflow: WorkflowConfig) -> Dict:
+    async def _execute_delay(self, step: WorkflowStep, workflow: WorkflowConfig) -> dict:
         """Execute delay"""
         params = step.parameters
-        delay_seconds = params.get('seconds', 1)
+        delay_seconds = params.get("seconds", 1)
         await asyncio.sleep(delay_seconds)
-        return {
-            "action": "delay",
-            "seconds": delay_seconds,
-            "result": f"Waited {delay_seconds} seconds"
-        }
+        return {"action": "delay", "seconds": delay_seconds, "result": f"Waited {delay_seconds} seconds"}
 
-    async def _execute_condition(self, step: WorkflowStep, workflow: WorkflowConfig) -> Dict:
+    async def _execute_condition(self, step: WorkflowStep, workflow: WorkflowConfig) -> dict:
         """Execute conditional logic"""
         params = step.parameters
-        return {
-            "action": "condition",
-            "condition": params.get('condition', ''),
-            "result": "Condition evaluated"
-        }
+        return {"action": "condition", "condition": params.get("condition", ""), "result": "Condition evaluated"}
 
-    async def get_workflow_status(self, workflow_id: str) -> Optional[Dict]:
+    async def get_workflow_status(self, workflow_id: str) -> dict | None:
         """Get current workflow status"""
         if workflow_id not in self.workflows:
             return None
@@ -442,15 +403,15 @@ class WorkflowEngine:
                     "name": s.name,
                     "action_type": s.action_type,
                     "order": s.order,
-                    "enabled": s.enabled
+                    "enabled": s.enabled,
                 }
                 for s in sorted(workflow.steps, key=lambda s: s.order)
             ],
             "created_at": workflow.created_at,
-            "updated_at": workflow.updated_at
+            "updated_at": workflow.updated_at,
         }
 
-    async def list_workflows(self) -> List[Dict]:
+    async def list_workflows(self) -> list[dict]:
         """List all workflows"""
         return [
             {
@@ -458,7 +419,7 @@ class WorkflowEngine:
                 "name": wf.name,
                 "steps_count": len(wf.steps),
                 "enabled": wf.enabled,
-                "created_at": wf.created_at
+                "created_at": wf.created_at,
             }
             for wf in self.workflows.values()
         ]
@@ -467,6 +428,7 @@ class WorkflowEngine:
 # ============================================================================
 # OPENWEBUI TOOL CLASS
 # ============================================================================
+
 
 class Tools:
     """Portier Workflow Builder OpenWebUI Tool"""
@@ -477,11 +439,8 @@ class Tools:
         logger.info("Portier Workflow Builder 1.0.0 initialized")
 
     async def workflow_builder_create(
-        self,
-        name: str,
-        description: str = "",
-        auto_execute: bool = False
-    ) -> Dict[str, Any]:
+        self, name: str, description: str = "", auto_execute: bool = False
+    ) -> dict[str, Any]:
         """
         Create new workflow
 
@@ -495,31 +454,21 @@ class Tools:
         """
         try:
             workflow_id = await self.engine.create_workflow(
-                name=name,
-                description=description,
-                auto_execute=auto_execute
+                name=name, description=description, auto_execute=auto_execute
             )
             return {
                 "status": "success",
                 "workflow_id": workflow_id,
                 "name": name,
-                "message": f"Workflow '{name}' created successfully"
+                "message": f"Workflow '{name}' created successfully",
             }
         except Exception as e:
             logger.error(f"Error creating workflow: {e}")
-            return {
-                "status": "failed",
-                "error": str(e)
-            }
+            return {"status": "failed", "error": str(e)}
 
     async def workflow_builder_add_step(
-        self,
-        workflow_id: str,
-        name: str,
-        action_type: str,
-        parameters: Dict[str, Any],
-        description: str = ""
-    ) -> Dict[str, Any]:
+        self, workflow_id: str, name: str, action_type: str, parameters: dict[str, Any], description: str = ""
+    ) -> dict[str, Any]:
         """
         Add step to workflow
 
@@ -536,35 +485,18 @@ class Tools:
         try:
             action = ActionType(action_type)
             success = await self.engine.add_step(
-                workflow_id=workflow_id,
-                name=name,
-                action_type=action,
-                parameters=parameters,
-                description=description
+                workflow_id=workflow_id, name=name, action_type=action, parameters=parameters, description=description
             )
 
             if success:
-                return {
-                    "status": "success",
-                    "message": f"Step '{name}' added to workflow"
-                }
+                return {"status": "success", "message": f"Step '{name}' added to workflow"}
             else:
-                return {
-                    "status": "failed",
-                    "error": "Failed to add step"
-                }
+                return {"status": "failed", "error": "Failed to add step"}
         except Exception as e:
             logger.error(f"Error adding step: {e}")
-            return {
-                "status": "failed",
-                "error": str(e)
-            }
+            return {"status": "failed", "error": str(e)}
 
-    async def workflow_builder_execute(
-        self,
-        workflow_id: str,
-        dry_run: bool = False
-    ) -> Dict[str, Any]:
+    async def workflow_builder_execute(self, workflow_id: str, dry_run: bool = False) -> dict[str, Any]:
         """
         Execute workflow
 
@@ -576,22 +508,13 @@ class Tools:
             Execution result
         """
         try:
-            result = await self.engine.execute_workflow(
-                workflow_id=workflow_id,
-                dry_run=dry_run
-            )
+            result = await self.engine.execute_workflow(workflow_id=workflow_id, dry_run=dry_run)
             return result
         except Exception as e:
             logger.error(f"Error executing workflow: {e}")
-            return {
-                "status": "failed",
-                "error": str(e)
-            }
+            return {"status": "failed", "error": str(e)}
 
-    async def workflow_builder_plan(
-        self,
-        workflow_id: str
-    ) -> Dict[str, Any]:
+    async def workflow_builder_plan(self, workflow_id: str) -> dict[str, Any]:
         """
         Generate execution plan for workflow
 
@@ -604,26 +527,14 @@ class Tools:
         try:
             plan = await self.engine.generate_execution_plan(workflow_id)
             if plan:
-                return {
-                    "status": "success",
-                    "plan": plan.model_dump()
-                }
+                return {"status": "success", "plan": plan.model_dump()}
             else:
-                return {
-                    "status": "failed",
-                    "error": "Could not generate plan"
-                }
+                return {"status": "failed", "error": "Could not generate plan"}
         except Exception as e:
             logger.error(f"Error generating plan: {e}")
-            return {
-                "status": "failed",
-                "error": str(e)
-            }
+            return {"status": "failed", "error": str(e)}
 
-    async def workflow_builder_status(
-        self,
-        workflow_id: str
-    ) -> Dict[str, Any]:
+    async def workflow_builder_status(self, workflow_id: str) -> dict[str, Any]:
         """
         Get workflow status
 
@@ -636,23 +547,14 @@ class Tools:
         try:
             status = await self.engine.get_workflow_status(workflow_id)
             if status:
-                return {
-                    "status": "success",
-                    "workflow": status
-                }
+                return {"status": "success", "workflow": status}
             else:
-                return {
-                    "status": "failed",
-                    "error": "Workflow not found"
-                }
+                return {"status": "failed", "error": "Workflow not found"}
         except Exception as e:
             logger.error(f"Error getting workflow status: {e}")
-            return {
-                "status": "failed",
-                "error": str(e)
-            }
+            return {"status": "failed", "error": str(e)}
 
-    async def workflow_builder_list(self) -> Dict[str, Any]:
+    async def workflow_builder_list(self) -> dict[str, Any]:
         """
         List all workflows
 
@@ -661,21 +563,14 @@ class Tools:
         """
         try:
             workflows = await self.engine.list_workflows()
-            return {
-                "status": "success",
-                "count": len(workflows),
-                "workflows": workflows
-            }
+            return {"status": "success", "count": len(workflows), "workflows": workflows}
         except Exception as e:
             logger.error(f"Error listing workflows: {e}")
-            return {
-                "status": "failed",
-                "error": str(e)
-            }
+            return {"status": "failed", "error": str(e)}
 
 
 # ============================================================================
 # EXPORT FOR OPENWEBUI
 # ============================================================================
 
-__all__ = ['Tools']
+__all__ = ["Tools"]

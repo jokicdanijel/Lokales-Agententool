@@ -14,5 +14,3 @@ Zugänge:
 Voraussetzung:
   In .env muss OPENAI_API_KEY=... gesetzt sein.
   Unllama wird nicht verwendet. Agenten laufen über OpenAI-API.
-
-

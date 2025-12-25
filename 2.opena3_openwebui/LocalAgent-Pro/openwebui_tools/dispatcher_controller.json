@@ -33,7 +33,7 @@
         "via": {
           "type": "array",
           "description": "Path through agents: [opena1, opena2, ..., kordp, target]",
-          "items": {"type": "string"}
+          "items": { "type": "string" }
         },
         "safepoint": {
           "type": "string",
@@ -50,12 +50,15 @@
   "response": {
     "type": "object",
     "properties": {
-      "status": {"type": "string", "enum": ["accepted", "routing", "executing", "completed", "error"]},
-      "cmd_id": {"type": "string"},
-      "safepoint": {"type": "string"},
-      "result": {"type": "object"},
-      "timestamp": {"type": "string"},
-      "audit_trail": {"type": "array"}
+      "status": {
+        "type": "string",
+        "enum": ["accepted", "routing", "executing", "completed", "error"]
+      },
+      "cmd_id": { "type": "string" },
+      "safepoint": { "type": "string" },
+      "result": { "type": "object" },
+      "timestamp": { "type": "string" },
+      "audit_trail": { "type": "array" }
     }
   }
 }

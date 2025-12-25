@@ -4,8 +4,8 @@
 
 **ELION Hyper-Dashboard – OpenWebUI & VS Code Copilot-Bridge**
 
-**Datum:** 2025-11-06  
-**Status:** ✅ PRODUCTION-READY + Phase 4 Ready  
+**Datum:** 2025-11-06
+**Status:** ✅ PRODUCTION-READY + Phase 4 Ready
 **Version:** 1.0 (Finalized from v0.1)
 
 ---
@@ -13,6 +13,7 @@
 ## 🎯 Mission Statement
 
 Jede textuelle Projektidee wird **deterministisch in produktionsreife Artefakte** überführt:
+
 - ✅ Code (Python, TypeScript, Bash)
 - ✅ Dokumentation (OpenAPI, README, Changelogs)
 - ✅ Skripte (Test, Deployment, Integration)
@@ -37,27 +38,30 @@ Jede textuelle Projektidee wird **deterministisch in produktionsreife Artefakte*
 ```
 
 ### Portzuweisung (Final)
-| Port | Service | Zweck | Status |
-|------|---------|-------|--------|
-| 12349 | Dashboard | Central REST API | ✅ Phase 3 |
-| 12344 | opena1 | AI Agent | ✅ Phase 1 |
-| 12345 | opena2 | Archivator | ✅ Phase 1 |
-| 12346 | kordp | Coordinator | ✅ Phase 1 |
-| 12347 | opena3 | OpenWebUI Wrapper | ✅ Phase 2 |
-| 12350 | Adapter | HTTP → 8080 | ✅ Phase 2 |
+
+| Port      | Service          | Zweck                   | Status     |
+| --------- | ---------------- | ----------------------- | ---------- |
+| 12349     | Dashboard        | Central REST API        | ✅ Phase 3 |
+| 12344     | opena1           | AI Agent                | ✅ Phase 1 |
+| 12345     | opena2           | Archivator              | ✅ Phase 1 |
+| 12346     | kordp            | Coordinator             | ✅ Phase 1 |
+| 12347     | opena3           | OpenWebUI Wrapper       | ✅ Phase 2 |
+| 12350     | Adapter          | HTTP → 8080             | ✅ Phase 2 |
 | **12351** | **Bridge Queue** | **Copilot Integration** | 🔜 Phase 4 |
-| 8080 | OpenWebUI | Docker UI (opt.) | ✅ Phase 2 |
+| 8080      | OpenWebUI        | Docker UI (opt.)        | ✅ Phase 2 |
 
 ---
 
 ## 📋 Leitplanken & Constraints
 
 ### 1. **Port-Policy**
+
 - Gültig: 12344–12399, 8080 (OpenWebUI nur)
 - Alle inbound HTTP requests via Bearer Token + Rate-Limiting
 - Agent-zu-Agent-Kommunikation: unrestricted (HTTP REST)
 
 ### 2. **Basisverzeichnis & Struktur**
+
 ```
 /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/
 ├── 19.dashboard_agent/                ← Main workspace
@@ -71,6 +75,7 @@ Jede textuelle Projektidee wird **deterministisch in produktionsreife Artefakte*
 ```
 
 ### 3. **Code-Qualität (DoD)**
+
 - ✅ Type hints (Python 3.12+)
 - ✅ Async-first (FastAPI + asyncio)
 - ✅ Bearer token validation (alle Endpoints außer `/health`)
@@ -81,11 +86,13 @@ Jede textuelle Projektidee wird **deterministisch in produktionsreife Artefakte*
 - ✅ Safepoint creation (schreiboptionale archivp/)
 
 ### 4. **Versionskontrolle & Releases**
+
 - Alle `.py`, `.sh`, `.ts` Dateien: **Keine Platzhalter**
 - Jede Datei trägt **[PDI-Header]** (Status + GitHub Check)
 - CI/CD: Lint (pylint, shellcheck, eslint) + Smoke Tests
 
 ### 5. **Kommunikationsprotokolle**
+
 - **Dashboard ↔ Agents:** HTTP REST (Bearer Token)
 - **Bridge → Dashboard:** WebSocket (SSE alt.) + Queue
 - **Extension ↔ Bridge:** HTTP + Queue-basiert
@@ -110,6 +117,7 @@ Jede Position (Kapitel) ist **DONE**, wenn:
 ## 📦 Phasen-Übersicht
 
 ### ✅ Phase 1–3 (Completed)
+
 - **Phase 1 (20 Tasks):** Core orchestration, root wrappers, docs
 - **Phase 2 (20 Tasks):** OpenWebUI adapter + agent + endpoints + UI
 - **Phase 3 (1 Task):** AI Copilot Instructions + completion checklists
@@ -117,7 +125,9 @@ Jede Position (Kapitel) ist **DONE**, wenn:
 **Status:** 41/41 Tasks ✅ | Production-Ready ✅
 
 ### 🔜 Phase 4 (Next 20 Tasks)
+
 **Copilot Bridge + VS Code Integration**
+
 - Tasks 01–20: Bridge API, Queue, Extension, Deployment, Testing
 - Deliverables: Bridge service, VS Code Extension, E2E tests, Docker Compose, systemd Units
 
@@ -125,20 +135,21 @@ Jede Position (Kapitel) ist **DONE**, wenn:
 
 ## 🚨 Kritische Risiken & Mitigationen
 
-| Risiko | Severity | Mitigation |
-|--------|----------|-----------|
-| Race Conditions in Queue-Verarbeitung | HIGH | Async locks + DB transactions |
-| Schreibkonflikte (gleichzeitige Tasks) | HIGH | 3-Way Merge + Conflict Resolution |
-| Pfad-Traversal-Attacken | CRITICAL | Sandboxing + Whitelist/Deny-list |
-| OpenWebUI-Ausfälle | MEDIUM | Circuit Breaker + Fallback |
-| LLM-Antwortvariabilität | MEDIUM | Deterministische Prompts + Validation |
-| Token-Leaks in Logs | HIGH | Scrubber + Audit Trail |
+| Risiko                                 | Severity | Mitigation                            |
+| -------------------------------------- | -------- | ------------------------------------- |
+| Race Conditions in Queue-Verarbeitung  | HIGH     | Async locks + DB transactions         |
+| Schreibkonflikte (gleichzeitige Tasks) | HIGH     | 3-Way Merge + Conflict Resolution     |
+| Pfad-Traversal-Attacken                | CRITICAL | Sandboxing + Whitelist/Deny-list      |
+| OpenWebUI-Ausfälle                     | MEDIUM   | Circuit Breaker + Fallback            |
+| LLM-Antwortvariabilität                | MEDIUM   | Deterministische Prompts + Validation |
+| Token-Leaks in Logs                    | HIGH     | Scrubber + Audit Trail                |
 
 ---
 
 ## 📊 Annahmen & Voraussetzungen
 
 ### Runtime Annahmen
+
 - ✅ Python 3.12+ vorhanden (`venv313`)
 - ✅ OpenWebUI erreichbar: `http://127.0.0.1:8080`
 - ✅ File system Schreibrechte in `Gesamtprojekt/`
@@ -146,6 +157,7 @@ Jede Position (Kapitel) ist **DONE**, wenn:
 - ✅ Docker + Docker Compose vorhanden (optional für systemd alt.)
 
 ### Dependency Annahmen
+
 - `fastapi`, `uvicorn`, `pydantic` (Python)
 - `@vscode/extension-tester` (TypeScript/Extension)
 - `asyncio`, `queue`, `threading` (Python stdlib)
@@ -155,12 +167,14 @@ Jede Position (Kapitel) ist **DONE**, wenn:
 ## 🔍 Validierungsframework
 
 ### Strukturcheck
+
 ```bash
 # Validiert: Verzeichnisspiel, Dateigefüge, PDI-Header
 bin/ops.sh validate:structure
 ```
 
 ### Konsistenzbericht
+
 ```bash
 # Generiert: consistency_report.md
 # Prüft: Token-Handling, Port-Konsistenz, Error Messages
@@ -168,6 +182,7 @@ bin/ops.sh validate:consistency
 ```
 
 ### Log & Audit
+
 ```bash
 # Liest: validation_log.csv
 # Entries: Timestamp, Task, Status, Errors
@@ -175,7 +190,9 @@ cat 19.dashboard_agent/docs/PDI/validation_log.csv
 ```
 
 ### GitHub/Copilot Simulation
+
 Jede Datei simuliert Lint + Build lokal vor Commit:
+
 ```bash
 # Lint
 pylint 19.dashboard_agent/*.py
@@ -216,24 +233,28 @@ docs/PDI/
 ## 🎯 Next Steps (Phase 4 Kickoff)
 
 ### Immediate (Today)
+
 1. ✅ Create PDI directory structure
 2. ✅ Write project_manifest.md (this file)
 3. 📋 **Create 00_kapitelplan.md** (all 20 positions)
 4. 📋 **Create 01_bridge_api_auth.md** (first task detail)
 
 ### Week 1
+
 - Create Bridge service (`copilot_bridge.py`)
 - Create VS Code Extension skeleton
 - Write OpenAPI schema
 - First test suite
 
 ### Week 2–3
+
 - Complete all 20 tasks
 - Full E2E testing
 - Docker Compose finalization
 - systemd deployment
 
 ### Week 4
+
 - CI/CD pipeline setup
 - GitHub integration
 - Release v1.0
@@ -243,17 +264,20 @@ docs/PDI/
 ## 📞 Governance & Review
 
 ### Decision Making
+
 - **Technical:** Lead Dev + AI Copilot
 - **Release:** PM + QA Sign-off
 - **Backlog:** Community Feedback → Roadmap
 
 ### Code Review
+
 - Python: Black + pylint + pytest
 - Bash: shellcheck
 - TypeScript: ESLint + TS strict mode
 - Merge: All checks + 2 approvals
 
 ### Versioning Scheme
+
 - Manifest: v0.1 → v1.0 → v2.0 (major.minor)
 - Code: Semantic versioning (semver)
 - Releases: GitHub Releases + Docker Hub
@@ -262,21 +286,21 @@ docs/PDI/
 
 ## 📝 Manifest Endorsement
 
-| Role | Sign-Off | Date |
-|------|----------|------|
-| Project Lead | ✅ Danijel | 2025-11-06 |
-| AI Copilot | ✅ Validated | 2025-11-06 |
-| QA | 🔜 Pending | — |
-| Operations | 🔜 Pending | — |
+| Role         | Sign-Off     | Date       |
+| ------------ | ------------ | ---------- |
+| Project Lead | ✅ Danijel   | 2025-11-06 |
+| AI Copilot   | ✅ Validated | 2025-11-06 |
+| QA           | 🔜 Pending   | —          |
+| Operations   | 🔜 Pending   | —          |
 
 ---
 
 ## 📜 Change History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| v0.1 | 2025-11-06 | Initial draft (user request) |
-| v1.0 | 2025-11-06 | Finalized + Phase 4 roadmap |
+| Version | Date       | Changes                      |
+| ------- | ---------- | ---------------------------- |
+| v0.1    | 2025-11-06 | Initial draft (user request) |
+| v1.0    | 2025-11-06 | Finalized + Phase 4 roadmap  |
 
 ---
 

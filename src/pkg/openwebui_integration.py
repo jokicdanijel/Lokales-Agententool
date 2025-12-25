@@ -7,15 +7,17 @@ Integriert JWT-basierte Authentifizierung für sichere Agenten-Kommunikation.
 
 import asyncio
 import logging
-from typing import Dict, List, Optional, Any
 from datetime import datetime
 from enum import Enum
+from typing import Any
+
 import aiohttp
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field
 
 # JWT Authentication Import
 try:
-    from jwt_auth import create_token, verify_token, refresh_token, TokenValidationResult
+    from jwt_auth import TokenValidationResult, create_token, refresh_token, verify_token
+
     JWT_ENABLED = True
 except ImportError:
     JWT_ENABLED = False
@@ -28,8 +30,10 @@ logger = logging.getLogger(__name__)
 # Enums und Datenmodelle
 # ============================================================================
 
+
 class AgentCategory(str, Enum):
     """Kategorien von Agenten"""
+
     CORE = "Core"
     INTEGRATION = "Integration"
     TOOLS = "Tools"
@@ -42,6 +46,7 @@ class AgentCategory(str, Enum):
 
 class Agent(BaseModel):
     """Agent-Modell mit vollständigen Metadaten"""
+
     agent_id: str = Field(..., min_length=1, description="Eindeutige ID")
     name: str = Field(..., min_length=1, description="Lesbare Name")
     port: int = Field(..., ge=1024, le=65535, description="Port")
@@ -68,38 +73,42 @@ class Agent(BaseModel):
 
 class HealthCheckResult(BaseModel):
     """Result einer Health-Check"""
+
     agent_id: str
     healthy: bool
-    response_time_ms: Optional[float] = None
-    status_code: Optional[int] = None
-    error: Optional[str] = None
+    response_time_ms: float | None = None
+    status_code: int | None = None
+    error: str | None = None
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
 
 class AgentRegistration(BaseModel):
     """Agent-Registrierung in OpenWebUI"""
+
     agent_id: str
     registered_at: datetime = Field(default_factory=datetime.utcnow)
     endpoint: str
     version: str = "1.0.0"
-    capabilities: List[str] = ["health", "status", "invoke"]
+    capabilities: list[str] = ["health", "status", "invoke"]
 
 
 class ChatRequest(BaseModel):
     """Chat-Request von OpenWebUI"""
-    agent_id: Optional[str] = None  # Wenn None, an Default-Agent
+
+    agent_id: str | None = None  # Wenn None, an Default-Agent
     message: str = Field(..., min_length=1, description="Chat-Nachricht")
-    context: Dict[str, Any] = Field(default_factory=dict, description="Zusätzlicher Kontext")
+    context: dict[str, Any] = Field(default_factory=dict, description="Zusätzlicher Kontext")
     temperature: float = Field(default=0.7, ge=0.0, le=2.0)
     max_tokens: int = Field(default=1000, ge=1, le=4000)
 
 
 class ChatResponse(BaseModel):
     """Chat-Response von Agent"""
+
     agent_id: str
     response: str
-    confidence: Optional[float] = None
-    processing_time_ms: Optional[float] = None
+    confidence: float | None = None
+    processing_time_ms: float | None = None
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
 
@@ -107,16 +116,17 @@ class ChatResponse(BaseModel):
 # OpenWebUI Integration Manager
 # ============================================================================
 
+
 class OpenWebUIIntegrationManager:
     """Verwaltet die Verbindung zwischen OpenWebUI und Agenten"""
 
     def __init__(self):
         """Initialisiere Manager"""
-        self.agents: Dict[str, Agent] = {}
-        self.registrations: Dict[str, AgentRegistration] = {}
-        self.health_cache: Dict[str, HealthCheckResult] = {}
-        self.session: Optional[aiohttp.ClientSession] = None
-        self.default_agent: Optional[str] = None
+        self.agents: dict[str, Agent] = {}
+        self.registrations: dict[str, AgentRegistration] = {}
+        self.health_cache: dict[str, HealthCheckResult] = {}
+        self.session: aiohttp.ClientSession | None = None
+        self.default_agent: str | None = None
         logger.info("OpenWebUI Integration Manager initialisiert")
 
     async def start(self):
@@ -137,11 +147,7 @@ class OpenWebUIIntegrationManager:
         try:
             self.agents[agent.agent_id] = agent
 
-            registration = AgentRegistration(
-                agent_id=agent.agent_id,
-                endpoint=agent.base_url,
-                version="1.0.0"
-            )
+            registration = AgentRegistration(agent_id=agent.agent_id, endpoint=agent.base_url, version="1.0.0")
             self.registrations[agent.agent_id] = registration
 
             # Setze erste Agent als Default
@@ -157,44 +163,135 @@ class OpenWebUIIntegrationManager:
     def register_all_default_agents(self):
         """Registriere alle 19 Standard-Agenten"""
         agents_config = [
-            Agent(agent_id="opena1", name="Coordinator", port=12344, category=AgentCategory.CORE,
-                  description="Orchestrator Phase 1"),
-            Agent(agent_id="opena2", name="Archivator", port=12345, category=AgentCategory.CORE,
-                  description="File Storage System"),
-            Agent(agent_id="kordp", name="Scheduler", port=12346, category=AgentCategory.CORE,
-                  description="Event Coordination"),
-            Agent(agent_id="opena4", name="Telegram", port=12347, category=AgentCategory.INTEGRATION,
-                  description="Telegram Integration"),
-            Agent(agent_id="opena5", name="Browser", port=12348, category=AgentCategory.TOOLS,
-                  description="Browser Automation"),
-            Agent(agent_id="opena6", name="Email", port=12349, category=AgentCategory.TOOLS,
-                  description="Email Management"),
-            Agent(agent_id="opena7", name="WhatsApp", port=12350, category=AgentCategory.INTEGRATION,
-                  description="WhatsApp Integration"),
-            Agent(agent_id="opena8", name="Telephone", port=12351, category=AgentCategory.INTEGRATION,
-                  description="Telephone System"),
-            Agent(agent_id="opena9", name="Call Tracking", port=12352, category=AgentCategory.ANALYTICS,
-                  description="Call Analytics"),
-            Agent(agent_id="opena10", name="Unlock", port=12353, category=AgentCategory.SECURITY,
-                  description="Security & Access"),
-            Agent(agent_id="opena11", name="Social Media", port=12359, category=AgentCategory.INTEGRATION,
-                  description="Social Media Manager"),
-            Agent(agent_id="opena12", name="Influencer", port=12360, category=AgentCategory.TOOLS,
-                  description="Influencer Collaboration"),
-            Agent(agent_id="opena13", name="Calendar", port=12361, category=AgentCategory.TOOLS,
-                  description="Calendar & Scheduling"),
-            Agent(agent_id="opena14", name="HTML Creator", port=12362, category=AgentCategory.TOOLS,
-                  description="HTML Generation"),
-            Agent(agent_id="opena15", name="Shop", port=12363, category=AgentCategory.BUSINESS,
-                  description="E-commerce System"),
-            Agent(agent_id="opena16", name="CRM", port=12364, category=AgentCategory.BUSINESS,
-                  description="CRM Management"),
-            Agent(agent_id="opena17", name="Analytics", port=12365, category=AgentCategory.ANALYTICS,
-                  description="Data Analytics"),
-            Agent(agent_id="opena18", name="Dashboard", port=12366, category=AgentCategory.UI,
-                  description="Dashboard UI"),
-            Agent(agent_id="opena19", name="Workflow", port=12367, category=AgentCategory.AUTOMATION,
-                  description="Workflow Automation"),
+            Agent(
+                agent_id="opena1",
+                name="Coordinator",
+                port=12344,
+                category=AgentCategory.CORE,
+                description="Orchestrator Phase 1",
+            ),
+            Agent(
+                agent_id="opena2",
+                name="Archivator",
+                port=12345,
+                category=AgentCategory.CORE,
+                description="File Storage System",
+            ),
+            Agent(
+                agent_id="kordp",
+                name="Scheduler",
+                port=12346,
+                category=AgentCategory.CORE,
+                description="Event Coordination",
+            ),
+            Agent(
+                agent_id="opena4",
+                name="Telegram",
+                port=12347,
+                category=AgentCategory.INTEGRATION,
+                description="Telegram Integration",
+            ),
+            Agent(
+                agent_id="opena5",
+                name="Browser",
+                port=12348,
+                category=AgentCategory.TOOLS,
+                description="Browser Automation",
+            ),
+            Agent(
+                agent_id="opena6",
+                name="Email",
+                port=12349,
+                category=AgentCategory.TOOLS,
+                description="Email Management",
+            ),
+            Agent(
+                agent_id="opena7",
+                name="WhatsApp",
+                port=12350,
+                category=AgentCategory.INTEGRATION,
+                description="WhatsApp Integration",
+            ),
+            Agent(
+                agent_id="opena8",
+                name="Telephone",
+                port=12351,
+                category=AgentCategory.INTEGRATION,
+                description="Telephone System",
+            ),
+            Agent(
+                agent_id="opena9",
+                name="Call Tracking",
+                port=12352,
+                category=AgentCategory.ANALYTICS,
+                description="Call Analytics",
+            ),
+            Agent(
+                agent_id="opena10",
+                name="Unlock",
+                port=12353,
+                category=AgentCategory.SECURITY,
+                description="Security & Access",
+            ),
+            Agent(
+                agent_id="opena11",
+                name="Social Media",
+                port=12359,
+                category=AgentCategory.INTEGRATION,
+                description="Social Media Manager",
+            ),
+            Agent(
+                agent_id="opena12",
+                name="Influencer",
+                port=12360,
+                category=AgentCategory.TOOLS,
+                description="Influencer Collaboration",
+            ),
+            Agent(
+                agent_id="opena13",
+                name="Calendar",
+                port=12361,
+                category=AgentCategory.TOOLS,
+                description="Calendar & Scheduling",
+            ),
+            Agent(
+                agent_id="opena14",
+                name="HTML Creator",
+                port=12362,
+                category=AgentCategory.TOOLS,
+                description="HTML Generation",
+            ),
+            Agent(
+                agent_id="opena15",
+                name="Shop",
+                port=12363,
+                category=AgentCategory.BUSINESS,
+                description="E-commerce System",
+            ),
+            Agent(
+                agent_id="opena16",
+                name="CRM",
+                port=12364,
+                category=AgentCategory.BUSINESS,
+                description="CRM Management",
+            ),
+            Agent(
+                agent_id="opena17",
+                name="Analytics",
+                port=12365,
+                category=AgentCategory.ANALYTICS,
+                description="Data Analytics",
+            ),
+            Agent(
+                agent_id="opena18", name="Dashboard", port=12366, category=AgentCategory.UI, description="Dashboard UI"
+            ),
+            Agent(
+                agent_id="opena19",
+                name="Workflow",
+                port=12367,
+                category=AgentCategory.AUTOMATION,
+                description="Workflow Automation",
+            ),
         ]
 
         for agent in agents_config:
@@ -205,13 +302,11 @@ class OpenWebUIIntegrationManager:
     async def health_check(self, agent_id: str) -> HealthCheckResult:
         """Prüfe Health-Status eines Agenten"""
         if agent_id not in self.agents:
-            return HealthCheckResult(agent_id=agent_id, healthy=False, 
-                                    error=f"Agent {agent_id} nicht registriert")
+            return HealthCheckResult(agent_id=agent_id, healthy=False, error=f"Agent {agent_id} nicht registriert")
 
         agent = self.agents[agent_id]
         if not agent.enabled:
-            return HealthCheckResult(agent_id=agent_id, healthy=False,
-                                    error=f"Agent {agent_id} deaktiviert")
+            return HealthCheckResult(agent_id=agent_id, healthy=False, error=f"Agent {agent_id} deaktiviert")
 
         try:
             start = datetime.utcnow()
@@ -221,13 +316,12 @@ class OpenWebUIIntegrationManager:
                     agent_id=agent_id,
                     healthy=(resp.status == 200),
                     response_time_ms=response_time,
-                    status_code=resp.status
+                    status_code=resp.status,
                 )
                 self.health_cache[agent_id] = result
                 return result
-        except asyncio.TimeoutError:
-            result = HealthCheckResult(agent_id=agent_id, healthy=False,
-                                      error="Health-Check Timeout (5s)")
+        except TimeoutError:
+            result = HealthCheckResult(agent_id=agent_id, healthy=False, error="Health-Check Timeout (5s)")
             self.health_cache[agent_id] = result
             return result
         except Exception as e:
@@ -235,14 +329,13 @@ class OpenWebUIIntegrationManager:
             self.health_cache[agent_id] = result
             return result
 
-    async def health_check_all(self) -> Dict[str, HealthCheckResult]:
+    async def health_check_all(self) -> dict[str, HealthCheckResult]:
         """Prüfe Health-Status aller Agenten parallel"""
         tasks = [self.health_check(agent_id) for agent_id in self.agents.keys()]
         results = await asyncio.gather(*tasks, return_exceptions=False)
         return {result.agent_id: result for result in results}
 
-    async def invoke_agent(self, agent_id: str, payload: Dict[str, Any],
-                          timeout_seconds: int = 30) -> Dict[str, Any]:
+    async def invoke_agent(self, agent_id: str, payload: dict[str, Any], timeout_seconds: int = 30) -> dict[str, Any]:
         """Rufe einen Agenten auf"""
         if agent_id not in self.agents:
             return {"error": f"Agent {agent_id} nicht registriert", "status": "error"}
@@ -253,21 +346,19 @@ class OpenWebUIIntegrationManager:
 
         try:
             async with self.session.post(
-                agent.invoke_endpoint,
-                json=payload,
-                timeout=aiohttp.ClientTimeout(total=timeout_seconds)
+                agent.invoke_endpoint, json=payload, timeout=aiohttp.ClientTimeout(total=timeout_seconds)
             ) as resp:
                 if resp.status == 200:
                     return await resp.json()
                 else:
                     error_text = await resp.text()
                     return {"error": f"HTTP {resp.status}: {error_text}", "status": "error"}
-        except asyncio.TimeoutError:
+        except TimeoutError:
             return {"error": f"Invoke Timeout nach {timeout_seconds}s", "status": "timeout"}
         except Exception as e:
             return {"error": str(e), "status": "error"}
 
-    def get_agents_list(self, category: Optional[AgentCategory] = None) -> List[Dict[str, Any]]:
+    def get_agents_list(self, category: AgentCategory | None = None) -> list[dict[str, Any]]:
         """Rückgabe Liste registrierter Agenten (optional gefiltert nach Kategorie)"""
         agents_list = []
         for agent in self.agents.values():
@@ -275,20 +366,22 @@ class OpenWebUIIntegrationManager:
                 continue
 
             health = self.health_cache.get(agent.agent_id)
-            agents_list.append({
-                "agent_id": agent.agent_id,
-                "name": agent.name,
-                "port": agent.port,
-                "category": agent.category.value,
-                "description": agent.description,
-                "enabled": agent.enabled,
-                "healthy": health.healthy if health else None,
-                "response_time_ms": health.response_time_ms if health else None
-            })
+            agents_list.append(
+                {
+                    "agent_id": agent.agent_id,
+                    "name": agent.name,
+                    "port": agent.port,
+                    "category": agent.category.value,
+                    "description": agent.description,
+                    "enabled": agent.enabled,
+                    "healthy": health.healthy if health else None,
+                    "response_time_ms": health.response_time_ms if health else None,
+                }
+            )
 
         return sorted(agents_list, key=lambda x: x["agent_id"])
 
-    def get_health_summary(self) -> Dict[str, Any]:
+    def get_health_summary(self) -> dict[str, Any]:
         """Rückgabe Zusammenfassung des Health-Status"""
         statuses = list(self.health_cache.values())
         healthy = sum(1 for s in statuses if s.healthy)
@@ -301,128 +394,118 @@ class OpenWebUIIntegrationManager:
             "health_percentage": (healthy / total * 100) if total > 0 else 0,
             "last_check": max((s.timestamp for s in statuses), default=None),
             "by_category": {
-                cat.value: len([a for a in self.agents.values() if a.category == cat])
-                for cat in AgentCategory
-            }
+                cat.value: len([a for a in self.agents.values() if a.category == cat]) for cat in AgentCategory
+            },
         }
-
 
     # ========================================================================
     # JWT Authentication Methods
     # ========================================================================
 
-    def create_agent_token(self, agent_id: str, scope: str = "invoke") -> Optional[str]:
+    def create_agent_token(self, agent_id: str, scope: str = "invoke") -> str | None:
         """
         Create JWT token for an agent.
-        
+
         Args:
             agent_id: Agent ID
             scope: Token scope (invoke, read, admin)
-        
+
         Returns:
             JWT token string or None if JWT not enabled
         """
         if not JWT_ENABLED:
             logger.warning("JWT nicht aktiviert, kann Token nicht erstellen")
             return None
-        
+
         if agent_id not in self.agents:
             logger.error(f"Agent {agent_id} nicht registriert")
             return None
-        
+
         try:
-            token = create_token(
-                agent_id=agent_id,
-                scope=scope,
-                permissions=["read", "write"]
-            )
+            token = create_token(agent_id=agent_id, scope=scope, permissions=["read", "write"])
             logger.info(f"✅ JWT-Token erstellt für {agent_id}")
             return token
         except Exception as e:
             logger.error(f"❌ Fehler beim JWT-Token erstellen: {e}")
             return None
 
-    def verify_agent_token(self, token: str) -> Optional[Dict[str, Any]]:
+    def verify_agent_token(self, token: str) -> dict[str, Any] | None:
         """
         Verify JWT token from agent.
-        
+
         Args:
             token: JWT token
-        
+
         Returns:
             Token claims dict or None if invalid
         """
         if not JWT_ENABLED:
             logger.warning("JWT nicht aktiviert, kann Token nicht verifizieren")
             return None
-        
+
         try:
             result = verify_token(token)
             if not result.valid:
                 logger.warning(f"⚠️  Token-Validierung fehlgeschlagen: {result.error}")
                 return None
-            
+
             return {
                 "agent_id": result.claims.agent_id,
                 "scope": result.claims.scope,
                 "permissions": result.claims.permissions,
-                "expires_at": result.claims.exp
+                "expires_at": result.claims.exp,
             }
         except Exception as e:
             logger.error(f"❌ Token-Verifikation Fehler: {e}")
             return None
 
     async def invoke_agent_with_jwt(
-        self,
-        agent_id: str,
-        payload: Dict[str, Any],
-        token: Optional[str] = None,
-        timeout_seconds: int = 30
-    ) -> Optional[Dict[str, Any]]:
+        self, agent_id: str, payload: dict[str, Any], token: str | None = None, timeout_seconds: int = 30
+    ) -> dict[str, Any] | None:
         """
         Invoke agent with JWT authentication.
-        
+
         Args:
             agent_id: Agent ID
             payload: Request payload
             token: JWT token (created if not provided)
             timeout_seconds: Request timeout
-        
+
         Returns:
             Response or None on error
         """
         if not token and JWT_ENABLED:
             token = self.create_agent_token(agent_id, scope="invoke")
-        
+
         headers = {"Content-Type": "application/json"}
         if token:
             headers["Authorization"] = f"Bearer {token}"
-        
+
         return await self.invoke_agent(agent_id, payload, timeout_seconds)
 
-    def get_all_agent_tokens(self) -> Dict[str, str]:
+    def get_all_agent_tokens(self) -> dict[str, str]:
         """
         Create tokens for all registered agents.
-        
+
         Returns:
             Dict mapping agent_id to token
         """
         if not JWT_ENABLED:
             logger.warning("JWT nicht aktiviert")
             return {}
-        
+
         tokens = {}
         for agent_id in self.agents:
             token = self.create_agent_token(agent_id)
             if token:
                 tokens[agent_id] = token
-        
+
         logger.info(f"✅ {len(tokens)} JWT-Token erstellt")
         return tokens
 
 
 # Singleton
-_manager: Optional[OpenWebUIIntegrationManager] = None
+_manager: OpenWebUIIntegrationManager | None = None
 
 
 async def get_manager() -> OpenWebUIIntegrationManager:
@@ -459,11 +542,13 @@ async def test():
         status = "✅ OK" if result.healthy else "❌ FAIL"
         logger.info(f"  {agent_id:10} | {status} | {result.response_time_ms:.1f}ms")
 
-    logger.info(f"\n=== Summary ===")
+    logger.info("\n=== Summary ===")
     summary = manager.get_health_summary()
-    logger.info(f"  Total: {summary['total_agents']} | Healthy: {summary['healthy_agents']} | "
-               f"Unhealthy: {summary['unhealthy_agents']} | "
-               f"Percentage: {summary['health_percentage']:.1f}%")
+    logger.info(
+        f"  Total: {summary['total_agents']} | Healthy: {summary['healthy_agents']} | "
+        f"Unhealthy: {summary['unhealthy_agents']} | "
+        f"Percentage: {summary['health_percentage']:.1f}%"
+    )
 
     await shutdown_manager()
 

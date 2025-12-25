@@ -294,7 +294,7 @@ Die detaillierten Master-Prompts für die Kern-Services sind hier dokumentiert:
 
 1. **Safepoint-Store (Append-Only)**
    - Validierung eingehender Safepoints
-   - Persistierung: archivp/YYYY/MM/DD/SP<TS>_src→dst_kind.json
+   - Persistierung: archivp/YYYY/MM/DD/SP<TS>\_src→dst_kind.json
    - Index: index.jsonl (jede Zeile = 1 Safepoint)
 
 2. **Dateiname-Konvention**

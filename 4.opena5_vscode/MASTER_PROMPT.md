@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena5 VS Code Agent
 
-**Agent-ID:** opena5  
-**Port:** 12351  
-**Status:** 🟡 Planned  
-**Kürzel:** `vscop`  
+**Agent-ID:** opena5
+**Port:** 12351
+**Status:** 🟡 Planned
+**Kürzel:** `vscop`
 **Domäne:** VS Code Agent, File-System-Watcher, Code-Analyse
 
 ---
@@ -141,5 +141,5 @@ Kopiere diesen Prompt in:
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

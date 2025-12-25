@@ -1,10 +1,9 @@
 import logging
-from typing import Optional
 
 import requests
-from requests.auth import HTTPDigestAuth
-from open_webui.retrieval.web.main import SearchResult, get_filtered_results
 from open_webui.env import SRC_LOG_LEVELS
+from open_webui.retrieval.web.main import SearchResult, get_filtered_results
+from requests.auth import HTTPDigestAuth
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["RAG"])
@@ -12,11 +11,11 @@ log.setLevel(SRC_LOG_LEVELS["RAG"])
 
 def search_yacy(
     query_url: str,
-    username: Optional[str],
-    password: Optional[str],
+    username: str | None,
+    password: str | None,
     query: str,
     count: int,
-    filter_list: Optional[list[str]] = None,
+    filter_list: list[str] | None = None,
 ) -> list[SearchResult]:
     """
     Search a Yacy instance for a given query and return the results as a list of SearchResult objects.

@@ -1,9 +1,9 @@
 # ⭐ opena13 - Influencer Management
 
-**Agent-ID:** `opena13`  
-**Port:** 12358  
-**Kürzel:** `influp`  
-**Version:** 1.0  
+**Agent-ID:** `opena13`
+**Port:** 12358
+**Kürzel:** `influp`
+**Version:** 1.0
 **Status:** ✅ RUNNING (PID: 1727022)
 
 ---
@@ -273,5 +273,5 @@ tail -f data/audit.jsonl | jq .
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 27. November 2025

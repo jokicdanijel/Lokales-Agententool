@@ -5,7 +5,7 @@
 OpenTelemetry (OTEL) ermöglicht verteilte Tracing über alle Services im ELION-System. Dies hilft bei:
 
 - 🔍 Performance Monitoring
-- 🐛 Distributed Debugging  
+- 🐛 Distributed Debugging
 - 📊 Request Flow Visualization
 - ⚠️ Error Tracking & Alerting
 - 📈 Latency Analysis
@@ -133,6 +133,7 @@ except Exception as e:
 ```
 
 **Instrumented Components:**
+
 - ✅ HTTP requests/responses (FastAPI)
 - ✅ External HTTP calls (requests library)
 - ✅ Logging events
@@ -149,7 +150,7 @@ traceparent: 00-{trace-id}-{span-id}-01
 Example request path:
 
 ```
-User Request 
+User Request
   ↓ (traceparent header)
 telegram_multi
   ↓ (traceparent + new span)
@@ -215,21 +216,25 @@ OTEL_SERVICE_NAME=opena20_dashboard
 3. Choose query type:
 
 **By Service Name:**
+
 ```
 { resource.service.name = "telegram_multi" }
 ```
 
 **By Span Name:**
+
 ```
 { name = "POST /admin/register-bot" }
 ```
 
 **By Duration (slow requests):**
+
 ```
 { duration > 1000ms }
 ```
 
 **By Status (errors):**
+
 ```
 { status = error }
 ```
@@ -237,11 +242,13 @@ OTEL_SERVICE_NAME=opena20_dashboard
 ### Example: Trace Bot Registration
 
 1. Run registration:
+
    ```bash
    bash scripts/register_bots.sh http://127.0.0.1:8000
    ```
 
 2. In Grafana, query:
+
    ```
    { resource.service.name = "telegram_multi" && name = "POST /admin/register-bot" }
    ```
@@ -262,11 +269,13 @@ python3 tracing/check_tracing.py
 ```
 
 Output when enabled:
+
 ```
 Tracing enabled: True
 ```
 
 Output when disabled or packages missing:
+
 ```
 Tracing enabled: False
 ```
@@ -317,16 +326,19 @@ cat docker-compose.otel.yml
 ### No Traces Appearing in Grafana
 
 1. **Check if OTEL packages are installed:**
+
    ```bash
    python3 -c "import opentelemetry; print('OK')"
    ```
 
 2. **Check if OTEL_ENABLED is true:**
+
    ```bash
    grep OTEL_ENABLED .env
    ```
 
 3. **Check if services are sending to collector:**
+
    ```bash
    docker-compose logs api | grep -i "otl\|telemetry"
    ```
@@ -341,12 +353,15 @@ cat docker-compose.otel.yml
 **Symptom:** Services crash when OTEL_ENABLED=true
 
 **Fix:**
+
 1. Install OpenTelemetry packages:
+
    ```bash
    pip install opentelemetry-api opentelemetry-sdk opentelemetry-exporter-otlp opentelemetry-instrumentation-fastapi
    ```
 
 2. Rebuild Docker images:
+
    ```bash
    docker-compose build --no-cache
    docker-compose up -d
@@ -364,9 +379,11 @@ cat docker-compose.otel.yml
 ## Performance Impact
 
 **With OTEL_ENABLED=false:**
+
 - ~0% overhead (OTEL code is lazy-loaded)
 
 **With OTEL_ENABLED=true:**
+
 - ~1-5% latency overhead per request
 - ~10-20 MB additional memory (per service)
 - Network traffic to collector (~10 KB per trace)
@@ -460,6 +477,6 @@ This removes volumes (traces, logs, metrics).
 
 ---
 
-**Last Updated:** 2025-12-17  
-**Version:** 1.0.0  
+**Last Updated:** 2025-12-17
+**Version:** 1.0.0
 **Maintained by:** ELION Hyper-Dashboard Team

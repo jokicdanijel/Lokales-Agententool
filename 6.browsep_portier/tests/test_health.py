@@ -1,5 +1,5 @@
 import httpx
-import asyncio
+
 
 async def test_health_endpoint():
     async with httpx.AsyncClient(timeout=5.0) as client:

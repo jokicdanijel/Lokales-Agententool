@@ -369,7 +369,7 @@ python /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_po
 
 
 ### USER
-  
+
 1 Verweis verwendet
 ✅ PATH-LOCK aktiv. Preflight-Check durchführen:
 BASE_ROOT: Gesamtprojekt ✅
@@ -1254,11 +1254,11 @@ Oder soll ich dir eine komplette Patch-Datei als heredoc liefern, die du in der 
 
 ### USER
 *   portier_service_base.py – e, lauffähige Version (mit **init**, Setup-Methoden etc.)
-    
+
 *   .github/workflows/python-app.yml – CI-Konfiguration
-    
+
 *   Optional: README_APIS.md/README-Docs-Eingabe
-    
+
 *   Optional: .gitignore (Env-Dateien, .venv)
 
 ### ASSISTANT
@@ -1580,19 +1580,19 @@ Ich bleibe bei dir – wie Tesla, aber nachhaltig und sicher: Wir bauen robuste,
 
 ### USER
 Falls du konkrete eine GitHub-Repo-URL has, kann ich eine direidagierte PR-Bipeline mit preisgünstigen Branch-Namen vorträchtigen vor und dir helfen Setup.erschoben. Eine venv ist **nicht** Teil des Repos und darf nie „umorganisiert“ werden. Ergebnis: kaputte Umgebung, nicht reproduzierbar.
-1.  **Libraries aus der venv in Repo geschoben**  
+1.  **Libraries aus der venv in Repo geschoben**
     `py.typed`, `REQUESTED`, `idna/py.typed`, `urllib3/...` etc. wurden als `.gitkeep`-Ersatz missbraucht. Das ist fachlich falsch (falscher Inhalt) und rechtlich heikel (Third-party-Files im Repo).
-    
-2.  **Safepoints am falschen Ort**  
-    Neue Dateien unter `3.opena4_telegram/archivp/.../SP..._ERR.json`. Laut Policy müssen Safepoints **zentral** nach  
+
+2.  **Safepoints am falschen Ort**
+    Neue Dateien unter `3.opena4_telegram/archivp/.../SP..._ERR.json`. Laut Policy müssen Safepoints **zentral** nach
     `1.opena1&2_portier/archivp_store/YYYY/MM/DD/...` gehen (über OpenA2 `/store/archivp`). Dezentral bei „Telegram“ ist ein Architektur-Leak.
-    
-3.  **Whitelist/Benennungen teils Chaotik-Moves**  
+
+3.  **Whitelist/Benennungen teils Chaotik-Moves**
     Einige Umbenennungen passen (z. B. `19.opena20_dashboard_agent`, `20.opena21_workflow`). Andere Moves waren Artefakt-Reste (z. B. gelöschte alte Agent-Bäume, „analytics“). Das ist okay, **sofern** final die Whitelist exakt eingehalten wird – aber erst **nach** bestandenem WANF-Check.
-    
-4.  **.env/Runtime-Files im Repo**  
+
+4.  **.env/Runtime-Files im Repo**
     Viele Laufzeit-Artefakte aus `19.dashboard_agent` wurden gelöscht (gut), aber das bestätigt: sie waren vorher versioniert. `.env` und Runtime-PIDs gehören in `.gitignore`, nicht in Git.
-    
+
 * * *
 ## Sofortige Remediation (deterministisch, sicher)
 ### A) Venv aus Git entfernen & sauber neu erstellen
@@ -1624,14 +1624,14 @@ git add $(git ls-files -o --exclude-standard | grep '\.gitkeep$') || true
 ```
 ### C) Safepoint-Pfad korrigieren
 *   **Nicht** lokal unter Agenten schreiben. Nur via API:
-    
+
 ```
 curl -s -X POST http://127.0.0.1:12345/store/archivp \
   -H 'content-type: application/json' \
   -d '{"src":"opena4","dst":"archivp","kind":"ERR","body":{"msg":"..."},"strict":true}'
 ```
 *   Vorhandene Fehlablagen unter `3.opena4_telegram/archivp/...` **archivieren oder löschen** (nicht mehr verwenden).
-    
+
 ### D) Whitelist & WANF erneut durchziehen
 ```
 # Verzeichnis-Whitelist prüfen
@@ -1652,32 +1652,32 @@ curl -s http://127.0.0.1:12344/health | jq
 ```
 * * *
 ## Entscheid: Richtig oder falsch?
-*   **Falsch** (Gesamtbewertung).  
+*   **Falsch** (Gesamtbewertung).
     Gründe: venv-Manipulation, Third-party-Dateien im Repo, falscher Safepoint-Ort, Policy-Bypässe.
-    
+
 *   Korrekte Anteile: einige Ordnerharmonisierungen Richtung Whitelist sind in Ordnung – **wenn** sie nach WANF validiert wurden.
-    
+
 * * *
 ## Go-Forward Guardrails (damit das nicht wieder passiert)
 1.  **Venv bleibt privat**: niemals committen; Änderungen an venv sind verboten.
-    
+
 2.  **Output-Policy erzwingen**: `configs/master_copilot_prompt.txt` + `scripts/copilot_guard.sh` _immer_ vor Output ausführen.
-    
+
 3.  **Safepoints nur über OpenA2** schreiben.
-    
+
 4.  **Secrets** ausschließlich via ENV; Redaction ist aktiv.
-    
+
 5.  **Pre-Commit Hook (Empfehlung)**: bricht Commits ab, wenn `venv`/`site-packages` oder `.env` im Index landen. Wenn gewünscht, liefere ich dir den Hook als Datei.
-    
+
 Wenn du willst, erstelle ich jetzt automatisch:
 *   einen `pre-commit` **Hook**,
-    
+
 *   und ein `Makefile`**-Target** `make wanf`, das Whitelist + GH-Audit + Lint in einem Rutsch fährt.
-    
+
 ##### Du:
 Was konkret falsch lief (Top-5) Venv manipuliert & versioniert Dateien aus 1.portier_openai/venv313/... und 1.portier_openai/venv/... wurden gelöscht/umbenannt bzw. in Agent-Verzeichnisse verschoben. Eine venv ist nicht Teil des Repos und darf nie „umorganisiert“ werden. Ergebnis: kaputte Umgebung, nicht reproduzierbar. Libraries aus der venv in Repo geschoben py.typed, REQUESTED, idna/py.typed, urllib3/... etc. wurden als .gitkeep-Ersatz missbraucht. Das ist fachlich falsch (falscher Inhalt) und rechtlich heikel (Third-party-Files im Repo).
-  
-  
+
+
 prompt erstellen um solche fehler in zukunft zu vermeiden!
 
 ### ASSISTANT

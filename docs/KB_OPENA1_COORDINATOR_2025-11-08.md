@@ -1,8 +1,8 @@
 # 🔄 Coordinator Self-Knowledge Module – opena1 KB
 
-**Erstellt:** Nov 8, 2025 19:00 UTC  
-**Version:** 1.0  
-**Status:** 🟢 OPERATIONAL & SELF-AWARE  
+**Erstellt:** Nov 8, 2025 19:00 UTC
+**Version:** 1.0
+**Status:** 🟢 OPERATIONAL & SELF-AWARE
 
 ---
 
@@ -23,14 +23,14 @@ Responsible for:
 
 ## 🏢 Core Identity
 
-| Eigenschaft | Wert |
-|-------------|------|
-| **Port** | 12344 |
-| **Role** | Orchestrator / Event Broker |
-| **Status** | ✅ RUNNING (Nov 8) |
-| **Uptime** | Continuous (since Nov 8, 12:00) |
-| **Dependencies** | None (independent) |
-| **Dependents** | All other services (opena2, 4, 19, finance, kordp) |
+| Eigenschaft      | Wert                                               |
+| ---------------- | -------------------------------------------------- |
+| **Port**         | 12344                                              |
+| **Role**         | Orchestrator / Event Broker                        |
+| **Status**       | ✅ RUNNING (Nov 8)                                 |
+| **Uptime**       | Continuous (since Nov 8, 12:00)                    |
+| **Dependencies** | None (independent)                                 |
+| **Dependents**   | All other services (opena2, 4, 19, finance, kordp) |
 
 ---
 
@@ -41,6 +41,7 @@ Responsible for:
 **What:** Central registry of all active services
 
 **How:**
+
 ```
 opena1 maintains: agent_registry.json
 ├─ opena2 (Port 12345) → Archive
@@ -52,6 +53,7 @@ opena1 maintains: agent_registry.json
 ```
 
 **Updates:**
+
 - New agent registers: POST /api/agent/register (via opena19)
 - Agent dies: Detected via health check → marked "unhealthy"
 - Agent recovers: Health check succeeds → marked "healthy"
@@ -63,6 +65,7 @@ opena1 maintains: agent_registry.json
 **What:** Poll all registered agents every 5 seconds
 
 **How:**
+
 ```
 Every 5 seconds:
   FOR each agent in registry:
@@ -77,6 +80,7 @@ Every 5 seconds:
 ```
 
 **Metrics Tracked:**
+
 - Last check timestamp
 - Current status (healthy/unhealthy)
 - Consecutive failures
@@ -89,6 +93,7 @@ Every 5 seconds:
 **What:** Route messages between services
 
 **How:**
+
 ```
 Service A wants to send message to Service B:
   ↓
@@ -108,6 +113,7 @@ All listeners receive event via SSE (Server-Sent Events)
 **What:** Save agent registry to disk
 
 **How:**
+
 ```
 File: agent_registry.json
 
@@ -128,6 +134,7 @@ Format:
 ```
 
 **Durability:**
+
 - Auto-saved on every registry change
 - Read on startup (recover from last session)
 - Append-only: Never overwrite, only update
@@ -137,6 +144,7 @@ Format:
 ### 5. Failover Handling
 
 **Scenario 1: Agent Dies Unexpectedly**
+
 ```
 opena1 polling detects:
   - 3 consecutive health check timeouts
@@ -153,6 +161,7 @@ opena1 retries every 10s until recovery
 ```
 
 **Scenario 2: Agent Recovers**
+
 ```
 opena1 polling detects:
   - Health check succeeds after being down
@@ -170,47 +179,51 @@ opena2 logs: RECOVERED_opena_finance_OK
 
 ## 🔌 Input Sources
 
-| Source | Type | Example |
-|--------|------|---------|
+| Source              | Type                     | Example                |
+| ------------------- | ------------------------ | ---------------------- |
 | opena19 (Dashboard) | POST /api/agent/register | New agent registration |
-| opena2 (Archive) | Query /archiv/last | Status queries |
-| External | Manual registration | CLI or API call |
-| Internal (opena1) | Self-check | 5s health polling |
+| opena2 (Archive)    | Query /archiv/last       | Status queries         |
+| External            | Manual registration      | CLI or API call        |
+| Internal (opena1)   | Self-check               | 5s health polling      |
 
 ---
 
 ## 📤 Output Targets
 
-| Target | Type | Message |
-|--------|------|---------|
-| All Services | Health Status | "Coordinator ready, registry available" |
-| opena2 (Archive) | Event Logs | "agent_registered", "agent_unhealthy" |
-| opena19 (Dashboard) | Agent Status | Registry state, health matrix |
-| SSE Bus | Events | Real-time updates to subscribers |
+| Target              | Type          | Message                                 |
+| ------------------- | ------------- | --------------------------------------- |
+| All Services        | Health Status | "Coordinator ready, registry available" |
+| opena2 (Archive)    | Event Logs    | "agent_registered", "agent_unhealthy"   |
+| opena19 (Dashboard) | Agent Status  | Registry state, health matrix           |
+| SSE Bus             | Events        | Real-time updates to subscribers        |
 
 ---
 
 ## 🔗 Key Endpoints
 
 ### 1. Health Check
+
 ```
 GET /health
 Response: {"status": "healthy", "service": "opena1", "port": 12344}
 ```
 
 ### 2. Agent Registry Query
+
 ```
 GET /agent/registry
 Response: {"agents": {...}, "last_update": "..."}
 ```
 
 ### 3. Agent Status
+
 ```
 GET /agent/status
 Response: List of all agents with status
 ```
 
 ### 4. Register Agent
+
 ```
 POST /agent/register
 Payload: {"service": "...", "port": ..., "endpoint": "..."}
@@ -218,6 +231,7 @@ Response: {"registered": true, "agent_id": "..."}
 ```
 
 ### 5. Unregister Agent
+
 ```
 POST /agent/unregister
 Payload: {"service": "..."}
@@ -225,6 +239,7 @@ Response: {"unregistered": true}
 ```
 
 ### 6. Health Report
+
 ```
 GET /health/report
 Response: {"healthy_agents": 5, "unhealthy_agents": 0, "timestamp": "..."}
@@ -235,6 +250,7 @@ Response: {"healthy_agents": 5, "unhealthy_agents": 0, "timestamp": "..."}
 ## ⚙️ Error Handling
 
 ### Error 1: Agent Not Responding
+
 ```
 Detection: 3 consecutive timeout failures
 Action: Mark as "unhealthy", log error
@@ -243,6 +259,7 @@ Timeout: 5 seconds per health check
 ```
 
 ### Error 2: Archive Write Failure
+
 ```
 Detection: POST /store/archivp fails
 Action: Log locally, mark opena2 as "degraded"
@@ -251,6 +268,7 @@ Fallback: Continue coordinator operations (don't cascade)
 ```
 
 ### Error 3: Port Conflict
+
 ```
 Detection: Startup fails (port in use)
 Action: Log error, refuse to start
@@ -263,14 +281,14 @@ Solution: Check "lsof -i :12344", kill conflicting process
 
 **Agents Currently Monitored by opena1:**
 
-| Agent | Port | Status (Nov 8) | Registered | Last Check |
-|-------|------|---|---|---|
-| opena1 (self) | 12344 | ✅ Healthy | N/A | Continuous |
-| opena2 | 12345 | ✅ Healthy | 12:00 UTC | 19:00 UTC |
-| kordp | 12346 | ✅ Healthy | 12:00 UTC | 19:00 UTC |
-| opena_finance | 12347 | ✅ Healthy | 17:28 UTC | 19:00 UTC |
-| opena4_telegram | 12348 | ✅ Healthy | 18:09 UTC | 19:00 UTC |
-| opena19 | 12349 | ⏳ Registering (Nov 9) | N/A | TBD |
+| Agent           | Port  | Status (Nov 8)         | Registered | Last Check |
+| --------------- | ----- | ---------------------- | ---------- | ---------- |
+| opena1 (self)   | 12344 | ✅ Healthy             | N/A        | Continuous |
+| opena2          | 12345 | ✅ Healthy             | 12:00 UTC  | 19:00 UTC  |
+| kordp           | 12346 | ✅ Healthy             | 12:00 UTC  | 19:00 UTC  |
+| opena_finance   | 12347 | ✅ Healthy             | 17:28 UTC  | 19:00 UTC  |
+| opena4_telegram | 12348 | ✅ Healthy             | 18:09 UTC  | 19:00 UTC  |
+| opena19         | 12349 | ⏳ Registering (Nov 9) | N/A        | TBD        |
 
 ---
 
@@ -279,6 +297,7 @@ Solution: Check "lsof -i :12344", kill conflicting process
 **Question:** "What is my current state?"
 
 **Answer:**
+
 ```
 Service: opena1 (Coordinator)
 Port: 12344
@@ -320,7 +339,6 @@ Issues: None detected ✅
 
 ---
 
-**Status:** 🟢 OPERATIONAL  
-**Version:** 1.0  
+**Status:** 🟢 OPERATIONAL
+**Version:** 1.0
 **Last Self-Check:** Nov 8, 19:00 UTC
-

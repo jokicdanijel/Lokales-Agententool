@@ -1,12 +1,12 @@
-import os
-import time
-import requests
 import logging
+import os
 import tempfile
+import time
 import zipfile
-from typing import List, Optional
-from langchain_core.documents import Document
+
+import requests
 from fastapi import HTTPException, status
+from langchain_core.documents import Document
 
 log = logging.getLogger(__name__)
 
@@ -44,15 +44,13 @@ class MinerULoader:
 
         # Validate API mode
         if self.api_mode not in ["local", "cloud"]:
-            raise ValueError(
-                f"Invalid API mode: {self.api_mode}. Must be 'local' or 'cloud'"
-            )
+            raise ValueError(f"Invalid API mode: {self.api_mode}. Must be 'local' or 'cloud'")
 
         # Validate Cloud API requirements
         if self.api_mode == "cloud" and not self.api_key:
             raise ValueError("API key is required for Cloud API mode")
 
-    def load(self) -> List[Document]:
+    def load(self) -> list[Document]:
         """
         Main entry point for loading and parsing the document.
         Routes to Cloud or Local API based on api_mode.
@@ -66,7 +64,7 @@ class MinerULoader:
             log.error(f"Error loading document with MinerU: {e}")
             raise
 
-    def _load_local_api(self) -> List[Document]:
+    def _load_local_api(self) -> list[Document]:
         """
         Load document using Local API (synchronous).
         Posts file to /file_parse endpoint and gets immediate response.
@@ -106,9 +104,7 @@ class MinerULoader:
                 response.raise_for_status()
 
         except FileNotFoundError:
-            raise HTTPException(
-                status.HTTP_404_NOT_FOUND, detail=f"File not found: {self.file_path}"
-            )
+            raise HTTPException(status.HTTP_404_NOT_FOUND, detail=f"File not found: {self.file_path}")
         except requests.Timeout:
             raise HTTPException(
                 status.HTTP_504_GATEWAY_TIMEOUT,
@@ -126,7 +122,7 @@ class MinerULoader:
         except Exception as e:
             raise HTTPException(
                 status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Error calling MinerU Local API: {str(e)}",
+                detail=f"Error calling MinerU Local API: {e!s}",
             )
 
         # Parse response
@@ -174,7 +170,7 @@ class MinerULoader:
 
         return [Document(page_content=markdown_content, metadata=metadata)]
 
-    def _load_cloud_api(self) -> List[Document]:
+    def _load_cloud_api(self) -> list[Document]:
         """
         Load document using Cloud API (asynchronous).
         Uses batch upload endpoint to avoid need for public file URLs.
@@ -193,9 +189,7 @@ class MinerULoader:
         result = self._poll_batch_status(batch_id, filename)
 
         # Step 4: Download and extract markdown from ZIP
-        markdown_content = self._download_and_extract_zip(
-            result["full_zip_url"], filename
-        )
+        markdown_content = self._download_and_extract_zip(result["full_zip_url"], filename)
 
         log.info(f"Successfully parsed document with MinerU Cloud API: {filename}")
 
@@ -256,7 +250,7 @@ class MinerULoader:
         except Exception as e:
             raise HTTPException(
                 status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Error requesting upload URL: {str(e)}",
+                detail=f"Error requesting upload URL: {e!s}",
             )
 
         try:
@@ -293,7 +287,7 @@ class MinerULoader:
         """
         Upload file to presigned URL (no authentication needed).
         """
-        log.info(f"Uploading file to presigned URL")
+        log.info("Uploading file to presigned URL")
 
         try:
             with open(self.file_path, "rb") as f:
@@ -304,9 +298,7 @@ class MinerULoader:
                 )
                 response.raise_for_status()
         except FileNotFoundError:
-            raise HTTPException(
-                status.HTTP_404_NOT_FOUND, detail=f"File not found: {self.file_path}"
-            )
+            raise HTTPException(status.HTTP_404_NOT_FOUND, detail=f"File not found: {self.file_path}")
         except requests.Timeout:
             raise HTTPException(
                 status.HTTP_504_GATEWAY_TIMEOUT,
@@ -320,7 +312,7 @@ class MinerULoader:
         except Exception as e:
             raise HTTPException(
                 status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Error uploading file: {str(e)}",
+                detail=f"Error uploading file: {e!s}",
             )
 
         log.info("File uploaded successfully")
@@ -359,7 +351,7 @@ class MinerULoader:
             except Exception as e:
                 raise HTTPException(
                     status.HTTP_500_INTERNAL_SERVER_ERROR,
-                    detail=f"Error polling batch status: {str(e)}",
+                    detail=f"Error polling batch status: {e!s}",
                 )
 
             try:
@@ -407,9 +399,7 @@ class MinerULoader:
             elif state in ["waiting-file", "pending", "running", "converting"]:
                 # Still processing
                 if iteration % 10 == 0:  # Log every 20 seconds
-                    log.info(
-                        f"Processing status: {state} (iteration {iteration + 1}/{max_iterations})"
-                    )
+                    log.info(f"Processing status: {state} (iteration {iteration + 1}/{max_iterations})")
                 time.sleep(poll_interval)
             else:
                 log.warning(f"Unknown state: {state}")
@@ -439,7 +429,7 @@ class MinerULoader:
         except Exception as e:
             raise HTTPException(
                 status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Error downloading results: {str(e)}",
+                detail=f"Error downloading results: {e!s}",
             )
 
         # Save ZIP to temporary file and extract
@@ -468,11 +458,9 @@ class MinerULoader:
                             found_md_path = full_path
                             log.info(f"Found markdown file at: {full_path}")
                             try:
-                                with open(full_path, "r", encoding="utf-8") as f:
+                                with open(full_path, encoding="utf-8") as f:
                                     markdown_content = f.read()
-                                if (
-                                    markdown_content
-                                ):  # Use the first non-empty markdown file
+                                if markdown_content:  # Use the first non-empty markdown file
                                     break
                             except Exception as e:
                                 log.warning(f"Failed to read {full_path}: {e}")
@@ -484,13 +472,9 @@ class MinerULoader:
                     # Try to provide more helpful error message
                     md_files = [f for f in all_files if f.endswith(".md")]
                     if md_files:
-                        error_msg = (
-                            f"Found .md files but couldn't read them: {md_files}"
-                        )
+                        error_msg = f"Found .md files but couldn't read them: {md_files}"
                     else:
-                        error_msg = (
-                            f"No .md files found in ZIP. Available files: {all_files}"
-                        )
+                        error_msg = f"No .md files found in ZIP. Available files: {all_files}"
                     raise HTTPException(
                         status.HTTP_502_BAD_GATEWAY,
                         detail=error_msg,
@@ -507,7 +491,7 @@ class MinerULoader:
         except Exception as e:
             raise HTTPException(
                 status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Error extracting ZIP: {str(e)}",
+                detail=f"Error extracting ZIP: {e!s}",
             )
 
         if not markdown_content:
@@ -516,7 +500,5 @@ class MinerULoader:
                 detail="Extracted markdown content is empty",
             )
 
-        log.info(
-            f"Successfully extracted markdown content ({len(markdown_content)} characters)"
-        )
+        log.info(f"Successfully extracted markdown content ({len(markdown_content)} characters)")
         return markdown_content

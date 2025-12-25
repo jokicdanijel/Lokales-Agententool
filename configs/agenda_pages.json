@@ -13,7 +13,9 @@
       "bromt": "Zentrale Übersicht und Navigation zu allen Agenda-Punkten.",
       "status": "active",
       "last_updated": "2025-11-11T15:55:00Z",
-      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+      "history": [
+        { "ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin" }
+      ]
     },
     {
       "id": "page02",
@@ -22,7 +24,9 @@
       "bromt": "Regeln, Flusslogik und Validierungsvorgaben.",
       "status": "active",
       "last_updated": "2025-11-11T15:55:00Z",
-      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+      "history": [
+        { "ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin" }
+      ]
     },
     {
       "id": "page03",
@@ -31,7 +35,9 @@
       "bromt": "Katalog der 20 API-Endpunkte mit Parameterlisten.",
       "status": "active",
       "last_updated": "2025-11-11T15:55:00Z",
-      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+      "history": [
+        { "ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin" }
+      ]
     },
     {
       "id": "page04",
@@ -40,7 +46,9 @@
       "bromt": "Vorlagen und Textbausteine für Bromt-Eingaben.",
       "status": "active",
       "last_updated": "2025-11-11T15:55:00Z",
-      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+      "history": [
+        { "ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin" }
+      ]
     },
     {
       "id": "page05",
@@ -49,7 +57,9 @@
       "bromt": "Eingabe-API, Bromt-Dokumentation, Status-Tracking.",
       "status": "active",
       "last_updated": "2025-11-11T15:55:00Z",
-      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+      "history": [
+        { "ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin" }
+      ]
     },
     {
       "id": "page06",
@@ -58,7 +68,9 @@
       "bromt": "Verarbeitungs-Pipeline, Transformationsregeln.",
       "status": "active",
       "last_updated": "2025-11-11T15:55:00Z",
-      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+      "history": [
+        { "ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin" }
+      ]
     },
     {
       "id": "page07",
@@ -67,7 +79,9 @@
       "bromt": "Validierungspfade, Fehlerbehandlung, Korrekturen.",
       "status": "active",
       "last_updated": "2025-11-11T15:55:00Z",
-      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+      "history": [
+        { "ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin" }
+      ]
     },
     {
       "id": "page08",
@@ -76,7 +90,9 @@
       "bromt": "Persistierung in DB, Audit-Log, Transaktionen.",
       "status": "active",
       "last_updated": "2025-11-11T15:55:00Z",
-      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+      "history": [
+        { "ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin" }
+      ]
     },
     {
       "id": "page09",
@@ -85,7 +101,9 @@
       "bromt": "RBAC-Konzepte, Token-basierte Authentifizierung.",
       "status": "active",
       "last_updated": "2025-11-11T15:55:00Z",
-      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+      "history": [
+        { "ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin" }
+      ]
     },
     {
       "id": "page10",
@@ -94,7 +112,9 @@
       "bromt": "Monitoring-Strategie, KPI-Definition, Dashboards.",
       "status": "active",
       "last_updated": "2025-11-11T15:55:00Z",
-      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+      "history": [
+        { "ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin" }
+      ]
     },
     {
       "id": "page11",
@@ -103,7 +123,9 @@
       "bromt": "Zugriff auf strukturierte Logs, Log-Levels.",
       "status": "active",
       "last_updated": "2025-11-11T15:55:00Z",
-      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+      "history": [
+        { "ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin" }
+      ]
     },
     {
       "id": "page12",
@@ -112,7 +134,9 @@
       "bromt": "Alerting-Strategien, Runbooks, Eskalation.",
       "status": "active",
       "last_updated": "2025-11-11T15:55:00Z",
-      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+      "history": [
+        { "ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin" }
+      ]
     },
     {
       "id": "page13",
@@ -121,7 +145,9 @@
       "bromt": "Berichte, Exportformate, View-Templates.",
       "status": "active",
       "last_updated": "2025-11-11T15:55:00Z",
-      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+      "history": [
+        { "ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin" }
+      ]
     },
     {
       "id": "page14",
@@ -130,7 +156,9 @@
       "bromt": "Datenimporte, Exporte, Snapshots, Backups.",
       "status": "active",
       "last_updated": "2025-11-11T15:55:00Z",
-      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+      "history": [
+        { "ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin" }
+      ]
     },
     {
       "id": "page15",
@@ -139,7 +167,9 @@
       "bromt": "Versionierung, Change-Logs, Rollback-Strategien.",
       "status": "active",
       "last_updated": "2025-11-11T15:55:00Z",
-      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+      "history": [
+        { "ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin" }
+      ]
     },
     {
       "id": "page16",
@@ -148,7 +178,9 @@
       "bromt": "Governance, Compliance, Policy-Management.",
       "status": "active",
       "last_updated": "2025-11-11T15:55:00Z",
-      "history": [{"ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin"}]
+      "history": [
+        { "ts": "2025-11-11T15:55:00Z", "action": "created", "by": "admin" }
+      ]
     }
   ]
 }

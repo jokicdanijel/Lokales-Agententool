@@ -4,18 +4,17 @@
 Handles email operations, validation, and coordination
 """
 
-import os
 import logging
+import os
 from datetime import datetime
-from typing import Dict, List, Optional, Any
-from pathlib import Path
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
 class EmailCore:
     """Core email handling and coordination"""
-    
+
     def __init__(self):
         self.agent_id = "opena7_email"
         self.version = "6.0.0"
@@ -24,26 +23,20 @@ class EmailCore:
             "version": "6.0.0",
             "status": "ready",
             "uptime": datetime.now().isoformat(),
-            "features": [
-                "imap_reading",
-                "smtp_sending", 
-                "ai_replies",
-                "email_classification",
-                "auto_responses"
-            ]
+            "features": ["imap_reading", "smtp_sending", "ai_replies", "email_classification", "auto_responses"],
         }
         logger.info("📧 EmailCore initialized (PAS-6.0)")
-    
-    def get_status(self) -> Dict[str, Any]:
+
+    def get_status(self) -> dict[str, Any]:
         """Get detailed agent status"""
         return {
             **self.status_data,
             "timestamp": datetime.now().isoformat(),
             "imap_connected": self._check_imap_connection(),
             "smtp_available": self._check_smtp_availability(),
-            "ai_engine": self._check_ai_engine()
+            "ai_engine": self._check_ai_engine(),
         }
-    
+
     def _check_imap_connection(self) -> bool:
         """Check IMAP server connectivity"""
         try:
@@ -51,7 +44,7 @@ class EmailCore:
             return bool(imap_server)
         except Exception:
             return False
-    
+
     def _check_smtp_availability(self) -> bool:
         """Check SMTP server availability"""
         try:
@@ -59,7 +52,7 @@ class EmailCore:
             return bool(smtp_server)
         except Exception:
             return False
-    
+
     def _check_ai_engine(self) -> bool:
         """Check AI engine availability"""
         try:
@@ -67,15 +60,15 @@ class EmailCore:
             return bool(openai_key)
         except Exception:
             return False
-    
-    async def execute_command(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+
+    async def execute_command(self, payload: dict[str, Any]) -> dict[str, Any]:
         """Execute email-related commands"""
         try:
             command = payload.get("command", "")
             args = payload.get("args", {})
-            
+
             logger.info(f"📧 Executing command: {command}")
-            
+
             if command == "check_inbox":
                 return await self._check_inbox(args)
             elif command == "send_email":
@@ -93,25 +86,25 @@ class EmailCore:
                     "error": "unknown_command",
                     "message": f"Command '{command}' not recognized",
                     "available_commands": [
-                        "check_inbox", "send_email", "get_email",
-                        "mark_read", "delete_email", "search_emails"
-                    ]
+                        "check_inbox",
+                        "send_email",
+                        "get_email",
+                        "mark_read",
+                        "delete_email",
+                        "search_emails",
+                    ],
                 }
-                
+
         except Exception as e:
             logger.error(f"❌ Command execution failed: {e}")
-            return {
-                "error": "command_failed",
-                "message": str(e),
-                "timestamp": datetime.now().isoformat()
-            }
-    
-    async def _check_inbox(self, args: Dict) -> Dict[str, Any]:
+            return {"error": "command_failed", "message": str(e), "timestamp": datetime.now().isoformat()}
+
+    async def _check_inbox(self, args: dict) -> dict[str, Any]:
         """Check inbox for new emails"""
         try:
             folder = args.get("folder", "INBOX")
             limit = args.get("limit", 10)
-            
+
             emails = [
                 {
                     "id": 1,
@@ -119,55 +112,52 @@ class EmailCore:
                     "from": "test@example.com",
                     "date": datetime.now().isoformat(),
                     "read": False,
-                    "preview": "This is a test email preview..."
+                    "preview": "This is a test email preview...",
                 }
             ]
-            
+
             return {
                 "status": "success",
                 "folder": folder,
                 "count": len(emails),
                 "emails": emails[:limit],
-                "timestamp": datetime.now().isoformat()
+                "timestamp": datetime.now().isoformat(),
             }
-            
+
         except Exception as e:
             return {"error": "inbox_check_failed", "message": str(e)}
-    
-    async def _send_email(self, args: Dict) -> Dict[str, Any]:
+
+    async def _send_email(self, args: dict) -> dict[str, Any]:
         """Send email via SMTP"""
         try:
             to = args.get("to", "")
             subject = args.get("subject", "")
             body = args.get("body", "")
-            
+
             if not to or not subject:
-                return {
-                    "error": "missing_required_fields",
-                    "message": "Fields 'to' and 'subject' are required"
-                }
-            
+                return {"error": "missing_required_fields", "message": "Fields 'to' and 'subject' are required"}
+
             email_id = f"email_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-            
+
             return {
                 "status": "sent",
                 "email_id": email_id,
                 "to": to,
                 "subject": subject,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": datetime.now().isoformat(),
             }
-            
+
         except Exception as e:
             return {"error": "send_failed", "message": str(e)}
-    
-    async def _get_email(self, args: Dict) -> Dict[str, Any]:
+
+    async def _get_email(self, args: dict) -> dict[str, Any]:
         """Get specific email by ID"""
         try:
             email_id = args.get("id", "")
-            
+
             if not email_id:
                 return {"error": "missing_email_id", "message": "Email ID required"}
-            
+
             email = {
                 "id": email_id,
                 "subject": "Mock Email Content",
@@ -176,109 +166,84 @@ class EmailCore:
                 "date": datetime.now().isoformat(),
                 "body": "This is the full email body content...",
                 "attachments": [],
-                "read": True
+                "read": True,
             }
-            
-            return {
-                "status": "success",
-                "email": email,
-                "timestamp": datetime.now().isoformat()
-            }
-            
+
+            return {"status": "success", "email": email, "timestamp": datetime.now().isoformat()}
+
         except Exception as e:
             return {"error": "get_email_failed", "message": str(e)}
-    
-    async def _mark_read(self, args: Dict) -> Dict[str, Any]:
+
+    async def _mark_read(self, args: dict) -> dict[str, Any]:
         """Mark email as read/unread"""
         try:
             email_id = args.get("id", "")
             read = args.get("read", True)
-            
+
             if not email_id:
                 return {"error": "missing_email_id"}
-            
-            return {
-                "status": "success",
-                "email_id": email_id,
-                "read": read,
-                "timestamp": datetime.now().isoformat()
-            }
-            
+
+            return {"status": "success", "email_id": email_id, "read": read, "timestamp": datetime.now().isoformat()}
+
         except Exception as e:
             return {"error": "mark_read_failed", "message": str(e)}
-    
-    async def _delete_email(self, args: Dict) -> Dict[str, Any]:
+
+    async def _delete_email(self, args: dict) -> dict[str, Any]:
         """Delete email"""
         try:
             email_id = args.get("id", "")
-            
+
             if not email_id:
                 return {"error": "missing_email_id"}
-            
-            return {
-                "status": "deleted",
-                "email_id": email_id,
-                "timestamp": datetime.now().isoformat()
-            }
-            
+
+            return {"status": "deleted", "email_id": email_id, "timestamp": datetime.now().isoformat()}
+
         except Exception as e:
             return {"error": "delete_failed", "message": str(e)}
-    
-    async def _search_emails(self, args: Dict) -> Dict[str, Any]:
+
+    async def _search_emails(self, args: dict) -> dict[str, Any]:
         """Search emails by criteria"""
         try:
             query = args.get("query", "")
             folder = args.get("folder", "INBOX")
             limit = args.get("limit", 20)
-            
+
             results = [
                 {
                     "id": 1,
                     "subject": f"Search result for: {query}",
                     "from": "search@example.com",
                     "date": datetime.now().isoformat(),
-                    "relevance": 0.95
+                    "relevance": 0.95,
                 }
             ]
-            
+
             return {
                 "status": "success",
                 "query": query,
                 "folder": folder,
                 "count": len(results),
                 "results": results[:limit],
-                "timestamp": datetime.now().isoformat()
+                "timestamp": datetime.now().isoformat(),
             }
-            
+
         except Exception as e:
             return {"error": "search_failed", "message": str(e)}
-    
-    def get_logs(self) -> Dict[str, Any]:
+
+    def get_logs(self) -> dict[str, Any]:
         """Get recent log entries"""
         try:
             logs = [
-                {
-                    "timestamp": datetime.now().isoformat(),
-                    "level": "INFO",
-                    "message": "Email agent running normally"
-                },
-                {
-                    "timestamp": datetime.now().isoformat(),
-                    "level": "INFO", 
-                    "message": "IMAP connection healthy"
-                }
+                {"timestamp": datetime.now().isoformat(), "level": "INFO", "message": "Email agent running normally"},
+                {"timestamp": datetime.now().isoformat(), "level": "INFO", "message": "IMAP connection healthy"},
             ]
-            
-            return {
-                "status": "success",
-                "logs": logs,
-                "count": len(logs)
-            }
-            
+
+            return {"status": "success", "logs": logs, "count": len(logs)}
+
         except Exception as e:
             return {"error": "log_retrieval_failed", "message": str(e)}
-    
-    def get_config(self) -> Dict[str, Any]:
+
+    def get_config(self) -> dict[str, Any]:
         """Get agent configuration (sanitized)"""
         return {
             "agent": self.agent_id,
@@ -288,5 +253,5 @@ class EmailCore:
             "smtp_server": os.getenv("SMTP_SERVER", ""),
             "ai_model": os.getenv("AI_MODEL", "gpt-4o-mini"),
             "features_enabled": self.status_data["features"],
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }

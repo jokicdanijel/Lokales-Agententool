@@ -30,6 +30,7 @@ Verwende prägnante, aussagekräftige Commit-Nachrichten, die den Conventional C
 ### Scope (optional)
 
 Bereich des Codes, der geändert wird:
+
 - `api`: API-Endpunkte
 - `tools`: Tool-Funktionen (file, shell, web)
 - `config`: Konfigurationsdateien
@@ -61,6 +62,7 @@ Bereich des Codes, der geändert wird:
 ## Beispiele
 
 ### Feature hinzufügen
+
 ```
 feat(tools): add file deletion capability
 
@@ -72,6 +74,7 @@ Fixes #42
 ```
 
 ### Bug beheben
+
 ```
 fix(api): correct loop detection timeout
 
@@ -80,6 +83,7 @@ langsamen Ollama-Responses zu vermeiden.
 ```
 
 ### Dokumentation aktualisieren
+
 ```
 docs: update API endpoint documentation
 
@@ -89,6 +93,7 @@ docs: update API endpoint documentation
 ```
 
 ### Refactoring
+
 ```
 refactor(tools): extract common validation logic
 
@@ -97,6 +102,7 @@ um Code-Duplikation zu reduzieren.
 ```
 
 ### Tests hinzufügen
+
 ```
 test(api): add integration tests for chat endpoint
 
@@ -107,6 +113,7 @@ Fügt 10 neue Tests für verschiedene Chat-Szenarien hinzu:
 ```
 
 ### Security-Fix
+
 ```
 security(tools): prevent path traversal in file operations
 
@@ -119,6 +126,7 @@ unterstützt in sandbox-Operationen.
 ```
 
 ### Breaking Change
+
 ```
 feat(config)!: change default sandbox path
 

@@ -3,7 +3,7 @@
 **Projektname:** Hyper Dashboard / Portier OpenAI
 **Projektwurzel:** `/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt`
 **Erstellt am:** 2025-11-09 UTC
-**Verantwortlich:** *(Team/Person eintragen)*
+**Verantwortlich:** _(Team/Person eintragen)_
 **Version:** 1.0
 
 **Regeln:** Append-only · Dedupe (SHA-256/IDs) · keine Doppelblobs · Auditierbarkeit durchgängig
@@ -49,34 +49,34 @@ Ein durchgängig **auditierbares Agenten-System** mit mehreren Modulen aufbauen 
 
 ## 3) Hauptakteure & Rollen
 
-| Rolle | Verantwortlich | Aufgaben | Kontakt |
-|-------|-----------------|----------|---------|
-| **Projektleitung** | *(Name eintragen)* | Gesamtverantwortung, Ressourcen, Zeitplan, Risiko-Management | — |
-| **Infrastruktur-Lead** | *(Name)* | Aufbau Verzeichnisstruktur, Governance-Regeln, Port-Leases, CI/CD | — |
-| **Archivator (opena2)** | Modul "opena2" Team | Persistenz, Dedupe, Audit-Index, Blob-Verwaltung, HEADS/INTEGRITY | — |
-| **Bridge Telegram (opena4)** | Modul "opena4" Team | Telegram-Anbindung (Webhook/Long-Polling), Task-Queue, Safepoints | — |
-| **VS Code Bridge (opena5)** | Modul "opena5" Team | VS Code Integration, Edit/Diff Workflow, Workspace-Management | — |
-| **UI/WebUI (opena3)** | Modul "opena3" Team | UI/Frontend, Buttons, Routing, Display Logic | — |
-| **Monitoring (opena20)** | Modul "opena20" Team | Health Checks, Metrics Collection, Alerting, Dashboard | — |
-| **Qualitätssicherung** | *(Name)* | Code-Reviews, CI/Pre-Commit, Tests, Audit-Compliance | — |
+| Rolle                        | Verantwortlich       | Aufgaben                                                          | Kontakt |
+| ---------------------------- | -------------------- | ----------------------------------------------------------------- | ------- |
+| **Projektleitung**           | _(Name eintragen)_   | Gesamtverantwortung, Ressourcen, Zeitplan, Risiko-Management      | —       |
+| **Infrastruktur-Lead**       | _(Name)_             | Aufbau Verzeichnisstruktur, Governance-Regeln, Port-Leases, CI/CD | —       |
+| **Archivator (opena2)**      | Modul "opena2" Team  | Persistenz, Dedupe, Audit-Index, Blob-Verwaltung, HEADS/INTEGRITY | —       |
+| **Bridge Telegram (opena4)** | Modul "opena4" Team  | Telegram-Anbindung (Webhook/Long-Polling), Task-Queue, Safepoints | —       |
+| **VS Code Bridge (opena5)**  | Modul "opena5" Team  | VS Code Integration, Edit/Diff Workflow, Workspace-Management     | —       |
+| **UI/WebUI (opena3)**        | Modul "opena3" Team  | UI/Frontend, Buttons, Routing, Display Logic                      | —       |
+| **Monitoring (opena20)**     | Modul "opena20" Team | Health Checks, Metrics Collection, Alerting, Dashboard            | —       |
+| **Qualitätssicherung**       | _(Name)_             | Code-Reviews, CI/Pre-Commit, Tests, Audit-Compliance              | —       |
 
 ---
 
 ## 4) Meilensteine & Zeitplan
 
-| Meilenstein | Beschreibung | Abhängigkeiten | Zieltermin | Status |
-|-------------|-------------|-----------------|-----------|--------|
-| **M1 – Projektstruktur** | Verzeichnislayout, README, .env-Beispiele, port_leases.json | — | *(Datum)* | ✅ In Progress |
-| **M2 – Governance Regeln** | Port-Pool definiert, Sekret-Handhabung, Dedupe Regeln, CI Policies | M1 | *(Datum)* | ⏳ Queued |
-| **M3 – Archivator Setup (opena2)** | Persistenz, Indexstruktur, Dedupe-Engine, HEADS/INTEGRITY | M2 | *(Datum)* | ⏳ Queued |
-| **M4 – Schritt 1: 7.1-Validierung (opena1)** | Pydantic Schemas, Request71, Error-Schema 8.3 | M2 | 2025-11-09 | ✅ Complete |
-| **M5 – Schritt 2: Tool-Registry** | Service Endpoints Mapping, Tool Dispatch | M4 | *(Datum)* | ⏳ Queued |
-| **M6 – Schritt 3: Safepoint Format** | SP<ts>_src→dst_EVENT.json, Index, Dedupe-Validierung | M3, M5 | *(Datum)* | ⏳ Queued |
-| **M7 – Schritt 4: Telegram (opena4)** | Webhook Integration, Task-Queue, Audit | M6 | *(Datum)* | ⏳ Queued |
-| **M8 – Schritt 5: VS Code (opena5)** | IDE Bridge, Edit/Diff Workflow, Workspace Mgmt | M6 | *(Datum)* | 📋 Spec Ready |
-| **M9 – Schritt 6: Monitoring (opena20)** | Health/Metrics/Alerting Pipeline | M3, M7, M8 | *(Datum)* | ⏳ Queued |
-| **M10 – MVP Release** | End-to-End Funktionalität: Telegram → Edit → UI | M4–M9 | *(Datum)* | ⏳ Queued |
-| **M11 – Production Deployment** | Hardening, Security Audit, SLA-Docs | M10 | *(Datum)* | ⏳ Queued |
+| Meilenstein                                  | Beschreibung                                                       | Abhängigkeiten | Zieltermin | Status         |
+| -------------------------------------------- | ------------------------------------------------------------------ | -------------- | ---------- | -------------- |
+| **M1 – Projektstruktur**                     | Verzeichnislayout, README, .env-Beispiele, port_leases.json        | —              | _(Datum)_  | ✅ In Progress |
+| **M2 – Governance Regeln**                   | Port-Pool definiert, Sekret-Handhabung, Dedupe Regeln, CI Policies | M1             | _(Datum)_  | ⏳ Queued      |
+| **M3 – Archivator Setup (opena2)**           | Persistenz, Indexstruktur, Dedupe-Engine, HEADS/INTEGRITY          | M2             | _(Datum)_  | ⏳ Queued      |
+| **M4 – Schritt 1: 7.1-Validierung (opena1)** | Pydantic Schemas, Request71, Error-Schema 8.3                      | M2             | 2025-11-09 | ✅ Complete    |
+| **M5 – Schritt 2: Tool-Registry**            | Service Endpoints Mapping, Tool Dispatch                           | M4             | _(Datum)_  | ⏳ Queued      |
+| **M6 – Schritt 3: Safepoint Format**         | SP<ts>\_src→dst_EVENT.json, Index, Dedupe-Validierung              | M3, M5         | _(Datum)_  | ⏳ Queued      |
+| **M7 – Schritt 4: Telegram (opena4)**        | Webhook Integration, Task-Queue, Audit                             | M6             | _(Datum)_  | ⏳ Queued      |
+| **M8 – Schritt 5: VS Code (opena5)**         | IDE Bridge, Edit/Diff Workflow, Workspace Mgmt                     | M6             | _(Datum)_  | 📋 Spec Ready  |
+| **M9 – Schritt 6: Monitoring (opena20)**     | Health/Metrics/Alerting Pipeline                                   | M3, M7, M8     | _(Datum)_  | ⏳ Queued      |
+| **M10 – MVP Release**                        | End-to-End Funktionalität: Telegram → Edit → UI                    | M4–M9          | _(Datum)_  | ⏳ Queued      |
+| **M11 – Production Deployment**              | Hardening, Security Audit, SLA-Docs                                | M10            | _(Datum)_  | ⏳ Queued      |
 
 ---
 
@@ -126,27 +126,29 @@ Ein durchgängig **auditierbares Agenten-System** mit mehreren Modulen aufbauen 
 
 ### Risiken & Mitigationen
 
-| Risiko | Eintrittswahrscheinlichkeit | Impact | Mitigation |
-|--------|---------------------------|--------|-----------|
-| **Portkonflikte (unberechtigt 8080)** | Mittel | Hoch | Pre-Commit Check, CI Port-Policy Validator |
-| **Doppel-Writes/Blobs ohne Dedupe** | Mittel | Hoch | Dedupe-Engine mit Hash-Check vor Write |
-| **Telegram API Limits/Rate-Limits** | Hoch | Mittel | Queue-Based Batching, Exponential Backoff |
-| **Unsichere Secrets/Logs** | Mittel | Kritisch | .env-basiertes Secrets, Maskierung-Filter in Logs |
-| **Fehlende CI/Pre-Commit** | Niedrig | Mittel | GitHub Actions + Pre-Commit Hooks enforced |
-| **Archive-Ausfälle** | Niedrig | Kritisch | Health-Check, Retry-Logic, redundante Backups |
-| **Diff-Apply-Fehler (VSCode)** | Mittel | Mittel | Validierung vor Apply, Rollback-Mechanism |
+| Risiko                                | Eintrittswahrscheinlichkeit | Impact   | Mitigation                                        |
+| ------------------------------------- | --------------------------- | -------- | ------------------------------------------------- |
+| **Portkonflikte (unberechtigt 8080)** | Mittel                      | Hoch     | Pre-Commit Check, CI Port-Policy Validator        |
+| **Doppel-Writes/Blobs ohne Dedupe**   | Mittel                      | Hoch     | Dedupe-Engine mit Hash-Check vor Write            |
+| **Telegram API Limits/Rate-Limits**   | Hoch                        | Mittel   | Queue-Based Batching, Exponential Backoff         |
+| **Unsichere Secrets/Logs**            | Mittel                      | Kritisch | .env-basiertes Secrets, Maskierung-Filter in Logs |
+| **Fehlende CI/Pre-Commit**            | Niedrig                     | Mittel   | GitHub Actions + Pre-Commit Hooks enforced        |
+| **Archive-Ausfälle**                  | Niedrig                     | Kritisch | Health-Check, Retry-Logic, redundante Backups     |
+| **Diff-Apply-Fehler (VSCode)**        | Mittel                      | Mittel   | Validierung vor Apply, Rollback-Mechanism         |
 
 ---
 
 ## 7) Erfolgs-Kriterien (Definition of Done)
 
 ✅ **Infrastruktur:**
+
 - Alle 7 Schritte dokumentiert & spec'd
 - Port-Governance enforced in CI
 - Dedupe-Engine läuft, 0 Doppel-Blobs
 - Audit-Index compliant, 100% Nachverfolgbarkeit
 
 ✅ **Funktionalität:**
+
 - opena1 (Koordinator) mit 7.1-Validation läuft
 - opena2 (Archivator) mit Persistenz/Dedupe läuft
 - opena4 (Telegram) Bot antwortet auf Commands
@@ -154,12 +156,14 @@ Ein durchgängig **auditierbares Agenten-System** mit mehreren Modulen aufbauen 
 - opena3 (UI) zeigt Agenten-Status live
 
 ✅ **Qualität:**
+
 - 80%+ Unit-Test Coverage
 - 0 Critical Security Findings
 - CI/CD 100% Green (Linting, Tests, Port-Check)
 - Dokumentation: 5/5 Schritte complete
 
 ✅ **Operations:**
+
 - Health-Checks auf allen Agents
 - Monitoring/Alerting läuft (opena20)
 - Production Runbook verfügbar
@@ -259,19 +263,21 @@ Ein durchgängig **auditierbares Agenten-System** mit mehreren Modulen aufbauen 
 
 ## 11) Sign-Off
 
-| Rolle | Name | Datum | Unterschrift |
-|-------|------|-------|-------------|
-| Projektleitung | — | — | — |
-| Infrastruktur-Lead | — | — | — |
-| QS-Lead | — | — | — |
+| Rolle              | Name | Datum | Unterschrift |
+| ------------------ | ---- | ----- | ------------ |
+| Projektleitung     | —    | —     | —            |
+| Infrastruktur-Lead | —    | —     | —            |
+| QS-Lead            | —    | —     | —            |
 
 ---
 
 **Projekt-ID:** `HYPER-DASHBOARD-001`
 **Version History:**
+
 - v1.0 – 2025-11-09 UTC – Initial Charter
 
 **Referenzen:**
+
 - GitHub Repo: https://github.com/jokicdanijel/Gesamtprojekt-start
-- Jira Board: *(ggf. Link)*
-- Slack Channel: *(ggf. Channel)*
+- Jira Board: _(ggf. Link)_
+- Slack Channel: _(ggf. Channel)_

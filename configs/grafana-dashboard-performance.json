@@ -9,62 +9,179 @@
       {
         "title": "Requests/sec (5m avg)",
         "type": "stat",
-        "gridPos": {"h": 4, "w": 3, "x": 0, "y": 0},
-        "targets": [{"expr": "sum(rate(elion_service_requests_total[5m]))", "refId": "A"}],
-        "fieldConfig": {"defaults": {"unit": "short", "decimals": 2}}
+        "gridPos": { "h": 4, "w": 3, "x": 0, "y": 0 },
+        "targets": [
+          {
+            "expr": "sum(rate(elion_service_requests_total[5m]))",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": { "defaults": { "unit": "short", "decimals": 2 } }
       },
       {
         "title": "Error Rate %",
         "type": "gauge",
-        "gridPos": {"h": 4, "w": 3, "x": 3, "y": 0},
-        "targets": [{"expr": "(sum(rate(elion_service_requests_total{status!=\"200\"}[5m])) / sum(rate(elion_service_requests_total[5m]))) * 100", "refId": "A"}],
-        "fieldConfig": {"defaults": {"unit": "percent", "min": 0, "max": 100}, "overrides": [{"matcher": {"id": "byName"}, "properties": [{"id": "thresholds", "value": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 2}, {"color": "red", "value": 5}]}}]}]}
+        "gridPos": { "h": 4, "w": 3, "x": 3, "y": 0 },
+        "targets": [
+          {
+            "expr": "(sum(rate(elion_service_requests_total{status!=\"200\"}[5m])) / sum(rate(elion_service_requests_total[5m]))) * 100",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": { "unit": "percent", "min": 0, "max": 100 },
+          "overrides": [
+            {
+              "matcher": { "id": "byName" },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      { "color": "green", "value": null },
+                      { "color": "yellow", "value": 2 },
+                      { "color": "red", "value": 5 }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
       },
       {
         "title": "p95 Latency (ms)",
         "type": "gauge",
-        "gridPos": {"h": 4, "w": 3, "x": 6, "y": 0},
-        "targets": [{"expr": "histogram_quantile(0.95, rate(elion_service_latency_ms_bucket[5m])) or 0", "refId": "A"}],
-        "fieldConfig": {"defaults": {"unit": "ms"}, "overrides": [{"matcher": {"id": "byName"}, "properties": [{"id": "thresholds", "value": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 500}, {"color": "red", "value": 1000}]}}]}]}
+        "gridPos": { "h": 4, "w": 3, "x": 6, "y": 0 },
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(elion_service_latency_ms_bucket[5m])) or 0",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": { "unit": "ms" },
+          "overrides": [
+            {
+              "matcher": { "id": "byName" },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      { "color": "green", "value": null },
+                      { "color": "yellow", "value": 500 },
+                      { "color": "red", "value": 1000 }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
       },
       {
         "title": "p99 Latency (ms)",
         "type": "gauge",
-        "gridPos": {"h": 4, "w": 3, "x": 9, "y": 0},
-        "targets": [{"expr": "histogram_quantile(0.99, rate(elion_service_latency_ms_bucket[5m])) or 0", "refId": "A"}],
-        "fieldConfig": {"defaults": {"unit": "ms"}, "overrides": [{"matcher": {"id": "byName"}, "properties": [{"id": "thresholds", "value": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 800}, {"color": "red", "value": 2000}]}}]}]}
+        "gridPos": { "h": 4, "w": 3, "x": 9, "y": 0 },
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.99, rate(elion_service_latency_ms_bucket[5m])) or 0",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": { "unit": "ms" },
+          "overrides": [
+            {
+              "matcher": { "id": "byName" },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      { "color": "green", "value": null },
+                      { "color": "yellow", "value": 800 },
+                      { "color": "red", "value": 2000 }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
       },
       {
         "title": "Request Throughput (req/s)",
         "type": "timeseries",
-        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
-        "targets": [{"expr": "sum(rate(elion_service_requests_total[1m])) by (service)", "refId": "A", "legendFormat": "{{service}}"}],
-        "fieldConfig": {"defaults": {"unit": "short", "custom": {"lineWidth": 2, "fillOpacity": 10}}}
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+        "targets": [
+          {
+            "expr": "sum(rate(elion_service_requests_total[1m])) by (service)",
+            "refId": "A",
+            "legendFormat": "{{service}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "custom": { "lineWidth": 2, "fillOpacity": 10 }
+          }
+        }
       },
       {
         "title": "Error Rate by Service (%)",
         "type": "timeseries",
-        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
-        "targets": [{"expr": "(sum by (service) (rate(elion_service_requests_total{status!=\"200\"}[1m])) / sum by (service) (rate(elion_service_requests_total[1m]))) * 100", "refId": "A", "legendFormat": "{{service}}"}],
-        "fieldConfig": {"defaults": {"unit": "percent", "custom": {"lineWidth": 2}}}
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+        "targets": [
+          {
+            "expr": "(sum by (service) (rate(elion_service_requests_total{status!=\"200\"}[1m])) / sum by (service) (rate(elion_service_requests_total[1m]))) * 100",
+            "refId": "A",
+            "legendFormat": "{{service}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": { "unit": "percent", "custom": { "lineWidth": 2 } }
+        }
       },
       {
         "title": "Latency Heatmap (p50, p95, p99)",
         "type": "heatmap",
-        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12},
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 12 },
         "targets": [
-          {"expr": "histogram_quantile(0.50, rate(elion_service_latency_ms_bucket[1m]))", "refId": "A", "legendFormat": "p50"},
-          {"expr": "histogram_quantile(0.95, rate(elion_service_latency_ms_bucket[1m]))", "refId": "B", "legendFormat": "p95"},
-          {"expr": "histogram_quantile(0.99, rate(elion_service_latency_ms_bucket[1m]))", "refId": "C", "legendFormat": "p99"}
+          {
+            "expr": "histogram_quantile(0.50, rate(elion_service_latency_ms_bucket[1m]))",
+            "refId": "A",
+            "legendFormat": "p50"
+          },
+          {
+            "expr": "histogram_quantile(0.95, rate(elion_service_latency_ms_bucket[1m]))",
+            "refId": "B",
+            "legendFormat": "p95"
+          },
+          {
+            "expr": "histogram_quantile(0.99, rate(elion_service_latency_ms_bucket[1m]))",
+            "refId": "C",
+            "legendFormat": "p99"
+          }
         ],
-        "fieldConfig": {"defaults": {"unit": "ms"}}
+        "fieldConfig": { "defaults": { "unit": "ms" } }
       },
       {
         "title": "Request Codes Distribution",
         "type": "piechart",
-        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
-        "targets": [{"expr": "sum by (status) (rate(elion_service_requests_total[5m]))", "refId": "A", "legendFormat": "{{status}}"}],
-        "options": {"legend": {"displayMode": "list", "placement": "right"}}
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 },
+        "targets": [
+          {
+            "expr": "sum by (status) (rate(elion_service_requests_total[5m]))",
+            "refId": "A",
+            "legendFormat": "{{status}}"
+          }
+        ],
+        "options": { "legend": { "displayMode": "list", "placement": "right" } }
       }
     ],
     "schemaVersion": 38,

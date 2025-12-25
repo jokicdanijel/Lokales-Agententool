@@ -15,7 +15,17 @@
       "properties": {
         "action": {
           "type": "string",
-          "enum": ["open", "click", "type", "extract_text", "extract_html", "query_selector", "screenshot", "scroll", "wait_for"],
+          "enum": [
+            "open",
+            "click",
+            "type",
+            "extract_text",
+            "extract_html",
+            "query_selector",
+            "screenshot",
+            "scroll",
+            "wait_for"
+          ],
           "description": "Browser-Aktion"
         },
         "url": {
@@ -54,6 +64,7 @@
 ### 1. Website öffnen
 
 **Request**:
+
 ```json
 {
   "action": "open",
@@ -62,6 +73,7 @@
 ```
 
 **Response**:
+
 ```json
 {
   "status": "success",
@@ -75,6 +87,7 @@
 ### 2. Text extrahieren
 
 **Request**:
+
 ```json
 {
   "action": "extract_text",
@@ -84,6 +97,7 @@
 ```
 
 **Response**:
+
 ```json
 {
   "status": "success",
@@ -97,6 +111,7 @@
 ### 3. Formular ausfüllen & abschicken
 
 **Request 1 - Input klicken**:
+
 ```json
 {
   "action": "click",
@@ -106,6 +121,7 @@
 ```
 
 **Request 2 - Text eingeben**:
+
 ```json
 {
   "action": "type",
@@ -116,6 +132,7 @@
 ```
 
 **Request 3 - Button klicken**:
+
 ```json
 {
   "action": "click",
@@ -129,6 +146,7 @@
 ### 4. Screenshot machen
 
 **Request**:
+
 ```json
 {
   "action": "screenshot",
@@ -137,6 +155,7 @@
 ```
 
 **Response**:
+
 ```json
 {
   "status": "success",
@@ -149,6 +168,7 @@
 ### 5. DOM analysieren
 
 **Request**:
+
 ```json
 {
   "action": "query_selector",
@@ -159,6 +179,7 @@
 ```
 
 **Response**:
+
 ```json
 {
   "status": "success",
@@ -217,17 +238,17 @@ curl -X POST http://192.168.0.70:8765/execute \
 
 ## 🎨 Action Parameter Übersicht
 
-| Action | Erforderlich | Optional | Beispiel |
-|--------|-------------|----------|----------|
-| open | url | wait_ms | `{"action":"open","url":"https://..."}` |
-| click | url, selector | wait_ms | `{"action":"click","url":"...","selector":"button"}` |
-| type | url, selector, text | wait_ms | `{"action":"type","url":"...","selector":"input","text":"text"}` |
-| extract_text | url, selector | return_format | `{"action":"extract_text","url":"...","selector":"p"}` |
-| extract_html | url, selector | return_format | `{"action":"extract_html","url":"...","selector":"div"}` |
-| query_selector | url, selector | return_format | `{"action":"query_selector","url":"...","selector":".class"}` |
-| screenshot | url | - | `{"action":"screenshot","url":"..."}` |
-| scroll | url, selector | wait_ms | `{"action":"scroll","url":"...","selector":"div"}` |
-| wait_for | url, selector | wait_ms | `{"action":"wait_for","url":"...","selector":".loaded"}` |
+| Action         | Erforderlich        | Optional      | Beispiel                                                         |
+| -------------- | ------------------- | ------------- | ---------------------------------------------------------------- |
+| open           | url                 | wait_ms       | `{"action":"open","url":"https://..."}`                          |
+| click          | url, selector       | wait_ms       | `{"action":"click","url":"...","selector":"button"}`             |
+| type           | url, selector, text | wait_ms       | `{"action":"type","url":"...","selector":"input","text":"text"}` |
+| extract_text   | url, selector       | return_format | `{"action":"extract_text","url":"...","selector":"p"}`           |
+| extract_html   | url, selector       | return_format | `{"action":"extract_html","url":"...","selector":"div"}`         |
+| query_selector | url, selector       | return_format | `{"action":"query_selector","url":"...","selector":".class"}`    |
+| screenshot     | url                 | -             | `{"action":"screenshot","url":"..."}`                            |
+| scroll         | url, selector       | wait_ms       | `{"action":"scroll","url":"...","selector":"div"}`               |
+| wait_for       | url, selector       | wait_ms       | `{"action":"wait_for","url":"...","selector":".loaded"}`         |
 
 ---
 
@@ -243,13 +264,13 @@ curl -X POST http://192.168.0.70:8765/execute \
 
 ## 🐛 Häufige Fehler
 
-| Fehler | Ursache | Lösung |
-|--------|--------|--------|
-| `SELECTOR_NOT_FOUND` | Element nicht gefunden | Selektor im Browser prüfen |
-| `TIMEOUT` | Seite lädt zu lange | `wait_ms` erhöhen |
-| `INVALID_URL` | URL ungültig | URL mit `https://` prefix |
-| `BROWSER_ERROR` | Browser Fehler | Agent neu starten |
-| `AGENT_UNREACHABLE` | Agent läuft nicht | `bash start_browser_agent.sh` |
+| Fehler               | Ursache                | Lösung                        |
+| -------------------- | ---------------------- | ----------------------------- |
+| `SELECTOR_NOT_FOUND` | Element nicht gefunden | Selektor im Browser prüfen    |
+| `TIMEOUT`            | Seite lädt zu lange    | `wait_ms` erhöhen             |
+| `INVALID_URL`        | URL ungültig           | URL mit `https://` prefix     |
+| `BROWSER_ERROR`      | Browser Fehler         | Agent neu starten             |
+| `AGENT_UNREACHABLE`  | Agent läuft nicht      | `bash start_browser_agent.sh` |
 
 ---
 

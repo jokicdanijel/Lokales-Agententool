@@ -1,4 +1,5 @@
 # PLAN: Agent opena5 – Browser Integration
+
 **Status:** Production-Ready Plan | **Port:** 12348 | **Modul:** 4.browser_opena5
 
 ---
@@ -6,6 +7,7 @@
 ## 📋 Zielsetzung (Stufe 1)
 
 Errichte einen **Browser-Automation-Agenten**, der:
+
 - UI-Templates generiert und bereitstellt
 - Patch-Delivery-Logik verwaltet
 - Audit-Tracking für OpenWebUI-Änderungen
@@ -18,12 +20,14 @@ Errichte einen **Browser-Automation-Agenten**, der:
 ## 🔗 Eingaben & Abhängigkeiten (Stufe 2)
 
 ### Eingaben
+
 - UI-Anforderungen (JSON Schema 7.1)
 - Patch-Blöcke (Unified Diff)
 - Patch-Templates aus Registry
 - Audit-Trigger-Events
 
 ### Abhängigkeiten
+
 - ✅ Koordinator (opena1)
 - ✅ Archivator (opena2) – Audit
 - ✅ OpenWebUI-Server aktiv
@@ -34,6 +38,7 @@ Errichte einen **Browser-Automation-Agenten**, der:
 ## 🏗️ Architektur & Interfaces (Stufe 3)
 
 ### Module
+
 ```
 2.openwebui/
 ├── openwebui_opena5.py
@@ -43,12 +48,14 @@ Errichte einen **Browser-Automation-Agenten**, der:
 ```
 
 ### Endpunkte
+
 - `GET /opena5/health` – Status
 - `GET /opena5/info` – Service-Info
 - `POST /opena5/generate-ui` – UI-Template-Generator
 - `GET /opena5/audit` – Audit-Logs
 
 ### Datenfluss
+
 ```
 UI-Request → Schema-Validierung → Template-Engine → Audit-Log → Response
 ```
@@ -58,6 +65,7 @@ UI-Request → Schema-Validierung → Template-Engine → Audit-Log → Response
 ## ⚙️ Umsetzung & Validierung (Stufe 4)
 
 ### Tasks
+
 - [ ] Erstelle `openwebui_opena5.py` (FastAPI Router)
 - [ ] Health-Endpunkt: `GET /opena5/health`
 - [ ] UI-Template-Generator: `POST /opena5/generate-ui`
@@ -67,6 +75,7 @@ UI-Request → Schema-Validierung → Template-Engine → Audit-Log → Response
 - [ ] Registrierung in OpenWebUI-Server
 
 ### Tests
+
 ```python
 def test_health():
     response = client.get("/opena5/health")
@@ -84,12 +93,14 @@ def test_generate_ui_template():
 ## 📦 Release & Betrieb (Stufe 5)
 
 ### Deliverables
+
 - `PLAN_opena5_Browser.md`
 - `2.openwebui/openwebui_opena5.py`
 - `tests/test_opena5.py`
 - `Runbooks/Runbook_opena5_Browser.md`
 
 ### Akzeptanzkriterien
+
 - ✅ Endpunkte erreichbar
 - ✅ Patch-Blöcke testbar
 - ✅ Audit-Logs vorhanden

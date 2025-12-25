@@ -1,9 +1,9 @@
 # Master Prompt für opena2 (Archivator)
 
-**Version:** 1.0  
-**Datum:** 27. November 2025  
-**Service:** opena2 - Archivator  
-**Port:** 12345  
+**Version:** 1.0
+**Datum:** 27. November 2025
+**Service:** opena2 - Archivator
+**Port:** 12345
 **Rolle:** Safepoint-Store / Archive Service
 
 ---
@@ -73,7 +73,7 @@ Safepoints müssen strukturell konform sein mit `KB_ARCHIVE_PATTERNS_2025-11-08.
   "src": "opena1",
   "dst": "kordp",
   "kind": "CMD",
-  "body": { },
+  "body": {},
   "strict": true
 }
 ```
@@ -297,6 +297,6 @@ sind als **Policy-Verstoß abzulehnen** und, falls via API erkannt, als Safepoin
 
 ---
 
-**Ende Master-Prompt opena2**  
-**Maintainer:** PORTIER 3.0 Team  
+**Ende Master-Prompt opena2**
+**Maintainer:** PORTIER 3.0 Team
 **Status:** ✅ Production-Ready

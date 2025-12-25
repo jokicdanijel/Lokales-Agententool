@@ -4,14 +4,14 @@
 
 ## 🎯 Features
 
-✅ **Option-2-Flow konform**: `/cmd`, `/health`, `/native`, `/dispatch_ready`  
-✅ **Safepoint-System**: CMD/RESP mit Unicode-Pfeil `→`  
-✅ **Dispatcher-Anbindung**: kordp-kompatibel  
-✅ **Tool-Registry**: Auto-Registration bei Start  
-✅ **Dashboard Integration**: SSE Events + Live Status  
-✅ **Bearer Auth**: Strict Security Model  
-✅ **Chat Engine**: Context chaining + Model selection  
-✅ **Dev-Friendly**: Mock-Mode, Self-Test, API Schema  
+✅ **Option-2-Flow konform**: `/cmd`, `/health`, `/native`, `/dispatch_ready`
+✅ **Safepoint-System**: CMD/RESP mit Unicode-Pfeil `→`
+✅ **Dispatcher-Anbindung**: kordp-kompatibel
+✅ **Tool-Registry**: Auto-Registration bei Start
+✅ **Dashboard Integration**: SSE Events + Live Status
+✅ **Bearer Auth**: Strict Security Model
+✅ **Chat Engine**: Context chaining + Model selection
+✅ **Dev-Friendly**: Mock-Mode, Self-Test, API Schema
 
 ## 🏗️ Architektur
 
@@ -22,19 +22,20 @@ OpenAI → opena1 → opena2 → kordp → opena3 → OpenWebUI
 ```
 
 ### Ports
+
 - **opena3 V2**: `12347` (FastAPI Agent)
 - **OpenWebUI**: `3000` (UI only)
 
 ### Endpoints
 
-| Endpoint | Beschreibung | Auth | Option-2 |
-|----------|-------------|------|----------|
-| `/cmd` | CMD-Envelope von opena1 | ✓ | ✓ |
-| `/health` | Extended Health Check | - | ✓ |
-| `/native` | Direkte UI-Calls | ✓ | - |
-| `/dispatch_ready` | Live Routing Status | ✓ | ✓ |
-| `/dispatch` | kordp-Kompatibilität | ✓ | ✓ |
-| `/selftest` | Endpoint-Tests | ✓ | - |
+| Endpoint          | Beschreibung            | Auth | Option-2 |
+| ----------------- | ----------------------- | ---- | -------- |
+| `/cmd`            | CMD-Envelope von opena1 | ✓    | ✓        |
+| `/health`         | Extended Health Check   | -    | ✓        |
+| `/native`         | Direkte UI-Calls        | ✓    | -        |
+| `/dispatch_ready` | Live Routing Status     | ✓    | ✓        |
+| `/dispatch`       | kordp-Kompatibilität    | ✓    | ✓        |
+| `/selftest`       | Endpoint-Tests          | ✓    | -        |
 
 ## 🚀 Quick Start
 
@@ -119,15 +120,15 @@ curl -X POST http://127.0.0.1:12347/native \
 
 ### Environment Variables
 
-| Variable | Default | Beschreibung |
-|----------|---------|-------------|
-| `OPENA3_PORT` | `12347` | Service Port |
-| `OPENWEBUI_URL` | `http://127.0.0.1:8080` | OpenWebUI Base URL |
-| `OPENWEBUI_TIMEOUT` | `30` | Request Timeout (s) |
-| `BEARER_TOKEN` | - | **Erforderlich**: Auth Token |
-| `ARCHIVP_ROOT` | `/tmp/archivp` | Safepoint Storage |
-| `DEV_MODE` | `false` | Development Features |
-| `MOCK_MODE` | `false` | Mock OpenWebUI Calls |
+| Variable            | Default                 | Beschreibung                 |
+| ------------------- | ----------------------- | ---------------------------- |
+| `OPENA3_PORT`       | `12347`                 | Service Port                 |
+| `OPENWEBUI_URL`     | `http://127.0.0.1:8080` | OpenWebUI Base URL           |
+| `OPENWEBUI_TIMEOUT` | `30`                    | Request Timeout (s)          |
+| `BEARER_TOKEN`      | -                       | **Erforderlich**: Auth Token |
+| `ARCHIVP_ROOT`      | `/tmp/archivp`          | Safepoint Storage            |
+| `DEV_MODE`          | `false`                 | Development Features         |
+| `MOCK_MODE`         | `false`                 | Mock OpenWebUI Calls         |
 
 ### Logging
 
@@ -140,16 +141,20 @@ logs/
 ## 🛡️ Security
 
 ### Bearer Authentication
+
 Alle Endpoints (außer `/health`) erfordern Bearer Token:
+
 ```
 Authorization: Bearer c899b90d-faf8-485b-afa4-078357cf5313
 ```
 
 ### CORS Policy
+
 - **Production**: Nur Dashboard (`127.0.0.1:12349`)
 - **DEV Mode**: Alle Origins
 
 ### Rate Limiting
+
 - `/native`: 10 requests/minute
 - Andere: Unbegrenzt (interne Calls)
 
@@ -166,6 +171,7 @@ archivp/
 ```
 
 ### Format
+
 - **Unicode-Pfeil**: `→` (U+2192)
 - **Masked Secrets**: Bearer Tokens automatisch maskiert
 - **Append-Only**: Keine Modifikation/Löschung
@@ -173,17 +179,19 @@ archivp/
 ## 🔄 Integration
 
 ### PORTIER Stack
+
 ```bash
 # Registrierung bei kordp (automatisch beim Start)
 POST /dispatch/kordp/register
 {
   "service_id": "opena3",
-  "service_target": "openwebui3", 
+  "service_target": "openwebui3",
   "capabilities": ["chat", "terminal", "openwebui"]
 }
 ```
 
 ### Dashboard Events
+
 ```bash
 # SSE Events an Dashboard
 POST /sse/publish
@@ -220,7 +228,7 @@ POST /sse/publish
 # Extended Health
 curl -s http://127.0.0.1:12347/health | jq .
 
-# Dispatch Readiness  
+# Dispatch Readiness
 curl -s -H "Authorization: Bearer $TOKEN" \
   http://127.0.0.1:12347/dispatch_ready | jq .
 
@@ -234,15 +242,17 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 ### Häufige Probleme
 
 1. **OpenWebUI nicht erreichbar**
+
    ```bash
    # OpenWebUI Status prüfen
    curl -s http://127.0.0.1:8080/api/config
-   
+
    # Mock Mode aktivieren
    export MOCK_MODE=true
    ```
 
 2. **Bearer Token fehlt**
+
    ```bash
    # Token aus .env laden
    source .env
@@ -250,10 +260,11 @@ curl -s -H "Authorization: Bearer $TOKEN" \
    ```
 
 3. **Port bereits belegt**
+
    ```bash
-   # Port-Konflikte prüfen  
+   # Port-Konflikte prüfen
    lsof -i :12347
-   
+
    # Alternativen Port
    export OPENA3_PORT=12348
    ```
@@ -274,12 +285,14 @@ tail -f /tmp/archivp/index.jsonl
 ## 📊 Performance
 
 ### Benchmarks
+
 - **Cold Start**: ~2 Sekunden
 - **Health Check**: ~50ms
 - **Native Chat**: ~500ms (+ OpenWebUI latency)
 - **Option-2 CMD**: ~600ms (+ Safepoint overhead)
 
 ### Monitoring
+
 ```bash
 # Request-Statistiken
 curl -s http://127.0.0.1:12347/health | jq '.uptime_seconds, .last_dispatch'
@@ -292,14 +305,14 @@ curl -s http://127.0.0.1:12347/health | jq '.openwebui_status'
 
 ### Unterschiede V1 → V2
 
-| Feature | V1 | V2 |
-|---------|----|----|
-| Option-2-Flow | ❌ | ✅ |
-| Safepoints | ❌ | ✅ |
-| Auto-Registration | ❌ | ✅ |
-| Bearer Auth | Basic | ✅ Strict |
-| Rate Limiting | ❌ | ✅ |
-| Mock Mode | ❌ | ✅ |
+| Feature           | V1    | V2        |
+| ----------------- | ----- | --------- |
+| Option-2-Flow     | ❌    | ✅        |
+| Safepoints        | ❌    | ✅        |
+| Auto-Registration | ❌    | ✅        |
+| Bearer Auth       | Basic | ✅ Strict |
+| Rate Limiting     | ❌    | ✅        |
+| Mock Mode         | ❌    | ✅        |
 
 ### Migration Steps
 

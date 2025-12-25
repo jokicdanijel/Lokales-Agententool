@@ -41,23 +41,23 @@ install_service() {
     local service_name=$1
     local service_dir=$2
     local service_file="${PROJECT_ROOT}/${service_dir}/${service_name}.service"
-    
+
     if [[ -f "$service_file" ]]; then
         echo -e "${YELLOW}📦 Installiere ${service_name}...${NC}"
-        
+
         # Kopiere Service-Datei
         cp "$service_file" "/etc/systemd/system/${service_name}.service"
-        
+
         # Log-Verzeichnis erstellen
         local log_dir="${PROJECT_ROOT}/${service_dir}/logs"
         mkdir -p "$log_dir"
         chown -R danijel-jd:danijel-jd "$log_dir"
-        
+
         # Data-Verzeichnis erstellen
         local data_dir="${PROJECT_ROOT}/${service_dir}/data"
         mkdir -p "$data_dir"
         chown -R danijel-jd:danijel-jd "$data_dir"
-        
+
         echo -e "${GREEN}   ✅ ${service_name} installiert${NC}"
     else
         echo -e "${RED}   ❌ Service-Datei nicht gefunden: ${service_file}${NC}"

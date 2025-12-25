@@ -29,6 +29,7 @@
 **File:** `1.opena1&2_portier/main.py`
 
 **Configuration Added:**
+
 ```python
 LOG_DIR = os.path.join(os.path.dirname(__file__), "logs")
 os.makedirs(LOG_DIR, exist_ok=True)
@@ -39,6 +40,7 @@ print(f"[opena1] Safepoint log file: {LOG_FILE_OPENA1}")
 ```
 
 **Endpoint Used:**
+
 - **Route:** `POST /log/opena1`
 - **Provider:** PortierServiceBase (src/portier_service_base.py:120-122)
 - **Schema:** SafepointRequest
@@ -78,10 +80,10 @@ curl -X POST http://127.0.0.1:12344/log/opena1 \
 
 ```json
 {
-    "written": true,
-    "path": "archiv/SP1763981912008_user→opena1_CMD.json",
-    "timestamp": "2025-11-24T11:58:25.025936Z",
-    "index_updated": true
+  "written": true,
+  "path": "archiv/SP1763981912008_user→opena1_CMD.json",
+  "timestamp": "2025-11-24T11:58:25.025936Z",
+  "index_updated": true
 }
 ```
 
@@ -92,25 +94,27 @@ curl -X POST http://127.0.0.1:12344/log/opena1 \
 ### Test 1: Single Safepoint Log
 
 **Request:**
+
 ```json
 {
-    "src": "user",
-    "dst": "opena1",
-    "kind": "CMD",
-    "payload": {
-        "query": "Was ist der Status?",
-        "session": "test-phase-15-2"
-    }
+  "src": "user",
+  "dst": "opena1",
+  "kind": "CMD",
+  "payload": {
+    "query": "Was ist der Status?",
+    "session": "test-phase-15-2"
+  }
 }
 ```
 
 **Response:**
+
 ```json
 {
-    "written": true,
-    "path": "archiv/SP1763981912008_user→opena1_CMD.json",
-    "timestamp": "2025-11-24T11:58:25.025936Z",
-    "index_updated": true
+  "written": true,
+  "path": "archiv/SP1763981912008_user→opena1_CMD.json",
+  "timestamp": "2025-11-24T11:58:25.025936Z",
+  "index_updated": true
 }
 ```
 
@@ -118,13 +122,13 @@ curl -X POST http://127.0.0.1:12344/log/opena1 \
 
 ### Test 2: Load Test (5 Concurrent Requests)
 
-| Request | Written | Unicode Marker | Status |
-|---------|---------|---|--------|
-| 1 | true | → | ✅ PASS |
-| 2 | true | → | ✅ PASS |
-| 3 | true | → | ✅ PASS |
-| 4 | true | → | ✅ PASS |
-| 5 | true | → | ✅ PASS |
+| Request | Written | Unicode Marker | Status  |
+| ------- | ------- | -------------- | ------- |
+| 1       | true    | →              | ✅ PASS |
+| 2       | true    | →              | ✅ PASS |
+| 3       | true    | →              | ✅ PASS |
+| 4       | true    | →              | ✅ PASS |
+| 5       | true    | →              | ✅ PASS |
 
 **Success Rate:** 100% (5/5)
 **Unicode Markers:** ✅ All present (→)
@@ -133,6 +137,7 @@ curl -X POST http://127.0.0.1:12344/log/opena1 \
 ### Test 3: File Verification
 
 **Safepoint Files Created:**
+
 ```bash
 archiv/SP1763981912008_user→opena1_CMD.json
 archiv/SP1763981912033_user→opena1_CMD.json
@@ -142,16 +147,17 @@ archiv/SP1763981912111_user→opena1_CMD.json
 ```
 
 **Safepoint File Format:**
+
 ```json
 {
-    "timestamp": "2025-11-24T11:58:25.025936Z",
-    "type": "CMD",
-    "request_id": "user→opena1",
-    "payload": {
-        "query": "Was ist der Status?",
-        "session": "test-phase-15-2"
-    },
-    "source": "opena1"
+  "timestamp": "2025-11-24T11:58:25.025936Z",
+  "type": "CMD",
+  "request_id": "user→opena1",
+  "payload": {
+    "query": "Was ist der Status?",
+    "session": "test-phase-15-2"
+  },
+  "source": "opena1"
 }
 ```
 
@@ -164,6 +170,7 @@ archiv/SP1763981912111_user→opena1_CMD.json
 ### /request Endpoint Flow
 
 **Current State (PHASE 15.1):**
+
 ```
 POST /request
     ↓
@@ -174,7 +181,8 @@ ResponsePayload returned (immediate)
 User gets response
 ```
 
-### With Safepoint Logging (PHASE 15.2):**
+### With Safepoint Logging (PHASE 15.2):\*\*
+
 ```
 POST /request
     ↓
@@ -235,16 +243,19 @@ Safepoint file created in archiv/
 ## 🚀 NEXT STEPS (PHASE 15.3+)
 
 ### Option 1: Auto-Logging Integration
+
 - Automatically log requests to `/log/opena1` when `/request` is called
 - Use background task or async fire-and-forget pattern
 - Keep response latency low (<5ms)
 
 ### Option 2: Agent Routing (PHASE 15.3)
+
 - Route requests through opena2 → kordp → agents
 - Log each step in the pipeline
 - Create request/response safepoint pairs
 
 ### Option 3: Response Tracking
+
 - Create corresponding RESP safepoint when response ready
 - Link CMD and RESP via request_id
 - Enable request tracing
@@ -309,13 +320,13 @@ Unicode Handling: Perfect (→ marker)
 
 ## 🎯 PHASE 15 COMPLETION STATUS
 
-| Phase | Component | Status |
-|-------|-----------|--------|
-| 15.1 | POST /request endpoint | ✅ COMPLETE |
-| 15.2 | Safepoint logging config | ✅ COMPLETE |
-| 15.3 | Agent registration | ⏳ PENDING |
-| 15.4 | Policy hardening | ⏳ PENDING |
-| 15.5 | Load test variations | ⏳ PENDING |
+| Phase | Component                | Status      |
+| ----- | ------------------------ | ----------- |
+| 15.1  | POST /request endpoint   | ✅ COMPLETE |
+| 15.2  | Safepoint logging config | ✅ COMPLETE |
+| 15.3  | Agent registration       | ⏳ PENDING  |
+| 15.4  | Policy hardening         | ⏳ PENDING  |
+| 15.5  | Load test variations     | ⏳ PENDING  |
 
 ---
 
@@ -344,4 +355,4 @@ Request Flow:
 **Status:** 🟢 **PRODUCTION READY**
 **Owner:** JD Smart Vision EU - Danijel Jokic
 
-*PHASE 15.2: Safepoint logging successfully configured. Request/response tracking enabled through existing /log/opena1 infrastructure.*
+_PHASE 15.2: Safepoint logging successfully configured. Request/response tracking enabled through existing /log/opena1 infrastructure._

@@ -1,4 +1,5 @@
 # MCP Tool Server
+
 ## Model Context Protocol - Tool Server für LLM Actions
 
 Der MCP Tool Server ermöglicht LLMs, Aktionen über einen standardisierten API-Server auszuführen. Die Implementierung folgt der [MCP Specification](https://modelcontextprotocol.io/).
@@ -16,8 +17,8 @@ python mcp_tool_server.py
 uvicorn mcp_tool_server:app --host 127.0.0.1 --port 12398
 ```
 
-**Port:** 12398  
-**Kürzel:** mcpp  
+**Port:** 12398
+**Kürzel:** mcpp
 **Health Check:** http://127.0.0.1:12398/health
 
 ---
@@ -25,9 +26,11 @@ uvicorn mcp_tool_server:app --host 127.0.0.1 --port 12398
 ## API Endpoints
 
 ### `POST /tools/list`
+
 Listet alle verfügbaren Tools auf.
 
 **Request:**
+
 ```json
 {
   "cursor": null
@@ -35,6 +38,7 @@ Listet alle verfügbaren Tools auf.
 ```
 
 **Response:**
+
 ```json
 {
   "tools": [
@@ -45,8 +49,8 @@ Listet alle verfügbaren Tools auf.
       "inputSchema": {
         "type": "object",
         "properties": {
-          "a": {"type": "number"},
-          "b": {"type": "number"}
+          "a": { "type": "number" },
+          "b": { "type": "number" }
         },
         "required": ["a", "b"]
       },
@@ -63,9 +67,11 @@ Listet alle verfügbaren Tools auf.
 ```
 
 ### `POST /tools/call`
+
 Führt ein Tool aus.
 
 **Request:**
+
 ```json
 {
   "name": "calculate_sum",
@@ -77,6 +83,7 @@ Führt ein Tool aus.
 ```
 
 **Response (Erfolg):**
+
 ```json
 {
   "content": [
@@ -90,6 +97,7 @@ Führt ein Tool aus.
 ```
 
 **Response (Fehler):**
+
 ```json
 {
   "content": [
@@ -103,6 +111,7 @@ Führt ein Tool aus.
 ```
 
 ### `GET /health`
+
 Health Check (kein Auth erforderlich).
 
 ```bash
@@ -110,25 +119,27 @@ curl http://127.0.0.1:12398/health
 ```
 
 ### `GET /tools`
+
 Convenience-Endpoint: Einfache Liste aller Tools.
 
 ### `GET /tools/{tool_name}`
+
 Info für ein spezifisches Tool.
 
 ---
 
 ## Verfügbare Tools
 
-| Tool | Beschreibung | Readonly | Idempotent |
-|------|--------------|----------|------------|
-| `calculate_sum` | Addiert zwei Zahlen | ✅ | ✅ |
-| `calculate_product` | Multipliziert zwei Zahlen | ✅ | ✅ |
-| `get_current_time` | Aktuelle Zeit in Timezone | ✅ | ❌ |
-| `echo_message` | Gibt Nachricht zurück (Test) | ✅ | ✅ |
-| `list_files` | Listet Dateien (nur Projektroot) | ✅ | ✅ |
-| `get_system_info` | System-Informationen | ✅ | ✅ |
-| `validate_json` | JSON-Validierung | ✅ | ✅ |
-| `hash_text` | Text hashen (md5/sha256/etc) | ✅ | ✅ |
+| Tool                | Beschreibung                     | Readonly | Idempotent |
+| ------------------- | -------------------------------- | -------- | ---------- |
+| `calculate_sum`     | Addiert zwei Zahlen              | ✅       | ✅         |
+| `calculate_product` | Multipliziert zwei Zahlen        | ✅       | ✅         |
+| `get_current_time`  | Aktuelle Zeit in Timezone        | ✅       | ❌         |
+| `echo_message`      | Gibt Nachricht zurück (Test)     | ✅       | ✅         |
+| `list_files`        | Listet Dateien (nur Projektroot) | ✅       | ✅         |
+| `get_system_info`   | System-Informationen             | ✅       | ✅         |
+| `validate_json`     | JSON-Validierung                 | ✅       | ✅         |
+| `hash_text`         | Text hashen (md5/sha256/etc)     | ✅       | ✅         |
 
 ---
 
@@ -144,6 +155,7 @@ curl -X POST http://127.0.0.1:12398/tools/list \
 ```
 
 Der Token wird aus `.env` geladen:
+
 ```
 BEARER_TOKEN=your-secure-token-here
 ```
@@ -162,14 +174,15 @@ BEARER_TOKEN=your-secure-token-here
 
 Jedes Tool kann Annotations haben, die sein Verhalten beschreiben:
 
-| Annotation | Beschreibung |
-|------------|--------------|
-| `readOnlyHint` | Tool verändert nichts |
-| `destructiveHint` | Tool kann Daten zerstören |
-| `idempotentHint` | Mehrfacher Aufruf hat keine zusätzliche Wirkung |
-| `openWorldHint` | Tool interagiert mit externen Systemen |
+| Annotation        | Beschreibung                                    |
+| ----------------- | ----------------------------------------------- |
+| `readOnlyHint`    | Tool verändert nichts                           |
+| `destructiveHint` | Tool kann Daten zerstören                       |
+| `idempotentHint`  | Mehrfacher Aufruf hat keine zusätzliche Wirkung |
+| `openWorldHint`   | Tool interagiert mit externen Systemen          |
 
 **Beispiel:**
+
 ```python
 tool_registry.register(
     name="delete_file",
@@ -240,12 +253,13 @@ Fehler werden im MCP-Format zurückgegeben (nicht als HTTP-Fehler):
 
 ```json
 {
-  "content": [{"type": "text", "text": "Error: Invalid arguments"}],
+  "content": [{ "type": "text", "text": "Error: Invalid arguments" }],
   "isError": true
 }
 ```
 
 **Best Practices:**
+
 - LLMs können `isError` prüfen und reagieren
 - Detaillierte Fehlermeldungen helfen beim Debugging
 - Interne Fehler werden nicht an Clients weitergegeben
@@ -255,16 +269,19 @@ Fehler werden im MCP-Format zurückgegeben (nicht als HTTP-Fehler):
 ## Sicherheit
 
 ### Input Validation
+
 - Strikte JSON Schema Validierung
 - Pydantic V2 mit `extra="forbid"`
 - Dateipfade auf Projektroot beschränkt
 
 ### Access Control
+
 - Bearer Token Authentifizierung
 - Rate Limiting pro Client
 - Audit Logging aller Requests
 
 ### Audit Log
+
 Alle Requests werden in `logs/mcp_audit.jsonl` protokolliert:
 
 ```json
@@ -272,7 +289,7 @@ Alle Requests werden in `logs/mcp_audit.jsonl` protokolliert:
   "timestamp": "2025-12-18T10:00:00Z",
   "event": "tools/call",
   "client_id": "abc123...",
-  "details": {"tool": "calculate_sum", "arguments": {"a": 5, "b": 3}}
+  "details": { "tool": "calculate_sum", "arguments": { "a": 5, "b": 3 } }
 }
 ```
 
@@ -353,18 +370,22 @@ mcp_server/
 ## Troubleshooting
 
 ### 401 Unauthorized
+
 - BEARER_TOKEN in `.env` prüfen
 - Header-Format: `Authorization: Bearer <token>`
 
 ### 429 Too Many Requests
+
 - Rate Limit erreicht (60/min default)
 - Warten oder `MCP_RATE_LIMIT` erhöhen
 
 ### Tool not found
+
 - Tool-Name prüfen mit `/tools/list`
 - Groß-/Kleinschreibung beachten
 
 ### Import Error
+
 - Dependencies installieren: `pip install fastapi uvicorn pydantic`
 
 ---
@@ -375,4 +396,4 @@ mcp_server/
 - **Port:** 12398
 - **Kürzel:** mcp
 - **Maintainer:** ELION Team
-- **Datum:** 19. Dezember 202   5
+- **Datum:** 19. Dezember 202 5

@@ -8,10 +8,9 @@ Create Date: 2024-06-24 13:15:33.808998
 
 from typing import Sequence, Union
 
+import open_webui.internal.db
 import sqlalchemy as sa
 from alembic import op
-
-import open_webui.internal.db
 from open_webui.internal.db import JSONField
 from open_webui.migrations.util import get_existing_tables
 

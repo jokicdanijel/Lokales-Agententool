@@ -219,7 +219,7 @@ ensure_agent_venv() {
   local agent_dir="$2"
 
   need_cmd python3
-  
+
   # Build paths directly
   local venv_dir="$agent_dir/.venv"
   local vpy="$agent_dir/.venv/bin/python"
@@ -326,7 +326,7 @@ start_agent_generic() {
 
   # Otherwise run Python main_*.py via isolated venv
   ensure_agent_venv "$agent" "$agent_dir"
-  
+
   # Build venv paths directly
   local venv_dir="$agent_dir/.venv"
   local vpy="$agent_dir/.venv/bin/python"
@@ -878,7 +878,7 @@ case "$cmd" in
 
     echo ""
     echo "=== Starting available agents (best-effort) ==="
-    
+
     # Export all BEARER_TOKENs for child processes
     export BEARER_TOKEN="${BEARER_TOKEN:-}"
     export OPENA3_BEARER_TOKEN="$(read_env_kv OPENA3_BEARER_TOKEN || true)"
@@ -888,7 +888,7 @@ case "$cmd" in
     export OPENA7_BEARER_TOKEN="$(read_env_kv OPENA7_BEARER_TOKEN || true)"
     export OPENA8_BEARER_TOKEN="$(read_env_kv OPENA8_BEARER_TOKEN || true)"
     export OPENA9_BEARER_TOKEN="$(read_env_kv OPENA9_BEARER_TOKEN || true)"
-    
+
     for e in "${AGENTS[@]}"; do
       agent="${e%%:*}"
       rest="${e#*:}"

@@ -1,7 +1,7 @@
 # 🚀 Website Integration Quick Reference — ELION System
 
-**Zweck:** Schnellreferenz für häufige Website-Integrations-Szenarien  
-**Zielgruppe:** Entwickler, die mit ELION Hyper-Dashboard arbeiten  
+**Zweck:** Schnellreferenz für häufige Website-Integrations-Szenarien
+**Zielgruppe:** Entwickler, die mit ELION Hyper-Dashboard arbeiten
 **Letzte Aktualisierung:** 21. Dezember 2025
 
 ---
@@ -22,9 +22,11 @@
 ## 🎯 Landing Page erstellen
 
 ### Szenario
+
 Eine moderne Landing Page mit Formular und Call-to-Action erstellen.
 
 ### Agent
+
 **opena15** (HTML Creator) — Port 12361
 
 ### Code
@@ -35,7 +37,7 @@ import asyncio
 
 async def create_landing_page():
     """Erstelle Landing Page via opena15."""
-    
+
     # Request-Daten
     request_data = {
         "request_id": "lp-001",
@@ -68,7 +70,7 @@ async def create_landing_page():
             ]
         }
     }
-    
+
     # Option-2-Flow: Request an opena1
     async with httpx.AsyncClient() as client:
         response = await client.post(
@@ -76,16 +78,16 @@ async def create_landing_page():
             json=request_data,
             timeout=30.0
         )
-        
+
         result = response.json()
-        
+
         # HTML ausgeben
         html = result.get("html", "")
-        
+
         # Speichern
         with open("landing_page.html", "w") as f:
             f.write(html)
-        
+
         print("✅ Landing Page erstellt: landing_page.html")
         return html
 
@@ -99,31 +101,37 @@ if __name__ == "__main__":
 ```html
 <!DOCTYPE html>
 <html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Willkommen bei ELION</title>
     <style>
-        /* Modern CSS */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; }
-        .hero { 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; 
-            padding: 100px 20px; 
-            text-align: center;
-        }
-        /* ... */
+      /* Modern CSS */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", sans-serif;
+      }
+      .hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 100px 20px;
+        text-align: center;
+      }
+      /* ... */
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <section class="hero">
-        <h1>Revolutionäre KI-Lösungen</h1>
-        <p>Für Ihr Business</p>
-        <a href="#contact" class="cta-button">Jetzt starten</a>
+      <h1>Revolutionäre KI-Lösungen</h1>
+      <p>Für Ihr Business</p>
+      <a href="#contact" class="cta-button">Jetzt starten</a>
     </section>
     <!-- ... -->
-</body>
+  </body>
 </html>
 ```
 
@@ -132,9 +140,11 @@ if __name__ == "__main__":
 ## 🛒 E-Commerce-Shop einrichten
 
 ### Szenario
+
 Produkt-Katalog mit Warenkorb und Checkout einrichten.
 
 ### Agent
+
 **opena16** (Shop Creator) — Port 12362
 
 ### Code
@@ -142,7 +152,7 @@ Produkt-Katalog mit Warenkorb und Checkout einrichten.
 ```python
 async def setup_ecommerce_shop():
     """Richte E-Commerce-Shop ein."""
-    
+
     # 1. Shop erstellen
     shop_config = {
         "request_id": "shop-001",
@@ -156,17 +166,17 @@ async def setup_ecommerce_shop():
             "shipping_zones": ["DE", "EU", "WORLD"]
         }
     }
-    
+
     async with httpx.AsyncClient() as client:
         # Shop erstellen via opena1 (Option-2-Flow)
         shop_response = await client.post(
             "http://127.0.0.1:12344/log/opena1",
             json=shop_config
         )
-        
+
         shop = shop_response.json()
         shop_id = shop["shop_id"]
-        
+
         # 2. Produkte hinzufügen
         products = [
             {
@@ -186,7 +196,7 @@ async def setup_ecommerce_shop():
                 "category": "Software"
             }
         ]
-        
+
         for product in products:
             product_request = {
                 "request_id": f"prod-{product['name']}",
@@ -199,15 +209,15 @@ async def setup_ecommerce_shop():
                     "product": product
                 }
             }
-            
+
             await client.post(
                 "http://127.0.0.1:12344/log/opena1",
                 json=product_request
             )
-        
+
         print(f"✅ Shop erstellt: {shop_id}")
         print(f"✅ {len(products)} Produkte hinzugefügt")
-        
+
         return shop
 
 # Ausführen
@@ -220,9 +230,9 @@ if __name__ == "__main__":
 ```python
 async def setup_stripe_payment():
     """Stripe-Payment-Gateway einrichten."""
-    
+
     # .env: STRIPE_SECRET_KEY=sk_test_...
-    
+
     payment_config = {
         "request_id": "payment-001",
         "timestamp": "2025-12-21T10:00:00Z",
@@ -235,13 +245,13 @@ async def setup_stripe_payment():
             "cancel_url": "https://yourdomain.com/cancel"
         }
     }
-    
+
     async with httpx.AsyncClient() as client:
         response = await client.post(
             "http://127.0.0.1:12344/log/opena1",
             json=payment_config
         )
-        
+
         result = response.json()
         print("✅ Stripe konfiguriert")
         print(f"   Publishable Key: {result['publishable_key']}")
@@ -253,9 +263,11 @@ async def setup_stripe_payment():
 ## 📧 Contact Form integrieren
 
 ### Szenario
+
 Kontaktformular mit E-Mail-Benachrichtigung.
 
 ### Agents
+
 - **opena15** (HTML) — Port 12361
 - **opena7** (Email) — Port 12353
 
@@ -264,7 +276,7 @@ Kontaktformular mit E-Mail-Benachrichtigung.
 ```python
 async def create_contact_form():
     """Erstelle Kontaktformular mit E-Mail-Integration."""
-    
+
     # 1. HTML-Formular generieren
     form_request = {
         "request_id": "form-001",
@@ -284,23 +296,23 @@ async def create_contact_form():
             "validation": True
         }
     }
-    
+
     async with httpx.AsyncClient() as client:
         # HTML generieren
         form_response = await client.post(
             "http://127.0.0.1:12344/log/opena1",
             json=form_request
         )
-        
+
         html = form_response.json()["html"]
-        
+
         # 2. Backend-Handler erstellen
         # (In FastAPI-App des entsprechenden Agents)
-        
+
         print("✅ Kontaktformular erstellt")
         print("   HTML: contact_form.html")
         print("   Endpoint: POST /api/contact")
-        
+
         return html
 
 # Backend-Handler (in FastAPI-App)
@@ -318,14 +330,14 @@ class ContactFormData(BaseModel):
 @router.post("/api/contact")
 async def handle_contact_form(data: ContactFormData):
     """Handle contact form submission."""
-    
+
     # Validierung
     if len(data.message) < 10:
         raise HTTPException(
             status_code=400,
             detail="Message too short"
         )
-    
+
     # E-Mail senden (via opena7)
     email_request = {
         "request_id": f"email-{data.email}",
@@ -345,13 +357,13 @@ async def handle_contact_form(data: ContactFormData):
             """
         }
     }
-    
+
     async with httpx.AsyncClient() as client:
         await client.post(
             "http://127.0.0.1:12344/log/opena1",
             json=email_request
         )
-    
+
     return {"status": "success", "message": "E-Mail gesendet"}
 ```
 
@@ -360,9 +372,11 @@ async def handle_contact_form(data: ContactFormData):
 ## 📝 Blog-System aufsetzen
 
 ### Szenario
+
 Multi-Post-Blog mit Kategorien und Kommentaren.
 
 ### Agent
+
 **opena17** (Homepage Creator) — Port 12366
 
 ### Code
@@ -370,7 +384,7 @@ Multi-Post-Blog mit Kategorien und Kommentaren.
 ```python
 async def setup_blog_system():
     """Richte Blog-System ein."""
-    
+
     blog_config = {
         "request_id": "blog-001",
         "timestamp": "2025-12-21T10:00:00Z",
@@ -394,17 +408,17 @@ async def setup_blog_system():
             ]
         }
     }
-    
+
     async with httpx.AsyncClient() as client:
         # Blog erstellen
         response = await client.post(
             "http://127.0.0.1:12344/log/opena1",
             json=blog_config
         )
-        
+
         blog = response.json()
         blog_id = blog["blog_id"]
-        
+
         # Ersten Post erstellen
         post_request = {
             "request_id": "post-001",
@@ -429,16 +443,16 @@ async def setup_blog_system():
                 "publish": True
             }
         }
-        
+
         await client.post(
             "http://127.0.0.1:12344/log/opena1",
             json=post_request
         )
-        
+
         print(f"✅ Blog erstellt: {blog_id}")
         print("✅ Erster Post veröffentlicht")
         print(f"   URL: /blog/{blog_id}")
-        
+
         return blog
 
 # Ausführen
@@ -451,6 +465,7 @@ if __name__ == "__main__":
 ## 🔌 API-Endpoint hinzufügen
 
 ### Szenario
+
 Custom REST-API-Endpoint für Website-Daten.
 
 ### Code
@@ -475,12 +490,12 @@ async def get_products(
 ):
     """
     Get products via Option-2-Flow.
-    
+
     Query Parameters:
         - category: Filter by category
         - limit: Max results (default: 10)
     """
-    
+
     # Request an opena16 (Shop)
     request_data = {
         "request_id": f"api-products-{category or 'all'}",
@@ -495,22 +510,22 @@ async def get_products(
             }
         }
     }
-    
+
     async with httpx.AsyncClient() as client:
         response = await client.post(
             "http://127.0.0.1:12344/log/opena1",
             json=request_data
         )
-        
+
         if response.status_code != 200:
             raise HTTPException(
                 status_code=500,
                 detail="Failed to fetch products"
             )
-        
+
         result = response.json()
         products = result.get("products", [])
-        
+
         return [
             ProductResponse(**p) for p in products
         ]
@@ -518,7 +533,7 @@ async def get_products(
 @router.post("/products")
 async def create_product(product: ProductResponse):
     """Create new product."""
-    
+
     request_data = {
         "request_id": f"api-create-{product.name}",
         "timestamp": "2025-12-21T10:00:00Z",
@@ -529,19 +544,19 @@ async def create_product(product: ProductResponse):
             "product": product.dict()
         }
     }
-    
+
     async with httpx.AsyncClient() as client:
         response = await client.post(
             "http://127.0.0.1:12344/log/opena1",
             json=request_data
         )
-        
+
         if response.status_code != 200:
             raise HTTPException(
                 status_code=500,
                 detail="Failed to create product"
             )
-        
+
         return response.json()
 ```
 
@@ -560,6 +575,7 @@ http://127.0.0.1:12362/redoc
 ## 📥 Webhook empfangen
 
 ### Szenario
+
 Stripe-Webhook für Payment-Events empfangen.
 
 ### Code
@@ -576,21 +592,21 @@ router = APIRouter()
 async def handle_stripe_webhook(request: Request):
     """
     Handle Stripe webhook events.
-    
+
     Security:
         - Signature validation
         - Replay protection
         - Safepoint archiving
     """
-    
+
     # 1. Signature-Validierung
     signature = request.headers.get("Stripe-Signature")
     if not signature:
         raise HTTPException(status_code=401, detail="Missing signature")
-    
+
     webhook_secret = os.getenv("STRIPE_WEBHOOK_SECRET")
     payload = await request.body()
-    
+
     # Verify signature
     try:
         expected_sig = hmac.new(
@@ -598,23 +614,23 @@ async def handle_stripe_webhook(request: Request):
             payload,
             hashlib.sha256
         ).hexdigest()
-        
+
         # Parse signature header
         sig_parts = dict(
-            item.split("=") 
+            item.split("=")
             for item in signature.split(",")
         )
-        
+
         if not hmac.compare_digest(sig_parts["v1"], expected_sig):
             raise HTTPException(status_code=401, detail="Invalid signature")
-            
+
     except Exception as e:
         raise HTTPException(status_code=401, detail=str(e))
-    
+
     # 2. Parse event
     event = await request.json()
     event_type = event["type"]
-    
+
     # 3. Safepoint-Archivierung (Option-2-Flow)
     webhook_request = {
         "request_id": f"webhook-{event['id']}",
@@ -627,30 +643,30 @@ async def handle_stripe_webhook(request: Request):
             "webhook_id": event["id"]
         }
     }
-    
+
     async with httpx.AsyncClient() as client:
         await client.post(
             "http://127.0.0.1:12344/log/opena1",
             json=webhook_request
         )
-    
+
     # 4. Event-spezifische Verarbeitung
     if event_type == "payment_intent.succeeded":
         await process_payment_success(event["data"]["object"])
-    
+
     elif event_type == "payment_intent.payment_failed":
         await process_payment_failed(event["data"]["object"])
-    
+
     elif event_type == "customer.subscription.created":
         await process_subscription_created(event["data"]["object"])
-    
+
     return {"status": "received"}
 
 async def process_payment_success(payment_intent):
     """Process successful payment."""
     amount = payment_intent["amount"] / 100  # Convert cents to euros
     customer_email = payment_intent.get("receipt_email")
-    
+
     # Send confirmation email
     email_request = {
         "request_id": f"email-payment-{payment_intent['id']}",
@@ -667,7 +683,7 @@ async def process_payment_success(payment_intent):
             """
         }
     }
-    
+
     async with httpx.AsyncClient() as client:
         await client.post(
             "http://127.0.0.1:12344/log/opena1",
@@ -680,9 +696,11 @@ async def process_payment_success(payment_intent):
 ## 🕷️ Website scrapen
 
 ### Szenario
+
 Daten von externer Website extrahieren.
 
 ### Agent
+
 **opena6** (Browser Automation) — Port 12352
 
 ### Code
@@ -690,7 +708,7 @@ Daten von externer Website extrahieren.
 ```python
 async def scrape_website():
     """Scrape Daten von Website."""
-    
+
     scrape_request = {
         "request_id": "scrape-001",
         "timestamp": "2025-12-21T10:00:00Z",
@@ -708,26 +726,26 @@ async def scrape_website():
             "screenshot": True
         }
     }
-    
+
     async with httpx.AsyncClient(timeout=60.0) as client:
         response = await client.post(
             "http://127.0.0.1:12344/log/opena1",
             json=scrape_request
         )
-        
+
         result = response.json()
-        
+
         products = result["data"]["products"]
         screenshot = result["screenshot"]  # Base64
-        
+
         print(f"✅ {len(products)} Produkte gescraped")
         print(f"   Screenshot: {len(screenshot)} bytes")
-        
+
         # Daten speichern
         import json
         with open("scraped_products.json", "w") as f:
             json.dump(products, f, indent=2)
-        
+
         return products
 
 # Ausführen
@@ -765,73 +783,73 @@ from playwright.async_api import async_playwright
 @pytest.mark.asyncio
 async def test_landing_page_e2e():
     """E2E-Test für Landing Page."""
-    
+
     # 1. Landing Page erstellen
     html = await create_landing_page()
-    
+
     # 2. Playwright-Browser starten
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         page = await browser.new_page()
-        
+
         # 3. HTML laden
         await page.set_content(html)
-        
+
         # 4. Elemente prüfen
         assert await page.locator("h1").text_content() == \
             "Revolutionäre KI-Lösungen"
-        
+
         assert await page.locator(".cta-button").is_visible()
-        
+
         # 5. Formular testen
         await page.fill('input[name="name"]', "Test User")
         await page.fill('input[name="email"]', "test@example.com")
         await page.fill('textarea[name="message"]', "Test-Nachricht")
-        
+
         # 6. Submit
         await page.click('button[type="submit"]')
-        
+
         # 7. Success-Message prüfen
         success = await page.locator(".success-message").is_visible()
         assert success
-        
+
         await browser.close()
 
 @pytest.mark.asyncio
 async def test_shop_checkout_flow():
     """E2E-Test für Shop-Checkout."""
-    
+
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         page = await browser.new_page()
-        
+
         # 1. Shop-Seite öffnen
         await page.goto("http://localhost:12362/shop")
-        
+
         # 2. Produkt zum Warenkorb
         await page.click(".product-card:first-child .add-to-cart")
-        
+
         # 3. Warenkorb prüfen
         cart_count = await page.locator(".cart-count").text_content()
         assert cart_count == "1"
-        
+
         # 4. Checkout
         await page.click(".cart-icon")
         await page.click(".checkout-button")
-        
+
         # 5. Formular ausfüllen
         await page.fill('input[name="email"]', "customer@example.com")
         await page.fill('input[name="card"]', "4242424242424242")  # Stripe test card
         await page.fill('input[name="exp"]', "12/25")
         await page.fill('input[name="cvc"]', "123")
-        
+
         # 6. Payment
         await page.click('button[type="submit"]')
-        
+
         # 7. Success-Page
         await page.wait_for_url("**/success")
         assert "Vielen Dank" in await page.locator("h1").text_content()
-        
+
         await browser.close()
 ```
 
@@ -840,17 +858,20 @@ async def test_shop_checkout_flow():
 ## 📚 Zusätzliche Ressourcen
 
 ### Dokumentation
+
 - **Master Prompt:** `docs/WEBSITE_INTEGRATION_MASTER_PROMPT.md`
 - **External APIs:** `docs/EXTERNAL_WEBSITE_API_INTEGRATION.md`
 - **Operations:** `docs/OPERATIONS.md`
 
 ### Code-Beispiele
+
 - **HTML Agent:** `14.opena15_html/main_html_agent.py`
 - **Shop Agent:** `15.opena16_shop/`
 - **Homepage Agent:** `16.opena17_homepagecreator/main_homepage_agent.py`
 - **Browser Agent:** `5.opena6_browser/`
 
 ### Testing
+
 - **E2E-Tests:** `tests/e2e_option2_flow.sh`
 - **Unit-Tests:** `tests/test_*.py`
 
@@ -859,6 +880,7 @@ async def test_shop_checkout_flow():
 ## 🔍 Troubleshooting
 
 ### Problem: Port bereits belegt
+
 ```bash
 # Lösung
 lsof -i :12361
@@ -867,6 +889,7 @@ bin/ops.sh start opena15
 ```
 
 ### Problem: Secrets fehlen
+
 ```bash
 # Lösung
 grep API_KEY .env
@@ -875,6 +898,7 @@ bin/ops.sh restart
 ```
 
 ### Problem: Safepoint nicht gespeichert
+
 ```bash
 # Lösung: Prüfe Option-2-Flow
 curl http://127.0.0.1:12345/archiv/last?n=5 | jq .
@@ -886,7 +910,7 @@ curl http://127.0.0.1:12345/archiv/last?n=5 | jq .
 
 ---
 
-**Maintainer:** Danijel Jokic (ELION Team)  
-**Letzte Aktualisierung:** 21. Dezember 2025  
-**Version:** 1.0.0  
+**Maintainer:** Danijel Jokic (ELION Team)
+**Letzte Aktualisierung:** 21. Dezember 2025
+**Version:** 1.0.0
 **Status:** ✅ Production Ready

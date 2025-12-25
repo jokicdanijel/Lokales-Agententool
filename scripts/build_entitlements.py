@@ -98,6 +98,11 @@ class EntitlementsBuilder:
             with open(self.inventory_path) as f:
                 self.inventory = json.load(f)
             print(f"  ✅ Loaded inventory: {self.inventory_path}")
+
+            # Normalize inventory to expected shape (agents mapping)
+            # Accepts artifacts/agent_inventory.json (services list),
+            # legacy dicts, or raw services lists produced by other tools.
+            self._normalize_inventory()
         else:
             print(f"  ⚠️  Inventory not found: {self.inventory_path}")
             print("  📝 Creating minimal inventory from baseline...")
@@ -201,6 +206,66 @@ class EntitlementsBuilder:
             "agent_count": len(agents),
             "agents": agents,
         }
+
+    def _normalize_inventory(self):
+        """Normalize inventory into a dict with an 'agents' mapping.
+
+        Accepts:
+          - {"services": [ ... ]}
+          - [ ... ] (list of service dicts)
+          - {"agents": {...}} (already correct)
+        """
+        raw = self.inventory
+
+        def list_to_dict(items):
+            out = {}
+            for i, item in enumerate(items):
+                if not isinstance(item, dict):
+                    raise TypeError(f"services[{i}] must be object, got {type(item).__name__}")
+                # prefer explicit agent_id or service_name
+                key = (
+                    item.get("agent_id")
+                    or item.get("service_name")
+                    or item.get("container_name")
+                    or item.get("image")
+                    or f"service_{i}"
+                )
+                if key in out:
+                    key = f"{key}__{i}"
+                out[key] = item
+            return out
+
+        # Case: raw is dict with 'services' list
+        if isinstance(raw, dict) and "services" in raw and isinstance(raw["services"], list):
+            services = raw["services"]
+            self.inventory = {**raw}
+            self.inventory["agents"] = list_to_dict(services)
+            return
+
+        # Case: raw is dict with 'agents' list
+        if isinstance(raw, dict) and "agents" in raw and isinstance(raw["agents"], list):
+            self.inventory = {**raw}
+            self.inventory["agents"] = list_to_dict(raw["agents"])
+            return
+
+        # Case: raw is list of services
+        if isinstance(raw, list):
+            self.inventory = {"agents": list_to_dict(raw)}
+            return
+
+        # Case: raw is dict and already provides 'agents' mapping
+        if isinstance(raw, dict) and "agents" in raw and isinstance(raw["agents"], dict):
+            # already okay
+            return
+
+        # Case: maybe raw is a dict mapping service_name->obj
+        if isinstance(raw, dict) and all(isinstance(v, dict) for v in raw.values()):
+            self.inventory = {"agents": raw}
+            return
+
+        # Fallback: minimal inventory
+        print("  ⚠️  Unrecognized inventory shape; using minimal inventory instead")
+        self.inventory = self._create_minimal_inventory()
 
     def build(self):
         """Build entitlements for all plans"""

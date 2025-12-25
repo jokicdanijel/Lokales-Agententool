@@ -10,12 +10,12 @@ PORTIER 3.0 ist eine vollständig modulare, produktionsreife Multi-Service-Archi
 
 Es besteht aus **vier Kernservices**:
 
-| Service | Port | Funktion |
-|---------|------|----------|
-| **opena1** | 12344 | Coordinator — verarbeitet Request71 und erzeugt Decision72 |
-| **opena2** | 12345 | Archivator — persistiert CMD/RESP Safepoints inkl. Unicode-Pfeil → |
-| **kordp** | 12346 | Gateway — Dispatch-Router zur Tool-Ausführung |
-| **opena20** | 12349 | Dashboard — UI für Monitoring, Status, E2E-Trigger und Safepoints |
+| Service     | Port  | Funktion                                                           |
+| ----------- | ----- | ------------------------------------------------------------------ |
+| **opena1**  | 12344 | Coordinator — verarbeitet Request71 und erzeugt Decision72         |
+| **opena2**  | 12345 | Archivator — persistiert CMD/RESP Safepoints inkl. Unicode-Pfeil → |
+| **kordp**   | 12346 | Gateway — Dispatch-Router zur Tool-Ausführung                      |
+| **opena20** | 12349 | Dashboard — UI für Monitoring, Status, E2E-Trigger und Safepoints  |
 
 ---
 
@@ -160,12 +160,12 @@ SP<timestamp>_<source>→<destination>_<KIND>.json
 
 **Tool-Registry (Default):**
 
-| Tool-ID | Ziel |
-|---------|------|
-| tool_file_manager | opena5:12351 |
-| tool_file_searcher | opena5:12351 |
-| tool_text_analyzer | opena5:12351 |
-| tool_default | kordp (Fallback) |
+| Tool-ID            | Ziel             |
+| ------------------ | ---------------- |
+| tool_file_manager  | opena5:12351     |
+| tool_file_searcher | opena5:12351     |
+| tool_text_analyzer | opena5:12351     |
+| tool_default       | kordp (Fallback) |
 
 **Endpoints:**
 
@@ -266,7 +266,7 @@ POST /api/restart            # Restart stack
 Ein voller End-to-End-Test deckt ab:
 
 ```
-Request71 → opena1 → Decision72 
+Request71 → opena1 → Decision72
 → CMD safepoint → opena2
 → Dispatch → kordp
 → Tool → RESP safepoint → opena2
@@ -538,16 +538,16 @@ bin/env_bootstrap.sh  # Generates .env with UUID token
 
 ## 🧩 TECHNOLOGY STACK
 
-| Component | Technology | Version |
-|-----------|-----------|---------|
-| **Framework** | FastAPI | 0.104+ |
-| **ASGI Server** | Uvicorn | Latest |
-| **Validation** | Pydantic | 2.0+ |
-| **Templates** | Jinja2 | 3.1.6 |
-| **HTTP Client** | httpx | Latest |
-| **Python** | CPython | 3.13.x |
-| **OS** | Ubuntu | 25.04 |
-| **Runtime** | venv313 / system python | - |
+| Component       | Technology              | Version |
+| --------------- | ----------------------- | ------- |
+| **Framework**   | FastAPI                 | 0.104+  |
+| **ASGI Server** | Uvicorn                 | Latest  |
+| **Validation**  | Pydantic                | 2.0+    |
+| **Templates**   | Jinja2                  | 3.1.6   |
+| **HTTP Client** | httpx                   | Latest  |
+| **Python**      | CPython                 | 3.13.x  |
+| **OS**          | Ubuntu                  | 25.04   |
+| **Runtime**     | venv313 / system python | -       |
 
 **Frontend:**
 
@@ -675,31 +675,31 @@ chmod -R 755 archivp_store/
 
 ## 👥 Contributors
 
-**Primary Developer:** Danijel (ELION Team)  
+**Primary Developer:** Danijel (ELION Team)
 **AI Assistant:** GitHub Copilot (Claude Sonnet 4.5)
 
 ---
 
 ## 📄 License
 
-**Internal Use Only**  
+**Internal Use Only**
 Proprietary - All Rights Reserved
 
 ---
 
 ## 📞 Support
 
-**Issues:** <https://github.com/jokicdanijel/Gesamtprojekt-start/issues>  
+**Issues:** <https://github.com/jokicdanijel/Gesamtprojekt-start/issues>
 **Discussions:** <https://github.com/jokicdanijel/Gesamtprojekt-start/discussions>
 
 ---
 
-**Last Updated:** 21. November 2025  
-**Version:** 3.0.0  
+**Last Updated:** 21. November 2025
+**Version:** 3.0.0
 **Status:** ✅ PRODUCTION-READY
 
 ---
 
-**Dashboard:** <http://127.0.0.1:12349/dashboard>  
-**Status API:** <http://127.0.0.1:12349/api/status>  
+**Dashboard:** <http://127.0.0.1:12349/dashboard>
+**Status API:** <http://127.0.0.1:12349/api/status>
 **Health Check:** <http://127.0.0.1:12349/health>

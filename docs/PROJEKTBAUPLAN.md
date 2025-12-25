@@ -3,6 +3,7 @@
 ## 🏗️ Systemarchitektur
 
 ### Basis-Informationen
+
 - **Projektname:** Portier / ELION Hyper-Dashboard 2.0
 - **Version:** 1.0 Production
 - **Plattform:** Linux Mint
@@ -10,6 +11,7 @@
 - **Hauptpfad:** `/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt`
 
 ### Port-Struktur
+
 - **Haupt-Dashboard:** 12344
 - **Agent-Ports:** 12345-12399
 - **Reserviert:** 8080 (nur intern für OpenWebUI)
@@ -17,6 +19,7 @@
 ## 📦 Komponenten
 
 ### 1. Basis-Agenten (1-10)
+
 1. **Portier** (Port 12344)
    - Zentrale Steuerung
    - Authentifizierung
@@ -59,6 +62,7 @@
     - Zugriffskontrolle
 
 ### 2. Erweiterungs-Agenten (11-20)
+
 11. **Social Media** (Port 12354)
     - Plattform-Integration
     - Content-Management
@@ -102,12 +106,14 @@
 ## 🗄️ Datenbankstruktur
 
 ### Koordinator-DB (opena1)
+
 - projects
 - files
 - tools
 - events
 
 ### Archivator-DB (opena2)
+
 - archives
 - safepoints
 - events
@@ -116,6 +122,7 @@
 ## 📂 Dateisystem
 
 ### Archiv-Struktur
+
 ```
 archivp/
 ├── YYYY/
@@ -129,6 +136,7 @@ archivp/
 ## 🔄 Prozessablauf (Option 2)
 
 ### Kommunikationsfluss
+
 1. OpenAI → opena1
 2. opena1 → opena2
 3. opena2 → kordp
@@ -140,12 +148,14 @@ archivp/
 ## 🛠️ Entwicklungsumgebung
 
 ### Python-Setup
+
 ```bash
 python3.13 -m venv venv313
 source venv313/bin/activate
 ```
 
 ### Hauptabhängigkeiten
+
 - FastAPI
 - Pydantic
 - SQLAlchemy
@@ -156,11 +166,13 @@ source venv313/bin/activate
 ## 📝 Logging & Monitoring
 
 ### Safepoint-System
+
 - Automatische Speicherung aller Aktionen
 - Tägliche Archivierung
 - Append-only Index
 
 ### Audit-Trail
+
 - Lückenlose Dokumentation
 - Compliance-Tracking
 - Fehlerprotokollierung
@@ -168,11 +180,13 @@ source venv313/bin/activate
 ## 🔐 Sicherheit
 
 ### Zugriffskontrollen
+
 - API-Key-Management über .env
 - Port-Restriktionen
 - Verschlüsselte Kommunikation
 
 ### Compliance
+
 - Datenschutz-konform
 - Audit-fähig
 - Backup-Strategie
@@ -180,16 +194,19 @@ source venv313/bin/activate
 ## 🚀 Deployment
 
 ### Produktionsstart
+
 ```bash
 ./venv313/bin/python3 main_production.py --port 12344
 ```
 
 ### Monitoring
+
 ```bash
 ./deployment_status.sh
 ```
 
 ### Build & Deploy
+
 ```bash
 ./run_deploy.sh
 ```
@@ -197,6 +214,7 @@ source venv313/bin/activate
 ## ✅ Qualitätssicherung
 
 ### Tests
+
 ```bash
 # Unit- & Integrationstests
 python -m pytest --tb=short -v
@@ -206,6 +224,7 @@ python code_quality_check.py
 ```
 
 ### Code-Formatierung
+
 ```bash
 # PEP8 mit Black
 python -m black .

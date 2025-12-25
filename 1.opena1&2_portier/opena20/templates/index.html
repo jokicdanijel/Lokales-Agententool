@@ -617,20 +617,20 @@
             try {
                 const res = await fetch(`${API_BASE}/health`);
                 const data = await res.json();
-                
+
                 document.getElementById('srv-status').textContent = data.status === 'ok' ? '✅ OK' : '⚠️ Checking';
                 document.getElementById('srv-uptime').textContent = `${(data.uptime_seconds / 3600).toFixed(1)}h`;
-                
+
                 const agents = data.agents || [];
                 const online = agents.filter(a => a.status.includes('Online')).length;
                 document.getElementById('health-agents').textContent = `${online}/${agents.length}`;
                 document.getElementById('health-circuit').textContent = online >= 3 ? '✅ Healthy' : '⚠️ Degraded';
-                
+
                 const sps = data.safepoints || {};
                 const spCount = Object.keys(sps).length;
                 document.getElementById('sp-active').textContent = `${spCount}/${spCount}`;
                 document.getElementById('sp-status').textContent = '✅ All Active';
-                
+
                 addLog('Dashboard refreshed', 'success');
             } catch (e) {
                 addLog(`Error: ${e.message}`, 'error');
@@ -641,7 +641,7 @@
             try {
                 const res = await fetch(`${API_BASE}/api/v1/agents`);
                 const data = await res.json();
-                
+
                 const tbody = document.getElementById('agents-table');
                 tbody.innerHTML = (data.agents || []).map(a => `
                     <tr>
@@ -652,7 +652,7 @@
                         <td>${a.requests || 0}</td>
                     </tr>
                 `).join('');
-                
+
                 addLog('Agents refreshed', 'success');
             } catch (e) {
                 addLog(`Error: ${e.message}`, 'error');
@@ -663,7 +663,7 @@
             try {
                 const res = await fetch(`${API_BASE}/api/v1/safepoints`);
                 const data = await res.json();
-                
+
                 const sps = data.safepoints || {};
                 Object.entries(sps).forEach(([key, sp]) => {
                     const status = sp.status || '⚠️ Unknown';
@@ -671,7 +671,7 @@
                     document.getElementById(`sp-${key.substring(0, 3)}`).textContent = status;
                     document.getElementById(`sp-${key.substring(0, 3)}-time`).textContent = time;
                 });
-                
+
                 addLog('Safepoints refreshed', 'success');
             } catch (e) {
                 addLog(`Error: ${e.message}`, 'error');
@@ -684,11 +684,11 @@
             result.className = 'status-panel';
             result.textContent = '🔄 Running E2E test...';
             addLog('E2E test started', 'info');
-            
+
             try {
                 const res = await fetch(`${API_BASE}/e2e`, { method: 'POST' });
                 const data = await res.json();
-                
+
                 if (data.success) {
                     result.className = 'status-panel success';
                     result.textContent = `✅ E2E PASSED (${data.duration_ms.toFixed(0)}ms)\n\n${JSON.stringify(data.results, null, 2)}`;
@@ -709,7 +709,7 @@
             try {
                 const res = await fetch(`${API_BASE}/metrics`);
                 const data = await res.json();
-                
+
                 const result = document.getElementById('e2e-result');
                 result.style.display = 'block';
                 result.className = 'status-panel success';

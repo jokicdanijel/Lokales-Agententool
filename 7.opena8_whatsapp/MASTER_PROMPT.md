@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena8 WhatsApp Business Cloud API
 
-**Agent-ID:** opena8  
-**Port:** 12353  
-**Status:** 🟡 Planned  
-**Kürzel:** `whatsappp`  
+**Agent-ID:** opena8
+**Port:** 12353
+**Status:** 🟡 Planned
+**Kürzel:** `whatsappp`
 **Domäne:** WhatsApp Business Cloud API, Webhook, Templates
 
 ---
@@ -141,5 +141,5 @@ Kopiere diesen Prompt in:
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

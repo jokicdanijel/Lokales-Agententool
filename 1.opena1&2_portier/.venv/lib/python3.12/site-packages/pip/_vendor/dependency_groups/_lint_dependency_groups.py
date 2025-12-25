@@ -17,8 +17,7 @@ def main(*, argv: list[str] | None = None) -> None:
 
     parser = argparse.ArgumentParser(
         description=(
-            "Lint Dependency Groups for validity. "
-            "This will eagerly load and check all of your Dependency Groups."
+            "Lint Dependency Groups for validity. " "This will eagerly load and check all of your Dependency Groups."
         )
     )
     parser.add_argument(

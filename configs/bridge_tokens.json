@@ -1,25 +1,9 @@
 {
-  "zSqZx06AFd_7RrRxqmhEQT_UNLHgJRX9LE-vmD7DdME": [
-    "admin"
-  ],
-  "ooOO8jr8XmfIlGraYDznXKqkuVPBZLW2_M_TfKVunrc": [
-    "admin"
-  ],
-  "xYc5rDD73yMVpNglJFKAmCQIhRmU2MBBSJqQdHfM6Vo": [
-    "writer",
-    "reader"
-  ],
-  "lSuZhorigOaZNCnHv--IeRTwGZuvSKDFTxtqfoZG9Xw": [
-    "admin"
-  ],
-  "Aiznd0Ia1kY4Q_cBSusC-H8CmU-VNjQDOAXv9oshbTo": [
-    "writer",
-    "reader"
-  ],
-  "iQH02LoZwRItUr0dJC1Zj_l-L-54wZRRPwdSKlAAFhI": [
-    "reader"
-  ],
-  "Qi-SwGCj-R_tAtlwNPTv_LMjqx8pcyNX45AnfjVkINo": [
-    "reader"
-  ]
+  "zSqZx06AFd_7RrRxqmhEQT_UNLHgJRX9LE-vmD7DdME": ["admin"],
+  "ooOO8jr8XmfIlGraYDznXKqkuVPBZLW2_M_TfKVunrc": ["admin"],
+  "xYc5rDD73yMVpNglJFKAmCQIhRmU2MBBSJqQdHfM6Vo": ["writer", "reader"],
+  "lSuZhorigOaZNCnHv--IeRTwGZuvSKDFTxtqfoZG9Xw": ["admin"],
+  "Aiznd0Ia1kY4Q_cBSusC-H8CmU-VNjQDOAXv9oshbTo": ["writer", "reader"],
+  "iQH02LoZwRItUr0dJC1Zj_l-L-54wZRRPwdSKlAAFhI": ["reader"],
+  "Qi-SwGCj-R_tAtlwNPTv_LMjqx8pcyNX45AnfjVkINo": ["reader"]
 }

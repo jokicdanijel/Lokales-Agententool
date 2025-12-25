@@ -9,6 +9,7 @@ Kernmodul für Spracherkennung mit Web Speech API.
 **Hauptklasse**: `VoiceRecognitionEngine`
 
 **Features**:
+
 - Real-time Spracherkennung
 - Automatische Stille-Erkennung
 - Sprachumschaltung
@@ -16,6 +17,7 @@ Kernmodul für Spracherkennung mit Web Speech API.
 - Transkript-Verwaltung
 
 **Wichtigste Methoden**:
+
 ```typescript
 start(): void                              // Recording starten
 stop(): void                               // Recording stoppen
@@ -28,6 +30,7 @@ clearTranscript(): void                    // Transkript löschen
 ```
 
 **Events**:
+
 - `onStart`: Recording begonnen
 - `onTranscript`: Transkript empfangen
 - `onError`: Fehler aufgetreten
@@ -42,12 +45,14 @@ Verwaltet alle Konfigurationseinstellungen der Extension.
 **Hauptklasse**: `VoiceInputSettings`
 
 **Kategorien**:
+
 - **Recognition**: Sprache, Stille, Dauer
 - **Copilot**: Auto-Send, Command Detection
 - **UI/UX**: Status Bar, Output, Sounds
 - **Advanced**: Continuous Mode, Interim Results, Confidence
 
 **Wichtigste Methoden**:
+
 ```typescript
 getLanguages(): string[]                   // Unterstützte Sprachen
 getDefaultLanguage(): string               // Standardsprache
@@ -68,6 +73,7 @@ Verwaltung der Kommunikation mit GitHub Copilot.
 **Hauptklasse**: `CopilotIntegrationHandler`
 
 **Features**:
+
 - Copilot Chat API Integration
 - Editor-Integration
 - Kopilot-Command-Erkennung
@@ -75,6 +81,7 @@ Verwaltung der Kommunikation mit GitHub Copilot.
 - Format-Anpassung
 
 **Wichtigste Methoden**:
+
 ```typescript
 sendToCopilotChat(transcript: string): Promise<boolean>
 insertIntoEditor(transcript: string): Promise<boolean>
@@ -92,10 +99,12 @@ logError(action: string, error: any): void
 Umfassendes Analytics- und Logging-System.
 
 **Hauptklassen**:
+
 - `AnalyticsManager`: Session-Tracking und Metriken
 - `EventLogger`: Strukturiertes Logging
 
 **Analytics Features**:
+
 ```typescript
 recordSession(session: VoiceSession): void
 getMetrics(): PerformanceMetrics
@@ -107,6 +116,7 @@ exportSessionsAsCsv(): string
 ```
 
 **Gemessene Metriken**:
+
 - Anzahl Sitzungen
 - Erfolgs-/Fehlerrate
 - Durchschnittliche Transkript-Länge
@@ -116,6 +126,7 @@ exportSessionsAsCsv(): string
 - An Copilot gesendete Transkripte
 
 **Event Logging**:
+
 - Informations-Level
 - Warnings
 - Errors
@@ -131,6 +142,7 @@ Verwaltet alle Befehle und Benutzerinteraktionen.
 **Hauptklasse**: `CommandHandler`
 
 **Verfügbare Commands**:
+
 - `showSettings()`: Einstellungen öffnen
 - `showAnalytics()`: Statistiken anzeigen
 - `exportAnalytics()`: Analytics exportieren
@@ -150,6 +162,7 @@ Haupt-Extension-Modul mit Integration aller Komponenten.
 **Hauptklasse**: `AdvancedVoiceInputManager`
 
 **Verantwortung**:
+
 - Initialisierung aller Module
 - Command-Registrierung
 - Event-Handling
@@ -158,6 +171,7 @@ Haupt-Extension-Modul mit Integration aller Komponenten.
 - Ressourcen-Verwaltung
 
 **Exported Functions**:
+
 ```typescript
 activate(context: vscode.ExtensionContext): void
 deactivate(): void
@@ -251,21 +265,21 @@ voiceInput (Configuration Scope)
 
 ## 🔌 Command-Registrierung
 
-| Command | Beschreibung | Keybinding |
-|---------|---|---|
-| `voiceInput.toggle` | An/Aus schalten | Ctrl+Shift+V |
-| `voiceInput.start` | Starten | - |
-| `voiceInput.stop` | Stoppen | - |
-| `voiceInput.showOutput` | Output anzeigen | - |
-| `voiceInput.showSettings` | Einstellungen | - |
-| `voiceInput.switchLanguage` | Sprache | Ctrl+Shift+L |
-| `voiceInput.toggleContinuousMode` | Kontinuierlich | - |
-| `voiceInput.showAnalytics` | Analytics | Ctrl+Shift+S |
-| `voiceInput.exportAnalytics` | Export | Ctrl+Shift+E |
-| `voiceInput.clearHistory` | Löschen | - |
-| `voiceInput.showHelp` | Hilfe | - |
-| `voiceInput.testMicrophone` | Test | - |
-| `voiceInput.resetSettings` | Reset | - |
+| Command                           | Beschreibung    | Keybinding   |
+| --------------------------------- | --------------- | ------------ |
+| `voiceInput.toggle`               | An/Aus schalten | Ctrl+Shift+V |
+| `voiceInput.start`                | Starten         | -            |
+| `voiceInput.stop`                 | Stoppen         | -            |
+| `voiceInput.showOutput`           | Output anzeigen | -            |
+| `voiceInput.showSettings`         | Einstellungen   | -            |
+| `voiceInput.switchLanguage`       | Sprache         | Ctrl+Shift+L |
+| `voiceInput.toggleContinuousMode` | Kontinuierlich  | -            |
+| `voiceInput.showAnalytics`        | Analytics       | Ctrl+Shift+S |
+| `voiceInput.exportAnalytics`      | Export          | Ctrl+Shift+E |
+| `voiceInput.clearHistory`         | Löschen         | -            |
+| `voiceInput.showHelp`             | Hilfe           | -            |
+| `voiceInput.testMicrophone`       | Test            | -            |
+| `voiceInput.resetSettings`        | Reset           | -            |
 
 ---
 
@@ -297,6 +311,7 @@ voice-input-extension/
 ## 📦 Dependencies
 
 ### Development
+
 - `@types/vscode`: VS Code API Types
 - `@types/node`: Node.js Types
 - `typescript`: TypeScript Compiler
@@ -305,6 +320,7 @@ voice-input-extension/
 - `eslint`: Code Linter
 
 ### Runtime
+
 - `web-speech-api`: Web Speech API Polyfill (optional)
 
 ---
@@ -345,16 +361,19 @@ npm run watch
 ## 📊 Performance Considerations
 
 ### Memory Management
+
 - Session-Puffer begrenzt auf 1000 Einträge
 - Event-Logs begrenzt auf 5000 Einträge
 - Automatische Cleanup bei Overflow
 
 ### CPU Usage
+
 - Lazy Loading von Modulen
 - Debouncing bei Einstellungsänderungen
 - Effiziente Event-Handler
 
 ### Network
+
 - Optional Cloud-Integrationen
 - Lokal-First Architecture
 - Kein Tracking ohne Konsent
@@ -364,15 +383,18 @@ npm run watch
 ## 🔐 Security & Privacy
 
 ✅ **Local Processing**
+
 - Alle Verarbeitung auf Benutzer-Rechner
 - Keine automatischen Cloud-Uploads
 
 ✅ **Data Protection**
+
 - Transkripte bleiben im Editor
 - Analytics lokal gespeichert
 - Benutzer kontrolliert Export
 
 ✅ **Permissions**
+
 - Explizite Mikrofonberechtigung
 - Settings Scope Management
 - Fehlerbehandlung mit Sicherheit
@@ -382,17 +404,20 @@ npm run watch
 ## 🔄 State Management
 
 ### Extension State
+
 - `isRecording`: Boolean
 - `currentTranscript`: Transcript Object
 - `sessionId`: String
 - `sessionStartTime`: Date
 
 ### User Settings (Persistent)
+
 - Alle Einstellungen in VS Code Settings
 - Workspace & Global Scope
 - Automatische Synchronisierung
 
 ### Runtime Analytics
+
 - Session History (In-Memory)
 - Event Logs (In-Memory)
 - Exportierbar zu JSON/CSV
@@ -402,21 +427,25 @@ npm run watch
 ## 🎨 UI Components
 
 ### Status Bar
+
 - Recording Status Indicator
 - Click to Toggle
 - Tooltip with Keybinding
 
 ### Output Channel
+
 - Real-time Event Logging
 - Colored Status Messages
 - Auto-Show on Activity
 
 ### Dialogs
+
 - Language Picker (QuickPick)
 - Analytics Display (InfoMessage)
 - Help Panel (WebView)
 
 ### Commands Palette
+
 - Alle Befehle integriert
 - Suchbar mit Kategorien
 - Icons und Beschreibungen
@@ -426,6 +455,7 @@ npm run watch
 ## 📈 Scalability
 
 **Kann erweitert werden mit**:
+
 - Additional Language Support
 - Custom Dictionaries
 - Voice Command Macros

@@ -1,23 +1,13 @@
 import logging
 import time
-from typing import Optional
 
-from open_webui.internal.db import Base, JSONField, get_db
 from open_webui.env import SRC_LOG_LEVELS
-
+from open_webui.internal.db import Base, JSONField, get_db
 from open_webui.models.groups import Groups
-from open_webui.models.users import User, UserModel, Users, UserResponse
-
-
-from pydantic import BaseModel, ConfigDict
-
-from sqlalchemy import String, cast, or_, and_, func
-from sqlalchemy.dialects import postgresql, sqlite
-from sqlalchemy import BigInteger, Column, Text, JSON, Boolean
-
-
+from open_webui.models.users import User, UserModel, UserResponse, Users
 from open_webui.utils.access_control import has_access
-
+from pydantic import BaseModel, ConfigDict
+from sqlalchemy import JSON, BigInteger, Boolean, Column, String, Text, cast, func, or_
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MODELS"])
@@ -31,23 +21,20 @@ log.setLevel(SRC_LOG_LEVELS["MODELS"])
 # ModelParams is a model for the data stored in the params field of the Model table
 class ModelParams(BaseModel):
     model_config = ConfigDict(extra="allow")
-    pass
 
 
 # ModelMeta is a model for the data stored in the meta field of the Model table
 class ModelMeta(BaseModel):
-    profile_image_url: Optional[str] = "/static/favicon.png"
+    profile_image_url: str | None = "/static/favicon.png"
 
-    description: Optional[str] = None
+    description: str | None = None
     """
         User-facing description of the model.
     """
 
-    capabilities: Optional[dict] = None
+    capabilities: dict | None = None
 
     model_config = ConfigDict(extra="allow")
-
-    pass
 
 
 class Model(Base):
@@ -105,13 +92,13 @@ class Model(Base):
 class ModelModel(BaseModel):
     id: str
     user_id: str
-    base_model_id: Optional[str] = None
+    base_model_id: str | None = None
 
     name: str
     params: ModelParams
     meta: ModelMeta
 
-    access_control: Optional[dict] = None
+    access_control: dict | None = None
 
     is_active: bool
     updated_at: int  # timestamp in epoch
@@ -126,7 +113,7 @@ class ModelModel(BaseModel):
 
 
 class ModelUserResponse(ModelModel):
-    user: Optional[UserResponse] = None
+    user: UserResponse | None = None
 
 
 class ModelResponse(ModelModel):
@@ -140,18 +127,16 @@ class ModelListResponse(BaseModel):
 
 class ModelForm(BaseModel):
     id: str
-    base_model_id: Optional[str] = None
+    base_model_id: str | None = None
     name: str
     meta: ModelMeta
     params: ModelParams
-    access_control: Optional[dict] = None
+    access_control: dict | None = None
     is_active: bool = True
 
 
 class ModelsTable:
-    def insert_new_model(
-        self, form_data: ModelForm, user_id: str
-    ) -> Optional[ModelModel]:
+    def insert_new_model(self, form_data: ModelForm, user_id: str) -> ModelModel | None:
         model = ModelModel(
             **{
                 **form_data.model_dump(),
@@ -204,25 +189,19 @@ class ModelsTable:
     def get_base_models(self) -> list[ModelModel]:
         with get_db() as db:
             return [
-                ModelModel.model_validate(model)
-                for model in db.query(Model).filter(Model.base_model_id == None).all()
+                ModelModel.model_validate(model) for model in db.query(Model).filter(Model.base_model_id == None).all()
             ]
 
-    def get_models_by_user_id(
-        self, user_id: str, permission: str = "write"
-    ) -> list[ModelUserResponse]:
+    def get_models_by_user_id(self, user_id: str, permission: str = "write") -> list[ModelUserResponse]:
         models = self.get_models()
         user_group_ids = {group.id for group in Groups.get_groups_by_member_id(user_id)}
         return [
             model
             for model in models
-            if model.user_id == user_id
-            or has_access(user_id, permission, model.access_control, user_group_ids)
+            if model.user_id == user_id or has_access(user_id, permission, model.access_control, user_group_ids)
         ]
 
-    def search_models(
-        self, user_id: str, filter: dict = {}, skip: int = 0, limit: int = 30
-    ) -> ModelListResponse:
+    def search_models(self, user_id: str, filter: dict = {}, skip: int = 0, limit: int = 30) -> ModelListResponse:
         with get_db() as db:
             # Join GroupMember so we can order by group_id when requested
             query = db.query(Model, User).outerjoin(User, User.id == Model.user_id)
@@ -293,17 +272,13 @@ class ModelsTable:
                 models.append(
                     ModelUserResponse(
                         **ModelModel.model_validate(model).model_dump(),
-                        user=(
-                            UserResponse(**UserModel.model_validate(user).model_dump())
-                            if user
-                            else None
-                        ),
+                        user=(UserResponse(**UserModel.model_validate(user).model_dump()) if user else None),
                     )
                 )
 
             return ModelListResponse(items=models, total=total)
 
-    def get_model_by_id(self, id: str) -> Optional[ModelModel]:
+    def get_model_by_id(self, id: str) -> ModelModel | None:
         try:
             with get_db() as db:
                 model = db.get(Model, id)
@@ -311,7 +286,7 @@ class ModelsTable:
         except Exception:
             return None
 
-    def toggle_model_by_id(self, id: str) -> Optional[ModelModel]:
+    def toggle_model_by_id(self, id: str) -> ModelModel | None:
         with get_db() as db:
             try:
                 is_active = db.query(Model).filter_by(id=id).first().is_active
@@ -328,7 +303,7 @@ class ModelsTable:
             except Exception:
                 return None
 
-    def update_model_by_id(self, id: str, model: ModelForm) -> Optional[ModelModel]:
+    def update_model_by_id(self, id: str, model: ModelForm) -> ModelModel | None:
         try:
             with get_db() as db:
                 # update only the fields that are present in the model
@@ -401,9 +376,7 @@ class ModelsTable:
 
                 db.commit()
 
-                return [
-                    ModelModel.model_validate(model) for model in db.query(Model).all()
-                ]
+                return [ModelModel.model_validate(model) for model in db.query(Model).all()]
         except Exception as e:
             log.exception(f"Error syncing models for user {user_id}: {e}")
             return []

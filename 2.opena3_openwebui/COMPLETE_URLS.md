@@ -333,7 +333,7 @@ http://localhost:8000/
 
 ### Program Execution
 
-- ✅ Only voice_*.py pattern allowed
+- ✅ Only voice\_\*.py pattern allowed
 - ✅ Process isolation with pipes
 - ✅ Background execution
 - 📍 Subprocess I/O management

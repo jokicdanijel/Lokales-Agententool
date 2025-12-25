@@ -3,12 +3,14 @@
 ## 1. Zweck
 
 ### Hauptfunktion
+
 - Lokaler Dateimanager fuer Gesamtprojekt
 - REST-API: Read/Write/Delete
 - Plugin-Kompatibel
 - Sicher gegen Pfad-Traversal
 
 ### Use-Cases
+
 - Datei-Upload via OpenWebUI
 - Datei-Download via OpenWebUI
 - Ordner-Erstellung
@@ -18,6 +20,7 @@
 ## 2. Endpunkte
 
 ### Core API
+
 ```
 GET  /health              # Health-Check
 GET  /files               # List Files
@@ -30,6 +33,7 @@ POST /folder              # Create Folder
 ### Request-Schemas
 
 #### GET /files
+
 ```json
 {
   "path": "/path/to/folder",
@@ -38,6 +42,7 @@ POST /folder              # Create Folder
 ```
 
 #### POST /file
+
 ```json
 {
   "path": "/path/to/file.txt",
@@ -46,6 +51,7 @@ POST /folder              # Create Folder
 ```
 
 #### DELETE /file
+
 ```json
 {
   "path": "/path/to/file.txt"
@@ -55,20 +61,24 @@ POST /folder              # Create Folder
 ## 3. Port-Policy
 
 ### Allowed Ports
+
 - 12344-12349 (Core Backend)
 - 12355 (Connector)
 
 ### Forbidden Ports
+
 - 8080 (UI-only fuer OpenWebUI)
 
 ### OpenWebUI
+
 - OpenWebUI selbst nutzt nur Loopback: 127.0.0.1:8080
 - Keine Backend-Services auf 8080
 - Docker-Container: open-webui/open-webui:main
 
 ## 4. Sicherheitsmerkmale
 
-### _resolve_safe()
+### \_resolve_safe()
+
 ```python
 def _resolve_safe(base_path, user_path):
     resolved = (base_path / user_path).resolve()
@@ -78,12 +88,14 @@ def _resolve_safe(base_path, user_path):
 ```
 
 ### Funktionen
+
 - Verhindert Pfad-Traversal
 - Validiert alle User-Pfade
 - Base-Path-Enforcement
 - Absolute-Path-Resolution
 
 ### Ausschluss venv
+
 ```python
 EXCLUDED_DIRS = ["venv", "venv313", ".git", "__pycache__"]
 
@@ -92,6 +104,7 @@ def is_excluded(path):
 ```
 
 ### CORS aktiv
+
 ```python
 app.add_middleware(
     CORSMiddleware,
@@ -105,12 +118,14 @@ app.add_middleware(
 ## 5. Integration
 
 ### Mit OpenWebUI
+
 - Plugin-Interface
 - REST-API-Calls
 - File-Upload/Download
 - Folder-Management
 
 ### Mit Portier
+
 - Option-2-Flow-Compliance
 - Safepoint-Logging
 - Archivator-Integration
@@ -118,6 +133,7 @@ app.add_middleware(
 ## 6. Error-Handling
 
 ### 400 Bad Request
+
 ```json
 {
   "error": "INVALID_PATH",
@@ -126,6 +142,7 @@ app.add_middleware(
 ```
 
 ### 403 Forbidden
+
 ```json
 {
   "error": "PATH_TRAVERSAL",
@@ -134,6 +151,7 @@ app.add_middleware(
 ```
 
 ### 404 Not Found
+
 ```json
 {
   "error": "FILE_NOT_FOUND",
@@ -142,6 +160,7 @@ app.add_middleware(
 ```
 
 ### 500 Internal Server Error
+
 ```json
 {
   "error": "FILE_OPERATION_FAILED",
@@ -153,11 +172,13 @@ app.add_middleware(
 ## 7. Deployment
 
 ### Standalone
+
 ```bash
 python connector.py --port 12355
 ```
 
 ### Via Docker
+
 ```yaml
 services:
   connector:
@@ -171,16 +192,19 @@ services:
 ## 8. Testing
 
 ### Health-Check
+
 ```bash
 curl -s http://127.0.0.1:12355/health | jq .
 ```
 
 ### List Files
+
 ```bash
 curl -s "http://127.0.0.1:12355/files?path=/" | jq .
 ```
 
 ### Upload File
+
 ```bash
 curl -X POST http://127.0.0.1:12355/file \
   -H "Content-Type: application/json" \
@@ -188,6 +212,7 @@ curl -X POST http://127.0.0.1:12355/file \
 ```
 
 ### Delete File
+
 ```bash
 curl -X DELETE http://127.0.0.1:12355/file \
   -H "Content-Type: application/json" \

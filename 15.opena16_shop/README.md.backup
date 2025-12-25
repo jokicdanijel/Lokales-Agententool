@@ -1,9 +1,9 @@
 # 🛒 opena16 - Shop Management Agent
 
-**Agent-ID:** `opena16`  
-**Port:** 12361  
-**Kürzel:** `shopp`  
-**Version:** 1.0  
+**Agent-ID:** `opena16`
+**Port:** 12361
+**Kürzel:** `shopp`
+**Version:** 1.0
 **Status:** ✅ RUNNING (PID: 1773450)
 
 ---
@@ -280,5 +280,5 @@ tail -f data/shop_history.jsonl | jq .
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 27. November 2025

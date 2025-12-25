@@ -17,15 +17,12 @@ Version: 1.0.0
 """
 
 import argparse
-import csv
 import json
 import os
 import re
 import subprocess
-import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Tuple
 
 # === CONFIGURATION ===
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
@@ -41,7 +38,7 @@ class GovernanceAnalyzer:
     """Scans workspace for governance violations"""
 
     def __init__(self):
-        self.violations: Dict[str, List[str]] = {
+        self.violations: dict[str, list[str]] = {
             "archiv": [],
             "venv_leaks": [],
             "tests_displaced": [],
@@ -49,7 +46,7 @@ class GovernanceAnalyzer:
             "doc_missing": [],
         }
 
-    def scan_archiv_contamination(self) -> List[str]:
+    def scan_archiv_contamination(self) -> list[str]:
         """Detect Safepoints outside ARCHIV/archivp/"""
         violations = []
         configs_dir = PROJECT_ROOT / "configs"
@@ -58,7 +55,7 @@ class GovernanceAnalyzer:
                 violations.append(str(file.relative_to(PROJECT_ROOT)))
         return violations
 
-    def scan_venv_leaks(self) -> List[str]:
+    def scan_venv_leaks(self) -> list[str]:
         """Detect venv packages in src/pkg/"""
         violations = []
         if SRC_PKG_DIR.exists():
@@ -74,7 +71,7 @@ class GovernanceAnalyzer:
                     violations.append(str(file_path.relative_to(PROJECT_ROOT)))
         return violations
 
-    def scan_tests_displaced(self) -> List[str]:
+    def scan_tests_displaced(self) -> list[str]:
         """Detect test files in _conflicts/"""
         violations = []
         if CONFLICTS_DIR.exists():
@@ -84,7 +81,7 @@ class GovernanceAnalyzer:
                 violations.append(str(file.relative_to(PROJECT_ROOT)))
         return violations
 
-    def scan_port_violations(self) -> List[str]:
+    def scan_port_violations(self) -> list[str]:
         """Detect hardcoded port 8080 in backend code (UI-only port, forbidden for backend)"""
         violations = []
         python_files = list(PROJECT_ROOT.glob("**/*.py"))
@@ -99,7 +96,7 @@ class GovernanceAnalyzer:
                 pass
         return violations
 
-    def scan_doc_missing(self) -> List[str]:
+    def scan_doc_missing(self) -> list[str]:
         """Check for missing critical documentation"""
         violations = []
         required_docs = [
@@ -113,7 +110,7 @@ class GovernanceAnalyzer:
                 violations.append(doc)
         return violations
 
-    def analyze(self) -> Dict[str, List[str]]:
+    def analyze(self) -> dict[str, list[str]]:
         """Run all scans"""
         print("🔍 Scanning workspace for governance violations...")
         self.violations["archiv"] = self.scan_archiv_contamination()
@@ -127,11 +124,11 @@ class GovernanceAnalyzer:
 class GovernanceFixer:
     """Generates & executes fix scripts"""
 
-    def __init__(self, violations: Dict[str, List[str]]):
+    def __init__(self, violations: dict[str, list[str]]):
         self.violations = violations
         self.fix_log = []
 
-    def generate_fix_plan(self) -> List[str]:
+    def generate_fix_plan(self) -> list[str]:
         """Generate shell commands to fix violations"""
         plan = []
 
@@ -277,7 +274,7 @@ class GovernanceValidator:
         self.results["tests_present"] = len(missing) == 0
         return self.results["tests_present"]
 
-    def validate_all(self) -> Dict[str, bool]:
+    def validate_all(self) -> dict[str, bool]:
         """Run all validations"""
         print("✅ Validating governance compliance...")
         self.validate_archiv()
@@ -286,7 +283,7 @@ class GovernanceValidator:
         return self.results
 
 
-def print_report(violations: Dict[str, List[str]]):
+def print_report(violations: dict[str, list[str]]):
     """Pretty-print violations report"""
     print("\n" + "=" * 70)
     print("📋 GOVERNANCE VIOLATIONS REPORT")
@@ -310,9 +307,7 @@ def print_report(violations: Dict[str, List[str]]):
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Automated Governance Compliance Checker & Fixer"
-    )
+    parser = argparse.ArgumentParser(description="Automated Governance Compliance Checker & Fixer")
     parser.add_argument(
         "mode",
         choices=["analyze", "plan", "apply", "validate"],

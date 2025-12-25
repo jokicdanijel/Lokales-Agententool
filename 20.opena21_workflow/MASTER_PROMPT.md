@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena21 Workflow Engine
 
-**Agent-ID:** opena21  
-**Port:** 12365  
-**Status:** 🟡 Planned  
-**Kürzel:** `workflowp`  
+**Agent-ID:** opena21
+**Port:** 12365
+**Status:** 🟡 Planned
+**Kürzel:** `workflowp`
 **Domäne:** Workflow Engine, State-Machine, Task-Queue, Multi-Agent-Orchestration
 
 ---
@@ -141,5 +141,5 @@ Kopiere diesen Prompt in:
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

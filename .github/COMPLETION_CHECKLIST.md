@@ -6,10 +6,11 @@
 
 ## 🚀 **HINWEIS: HYPER-MASTER-PROMPT**
 
-**Für vollständige Systemkenntnis siehe:**  
+**Für vollständige Systemkenntnis siehe:**
 📖 **[`.github/copilot-master-prompt.md`](./copilot-master-prompt.md)**
 
 Dieser Prompt enthält das **komplette, absolute, unhinterfragbare Wissen** über:
+
 - Architektur & Module
 - Agenten & Ports
 - Option-2-Flow
@@ -51,85 +52,90 @@ Dieser Prompt enthält das **komplette, absolute, unhinterfragbare Wissen** übe
 ## Phase 2: OpenWebUI Integration (20 Tasks) ✅
 
 ### Core Components (5 Tasks)
+
 - [x] **1. OpenWebUI Adapter** – `openwebui_adapter.py` (Port 12350)
   - Purpose: HTTP forwarding to OpenWebUI (8080)
   - Methods: `/openwebui/chat`, `/openwebui/health`
-  
+
 - [x] **2. opena3 Agent** – `main_openwebui_agent.py` (Port 12347)
   - Purpose: FastAPI wrapper around OpenWebUI
   - Endpoints: `/health`, `/command`, `/invoke`
-  
+
 - [x] **3. Adapter Start Script** – `bin/start_openwebui_adapter.sh`
   - Launches adapter in nohup
   - Logs to `logs/openwebui_adapter.nohup.log`
-  
+
 - [x] **4. opena3 Start Script** – `bin/start_opena3.sh`
   - Launches agent in nohup
   - Logs to `logs/opena3.nohup.log`
-  
+
 - [x] **5. OpenWebUI Test Script** – `scripts/test_openwebui.py`
   - Health checks, command endpoint, OpenWebUI availability
 
 ### Dashboard Integration (3 Tasks)
+
 - [x] **6. Dashboard Endpoints** – `main_dashboard.py` extended
   - `/api/openwebui/status` – GET agent health (Bearer token required)
   - `/api/openwebui/chat` – POST chat request (rate-limited, SSE event published)
-  
+
 - [x] **7. UI Enhancement** – `ui_index.html` ✅ **COMPLETED**
   - Modal dialog for OpenWebUI chat
   - Bearer token storage (localStorage)
   - JavaScript fetch integration
   - Status indicators (ok/error/loading)
-  
+
 - [x] **8. API Documentation** – `docs/OPENWEBUI_API.md`
   - Endpoint descriptions
   - cURL examples
   - Error handling (401, 502, 504)
 
 ### Configuration & Registry (3 Tasks)
+
 - [x] **9. OpenWebUI Config** – `config.py` extended
   - `OpenWebUIConfig` class
   - URL, ports, timeouts from env
-  
+
 - [x] **10. Registry Extensions** – `agent_registry.py` extended
   - `register_if_absent()` – idempotent registration
   - `list_agents()` – compact list
   - `persist()`, `load()` – JSON persistence
-  
+
 - [x] **11. Security CORS** – Inline in `main_dashboard.py`
   - Middleware validates inbound ports
   - Agent communication unrestricted
 
 ### Data & Utilities (5 Tasks)
+
 - [x] **12. Safepoint Latest** – `safepoints_latest.py`
   - `latest()` function retrieves newest checkpoint
-  
+
 - [x] **13. OpenWebUI Seeding** – `scripts/seed_openwebui.py`
   - Sends 3 example prompts to opena3
   - Stores responses in archivp via opena2
-  
+
 - [x] **14. opena3 Tests** – `tests/test_openwebui_agent.py`
   - Pytest suite (health, command, availability)
-  
+
 - [x] **15. OpenWebUI Status Checker** – `bin/openwebui_status.sh`
   - Checks ports 8080, 12347, 12350
-  
+
 - [x] **16. Troubleshooting Guide** – `docs/TROUBLESHOOTING.md`
   - 8+ scenarios (401, 404, unreachable, ports, tokens, logs, SSE, registration)
 
 ### Dependencies & Deployment (4 Tasks)
+
 - [x] **17. Requirements Update** – `requirements.txt` extended
   - Added: `requests`, `aiohttp`, `httpx`
   - Total: 30 packages
-  
+
 - [x] **18. Docker Containerization** – `Dockerfile.openwebui`
   - Base: `python:3.12-slim`
   - Exposes ports 12349 + 8080
-  
+
 - [x] **19. Data Migration** – `scripts/migrate_data.py`
   - Safepoint format conversion
   - Adds `"migrated": true` flag
-  
+
 - [x] **20. Backlog & Tracking** – `docs/OPENWEBUI_TODO.md`
   - 30+ items across features, testing, docs, infrastructure
 
@@ -167,12 +173,12 @@ Dieser Prompt enthält das **komplette, absolute, unhinterfragbare Wissen** übe
 
 ## Summary
 
-| Phase | Tasks | Status | Key Deliverables |
-|-------|-------|--------|------------------|
-| **1. Core Infrastructure** | 20 | ✅ Complete | Orchestration, docs, root wrappers |
-| **2. OpenWebUI Integration** | 20 | ✅ Complete | Adapter, agent, endpoints, tests, UI |
-| **3. AI Documentation** | 7 | ✅ Complete | Master-Prompt + 5 Config-Dateien |
-| **Total** | **47** | **✅ COMPLETE** | **70+ files, fully tested** |
+| Phase                        | Tasks  | Status          | Key Deliverables                     |
+| ---------------------------- | ------ | --------------- | ------------------------------------ |
+| **1. Core Infrastructure**   | 20     | ✅ Complete     | Orchestration, docs, root wrappers   |
+| **2. OpenWebUI Integration** | 20     | ✅ Complete     | Adapter, agent, endpoints, tests, UI |
+| **3. AI Documentation**      | 7      | ✅ Complete     | Master-Prompt + 5 Config-Dateien     |
+| **Total**                    | **47** | **✅ COMPLETE** | **70+ files, fully tested**          |
 
 ---
 
@@ -289,14 +295,14 @@ git status | grep "new file" || echo "Not a git repo; use find instead"
 
 ## Known Limitations & Future Work
 
-| Category | Item | Status |
-|----------|------|--------|
-| **Features** | Persistent chat history | 📋 Backlog |
-| **Features** | Multi-turn conversation | 📋 Backlog |
-| **Testing** | E2E UI tests (Selenium/Cypress) | 📋 Backlog |
-| **Docs** | Video tutorials | 📋 Backlog |
-| **Deployment** | Kubernetes manifests | 📋 Backlog |
-| **Security** | OAuth2 integration | 📋 Backlog |
+| Category       | Item                            | Status     |
+| -------------- | ------------------------------- | ---------- |
+| **Features**   | Persistent chat history         | 📋 Backlog |
+| **Features**   | Multi-turn conversation         | 📋 Backlog |
+| **Testing**    | E2E UI tests (Selenium/Cypress) | 📋 Backlog |
+| **Docs**       | Video tutorials                 | 📋 Backlog |
+| **Deployment** | Kubernetes manifests            | 📋 Backlog |
+| **Security**   | OAuth2 integration              | 📋 Backlog |
 
 See `docs/OPENWEBUI_TODO.md` for full backlog (30+ items).
 
@@ -323,22 +329,26 @@ See `docs/OPENWEBUI_TODO.md` for full backlog (30+ items).
 ## 🎯 AI Integration Paths
 
 ### GitHub Copilot (VS Code):
+
 ```bash
 # Automatisch aktiv via .copilot-config
 # Exclusions via .copilot-ignore
 ```
 
 ### GitHub Copilot Enterprise:
+
 ```bash
 # Deploy .copilot-system.yaml im Workspace
 ```
 
 ### ChatGPT Custom GPT:
+
 ```bash
 # Kopiere .github/copilot-master-prompt.md → Instructions
 ```
 
 ### OpenAI Assistants API:
+
 ```python
 import json
 with open('.assistant.json') as f:
@@ -347,6 +357,7 @@ client.beta.assistants.create(**config)
 ```
 
 ### Custom Agent Engine:
+
 ```python
 import yaml
 with open('.prompt-profile') as f:
@@ -355,6 +366,6 @@ with open('.prompt-profile') as f:
 
 ---
 
-**Last Updated:** 2025-11-21  
-**Maintainer:** Danijel (ELION Team)  
+**Last Updated:** 2025-11-21
+**Maintainer:** Danijel (ELION Team)
 **License:** Internal Use Only

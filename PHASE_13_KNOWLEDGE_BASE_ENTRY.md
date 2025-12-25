@@ -12,11 +12,13 @@
 ### 1. GITHUB PUSH BLOCKADE - LESSONS LEARNED
 
 **Problem:**
+
 - Git Push fehlgeschlagen mit `HTTP 500` Error
 - Fehlermeldung: `pack exceeds maximum allowed size (2.00 GiB)`
 - Root Cause: `.venv/` + andere Verzeichnisse (284MB lokal, 2GB+ in Pack)
 
 **Ursache:**
+
 ```
 venv-Verzeichnisse NICHT in .gitignore IGNORED
 → Waren aber COMMITTED in Git History
@@ -25,6 +27,7 @@ venv-Verzeichnisse NICHT in .gitignore IGNORED
 ```
 
 **Lösung (Für Zukunft):**
+
 ```bash
 # 1. .gitignore PRÜFEN - muss venv enthalten
 grep -E "venv|\.venv" .gitignore
@@ -41,11 +44,13 @@ git push origin main
 ```
 
 **Prevention:**
+
 - `.gitignore` muss ZUERST aktualisiert werden
 - VOR dem ersten Commit mit venv
 - Standard `.gitignore` für Python Projekte verwenden
 
 **Tools:**
+
 ```bash
 # Findet alle tracked Verzeichnisse >100MB
 git rev-list --all --objects | sort -k2 | tail -50
@@ -62,6 +67,7 @@ git gc --aggressive
 ### 2. PORTIER PORT POLICY - ARCHITECTURE PATTERN
 
 **Accepted Pattern:**
+
 ```
 opena1  → Port 12344  (Koordinator)
 opena2  → Port 12345  (Archivator)
@@ -74,6 +80,7 @@ FORBIDDEN: Port 8080 (OpenWebUI - conflict prevention)
 ```
 
 **PortPolicyMiddleware Pattern:**
+
 ```python
 # PRODUCTION START: Lockerer Policy
 class PortPolicyMiddleware:
@@ -93,6 +100,7 @@ class PortPolicyMiddleware:
 ```
 
 **Key Learning:**
+
 - START LOOSE → TIGHTEN LATER
 - Don't block production launch for policy enforcement
 - Gradual policy hardening = safer deployment
@@ -102,6 +110,7 @@ class PortPolicyMiddleware:
 ### 3. OPTION-2-FLOW REQUEST ROUTING (CRITICAL)
 
 **Sequence (MUST maintain order):**
+
 ```
 1. OpenAI Request arrives
    ↓
@@ -136,6 +145,7 @@ class PortPolicyMiddleware:
 ```
 
 **Safepoint Naming Convention:**
+
 ```
 Format: data/safepoints/YYYY/MM/DD/→_<timestamp>_<agent>_<type>.json
 
@@ -188,6 +198,7 @@ Example:
 ```
 
 **Startup Health Check:**
+
 ```bash
 # Check all ports are listening
 for port in 12344 12345 12346 12347 12349; do
@@ -206,6 +217,7 @@ curl -X POST http://127.0.0.1:12344/request \
 ### 5. ENVIRONMENT SETUP PATTERN
 
 **Template → .env Workflow:**
+
 ```bash
 # .env.template (COMMITTED)
 BEARER_TOKEN=<CHANGE_ME>
@@ -219,6 +231,7 @@ DEBUG=False
 ```
 
 **Auto-Setup Script:**
+
 ```bash
 for template in $(find . -name ".env.template"); do
   target="${template%.template}"
@@ -236,17 +249,20 @@ done
 ### 6. PYTHON IMPORT ISSUES & FIXES
 
 **Common Error:**
+
 ```
 ImportError: cannot import name 'ClassName' from 'module'
 ```
 
 **Causes:**
+
 1. Class not defined in module
 2. Typo in class name
 3. Wrong import path
 4. Module not in PYTHONPATH
 
 **Quick Fix Pattern:**
+
 ```python
 # If import fails, add minimal implementation
 # PRODUCTION MODE: Start with loose implementation
@@ -261,6 +277,7 @@ except ImportError:
 ```
 
 **Better Pattern (PHASE 13 Approach):**
+
 ```python
 # Create missing classes directly
 # Start production ASAP
@@ -272,6 +289,7 @@ except ImportError:
 ### 7. KNOWLEDGE DATABASE INGESTION PATTERN
 
 **For LocalAgent-Pro Knowledge Feeder:**
+
 ```bash
 # Create knowledge index entry
 cat > kb_entry_phase13.jsonl << 'EOF'
@@ -288,17 +306,17 @@ python3 2.opena3_openwebui/knowledge_feeder.py < kb_entry_phase13.jsonl
 
 ### 8. DEPLOYMENT TIMELINE FOR FUTURE REFERENCE
 
-| Phase | Time | Action | Status |
-|-------|------|--------|--------|
-| Documentation | T+0h | Create README, SECURITY, NOTICE | ✅ |
-| System Audit | T+1h | Scan all 22 agents | ✅ |
-| Middleware Fix | T+1.5h | Add PortPolicyMiddleware | ⏳ |
-| Service Startup | T+2h | Start opena1-opena20 sequence | ⏳ |
-| Health Check | T+2.5h | Verify all services responding | ⏳ |
-| Policy Hardening | T+3h | Implement strict port policy | 📅 |
-| Integration Tests | T+4h | Test Option-2-Flow | 📅 |
-| Safepoint Verification | T+5h | Verify append-only archiving | 📅 |
-| Go-Live | T+6h | Production ready | 📅 |
+| Phase                  | Time   | Action                          | Status |
+| ---------------------- | ------ | ------------------------------- | ------ |
+| Documentation          | T+0h   | Create README, SECURITY, NOTICE | ✅     |
+| System Audit           | T+1h   | Scan all 22 agents              | ✅     |
+| Middleware Fix         | T+1.5h | Add PortPolicyMiddleware        | ⏳     |
+| Service Startup        | T+2h   | Start opena1-opena20 sequence   | ⏳     |
+| Health Check           | T+2.5h | Verify all services responding  | ⏳     |
+| Policy Hardening       | T+3h   | Implement strict port policy    | 📅     |
+| Integration Tests      | T+4h   | Test Option-2-Flow              | 📅     |
+| Safepoint Verification | T+5h   | Verify append-only archiving    | 📅     |
+| Go-Live                | T+6h   | Production ready                | 📅     |
 
 ---
 
@@ -336,6 +354,7 @@ python3 2.opena3_openwebui/knowledge_feeder.py < kb_entry_phase13.jsonl
 ### 10. PHASE 13 SUCCESS CRITERIA (KNOWLEDGE CHECKPOINT)
 
 **Mark complete when all true:**
+
 - ✅ All 5 core services starting without import errors
 - ✅ Ports 12344-12349 listening and responding
 - ✅ Bearer token authentication working
@@ -362,6 +381,6 @@ python3 2.opena3_openwebui/knowledge_feeder.py < kb_entry_phase13.jsonl
 
 **Knowledge Database Entry Status:** 🟢 **READY FOR INGESTION**
 
-*This document should be ingested into LocalAgent-Pro Knowledge DB*
-*Reference: PHASE_13_KNOWLEDGE_BASE_ENTRY.md*
-*Generated: 24. November 2025*
+_This document should be ingested into LocalAgent-Pro Knowledge DB_
+_Reference: PHASE_13_KNOWLEDGE_BASE_ENTRY.md_
+_Generated: 24. November 2025_

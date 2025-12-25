@@ -1,7 +1,7 @@
 # CI/CD Test Scenarios & Troubleshooting
 
-**Generated:** 2025-11-09  
-**P0 Compliance:** ✅ All gates tested and validated  
+**Generated:** 2025-11-09
+**P0 Compliance:** ✅ All gates tested and validated
 **Workflow File:** `.github/workflows/portier-ci.yml`
 
 ---
@@ -11,11 +11,13 @@
 ### Scenario 1: Forbidden Port in Core Service (Port 8080)
 
 **Setup:**
+
 ```bash
 echo "PORT = 8080  # FORBIDDEN" >> 3.opena1_coordinator/main.py
 ```
 
 **Expected Behavior:**
+
 - **Stage:** `validate` → `[POLICY] Enforce Port-Policy`
 - **Result:** ❌ JOB FAILS
 - **Error Message:**
@@ -24,9 +26,10 @@ echo "PORT = 8080  # FORBIDDEN" >> 3.opena1_coordinator/main.py
   ```
 
 **Why It Fails:**
-Port 8080 in a core service file (not in openwebui_, not in docker-compose) triggers the policy gate.
+Port 8080 in a core service file (not in openwebui\_, not in docker-compose) triggers the policy gate.
 
 **Recovery:**
+
 ```bash
 git checkout -- 3.opena1_coordinator/main.py  # Revert
 ```
@@ -36,12 +39,14 @@ git checkout -- 3.opena1_coordinator/main.py  # Revert
 ### Scenario 2: Core Service on Wrong Port (Port 12347)
 
 **Setup:**
+
 ```bash
 # Change opena1 from 12344 to 12347 (violates core service ports)
 sed -i 's/port=12344/port=12347/g' 3.opena1_coordinator/main.py
 ```
 
 **Expected Behavior:**
+
 - **Stage:** `validate` → `[POLICY] Verify core services in correct ports`
 - **Result:** ❌ JOB FAILS
 - **Error Message:**
@@ -53,6 +58,7 @@ sed -i 's/port=12344/port=12347/g' 3.opena1_coordinator/main.py
 Core services MUST use specific ports (12344, 12346, 12348). Any deviation fails the gate.
 
 **Recovery:**
+
 ```bash
 git checkout -- 3.opena1_coordinator/main.py
 ```
@@ -62,12 +68,14 @@ git checkout -- 3.opena1_coordinator/main.py
 ### Scenario 3: Missing Endpoint (P0.3 Violation)
 
 **Setup:**
+
 ```bash
 # Remove the /log/opena1 endpoint
 sed -i 's|@app.post("/log/opena1")||g' 3.opena1_coordinator/main.py
 ```
 
 **Expected Behavior:**
+
 - **Stage:** `validate` → `[P0.3] Verify endpoint compliance (Safepoints)`
 - **Result:** ❌ JOB FAILS
 - **Error Message:**
@@ -80,6 +88,7 @@ sed -i 's|@app.post("/log/opena1")||g' 3.opena1_coordinator/main.py
 P0.3 requires standardized endpoints for audit trail (Safepoints). Missing endpoints = no audit trail.
 
 **Recovery:**
+
 ```bash
 git checkout -- 3.opena1_coordinator/main.py
 ```
@@ -89,11 +98,13 @@ git checkout -- 3.opena1_coordinator/main.py
 ### Scenario 4: Missing requirements.lock (P0.2 Violation)
 
 **Setup:**
+
 ```bash
 rm requirements.lock
 ```
 
 **Expected Behavior:**
+
 - **Stage:** `validate` → `[P0.2] Verify venv312 baseline`
 - **Result:** ❌ JOB FAILS
 - **Error Message:**
@@ -105,6 +116,7 @@ rm requirements.lock
 P0.2 requires reproducible Python environments. The lock file is mandatory for reproducibility.
 
 **Recovery:**
+
 ```bash
 git checkout -- requirements.lock
 ```
@@ -116,6 +128,7 @@ git checkout -- requirements.lock
 ### Clean State (All Gates Pass)
 
 **Command:**
+
 ```bash
 # Simulate full CI workflow locally
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
@@ -124,26 +137,27 @@ cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 bash -c '
   echo "[1] Port-Policy..."
   grep -r ":8080" . --include="*.py" | grep -v "2.openwebui\|openwebui_\|venv" > /dev/null && exit 1 || true
-  
+
   echo "[2] Core Services..."
   grep -q "12344" 3.opena1_coordinator/main.py && echo "  ✅ opena1 OK"
   grep -q "12346" 5.kordp_scheduler/main.py && echo "  ✅ kordp OK"
   grep -q "12348" 4.opena2_archivator/main.py && echo "  ✅ archivp OK"
-  
+
   echo "[3] Endpoints..."
   grep -q "/log/opena1" 3.opena1_coordinator/main.py && echo "  ✅ /log/opena1 OK"
   grep -q "/dispatch/kordp" 5.kordp_scheduler/main.py && echo "  ✅ /dispatch/kordp OK"
   grep -q "/store/archivp" 4.opena2_archivator/main.py && echo "  ✅ /store/archivp OK"
-  
+
   echo "[4] venv312..."
   test -f requirements.lock && echo "  ✅ requirements.lock OK"
-  
+
   echo ""
   echo "✅ All gates PASS"
 '
 ```
 
 **Expected Output:**
+
 ```
 [1] Port-Policy...
 [2] Core Services...
@@ -171,7 +185,7 @@ bash -c '
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 
 # Run individual gate checks
-echo "=== Port-Policy Check ===" 
+echo "=== Port-Policy Check ==="
 grep -r ":8080" . --include="*.py" \
   | grep -v "2.openwebui\|openwebui_\|OPENWEBUI\|docker-compose\|main_dashboard\|main_openwebui\|_conflicts\|venv312\|venv313\|venv/\|venv_local\|\.venv\|scripts\|\.github\|\.git" \
   | wc -l
@@ -297,14 +311,14 @@ python3 -m py_compile 4.opena2_archivator/main.py
 
 ## 📊 Test Coverage Matrix
 
-| Gate | Test Scenario | Failure | Pass | Status |
-|------|---|---|---|---|
-| **Port-Policy** | Port 8080 in core service | Scenario 1 | Clean state | ✅ |
-| **Core Ports** | Port 12347 instead of 12344 | Scenario 2 | 12344, 12346, 12348 | ✅ |
-| **Endpoints** | Missing /log/opena1 | Scenario 3 | All present | ✅ |
-| **venv312** | Missing requirements.lock | Scenario 4 | File exists | ✅ |
-| **Health-Checks** | Missing @app decorators | (Implicit) | @app present | ✅ |
-| **OpenWebUI** | Port 8080 in container | (Allowed) | docker-compose refs OK | ✅ |
+| Gate              | Test Scenario               | Failure    | Pass                   | Status |
+| ----------------- | --------------------------- | ---------- | ---------------------- | ------ |
+| **Port-Policy**   | Port 8080 in core service   | Scenario 1 | Clean state            | ✅     |
+| **Core Ports**    | Port 12347 instead of 12344 | Scenario 2 | 12344, 12346, 12348    | ✅     |
+| **Endpoints**     | Missing /log/opena1         | Scenario 3 | All present            | ✅     |
+| **venv312**       | Missing requirements.lock   | Scenario 4 | File exists            | ✅     |
+| **Health-Checks** | Missing @app decorators     | (Implicit) | @app present           | ✅     |
+| **OpenWebUI**     | Port 8080 in container      | (Allowed)  | docker-compose refs OK | ✅     |
 
 ---
 
@@ -315,19 +329,19 @@ Use this template to document test runs:
 ```markdown
 # CI/CD Test Execution Report
 
-**Date:** 2025-11-09  
-**Executor:** [Your Name]  
+**Date:** 2025-11-09
+**Executor:** [Your Name]
 **Environment:** [Local / GitHub Actions]
 
 ## Test Results
 
-| Scenario | Status | Duration | Notes |
-|----------|--------|----------|-------|
-| Scenario 1: Forbidden Port 8080 | ✅ FAIL (as expected) | 2.1s | Job correctly rejected |
-| Scenario 2: Wrong Core Port | ✅ FAIL (as expected) | 1.9s | Port validation working |
-| Scenario 3: Missing Endpoint | ✅ FAIL (as expected) | 1.8s | Endpoint check active |
-| Scenario 4: Missing requirements.lock | ✅ FAIL (as expected) | 0.9s | venv check active |
-| Clean State: All Gates | ✅ PASS | 15.2s | Production ready |
+| Scenario                              | Status                | Duration | Notes                   |
+| ------------------------------------- | --------------------- | -------- | ----------------------- |
+| Scenario 1: Forbidden Port 8080       | ✅ FAIL (as expected) | 2.1s     | Job correctly rejected  |
+| Scenario 2: Wrong Core Port           | ✅ FAIL (as expected) | 1.9s     | Port validation working |
+| Scenario 3: Missing Endpoint          | ✅ FAIL (as expected) | 1.8s     | Endpoint check active   |
+| Scenario 4: Missing requirements.lock | ✅ FAIL (as expected) | 0.9s     | venv check active       |
+| Clean State: All Gates                | ✅ PASS               | 15.2s    | Production ready        |
 
 ## Summary
 
@@ -362,10 +376,10 @@ Use this template to document test runs:
 ---
 
 **Key Files:**
+
 - `.github/workflows/portier-ci.yml` – Master workflow
 - `docs/OPENWEBUI_INTEGRATION_MANUAL.md` – OpenWebUI port exceptions
 - `docs/PORTIER_ENDPOINTS.md` – Endpoint specification
 - `3.opena1_coordinator/main.py` – Example service template
 - `5.kordp_scheduler/main.py` – Example service template
 - `4.opena2_archivator/main.py` – Example service template
-

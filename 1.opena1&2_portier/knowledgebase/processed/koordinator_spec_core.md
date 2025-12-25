@@ -1,6 +1,7 @@
 # Koordinator (opena1) - Processed Core Version
 
 ## 1. Rolle
+
 - Eingang aller User-Nachrichten (Schema 7.1)
 - strikte Validierung
 - deterministische Toolwahl
@@ -9,6 +10,7 @@
 - Weiterleitung ueber opena2
 
 ## 2. Port-Policy
+
 - Port: 12344
 - Zulaessig: 12344-12399
 - Verboten: 8080
@@ -16,6 +18,7 @@
 - Enforcement via Middleware
 
 ## 3. Eingabeschema (7.1)
+
 - request_id (UUID v4)
 - timestamp (ISO-8601 Zulu)
 - command (string)
@@ -26,6 +29,7 @@
 - additionalProperties: false
 
 ## 4. Ausgabeschema (7.2)
+
 - request_id (UUID v4)
 - timestamp (ISO-8601 Zulu)
 - source: "opena1"
@@ -40,6 +44,7 @@
 - additionalProperties: false
 
 ## 5. Tool-Registry
+
 - tool_text_analyzer
 - tool_file_searcher
 - tool_scheduler
@@ -48,12 +53,14 @@
 - Zentrale Registry: config/registry.json
 
 ## 6. DB-Modelle
+
 - projects (id, name, status)
 - files (id, path, project_id)
 - tools (id, name, port, status)
 - events (id, request_id, timestamp, type)
 
 ## 7. Verantwortungen
+
 - Request-Validierung
 - Tool-Selektion
 - Envelope-Bau
@@ -62,6 +69,7 @@
 - Archivator-Integration
 
 ## 8. Ablauf
+
 1. POST Request empfangen
 2. Schema 7.1 validieren
 3. Tool auswaehlen

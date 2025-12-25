@@ -8,18 +8,16 @@ Port: 12347 (Policy-bound, assigned)
 Integration: Portier (kordp) via /dispatch/kordp
 """
 
-import asyncio
 import hashlib
-import json
 import os
 import socket
 import time
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Any
 
-from fastapi import FastAPI, HTTPException, Request
-from pydantic import BaseModel, Field, ConfigDict
 import httpx
+from fastapi import FastAPI
+from pydantic import BaseModel, ConfigDict, Field
 
 # ────────────────────────────────────────────────────────────────────────
 # Configuration
@@ -47,15 +45,21 @@ TELEGRAM_PRESENT = bool(TELEGRAM_BOT_TOKEN)
 TELEGRAM_FP = _key_fingerprint(TELEGRAM_BOT_TOKEN)
 
 REDACT_KEYS = {
-    "authorization", "telegram_bot_token", "bot_token", "token", "api_key",
-    "TELEGRAM_BOT_TOKEN", "bearer", "key"
+    "authorization",
+    "telegram_bot_token",
+    "bot_token",
+    "token",
+    "api_key",
+    "TELEGRAM_BOT_TOKEN",
+    "bearer",
+    "key",
 }
 
 
 def _redact_secrets(obj: Any) -> Any:
     """Remove/obfuscate sensitive fields recursively."""
     if isinstance(obj, dict):
-        sanitized: Dict[str, Any] = {}
+        sanitized: dict[str, Any] = {}
         for k, v in obj.items():
             kl = str(k).lower()
             if kl in REDACT_KEYS or "token" in kl or "secret" in kl or "key" in kl:
@@ -85,21 +89,24 @@ def _hostname() -> str:
 # Pydantic Models
 # ────────────────────────────────────────────────────────────────────────
 
+
 class MessageIn(BaseModel):
     """Incoming Telegram message."""
+
     model_config = ConfigDict(extra="forbid")
     chat_id: int = Field(...)
     text: str = Field(..., min_length=1)
-    user_id: Optional[int] = None
-    username: Optional[str] = None
+    user_id: int | None = None
+    username: str | None = None
     strict: bool = True
 
 
 class NotifyIn(BaseModel):
     """Notification payload."""
+
     model_config = ConfigDict(extra="forbid")
     message: str = Field(..., min_length=1)
-    chat_id: Optional[int] = None
+    chat_id: int | None = None
     strict: bool = True
 
 
@@ -108,9 +115,7 @@ class NotifyIn(BaseModel):
 # ────────────────────────────────────────────────────────────────────────
 
 app = FastAPI(
-    title=f"Telegram Bot — {PROGRAM_TARGET.upper()}",
-    description="Telegram Bot Integration Service",
-    version="1.0.0"
+    title=f"Telegram Bot — {PROGRAM_TARGET.upper()}", description="Telegram Bot Integration Service", version="1.0.0"
 )
 
 # Statistics
@@ -136,7 +141,8 @@ APP_META = {
 # Helper: Store Safepoint (delegate to Archivator)
 # ────────────────────────────────────────────────────────────────────────
 
-async def _store_safepoint(kind: str, body: Dict[str, Any]) -> None:
+
+async def _store_safepoint(kind: str, body: dict[str, Any]) -> None:
     """Delegate safepoint storage to OpenA2."""
     url = f"http://127.0.0.1:{ARCHIVP_PORT}/store/archivp"
     payload = {
@@ -145,7 +151,7 @@ async def _store_safepoint(kind: str, body: Dict[str, Any]) -> None:
         "kind": kind,
         "body": _redact_secrets(body),
         "strict": True,
-        "ts": _now()
+        "ts": _now(),
     }
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
@@ -160,8 +166,9 @@ async def _store_safepoint(kind: str, body: Dict[str, Any]) -> None:
 # Endpoints
 # ────────────────────────────────────────────────────────────────────────
 
+
 @app.get("/health")
-async def health() -> Dict[str, Any]:
+async def health() -> dict[str, Any]:
     """Health check endpoint."""
     return {
         **APP_META,
@@ -173,18 +180,21 @@ async def health() -> Dict[str, Any]:
 
 
 @app.post("/message/receive")
-async def receive_message(msg: MessageIn) -> Dict[str, Any]:
+async def receive_message(msg: MessageIn) -> dict[str, Any]:
     """Receive message from Telegram."""
     STATS["messages_received"] += 1
-    
+
     # Log to archive
-    await _store_safepoint("MESSAGE_IN", {
-        "chat_id": msg.chat_id,
-        "user_id": msg.user_id,
-        "username": msg.username,
-        "text": msg.text,
-    })
-    
+    await _store_safepoint(
+        "MESSAGE_IN",
+        {
+            "chat_id": msg.chat_id,
+            "user_id": msg.user_id,
+            "username": msg.username,
+            "text": msg.text,
+        },
+    )
+
     return {
         "ok": True,
         "message_id": int(time.time() * 1000),
@@ -193,17 +203,20 @@ async def receive_message(msg: MessageIn) -> Dict[str, Any]:
 
 
 @app.post("/notify")
-async def notify(payload: NotifyIn) -> Dict[str, Any]:
+async def notify(payload: NotifyIn) -> dict[str, Any]:
     """Send notification to Telegram chat."""
     STATS["messages_sent"] += 1
     chat_id = payload.chat_id or int(TELEGRAM_CHAT_ID)
-    
+
     # Log to archive
-    await _store_safepoint("MESSAGE_OUT", {
-        "chat_id": chat_id,
-        "message": payload.message,
-    })
-    
+    await _store_safepoint(
+        "MESSAGE_OUT",
+        {
+            "chat_id": chat_id,
+            "message": payload.message,
+        },
+    )
+
     return {
         "ok": True,
         "sent": True,
@@ -213,7 +226,7 @@ async def notify(payload: NotifyIn) -> Dict[str, Any]:
 
 
 @app.post("/echo")
-async def echo(payload: Dict[str, Any]) -> Dict[str, Any]:
+async def echo(payload: dict[str, Any]) -> dict[str, Any]:
     """Echo endpoint for testing."""
     await _store_safepoint("ECHO", payload)
     return {
@@ -229,11 +242,5 @@ async def echo(payload: Dict[str, Any]) -> Dict[str, Any]:
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(
-        "main:app",
-        host="127.0.0.1",
-        port=PORT,
-        reload=False,
-        access_log=False,
-        log_level="info"
-    )
+
+    uvicorn.run("main:app", host="127.0.0.1", port=PORT, reload=False, access_log=False, log_level="info")

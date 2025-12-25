@@ -1,17 +1,13 @@
 import logging
 import time
-from typing import Optional
-
-from open_webui.internal.db import Base, JSONField, get_db
-from open_webui.models.users import Users, UserResponse
-from open_webui.models.groups import Groups
 
 from open_webui.env import SRC_LOG_LEVELS
-from pydantic import BaseModel, ConfigDict
-from sqlalchemy import BigInteger, Column, String, Text, JSON
-
+from open_webui.internal.db import Base, JSONField, get_db
+from open_webui.models.groups import Groups
+from open_webui.models.users import UserResponse, Users
 from open_webui.utils.access_control import has_access
-
+from pydantic import BaseModel, ConfigDict
+from sqlalchemy import JSON, BigInteger, Column, String, Text
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MODELS"])
@@ -54,8 +50,8 @@ class Tool(Base):
 
 
 class ToolMeta(BaseModel):
-    description: Optional[str] = None
-    manifest: Optional[dict] = {}
+    description: str | None = None
+    manifest: dict | None = {}
 
 
 class ToolModel(BaseModel):
@@ -65,7 +61,7 @@ class ToolModel(BaseModel):
     content: str
     specs: list[dict]
     meta: ToolMeta
-    access_control: Optional[dict] = None
+    access_control: dict | None = None
 
     updated_at: int  # timestamp in epoch
     created_at: int  # timestamp in epoch
@@ -79,7 +75,7 @@ class ToolModel(BaseModel):
 
 
 class ToolUserModel(ToolModel):
-    user: Optional[UserResponse] = None
+    user: UserResponse | None = None
 
 
 class ToolResponse(BaseModel):
@@ -87,13 +83,13 @@ class ToolResponse(BaseModel):
     user_id: str
     name: str
     meta: ToolMeta
-    access_control: Optional[dict] = None
+    access_control: dict | None = None
     updated_at: int  # timestamp in epoch
     created_at: int  # timestamp in epoch
 
 
 class ToolUserResponse(ToolResponse):
-    user: Optional[UserResponse] = None
+    user: UserResponse | None = None
 
     model_config = ConfigDict(extra="allow")
 
@@ -103,17 +99,15 @@ class ToolForm(BaseModel):
     name: str
     content: str
     meta: ToolMeta
-    access_control: Optional[dict] = None
+    access_control: dict | None = None
 
 
 class ToolValves(BaseModel):
-    valves: Optional[dict] = None
+    valves: dict | None = None
 
 
 class ToolsTable:
-    def insert_new_tool(
-        self, user_id: str, form_data: ToolForm, specs: list[dict]
-    ) -> Optional[ToolModel]:
+    def insert_new_tool(self, user_id: str, form_data: ToolForm, specs: list[dict]) -> ToolModel | None:
         with get_db() as db:
             tool = ToolModel(
                 **{
@@ -138,7 +132,7 @@ class ToolsTable:
                 log.exception(f"Error creating a new tool: {e}")
                 return None
 
-    def get_tool_by_id(self, id: str) -> Optional[ToolModel]:
+    def get_tool_by_id(self, id: str) -> ToolModel | None:
         try:
             with get_db() as db:
                 tool = db.get(Tool, id)
@@ -168,42 +162,35 @@ class ToolsTable:
                 )
             return tools
 
-    def get_tools_by_user_id(
-        self, user_id: str, permission: str = "write"
-    ) -> list[ToolUserModel]:
+    def get_tools_by_user_id(self, user_id: str, permission: str = "write") -> list[ToolUserModel]:
         tools = self.get_tools()
         user_group_ids = {group.id for group in Groups.get_groups_by_member_id(user_id)}
 
         return [
             tool
             for tool in tools
-            if tool.user_id == user_id
-            or has_access(user_id, permission, tool.access_control, user_group_ids)
+            if tool.user_id == user_id or has_access(user_id, permission, tool.access_control, user_group_ids)
         ]
 
-    def get_tool_valves_by_id(self, id: str) -> Optional[dict]:
+    def get_tool_valves_by_id(self, id: str) -> dict | None:
         try:
             with get_db() as db:
                 tool = db.get(Tool, id)
                 return tool.valves if tool.valves else {}
-        except Exception as e:
+        except Exception:
             log.exception(f"Error getting tool valves by id {id}")
             return None
 
-    def update_tool_valves_by_id(self, id: str, valves: dict) -> Optional[ToolValves]:
+    def update_tool_valves_by_id(self, id: str, valves: dict) -> ToolValves | None:
         try:
             with get_db() as db:
-                db.query(Tool).filter_by(id=id).update(
-                    {"valves": valves, "updated_at": int(time.time())}
-                )
+                db.query(Tool).filter_by(id=id).update({"valves": valves, "updated_at": int(time.time())})
                 db.commit()
                 return self.get_tool_by_id(id)
         except Exception:
             return None
 
-    def get_user_valves_by_id_and_user_id(
-        self, id: str, user_id: str
-    ) -> Optional[dict]:
+    def get_user_valves_by_id_and_user_id(self, id: str, user_id: str) -> dict | None:
         try:
             user = Users.get_user_by_id(user_id)
             user_settings = user.settings.model_dump() if user.settings else {}
@@ -216,14 +203,10 @@ class ToolsTable:
 
             return user_settings["tools"]["valves"].get(id, {})
         except Exception as e:
-            log.exception(
-                f"Error getting user values by id {id} and user_id {user_id}: {e}"
-            )
+            log.exception(f"Error getting user values by id {id} and user_id {user_id}: {e}")
             return None
 
-    def update_user_valves_by_id_and_user_id(
-        self, id: str, user_id: str, valves: dict
-    ) -> Optional[dict]:
+    def update_user_valves_by_id_and_user_id(self, id: str, user_id: str, valves: dict) -> dict | None:
         try:
             user = Users.get_user_by_id(user_id)
             user_settings = user.settings.model_dump() if user.settings else {}
@@ -241,17 +224,13 @@ class ToolsTable:
 
             return user_settings["tools"]["valves"][id]
         except Exception as e:
-            log.exception(
-                f"Error updating user valves by id {id} and user_id {user_id}: {e}"
-            )
+            log.exception(f"Error updating user valves by id {id} and user_id {user_id}: {e}")
             return None
 
-    def update_tool_by_id(self, id: str, updated: dict) -> Optional[ToolModel]:
+    def update_tool_by_id(self, id: str, updated: dict) -> ToolModel | None:
         try:
             with get_db() as db:
-                db.query(Tool).filter_by(id=id).update(
-                    {**updated, "updated_at": int(time.time())}
-                )
+                db.query(Tool).filter_by(id=id).update({**updated, "updated_at": int(time.time())})
                 db.commit()
 
                 tool = db.query(Tool).get(id)

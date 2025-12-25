@@ -37,34 +37,34 @@ start_service() {
     local service_path="$1"
     local port="$2"
     local name="$3"
-    
+
     local full_path="$ROOT/$service_path"
     local log_file="$LOGS_DIR/${name}.nohup.log"
     local pid_file="$PIDS_DIR/${name}.pid"
-    
+
     # Check if file exists
     if [ ! -f "$full_path" ]; then
         echo "  ⚠️  $name: File not found ($service_path)"
         return 1
     fi
-    
+
     # Check if already running
     if lsof -i ":$port" > /dev/null 2>&1; then
         echo "  ✅ $name (port $port): Already running"
         return 0
     fi
-    
+
     # Start service
     local service_dir="$(dirname "$full_path")"
     cd "$service_dir"
-    
+
     nohup python3 "$(basename "$full_path")" > "$log_file" 2>&1 &
     local pid=$!
     echo "$pid" > "$pid_file"
-    
+
     # Wait briefly to verify
     sleep 1
-    
+
     if ps -p "$pid" > /dev/null 2>&1; then
         echo "  ✅ $name (port $port) — PID $pid"
         return 0

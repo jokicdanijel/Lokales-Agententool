@@ -11320,6 +11320,3 @@ danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/1
     │               └── WHEEL
     ├── lib64 -> lib
     └── pyvenv.cfg
-
-
-

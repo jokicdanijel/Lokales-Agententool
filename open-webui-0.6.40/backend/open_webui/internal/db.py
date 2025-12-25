@@ -1,28 +1,27 @@
-import os
 import json
 import logging
+import os
 from contextlib import contextmanager
-from typing import Any, Optional
+from typing import Any, Self
 
-from open_webui.internal.wrappers import register_connection
 from open_webui.env import (
-    OPEN_WEBUI_DIR,
-    DATABASE_URL,
-    DATABASE_SCHEMA,
-    SRC_LOG_LEVELS,
+    DATABASE_ENABLE_SQLITE_WAL,
     DATABASE_POOL_MAX_OVERFLOW,
     DATABASE_POOL_RECYCLE,
     DATABASE_POOL_SIZE,
     DATABASE_POOL_TIMEOUT,
-    DATABASE_ENABLE_SQLITE_WAL,
+    DATABASE_SCHEMA,
+    DATABASE_URL,
+    OPEN_WEBUI_DIR,
+    SRC_LOG_LEVELS,
 )
+from open_webui.internal.wrappers import register_connection
 from peewee_migrate import Router
-from sqlalchemy import Dialect, create_engine, MetaData, event, types
+from sqlalchemy import Dialect, MetaData, create_engine, event, types
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.pool import QueuePool, NullPool
+from sqlalchemy.pool import NullPool, QueuePool
 from sqlalchemy.sql.type_api import _T
-from typing_extensions import Self
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["DB"])
@@ -32,10 +31,10 @@ class JSONField(types.TypeDecorator):
     impl = types.Text
     cache_ok = True
 
-    def process_bind_param(self, value: Optional[_T], dialect: Dialect) -> Any:
+    def process_bind_param(self, value: _T | None, dialect: Dialect) -> Any:
         return json.dumps(value)
 
-    def process_result_value(self, value: Optional[_T], dialect: Dialect) -> Any:
+    def process_result_value(self, value: _T | None, dialect: Dialect) -> Any:
         if value is not None:
             return json.loads(value)
 
@@ -64,9 +63,7 @@ def handle_peewee_migration(DATABASE_URL):
 
     except Exception as e:
         log.error(f"Failed to initialize the database connection: {e}")
-        log.warning(
-            "Hint: If your database password contains special characters, you may need to URL-encode it."
-        )
+        log.warning("Hint: If your database password contains special characters, you may need to URL-encode it.")
         raise
     finally:
         # Properly closing the database connection
@@ -86,9 +83,7 @@ SQLALCHEMY_DATABASE_URL = DATABASE_URL
 if SQLALCHEMY_DATABASE_URL.startswith("sqlite+sqlcipher://"):
     database_password = os.environ.get("DATABASE_PASSWORD")
     if not database_password or database_password.strip() == "":
-        raise ValueError(
-            "DATABASE_PASSWORD is required when using sqlite+sqlcipher:// URLs"
-        )
+        raise ValueError("DATABASE_PASSWORD is required when using sqlite+sqlcipher:// URLs")
 
     # Extract database path from SQLCipher URL
     db_path = SQLALCHEMY_DATABASE_URL.replace("sqlite+sqlcipher://", "")
@@ -112,9 +107,7 @@ if SQLALCHEMY_DATABASE_URL.startswith("sqlite+sqlcipher://"):
     log.info("Connected to encrypted SQLite database using SQLCipher")
 
 elif "sqlite" in SQLALCHEMY_DATABASE_URL:
-    engine = create_engine(
-        SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
-    )
+    engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 
     def on_connect(dbapi_connection, connection_record):
         cursor = dbapi_connection.cursor()
@@ -138,16 +131,12 @@ else:
                 poolclass=QueuePool,
             )
         else:
-            engine = create_engine(
-                SQLALCHEMY_DATABASE_URL, pool_pre_ping=True, poolclass=NullPool
-            )
+            engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_pre_ping=True, poolclass=NullPool)
     else:
         engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_pre_ping=True)
 
 
-SessionLocal = sessionmaker(
-    autocommit=False, autoflush=False, bind=engine, expire_on_commit=False
-)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, expire_on_commit=False)
 metadata_obj = MetaData(schema=DATABASE_SCHEMA)
 Base = declarative_base(metadata=metadata_obj)
 Session = scoped_session(SessionLocal)

@@ -12,6 +12,7 @@ from fastapi.testclient import TestClient
 def client():
     """FastAPI TestClient Fixture"""
     from main_telegram_agent import app
+
     return TestClient(app)
 
 
@@ -27,7 +28,7 @@ class TestHealthEndpoint:
         """Test: /health enthält agent='opena4'"""
         response = client.get("/health")
         data = response.json()
-        
+
         assert "agent" in data
         assert data["agent"] == "opena4"
 
@@ -35,7 +36,7 @@ class TestHealthEndpoint:
         """Test: /health enthält port"""
         response = client.get("/health")
         data = response.json()
-        
+
         assert "port" in data
         assert isinstance(data["port"], int)
 
@@ -43,7 +44,7 @@ class TestHealthEndpoint:
         """Test: /health status ist 'ok'"""
         response = client.get("/health")
         data = response.json()
-        
+
         assert "status" in data
         assert data["status"] == "ok"
 
@@ -51,7 +52,7 @@ class TestHealthEndpoint:
         """Test: /health enthält Telegram-Status"""
         response = client.get("/health")
         data = response.json()
-        
+
         # Prüfe dass Telegram-Info vorhanden ist
         assert "telegram_available" in data or "telegram_users_configured" in data
 
@@ -68,7 +69,7 @@ class TestRootEndpoint:
         """Test: / enthält kuerzel='tgap' oder 'telep'"""
         response = client.get("/")
         data = response.json()
-        
+
         assert "kuerzel" in data
         assert data["kuerzel"] in ["tgap", "telep"]  # Beide akzeptabel
 
@@ -76,7 +77,7 @@ class TestRootEndpoint:
         """Test: / enthält description"""
         response = client.get("/")
         data = response.json()
-        
+
         assert "description" in data
         assert len(data["description"]) > 10
 

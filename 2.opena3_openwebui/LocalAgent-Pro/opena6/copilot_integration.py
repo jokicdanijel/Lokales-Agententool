@@ -25,13 +25,13 @@ Usage:
 @copilot /browser click button.submit
 """
 
-import json
 import asyncio
-import httpx
-from typing import Optional, List, Dict, Any
-from pathlib import Path
+import json
 from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
+import httpx
 
 # ==================== Copilot Chat Commands ====================
 

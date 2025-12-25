@@ -17,36 +17,38 @@ Anwendungsfälle:
 
 from __future__ import annotations
 
-import subprocess
 import json
-import time
-import sys
 import platform
-from typing import Optional, Dict, Any
+import subprocess
+import sys
+import time
 from dataclasses import dataclass
 from datetime import datetime
-
+from typing import Any
 
 # ==================== Type Aliases ====================
 
-TunnelDict = Dict[str, Any]
-TunnelRegistry = Dict[str, TunnelDict]
+TunnelDict = dict[str, Any]
+TunnelRegistry = dict[str, TunnelDict]
 
 
 # ==================== Data Models ====================
 
+
 @dataclass
 class TunnelInfo:
     """Tunnel-Informationen mit sauberer Typisierung"""
+
     name: str
     port: int
-    url: Optional[str]
-    process: Optional[subprocess.Popen]  # type: ignore
+    url: str | None
+    process: subprocess.Popen | None  # type: ignore
     status: str
     created_at: datetime
 
 
 # ==================== ngrok Tunneling ====================
+
 
 class NgrokTunnel:
     """Verwalte ngrok Tunnels für lokale Server"""
@@ -57,16 +59,12 @@ class NgrokTunnel:
 
     def is_installed(self) -> bool:
         """Überprüfe, ob ngrok installiert ist"""
-        result = subprocess.run(
-            ["which", "ngrok"],
-            capture_output=True,
-            text=True
-        )
+        result = subprocess.run(["which", "ngrok"], capture_output=True, text=True)
         return result.returncode == 0
 
     def install_ngrok(self) -> bool:
         """Installiere ngrok"""
-        import platform
+
         os_type = platform.system()
 
         if os_type == "Darwin":  # macOS
@@ -89,19 +87,10 @@ class NgrokTunnel:
 
     def authenticate(self, token: str) -> bool:
         """Authentifiziere ngrok mit Auth Token"""
-        result = subprocess.run(
-            ["ngrok", "config", "add-authtoken", token],
-            capture_output=True,
-            text=True
-        )
+        result = subprocess.run(["ngrok", "config", "add-authtoken", token], capture_output=True, text=True)
         return result.returncode == 0
 
-    def start_tunnel(
-        self,
-        port: int,
-        name: Optional[str] = None,
-        protocol: str = "http"
-    ) -> Optional[TunnelDict]:
+    def start_tunnel(self, port: int, name: str | None = None, protocol: str = "http") -> TunnelDict | None:
         """Starte einen ngrok Tunnel"""
         if not self.is_installed():
             print("❌ ngrok nicht installiert!")
@@ -118,12 +107,7 @@ class NgrokTunnel:
 
         try:
             # Starte ngrok im Background
-            process = subprocess.Popen(
-                cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True
-            )
+            process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
             # Warte auf Tunnel-URL
             time.sleep(2)
@@ -135,31 +119,18 @@ class NgrokTunnel:
                 public_url = tunnel.get("public_url")
                 print(f"✅ Tunnel aktiv: {public_url}")
 
-                self.tunnels[tunnel_name] = {
-                    "port": port,
-                    "url": public_url,
-                    "process": process,
-                    "status": "active"
-                }
-                return {
-                    "name": tunnel_name,
-                    "port": port,
-                    "url": public_url,
-                    "status": "running"
-                }
+                self.tunnels[tunnel_name] = {"port": port, "url": public_url, "process": process, "status": "active"}
+                return {"name": tunnel_name, "port": port, "url": public_url, "status": "running"}
         except Exception as ex:
             print(f"❌ Fehler beim Starten des Tunnels: {ex}")
 
         return None
 
-    def get_tunnel_status(self) -> Optional[Dict[str, Any]]:
+    def get_tunnel_status(self) -> dict[str, Any] | None:
         """Hole aktuelle Tunnel-Status"""
         try:
             result = subprocess.run(
-                ["curl", "-s", "http://127.0.0.1:4040/api/tunnels"],
-                capture_output=True,
-                text=True,
-                timeout=5
+                ["curl", "-s", "http://127.0.0.1:4040/api/tunnels"], capture_output=True, text=True, timeout=5
             )
             if result.returncode == 0:
                 return json.loads(result.stdout)
@@ -178,32 +149,30 @@ class NgrokTunnel:
                 return True
         return False
 
-    def list_tunnels(self) -> Dict[str, Any]:
+    def list_tunnels(self) -> dict[str, Any]:
         """Zeige alle aktiven Tunnels"""
         return self.tunnels
 
 
 # ==================== SSH Tunneling ====================
 
+
 class SSHTunnel:
     """Verwalte SSH Tunnels für lokale Server"""
 
     @staticmethod
     def create_tunnel(
-        remote_host: str,
-        remote_user: str,
-        local_port: int,
-        remote_port: int = None,
-        ssh_key: Optional[str] = None
+        remote_host: str, remote_user: str, local_port: int, remote_port: int = None, ssh_key: str | None = None
     ) -> bool:
         """Erstelle SSH Tunnel (lokaler Port ← remote_host:remote_port)"""
         remote_port = remote_port or local_port
 
         cmd = [
             "ssh",
-            "-L", f"{local_port}:localhost:{remote_port}",
+            "-L",
+            f"{local_port}:localhost:{remote_port}",
             f"{remote_user}@{remote_host}",
-            "-N"  # Keine Shell
+            "-N",  # Keine Shell
         ]
 
         if ssh_key:
@@ -212,11 +181,7 @@ class SSHTunnel:
         print(f"🔐 Starte SSH Tunnel: localhost:{local_port} ← {remote_host}:{remote_port}")
 
         try:
-            subprocess.Popen(
-                cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
-            )
+            subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             print(f"✅ SSH Tunnel aktiv: http://localhost:{local_port}")
             return True
         except Exception as ex:
@@ -225,19 +190,10 @@ class SSHTunnel:
 
     @staticmethod
     def create_reverse_tunnel(
-        remote_host: str,
-        remote_user: str,
-        remote_port: int,
-        local_port: int,
-        ssh_key: Optional[str] = None
+        remote_host: str, remote_user: str, remote_port: int, local_port: int, ssh_key: str | None = None
     ) -> bool:
         """Erstelle Reverse SSH Tunnel (remote_host:remote_port ← lokaler Port)"""
-        cmd = [
-            "ssh",
-            "-R", f"{remote_port}:localhost:{local_port}",
-            f"{remote_user}@{remote_host}",
-            "-N"
-        ]
+        cmd = ["ssh", "-R", f"{remote_port}:localhost:{local_port}", f"{remote_user}@{remote_host}", "-N"]
 
         if ssh_key:
             cmd.extend(["-i", ssh_key])
@@ -245,12 +201,8 @@ class SSHTunnel:
         print(f"🔄 Starte Reverse SSH Tunnel: {remote_host}:{remote_port} ← localhost:{local_port}")
 
         try:
-            subprocess.Popen(
-                cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
-            )
-            print(f"✅ Reverse Tunnel aktiv")
+            subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            print("✅ Reverse Tunnel aktiv")
             return True
         except Exception as ex:
             print(f"❌ Fehler: {ex}")
@@ -259,31 +211,24 @@ class SSHTunnel:
 
 # ==================== LocalTunnel ====================
 
+
 class LocalTunnel:
     """Verwende localtunnel für Tunneling (Alternative zu ngrok)"""
 
     @staticmethod
     def is_installed() -> bool:
         """Überprüfe, ob lt CLI installiert ist"""
-        result = subprocess.run(
-            ["which", "lt"],
-            capture_output=True,
-            text=True
-        )
+        result = subprocess.run(["which", "lt"], capture_output=True, text=True)
         return result.returncode == 0
 
     @staticmethod
     def install() -> bool:
         """Installiere localtunnel"""
-        result = subprocess.run(
-            ["npm", "install", "-g", "localtunnel"],
-            capture_output=True,
-            text=True
-        )
+        result = subprocess.run(["npm", "install", "-g", "localtunnel"], capture_output=True, text=True)
         return result.returncode == 0
 
     @staticmethod
-    def start_tunnel(port: int, subdomain: Optional[str] = None) -> Optional[str]:
+    def start_tunnel(port: int, subdomain: str | None = None) -> str | None:
         """Starte localtunnel"""
         if not LocalTunnel.is_installed():
             print("❌ localtunnel nicht installiert!")
@@ -297,12 +242,7 @@ class LocalTunnel:
         print(f"🌐 Starte localtunnel für Port {port}...")
 
         try:
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                timeout=5
-            )
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=5)
             # Extrahiere URL aus Output
             for line in result.stdout.split("\n"):
                 if "https://" in line:
@@ -317,11 +257,12 @@ class LocalTunnel:
 
 # ==================== VS Code Server Configuration ====================
 
+
 class VSCodeServerConfig:
     """Konfiguriere lokale Server für VS Code"""
 
     @staticmethod
-    def get_launch_config() -> Dict[str, Any]:
+    def get_launch_config() -> dict[str, Any]:
         """Generiere VS Code launch.json für Debugging"""
         return {
             "version": "0.2.0",
@@ -333,10 +274,7 @@ class VSCodeServerConfig:
                     "program": "${workspaceFolder}/LocalAgent-Pro/opena6/tool_server.py",
                     "console": "integratedTerminal",
                     "args": ["--host", "0.0.0.0", "--port", "8765"],
-                    "env": {
-                        "PYTHONUNBUFFERED": "1",
-                        "DEBUG": "1"
-                    }
+                    "env": {"PYTHONUNBUFFERED": "1", "DEBUG": "1"},
                 },
                 {
                     "name": "Browser Agent (Port 12350)",
@@ -344,23 +282,20 @@ class VSCodeServerConfig:
                     "request": "launch",
                     "program": "${workspaceFolder}/LocalAgent-Pro/opena6/main.py",
                     "console": "integratedTerminal",
-                    "env": {
-                        "PORT": "12350",
-                        "DEBUG": "1"
-                    }
+                    "env": {"PORT": "12350", "DEBUG": "1"},
                 },
                 {
                     "name": "Compute Agent (Port 12349)",
                     "type": "python",
                     "request": "launch",
                     "program": "${workspaceFolder}/LocalAgent-Pro/opena5/main.py",
-                    "console": "integratedTerminal"
-                }
-            ]
+                    "console": "integratedTerminal",
+                },
+            ],
         }
 
     @staticmethod
-    def get_tasks_config() -> Dict[str, Any]:
+    def get_tasks_config() -> dict[str, Any]:
         """Generiere VS Code tasks.json für Server Management"""
         return {
             "version": "2.0.0",
@@ -371,7 +306,7 @@ class VSCodeServerConfig:
                     "command": "python3",
                     "args": ["setup_tunnels.py"],
                     "isBackground": True,
-                    "problemMatcher": []
+                    "problemMatcher": [],
                 },
                 {
                     "label": "🌐 Start ngrok Tunnel (8765)",
@@ -379,7 +314,7 @@ class VSCodeServerConfig:
                     "command": "ngrok",
                     "args": ["http", "8765"],
                     "isBackground": True,
-                    "problemMatcher": []
+                    "problemMatcher": [],
                 },
                 {
                     "label": "🌐 Start localtunnel (8765)",
@@ -387,7 +322,7 @@ class VSCodeServerConfig:
                     "command": "lt",
                     "args": ["--port", "8765", "--subdomain", "browser-agent"],
                     "isBackground": True,
-                    "problemMatcher": []
+                    "problemMatcher": [],
                 },
                 {
                     "label": "🔐 SSH Tunnel to Remote",
@@ -395,13 +330,14 @@ class VSCodeServerConfig:
                     "command": "ssh",
                     "args": ["-L", "8765:localhost:8765", "user@remote.host", "-N"],
                     "isBackground": True,
-                    "problemMatcher": []
-                }
-            ]
+                    "problemMatcher": [],
+                },
+            ],
         }
 
 
 # ==================== Setup Scripts ====================
+
 
 def generate_setup_script() -> str:
     """Generiere Python Setup-Skript für Tunnel-Verwaltung"""
@@ -481,9 +417,11 @@ if __name__ == "__main__":
 
 # ==================== Usage Examples ====================
 
+
 def print_usage_examples():
     """Zeige Verwendungsbeispiele"""
-    print("""
+    print(
+        """
 === VS Code Server Tunneling - Verwendungsbeispiele ===
 
 1️⃣  NGROK - Schnellste Methode
@@ -615,7 +553,8 @@ def print_usage_examples():
 
    # Tunnel-Überprüfung:
    curl https://your-tunnel.ngrok.io/health | jq
-""")
+"""
+    )
 
 
 # ==================== Main ====================

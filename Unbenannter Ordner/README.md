@@ -1,10 +1,10 @@
 # 🏢 PORTIER 3.0 — Enterprise Multi-Agent Intelligence Platform
 
-**Version:** 3.0.0  
-**Status:** ✅ **PRODUCTION-READY**  
-**Release Date:** 21. November 2025  
-**Lead Developer:** Danijel Jokic  
-**Repository:** [jokicdanijel/Gesamtprojekt-start](https://github.com/jokicdanijel/Gesamtprojekt-start)  
+**Version:** 3.0.0
+**Status:** ✅ **PRODUCTION-READY**
+**Release Date:** 21. November 2025
+**Lead Developer:** Danijel Jokic
+**Repository:** [jokicdanijel/Gesamtprojekt-start](https://github.com/jokicdanijel/Gesamtprojekt-start)
 **License:** MIT + Internal Use Only (Enterprise Components)
 
 ---
@@ -17,14 +17,14 @@ Das System folgt dem **Option-2-Flow** Architekturprinzip, bei dem jede Anfrage 
 
 **Kern-Services (PORTIER 3.0 Core):**
 
-| Service | Port | Funktion | Status |
-|---------|------|----------|--------|
-| **opena1** | 12344 | Coordinator (Request71→Decision72) | ✅ Running |
-| **opena2** | 12345 | Archivator (CMD/RESP Safepoints) | ✅ Running |
-| **kordp** | 12346 | Gateway (Tool Dispatch) | ✅ Running |
-| **opena3** | 12347 | OpenWebUI Terminal Agent | ✅ Running |
-| **opena20** | 12349 | Dashboard (Live Monitoring UI) | ✅ Running |
-| **archivp** | Filesystem | Safepoint Storage (YYYY/MM/DD) | ✅ Active |
+| Service     | Port       | Funktion                           | Status     |
+| ----------- | ---------- | ---------------------------------- | ---------- |
+| **opena1**  | 12344      | Coordinator (Request71→Decision72) | ✅ Running |
+| **opena2**  | 12345      | Archivator (CMD/RESP Safepoints)   | ✅ Running |
+| **kordp**   | 12346      | Gateway (Tool Dispatch)            | ✅ Running |
+| **opena3**  | 12347      | OpenWebUI Terminal Agent           | ✅ Running |
+| **opena20** | 12349      | Dashboard (Live Monitoring UI)     | ✅ Running |
+| **archivp** | Filesystem | Safepoint Storage (YYYY/MM/DD)     | ✅ Active  |
 
 **Kernmerkmale:**
 
@@ -110,7 +110,7 @@ flowchart TB
         OpenAI["OpenAI API<br>(External)"]
         UserUI["User Interfaces<br>(Web, CLI, API)"]
     end
-    
+
     %% =====================
     %% CORE SERVICES
     %% =====================
@@ -120,14 +120,14 @@ flowchart TB
         kordp["kordp<br>Dispatch Gateway<br>Port 12346<br>Tool Routing"]
         archivp["archivp<br>Local Archive<br>Filesystem<br>YYYY/MM/DD"]
     end
-    
+
     %% =====================
     %% DASHBOARD
     %% =====================
     subgraph Dashboard["🖥️ Dashboard Layer (19.opena20_dashboard_agent)"]
         opena20["opena20<br>Dashboard Service<br>Port 12349<br>Web UI + API"]
     end
-    
+
     %% =====================
     %% OPERATIONAL AGENTS
     %% =====================
@@ -151,38 +151,38 @@ flowchart TB
         opena19["opena19<br>Aktien & Crypto<br>Port 12363<br>🟡 Planned"]
         opena21["opena21<br>Workflow Engine<br>Port 12364<br>🟡 Planned"]
     end
-    
+
     %% =====================
     %% SCTA LAYER
     %% =====================
     subgraph SCTA["📋 SCTA Layer (Structured Code Task Automation)"]
         agenda_api["agenda_api<br>16-Seiten Agenda<br>Port 12399<br>✅ Running"]
     end
-    
+
     %% =====================
     %% EXTERNAL UI (FORBIDDEN FOR BACKEND)
     %% =====================
     subgraph External["⚠️ External UI (UI-Only, No Backend)"]
         openwebui_ui["OpenWebUI UI<br>Port 8080<br>❌ Backend Forbidden"]
     end
-    
+
     %% =====================
     %% OPTION-2-FLOW (CORE ROUTING)
     %% =====================
-    
+
     %% Entry → opena1
     OpenAI -->|Request71| opena1
     UserUI -->|API Call| opena1
-    
+
     %% opena1 → opena2 (CMD Safepoint)
     opena1 -->|Decision72 → CMD| opena2
-    
+
     %% opena2 → kordp (Route)
     opena2 -->|ROUTE Safepoint| kordp
-    
+
     %% opena2 → archivp (Persist)
     opena2 -.->|Save Safepoint<br>YYYY/MM/DD| archivp
-    
+
     %% kordp → Tools (Dispatch)
     kordp -->|Dispatch| opena3
     kordp -->|Dispatch| opena4
@@ -202,17 +202,17 @@ flowchart TB
     kordp -->|Dispatch| opena18
     kordp -->|Dispatch| opena19
     kordp -->|Dispatch| opena21
-    
+
     %% Tools → opena2 (RESP Safepoint)
     opena3 -.->|RESP| opena2
     opena6 -.->|RESP| opena2
-    
+
     %% opena2 → opena1 (Return)
     opena2 -->|RESP to Coordinator| opena1
-    
+
     %% opena1 → OpenAI (Final Response)
     opena1 -->|Final Response| OpenAI
-    
+
     %% =====================
     %% DASHBOARD MONITORING
     %% =====================
@@ -220,17 +220,17 @@ flowchart TB
     opena20 -.->|Status Poll| opena2
     opena20 -.->|Status Poll| kordp
     opena20 -.->|Read Safepoints| archivp
-    
+
     %% =====================
     %% SCTA INTEGRATION
     %% =====================
     opena1 -.->|Agenda Query| agenda_api
-    
+
     %% =====================
     %% OPENWEBUI UI (EXTERNAL, UI-ONLY)
     %% =====================
     openwebui_ui -.->|HTTP → Adapter → opena3| opena6
-    
+
     %% =====================
     %% STYLING
     %% =====================
@@ -239,7 +239,7 @@ flowchart TB
     classDef forbidden fill:#f44336,stroke:#d32f2f,color:#fff
     classDef dashboard fill:#f0ad4e,stroke:#ec971f,color:#fff
     classDef scta fill:#4caf50,stroke:#388e3c,color:#fff
-    
+
     class opena1,opena2,kordp,archivp,opena3,opena6,agenda_api running
     class opena4,opena5,opena7,opena8,opena9,opena10,opena11,opena12,opena13,opena14,opena15,opena16,opena17,opena18,opena19,opena21 planned
     class openwebui_ui forbidden
@@ -279,14 +279,14 @@ OpenAI → opena1:12344 → opena2:12345 → kordp:12346 → Tools
 
 ### Port Policy
 
-| Port | Service | Role | Status |
-|------|---------|------|--------|
-| **12344** | **Portier** | Coordinator/Dispatcher | ✅ Online |
-| **12345** | **OpenA2** | Archive (JSONL Storage) | ✅ Online |
-| **12346** | **Telegram** | Messaging Agent | ✅ Online |
-| **12348** | **Inference** | llama-stack + Ollama | ✅ Online |
-| **12349-12364** | Scalable Services | Agent Pool | ⏳ Template-Ready |
-| **12365-12399** | Reserved | Future Expansion | 📅 Available |
+| Port            | Service           | Role                    | Status            |
+| --------------- | ----------------- | ----------------------- | ----------------- |
+| **12344**       | **Portier**       | Coordinator/Dispatcher  | ✅ Online         |
+| **12345**       | **OpenA2**        | Archive (JSONL Storage) | ✅ Online         |
+| **12346**       | **Telegram**      | Messaging Agent         | ✅ Online         |
+| **12348**       | **Inference**     | llama-stack + Ollama    | ✅ Online         |
+| **12349-12364** | Scalable Services | Agent Pool              | ⏳ Template-Ready |
+| **12365-12399** | Reserved          | Future Expansion        | 📅 Available      |
 
 ---
 
@@ -294,18 +294,18 @@ OpenAI → opena1:12344 → opena2:12345 → kordp:12346 → Tools
 
 ### ✅ Completed Phases (7-16)
 
-| Phase | Feature | Details |
-|-------|---------|---------|
-| **7b** | Runtime Validation | OpenA1/OpenA2 Health Checks ✓ |
-| **8** | Service Architecture | 19 Service Folders + CI/CD Gate ✓ |
-| **9** | Portier Service | Coordinator + Routing Registry ✓ |
-| **10** | Telegram + OpenWebUI | Messaging + Inference Integration ✓ |
-| **11** | Multi-Service Test | 4 Services, Route Registration ✓ |
-| **12** | Git Sync | All Changes Committed & Pushed ✓ |
-| **13** | Load-Test Phase 1 | 100 Requests, 30.33 req/s, 100% Success ✓ |
-| **14** | llama-stack Integration | Inference Service, Bridge, 0.87 req/s ✓ |
-| **15** | Scale zu 20 Services | Template, Bulk Generation, 27.74 req/s ✓ |
-| **16** | CI/CD Hardening | GitHub Actions, Pre-Commit, Deployment Validation ✓ |
+| Phase  | Feature                 | Details                                             |
+| ------ | ----------------------- | --------------------------------------------------- |
+| **7b** | Runtime Validation      | OpenA1/OpenA2 Health Checks ✓                       |
+| **8**  | Service Architecture    | 19 Service Folders + CI/CD Gate ✓                   |
+| **9**  | Portier Service         | Coordinator + Routing Registry ✓                    |
+| **10** | Telegram + OpenWebUI    | Messaging + Inference Integration ✓                 |
+| **11** | Multi-Service Test      | 4 Services, Route Registration ✓                    |
+| **12** | Git Sync                | All Changes Committed & Pushed ✓                    |
+| **13** | Load-Test Phase 1       | 100 Requests, 30.33 req/s, 100% Success ✓           |
+| **14** | llama-stack Integration | Inference Service, Bridge, 0.87 req/s ✓             |
+| **15** | Scale zu 20 Services    | Template, Bulk Generation, 27.74 req/s ✓            |
+| **16** | CI/CD Hardening         | GitHub Actions, Pre-Commit, Deployment Validation ✓ |
 
 ---
 
@@ -705,29 +705,29 @@ find . -name "*.pyc" -delete
 
 ## 📚 Dokumentation
 
-| Dokument | Link | Status |
-|----------|------|--------|
-| Architecture Runbook | `docs/OPERATIONS.md` | ✅ |
-| Portier API | `src/services/portier/main.py` (docstrings) | ✅ |
-| Service Template | `src/services/template/main.py` | ✅ |
-| Routing Matrix | `configs/routing_matrix.yaml` | ✅ |
-| CI/CD Config | `.github/workflows/ci.yml` | ✅ |
-| Load-Test Docs | `scripts/load_test*.py` (comments) | ✅ |
+| Dokument             | Link                                        | Status |
+| -------------------- | ------------------------------------------- | ------ |
+| Architecture Runbook | `docs/OPERATIONS.md`                        | ✅     |
+| Portier API          | `src/services/portier/main.py` (docstrings) | ✅     |
+| Service Template     | `src/services/template/main.py`             | ✅     |
+| Routing Matrix       | `configs/routing_matrix.yaml`               | ✅     |
+| CI/CD Config         | `.github/workflows/ci.yml`                  | ✅     |
+| Load-Test Docs       | `scripts/load_test*.py` (comments)          | ✅     |
 
 ---
 
 ## 🚦 Current Status (November 11, 2025)
 
-| Component | Status | Details |
-|-----------|--------|---------|
-| **Core Architecture** | ✅ Complete | 20 Services, 4 Running |
-| **Coordinator** | ✅ Complete | Portier + Route Registry |
-| **Archive** | ✅ Complete | JSONL + Daily Partitions |
-| **Inference** | ✅ Complete | llama2 via Ollama |
-| **OpenWebUI** | ✅ Complete | Port 3000, Bridge Active |
-| **Load Testing** | ✅ Complete | 27.74 req/s validated |
-| **CI/CD** | ✅ Complete | GitHub Actions, Pre-Commit |
-| **Production Ready** | ⏳ Phase 17-18 | Monitoring + Deployment |
+| Component             | Status         | Details                    |
+| --------------------- | -------------- | -------------------------- |
+| **Core Architecture** | ✅ Complete    | 20 Services, 4 Running     |
+| **Coordinator**       | ✅ Complete    | Portier + Route Registry   |
+| **Archive**           | ✅ Complete    | JSONL + Daily Partitions   |
+| **Inference**         | ✅ Complete    | llama2 via Ollama          |
+| **OpenWebUI**         | ✅ Complete    | Port 3000, Bridge Active   |
+| **Load Testing**      | ✅ Complete    | 27.74 req/s validated      |
+| **CI/CD**             | ✅ Complete    | GitHub Actions, Pre-Commit |
+| **Production Ready**  | ⏳ Phase 17-18 | Monitoring + Deployment    |
 
 ---
 
@@ -810,9 +810,9 @@ MIT License – Siehe [LICENSE](LICENSE) für Details
 
 ## 🏢 PORTIER 3.0 — Firmen-Kontext
 
-**Entwickelt für:**  
-ELION Technologies GmbH  
-Lead Developer: **Danijel Jokic**  
+**Entwickelt für:**
+ELION Technologies GmbH
+Lead Developer: **Danijel Jokic**
 Team: AI Engineering & Automation
 
 **Technologie-Partner:**
@@ -829,7 +829,7 @@ Team: AI Engineering & Automation
 
 ## 📄 License
 
-**MIT License** (Open Source Components)  
+**MIT License** (Open Source Components)
 **Internal Use Only** (Enterprise Components)
 
 ```
@@ -842,19 +842,19 @@ in the Software without restriction...
 
 ---
 
-**Last Updated:** 21. November 2025  
-**Version:** 3.0.0 PORTIER Release  
-**Status:** ✅ **PRODUCTION-READY**  
+**Last Updated:** 21. November 2025
+**Version:** 3.0.0 PORTIER Release
+**Status:** ✅ **PRODUCTION-READY**
 **Maintainer:** Danijel Jokic (ELION Team)
 
 ---
 
-**🚀 Dashboard:** <http://127.0.0.1:12349/dashboard>  
-**📊 Status API:** <http://127.0.0.1:12349/api/status>  
+**🚀 Dashboard:** <http://127.0.0.1:12349/dashboard>
+**📊 Status API:** <http://127.0.0.1:12349/api/status>
 **💚 Health Check:** <http://127.0.0.1:12349/health>
 
 ---
 
-**Für vollständige technische Dokumentation siehe:**  
-📖 **[PORTIER_SYSTEM_DOCS.md](PORTIER_SYSTEM_DOCS.md)** (654 Zeilen)  
+**Für vollständige technische Dokumentation siehe:**
+📖 **[PORTIER_SYSTEM_DOCS.md](PORTIER_SYSTEM_DOCS.md)** (654 Zeilen)
 📖 **[README_ENTERPRISE.md](README_ENTERPRISE.md)** (5,890 Zeilen, 20 Seiten)

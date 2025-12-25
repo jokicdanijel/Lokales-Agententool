@@ -11,30 +11,35 @@ Ein umfassendes System zur Verwaltung akademischer Papers mit arXiv-Integration,
 ## ✨ Features
 
 ### 🔍 Paper Discovery & Management
+
 - ✅ arXiv API Integration - Direkter Zugriff auf Millionen Papers
 - ✅ Automatische Metadaten-Extraktion (Titel, Autoren, Abstract, etc.)
 - ✅ arXiv ID Parser - Automatische Erkennung von Paper-IDs
 - ✅ Advanced Search - Kategorie, Autor, Datum, Keywords
 
 ### 📁 Organisation & Tagging
+
 - ✅ Custom Tags & Labels
 - ✅ Kategorisierung (Physics, CS, Math, Bio, etc.)
 - ✅ Favoriten & Lesezeichen
 - ✅ Collections & Ordner
 
 ### 💾 Persistenz
+
 - ✅ SQLite Datenbank
 - ✅ PDF-Download & -Speicherung
 - ✅ Offline-Zugriff
 - ✅ Backup & Export (JSON, CSV)
 
 ### 🤖 AI-Features (mit Qwen3-Coder)
+
 - ✅ Automatische Zusammenfassungen
 - ✅ Keyword-Extraktion
 - ✅ Ähnliche Papers suchen
 - ✅ Citation Network Analysis
 
 ### 🌐 API & UI
+
 - ✅ RESTful API (Flask)
 - ✅ Web Dashboard (HTML/JavaScript)
 - ✅ JSON-Export

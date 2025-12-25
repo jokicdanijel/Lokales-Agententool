@@ -11,23 +11,19 @@ Central Dashboard für ELION/Portier System mit professionellem UI
 - Start/Stop/Health für alle Agenten
 """
 
-import os
-import time
-import json
 import logging
+import time
 from contextlib import asynccontextmanager
-from datetime import datetime, timezone
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any
 
+import aiohttp
+import uvicorn
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import uvicorn
-import aiohttp
 
 # =============================================================================
 # CONFIGURATION
@@ -43,9 +39,7 @@ STATIC_DIR = BASE_DIR / "static"
 TEMPLATES_DIR = BASE_DIR / "templates"
 
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    handlers=[logging.StreamHandler()]
+    level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s", handlers=[logging.StreamHandler()]
 )
 logger = logging.getLogger(__name__)
 
@@ -53,33 +47,34 @@ logger = logging.getLogger(__name__)
 # AGENT REGISTRY (opena1 - opena20)
 # =============================================================================
 
-AGENT_REGISTRY: List[Dict[str, Any]] = [
-    {"id": "opena1",  "name": "Koordinator",         "kuerzel": "kordp",       "port": 12344, "icon": "🎯"},
-    {"id": "opena2",  "name": "Archivator",          "kuerzel": "archivp",     "port": 12345, "icon": "📦"},
-    {"id": "opena3",  "name": "OpenWebUI Terminal",  "kuerzel": "owuip",       "port": 12347, "icon": "🖥️"},
-    {"id": "opena4",  "name": "Telegram Agent",      "kuerzel": "telep",       "port": 12348, "icon": "📱"},
-    {"id": "opena5",  "name": "VS Code Agent",       "kuerzel": "vscop",       "port": 12351, "icon": "💻"},
-    {"id": "opena6",  "name": "Browser Agent",       "kuerzel": "browsep",     "port": 12352, "icon": "🌐"},
-    {"id": "opena7",  "name": "Email Agent",         "kuerzel": "emailp",      "port": 12353, "icon": "📧"},
-    {"id": "opena8",  "name": "WhatsApp Agent",      "kuerzel": "whatsappp",   "port": 12354, "icon": "💬"},
-    {"id": "opena9",  "name": "Telefonie Agent",     "kuerzel": "telephonep",  "port": 12355, "icon": "📞"},
-    {"id": "opena10", "name": "Call Tracking",       "kuerzel": "calltrackp",  "port": 12356, "icon": "📊"},
-    {"id": "opena11", "name": "Unlock Agent",        "kuerzel": "unlockp",     "port": 12357, "icon": "🔓"},
-    {"id": "opena12", "name": "Social Media Agent",  "kuerzel": "smp",         "port": 12358, "icon": "📣"},
-    {"id": "opena13", "name": "Influencer Agent",    "kuerzel": "influp",      "port": 12359, "icon": "⭐"},
-    {"id": "opena14", "name": "Calendar Agent",      "kuerzel": "calp",        "port": 12360, "icon": "📅"},
-    {"id": "opena15", "name": "HTML Creator",        "kuerzel": "htmlp",       "port": 12361, "icon": "🎨"},
-    {"id": "opena16", "name": "Shop Agent",          "kuerzel": "shopp",       "port": 12362, "icon": "🛒"},
-    {"id": "opena17", "name": "Homepage Creator",    "kuerzel": "hpcreatep",   "port": 12363, "icon": "🏠"},
-    {"id": "opena18", "name": "CRM Agent",           "kuerzel": "crmp",        "port": 12364, "icon": "👥"},
-    {"id": "opena19", "name": "Stocks & Crypto",     "kuerzel": "stockcryptop","port": 12365, "icon": "📈"},
-    {"id": "opena20", "name": "Dashboard",           "kuerzel": "dashp",       "port": 12349, "icon": "🚀"},
+AGENT_REGISTRY: list[dict[str, Any]] = [
+    {"id": "opena1", "name": "Koordinator", "kuerzel": "kordp", "port": 12344, "icon": "🎯"},
+    {"id": "opena2", "name": "Archivator", "kuerzel": "archivp", "port": 12345, "icon": "📦"},
+    {"id": "opena3", "name": "OpenWebUI Terminal", "kuerzel": "owuip", "port": 12347, "icon": "🖥️"},
+    {"id": "opena4", "name": "Telegram Agent", "kuerzel": "telep", "port": 12348, "icon": "📱"},
+    {"id": "opena5", "name": "VS Code Agent", "kuerzel": "vscop", "port": 12351, "icon": "💻"},
+    {"id": "opena6", "name": "Browser Agent", "kuerzel": "browsep", "port": 12352, "icon": "🌐"},
+    {"id": "opena7", "name": "Email Agent", "kuerzel": "emailp", "port": 12353, "icon": "📧"},
+    {"id": "opena8", "name": "WhatsApp Agent", "kuerzel": "whatsappp", "port": 12354, "icon": "💬"},
+    {"id": "opena9", "name": "Telefonie Agent", "kuerzel": "telephonep", "port": 12355, "icon": "📞"},
+    {"id": "opena10", "name": "Call Tracking", "kuerzel": "calltrackp", "port": 12356, "icon": "📊"},
+    {"id": "opena11", "name": "Unlock Agent", "kuerzel": "unlockp", "port": 12357, "icon": "🔓"},
+    {"id": "opena12", "name": "Social Media Agent", "kuerzel": "smp", "port": 12358, "icon": "📣"},
+    {"id": "opena13", "name": "Influencer Agent", "kuerzel": "influp", "port": 12359, "icon": "⭐"},
+    {"id": "opena14", "name": "Calendar Agent", "kuerzel": "calp", "port": 12360, "icon": "📅"},
+    {"id": "opena15", "name": "HTML Creator", "kuerzel": "htmlp", "port": 12361, "icon": "🎨"},
+    {"id": "opena16", "name": "Shop Agent", "kuerzel": "shopp", "port": 12362, "icon": "🛒"},
+    {"id": "opena17", "name": "Homepage Creator", "kuerzel": "hpcreatep", "port": 12363, "icon": "🏠"},
+    {"id": "opena18", "name": "CRM Agent", "kuerzel": "crmp", "port": 12364, "icon": "👥"},
+    {"id": "opena19", "name": "Stocks & Crypto", "kuerzel": "stockcryptop", "port": 12365, "icon": "📈"},
+    {"id": "opena20", "name": "Dashboard", "kuerzel": "dashp", "port": 12349, "icon": "🚀"},
 ]
 
 
 # =============================================================================
 # FASTAPI APP
 # =============================================================================
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -89,10 +84,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="ELION Dashboard v3.0",
-    description="Zentrale Übersicht aller Agenten",
-    version="3.0.0",
-    lifespan=lifespan
+    title="ELION Dashboard v3.0", description="Zentrale Übersicht aller Agenten", version="3.0.0", lifespan=lifespan
 )
 
 # CORS Middleware
@@ -115,7 +107,8 @@ templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 # HELPER FUNCTIONS
 # =============================================================================
 
-async def check_agent_health(agent: Dict[str, Any]) -> Dict[str, Any]:
+
+async def check_agent_health(agent: dict[str, Any]) -> dict[str, Any]:
     """Check health of single agent"""
     try:
         timeout = aiohttp.ClientTimeout(total=3)
@@ -129,9 +122,10 @@ async def check_agent_health(agent: Dict[str, Any]) -> Dict[str, Any]:
     return {**agent, "online": False, "data": None, "uptime": 0}
 
 
-async def get_all_agents_status() -> List[Dict[str, Any]]:
+async def get_all_agents_status() -> list[dict[str, Any]]:
     """Get status of all agents"""
     import asyncio
+
     tasks = [check_agent_health(agent) for agent in AGENT_REGISTRY]
     return await asyncio.gather(*tasks)
 
@@ -139,6 +133,7 @@ async def get_all_agents_status() -> List[Dict[str, Any]]:
 # =============================================================================
 # API ROUTES
 # =============================================================================
+
 
 @app.get("/health")
 async def health():
@@ -149,7 +144,7 @@ async def health():
         "kuerzel": KUERZEL,
         "port": PORT,
         "uptime_seconds": round(time.time() - START_TIME, 2),
-        "version": "3.0.0"
+        "version": "3.0.0",
     }
 
 
@@ -158,12 +153,7 @@ async def get_agents():
     """Get all agents with status"""
     agents = await get_all_agents_status()
     online = sum(1 for a in agents if a["online"])
-    return {
-        "agents": agents,
-        "total": len(agents),
-        "online": online,
-        "offline": len(agents) - online
-    }
+    return {"agents": agents, "total": len(agents), "online": online, "offline": len(agents) - online}
 
 
 @app.get("/api/agent/{agent_id}")
@@ -213,6 +203,7 @@ async def stop_all_agents():
 # HTML ROUTES
 # =============================================================================
 
+
 @app.get("/", response_class=HTMLResponse)
 async def dashboard_home(request: Request):
     """Main dashboard page"""
@@ -226,23 +217,19 @@ async def agent_detail(request: Request, agent_id: str):
     if not agent:
         raise HTTPException(status_code=404, detail=f"Agent {agent_id} not found")
     return templates.TemplateResponse(
-        "agent_detail.html",
-        {
-            "request": request,
-            "agent_id": agent_id,
-            "agent_name": agent["name"],
-            "agent": agent
-        }
+        "agent_detail.html", {"request": request, "agent_id": agent_id, "agent_name": agent["name"], "agent": agent}
     )
 
 
 # Redirect routes for /opena1 - /opena20
 for agent in AGENT_REGISTRY:
-    exec(f"""
+    exec(
+        f"""
 @app.get("/{agent['id']}", response_class=HTMLResponse)
 async def redirect_{agent['id']}(request: Request):
     return templates.TemplateResponse("agent_detail.html", {{"request": request, "agent_id": "{agent['id']}", "agent_name": "{agent['name']}", "agent": {agent}}})
-""")
+"""
+    )
 
 
 # =============================================================================
@@ -250,10 +237,4 @@ async def redirect_{agent['id']}(request: Request):
 # =============================================================================
 
 if __name__ == "__main__":
-    uvicorn.run(
-        "main_dashboard_v3:app",
-        host="0.0.0.0",
-        port=PORT,
-        reload=False,
-        log_level="info"
-    )
+    uvicorn.run("main_dashboard_v3:app", host="0.0.0.0", port=PORT, reload=False, log_level="info")

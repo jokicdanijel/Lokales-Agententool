@@ -8,6 +8,7 @@
 ---
 
 ## 📋 Table of Contents
+
 1. [Quick Start](#quick-start)
 2. [System Architecture](#system-architecture)
 3. [Services Overview](#services-overview)
@@ -24,21 +25,25 @@
 ### Access the System
 
 **Main Dashboard:**
+
 ```
 http://localhost:8000
 ```
 
 **Tools Panel:**
+
 ```
 http://localhost:8000/tools.html
 ```
 
 **OpenWebUI:**
+
 ```
 http://localhost:3000
 ```
 
 **LocalAgent-Pro API:**
+
 ```
 http://127.0.0.1:8001/health
 ```
@@ -95,9 +100,11 @@ http://127.0.0.1:8001/health
 ## 📊 Services Overview
 
 ### LocalAgent-Pro (Port 8001)
+
 **Purpose:** Tool Execution Server with OpenAI-compatible API
 
 **Key Features:**
+
 - ✅ OpenAI-compatible `/v1/chat/completions` endpoint
 - ✅ 8 powerful tools for file/system operations
 - ✅ Sandbox isolation for security
@@ -106,6 +113,7 @@ http://127.0.0.1:8001/health
 - ✅ Command whitelisting
 
 **Endpoints:**
+
 ```
 GET  /health              - Health check
 GET  /v1/models          - Available models
@@ -114,14 +122,17 @@ GET  /metrics            - Prometheus metrics
 ```
 
 **Status Check:**
+
 ```bash
 curl http://127.0.0.1:8001/health | jq .
 ```
 
 ### OpenWebUI (Port 3000)
+
 **Purpose:** Modern Chat Interface for AI Models
 
 **Features:**
+
 - Chat interface with multiple models
 - Tool integration
 - File upload/management
@@ -129,17 +140,21 @@ curl http://127.0.0.1:8001/health | jq .
 - Dark/Light mode
 
 **Access:**
+
 ```
 http://localhost:3000
 ```
 
 ### Ollama (Port 11434)
+
 **Purpose:** Local LLM Engine
 
 **Models:**
+
 - llama3.1:8b-instruct-q4_K_M (currently loaded)
 
 **API:**
+
 ```bash
 # List models
 curl http://localhost:11434/api/tags | jq .
@@ -154,20 +169,21 @@ curl http://localhost:11434/api/health
 
 🔗 **[🚀 Öffne Tools Panel](http://localhost:8000/tools.html)**
 
-| # | Tool | Beschreibung | Link |
-|---|------|-------------|------|
-| 1 | 📝 write_file | Dateien erstellen/schreiben | [🔗 Öffnen](http://localhost:8000/tools.html?tool=write_file) |
-| 2 | 📖 read_file | Dateien auslesen | [🔗 Öffnen](http://localhost:8000/tools.html?tool=read_file) |
-| 3 | 🗑️ delete_file | Dateien löschen | [🔗 Öffnen](http://localhost:8000/tools.html?tool=delete_file) |
-| 4 | 💻 shell_exec | Shell-Befehle ausführen | [🔗 Öffnen](http://localhost:8000/tools.html?tool=shell_exec) |
-| 5 | 🌐 fetch_webpage | Webseiten abrufen | [🔗 Öffnen](http://localhost:8000/tools.html?tool=fetch_webpage) |
-| 6 | 📊 execute_query | Datenbank-Abfragen | [🔗 Öffnen](http://localhost:8000/tools.html?tool=execute_query) |
-| 7 | 🔍 list_directory | Verzeichnis auflisten | [🔗 Öffnen](http://localhost:8000/tools.html?tool=list_directory) |
-| 8 | ⚡ execute_function | Funktionen ausführen | [🔗 Öffnen](http://localhost:8000/tools.html?tool=execute_function) |
+| #   | Tool                | Beschreibung                | Link                                                                |
+| --- | ------------------- | --------------------------- | ------------------------------------------------------------------- |
+| 1   | 📝 write_file       | Dateien erstellen/schreiben | [🔗 Öffnen](http://localhost:8000/tools.html?tool=write_file)       |
+| 2   | 📖 read_file        | Dateien auslesen            | [🔗 Öffnen](http://localhost:8000/tools.html?tool=read_file)        |
+| 3   | 🗑️ delete_file      | Dateien löschen             | [🔗 Öffnen](http://localhost:8000/tools.html?tool=delete_file)      |
+| 4   | 💻 shell_exec       | Shell-Befehle ausführen     | [🔗 Öffnen](http://localhost:8000/tools.html?tool=shell_exec)       |
+| 5   | 🌐 fetch_webpage    | Webseiten abrufen           | [🔗 Öffnen](http://localhost:8000/tools.html?tool=fetch_webpage)    |
+| 6   | 📊 execute_query    | Datenbank-Abfragen          | [🔗 Öffnen](http://localhost:8000/tools.html?tool=execute_query)    |
+| 7   | 🔍 list_directory   | Verzeichnis auflisten       | [🔗 Öffnen](http://localhost:8000/tools.html?tool=list_directory)   |
+| 8   | ⚡ execute_function | Funktionen ausführen        | [🔗 Öffnen](http://localhost:8000/tools.html?tool=execute_function) |
 
 ---
 
 ### 1. 📝 write_file [🔗 Öffnen](http://localhost:8000/tools.html?tool=write_file)
+
 **Create or overwrite files**
 
 ```javascript
@@ -187,6 +203,7 @@ POST /v1/chat/completions
 ```
 
 ### 2. 📖 read_file
+
 **Read file contents**
 
 ```javascript
@@ -205,6 +222,7 @@ POST /v1/chat/completions
 ```
 
 ### 3. 🗑️ delete_file
+
 **Delete files or directories**
 
 ```javascript
@@ -226,6 +244,7 @@ POST /v1/chat/completions
 ```
 
 ### 4. 💻 shell_exec
+
 **Execute shell commands (whitelisted)**
 
 ```javascript
@@ -242,6 +261,7 @@ Whitelisted: ls, cat, grep, find, curl, wget, git, docker, python, node
 ```
 
 ### 5. 🌐 fetch_webpage
+
 **Fetch and parse web content**
 
 ```javascript
@@ -263,6 +283,7 @@ POST /v1/chat/completions
 ```
 
 ### 6. 📊 execute_query
+
 **Execute database queries**
 
 ```javascript
@@ -284,6 +305,7 @@ POST /v1/chat/completions
 ```
 
 ### 7. 🔍 list_directory
+
 **List directory contents**
 
 ```javascript
@@ -305,6 +327,7 @@ POST /v1/chat/completions
 ```
 
 ### 8. ⚡ execute_function
+
 **Execute Python or JavaScript**
 
 ```javascript
@@ -330,9 +353,11 @@ POST /v1/chat/completions
 ## 🌐 Web Interfaces
 
 ### Dashboard (index.html)
+
 **URL:** http://localhost:8000
 
 **Sections:**
+
 - Service Status Cards
 - System Metrics
 - Live Logs
@@ -340,15 +365,18 @@ POST /v1/chat/completions
 - About Information
 
 **Features:**
+
 - Real-time status updates
 - Auto-refresh every 30 seconds
 - Log export functionality
 - Smooth scrolling navigation
 
 ### Tools Panel (tools.html)
+
 **URL:** http://localhost:8000/tools.html
 
 **Layout:**
+
 - 8 Tool Cards (one per tool)
 - Input fields for parameters
 - Real-time execution
@@ -356,6 +384,7 @@ POST /v1/chat/completions
 - Error handling
 
 **Workflow:**
+
 1. Select tool card
 2. Enter parameters
 3. Click "Ausführen"
@@ -366,6 +395,7 @@ POST /v1/chat/completions
 ## 📡 API Reference
 
 ### Health Check
+
 ```bash
 GET /health
 
@@ -379,6 +409,7 @@ Response:
 ```
 
 ### Models Endpoint
+
 ```bash
 GET /v1/models
 
@@ -397,6 +428,7 @@ Response:
 ```
 
 ### Chat Completions
+
 ```bash
 POST /v1/chat/completions
 Content-Type: application/json
@@ -430,6 +462,7 @@ Response:
 ```
 
 ### Metrics
+
 ```bash
 GET /metrics
 
@@ -448,7 +481,9 @@ sandbox_files 23
 ## 🔒 Security
 
 ### Sandbox Isolation
+
 All file operations are confined to `/localagent_sandbox`
+
 ```
 /localagent_sandbox/
 ├── documents/
@@ -458,7 +493,9 @@ All file operations are confined to `/localagent_sandbox`
 ```
 
 ### Command Whitelisting
+
 Only these shell commands are allowed:
+
 ```
 File Operations: ls, cat, tail, head, find, grep, wc
 Network: curl, wget, ssh
@@ -467,9 +504,11 @@ System: echo, date, whoami, pwd
 ```
 
 ### Request Deduplication
+
 Prevents duplicate execution using MD5 hashing of request content.
 
 ### Timeout Protection
+
 ```
 shell_exec:      30s max
 fetch_webpage:   20s max
@@ -477,6 +516,7 @@ execute_query:   60s max
 ```
 
 ### Input Validation
+
 - Path sanitization (no `../` traversal)
 - Command escaping (shell special characters)
 - URL validation (http/https only)
@@ -487,24 +527,32 @@ execute_query:   60s max
 ## 🐛 Troubleshooting
 
 ### Issue: "Cannot connect to http://127.0.0.1:8001"
+
 **Solution:**
+
 1. Check if LocalAgent-Pro is running: `ps aux | grep openwebui_agent_server`
 2. Restart: `cd LocalAgent-Pro && source venv/bin/activate && python src/openwebui_agent_server.py`
 
 ### Issue: Ollama connection error
+
 **Solution:**
+
 1. Check Ollama container: `docker ps | grep ollama`
 2. Restart Docker: `docker compose restart ollama`
 3. Check network: `docker network ls`
 
 ### Issue: Tools returning 500 errors
+
 **Solution:**
+
 1. Check server logs: `tail -f server.log`
 2. Verify Ollama connection: `curl http://localhost:11434/api/tags`
 3. Check sandbox permissions: `ls -la /home/danijel-jd/localagent_sandbox`
 
 ### Issue: Dashboard not loading
+
 **Solution:**
+
 1. Check HTTP server: `ps aux | grep http.server`
 2. Restart server: `python3 -m http.server 8000`
 3. Clear browser cache and reload
@@ -565,6 +613,7 @@ Before production deployment, verify:
 ## 🎯 Common Use Cases
 
 ### Use Case 1: Daily Report Generation
+
 ```
 1. write_file() → Create report template
 2. shell_exec() → Run data collection scripts
@@ -574,6 +623,7 @@ Before production deployment, verify:
 ```
 
 ### Use Case 2: System Administration
+
 ```
 1. shell_exec() → Check system status
 2. list_directory() → Browse file system
@@ -582,6 +632,7 @@ Before production deployment, verify:
 ```
 
 ### Use Case 3: Data Processing
+
 ```
 1. fetch_webpage() → Get data from API
 2. execute_query() → Parse CSV/JSON
@@ -590,6 +641,7 @@ Before production deployment, verify:
 ```
 
 ### Use Case 4: Development Workflow
+
 ```
 1. shell_exec() → Run git commands
 2. shell_exec() → Execute tests
@@ -613,6 +665,7 @@ Before production deployment, verify:
 ## 📞 Support & Help
 
 For issues or questions:
+
 1. Check Troubleshooting section above
 2. Review documentation files
 3. Check system logs

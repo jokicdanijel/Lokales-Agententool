@@ -8,6 +8,7 @@
 ## 🎯 Was wurde implementiert?
 
 Ein **vollständig datengetriebenes Entitlements-System** für ELION Hyper-Dashboard mit:
+
 - Maschineller Generierung aus Baseline-Daten
 - Automatischer Validierung gegen Constraints
 - CI-Integration für Policy-Enforcement
@@ -21,34 +22,34 @@ Ein **vollständig datengetriebenes Entitlements-System** für ELION Hyper-Dashb
 
 ### 1. Core-Scripts
 
-| Datei | Zeilen | Funktion |
-|-------|--------|----------|
-| `scripts/build_entitlements.py` | 396 | Generiert entitlements.json aus baseline + inventory |
-| `scripts/validate_entitlements.py` | 479 | Validiert entitlements gegen 9 Constraints |
+| Datei                              | Zeilen | Funktion                                             |
+| ---------------------------------- | ------ | ---------------------------------------------------- |
+| `scripts/build_entitlements.py`    | 396    | Generiert entitlements.json aus baseline + inventory |
+| `scripts/validate_entitlements.py` | 479    | Validiert entitlements gegen 9 Constraints           |
 
 **Gesamt:** 875 Zeilen Python-Code
 
 ### 2. Build-Outputs
 
-| Datei | Größe | Inhalt |
-|-------|-------|--------|
-| `build/entitlements.json` | 24 KB | Vollständige Entitlements für alle Pläne |
-| `artifacts/entitlements_validation.json` | 2 KB | Validierungsergebnis mit Details |
-| `system_baseline.yaml` | 3.1 KB | Auto-generierte Baseline (21 Agenten) |
+| Datei                                    | Größe  | Inhalt                                   |
+| ---------------------------------------- | ------ | ---------------------------------------- |
+| `build/entitlements.json`                | 24 KB  | Vollständige Entitlements für alle Pläne |
+| `artifacts/entitlements_validation.json` | 2 KB   | Validierungsergebnis mit Details         |
+| `system_baseline.yaml`                   | 3.1 KB | Auto-generierte Baseline (21 Agenten)    |
 
 ### 3. Automation & CI
 
-| Datei | Zeilen | Funktion |
-|-------|--------|----------|
-| `Makefile.entitlements` | 78 | 11 Make-Targets für Build/Validate/View |
-| `.github/workflows/validate-entitlements.yml` | 105 | GitHub Actions Workflow |
+| Datei                                         | Zeilen | Funktion                                |
+| --------------------------------------------- | ------ | --------------------------------------- |
+| `Makefile.entitlements`                       | 78     | 11 Make-Targets für Build/Validate/View |
+| `.github/workflows/validate-entitlements.yml` | 105    | GitHub Actions Workflow                 |
 
 ### 4. Dokumentation
 
-| Datei | Zeilen | Inhalt |
-|-------|--------|--------|
-| `docs/ENTITLEMENTS_BUILDER_COMPLETE.md` | 407 | Vollständige Implementierungsdokumentation |
-| `scripts/README_ENTITLEMENTS.md` | 348 | Quick-Start-Guide & Integration-Beispiele |
+| Datei                                   | Zeilen | Inhalt                                     |
+| --------------------------------------- | ------ | ------------------------------------------ |
+| `docs/ENTITLEMENTS_BUILDER_COMPLETE.md` | 407    | Vollständige Implementierungsdokumentation |
+| `scripts/README_ENTITLEMENTS.md`        | 348    | Quick-Start-Guide & Integration-Beispiele  |
 
 **Gesamt:** 755 Zeilen Dokumentation
 
@@ -57,6 +58,7 @@ Ein **vollständig datengetriebenes Entitlements-System** für ELION Hyper-Dashb
 ## 🔐 Harte Regeln (100% durchgesetzt)
 
 ### ✅ Basic-Plan Constraint
+
 ```json
 {
   "clickable_count": 4,
@@ -73,6 +75,7 @@ Ein **vollständig datengetriebenes Entitlements-System** für ELION Hyper-Dashb
 **Validierung:** ✅ EXAKT 4 klickbare Agenten (opena3, opena4, opena7, opena11)
 
 ### ✅ Inclusion-Regel
+
 ```
 ultimum ⊇ premium ⊇ pro ⊇ basic
 
@@ -85,18 +88,21 @@ ultimum: 17 clickable (premium + 5)
 **Validierung:** ✅ Alle Inclusion-Checks bestanden
 
 ### ✅ Core-Agenten (opena1, opena2)
+
 - **Immer sichtbar** in allen Plänen
 - **NIE klickbar** (Infrastructure)
 
 **Validierung:** ✅ Visible, not clickable in all plans
 
 ### ✅ System-Agenten (opena20, opena21)
+
 - **Sichtbar** aber nicht klickbar
 - **Monitoring/Orchestration** only
 
 **Validierung:** ✅ Never clickable
 
 ### ✅ Limits-Monotonie
+
 ```
 Workflows: basic:4 → pro:10 → premium:25 → ultimum:∞
 ```
@@ -158,7 +164,6 @@ make -f Makefile.entitlements view-clickable
 # In .github/workflows
 - name: Validate Entitlements
   run: make -f Makefile.entitlements ci-validate
-
 # Exit-Code 0 = pass, 1 = fail (CI fails)
 ```
 

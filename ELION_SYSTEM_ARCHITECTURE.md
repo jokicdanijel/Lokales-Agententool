@@ -38,16 +38,16 @@ Die Persistenz-Speicher verwenden UTF-8 sowie ISO‑8601 Zeitstempel (UTC) für 
 
 ### Kern-Datenentitäten und Beziehungen
 
-| Entität | Beschreibung | Beziehungen | Speicherort |
-|---------|--------------|------------|-------------|
-| **Endpoint** | Run‑time Services (opena1..opena21) | 1:n → HealthRecord, 1:n → Safepoint | SQLite / env-Config |
-| **PatchBlock** | Unified-Diff Patch-Objekte (Code-Updates) | Gehört zu Endpoint; Audit → AuditLog | `patches/` |
-| **Safepoint** | Transaktions-Checkpoint (CMD/RESP/ROUTE/DISPATCH) | Verknüpft mit MessageRelay & Archivator | `archivp_store/YYYY/MM/DD/` + `index.jsonl` |
-| **HealthRecord** | Zeitreihen-Metriken und Health-Checks | Von Endpoint generiert; aggregiert in Koordinator | SQLite, `/logs/` |
-| **AuditLog** | SHA-256 Hashkette für Änderungen | Referenziert Endpoint & PatchBlock; append-only | `audit_hashes.log` |
-| **Voice-Program-Daten** | Notizen, Kontakte, Aufgaben, Transkripte | JSON‑persistiert im Sandbox-Verzeichnis | `LocalAgent-Pro/sandbox/` |
-| **MessageRelay** | Messaging‑Routing (Telegram → OpenWebUI) | Erzeugt Safepoints; schreibt `archive.db` | opena3 Bridge |
-| **GitHubWebhook** | GitHub Event (Push/PR/Release) | Wird in Safepoint-Flow aufgenommen; optional Auto-Patch | opena3 Bridge |
+| Entität                 | Beschreibung                                      | Beziehungen                                             | Speicherort                                 |
+| ----------------------- | ------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------- |
+| **Endpoint**            | Run‑time Services (opena1..opena21)               | 1:n → HealthRecord, 1:n → Safepoint                     | SQLite / env-Config                         |
+| **PatchBlock**          | Unified-Diff Patch-Objekte (Code-Updates)         | Gehört zu Endpoint; Audit → AuditLog                    | `patches/`                                  |
+| **Safepoint**           | Transaktions-Checkpoint (CMD/RESP/ROUTE/DISPATCH) | Verknüpft mit MessageRelay & Archivator                 | `archivp_store/YYYY/MM/DD/` + `index.jsonl` |
+| **HealthRecord**        | Zeitreihen-Metriken und Health-Checks             | Von Endpoint generiert; aggregiert in Koordinator       | SQLite, `/logs/`                            |
+| **AuditLog**            | SHA-256 Hashkette für Änderungen                  | Referenziert Endpoint & PatchBlock; append-only         | `audit_hashes.log`                          |
+| **Voice-Program-Daten** | Notizen, Kontakte, Aufgaben, Transkripte          | JSON‑persistiert im Sandbox-Verzeichnis                 | `LocalAgent-Pro/sandbox/`                   |
+| **MessageRelay**        | Messaging‑Routing (Telegram → OpenWebUI)          | Erzeugt Safepoints; schreibt `archive.db`               | opena3 Bridge                               |
+| **GitHubWebhook**       | GitHub Event (Push/PR/Release)                    | Wird in Safepoint-Flow aufgenommen; optional Auto-Patch | opena3 Bridge                               |
 
 ### Datentypen & Formate
 
@@ -72,7 +72,7 @@ Alle Daten sind UTF‑8 kodiert und nutzen ISO‑8601 Zeitstempel (UTC) für Tim
 
 ## 🔧 Was wurde installiert (Relevante Tools)
 
-- **tools/_common.py** – Utility-Funktionen (Paths, hashing, iso_utc, gitignore light parser)
+- **tools/\_common.py** – Utility-Funktionen (Paths, hashing, iso_utc, gitignore light parser)
 - **tools/scan_project.py** – Projektscanner (STRUCTURE.md, path_index.json, files.csv, violations.md)
 - **Makefile** – neue Targets: `make scan`, `make clean-map`
 - **tools/README_SCANNER.md** – Dokumentation, Quickstart, CI-Integration
@@ -87,8 +87,6 @@ Alle Daten sind UTF‑8 kodiert und nutzen ISO‑8601 Zeitstempel (UTC) für Tim
 - Typische Violations: Depth>6 (venv, cache), large files
 
 ---
-
-
 
 ---
 
@@ -141,6 +139,7 @@ Ausgabe (Frontend/API/Logs)
 ### Spezifische Datenbewegungen nach Use-Case
 
 **Use-Case 1 – Datei-Operation (z. B. write_file):**
+
 ```
 OpenWebUI → LocalAgent-Pro /api/file/write
   → Sanitization (path traversal check)
@@ -152,6 +151,7 @@ OpenWebUI → LocalAgent-Pro /api/file/write
 ```
 
 **Use-Case 2 – Telegram-Nachricht:**
+
 ```
 Telegram Bot
   → opena3-Bridge /message/relay
@@ -163,6 +163,7 @@ Telegram Bot
 ```
 
 **Use-Case 3 – Patch-Delivery (GitHub Guard):**
+
 ```
 Patch-Block (Unified-Diff)
   → Guardian vor-Sync-Check
@@ -176,6 +177,7 @@ Patch-Block (Unified-Diff)
 ```
 
 **Use-Case 4 – Voice-Programm-Ausführung (z. B. voice_scheduler):**
+
 ```
 Frontend /api/program/start
   → tools/voice_scheduler.py Launch
@@ -293,6 +295,7 @@ Gesamtprojekt/
 ### Wichtige Kernmodule
 
 **1. LocalAgent-Pro/src/openwebui_agent_server.py** – Flask REST-API mit 15+ Endpoints:
+
 - `GET /health` – Health Check
 - `GET /v1/models` – Verfügbare AI-Modelle
 - `POST /v1/chat/completions` – Chat-API (OpenAI-kompatibel)
@@ -301,31 +304,34 @@ Gesamtprojekt/
 - `POST /api/program/start` – Voice-Programm-Launch
 
 **2. 2.opena3_openwebui/main_openwebui_bridge_v2.py** – Safepoint-Bridge (Port 12347):
+
 - Relay Telegram-Nachrichten zu OpenWebUI
 - GitHub-Webhook-Verarbeitung
 - Safepoint-Archivierung in JSONL
 - Audit-Logging mit SHA-256 Hashes
 
 **3. 1.opena1&2_portier/agenten/coordinator.py** – Zentrale Orchestrierung:
+
 - Koordiniert Health-Checks aller 20 Endpunkte
 - OpenAI API-Gateway-Integration
 - Log-Aggregation
 
 **4. Voice-Tools Suite** (1.041 Zeilen, 6 Programme):
+
 - Sprachgesteuerte Daten-Ein-/Ausgabe
 - Persistent via JSON in `LocalAgent-Pro/sandbox/`
 - Modular integriert in `/api/program/start` Endpoint
 
 ### Konvention für Ports und Namensgebung
 
-| Service | Port | Rolle |
-|---------|------|-------|
+| Service                       | Port        | Rolle                   |
+| ----------------------------- | ----------- | ----------------------- |
 | Portier-Pool (opena1–opena20) | 12344–12349 | Koordination & Services |
-| OpenWebUI | 3000 | Frontend |
-| LocalAgent-Pro | 8001 | API Server |
-| opena3-Bridge | 12347 | Safepoint-Hub |
-| Ollama | 11434 | AI-Models (optional) |
-| Prometheus | 9090 | Metriken (optional) |
+| OpenWebUI                     | 3000        | Frontend                |
+| LocalAgent-Pro                | 8001        | API Server              |
+| opena3-Bridge                 | 12347       | Safepoint-Hub           |
+| Ollama                        | 11434       | AI-Models (optional)    |
+| Prometheus                    | 9090        | Metriken (optional)     |
 
 ### Konfiguration und Secrets
 
@@ -346,6 +352,7 @@ Das ELION-System ist ein **verteiltes, multi-agenten AI-Ökosystem** mit zentral
 ### Kritische Erkenntnisse
 
 **Datenfluss-Charakteristiken:**
+
 - ✅ **Asynchron & Event-getrieben** – Safepoints entstehen zu kritischen Meilensteinen
 - ✅ **Multi-Entry, Single-Exit** – Daten via OpenWebUI/Telegram/GitHub; zentrale Ausgabe via opena3-Bridge
 - ✅ **Loop-Protection** – MD5-Request-Deduplication verhindert Rekursionen
@@ -353,17 +360,18 @@ Das ELION-System ist ein **verteiltes, multi-agenten AI-Ökosystem** mit zentral
 
 **Integrations-Punkte:**
 
-| System | Port | Rolle | Integration |
-|--------|------|-------|-----------|
-| OpenWebUI | 3000 | Frontend | HTTP ↔ LocalAgent-Pro |
-| LocalAgent-Pro | 8001 | Agent-API | REST ↔ Ollama, OpenAI |
-| opena3-Bridge | 12347 | Safepoint-Hub | Relay + Archive |
-| Portier-Koordinator | 12344 | Orchestrator | Aggregation + Health |
-| Ollama | 11434 | AI-Engine | Local LLM Models |
-| GitHub CI/CD | — | Automation | Webhook-Trigger |
-| Telegram Bot | — | External-I/O | Message-Relay |
+| System              | Port  | Rolle         | Integration           |
+| ------------------- | ----- | ------------- | --------------------- |
+| OpenWebUI           | 3000  | Frontend      | HTTP ↔ LocalAgent-Pro |
+| LocalAgent-Pro      | 8001  | Agent-API     | REST ↔ Ollama, OpenAI |
+| opena3-Bridge       | 12347 | Safepoint-Hub | Relay + Archive       |
+| Portier-Koordinator | 12344 | Orchestrator  | Aggregation + Health  |
+| Ollama              | 11434 | AI-Engine     | Local LLM Models      |
+| GitHub CI/CD        | —     | Automation    | Webhook-Trigger       |
+| Telegram Bot        | —     | External-I/O  | Message-Relay         |
 
 **Sicherheits-Architektur:**
+
 - ✅ **Layered Defense** – Sandbox-Isolation → Whitelisting → Hash-Verification → Audit-Logging
 - ✅ **Secret-Management** – Umgebungsvariablen nur; niemals im Code
 - ✅ **Audit-Trail** – Immutable SHA-256 Hash-Ketten in `audit_hashes.log`

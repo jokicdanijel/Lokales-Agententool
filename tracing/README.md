@@ -4,6 +4,7 @@ This project contains optional OpenTelemetry tracing support. It is implemented
 safely so services do not fail if OpenTelemetry Python packages are not installed.
 
 Quick guide
+
 1. Install OpenTelemetry in your environment or inside each service image:
 
    pip install -r telegram_multi/requirements.txt
@@ -40,5 +41,6 @@ services:
 ```
 
 Notes
+
 - Tracing is optional and non-blocking: if packages are missing it logs a warning and continues.
 - Use a compatible OTLP collector (Grafana Agent/Tempo/Jaeger/OTel Collector) in production.

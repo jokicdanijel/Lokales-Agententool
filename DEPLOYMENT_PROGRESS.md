@@ -1,7 +1,7 @@
 # 🚀 ELION Hyper-Dashboard – Deployment Progress
 
-**Status:** Phase 0 in Bearbeitung (Schritt 1/4 ✅)  
-**Ziel:** https://hyperdashboard-one.de produktiv  
+**Status:** Phase 0 in Bearbeitung (Schritt 1/4 ✅)
+**Ziel:** https://hyperdashboard-one.de produktiv
 **Datum:** 17. Dezember 2025
 
 ---
@@ -10,20 +10,20 @@
 
 ### Schritt 1: Server gemietet ✅ DONE
 
-**Provider:** Hetzner (CPX32)  
+**Provider:** Hetzner (CPX32)
 **Server-Name:** cpx32 (ubuntu-8gb-hel1-1)
 
-| Property | Wert |
-|----------|------|
-| **Public IPv4** | `77.42.23.168` |
-| **IPv6** | `2a01:4f9:c013:7352::/64` |
-| **CPU** | 4 vCPU |
-| **RAM** | 8 GB |
-| **Disk** | 160 GB (lokal) |
-| **Region** | Helsinkii (HEL) |
+| Property        | Wert                                         |
+| --------------- | -------------------------------------------- |
+| **Public IPv4** | `77.42.23.168`                               |
+| **IPv6**        | `2a01:4f9:c013:7352::/64`                    |
+| **CPU**         | 4 vCPU                                       |
+| **RAM**         | 8 GB                                         |
+| **Disk**        | 160 GB (lokal)                               |
+| **Region**      | Helsinkii (HEL)                              |
 | **Reverse DNS** | `static.168.23.42.77.clients.your-server.de` |
-| **Kosten** | €12,59/Monat |
-| **OS** | Ubuntu 20.04 LTS (Standard) |
+| **Kosten**      | €12,59/Monat                                 |
+| **OS**          | Ubuntu 20.04 LTS (Standard)                  |
 
 ✅ **Status:** Server aktiv und SSH-erreichbar
 
@@ -34,6 +34,7 @@
 **Domain:** `hyperdashboard-one.de`
 
 **Aktion:**
+
 ```
 1. Öffne Registrar (Namecheap, GoDaddy, Ionos, Hetzner, etc.)
 2. Suche: hyperdashboard-one.de
@@ -42,7 +43,7 @@
 5. Warte auf Aktivierung (meist sofort)
 ```
 
-**Geschätzte Dauer:** 5–10 Min.  
+**Geschätzte Dauer:** 5–10 Min.
 **Nach diesem Schritt:** Registrar-Account mit Domain-Zugang
 
 ---
@@ -52,6 +53,7 @@
 **Ziel:** `hyperdashboard-one.de` → `77.42.23.168`
 
 **Im Registrar:**
+
 ```
 Type: A
 Name: @  (oder leer)
@@ -62,6 +64,7 @@ TTL: 3600 (Standard)
 ```
 
 **Verifikation (nach 5–15 Min):**
+
 ```bash
 nslookup hyperdashboard-one.de
 # Sollte zeigen: 77.42.23.168
@@ -116,6 +119,7 @@ ssh hyperdash
 ```
 
 **Erfolgreich, wenn:**
+
 ```bash
 root@ubuntu-8gb-hel1-1:~#
 ```
@@ -132,15 +136,15 @@ root@ubuntu-8gb-hel1-1:~#
   ├─ CPU: 4 vCPU ✅
   ├─ RAM: 8 GB ✅
   └─ SSH-Key heruntergeladen ⏳
-  
+
 ☐ Schritt 2: Domain registrieren ⏳
   ├─ hyperdashboard-one.de gekauft ⏳
   └─ Registrar-Login bereit ⏳
-  
+
 ☐ Schritt 3: DNS A-Record ⏳
   ├─ A-Record erstellt (@  → 77.42.23.168) ⏳
   └─ DNS propagiert (nslookup test) ⏳
-  
+
 ☐ Schritt 4: SSH testen ⏳
   ├─ ssh root@77.42.23.168 funktioniert ⏳
   └─ Ready für Phase 1 ⏳
@@ -176,24 +180,24 @@ ssh -i ~/.ssh/hetzner_key root@hyperdashboard-one.de
 
 ## 📚 Dokumentation (parallel lesen)
 
-| Datei | Verwendung |
-|-------|-----------|
-| [PRE_DEPLOYMENT_CHECKLIST.md](./PRE_DEPLOYMENT_CHECKLIST.md) | Phase 0 Details + Commands |
-| [PRODUCTION_DEPLOYMENT_STEPS.md](./PRODUCTION_DEPLOYMENT_STEPS.md) | Phase 1 (nach SSH) |
-| [DEPLOYMENT_OPENA4.md](./DEPLOYMENT_OPENA4.md) | Nginx + SSL Details |
+| Datei                                                              | Verwendung                 |
+| ------------------------------------------------------------------ | -------------------------- |
+| [PRE_DEPLOYMENT_CHECKLIST.md](./PRE_DEPLOYMENT_CHECKLIST.md)       | Phase 0 Details + Commands |
+| [PRODUCTION_DEPLOYMENT_STEPS.md](./PRODUCTION_DEPLOYMENT_STEPS.md) | Phase 1 (nach SSH)         |
+| [DEPLOYMENT_OPENA4.md](./DEPLOYMENT_OPENA4.md)                     | Nginx + SSL Details        |
 
 ---
 
 ## ⏱️ Zeitplan Rest heute
 
-| Zeit | Task | Dauer |
-|------|------|-------|
-| **Jetzt** | Domain registrieren + DNS A-Record | 10 Min |
-| **+10 Min** | DNS propagieren (warten) | 5–15 Min |
-| **+25 Min** | SSH testen + Server vorbereiten | 5 Min |
-| **~35–45 Min** | **Phase 0 COMPLETE** ✅ | |
-| **+45 Min** | **Phase 1 starten** (am Server) | 60 Min |
-| **~2 Stunden total** | **https://hyperdashboard-one.de LIVE** 🚀 | |
+| Zeit                 | Task                                      | Dauer    |
+| -------------------- | ----------------------------------------- | -------- |
+| **Jetzt**            | Domain registrieren + DNS A-Record        | 10 Min   |
+| **+10 Min**          | DNS propagieren (warten)                  | 5–15 Min |
+| **+25 Min**          | SSH testen + Server vorbereiten           | 5 Min    |
+| **~35–45 Min**       | **Phase 0 COMPLETE** ✅                   |          |
+| **+45 Min**          | **Phase 1 starten** (am Server)           | 60 Min   |
+| **~2 Stunden total** | **https://hyperdashboard-one.de LIVE** 🚀 |          |
 
 ---
 
@@ -230,15 +234,16 @@ cd Gesamtprojekt-start
 
 ---
 
-**Status:** � Phase 1 LIVE (90% done) – Infrastructure Ready!  
-**Letzter Checkpoint:** HTTPS unter https://hyperdashboard-one.de ✅  
-**ETA bis Agents Live:** ~30 Min (Services starten)  
+**Status:** � Phase 1 LIVE (90% done) – Infrastructure Ready!
+**Letzter Checkpoint:** HTTPS unter https://hyperdashboard-one.de ✅
+**ETA bis Agents Live:** ~30 Min (Services starten)
 
 ---
 
 ## 🎯 Phase 1 – LIVE! (17. Dezember 2025)
 
 **✅ Abgeschlossen:**
+
 1. System-Updates + Pakete (Nginx, Docker, Certbot)
 2. DNS propagiert: hyperdashboard-one.de → 77.42.23.168
 3. Nginx Reverse Proxy (mit /opena1–/opena4 routing)
@@ -248,6 +253,7 @@ cd Gesamtprojekt-start
 7. .env Template erstellt
 
 **🌐 Infrastruktur Live:**
+
 ```
 https://hyperdashboard-one.de     ← Domain aktiv ✅
   ├─ HTTP → HTTPS redirect
@@ -257,6 +263,7 @@ https://hyperdashboard-one.de     ← Domain aktiv ✅
 ```
 
 **⏳ Nächstes (30 Min):**
+
 1. SSH: `ssh root@hyperdashboard-one.de`
 2. Edit: `nano /var/www/hyperdashboard/.env` (API-Keys)
 3. Start: `cd /var/www/hyperdashboard && bash bin/ops.sh start`

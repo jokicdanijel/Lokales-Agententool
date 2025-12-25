@@ -34,7 +34,6 @@ In diesem Dokument erfährst du, wie du LocalAgent‑Pro auf deinem lokalen Linu
 3. **Konfiguration anpassen**
 
    Öffne die Datei `config/config.yaml` und passe folgende Einstellungen an:
-
    - `sandbox`: Setze auf `false`, wenn du direkt im Live‑Dateisystem arbeiten möchtest. Für erste Tests empfiehlt sich `true`.
    - `sandbox_path`: Lege hier das Verzeichnis fest, in dem Dateien im Sandbox‑Modus gespeichert werden.
    - `allowed_domains`: Liste der Domains, die für Web‑Requests zugelassen sind.

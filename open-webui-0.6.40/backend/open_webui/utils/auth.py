@@ -1,49 +1,35 @@
-import logging
-import uuid
-import jwt
 import base64
-import hmac
 import hashlib
-import requests
-import os
-import bcrypt
-
-from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-from cryptography.hazmat.primitives.asymmetric import ed25519
-from cryptography.hazmat.primitives import serialization
+import hmac
 import json
-
-
+import logging
+import os
+import uuid
 from datetime import datetime, timedelta
-import pytz
-from pytz import UTC
-from typing import Optional, Union, List, Dict
 
-from opentelemetry import trace
-
-
-from open_webui.utils.access_control import has_permission
-from open_webui.models.users import Users
-
+import bcrypt
+import jwt
+import requests
+from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+from fastapi import BackgroundTasks, Depends, HTTPException, Request, Response, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from open_webui.constants import ERROR_MESSAGES
-
 from open_webui.env import (
     ENABLE_PASSWORD_VALIDATION,
-    OFFLINE_MODE,
     LICENSE_BLOB,
     PASSWORD_VALIDATION_REGEX_PATTERN,
     REDIS_KEY_PREFIX,
-    pk,
-    WEBUI_SECRET_KEY,
-    TRUSTED_SIGNATURE_KEY,
-    STATIC_DIR,
     SRC_LOG_LEVELS,
+    STATIC_DIR,
+    TRUSTED_SIGNATURE_KEY,
     WEBUI_AUTH_TRUSTED_EMAIL_HEADER,
+    WEBUI_SECRET_KEY,
+    pk,
 )
-
-from fastapi import BackgroundTasks, Depends, HTTPException, Request, Response, status
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-
+from open_webui.models.users import Users
+from open_webui.utils.access_control import has_permission
+from opentelemetry import trace
+from pytz import UTC
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["OAUTH"])
@@ -92,11 +78,11 @@ def get_license_data(app, key):
                 for p, c in v.items():
                     globals().get("override_static", lambda a, b: None)(p, c)
             elif k == "count":
-                setattr(app.state, "USER_COUNT", v)
+                app.state.USER_COUNT = v
             elif k == "name":
-                setattr(app.state, "WEBUI_NAME", v)
+                app.state.WEBUI_NAME = v
             elif k == "metadata":
-                setattr(app.state, "LICENSE_METADATA", v)
+                app.state.LICENSE_METADATA = v
 
     def handler(u):
         res = requests.post(
@@ -106,13 +92,11 @@ def get_license_data(app, key):
         )
 
         if getattr(res, "ok", False):
-            payload = getattr(res, "json", lambda: {})()
+            payload = getattr(res, "json", dict)()
             data_handler(payload)
             return True
         else:
-            log.error(
-                f"License: retrieval issue: {getattr(res, 'text', 'unknown error')}"
-            )
+            log.error(f"License: retrieval issue: {getattr(res, 'text', 'unknown error')}")
 
     if key:
         us = [
@@ -190,7 +174,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     )
 
 
-def create_token(data: dict, expires_delta: Union[timedelta, None] = None) -> str:
+def create_token(data: dict, expires_delta: timedelta | None = None) -> str:
     payload = data.copy()
 
     if expires_delta:
@@ -204,7 +188,7 @@ def create_token(data: dict, expires_delta: Union[timedelta, None] = None) -> st
     return encoded_jwt
 
 
-def decode_token(token: str) -> Optional[dict]:
+def decode_token(token: str) -> dict | None:
     try:
         decoded = jwt.decode(token, SESSION_SECRET, algorithms=[ALGORITHM])
         return decoded
@@ -218,9 +202,7 @@ async def is_valid_token(request, decoded) -> bool:
         jti = decoded.get("jti")
 
         if jti:
-            revoked = await request.app.state.redis.get(
-                f"{REDIS_KEY_PREFIX}:auth:token:{jti}:revoked"
-            )
+            revoked = await request.app.state.redis.get(f"{REDIS_KEY_PREFIX}:auth:token:{jti}:revoked")
             if revoked:
                 return False
 
@@ -236,9 +218,7 @@ async def invalidate_token(request, token):
         exp = decoded.get("exp")
 
         if jti:
-            ttl = exp - int(
-                datetime.now(UTC).timestamp()
-            )  # Calculate time-to-live for the token
+            ttl = exp - int(datetime.now(UTC).timestamp())  # Calculate time-to-live for the token
 
             if ttl > 0:
                 # Store the revoked token in Redis with an expiration time
@@ -258,7 +238,7 @@ def create_api_key():
     return f"sk-{key}"
 
 
-def get_http_authorization_cred(auth_header: Optional[str]):
+def get_http_authorization_cred(auth_header: str | None):
     if not auth_header:
         return None
     try:
@@ -303,7 +283,7 @@ async def get_current_user(
     try:
         try:
             data = decode_token(token)
-        except Exception as e:
+        except Exception:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid token",
@@ -324,9 +304,7 @@ async def get_current_user(
                 )
             else:
                 if WEBUI_AUTH_TRUSTED_EMAIL_HEADER:
-                    trusted_email = request.headers.get(
-                        WEBUI_AUTH_TRUSTED_EMAIL_HEADER, ""
-                    ).lower()
+                    trusted_email = request.headers.get(WEBUI_AUTH_TRUSTED_EMAIL_HEADER, "").lower()
                     if trusted_email and user.email != trusted_email:
                         raise HTTPException(
                             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -344,9 +322,7 @@ async def get_current_user(
                 # Refresh the user's last active timestamp asynchronously
                 # to prevent blocking the request
                 if background_tasks:
-                    background_tasks.add_task(
-                        Users.update_user_last_active_by_id, user.id
-                    )
+                    background_tasks.add_task(Users.update_user_last_active_by_id, user.id)
             return user
         else:
             raise HTTPException(
@@ -385,9 +361,7 @@ def get_current_user_by_api_key(request, api_key: str):
             request.app.state.config.USER_PERMISSIONS,
         )
     ):
-        raise HTTPException(
-            status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.API_KEY_NOT_ALLOWED
-        )
+        raise HTTPException(status.HTTP_403_FORBIDDEN, detail=ERROR_MESSAGES.API_KEY_NOT_ALLOWED)
 
     # Add user info to current span
     current_span = trace.get_current_span()

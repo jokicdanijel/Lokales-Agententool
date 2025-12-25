@@ -1387,7 +1387,5 @@
       "compose_entries": 4
     }
   },
-  "messages": [
-    "loaded inventory from agent_inventory.json"
-  ]
+  "messages": ["loaded inventory from agent_inventory.json"]
 }

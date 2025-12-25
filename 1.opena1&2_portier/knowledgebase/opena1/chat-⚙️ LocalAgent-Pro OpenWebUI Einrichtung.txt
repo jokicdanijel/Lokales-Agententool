@@ -3,15 +3,15 @@
 ✅ Server-Geschäftslauf!
 ## 📋 Konfiguration
 *   **Modell:** llama3.1
-    
+
 *   **Sandbox:** ✅ Aktiv
-    
+
 *   **Sandbox-Pfad:** /home/danijel-jd/localagent_sandbox
-    
+
 *   **Erlaubte Domains:** 4
-    
+
 *   **OpenWebUI Port:** 3000
-    
+
 ## 🔗 API-Endpunkte
 **GET /health** - Serverstatus
 **GET /v1/models** - Verfügbare Modelle
@@ -215,7 +215,7 @@ ss -ltnp | grep 8001
 (venv) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Lokales Agententool/LocalAgent-Pro$ ss -ltnp | grep 8001
 LISTEN 0      128          0.0.0.0:8001       0.0.0.0:*    users:(("python",pid=225704,fd=3))
 (venv) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Lokales Agententool/LocalAgent-Pro$ sudo lsof -iTCP:8001 -sTCP:LISTEN
-[sudo] Passwort für danijel-jd:       
+[sudo] Passwort für danijel-jd:
 COMMAND    PID       USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
 python  225704 danijel-jd    3u  IPv4 781840      0t0  TCP *:8001 (LISTEN)
 (venv) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Lokales Agententool/LocalAgent-Pro$ curl: curl -s http://127.0.0.1:8001/ Gesundheit | jq
@@ -305,19 +305,19 @@ Test-Endpunkt (Tool-Ausgabe):
 (venv) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Lokales Agententool/LocalAgent-Pro$     sudo apt update
     sudo apt installieren -y curl jq
 OK:1 http://mirror.easyname.at/ubuntu-archive noble InRelease
-OK:2 http://mirror.easyname.at/ubuntu-archive noble-updates InRelease                     
-OK:3 https://download.docker.com/linux/ubuntu noble InRelease                             
-OK:4 http://mirror.easyname.at/ubuntu-archive noble-backports InRelease                   
-Ign:5 http://dl.google.com/linux/chrome-remote-desktop/deb stable InRelease               
-OK:6 https://cli.github.com/packages stable InRelease                                     
-Ign:7 https://mirror.alwyzon.net/linuxmint zara InRelease                                 
-OK:8 https://mirror.alwyzon.net/linuxmint zara Release                                    
-OK:9 https://packages.microsoft.com/repos/code stable InRelease                           
-OK:10 https://dl.google.com/linux/chrome/deb stable InRelease                             
-OK:11 http://security.ubuntu.com/ubuntu noble-security InRelease                          
-OK:12 http://dl.google.com/linux/chrome-remote-desktop/deb stable Release                 
-Ign:13 https://releases.warp.dev/linux/deb stable InRelease               
-OK:14 http://ddebs.ubuntu.com noble InRelease     
+OK:2 http://mirror.easyname.at/ubuntu-archive noble-updates InRelease
+OK:3 https://download.docker.com/linux/ubuntu noble InRelease
+OK:4 http://mirror.easyname.at/ubuntu-archive noble-backports InRelease
+Ign:5 http://dl.google.com/linux/chrome-remote-desktop/deb stable InRelease
+OK:6 https://cli.github.com/packages stable InRelease
+Ign:7 https://mirror.alwyzon.net/linuxmint zara InRelease
+OK:8 https://mirror.alwyzon.net/linuxmint zara Release
+OK:9 https://packages.microsoft.com/repos/code stable InRelease
+OK:10 https://dl.google.com/linux/chrome/deb stable InRelease
+OK:11 http://security.ubuntu.com/ubuntu noble-security InRelease
+OK:12 http://dl.google.com/linux/chrome-remote-desktop/deb stable Release
+Ign:13 https://releases.warp.dev/linux/deb stable InRelease
+OK:14 http://ddebs.ubuntu.com noble InRelease
 OK:15 http://ddebs.ubuntu.com noble-updates InRelease
 OK:16 https://releases.warp.dev/linux/deb stable Release
 Paketlisten werden gelesen… Fertig
@@ -611,7 +611,7 @@ Hinweis zum Code-Fix-Ansatz
 Sag mir gern, ob ich dir eine kurze, fertig kopierbare OpenWebUI-Copilot-Datei (System Prompt + Test-Skripte) zusammenbauen soll. Der obige Text ist direkt nutzbar und minimiert Missverständnisse beim Setup.
 
 ### USER
-  
+
 🚀 LocalAgent-Pro Server (OpenWebUI-kompatibel) startet...
 🧠 Modell: llama3.1
 🔒 Sandbox: ✅ Aktiv
@@ -707,7 +707,7 @@ ss -ltnp | grep 8001
 (venv) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Lokales Agententool/LocalAgent-Pro$ ss -ltnp | grep 8001
 LISTEN 0      128          0.0.0.0:8001       0.0.0.0:*    users:(("python",pid=225704,fd=3))
 (venv) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Lokales Agententool/LocalAgent-Pro$ sudo lsof -iTCP:8001 -sTCP:LISTEN
-[sudo] Passwort für danijel-jd:       
+[sudo] Passwort für danijel-jd:
 COMMAND    PID       USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
 python  225704 danijel-jd    3u  IPv4 781840      0t0  TCP *:8001 (LISTEN)
 (venv) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Lokales Agententool/LocalAgent-Pro$ curl: curl -s http://127.0.0.1:8001/ Gesundheit | jq
@@ -797,19 +797,19 @@ Test-Endpunkt (Tool-Ausgabe):
 (venv) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Lokales Agententool/LocalAgent-Pro$     sudo apt update
     sudo apt installieren -y curl jq
 OK:1 http://mirror.easyname.at/ubuntu-archive noble InRelease
-OK:2 http://mirror.easyname.at/ubuntu-archive noble-updates InRelease                     
-OK:3 https://download.docker.com/linux/ubuntu noble InRelease                             
-OK:4 http://mirror.easyname.at/ubuntu-archive noble-backports InRelease                   
-Ign:5 http://dl.google.com/linux/chrome-remote-desktop/deb stable InRelease               
-OK:6 https://cli.github.com/packages stable InRelease                                     
-Ign:7 https://mirror.alwyzon.net/linuxmint zara InRelease                                 
-OK:8 https://mirror.alwyzon.net/linuxmint zara Release                                    
-OK:9 https://packages.microsoft.com/repos/code stable InRelease                           
-OK:10 https://dl.google.com/linux/chrome/deb stable InRelease                             
-OK:11 http://security.ubuntu.com/ubuntu noble-security InRelease                          
-OK:12 http://dl.google.com/linux/chrome-remote-desktop/deb stable Release                 
-Ign:13 https://releases.warp.dev/linux/deb stable InRelease               
-OK:14 http://ddebs.ubuntu.com noble InRelease     
+OK:2 http://mirror.easyname.at/ubuntu-archive noble-updates InRelease
+OK:3 https://download.docker.com/linux/ubuntu noble InRelease
+OK:4 http://mirror.easyname.at/ubuntu-archive noble-backports InRelease
+Ign:5 http://dl.google.com/linux/chrome-remote-desktop/deb stable InRelease
+OK:6 https://cli.github.com/packages stable InRelease
+Ign:7 https://mirror.alwyzon.net/linuxmint zara InRelease
+OK:8 https://mirror.alwyzon.net/linuxmint zara Release
+OK:9 https://packages.microsoft.com/repos/code stable InRelease
+OK:10 https://dl.google.com/linux/chrome/deb stable InRelease
+OK:11 http://security.ubuntu.com/ubuntu noble-security InRelease
+OK:12 http://dl.google.com/linux/chrome-remote-desktop/deb stable Release
+Ign:13 https://releases.warp.dev/linux/deb stable InRelease
+OK:14 http://ddebs.ubuntu.com noble InRelease
 OK:15 http://ddebs.ubuntu.com noble-updates InRelease
 OK:16 https://releases.warp.dev/linux/deb stable Release
 Paketlisten werden gelesen… Fertig

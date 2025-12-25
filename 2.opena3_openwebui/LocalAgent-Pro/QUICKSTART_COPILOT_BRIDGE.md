@@ -20,16 +20,19 @@ Ein vollautomatisiertes Bash-Skript, das LocalAgent-Pro mit VSCode Copilot verbi
 ## 🎯 5-Minuten Setup
 
 ### 1. Navigiere zum Projekt
+
 ```bash
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.opena3_openwebui/LocalAgent-Pro
 ```
 
 ### 2. Starte das Skript
+
 ```bash
 ./scripts/vscode_copilot_bridge.sh
 ```
 
 ### 3. Wähle eine Aktion
+
 ```
 1️⃣  TEST-Generierung (10 Sek)
 2️⃣  Struktur reorganisieren (30 Sek)
@@ -45,6 +48,7 @@ cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/2.opena3_openwebu
 ### 🧪 Option 1: TEST-Generierung
 
 **Erstellt:**
+
 ```
 tests/
 ├── unit/
@@ -60,10 +64,12 @@ tests/
 ```
 
 **Plus Dateien:**
+
 - `pytest.ini` - Pytest-Konfiguration
 - `.coveragerc` - Coverage-Konfiguration
 
 **Ausführen:**
+
 ```bash
 pytest -v --cov=src
 ```
@@ -73,6 +79,7 @@ pytest -v --cov=src
 ### 📁 Option 2: Struktur optimieren
 
 **Neue Struktur:**
+
 ```
 LocalAgent-Pro/
 ├── src/
@@ -91,6 +98,7 @@ LocalAgent-Pro/
 ```
 
 **Und generiert:**
+
 - `docs/PROJECT_MAP.md` - Vollständige Struktur-Dokumentation
 
 ---
@@ -98,12 +106,14 @@ LocalAgent-Pro/
 ### 📦 Option 3: ZIP Export
 
 **Erstellt auf Desktop:**
+
 ```
 LocalAgent-Pro-Autobuild_20251125_120200.zip
 LocalAgent-Pro-Autobuild_20251125_120200_MANIFEST.txt
 ```
 
 **Enthält:**
+
 - Kompletten Quellcode
 - Tests & Fixtures
 - Dokumentation
@@ -111,6 +121,7 @@ LocalAgent-Pro-Autobuild_20251125_120200_MANIFEST.txt
 - Shell-Skripte
 
 **Nicht enthalten (automatisch ausgeschlossen):**
+
 - `.git/`, `.venv/`, `__pycache__/`
 - `*.pyc`, `.pytest_cache/`
 
@@ -119,6 +130,7 @@ LocalAgent-Pro-Autobuild_20251125_120200_MANIFEST.txt
 ### 🏥 Option 6: Health-Check
 
 **Prüft:**
+
 - ✅ VSCode Installation
 - ✅ Python-Version
 - ✅ Abhängigkeiten (Flask, requests, pytest, etc.)
@@ -131,6 +143,7 @@ LocalAgent-Pro-Autobuild_20251125_120200_MANIFEST.txt
 - ✅ Copilot-Integration
 
 **Output-Beispiel:**
+
 ```
 ✅ VSCode installiert: 1.96.0
 ✅ Python3 vorhanden: Python 3.12.3
@@ -147,6 +160,7 @@ System Health: 98%
 ## 💡 Häufige Workflows
 
 ### Schneller Komplett-Run
+
 ```bash
 ./scripts/vscode_copilot_bridge.sh
 # Wähle: 4 (ALLES)
@@ -154,6 +168,7 @@ System Health: 98%
 ```
 
 ### Nur Tests
+
 ```bash
 ./scripts/vscode_copilot_bridge.sh
 # Wähle: 1
@@ -162,6 +177,7 @@ pytest -v
 ```
 
 ### Vorbereitung für Deployment
+
 ```bash
 ./scripts/vscode_copilot_bridge.sh
 # Wähle: 4 (ALLES)
@@ -191,12 +207,14 @@ cat logs/copilot_bridge_20251125_120200.log
 ## 🛠️ Fehlerbehebung
 
 ### Problem: "Command not found"
+
 ```bash
 # Lösung:
 chmod +x ./scripts/vscode_copilot_bridge.sh
 ```
 
 ### Problem: "VSCode nicht gefunden"
+
 ```bash
 # Prüfe:
 which code
@@ -206,6 +224,7 @@ VSCODE_CMD="/usr/bin/code" ./scripts/vscode_copilot_bridge.sh
 ```
 
 ### Problem: "Permission denied"
+
 ```bash
 # Lösung:
 chmod +x ./scripts/*.sh
@@ -213,6 +232,7 @@ chmod +x ./scripts/health/*.sh
 ```
 
 ### Problem: "ZIP Erstellung fehlgeschlagen"
+
 ```bash
 # Prüfe:
 zip --version  # Sollte installiert sein
@@ -236,6 +256,7 @@ code config/.copilot_bridge_config.yaml
 ```
 
 **Wichtige Einstellungen:**
+
 ```yaml
 project:
   root: "/pfad/zum/projekt"
@@ -274,11 +295,13 @@ zip_export:
 ## 📞 Support & Troubleshooting
 
 **Log-Fehler?**
+
 ```bash
 tail -50 logs/copilot_bridge_*.log | grep ERROR
 ```
 
 **Script hängt?**
+
 ```bash
 # Abort und neu starten
 Ctrl+C
@@ -286,6 +309,7 @@ Ctrl+C
 ```
 
 **Struktur verändert?**
+
 ```bash
 # Führe Check aus:
 ./scripts/health/check_system.sh

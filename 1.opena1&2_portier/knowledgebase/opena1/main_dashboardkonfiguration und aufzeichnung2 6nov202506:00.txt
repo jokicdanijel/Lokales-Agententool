@@ -798,7 +798,7 @@ danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$ 
 {"service":"opena19","status":"healthy","strict":true,"timestamp":"2025-11-05T17:20:37.111690"}danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/curl -H "Authorization: Bearer $(cat .env)" \
      http://127.0.0.1:12349/api/status/all
 cat: .env: Datei oder Verzeichnis nicht gefunden
-{"detail":"Not authenticated"}danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$  
+{"detail":"Not authenticated"}danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt$
 ChatGPT:
 
 Ja — klar. Dein curl lief aus dem Ordner Gesamtprojekt, dort gibt’s keine .env.
@@ -863,7 +863,7 @@ curl: (7) Failed to connect to 127.0.0.1 port 12349 after 0 ms: Couldn't connect
 danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$ curl -H "Authorization: Bearer $(cat /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/.env)" \
      http://127.0.0.1:12349/api/status/all
 curl: (7) Failed to connect to 127.0.0.1 port 12349 after 0 ms: Couldn't connect to server
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$ 
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$
 ChatGPT:
 
 Jup — der Fehler ist simpel: Der Dashboard-Server läuft gerade nicht (deshalb “Failed to connect … 12349”). Lass uns das in 90 Sek. sauber hochziehen.
@@ -1087,7 +1087,7 @@ curl http://127.0.0.1:12349/api/status/all
 Du:
 danijel-jd@danijeljd-ESPRIMO-P920:~$ curl -H "Authorization: Bearer $(cat /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/.env)" \
      http://127.0.0.1:12349/api/status/all
-{"strict":true,"agents":{}}danijel-jd@danijeljd-ESPRIMO-P920:~$ 
+{"strict":true,"agents":{}}danijel-jd@danijeljd-ESPRIMO-P920:~$
 danijel-jd@danijeljd-ESPRIMO-P920:~$ curl -H "Authorization: Bearer $(cat /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/.env)" \
      http://127.0.0.1:12349/api/status/all
 danijel-jd@danijeljd-ESPRIMO-P920:~$ cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agenttprojekt/19.dashboard_agent
@@ -1350,8 +1350,8 @@ Wenn der Health-Check wieder 200 ist, hängen wir opena1 auf 12344 an (Auto-Hand
 Du:
 9.dashboard_agent$ # Wer lauscht auf 12349?
 ss -ltnp 'sport = :12349' || sudo lsof -iTCP:12349 -sTCP:LISTEN -n -P
-State   Recv-Q   Send-Q     Local Address:Port     Peer Address:Port  Process   
-danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$ 
+State   Recv-Q   Send-Q     Local Address:Port     Peer Address:Port  Process
+danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$
 ChatGPT:
 
 Gut: Port 12349 ist frei. Also starten wir den Dashboard-Server jetzt sauber und testen sofort den Token.
@@ -2775,7 +2775,7 @@ Services gestartet. Logs: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtpr
 }
 # 6) Letzte Safepoints im Archiv listen (optional per ls)
 Heute noch keine Dateien gefunden.
-(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$ 
+(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$
 ChatGPT:
 
 Gut gesehen. Zwei Baustellen:
@@ -3486,7 +3486,7 @@ tail -n 120 logs/dashboard_runtime.log
 2025-11-06 06:05:20,184 - security - INFO - Tokenprüfung ok=True
 2025-11-06 06:05:20,184 - dashboard - ERROR - Fehler bei Befehlsausführung: Agent register nicht registriert
 2025-11-06 06:05:20,192 - security - INFO - Tokenprüfung ok=True
-(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$ 
+(venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$
 ChatGPT:
 
 Network connection lost. Attempting to reconnect…

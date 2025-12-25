@@ -1,63 +1,65 @@
+default_language_version:
+  python: python3.12
+
+default_stages: [pre-commit]
+
+fail_fast: true
+
+exclude: |
+  (?x)^(archivp_store/|\.venv/|\.venv-precommit/|venv/|dist/|build/|open-webui-0\.6\.40/|^start/|^1\.opena1&2_portier/knowledgebase/|^3\.opena4_telegram/archivp/|^artifacts/|^build/|(.*/)?artifacts/|(.*/)?\.vscode/|(.*/)?knowledgebase/|(.*/)?archivp/|.*\.min\.(js|css)$)
+
 repos:
-  # YAML validation
+  # Basic hygiene (fast, staged files only)
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
-      - id: check-yaml
-        args: ['--unsafe']
-      - id: check-json
-      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=1024"]
       - id: end-of-file-fixer
       - id: trailing-whitespace
-      - id: check-ast
-      - id: debug-statements
+      - id: check-yaml
+      - id: check-toml
+      - id: check-json
 
-  # isort (import sorting)
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.12.0
-    hooks:
-      - id: isort
-        args: ['--profile', 'black', '--line-length', '120']
-
-  # Black (code formatting)
-  - repo: https://github.com/psf/black
-    rev: 24.8.0
-    hooks:
-      - id: black
-        language_version: python3.12
-        args: ['--line-length', '120']
-
-  # Ruff (fast linting)
+  # Python linting (ruff) - staged-only, auto-fix enabled
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.6.8
+    rev: v0.6.9
     hooks:
       - id: ruff
-        args: [--fix, --line-length=120]
+        args: ["--fix", "--exit-non-zero-on-fix"]
       - id: ruff-format
 
-  # Flake8 (additional linting)
-  - repo: https://github.com/PyCQA/flake8
-    rev: 6.0.0
+  # GitHub Actions / Workflows: actionlint (lint only)
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.7
     hooks:
-      - id: flake8
-        args: ['--max-line-length=120', '--extend-ignore=E203,W503,E501']
-        stages: [manual]  # Run manually if needed
+      - id: actionlint
+        files: ^\.github/workflows/.*\.(ya?ml)$
 
-  # MyPy (type checking)
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.11.2
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
     hooks:
-      - id: mypy
-        additional_dependencies: ['pydantic', 'fastapi', 'httpx']
-        args: ["--ignore-missing-imports", "--no-error-summary"]
-        stages: [manual]  # Run manually if needed
+      - id: detect-secrets
+        args: ["--baseline", ".secrets.baseline"]
 
-  # Local Portier Policy Check
+  # Local policy gates (system hooks) - run on staged content
   - repo: local
     hooks:
-      - id: portier-policy
-        name: Portier Policy Check
-        entry: bash 1.portier_openai/skripte/validate_portier.sh
+      - id: policy-port-range
+        name: "policy: forbid 8080 & enforce host ports 12344-12399"
+        entry: python3.12 scripts/policy/ports.py
         language: system
         pass_filenames: false
-        stages: [manual]
+
+      - id: policy-html-only
+        name: "policy: HTML-only (no JS/CSS) for app pages"
+        entry: python3.12 scripts/policy/html_only.py
+        language: system
+        pass_filenames: false
+
+      - id: policy-no-agent-ports-in-ui
+        name: "policy: UI must not link to agent ports"
+        entry: python3.12 scripts/policy/no_agent_ports_in_ui.py
+        language: system
+        pass_filenames: false

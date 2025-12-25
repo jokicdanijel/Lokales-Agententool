@@ -25,16 +25,16 @@ Das System nutzt mehrschichtige Persistence:
 
 ### Kern-Datenentitäten und Beziehungen
 
-| Entität | Beschreibung | Beziehungen | Speicherort |
-|---------|------------|-----------|-----------|
-| **Endpoint** (20) | Services auf Port 12344–12399 (opena1–opena20) | Hat viele HealthRecords; wird gepatcht via PatchBlock | SQLite, .env |
-| **PatchBlock** | Unified-Diff-Patches für Code-Updates | Gehört zu Endpoint; wird geauditet in AuditLog | `patches/` Verzeichnis |
-| **Safepoint** | Transaktions-Checkpoints (Gateway, Tool-Execution, Archive-Access) | Ist Teil von MessageRelay/GitHubWebhook-Flow | `archivp_store/index.jsonl` |
-| **HealthRecord** | Zeitstempel-basierte Gesundheitsprüfungen | Ist von Endpoint; Zeitreihen-Metadaten | SQLite, `/logs/` |
-| **AuditLog** | SHA-256 Hash-Ketten für alle Änderungen | Referenziert Endpoint & PatchBlock; vollständig verfolgbar | `audit_hashes.log` |
-| **Voice-Program-Daten** | Notizen, Kontakte, Aufgaben, Transkripte (1.041 Zeilen, 6 Programme) | Persistent in JSON | `LocalAgent-Pro/sandbox/` |
-| **MessageRelay** | Telegram → OpenWebUI Nachrichten-Routing | Wird zu Safepoint; loggt in archive.db | opena3 Bridge |
-| **GitHubWebhook** | GitHub-Events (Push, PR, Release) | Wird zu Safepoint; triggert optionale Updates | opena3 Bridge |
+| Entität                 | Beschreibung                                                         | Beziehungen                                                | Speicherort                 |
+| ----------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------- | --------------------------- |
+| **Endpoint** (20)       | Services auf Port 12344–12399 (opena1–opena20)                       | Hat viele HealthRecords; wird gepatcht via PatchBlock      | SQLite, .env                |
+| **PatchBlock**          | Unified-Diff-Patches für Code-Updates                                | Gehört zu Endpoint; wird geauditet in AuditLog             | `patches/` Verzeichnis      |
+| **Safepoint**           | Transaktions-Checkpoints (Gateway, Tool-Execution, Archive-Access)   | Ist Teil von MessageRelay/GitHubWebhook-Flow               | `archivp_store/index.jsonl` |
+| **HealthRecord**        | Zeitstempel-basierte Gesundheitsprüfungen                            | Ist von Endpoint; Zeitreihen-Metadaten                     | SQLite, `/logs/`            |
+| **AuditLog**            | SHA-256 Hash-Ketten für alle Änderungen                              | Referenziert Endpoint & PatchBlock; vollständig verfolgbar | `audit_hashes.log`          |
+| **Voice-Program-Daten** | Notizen, Kontakte, Aufgaben, Transkripte (1.041 Zeilen, 6 Programme) | Persistent in JSON                                         | `LocalAgent-Pro/sandbox/`   |
+| **MessageRelay**        | Telegram → OpenWebUI Nachrichten-Routing                             | Wird zu Safepoint; loggt in archive.db                     | opena3 Bridge               |
+| **GitHubWebhook**       | GitHub-Events (Push, PR, Release)                                    | Wird zu Safepoint; triggert optionale Updates              | opena3 Bridge               |
 
 ### Datentypen und Formate
 
@@ -287,14 +287,14 @@ Gesamtprojekt/
 
 ### Konvention für Ports und Namensgebung
 
-| Service | Port | Rolle |
-|---------|------|-------|
+| Service                       | Port        | Rolle                   |
+| ----------------------------- | ----------- | ----------------------- |
 | Portier-Pool (opena1–opena20) | 12344–12349 | Koordination & Services |
-| OpenWebUI | 3000 | Frontend |
-| LocalAgent-Pro | 8001 | API Server |
-| opena3-Bridge | 12347 | Safepoint-Hub |
-| Ollama | 11434 | AI-Models (optional) |
-| Prometheus | 9090 | Metriken (optional) |
+| OpenWebUI                     | 3000        | Frontend                |
+| LocalAgent-Pro                | 8001        | API Server              |
+| opena3-Bridge                 | 12347       | Safepoint-Hub           |
+| Ollama                        | 11434       | AI-Models (optional)    |
+| Prometheus                    | 9090        | Metriken (optional)     |
 
 ### Konfiguration und Secrets
 
@@ -323,15 +323,15 @@ Das ELION-System ist ein **verteiltes, multi-agenten AI-Ökosystem** mit zentral
 
 **Integrations-Punkte:**
 
-| System | Port | Rolle | Integration |
-|--------|------|-------|-----------|
-| OpenWebUI | 3000 | Frontend | HTTP ↔ LocalAgent-Pro |
-| LocalAgent-Pro | 8001 | Agent-API | REST ↔ Ollama, OpenAI |
-| opena3-Bridge | 12347 | Safepoint-Hub | Relay + Archive |
-| Portier-Koordinator | 12344 | Orchestrator | Aggregation + Health |
-| Ollama | 11434 | AI-Engine | Local LLM Models |
-| GitHub CI/CD | — | Automation | Webhook-Trigger |
-| Telegram Bot | — | External-I/O | Message-Relay |
+| System              | Port  | Rolle         | Integration           |
+| ------------------- | ----- | ------------- | --------------------- |
+| OpenWebUI           | 3000  | Frontend      | HTTP ↔ LocalAgent-Pro |
+| LocalAgent-Pro      | 8001  | Agent-API     | REST ↔ Ollama, OpenAI |
+| opena3-Bridge       | 12347 | Safepoint-Hub | Relay + Archive       |
+| Portier-Koordinator | 12344 | Orchestrator  | Aggregation + Health  |
+| Ollama              | 11434 | AI-Engine     | Local LLM Models      |
+| GitHub CI/CD        | —     | Automation    | Webhook-Trigger       |
+| Telegram Bot        | —     | External-I/O  | Message-Relay         |
 
 **Sicherheits-Architektur:**
 

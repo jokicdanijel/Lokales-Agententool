@@ -1,7 +1,7 @@
 # TODO – opena4 Telegram Bot Agent
 
-**Port:** 12348  
-**Status:** 🟡 Planned  
+**Port:** 12348
+**Status:** 🟡 Planned
 **Kürzel:** `telep`
 
 ---
@@ -89,5 +89,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

@@ -1,7 +1,7 @@
 # 📦 Archive Patterns Module – opena2 KB
 
-**Erstellt:** Nov 8, 2025 19:05 UTC  
-**Version:** 1.0  
+**Erstellt:** Nov 8, 2025 19:05 UTC
+**Version:** 1.0
 **Status:** 🟢 OPERATIONAL (15+ entries verified Nov 8)
 
 ---
@@ -53,7 +53,7 @@ SP1762622898_opena_finance→opena2_TRANSACTION.json
   },
   "payload": {
     "account_id": "d62d3fb6-1234-5678-abcd-ef0123456789",
-    "amount": -50.00,
+    "amount": -50.0,
     "currency": "EUR",
     "description": "Expense: Coffee",
     "category": "food",
@@ -92,6 +92,7 @@ archivp/
 ```
 
 **Properties:**
+
 - `ts` – ISO 8601 timestamp
 - `path` – Relative path to file
 - `src` – Source service
@@ -113,6 +114,7 @@ curl -s http://127.0.0.1:12345/archiv/last?n=5 | jq .
 ```
 
 **Response:**
+
 ```json
 {
   "count": 5,
@@ -146,6 +148,7 @@ curl -s http://127.0.0.1:12345/archiv/date/2025-11-08 | jq .
 ```
 
 **Response:**
+
 ```json
 {
   "date": "2025-11-08",
@@ -165,6 +168,7 @@ curl -s http://127.0.0.1:12345/archiv/source/opena_finance | jq .
 ```
 
 **Response:**
+
 ```json
 {
   "source": "opena_finance",
@@ -184,6 +188,7 @@ curl -s http://127.0.0.1:12345/archiv/kind/TRANSACTION | jq .
 ```
 
 **Response:**
+
 ```json
 {
   "kind": "TRANSACTION",
@@ -199,6 +204,7 @@ curl -s http://127.0.0.1:12345/archiv/kind/TRANSACTION | jq .
 **Endpoint:** `POST /store/archivp`
 
 **Request:**
+
 ```bash
 curl -X POST http://127.0.0.1:12345/store/archivp \
   -H "Content-Type: application/json" \
@@ -215,6 +221,7 @@ curl -X POST http://127.0.0.1:12345/store/archivp \
 ```
 
 **Response:**
+
 ```json
 {
   "written": true,
@@ -233,12 +240,12 @@ curl -X POST http://127.0.0.1:12345/store/archivp \
 Before writing:
   1. Compute SHA-256 hash of payload
   2. Check if hash exists in archive
-  
+
   IF hash matches existing entry:
     → Don't write new file
     → Log: "DUPLICATE_SKIPPED (hash: abc123)"
     → Return: {"written": false, "reason": "duplicate"}
-    
+
   IF hash is new:
     → Write new file
     → Add to index.jsonl
@@ -286,7 +293,7 @@ Operation: Add new entry
   → Append line to end of file
   → Never modify existing lines
   → Never delete lines
-  
+
 Benefit:
   - Fast appends (O(1))
   - Immutable history
@@ -315,6 +322,7 @@ done
 ## 🧪 Test Examples (Verified Nov 8)
 
 ### Test 1: Write Transaction
+
 ```bash
 curl -X POST http://127.0.0.1:12345/store/archivp \
   -d '{
@@ -336,6 +344,7 @@ curl -X POST http://127.0.0.1:12345/store/archivp \
 ---
 
 ### Test 2: Query Last 5 Entries
+
 ```bash
 curl -s http://127.0.0.1:12345/archiv/last?n=5 | jq '.count'
 
@@ -347,6 +356,7 @@ curl -s http://127.0.0.1:12345/archiv/last?n=5 | jq '.count'
 ---
 
 ### Test 3: Query By Source
+
 ```bash
 curl -s http://127.0.0.1:12345/archiv/source/opena4_telegram | jq '.count'
 
@@ -359,19 +369,20 @@ curl -s http://127.0.0.1:12345/archiv/source/opena4_telegram | jq '.count'
 
 ## 📈 Performance Notes
 
-| Operation | Latency | Notes |
-|-----------|---------|-------|
-| Write (new) | ~10ms | File I/O + index append |
-| Write (duplicate) | ~5ms | Hash check only |
-| Query last N | ~20ms | Reads index, fetches files |
-| Query by source | ~50ms | Full scan of index |
-| Query by date | ~30ms | Directory listing + files |
+| Operation         | Latency | Notes                      |
+| ----------------- | ------- | -------------------------- |
+| Write (new)       | ~10ms   | File I/O + index append    |
+| Write (duplicate) | ~5ms    | Hash check only            |
+| Query last N      | ~20ms   | Reads index, fetches files |
+| Query by source   | ~50ms   | Full scan of index         |
+| Query by date     | ~30ms   | Directory listing + files  |
 
 ---
 
 ## 🔄 Nov 8 Archive Status
 
 **Current State:**
+
 ```
 Archive Location: archivp/2025/11/08/
 Total Entries: 15+
@@ -381,7 +392,7 @@ Distribution:
   - opena_finance → opena2: 6 entries (TRANSACTION)
   - opena4_telegram → opena2: 2+ entries (MESSAGE)
   - Other: 7+ entries
-  
+
 Index Integrity: ✅ 100% verified
 Deduplication: ✅ Working (no duplicates found)
 Append-Only: ✅ Enforced (no overwrites)
@@ -392,6 +403,7 @@ Append-Only: ✅ Enforced (no overwrites)
 ## 🚀 Nov 9 Expectations
 
 **Archive Will Receive:**
+
 - opena19 (Dashboard) startup events
 - Agent registration events
 - Health check results (possibly)
@@ -399,6 +411,7 @@ Append-Only: ✅ Enforced (no overwrites)
 - Finance transactions (ongoing)
 
 **By Nov 9 EOD:**
+
 - Estimated 50+ total archive entries
 - Estimated 15-20 KB total size
 - Full audit trail of system operations
@@ -414,6 +427,6 @@ Append-Only: ✅ Enforced (no overwrites)
 
 ---
 
-**Status:** 🟢 OPERATIONAL  
-**Version:** 1.0  
+**Status:** 🟢 OPERATIONAL
+**Version:** 1.0
 **Entries Verified:** 15+ (Nov 8, 19:00 UTC)

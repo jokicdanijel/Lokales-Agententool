@@ -1,24 +1,12 @@
-import os
-from pathlib import Path
-from typing import Optional
 import logging
+from typing import Optional
 
-from open_webui.models.users import Users
-from open_webui.models.groups import (
-    Groups,
-    GroupForm,
-    GroupUpdateForm,
-    GroupResponse,
-    UserIdsForm,
-)
-
-from open_webui.config import CACHE_DIR
+from fastapi import APIRouter, Depends, HTTPException, status
 from open_webui.constants import ERROR_MESSAGES
-from fastapi import APIRouter, Depends, HTTPException, Request, status
-
-from open_webui.utils.auth import get_admin_user, get_verified_user
 from open_webui.env import SRC_LOG_LEVELS
-
+from open_webui.models.groups import GroupForm, GroupResponse, Groups, GroupUpdateForm, UserIdsForm
+from open_webui.models.users import Users
+from open_webui.utils.auth import get_admin_user, get_verified_user
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MAIN"])
@@ -31,7 +19,7 @@ router = APIRouter()
 
 
 @router.get("/", response_model=list[GroupResponse])
-async def get_groups(share: Optional[bool] = None, user=Depends(get_verified_user)):
+async def get_groups(share: bool | None = None, user=Depends(get_verified_user)):
     if user.role == "admin":
         groups = Groups.get_groups()
     else:
@@ -42,11 +30,7 @@ async def get_groups(share: Optional[bool] = None, user=Depends(get_verified_use
     for group in groups:
         if share is not None:
             # Check if the group has data and a config with share key
-            if (
-                group.data
-                and "share" in group.data.get("config", {})
-                and group.data["config"]["share"] != share
-            ):
+            if group.data and "share" in group.data.get("config", {}) and group.data["config"]["share"] != share:
                 continue
 
         group_list.append(
@@ -112,9 +96,7 @@ async def get_group_by_id(id: str, user=Depends(get_admin_user)):
 
 
 @router.post("/id/{id}/update", response_model=Optional[GroupResponse])
-async def update_group_by_id(
-    id: str, form_data: GroupUpdateForm, user=Depends(get_admin_user)
-):
+async def update_group_by_id(id: str, form_data: GroupUpdateForm, user=Depends(get_admin_user)):
     try:
         group = Groups.update_group_by_id(id, form_data)
         if group:
@@ -141,9 +123,7 @@ async def update_group_by_id(
 
 
 @router.post("/id/{id}/users/add", response_model=Optional[GroupResponse])
-async def add_user_to_group(
-    id: str, form_data: UserIdsForm, user=Depends(get_admin_user)
-):
+async def add_user_to_group(id: str, form_data: UserIdsForm, user=Depends(get_admin_user)):
     try:
         if form_data.user_ids:
             form_data.user_ids = Users.get_valid_user_ids(form_data.user_ids)
@@ -168,9 +148,7 @@ async def add_user_to_group(
 
 
 @router.post("/id/{id}/users/remove", response_model=Optional[GroupResponse])
-async def remove_users_from_group(
-    id: str, form_data: UserIdsForm, user=Depends(get_admin_user)
-):
+async def remove_users_from_group(id: str, form_data: UserIdsForm, user=Depends(get_admin_user)):
     try:
         group = Groups.remove_users_from_group(id, form_data.user_ids)
         if group:

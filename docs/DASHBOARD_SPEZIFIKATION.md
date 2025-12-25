@@ -1,16 +1,20 @@
 # 📊 Dashboard-Spezifikation & API-Endpunkte
+
 ## Version 1.0 (22.10.2025)
 
 ## 1️⃣ Ziel & Geltungsbereich
 
 ### Systemidentifikation
+
 - **System**: Portier / ELION Hyper-Dashboard 2.0
 - **Architekturmodus**: Option 2
   - **Hinweg**: OpenAI → opena1 (Koordinator) → opena2 (Archivator) → kordp → Tool/Agent
   - **Rückweg**: Tool/Agent → opena2 → opena1 → OpenAI
 
 ### Dokumentationszweck
+
 Vollständige Spezifikation für:
+
 - Backend- und Frontend-Layer
 - Verbindliche API-Endpunkte
 - Agenten-Seitenstandard
@@ -19,15 +23,16 @@ Vollständige Spezifikation für:
 
 ## 2️⃣ Rollenmodell Dashboard
 
-| Komponente | Typ | Verantwortung | Pfad (Root) |
-|------------|-----|---------------|-------------|
-| opena19 | Dashboard-Backend | Status-Aggregation, Routing, Events/SSE, Befehle, Safepoint-Query | /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/ |
-| opena16 | Frontend-Assembler | Gesamtlayout Dashboard-UI, Startseite, Navigationsrahmen | /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.homepage_creator/ |
-| opena14 | HTML-Komponenten | Agenten-Unterseiten-Widgets (Kacheln, Tabellen, Logs-Viewer) | /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/14.html_creator/ |
-| opena1 | Koordinator | Policy-Gate, Routing, DB/Audit-Schreiben, Befehlsannahme /log/opena1 | /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/ |
-| opena2 | Archivator | Safepoints speichern/auflisten /finalize/opena2, /store/archivp | /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/ |
+| Komponente | Typ                | Verantwortung                                                        | Pfad (Root)                                                                      |
+| ---------- | ------------------ | -------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| opena19    | Dashboard-Backend  | Status-Aggregation, Routing, Events/SSE, Befehle, Safepoint-Query    | /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/  |
+| opena16    | Frontend-Assembler | Gesamtlayout Dashboard-UI, Startseite, Navigationsrahmen             | /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.homepage_creator/ |
+| opena14    | HTML-Komponenten   | Agenten-Unterseiten-Widgets (Kacheln, Tabellen, Logs-Viewer)         | /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/14.html_creator/     |
+| opena1     | Koordinator        | Policy-Gate, Routing, DB/Audit-Schreiben, Befehlsannahme /log/opena1 | /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/  |
+| opena2     | Archivator         | Safepoints speichern/auflisten /finalize/opena2, /store/archivp      | /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/  |
 
 ### Port-Policy
+
 - ✅ Erlaubt: 12344–12399
 - ❌ Verboten: 8080 (Ausnahme: interne OpenWebUI-Compose)
 - 🔍 Health-Check: Jeder Dienst muss GET /health anbieten
@@ -45,6 +50,7 @@ GET /api/agents
 ```
 
 Antwortschema (Beispiel):
+
 ```json
 {
   "strict": true,
@@ -56,7 +62,10 @@ Antwortschema (Beispiel):
       "port": 12356,
       "health": "healthy",
       "path": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/16.homepage_creator/",
-      "last_safepoints": ["SP173..._kordp→opena15_CMD.json", "SP173..._opena15→opena2_RESP.json"]
+      "last_safepoints": [
+        "SP173..._kordp→opena15_CMD.json",
+        "SP173..._opena15→opena2_RESP.json"
+      ]
     }
   ]
 }
@@ -69,6 +78,7 @@ POST /api/command/{agent}
 ```
 
 Request-Schema:
+
 ```json
 {
   "request_id": "uuid-...-...-...",
@@ -82,7 +92,9 @@ Request-Schema:
 ```http
 GET /api/events/live
 ```
+
 SSE-Events:
+
 - sp_created
 - agent_status
 - warning
@@ -95,14 +107,15 @@ POST /api/safepoints/query
 ```
 
 Query-Schema:
+
 ```json
 {
   "filter": {
     "date_from": "2025-10-18",
     "date_to": "2025-10-22",
-    "src": ["opena1","kordp"],
-    "dst": ["opena2","opena15"],
-    "kind": ["CMD","RESP"]
+    "src": ["opena1", "kordp"],
+    "dst": ["opena2", "opena15"],
+    "kind": ["CMD", "RESP"]
   },
   "limit": 200,
   "strict": true
@@ -127,6 +140,7 @@ GET /health
 ```
 
 Response:
+
 ```json
 {
   "service": "opena19",
@@ -139,22 +153,26 @@ Response:
 ## 4️⃣ Koordinator-/Archiv-Endpunkte
 
 ### Koordinator (opena1)
+
 ```http
 POST /log/opena1
 ```
 
 ### Archivator (opena2)
+
 ```http
 POST /finalize/opena2
 POST /store/archivp
 ```
 
 ### Dispatch
+
 ```http
 POST /dispatch/kordp
 ```
 
 Request-Schema (Mindestfelder):
+
 ```json
 {
   "request_id": "uuid-...-...-...",
@@ -168,10 +186,12 @@ Request-Schema (Mindestfelder):
 ## 5️⃣ Frontend-Standard
 
 ### Pfadkonventionen
+
 - Startseite: `/ui/`
 - Agentenseite: `/agent/{agent}`
 
 ### Pflicht-Abschnitte
+
 1. Header
 2. Controls
 3. Statuspanel
@@ -181,7 +201,9 @@ Request-Schema (Mindestfelder):
 7. Events-Live
 
 ### UI-Richtlinien
+
 ✅ Erlaubt:
+
 - div, section, table, thead, tbody, tr, td, th
 - h1–h6, p, ul, li
 - code, pre
@@ -189,33 +211,39 @@ Request-Schema (Mindestfelder):
 - form (ohne action)
 
 ❌ Verboten:
+
 - script, iframe, embed
 - externe Fonts/CDNs
 
 ## 6️⃣ Sicherheit & Auth
 
 ### Token-System
+
 ```http
 Authorization: Bearer <DASHBOARD_ADMIN_TOKEN>
 ```
 
 ### Berechtigungsstufen
+
 - `dashboard_admin`: volle Befehle + Query
 - `dashboard_readonly`: nur GET-Zugriffe
 
 ### Rate Limiting
+
 - 60 req/min pro Token
 - HTTP 429 bei Überschreitung
 
 ## 7️⃣ Audit & Safepoints
 
 ### Safepoint-Kette
+
 1. `SP<ts>_opena19→opena1_CMD.json`
 2. `SP<ts>_opena1→opena2_CMD.json`
 3. `SP<ts>_opena2→kordp_CMD.json`
 4. `SP<ts>_<target>→opena2_RESP.json`
 
 ### Pfadstruktur
+
 ```
 /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/archivp/
 └── YYYY/
@@ -227,13 +255,13 @@ Authorization: Bearer <DASHBOARD_ADMIN_TOKEN>
 
 ## 8️⃣ Fehlerbehandlung
 
-| Fehlerklasse | HTTP | Pflichtreaktion |
-|--------------|------|-----------------|
-| Validation | 422 | SP mit error.validation=true |
-| Policy | 403 | SP-Log + policy_violation Event |
-| Conflict | 409 | supported_actions im Body |
-| Downstream | 502 | Retry-Hinweis + retry_after |
-| Internal | 500 | SP mit error_id |
+| Fehlerklasse | HTTP | Pflichtreaktion                 |
+| ------------ | ---- | ------------------------------- |
+| Validation   | 422  | SP mit error.validation=true    |
+| Policy       | 403  | SP-Log + policy_violation Event |
+| Conflict     | 409  | supported_actions im Body       |
+| Downstream   | 502  | Retry-Hinweis + retry_after     |
+| Internal     | 500  | SP mit error_id                 |
 
 ## 9️⃣ Health-Standard
 
@@ -254,6 +282,7 @@ Authorization: Bearer <DASHBOARD_ADMIN_TOKEN>
 ## 🔟 Qualitätssicherung
 
 ### Musskriterien-Tests
+
 1. Backend-Health
 2. Agentenliste
 3. Gesamtstatus
@@ -267,11 +296,13 @@ Authorization: Bearer <DASHBOARD_ADMIN_TOKEN>
 ## Integration
 
 ### VS Code
+
 - Status-Panel via `/api/status/all`
 - Agent-Details via `/api/agent/{name}`
 - Live-Events via SSE
 
 ### Telegram
+
 - Command `/dashboard status`
 - Tägliche Safepoint-Statistik
 

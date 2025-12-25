@@ -1,18 +1,18 @@
-version: '3.8'
+version: "3.8"
 
 services:
   # OpenTelemetry Collector
   otel-collector:
     image: otel/opentelemetry-collector:latest
     container_name: otel-collector
-    command: [ "--config=/etc/otel-collector-config.yaml" ]
+    command: ["--config=/etc/otel-collector-config.yaml"]
     volumes:
       - ./docker/otel-collector-config.yaml:/etc/otel-collector-config.yaml
     ports:
-      - "4317:4317"  # gRPC receiver
-      - "4318:4318"  # HTTP receiver
-      - "8888:8888"  # Prometheus metrics
-      - "8889:8889"  # Health check
+      - "4317:4317" # gRPC receiver
+      - "4318:4318" # HTTP receiver
+      - "8888:8888" # Prometheus metrics
+      - "8889:8889" # Health check
     environment:
       - GOGC=80
     networks:
@@ -23,9 +23,9 @@ services:
     image: jaegertracing/all-in-one:latest
     container_name: jaeger
     ports:
-      - "16686:16686"  # Jaeger UI
-      - "14250:14250"  # gRPC
-      - "14268:14268"  # HTTP
+      - "16686:16686" # Jaeger UI
+      - "14250:14250" # gRPC
+      - "14268:14268" # HTTP
     environment:
       - COLLECTOR_OTLP_ENABLED=true
     networks:
@@ -36,8 +36,8 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus
     command:
-      - '--config.file=/etc/prometheus/prometheus.yaml'
-      - '--storage.tsdb.path=/prometheus'
+      - "--config.file=/etc/prometheus/prometheus.yaml"
+      - "--storage.tsdb.path=/prometheus"
     volumes:
       - ./docker/prometheus.yaml:/etc/prometheus/prometheus.yaml
       - prometheus_data:/prometheus

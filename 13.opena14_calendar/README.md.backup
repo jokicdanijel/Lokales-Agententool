@@ -1,9 +1,9 @@
 # 📅 opena14 - Calendar Management
 
-**Agent-ID:** `opena14`  
-**Port:** 12359  
-**Kürzel:** `calp`  
-**Version:** 1.0  
+**Agent-ID:** `opena14`
+**Port:** 12359
+**Kürzel:** `calp`
+**Version:** 1.0
 **Status:** ✅ RUNNING (PID: 1754254)
 
 ---
@@ -273,5 +273,5 @@ tail -f data/event_history.jsonl | jq .
 
 ---
 
-**Maintainer:** ELION Team  
+**Maintainer:** ELION Team
 **Letzte Aktualisierung:** 27. November 2025

@@ -508,4 +508,3 @@ timestamp,unit,check,result,notes
 [PDI-ACTIVE: TRUE | VALIDATED | GITHUB-CHECK: PASS]
 
 Nur so gilt sie als freigegeben, funktional und systemkonform.
-

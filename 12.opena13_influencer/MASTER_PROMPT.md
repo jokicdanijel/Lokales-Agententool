@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena13 Influencer-Matching
 
-**Agent-ID:** opena13  
-**Port:** 12358  
-**Status:** 🟡 Planned  
-**Kürzel:** `influp`  
+**Agent-ID:** opena13
+**Port:** 12358
+**Status:** 🟡 Planned
+**Kürzel:** `influp`
 **Domäne:** Influencer-Matching, Kampagnen, Reichweiten-Metriken
 
 ---
@@ -141,5 +141,5 @@ Kopiere diesen Prompt in:
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

@@ -8,10 +8,7 @@
       "title": "Welcome Home",
       "content": "<p>This is the homepage content.</p>",
       "meta_description": "Test homepage",
-      "meta_keywords": [
-        "test",
-        "homepage"
-      ],
+      "meta_keywords": ["test", "homepage"],
       "is_homepage": true
     }
   ],

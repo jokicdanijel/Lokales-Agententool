@@ -134,14 +134,14 @@ Gesamtprojekt/
 
 ### Konvention für Ports und Namensgebung
 
-| Service | Port | Rolle |
-|---------|------|-------|
+| Service                       | Port        | Rolle                   |
+| ----------------------------- | ----------- | ----------------------- |
 | Portier-Pool (opena1–opena20) | 12344–12399 | Koordination & Services |
-| OpenWebUI | 3000 | Frontend |
-| LocalAgent-Pro | 8001 | API Server |
-| opena3-Bridge | 12347 | Safepoint-Hub |
-| Ollama | 11434 | AI-Models (optional) |
-| Prometheus | 9090 | Metriken (optional) |
+| OpenWebUI                     | 3000        | Frontend                |
+| LocalAgent-Pro                | 8001        | API Server              |
+| opena3-Bridge                 | 12347       | Safepoint-Hub           |
+| Ollama                        | 11434       | AI-Models (optional)    |
+| Prometheus                    | 9090        | Metriken (optional)     |
 
 ### Konfiguration und Secrets
 

@@ -9,10 +9,12 @@
 # OpenA1 (kordp) & OpenA2 (archivp) – API Nutzung
 
 ## Dienste & Ports
+
 - OpenA1 (Coordinator, **kordp**) → `http://127.0.0.1:12344`
 - OpenA2 (Archivator, **archivp**) → `http://127.0.0.1:12345`
 
 ## Health
+
 ```bash
 curl -s http://127.0.0.1:12344/health | jq
 curl -s http://127.0.0.1:12345/health | jq
@@ -70,8 +72,8 @@ curl -s -X POST http://127.0.0.1:12345/finalize/opena2 \
 
 ## Speicherorte
 
-* Safepoints: `1.opena1&2_portier/archivp_store/YYYY/MM/DD/SP<ts>_<src>→<dst>_<kind>.json`
-* Index:      `1.opena1&2_portier/archivp_store/index.jsonl`
+- Safepoints: `1.opena1&2_portier/archivp_store/YYYY/MM/DD/SP<ts>_<src>→<dst>_<kind>.json`
+- Index: `1.opena1&2_portier/archivp_store/index.jsonl`
 
 ## Start (je Dienst)
 

@@ -26,36 +26,28 @@ ORACLE_DB_POOL_MAX = 10
 ORACLE_DB_POOL_INCREMENT = 1
 """
 
-from typing import Optional, List, Dict, Any, Union
-from decimal import Decimal
+import array
+import json
 import logging
-import os
 import threading
 import time
-import json
-import array
+from decimal import Decimal
+from typing import Any
+
 import oracledb
-
-from open_webui.retrieval.vector.main import (
-    VectorDBBase,
-    VectorItem,
-    SearchResult,
-    GetResult,
-)
-
 from open_webui.config import (
+    ORACLE_DB_DSN,
+    ORACLE_DB_PASSWORD,
+    ORACLE_DB_POOL_INCREMENT,
+    ORACLE_DB_POOL_MAX,
+    ORACLE_DB_POOL_MIN,
     ORACLE_DB_USE_WALLET,
     ORACLE_DB_USER,
-    ORACLE_DB_PASSWORD,
-    ORACLE_DB_DSN,
     ORACLE_WALLET_DIR,
     ORACLE_WALLET_PASSWORD,
-    ORACLE_VECTOR_LENGTH,
-    ORACLE_DB_POOL_MIN,
-    ORACLE_DB_POOL_MAX,
-    ORACLE_DB_POOL_INCREMENT,
 )
 from open_webui.env import SRC_LOG_LEVELS
+from open_webui.retrieval.vector.main import GetResult, SearchResult, VectorDBBase, VectorItem
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["RAG"])
@@ -155,9 +147,7 @@ class Oracle23aiClient(VectorDBBase):
                 return connection
             except oracledb.DatabaseError as e:
                 (error_obj,) = e.args
-                log.exception(
-                    f"Connection attempt {attempt + 1} failed: {error_obj.message}"
-                )
+                log.exception(f"Connection attempt {attempt + 1} failed: {error_obj.message}")
 
                 if attempt < max_retries - 1:
                     wait_time = 2**attempt
@@ -222,9 +212,7 @@ class Oracle23aiClient(VectorDBBase):
                 with connection.cursor() as cursor:
                     cursor.execute("SELECT 1 FROM dual")
         except Exception as e:
-            log.exception(
-                f"Connection check failed: {e}, attempting to reconnect pool..."
-            )
+            log.exception(f"Connection check failed: {e}, attempting to reconnect pool...")
             self._reconnect_pool()
 
     def _output_type_handler(self, cursor, metadata):
@@ -239,9 +227,7 @@ class Oracle23aiClient(VectorDBBase):
             A variable with appropriate conversion for vector types
         """
         if metadata.type_code is oracledb.DB_TYPE_VECTOR:
-            return cursor.var(
-                metadata.type_code, arraysize=cursor.arraysize, outconverter=list
-            )
+            return cursor.var(metadata.type_code, arraysize=cursor.arraysize, outconverter=list)
 
     def _initialize_database(self, connection) -> None:
         """
@@ -301,8 +287,8 @@ class Oracle23aiClient(VectorDBBase):
                     """
                     BEGIN
                         EXECUTE IMMEDIATE '
-                            CREATE VECTOR INDEX IF NOT EXISTS document_chunk_vector_ivf_idx 
-                            ON document_chunk(vector) 
+                            CREATE VECTOR INDEX IF NOT EXISTS document_chunk_vector_ivf_idx
+                            ON document_chunk(vector)
                             ORGANIZATION NEIGHBOR PARTITIONS
                             DISTANCE COSINE
                             WITH TARGET ACCURACY 95
@@ -332,9 +318,8 @@ class Oracle23aiClient(VectorDBBase):
         This method would check if the configured vector length matches the database schema.
         Currently implemented as a placeholder.
         """
-        pass
 
-    def _vector_to_blob(self, vector: List[float]) -> bytes:
+    def _vector_to_blob(self, vector: list[float]) -> bytes:
         """
         Convert a vector to Oracle BLOB format.
 
@@ -346,7 +331,7 @@ class Oracle23aiClient(VectorDBBase):
         """
         return array.array("f", vector)
 
-    def adjust_vector_length(self, vector: List[float]) -> List[float]:
+    def adjust_vector_length(self, vector: list[float]) -> list[float]:
         """
         Adjust vector to the expected length if needed.
 
@@ -375,7 +360,7 @@ class Oracle23aiClient(VectorDBBase):
             return float(obj)
         raise TypeError(f"{obj} is not JSON serializable")
 
-    def _metadata_to_json(self, metadata: Dict) -> str:
+    def _metadata_to_json(self, metadata: dict) -> str:
         """
         Convert metadata dictionary to JSON string.
 
@@ -387,7 +372,7 @@ class Oracle23aiClient(VectorDBBase):
         """
         return json.dumps(metadata, default=self._decimal_handler) if metadata else "{}"
 
-    def _json_to_metadata(self, json_str: str) -> Dict:
+    def _json_to_metadata(self, json_str: str) -> dict:
         """
         Convert JSON string to metadata dictionary.
 
@@ -399,7 +384,7 @@ class Oracle23aiClient(VectorDBBase):
         """
         return json.loads(json_str) if json_str else {}
 
-    def insert(self, collection_name: str, items: List[VectorItem]) -> None:
+    def insert(self, collection_name: str, items: list[VectorItem]) -> None:
         """
         Insert vector items into the database.
 
@@ -429,8 +414,8 @@ class Oracle23aiClient(VectorDBBase):
 
                         cursor.execute(
                             """
-                            INSERT INTO document_chunk 
-                            (id, collection_name, text, vmetadata, vector) 
+                            INSERT INTO document_chunk
+                            (id, collection_name, text, vmetadata, vector)
                             VALUES (:id, :collection_name, :text, :metadata, :vector)
                         """,
                             {
@@ -443,16 +428,14 @@ class Oracle23aiClient(VectorDBBase):
                         )
 
                 connection.commit()
-                log.info(
-                    f"Successfully inserted {len(items)} items into collection '{collection_name}'."
-                )
+                log.info(f"Successfully inserted {len(items)} items into collection '{collection_name}'.")
 
             except Exception as e:
                 connection.rollback()
                 log.exception(f"Error during insert: {e}")
                 raise
 
-    def upsert(self, collection_name: str, items: List[VectorItem]) -> None:
+    def upsert(self, collection_name: str, items: list[VectorItem]) -> None:
         """
         Update or insert vector items into the database.
 
@@ -489,7 +472,7 @@ class Oracle23aiClient(VectorDBBase):
                             USING (SELECT :merge_id as id FROM dual) s
                             ON (d.id = s.id)
                             WHEN MATCHED THEN
-                                UPDATE SET 
+                                UPDATE SET
                                     collection_name = :upd_collection_name,
                                     text = :upd_text,
                                     vmetadata = :upd_metadata,
@@ -513,18 +496,14 @@ class Oracle23aiClient(VectorDBBase):
                         )
 
                 connection.commit()
-                log.info(
-                    f"Successfully upserted {len(items)} items into collection '{collection_name}'."
-                )
+                log.info(f"Successfully upserted {len(items)} items into collection '{collection_name}'.")
 
             except Exception as e:
                 connection.rollback()
                 log.exception(f"Error during upsert: {e}")
                 raise
 
-    def search(
-        self, collection_name: str, vectors: List[List[Union[float, int]]], limit: int
-    ) -> Optional[SearchResult]:
+    def search(self, collection_name: str, vectors: list[list[float | int]], limit: int) -> SearchResult | None:
         """
         Search for similar vectors in the database.
 
@@ -547,9 +526,7 @@ class Oracle23aiClient(VectorDBBase):
             ...     for i, (id, dist) in enumerate(zip(results.ids[0], results.distances[0])):
             ...         log.info(f"Match {i+1}: id={id}, distance={dist}")
         """
-        log.info(
-            f"Searching items from collection '{collection_name}' with limit {limit}."
-        )
+        log.info(f"Searching items from collection '{collection_name}' with limit {limit}.")
 
         try:
             if not vectors:
@@ -570,7 +547,7 @@ class Oracle23aiClient(VectorDBBase):
 
                         cursor.execute(
                             """
-                            SELECT dc.id, dc.text, 
+                            SELECT dc.id, dc.text,
                                 JSON_SERIALIZE(dc.vmetadata RETURNING VARCHAR2(4096)) as vmetadata,
                                 VECTOR_DISTANCE(dc.vector, :query_vector, COSINE) as distance
                             FROM document_chunk dc
@@ -589,35 +566,21 @@ class Oracle23aiClient(VectorDBBase):
 
                         for row in results:
                             ids[qid].append(row[0])
-                            documents[qid].append(
-                                row[1].read()
-                                if isinstance(row[1], oracledb.LOB)
-                                else str(row[1])
-                            )
+                            documents[qid].append(row[1].read() if isinstance(row[1], oracledb.LOB) else str(row[1]))
                             # 🔧 FIXED: Parse JSON metadata properly
-                            metadata_str = (
-                                row[2].read()
-                                if isinstance(row[2], oracledb.LOB)
-                                else row[2]
-                            )
+                            metadata_str = row[2].read() if isinstance(row[2], oracledb.LOB) else row[2]
                             metadatas[qid].append(self._json_to_metadata(metadata_str))
                             distances[qid].append(float(row[3]))
 
-            log.info(
-                f"Search completed. Found {sum(len(ids[i]) for i in range(num_queries))} total results."
-            )
+            log.info(f"Search completed. Found {sum(len(ids[i]) for i in range(num_queries))} total results.")
 
-            return SearchResult(
-                ids=ids, distances=distances, documents=documents, metadatas=metadatas
-            )
+            return SearchResult(ids=ids, distances=distances, documents=documents, metadatas=metadatas)
 
         except Exception as e:
             log.exception(f"Error during search: {e}")
             return None
 
-    def query(
-        self, collection_name: str, filter: Dict, limit: Optional[int] = None
-    ) -> Optional[GetResult]:
+    def query(self, collection_name: str, filter: dict, limit: int | None = None) -> GetResult | None:
         """
         Query items based on metadata filters.
 
@@ -644,7 +607,7 @@ class Oracle23aiClient(VectorDBBase):
             limit = limit or 100
 
             query = """
-                SELECT id, text, JSON_SERIALIZE(vmetadata RETURNING VARCHAR2(4096)) as vmetadata 
+                SELECT id, text, JSON_SERIALIZE(vmetadata RETURNING VARCHAR2(4096)) as vmetadata
                 FROM document_chunk
                 WHERE collection_name = :collection_name
             """
@@ -669,18 +632,11 @@ class Oracle23aiClient(VectorDBBase):
                 return None
 
             ids = [[row[0] for row in results]]
-            documents = [
-                [
-                    row[1].read() if isinstance(row[1], oracledb.LOB) else str(row[1])
-                    for row in results
-                ]
-            ]
+            documents = [[row[1].read() if isinstance(row[1], oracledb.LOB) else str(row[1]) for row in results]]
             # 🔧 FIXED: Parse JSON metadata properly
             metadatas = [
                 [
-                    self._json_to_metadata(
-                        row[2].read() if isinstance(row[2], oracledb.LOB) else row[2]
-                    )
+                    self._json_to_metadata(row[2].read() if isinstance(row[2], oracledb.LOB) else row[2])
                     for row in results
                 ]
             ]
@@ -693,7 +649,7 @@ class Oracle23aiClient(VectorDBBase):
             log.exception(f"Error during query: {e}")
             return None
 
-    def get(self, collection_name: str) -> Optional[GetResult]:
+    def get(self, collection_name: str) -> GetResult | None:
         """
         Get all items in a collection.
 
@@ -712,9 +668,7 @@ class Oracle23aiClient(VectorDBBase):
             >>> if results:
             ...     print(f"Retrieved {len(results.ids[0])} documents from collection")
         """
-        log.info(
-            f"Getting items from collection '{collection_name}' with limit {limit}."
-        )
+        log.info(f"Getting items from collection '{collection_name}' with limit {limit}.")
 
         try:
             limit = 1000  # Hardcoded limit for get operation
@@ -738,18 +692,11 @@ class Oracle23aiClient(VectorDBBase):
                 return None
 
             ids = [[row[0] for row in results]]
-            documents = [
-                [
-                    row[1].read() if isinstance(row[1], oracledb.LOB) else str(row[1])
-                    for row in results
-                ]
-            ]
+            documents = [[row[1].read() if isinstance(row[1], oracledb.LOB) else str(row[1]) for row in results]]
             # 🔧 FIXED: Parse JSON metadata properly
             metadatas = [
                 [
-                    self._json_to_metadata(
-                        row[2].read() if isinstance(row[2], oracledb.LOB) else row[2]
-                    )
+                    self._json_to_metadata(row[2].read() if isinstance(row[2], oracledb.LOB) else row[2])
                     for row in results
                 ]
             ]
@@ -763,8 +710,8 @@ class Oracle23aiClient(VectorDBBase):
     def delete(
         self,
         collection_name: str,
-        ids: Optional[List[str]] = None,
-        filter: Optional[Dict[str, Any]] = None,
+        ids: list[str] | None = None,
+        filter: dict[str, Any] | None = None,
     ) -> None:
         """
         Delete items from the database.
@@ -789,9 +736,7 @@ class Oracle23aiClient(VectorDBBase):
         log.info(f"Deleting items from collection '{collection_name}'.")
 
         try:
-            query = (
-                "DELETE FROM document_chunk WHERE collection_name = :collection_name"
-            )
+            query = "DELETE FROM document_chunk WHERE collection_name = :collection_name"
             params = {"collection_name": collection_name}
 
             if ids:
@@ -841,9 +786,7 @@ class Oracle23aiClient(VectorDBBase):
                     deleted = cursor.rowcount
                 connection.commit()
 
-            log.info(
-                f"Reset complete. Deleted {deleted} items from 'document_chunk' table."
-            )
+            log.info(f"Reset complete. Deleted {deleted} items from 'document_chunk' table.")
 
         except Exception as e:
             log.exception(f"Error during reset: {e}")
@@ -925,7 +868,7 @@ class Oracle23aiClient(VectorDBBase):
                 with connection.cursor() as cursor:
                     cursor.execute(
                         """
-                        DELETE FROM document_chunk 
+                        DELETE FROM document_chunk
                         WHERE collection_name = :collection_name
                     """,
                         {"collection_name": collection_name},
@@ -934,9 +877,7 @@ class Oracle23aiClient(VectorDBBase):
                     deleted = cursor.rowcount
                 connection.commit()
 
-            log.info(
-                f"Collection '{collection_name}' deleted. Removed {deleted} items."
-            )
+            log.info(f"Collection '{collection_name}' deleted. Removed {deleted} items.")
 
         except Exception as e:
             log.exception(f"Error deleting collection '{collection_name}': {e}")

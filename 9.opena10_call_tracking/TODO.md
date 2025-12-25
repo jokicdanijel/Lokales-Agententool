@@ -1,7 +1,7 @@
 # TODO – opena10 Call Tracking Agent
 
-**Port:** 12355  
-**Status:** 🟡 Planned  
+**Port:** 12355
+**Status:** 🟡 Planned
 **Kürzel:** `calltrackp`
 
 ---
@@ -95,5 +95,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

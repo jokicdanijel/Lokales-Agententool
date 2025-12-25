@@ -2,6 +2,7 @@
 src/services/openwebui/client_openwebui.py
 Client library for OpenWebUI service (opena3)
 """
+
 from __future__ import annotations
 
 import httpx
@@ -18,10 +19,7 @@ def ping() -> dict:
 
 def call_prompt(text: str) -> dict:
     """Call /openwebui/call with prompt action."""
-    payload = {
-        "action": "prompt",
-        "data": {"text": text}
-    }
+    payload = {"action": "prompt", "data": {"text": text}}
     r = httpx.post(f"{BASE}/openwebui/call", json=payload, timeout=5.0)
     r.raise_for_status()
     return r.json()

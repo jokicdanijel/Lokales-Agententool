@@ -10,22 +10,18 @@ Funktionen:
 - Tool-Aufrufe empfangen und delegieren
 """
 
-import requests
-import json
 import logging
-from typing import Dict, Any, Optional
-from pathlib import Path
 from datetime import datetime
+from typing import Any
+
+import requests
 
 # ============================================================================
 # SETUP
 # ============================================================================
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s [TOOL_REG] %(levelname)s - %(message)s'
-)
-logger = logging.getLogger('openwebui_registration')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [TOOL_REG] %(levelname)s - %(message)s")
+logger = logging.getLogger("openwebui_registration")
 
 # ============================================================================
 # TOOL DEFINITION
@@ -39,7 +35,7 @@ BROWSER_AGENT_TOOL = {
         "agent_url": "http://localhost:12350",
         "bearer_token": "sk_opena6_browser_v3_production",
         "timeout": 30,
-        "enabled": True
+        "enabled": True,
     },
     "target": "opena6_browser_chat_handler",
     "input_schema": {
@@ -57,34 +53,21 @@ BROWSER_AGENT_TOOL = {
                     "query_selector",
                     "screenshot",
                     "scroll",
-                    "wait_for"
+                    "wait_for",
                 ],
-                "description": "Browser-Aktion ausführen"
+                "description": "Browser-Aktion ausführen",
             },
-            "url": {
-                "type": "string",
-                "description": "Zielseite URL"
-            },
-            "selector": {
-                "type": "string",
-                "description": "CSS oder XPath Selektor"
-            },
-            "text": {
-                "type": "string",
-                "description": "Text zum eingeben (für type-Aktion)"
-            },
-            "wait_ms": {
-                "type": "integer",
-                "default": 500,
-                "description": "Wartezeit nach Aktion in Millisekunden"
-            },
+            "url": {"type": "string", "description": "Zielseite URL"},
+            "selector": {"type": "string", "description": "CSS oder XPath Selektor"},
+            "text": {"type": "string", "description": "Text zum eingeben (für type-Aktion)"},
+            "wait_ms": {"type": "integer", "default": 500, "description": "Wartezeit nach Aktion in Millisekunden"},
             "return_format": {
                 "type": "string",
                 "enum": ["text", "html", "json", "raw"],
                 "default": "text",
-                "description": "Format der Rückgabe"
-            }
-        }
+                "description": "Format der Rückgabe",
+            },
+        },
     },
     "output_schema": {
         "type": "object",
@@ -92,14 +75,15 @@ BROWSER_AGENT_TOOL = {
             "status": {"type": "string"},
             "data": {"type": "object"},
             "timestamp": {"type": "string"},
-            "session_id": {"type": "string"}
-        }
-    }
+            "session_id": {"type": "string"},
+        },
+    },
 }
 
 # ============================================================================
 # OPENWEBUI TOOL MANAGER
 # ============================================================================
+
 
 class OpenWebUIToolManager:
     """Verwaltet Tool-Registrierung bei OpenWebUI"""
@@ -111,7 +95,7 @@ class OpenWebUIToolManager:
         Args:
             openwebui_url: OpenWebUI API URL (default: localhost:8080)
         """
-        self.openwebui_url = openwebui_url.rstrip('/')
+        self.openwebui_url = openwebui_url.rstrip("/")
         self.tool_url = f"{self.openwebui_url}/api/v1/tools"
         self.health_url = f"{self.openwebui_url}/api/v1/auth"
         self.session = requests.Session()
@@ -132,9 +116,7 @@ class OpenWebUIToolManager:
         """Check if Browser Agent is available"""
         try:
             response = self.session.get(
-                f"{self.agent_url}/health",
-                headers={"Authorization": f"Bearer {self.bearer_token}"},
-                timeout=5
+                f"{self.agent_url}/health", headers={"Authorization": f"Bearer {self.bearer_token}"}, timeout=5
             )
             if response.status_code == 200:
                 logger.info(f"✅ Browser Agent verfügbar: {self.agent_url}")
@@ -159,11 +141,7 @@ class OpenWebUIToolManager:
             payload["valves"]["agent_url"] = self.agent_url
             payload["valves"]["bearer_token"] = self.bearer_token
 
-            response = self.session.post(
-                self.tool_url,
-                json=payload,
-                timeout=10
-            )
+            response = self.session.post(self.tool_url, json=payload, timeout=10)
 
             if response.status_code in [200, 201]:
                 logger.info(f"✅ Tool erfolgreich registriert: {BROWSER_AGENT_TOOL['name']}")
@@ -181,10 +159,7 @@ class OpenWebUIToolManager:
         """Unregister browser tool from OpenWebUI"""
         try:
             tool_id = BROWSER_AGENT_TOOL["id"]
-            response = self.session.delete(
-                f"{self.tool_url}/{tool_id}",
-                timeout=10
-            )
+            response = self.session.delete(f"{self.tool_url}/{tool_id}", timeout=10)
 
             if response.status_code in [200, 204]:
                 logger.info(f"✅ Tool deregistriert: {tool_id}")
@@ -208,11 +183,7 @@ class OpenWebUIToolManager:
             payload["valves"]["agent_url"] = self.agent_url
             tool_id = BROWSER_AGENT_TOOL["id"]
 
-            response = self.session.put(
-                f"{self.tool_url}/{tool_id}",
-                json=payload,
-                timeout=10
-            )
+            response = self.session.put(f"{self.tool_url}/{tool_id}", json=payload, timeout=10)
 
             if response.status_code == 200:
                 logger.info(f"✅ Tool aktualisiert: {BROWSER_AGENT_TOOL['name']}")
@@ -225,7 +196,7 @@ class OpenWebUIToolManager:
             logger.warning(f"⚠️  Fehler bei Update: {e}")
             return False
 
-    def get_tool_status(self) -> Dict[str, Any]:
+    def get_tool_status(self) -> dict[str, Any]:
         """Get tool registration status"""
         return {
             "openwebui_available": self.is_openwebui_available(),
@@ -234,12 +205,14 @@ class OpenWebUIToolManager:
             "tool_name": BROWSER_AGENT_TOOL["name"],
             "agent_url": self.agent_url,
             "openwebui_url": self.openwebui_url,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
+
 
 # ============================================================================
 # TOOL HANDLER FÜR OPENWEBUI
 # ============================================================================
+
 
 class BrowserAgentChatHandler:
     """Handles tool calls from OpenWebUI chat"""
@@ -248,7 +221,7 @@ class BrowserAgentChatHandler:
         self.agent_url = agent_url
         self.bearer_token = "sk_opena6_browser_v3_production"
 
-    async def handle_tool_call(self, tool_input: Dict[str, Any]) -> Dict[str, Any]:
+    async def handle_tool_call(self, tool_input: dict[str, Any]) -> dict[str, Any]:
         """
         Handle tool call from OpenWebUI chat
 
@@ -274,7 +247,7 @@ class BrowserAgentChatHandler:
                 "selector": selector,
                 "text": text,
                 "wait_ms": wait_ms,
-                "return_format": return_format
+                "return_format": return_format,
             }
 
             # Send to browser agent
@@ -282,65 +255,46 @@ class BrowserAgentChatHandler:
                 f"{self.agent_url}/execute",
                 json=payload,
                 headers={"Authorization": f"Bearer {self.bearer_token}"},
-                timeout=30
+                timeout=30,
             )
 
             if response.status_code == 200:
                 result = response.json()
-                return {
-                    "status": "success",
-                    "data": result,
-                    "timestamp": datetime.now().isoformat()
-                }
+                return {"status": "success", "data": result, "timestamp": datetime.now().isoformat()}
             else:
                 return {
                     "status": "error",
                     "message": f"Browser Agent Error: {response.status_code}",
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": datetime.now().isoformat(),
                 }
 
         except Exception as e:
             logger.error(f"❌ Tool Call Error: {e}")
-            return {
-                "status": "error",
-                "message": str(e),
-                "timestamp": datetime.now().isoformat()
-            }
+            return {"status": "error", "message": str(e), "timestamp": datetime.now().isoformat()}
+
 
 # ============================================================================
 # CLI INTERFACE
 # ============================================================================
 
+
 def main():
     """Main CLI interface"""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Browser Agent - OpenWebUI Tool Registration"
-    )
+    parser = argparse.ArgumentParser(description="Browser Agent - OpenWebUI Tool Registration")
     parser.add_argument(
-        "--action",
-        choices=["register", "unregister", "update", "status"],
-        default="status",
-        help="Aktion ausführen"
+        "--action", choices=["register", "unregister", "update", "status"], default="status", help="Aktion ausführen"
     )
-    parser.add_argument(
-        "--openwebui-url",
-        default="http://localhost:8080",
-        help="OpenWebUI API URL"
-    )
-    parser.add_argument(
-        "--agent-url",
-        default="http://localhost:12350",
-        help="Browser Agent URL"
-    )
+    parser.add_argument("--openwebui-url", default="http://localhost:8080", help="OpenWebUI API URL")
+    parser.add_argument("--agent-url", default="http://localhost:12350", help="Browser Agent URL")
 
     args = parser.parse_args()
 
     manager = OpenWebUIToolManager(openwebui_url=args.openwebui_url)
     manager.agent_url = args.agent_url
 
-    logger.info(f"🚀 Browser Agent OpenWebUI Tool Manager")
+    logger.info("🚀 Browser Agent OpenWebUI Tool Manager")
     logger.info(f"   OpenWebUI: {args.openwebui_url}")
     logger.info(f"   Agent: {args.agent_url}")
     logger.info("")
@@ -380,6 +334,7 @@ def main():
         return 0
 
     return 1
+
 
 if __name__ == "__main__":
     exit(main())

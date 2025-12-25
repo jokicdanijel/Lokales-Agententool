@@ -1,9 +1,9 @@
 # 🤖 MASTER PROMPT – opena15 HTML Creator
 
-**Agent-ID:** opena15  
-**Port:** 12360  
-**Status:** 🟡 Planned  
-**Kürzel:** `htmlp`  
+**Agent-ID:** opena15
+**Port:** 12360
+**Status:** 🟡 Planned
+**Kürzel:** `htmlp`
 **Domäne:** HTML Creator, Jinja2, Template-Rendering, Validation
 
 ---
@@ -141,5 +141,5 @@ Kopiere diesen Prompt in:
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

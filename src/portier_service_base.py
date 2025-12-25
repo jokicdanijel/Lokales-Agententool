@@ -9,55 +9,66 @@
 # -----------------------------------------------------------------------------
 
 import json
-from datetime import datetime
-from pathlib import Path
-from typing import Optional, Dict, Any
 from dataclasses import dataclass
+from datetime import datetime
 from enum import Enum
+from pathlib import Path
+from typing import Any
 
 from fastapi import FastAPI, HTTPException
-from starlette.middleware.base import BaseHTTPMiddleware
 from pydantic import BaseModel
+from starlette.middleware.base import BaseHTTPMiddleware
+
 
 # DATA MODELS
 class MessageKind(str, Enum):
     """Safepoint message kind"""
+
     CMD = "CMD"
     RESP = "RESP"
     ERR = "ERR"
 
+
 class HealthResponse(BaseModel):
     """Standard health check response"""
+
     service: str
     status: str  # "online", "degraded", "offline"
     base: str
     port: int
-    port_policy: Dict[str, Any]
+    port_policy: dict[str, Any]
     timestamp: str
+
 
 class SafepointRequest(BaseModel):
     """Safepoint write request"""
+
     src: str
     dst: str
     kind: MessageKind
-    payload: Dict[str, Any]
+    payload: dict[str, Any]
+
 
 class SafepointResponse(BaseModel):
     """Safepoint write response"""
+
     written: bool
     path: str
     timestamp: str
     index_updated: bool
 
+
 @dataclass
 class PortierServiceConfig:
     """Service configuration"""
+
     service_name: str
     service_port: int
     allowed_port_min: int = 12344
     allowed_port_max: int = 12399
     bind_addr: str = "127.0.0.1"
-    archiv_base: Optional[str] = None
+    archiv_base: str | None = None
+
 
 # BASE CLASS
 class PortierServiceBase:
@@ -71,6 +82,7 @@ class PortierServiceBase:
             # Custom logic
             return {"result": ...}
     """
+
     def __init__(self, config: PortierServiceConfig):
         self.config = config
         self.start_time = datetime.utcnow().isoformat() + "Z"
@@ -87,6 +99,7 @@ class PortierServiceBase:
     # ─────────────────────────────────────────────────────────────────────
     def setup_health_endpoint(self, app: FastAPI) -> None:
         """Register GET /health endpoint"""
+
         @app.get("/health", response_model=HealthResponse)
         async def health_check() -> HealthResponse:
             base = f"http://{self.config.bind_addr}:{self.config.service_port}"
@@ -99,9 +112,7 @@ class PortierServiceBase:
                     "min": self.config.allowed_port_min,
                     "max": self.config.allowed_port_max,
                     "compliant": (
-                        self.config.allowed_port_min
-                        <= self.config.service_port
-                        <= self.config.allowed_port_max
+                        self.config.allowed_port_min <= self.config.service_port <= self.config.allowed_port_max
                     ),
                     "current": self.config.service_port,
                 },
@@ -117,31 +128,30 @@ class PortierServiceBase:
         index_path = Path(archiv_dir) / "index.jsonl"
 
         if self.config.service_name == "opena1":
+
             @app.post("/log/opena1", response_model=SafepointResponse)
             async def log_endpoint(req: SafepointRequest) -> SafepointResponse:
                 return await self._write_safepoint(req, archiv_dir, index_path)
 
         elif self.config.service_name == "kordp":
+
             @app.post("/dispatch/kordp", response_model=SafepointResponse)
             async def dispatch_endpoint(req: SafepointRequest) -> SafepointResponse:
                 return await self._write_safepoint(req, archiv_dir, index_path)
 
         elif self.config.service_name == "archivp":
+
             @app.post("/store/archivp", response_model=SafepointResponse)
             async def store_endpoint(req: SafepointRequest) -> SafepointResponse:
                 return await self._write_safepoint(req, archiv_dir, index_path)
 
         elif self.config.service_name == "opena2":
+
             @app.post("/finalize/opena2", response_model=SafepointResponse)
             async def finalize_endpoint(req: SafepointRequest) -> SafepointResponse:
                 return await self._write_safepoint(req, archiv_dir, index_path)
 
-    async def _write_safepoint(
-        self,
-        req: SafepointRequest,
-        archiv_dir: str,
-        index_path: Path
-    ) -> SafepointResponse:
+    async def _write_safepoint(self, req: SafepointRequest, archiv_dir: str, index_path: Path) -> SafepointResponse:
         """
         Write safepoint file with standardized naming:
         SP<timestamp>_<src>→<dst>_<KIND>.json
@@ -157,27 +167,16 @@ class PortierServiceBase:
                 "src": req.src,
                 "dst": req.dst,
                 "kind": req.kind.value,
-                "payload": req.payload
+                "payload": req.payload,
             }
             filepath.write_text(json.dumps(safepoint_data, indent=2), encoding="utf-8")
             # Index aktualisieren
-            index_entry = {
-                "path": filename,
-                "ts": timestamp,
-                "src": req.src,
-                "dst": req.dst,
-                "kind": req.kind.value
-            }
+            index_entry = {"path": filename, "ts": timestamp, "src": req.src, "dst": req.dst, "kind": req.kind.value}
             with index_path.open("a", encoding="utf-8") as idx:
                 idx.write(json.dumps(index_entry) + "\n")
-            return SafepointResponse(
-                written=True,
-                path=str(filepath),
-                timestamp=timestamp,
-                index_updated=True
-            )
+            return SafepointResponse(written=True, path=str(filepath), timestamp=timestamp, index_updated=True)
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Failed to write safepoint: {str(e)}")
+            raise HTTPException(status_code=500, detail=f"Failed to write safepoint: {e!s}")
 
     # ─────────────────────────────────────────────────────────────────────────
     # MIDDLEWARE: PORT-POLICY VALIDATION
@@ -200,15 +199,17 @@ class PortierServiceBase:
 
         app.add_middleware(_PortPolicyMiddleware, config=self.config)
 
+
 # === PHASE 13 PRODUCTION: Minimal PortPolicyMiddleware ===
 # LOOSENED POLICY FOR FAST START - TIGHTEN LATER
 
+
 class PortPolicyMiddleware:
     """Minimal Port Policy Middleware - Production Mode (Loose)"""
-    
+
     ALLOWED_PORTS = list(range(12344, 12400))  # 12344-12399
     FORBIDDEN_PORTS = [8080]
-    
+
     def __init__(self, app, config=None):
         self.app = app
         self.config = config or {}
@@ -216,4 +217,4 @@ class PortPolicyMiddleware:
         print("✅ PortPolicyMiddleware initialized (PRODUCTION MODE - POLICY LOOSENED)")
 
 
-__all__ = ['PortPolicyMiddleware']
+__all__ = ["PortPolicyMiddleware"]

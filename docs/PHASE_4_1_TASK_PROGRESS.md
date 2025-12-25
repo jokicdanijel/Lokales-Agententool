@@ -28,6 +28,7 @@ Week 4 (Nov 28–Dec 5): Pos. 16–20 (0/5 pending)
 ## ✅ Completed Tasks
 
 ### [01/20] ✅ system_mode_switch.sh – DONE
+
 - **Status:** Production-Ready
 - **File:** `bin/system_mode_switch.sh`
 - **Features:**
@@ -50,6 +51,7 @@ Week 4 (Nov 28–Dec 5): Pos. 16–20 (0/5 pending)
 ## ⏳ Pending Tasks
 
 ### [02/20] ⏳ audit_security.py
+
 - **Purpose:** Security audit script
 - **Status:** Not started
 - **Due:** Nov 7
@@ -59,21 +61,25 @@ Week 4 (Nov 28–Dec 5): Pos. 16–20 (0/5 pending)
   - Report PROD-readiness
 
 ### [03/20] ⏳ config_report.md
+
 - **Purpose:** Configuration validation report
 - **Status:** Not started
 - **Due:** Nov 8
 
 ### [04/20] ⏳ Governance_Policy.md
+
 - **Purpose:** Official governance documentation
 - **Status:** Not started
 - **Due:** Nov 9
 
 ### [05/20] ⏳ release.sh
+
 - **Purpose:** Automated release pipeline
 - **Status:** Not started
 - **Due:** Nov 10
 
 ### [06/20]–[20/20] ⏳ Future Tasks
+
 - **Status:** Queued for Week 2–4
 
 ---
@@ -81,6 +87,7 @@ Week 4 (Nov 28–Dec 5): Pos. 16–20 (0/5 pending)
 ## 📅 Weekly Milestones
 
 ### Week 1: Nov 7–14 (Auth & APIs)
+
 ```
 Mon (7): Kickoff + Task 01 review → Task 02 start (audit_security.py)
 Tue (8): Task 02 cont. → Task 03 (config_report.md)
@@ -92,12 +99,15 @@ Fri (11–14): Buffer + Testing + Reviews
 **Target:** Tasks 01–05 DONE or 80%
 
 ### Week 2: Nov 14–21 (Sandbox & CLI)
+
 - Tasks 06–10 (Path security, Rate-limit, CLI, Systemd, Docker)
 
 ### Week 3: Nov 21–28 (Testing & Extension)
+
 - Tasks 11–15 (E2E tests, Robustness, Persistence, Extension, Streaming)
 
 ### Week 4: Nov 28–Dec 5 (UX & Release)
+
 - Tasks 16–20 (Conflicts UI, Logging, Benchmarks, Deployment, Release v1.0)
 
 ---
@@ -105,12 +115,14 @@ Fri (11–14): Buffer + Testing + Reviews
 ## 🚀 Getting Started (Nov 7)
 
 ### Team Kickoff (9:00 AM)
+
 1. Review BOOTSTRAP_PDI_PROMPT.md
 2. Understand Task 01 (system_mode_switch.sh) – Already done ✅
 3. Set up development environment
 4. Begin Task 02
 
 ### Dev Environment Setup
+
 ```bash
 # 1. Activate venv
 source 1.opena1&2_portier/venv313/bin/activate
@@ -126,6 +138,7 @@ echo "System ready for Phase 4.1"
 ```
 
 ### First Code Review (3:00 PM)
+
 - Review `system_mode_switch.sh` implementation
 - Approve or request changes
 - Merge to main branch
@@ -174,6 +187,7 @@ Task 01 Completion Safepoint:
 ## 🎯 Success Criteria
 
 ✅ Task 01 (system_mode_switch.sh):
+
 - [x] Script created
 - [x] All functions tested
 - [x] Help documentation works
@@ -181,6 +195,7 @@ Task 01 Completion Safepoint:
 - [x] Executable and in git
 
 🔄 Phase 4.1 Overall:
+
 - [ ] 20/20 tasks complete by Dec 5
 - [ ] 100% test coverage
 - [ ] Zero critical bugs
@@ -207,6 +222,7 @@ Task 01 Completion Safepoint:
 **→ Friday, Nov 7, 9:00 AM: Phase 4.1 Kickoff Meeting**
 
 Agenda:
+
 1. Welcome to Phase 4.1
 2. Review BOOTSTRAP_PDI_PROMPT.md (10 min)
 3. Demo system_mode_switch.sh (5 min)

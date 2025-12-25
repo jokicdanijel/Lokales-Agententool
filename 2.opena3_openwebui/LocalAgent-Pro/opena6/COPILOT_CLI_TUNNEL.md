@@ -6,11 +6,11 @@ Verwende GitHub Copilot direkt über die `gh copilot` CLI in OpenWebUI!
 
 **3 Einsatzmöglichkeiten:**
 
-| Modus | Beschreibung | Beispiel |
-|-------|-------------|---------|
-| **chat** | Freie Anfrage an Copilot | "Erkläre Async/Await in Python" |
-| **explain** | Code/Datei erklären lassen | Zeige Datei `main.py` |
-| **commit** | Commit-Message generieren | Basierend auf `git diff` |
+| Modus       | Beschreibung               | Beispiel                        |
+| ----------- | -------------------------- | ------------------------------- |
+| **chat**    | Freie Anfrage an Copilot   | "Erkläre Async/Await in Python" |
+| **explain** | Code/Datei erklären lassen | Zeige Datei `main.py`           |
+| **commit**  | Commit-Message generieren  | Basierend auf `git diff`        |
 
 ---
 
@@ -19,11 +19,13 @@ Verwende GitHub Copilot direkt über die `gh copilot` CLI in OpenWebUI!
 ### 1. GitHub CLI installieren
 
 **macOS:**
+
 ```bash
 brew install gh
 ```
 
 **Linux (Ubuntu/Debian):**
+
 ```bash
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
@@ -32,6 +34,7 @@ sudo apt install gh
 ```
 
 **Verify:**
+
 ```bash
 gh --version
 ```
@@ -50,6 +53,7 @@ gh auth login
 ```
 
 **Verify:**
+
 ```bash
 gh auth status
 ```
@@ -63,6 +67,7 @@ gh extension install github/gh-copilot
 ```
 
 **Verify:**
+
 ```bash
 gh copilot --version
 ```
@@ -94,12 +99,14 @@ VERBOSE:           Debug-Logging aktivieren
 ### 1. Chat Mode
 
 **Prompt:**
+
 ```
 MODE: chat
 PROMPT: Schreibe eine Python-Funktion für Fibonacci
 ```
 
 **Response:**
+
 ```python
 def fibonacci(n):
     """Generate Fibonacci sequence up to n numbers"""
@@ -119,12 +126,14 @@ def fibonacci(n):
 ### 2. Explain Mode
 
 **Setup:**
+
 ```
 MODE: explain
 FILES: ["src/main.py"]
 ```
 
 **Response:**
+
 ```
 Diese Datei enthält die Hauptlogik für...
 - Initialisierung der Datenbank
@@ -141,12 +150,14 @@ Wichtigste Funktionen:
 ### 3. Commit Mode
 
 **Setup:**
+
 ```
 MODE: commit
 PROMPT: (leer) # Nutzt Default-Prompt
 ```
 
 **Git Diff:**
+
 ```diff
 + def new_feature():
 +     pass
@@ -155,6 +166,7 @@ PROMPT: (leer) # Nutzt Default-Prompt
 ```
 
 **Response:**
+
 ```
 ✨ feat: replace old feature with new implementation
 
@@ -246,6 +258,7 @@ Alle Requests und Responses werden geloggt!
 ### Problem: "GitHub CLI 'gh' nicht gefunden"
 
 **Lösung:**
+
 ```bash
 # Installiere GitHub CLI
 brew install gh  # Mac
@@ -261,6 +274,7 @@ which gh
 ### Problem: "Not authenticated"
 
 **Lösung:**
+
 ```bash
 gh auth login
 gh auth status
@@ -271,6 +285,7 @@ gh auth status
 ### Problem: "gh copilot: command not found"
 
 **Lösung:**
+
 ```bash
 # Installiere gh-copilot Extension
 gh extension install github/gh-copilot
@@ -282,6 +297,7 @@ gh copilot --version
 ### Problem: Timeout Error
 
 **Lösung:**
+
 ```
 Erhöhe TIMEOUT_SEC:
 TIMEOUT_SEC: 180  # 3 Minuten

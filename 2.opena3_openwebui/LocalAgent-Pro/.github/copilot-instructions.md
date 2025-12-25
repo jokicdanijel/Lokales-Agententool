@@ -21,6 +21,7 @@ EXECUTION MODE (Nur wenn OK)
 ```
 
 ### Kernkompetenzen
+
 1. **Code-Assistent** - Python/Flask-Entwicklung mit Type Safety
 2. **Sicherheits-Experte** - Sandbox-Isolation & Whitelisting
 3. **DevOps-Helfer** - Docker, Ollama, OpenWebUI
@@ -41,6 +42,7 @@ OpenWebUI (3000) → LocalAgent-Pro (8001) → Ollama (11434)
 ## 🔐 Security-First Prinzipien
 
 **IMMER beachten:**
+
 - ✅ **Whitelist-Ansatz** (nie Blacklist)
 - ✅ **Path Traversal Prevention** (`..` und `/` blockieren)
 - ✅ **Command Whitelisting** (nur sichere Befehle)
@@ -48,6 +50,7 @@ OpenWebUI (3000) → LocalAgent-Pro (8001) → Ollama (11434)
 - ✅ **Input Validation** (alle User-Eingaben prüfen)
 
 **Beispiel:**
+
 ```python
 ALLOWED_COMMANDS = ['ls', 'cat', 'grep', 'echo']
 if base_cmd not in ALLOWED_COMMANDS:
@@ -59,6 +62,7 @@ if base_cmd not in ALLOWED_COMMANDS:
 ## 💻 Code-Standards
 
 ### 1. Type Hints & Docstrings
+
 ```python
 def sanitize_filename(filename: str) -> Path:
     """Sanitize filename and return safe path within sandbox.
@@ -75,6 +79,7 @@ def sanitize_filename(filename: str) -> Path:
 ```
 
 ### 2. Error Handling
+
 ```python
 try:
     # ... operation ...
@@ -90,6 +95,7 @@ except Exception as e:
 ```
 
 ### 3. Logging
+
 - **INFO** - Normale Operationen
 - **WARNING** - Security-Warnungen
 - **ERROR** - Fehler & Exceptions
@@ -99,6 +105,7 @@ except Exception as e:
 ## 🔧 Häufige Workflows
 
 ### Neues Tool hinzufügen
+
 1. Function in `src/openwebui_agent_server.py` erstellen
 2. Security-Checks implementieren (Whitelist)
 3. Error Handling hinzufügen
@@ -107,6 +114,7 @@ except Exception as e:
 6. API-Docs aktualisieren (`docs/API.md`)
 
 ### API-Endpoint erweitern
+
 1. Route mit `@app.route()` definieren
 2. Input-Validation implementieren
 3. Try-Except-Block für Error Handling
@@ -114,6 +122,7 @@ except Exception as e:
 5. cURL-Beispiel dokumentieren
 
 ### Security-Check hinzufügen
+
 1. Validation-Function erstellen
 2. Whitelist-Ansatz verwenden
 3. SecurityError bei Verstößen
@@ -135,6 +144,7 @@ pytest tests/ -v --cov=src
 ```
 
 **Jeder Test braucht:**
+
 - Docstring mit Beschreibung
 - Positive Test Cases
 - Negative Test Cases (Security)
@@ -145,6 +155,7 @@ pytest tests/ -v --cov=src
 ## 🚀 Deployment-Checkliste
 
 Bei Code-Changes prüfen:
+
 - [ ] Type hints vorhanden?
 - [ ] Docstrings vollständig?
 - [ ] Error handling implementiert?
@@ -178,15 +189,15 @@ docker-compose ps
 
 ## 📦 Wichtige Dateien
 
-| Datei | Beschreibung |
-|-------|--------------|
-| `src/openwebui_agent_server.py` | Main server code |
-| `config/config.yaml` | Configuration |
-| `config/system_prompt.txt` | AI system prompt |
-| `docs/API.md` | API documentation |
-| `tests/test_*.py` | Test suites |
-| `docker-compose.yml` | Multi-container setup |
-| `requirements.txt` | Python dependencies |
+| Datei                           | Beschreibung          |
+| ------------------------------- | --------------------- |
+| `src/openwebui_agent_server.py` | Main server code      |
+| `config/config.yaml`            | Configuration         |
+| `config/system_prompt.txt`      | AI system prompt      |
+| `docs/API.md`                   | API documentation     |
+| `tests/test_*.py`               | Test suites           |
+| `docker-compose.yml`            | Multi-container setup |
+| `requirements.txt`              | Python dependencies   |
 
 ---
 

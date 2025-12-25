@@ -6,16 +6,15 @@ Security Module - PORTIER 3.0 Compliant
 Bearer Token Validation, Rate Limiting, API Key Management
 """
 
+import hashlib
 import os
 import time
-import hashlib
-from typing import Optional, Dict, Any
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+from typing import Any
 
-from fastapi import HTTPException, Header, Request
+from fastapi import Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from pydantic import BaseModel, ConfigDict
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 # ================== BEARER TOKEN ==================
 
@@ -32,54 +31,55 @@ def verify_token(credentials: HTTPAuthorizationCredentials) -> str:
                 "error": {
                     "code": "INVALID_TOKEN",
                     "message": "Ungültiger Bearer Token",
-                    "timestamp": datetime.now(timezone.utc).isoformat()
+                    "timestamp": datetime.now(UTC).isoformat(),
                 }
-            }
+            },
         )
     return credentials.credentials
 
 
-async def verify_bearer_token(authorization: Optional[str] = Header(None)) -> str:
+async def verify_bearer_token(authorization: str | None = Header(None)) -> str:
     """Bearer Token Validierung (Header-basiert)"""
     if authorization is None:
         raise HTTPException(status_code=401, detail="Authorization header fehlt")
-    
+
     scheme, _, token = authorization.partition(" ")
     if scheme.lower() != "bearer" or token != BEARER_TOKEN:
         raise HTTPException(status_code=401, detail="Ungültiger Token")
-    
+
     return token
 
 
 # ================== RATE LIMITER ==================
 
+
 class RateLimiter:
     """Rate Limiter für API Calls"""
-    
+
     def __init__(self, max_requests: int = 100, window_seconds: int = 60):
         self.max_requests = max_requests
         self.window_seconds = window_seconds
-        self.requests: Dict[str, list] = {}
-    
+        self.requests: dict[str, list] = {}
+
     def _get_client_id(self, request: Request) -> str:
         """Ermittelt Client-ID"""
         client_ip = request.client.host if request.client else "unknown"
         return hashlib.md5(client_ip.encode()).hexdigest()[:16]
-    
+
     def is_allowed(self, request: Request) -> bool:
         """Prüft ob Request erlaubt ist"""
         client_id = self._get_client_id(request)
         now = time.time()
         cutoff = now - self.window_seconds
-        
+
         if client_id not in self.requests:
             self.requests[client_id] = []
-        
+
         self.requests[client_id] = [ts for ts in self.requests[client_id] if ts > cutoff]
-        
+
         if len(self.requests[client_id]) >= self.max_requests:
             return False
-        
+
         self.requests[client_id].append(now)
         return True
 
@@ -99,11 +99,10 @@ def mask_secrets(data: Any, depth: int = 0) -> Any:
     """Maskiert Secrets in Datenstrukturen"""
     if depth > 10:
         return data
-    
+
     if isinstance(data, dict):
         return {
-            k: "***MASKED***" if any(s in k.lower() for s in SECRET_KEYS)
-            else mask_secrets(v, depth + 1)
+            k: "***MASKED***" if any(s in k.lower() for s in SECRET_KEYS) else mask_secrets(v, depth + 1)
             for k, v in data.items()
         }
     elif isinstance(data, list):
@@ -113,25 +112,26 @@ def mask_secrets(data: Any, depth: int = 0) -> Any:
 
 # ================== API KEY MANAGER ==================
 
+
 class APIKeyManager:
     """Verwaltet externe API Keys (Alpha Vantage, CoinGecko)"""
-    
+
     def __init__(self):
         self.alpha_vantage_key = os.getenv("ALPHA_VANTAGE_KEY", "demo")
         self.coingecko_key = os.getenv("COINGECKO_API_KEY", "")
-        self._api_call_counts: Dict[str, int] = {}
+        self._api_call_counts: dict[str, int] = {}
         self._last_reset: float = time.time()
-    
+
     def get_alpha_vantage_key(self) -> str:
         """Alpha Vantage API Key (mit Rate Limit Tracking)"""
         self._track_call("alpha_vantage")
         return self.alpha_vantage_key
-    
-    def get_coingecko_key(self) -> Optional[str]:
+
+    def get_coingecko_key(self) -> str | None:
         """CoinGecko API Key (optional, public API verfügbar)"""
         self._track_call("coingecko")
         return self.coingecko_key if self.coingecko_key else None
-    
+
     def _track_call(self, api_name: str) -> None:
         """Trackt API Calls"""
         now = time.time()
@@ -139,21 +139,18 @@ class APIKeyManager:
         if now - self._last_reset > 86400:
             self._api_call_counts = {}
             self._last_reset = now
-        
+
         if api_name not in self._api_call_counts:
             self._api_call_counts[api_name] = 0
         self._api_call_counts[api_name] += 1
-    
-    def get_usage_stats(self) -> Dict[str, int]:
+
+    def get_usage_stats(self) -> dict[str, int]:
         """Gibt API Usage Statistiken zurück"""
         return self._api_call_counts.copy()
-    
+
     def check_rate_limit(self, api_name: str) -> bool:
         """Prüft ob API Rate Limit erreicht"""
-        limits = {
-            "alpha_vantage": 5,  # 5 calls/min for free tier
-            "coingecko": 50     # 50 calls/min for free tier
-        }
+        limits = {"alpha_vantage": 5, "coingecko": 50}  # 5 calls/min for free tier  # 50 calls/min for free tier
         # Simplified check
         return self._api_call_counts.get(api_name, 0) < limits.get(api_name, 100)
 

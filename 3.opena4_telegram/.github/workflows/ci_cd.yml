@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
     inputs:
       force_deploy:
-        description: 'Force deployment'
+        description: "Force deployment"
         required: false
-        default: 'false'
+        default: "false"
 
 env:
   SERVICE_NAME: opena4_telegram
@@ -26,26 +26,25 @@ env:
   IMAGE_NAME: ${{ github.repository }}/opena4_telegram
 
 jobs:
-
   security-scan:
     name: 🛡️ Security & Vulnerability Scan
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@v4
-        
+
       - name: 🔍 Run Trivy Security Scan
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: 'fs'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          
+          scan-type: "fs"
+          format: "sarif"
+          output: "trivy-results.sarif"
+
       - name: 📋 Upload Security Results
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: "trivy-results.sarif"
 
   build-test-lint:
     name: 🧪 Build, Test & Lint
@@ -66,7 +65,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pip'
+          cache: "pip"
 
       - name: 📦 Install Dependencies
         run: |
@@ -92,7 +91,7 @@ jobs:
       - name: 🧪 Run Unit Tests
         run: |
           pytest -v --cov=. --cov-report=xml --cov-report=html
-          
+
       - name: 📊 Upload Coverage
         uses: codecov/codecov-action@v3
         with:
@@ -105,7 +104,7 @@ jobs:
           if [[ ! -f "$VERSION_FILE" ]]; then echo "1.0.0" > "$VERSION_FILE"; fi
           current=$(cat "$VERSION_FILE")
           IFS='.' read -r major minor patch <<< "$current"
-          
+
           # Increment based on commit message
           if git log -1 --pretty=%B | grep -i "BREAKING CHANGE\|major:"; then
             new_version="$((major + 1)).0.0"
@@ -114,7 +113,7 @@ jobs:
           else
             new_version="$major.$minor.$((patch + 1))"
           fi
-          
+
           echo "$new_version" > "$VERSION_FILE"
           echo "new=$new_version" >> $GITHUB_OUTPUT
           echo "previous=$current" >> $GITHUB_OUTPUT
@@ -159,7 +158,7 @@ jobs:
     name: 🔗 Integration Tests
     runs-on: ubuntu-latest
     needs: build-test-lint
-    
+
     services:
       redis:
         image: redis:alpine
@@ -172,12 +171,12 @@ jobs:
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@v4
-        
+
       - name: 🐍 Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          
+
       - name: 🧪 Run Integration Tests
         run: |
           pip install -r requirements.txt
@@ -212,20 +211,20 @@ jobs:
           name: 🚀 opena4_telegram v${{ needs.build-test-lint.outputs.version }}
           body: |
             ## 🎯 PORTIER 3.0 Telegram Agent Release
-            
+
             **Version:** ${{ needs.build-test-lint.outputs.version }}
             **Build Time:** ${{ github.run_started_at }}
             **Commit:** ${{ github.sha }}
             **Image Digest:** ${{ needs.build-test-lint.outputs.image-digest }}
-            
+
             ### 📋 Changes
             ${{ steps.changelog.outputs.changelog }}
-            
+
             ### 🐳 Docker Image
             ```bash
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.build-test-lint.outputs.version }}
             ```
-            
+
             ### 🚀 Quick Deploy
             ```bash
             kubectl apply -f k8s/opena4-deployment.yaml
@@ -241,7 +240,7 @@ jobs:
     needs: [build-test-lint, integration-test]
     runs-on: ubuntu-latest
     environment: staging
-    
+
     steps:
       - name: 🚀 Deploy to Staging
         uses: appleboy/ssh-action@v1.3.1
@@ -252,11 +251,11 @@ jobs:
           script: |
             # Pull new image
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.build-test-lint.outputs.version }}
-            
+
             # Stop existing container
             docker stop opena4_telegram_staging 2>/dev/null || true
             docker rm opena4_telegram_staging 2>/dev/null || true
-            
+
             # Start new container
             docker run -d \
               --name opena4_telegram_staging \
@@ -266,10 +265,10 @@ jobs:
               -e BEARER_TOKEN="${{ secrets.BEARER_TOKEN }}" \
               -e ENV=staging \
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.build-test-lint.outputs.version }}
-            
+
             # Wait for startup
             sleep 10
-            
+
             # Health check
             curl -f http://localhost:12348/health || exit 1
 
@@ -279,7 +278,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     if: github.ref == 'refs/heads/main'
-    
+
     steps:
       - name: 🚀 Blue-Green Deployment
         uses: appleboy/ssh-action@v1.3.1
@@ -291,12 +290,12 @@ jobs:
             # Blue-Green Deployment Strategy
             CURRENT_COLOR=$(docker ps --format "table {{.Names}}" | grep opena4_telegram_ | grep -o "blue\|green" | head -1 || echo "green")
             NEW_COLOR=$([ "$CURRENT_COLOR" = "blue" ] && echo "green" || echo "blue")
-            
+
             echo "Current: $CURRENT_COLOR, Deploying: $NEW_COLOR"
-            
+
             # Pull new image
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.build-test-lint.outputs.version }}
-            
+
             # Start new container (new color)
             docker run -d \
               --name opena4_telegram_${NEW_COLOR} \
@@ -306,25 +305,25 @@ jobs:
               -e BEARER_TOKEN="${{ env.BEARER_TOKEN }}" \
               -e ENV=production \
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.build-test-lint.outputs.version }}
-            
+
             # Wait for startup
             sleep 15
-            
+
             # Health check new deployment
             NEW_PORT=$([[ "$NEW_COLOR" == "blue" ]] && echo "12349" || echo "12350")
             curl -f http://localhost:$NEW_PORT/health || exit 1
-            
+
             # Switch traffic (nginx reload or load balancer update)
             # This would typically update your load balancer configuration
             echo "Traffic switched to $NEW_COLOR deployment"
-            
+
             # Wait before killing old deployment
             sleep 30
-            
+
             # Remove old deployment
             docker stop opena4_telegram_${CURRENT_COLOR} 2>/dev/null || true
             docker rm opena4_telegram_${CURRENT_COLOR} 2>/dev/null || true
-            
+
             echo "✅ Blue-Green deployment completed successfully"
 
   post-deploy-verification:
@@ -332,11 +331,11 @@ jobs:
     needs: deploy-production
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    
+
     steps:
       - name: ⏱️ Wait for Service Stabilization
         run: sleep 30
-        
+
       - name: 🔍 Comprehensive Health Check
         run: |
           # Health endpoint
@@ -345,23 +344,23 @@ jobs:
             echo "❌ Health check failed: $HEALTH"
             exit 1
           fi
-          
+
           # Metrics endpoint
           METRICS=$(curl -s http://${{ env.DEPLOY_HOST }}:12348/metrics)
           if [[ $? -ne 0 ]]; then
             echo "❌ Metrics endpoint failed"
             exit 1
           fi
-          
+
           # Agent status
           STATUS=$(curl -s http://${{ env.DEPLOY_HOST }}:12348/status | jq -r '.agent_status')
           if [[ "$STATUS" != "active" ]]; then
             echo "❌ Agent not active: $STATUS"
             exit 1
           fi
-          
+
           echo "✅ All health checks passed - deployment verified!"
-          
+
       - name: 📊 Update Deployment Status
         uses: actions/github-script@v7
         with:
@@ -380,12 +379,12 @@ jobs:
     needs: post-deploy-verification
     runs-on: ubuntu-latest
     if: always()
-    
+
     steps:
       - name: 🗑️ Cleanup Old Container Images
         uses: actions/delete-package-versions@v5
         with:
           package-name: ${{ env.IMAGE_NAME }}
-          package-type: 'container'
+          package-type: "container"
           min-versions-to-keep: 5
           delete-only-untagged-versions: true

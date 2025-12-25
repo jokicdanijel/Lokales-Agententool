@@ -1,16 +1,20 @@
 # PLAN: Agent opena6 – Email Chatbot
+
 **Status:** Production-Ready Plan | **Port:** 12348 | **Modul:** 5.chatbot_schrift_opena6
 
 ## 📋 Zielsetzung
+
 Email-basierter Chatbot mit Patch-Integration, Konversations-Abstrahierung und Audit-Logging.
 
 ## 🔗 Eingaben & Abhängigkeiten
+
 - SMTP/API-Requests
 - Patch-Blöcke (Unified Diff)
 - Audit-Log-Anforderungen
 - OpenWebUI-Context
 
 ## 🏗️ Architektur
+
 ```
 2.openwebui/
 ├── openwebui_opena6.py
@@ -20,11 +24,13 @@ Email-basierter Chatbot mit Patch-Integration, Konversations-Abstrahierung und A
 ```
 
 ## Endpunkte
+
 - `GET /opena6/health` – Status
 - `POST /opena6/send-email` – Email senden + Archive
 - `GET /opena6/audit` – Audit-Logs
 
 ## ⚙️ Umsetzung
+
 - [ ] Erstelle `openwebui_opena6.py`
 - [ ] Health-Endpunkt implementieren
 - [ ] Email-to-Chat-Konversion
@@ -33,6 +39,7 @@ Email-basierter Chatbot mit Patch-Integration, Konversations-Abstrahierung und A
 - [ ] Archivator-Integration
 
 ## 📦 Release
+
 - `PLAN_opena6_Email.md`
 - `2.openwebui/openwebui_opena6.py`
 - `tests/test_opena6.py`

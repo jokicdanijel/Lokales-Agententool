@@ -161,11 +161,11 @@ apiURL	string	Endpunkt, der das ChatKit-Serverprotokoll implementiert.	erforderl
 fetch	typeof fetch	Fetch-Aufrufe überschreiben (für benutzerdefinierte Header oder Authentifizierung).	window.fetch
 theme	"light" | "dark"	UI-Design.	"light"
 initialThread	string | null	Beim Mounten zu öffnender Thread; nullzeigt die neue Thread-Ansicht.	null
-clientTools	Record<string, Function>	Vom Client ausgeführte Tools, die dem Modell ausgesetzt sind.	
+clientTools	Record<string, Function>	Vom Client ausgeführte Tools, die dem Modell ausgesetzt sind.
 header	object | boolean	Kopfzeilenkonfiguration oder falsezum Ausblenden der Kopfzeile.	true
-newThreadView	object	Passen Sie Begrüßungstext und Startaufforderungen an.	
-messages	object	Konfigurieren Sie Nachrichtenangebote (Feedback, Anmerkungen usw.).	
-composer	object	Steuern Sie Anhänge, Entitäts-Tags und Platzhaltertext.	
+newThreadView	object	Passen Sie Begrüßungstext und Startaufforderungen an.
+messages	object	Konfigurieren Sie Nachrichtenangebote (Feedback, Anmerkungen usw.).
+composer	object	Steuern Sie Anhänge, Entitäts-Tags und Platzhaltertext.
 entities	object	Rückrufe für Entitätssuche, Klickverarbeitung und Vorschauen.	ChatKit-Serverintegration
 Die Serverintegration von ChatKit bietet einen flexiblen und Framework-unabhängigen Ansatz für die Erstellung von Echtzeit-Chat-Erlebnissen. Durch die Implementierung der ChatKitServerBasisklasse und ihrer respondMethode können Sie konfigurieren, wie Ihr Workflow auf Benutzereingaben reagiert – von der Verwendung von Tools bis zur Rückgabe von Rich-Display-Widgets. Die ChatKit-Serverintegration stellt einen einzelnen Endpunkt bereit und unterstützt JSON und Server-Send-Events (SSE) für das Streamen von Echtzeit-Updates.
 Installation
@@ -956,4 +956,3 @@ Der Serverkontext kann verwendet werden, um Berechtigungsprüfungen in Attachmen
 class MyChatKitServer(ChatKitServer):
     async def load_attachment(..., context) -> Attachment:
         # check context["userId"] has access to the file
-

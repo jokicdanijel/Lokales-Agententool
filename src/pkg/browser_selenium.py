@@ -2,16 +2,14 @@
 Browser Automation Module using Selenium
 """
 
-import asyncio
-import logging
-from typing import Optional, List, Dict
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import base64
-import json
+import logging
+
+from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 logger = logging.getLogger(__name__)
 
@@ -21,21 +19,21 @@ class BrowserAutomation:
 
     def __init__(self, headless: bool = True):
         self.headless = headless
-        self._driver: Optional[webdriver.Chrome] = None
+        self._driver: webdriver.Chrome | None = None
 
     async def init(self) -> bool:
         """Initialize Chrome WebDriver"""
         try:
             options = webdriver.ChromeOptions()
-            
+
             if self.headless:
                 options.add_argument("--headless")
-            
+
             options.add_argument("--no-sandbox")
             options.add_argument("--disable-dev-shm-usage")
             options.add_argument("--disable-blink-features=AutomationControlled")
             options.add_argument("user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36")
-            
+
             self._driver = webdriver.Chrome(options=options)
             logger.info("✅ Chrome WebDriver initialized")
             return True
@@ -47,12 +45,10 @@ class BrowserAutomation:
         """Navigate to URL and wait for page load"""
         if not self._driver:
             raise RuntimeError("WebDriver not initialized")
-        
+
         try:
             self._driver.get(url)
-            WebDriverWait(self._driver, wait_time).until(
-                EC.presence_of_element_located((By.TAG_NAME, "body"))
-            )
+            WebDriverWait(self._driver, wait_time).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
             logger.info(f"✅ Navigated to {url}")
             return True
         except TimeoutException:
@@ -66,11 +62,9 @@ class BrowserAutomation:
         """Wait for element to be present"""
         if not self._driver:
             raise RuntimeError("WebDriver not initialized")
-        
+
         try:
-            WebDriverWait(self._driver, timeout).until(
-                EC.presence_of_element_located((by, selector))
-            )
+            WebDriverWait(self._driver, timeout).until(EC.presence_of_element_located((by, selector)))
             logger.info(f"✅ Element found: {selector}")
             return True
         except TimeoutException:
@@ -81,7 +75,7 @@ class BrowserAutomation:
         """Click on element"""
         if not self._driver:
             raise RuntimeError("WebDriver not initialized")
-        
+
         try:
             element = self._driver.find_element(by, selector)
             self._driver.execute_script("arguments[0].scrollIntoView(true);", element)
@@ -95,38 +89,38 @@ class BrowserAutomation:
             logger.error(f"❌ Click failed: {e}")
             return False
 
-    async def fill_form(self, fields: Dict[str, str]) -> bool:
+    async def fill_form(self, fields: dict[str, str]) -> bool:
         """Fill form fields"""
         if not self._driver:
             raise RuntimeError("WebDriver not initialized")
-        
+
         try:
             for selector, value in fields.items():
                 element = self._driver.find_element(By.CSS_SELECTOR, selector)
                 element.clear()
                 element.send_keys(value)
-            
+
             logger.info(f"✅ Filled {len(fields)} form fields")
             return True
         except Exception as e:
             logger.error(f"❌ Form fill failed: {e}")
             return False
 
-    async def get_screenshot(self, filename: Optional[str] = None) -> Optional[str]:
+    async def get_screenshot(self, filename: str | None = None) -> str | None:
         """Take screenshot and return base64 or save to file"""
         if not self._driver:
             raise RuntimeError("WebDriver not initialized")
-        
+
         try:
             screenshot_data = self._driver.get_screenshot_as_png()
-            
+
             if filename:
-                with open(filename, 'wb') as f:
+                with open(filename, "wb") as f:
                     f.write(screenshot_data)
                 logger.info(f"✅ Screenshot saved: {filename}")
                 return filename
             else:
-                b64 = base64.b64encode(screenshot_data).decode('utf-8')
+                b64 = base64.b64encode(screenshot_data).decode("utf-8")
                 logger.info("✅ Screenshot captured (base64)")
                 return b64
         except Exception as e:
@@ -137,7 +131,7 @@ class BrowserAutomation:
         """Get full page HTML"""
         if not self._driver:
             raise RuntimeError("WebDriver not initialized")
-        
+
         try:
             source = self._driver.page_source
             logger.info(f"✅ Page source retrieved ({len(source)} bytes)")
@@ -150,20 +144,20 @@ class BrowserAutomation:
         """Execute JavaScript"""
         if not self._driver:
             raise RuntimeError("WebDriver not initialized")
-        
+
         try:
             result = self._driver.execute_script(script)
-            logger.info(f"✅ Script executed")
+            logger.info("✅ Script executed")
             return result
         except Exception as e:
             logger.error(f"❌ Script execution failed: {e}")
             return None
 
-    async def get_cookies(self) -> List[Dict]:
+    async def get_cookies(self) -> list[dict]:
         """Get all cookies"""
         if not self._driver:
             raise RuntimeError("WebDriver not initialized")
-        
+
         try:
             cookies = self._driver.get_cookies()
             logger.info(f"✅ Retrieved {len(cookies)} cookies")
@@ -176,12 +170,12 @@ class BrowserAutomation:
         """Set cookie"""
         if not self._driver:
             raise RuntimeError("WebDriver not initialized")
-        
+
         try:
             cookie_dict = {"name": name, "value": value}
             if domain:
                 cookie_dict["domain"] = domain
-            
+
             self._driver.add_cookie(cookie_dict)
             logger.info(f"✅ Cookie set: {name}")
             return True
@@ -202,7 +196,7 @@ class BrowserAutomation:
 
 
 # Global instance
-_browser_instance: Optional[BrowserAutomation] = None
+_browser_instance: BrowserAutomation | None = None
 
 
 async def get_browser() -> BrowserAutomation:

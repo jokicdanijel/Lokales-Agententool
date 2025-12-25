@@ -17,6 +17,7 @@ umfassende Dokumentation sowie Testskripte.
 ## 📦 Implementierte Komponenten
 
 ### 1. **OpenWebUI Adapter (openwebui_adapter.py)**
+
 - FastAPI Relay-Modul für Port 8080 (OpenWebUI)
 - Endpoints: `GET /openwebui/health`, `POST /openwebui/chat`
 - Fehlerbehandlung: Timeout (10s), ConnectionError → HTTP 502
@@ -24,6 +25,7 @@ umfassende Dokumentation sowie Testskripte.
 - ✅ **Status:** Production-ready
 
 ### 2. **OpenWebUI Agent – opena3 (main_openwebui_agent.py)**
+
 - FastAPI Agent auf Port 12347
 - Endpoints: `GET /health`, `POST /command`, `POST /invoke`
 - Kommando-Format: `{"prompt": "...", "context": {...}, "model": "..."}`
@@ -33,6 +35,7 @@ umfassende Dokumentation sowie Testskripte.
 ### 3. **Start-Skripte**
 
 #### `bin/start_openwebui_adapter.sh`
+
 - Startet Adapter auf Port 12350 im Hintergrund
 - Venv-Aktivierung
 - PID-Speicherung in `.runtime/openwebui_adapter.pid`
@@ -40,12 +43,14 @@ umfassende Dokumentation sowie Testskripte.
 - ✅ **Status:** Tested
 
 #### `bin/start_opena3.sh`
+
 - Startet opena3 Agent auf Port 12347
 - Identical pattern zu anderen start-scripts
 - Health-Check nach Start
 - ✅ **Status:** Tested
 
 ### 4. **Dashboard Integration (main_dashboard.py)**
+
 - 2 neue Endpunkte:
   - `GET /api/openwebui/status` – Health Check für opena3
   - `POST /api/openwebui/chat` – Chat-Request Relay
@@ -56,6 +61,7 @@ umfassende Dokumentation sowie Testskripte.
 - ✅ **Status:** Tested & Integrated
 
 ### 5. **UI-Integration (ui_index.html)**
+
 - "💬 OpenWebUI Chat" Button
 - Modal-Dialog für Chat-Input
 - Response-Anzeige mit JSON-Formatting
@@ -64,6 +70,7 @@ umfassende Dokumentation sowie Testskripte.
 - ✅ **Status:** Working
 
 ### 6. **Test-Script (scripts/test_openwebui.py)**
+
 - Token-Validierung aus `.env`
 - 2 Tests: Health-Check + Command
 - Farbige Output
@@ -72,6 +79,7 @@ umfassende Dokumentation sowie Testskripte.
 - ✅ **Status:** Executable
 
 ### 7. **Configuration**
+
 - `config.py` mit `OpenWebUIConfig` Klasse
 - Umgebungsvariablen-Support:
   - `OPENWEBUI_URL` (default: http://127.0.0.1:8080)
@@ -81,6 +89,7 @@ umfassende Dokumentation sowie Testskripte.
 - ✅ **Status:** Flexible
 
 ### 8. **Status Check Tool (bin/openwebui_status.sh)**
+
 - Prüft alle 4 Services:
   1. OpenWebUI (8080)
   2. opena3 (12347)
@@ -92,6 +101,7 @@ umfassende Dokumentation sowie Testskripte.
 - ✅ **Status:** Tested
 
 ### 9. **Seed Script (scripts/seed_openwebui.py)**
+
 - 5 Test-Prompts
 - Sendet via Dashboard-API
 - Speichert Responses als Safepoints in opena2
@@ -100,6 +110,7 @@ umfassende Dokumentation sowie Testskripte.
 - ✅ **Status:** Ready
 
 ### 10. **Docker (Dockerfile.openwebui)**
+
 - Python 3.12-slim Base Image
 - curl + netcat-traditional Tools
 - Health-Check (30s interval)
@@ -109,6 +120,7 @@ umfassende Dokumentation sowie Testskripte.
 ### 11. **Documentation**
 
 #### `docs/OPENWEBUI_API.md`
+
 - 8 Sections mit cURL-Beispielen
 - Request/Response-Schemas
 - Fehlerbehandlung-Guide
@@ -117,6 +129,7 @@ umfassende Dokumentation sowie Testskripte.
 - ✅ **Status:** Complete
 
 #### `docs/TROUBLESHOOTING.md`
+
 - 10+ häufige Probleme
 - Ursachen + Lösungsschritte
 - Log-Dateien dokumentiert
@@ -125,6 +138,7 @@ umfassende Dokumentation sowie Testskripte.
 - ✅ **Status:** Comprehensive
 
 #### `docs/OPENWEBUI_TODO.md`
+
 - 8 Phasen (Phase 2-8)
 - 100+ offene Tasks
 - Geschätzte Hours pro Task
@@ -132,6 +146,7 @@ umfassende Dokumentation sowie Testskripte.
 - ✅ **Status:** Strategic
 
 ### 12. **Requirements.txt**
+
 - FastAPI, uvicorn, pydantic
 - requests, httpx, aiohttp
 - sse-starlette, aiofiles
@@ -144,12 +159,12 @@ umfassende Dokumentation sowie Testskripte.
 
 ## 🔌 Port-Plan
 
-| Service | Port | Process | Log |
-|---------|------|---------|-----|
-| OpenWebUI | 8080 | Docker/External | stdout |
-| Adapter | 12350 | Python/uvicorn | logs/openwebui_adapter.nohup.log |
-| **opena3** | **12347** | **Python/uvicorn** | **logs/opena3.nohup.log** |
-| Dashboard | 12349 | Python/uvicorn | logs/dashboard_runtime.log |
+| Service    | Port      | Process            | Log                              |
+| ---------- | --------- | ------------------ | -------------------------------- |
+| OpenWebUI  | 8080      | Docker/External    | stdout                           |
+| Adapter    | 12350     | Python/uvicorn     | logs/openwebui_adapter.nohup.log |
+| **opena3** | **12347** | **Python/uvicorn** | **logs/opena3.nohup.log**        |
+| Dashboard  | 12349     | Python/uvicorn     | logs/dashboard_runtime.log       |
 
 ---
 
@@ -185,6 +200,7 @@ curl -H "Authorization: Bearer $TOKEN" \
 ```
 
 ### Expected Results:
+
 ```
 ✅ bin/openwebui_status.sh → "ALLE SERVICES OK"
 ✅ scripts/test_openwebui.py → "2/2 Tests ERFOLGREICH"
@@ -289,34 +305,37 @@ Response JSON + Modal Display
 
 ## 📊 Completed Metrics
 
-| Komponente | Status | LOC | Tests | Docs |
-|-----------|--------|-----|-------|------|
-| openwebui_adapter.py | ✅ | ~165 | ✅ | ✅ |
-| main_openwebui_agent.py | ✅ | ~180 | ✅ | ✅ |
-| Dashboard Endpoints | ✅ | +60 | ✅ | ✅ |
-| UI Modal | ✅ | +80 | ✅ | ✅ |
-| Start Scripts | ✅ | 2×~50 | ✅ | ✅ |
-| Test Suite | ✅ | ~180 | 2/2 ✅ | ✅ |
-| Documentation | ✅ | ~500 | N/A | ✅ |
-| **Total** | **✅** | **~1300** | **✅** | **✅** |
+| Komponente              | Status | LOC       | Tests  | Docs   |
+| ----------------------- | ------ | --------- | ------ | ------ |
+| openwebui_adapter.py    | ✅     | ~165      | ✅     | ✅     |
+| main_openwebui_agent.py | ✅     | ~180      | ✅     | ✅     |
+| Dashboard Endpoints     | ✅     | +60       | ✅     | ✅     |
+| UI Modal                | ✅     | +80       | ✅     | ✅     |
+| Start Scripts           | ✅     | 2×~50     | ✅     | ✅     |
+| Test Suite              | ✅     | ~180      | 2/2 ✅ | ✅     |
+| Documentation           | ✅     | ~500      | N/A    | ✅     |
+| **Total**               | **✅** | **~1300** | **✅** | **✅** |
 
 ---
 
 ## ⏭️ Nächste Schritte (Phase 2)
 
 ### Sofort-Priorities:
+
 1. **[ ] Deployment-Test** – Alle Services 24h laufen lassen
 2. **[ ] Load-Testing** – 50+ concurrent Requests testen
 3. **[ ] Production CORS** – Auf spezifische Domains beschränken
 4. **[ ] Backup-Strategie** – Archive-Daten sichern
 
 ### 1-2 Wochen:
+
 1. **[ ] Docker Compose** – Orchestrierung aller Services
 2. **[ ] Monitoring** – Prometheus + Grafana
 3. **[ ] CI/CD** – GitHub Actions Pipeline
 4. **[ ] Knowledge-Base** – RAG Integration
 
 ### 2-4 Wochen:
+
 1. **[ ] Multi-Agent Orchestration** – Agent Chains
 2. **[ ] Fine-Tuning** – Custom LLM Models
 3. **[ ] Kubernetes** – Enterprise Deployment
@@ -326,16 +345,19 @@ Response JSON + Modal Display
 ## 📞 Support & Escalation
 
 **Level 1 – Häufige Probleme:**
+
 - Prüfe `docs/TROUBLESHOOTING.md`
 - Führe `bash bin/openwebui_status.sh` aus
 - Schau in `logs/` Dateien
 
 **Level 2 – API Issues:**
+
 - Validiere Token: `cat .env | grep DASHBOARD_ADMIN_TOKEN`
 - Teste mit `curl` oder `python3 scripts/test_openwebui.py`
 - Prüfe `docs/OPENWEBUI_API.md`
 
 **Level 3 – Architecture:**
+
 - Kontaktiere ELION Development Team
 - Check GitHub Issues
 - Review `docs/OPENWEBUI_TODO.md` für Roadmap
@@ -346,12 +368,12 @@ Response JSON + Modal Display
 
 - ✅ Adapter läuft + responds auf /openwebui/health
 - ✅ opena3 Agent läuft + responds auf /health
-- ✅ Dashboard-Endpoints /api/openwebui/* funktionieren
+- ✅ Dashboard-Endpoints /api/openwebui/\* funktionieren
 - ✅ UI Modal funktioniert + sendet Requests
 - ✅ Token-Auth works mit Bearer Token
 - ✅ Rate Limiting aktiv (60 req/min)
 - ✅ Error Handling: 401, 429, 502, 504 Responses correct
-- ✅ Logging in logs/*.nohup.log
+- ✅ Logging in logs/\*.nohup.log
 - ✅ Dokumentation komplett
 - ✅ Test-Scripts executable + passing
 - ✅ Kein TODO-Code (keine "TODO", "FIXME", "HACK" Comments)
@@ -361,6 +383,7 @@ Response JSON + Modal Display
 ## 📝 Changelog
 
 **v1.0.0 (2025-11-09) – Initial Release**
+
 - ✅ 12 Komponenten implementiert
 - ✅ 21 Prompts/Tasks komplett
 - ✅ 1300+ LOC Production-ready

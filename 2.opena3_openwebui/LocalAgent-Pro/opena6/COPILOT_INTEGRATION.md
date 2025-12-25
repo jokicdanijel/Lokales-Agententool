@@ -146,13 +146,13 @@ Ich öffne GitHub und extrahiere die Headline...
 
 Copilot versteht auch natürliche Sprachbefehle:
 
-| Prompt | Command |
-|--------|---------|
-| "Öffne GitHub" | `@browser /open https://github.com` |
-| "Zeige die Headline" | `@browser /extract h1` |
-| "Mach einen Screenshot" | `@browser /screenshot` |
-| "Klick den Button" | `@browser /click button` |
-| "Scroll nach unten" | `@browser /scroll down 5` |
+| Prompt                  | Command                             |
+| ----------------------- | ----------------------------------- |
+| "Öffne GitHub"          | `@browser /open https://github.com` |
+| "Zeige die Headline"    | `@browser /extract h1`              |
+| "Mach einen Screenshot" | `@browser /screenshot`              |
+| "Klick den Button"      | `@browser /click button`            |
+| "Scroll nach unten"     | `@browser /scroll down 5`           |
 
 ---
 

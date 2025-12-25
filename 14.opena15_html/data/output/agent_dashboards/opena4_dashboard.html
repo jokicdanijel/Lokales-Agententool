@@ -69,7 +69,7 @@
         <div class="header">
             <h1>🤖 Telegram Agent</h1>
             <span class="badge">Communication Agent</span>
-            
+
             <div class="info-grid">
                 <div class="info-card">
                     <h3>Agent ID</h3>
@@ -89,7 +89,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="controls">
             <h2>🎛️ Steuerung</h2>
             <button class="btn" onclick="checkHealth()">❤️ Health Check</button>
@@ -97,13 +97,13 @@
             <button class="btn" onclick="location.href='http://127.0.0.1:12349'">🏠 Zum Dashboard</button>
             <button class="btn" onclick="location.href='http://127.0.0.1:12348/health'">🔗 Direkt öffnen</button>
         </div>
-        
+
         <div class="controls">
             <h2>📝 Response</h2>
             <pre id="response" style="background: #1e293b; color: #e2e8f0; padding: 20px; border-radius: 10px; min-height: 100px;"></pre>
         </div>
     </div>
-    
+
     <script>
         async function checkHealth() {
             const response = document.getElementById('response');
@@ -118,7 +118,7 @@
                 document.getElementById('status').textContent = 'Offline';
             }
         }
-        
+
         async function checkStatus() {
             const response = document.getElementById('response');
             response.textContent = 'Rufe Status ab...';
@@ -130,7 +130,7 @@
                 response.textContent = 'Fehler: ' + e.message;
             }
         }
-        
+
         window.addEventListener('load', checkHealth);
     </script>
 </body>

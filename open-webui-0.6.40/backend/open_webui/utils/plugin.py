@@ -1,13 +1,12 @@
+import logging
 import os
 import re
 import subprocess
 import sys
-from importlib import util
-import types
 import tempfile
-import logging
+import types
 
-from open_webui.env import SRC_LOG_LEVELS, PIP_OPTIONS, PIP_PACKAGE_INDEX_OPTIONS
+from open_webui.env import PIP_OPTIONS, PIP_PACKAGE_INDEX_OPTIONS, SRC_LOG_LEVELS
 from open_webui.models.functions import Functions
 from open_webui.models.tools import Tools
 
@@ -69,7 +68,6 @@ def replace_imports(content):
 
 
 def load_tool_module_by_id(tool_id, content=None):
-
     if content is None:
         tool = Tools.get_tool_by_id(tool_id)
         if not tool:
@@ -180,10 +178,7 @@ def get_tool_module_from_cache(request, tool_id, load_from_db=True):
             # Update the tool content in the database
             Tools.update_tool_by_id(tool_id, {"content": content})
 
-        if (
-            hasattr(request.app.state, "TOOL_CONTENTS")
-            and tool_id in request.app.state.TOOL_CONTENTS
-        ) and (
+        if (hasattr(request.app.state, "TOOL_CONTENTS") and tool_id in request.app.state.TOOL_CONTENTS) and (
             hasattr(request.app.state, "TOOLS") and tool_id in request.app.state.TOOLS
         ):
             if request.app.state.TOOL_CONTENTS[tool_id] == content:
@@ -226,31 +221,20 @@ def get_function_module_from_cache(request, function_id, load_from_db=True):
             Functions.update_function_by_id(function_id, {"content": content})
 
         if (
-            hasattr(request.app.state, "FUNCTION_CONTENTS")
-            and function_id in request.app.state.FUNCTION_CONTENTS
-        ) and (
-            hasattr(request.app.state, "FUNCTIONS")
-            and function_id in request.app.state.FUNCTIONS
-        ):
+            hasattr(request.app.state, "FUNCTION_CONTENTS") and function_id in request.app.state.FUNCTION_CONTENTS
+        ) and (hasattr(request.app.state, "FUNCTIONS") and function_id in request.app.state.FUNCTIONS):
             if request.app.state.FUNCTION_CONTENTS[function_id] == content:
                 return request.app.state.FUNCTIONS[function_id], None, None
 
-        function_module, function_type, frontmatter = load_function_module_by_id(
-            function_id, content
-        )
+        function_module, function_type, frontmatter = load_function_module_by_id(function_id, content)
     else:
         # Load from cache (e.g. "stream" hook)
         # This is useful for performance reasons
 
-        if (
-            hasattr(request.app.state, "FUNCTIONS")
-            and function_id in request.app.state.FUNCTIONS
-        ):
+        if hasattr(request.app.state, "FUNCTIONS") and function_id in request.app.state.FUNCTIONS:
             return request.app.state.FUNCTIONS[function_id], None, None
 
-        function_module, function_type, frontmatter = load_function_module_by_id(
-            function_id
-        )
+        function_module, function_type, frontmatter = load_function_module_by_id(function_id)
 
     if not hasattr(request.app.state, "FUNCTIONS"):
         request.app.state.FUNCTIONS = {}
@@ -270,10 +254,7 @@ def install_frontmatter_requirements(requirements: str):
             req_list = [req.strip() for req in requirements.split(",")]
             log.info(f"Installing requirements: {' '.join(req_list)}")
             subprocess.check_call(
-                [sys.executable, "-m", "pip", "install"]
-                + PIP_OPTIONS
-                + req_list
-                + PIP_PACKAGE_INDEX_OPTIONS
+                [sys.executable, "-m", "pip", "install"] + PIP_OPTIONS + req_list + PIP_PACKAGE_INDEX_OPTIONS
             )
         except Exception as e:
             log.error(f"Error installing packages: {' '.join(req_list)}")

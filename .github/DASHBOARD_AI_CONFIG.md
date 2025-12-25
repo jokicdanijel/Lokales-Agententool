@@ -1,7 +1,7 @@
 # 🤖 Dashboard AI Configuration (opena20)
 
-**Version:** 1.0  
-**Datum:** 28. November 2025  
+**Version:** 1.0
+**Datum:** 28. November 2025
 **Status:** ✅ **PRODUCTION-READY**
 
 ---
@@ -14,7 +14,7 @@
 MODEL: gpt-3.5-turbo
 ```
 
-**WICHTIG:** Dieses Model ist **dauerhaft für das gesamte Dashboard** festgelegt.  
+**WICHTIG:** Dieses Model ist **dauerhaft für das gesamte Dashboard** festgelegt.
 **NICHT ÄNDERN** ohne explizite Freigabe.
 
 ### Token Policy
@@ -112,8 +112,8 @@ SP<timestamp>_kordp→archivp_LOG.json
 ```json
 {
   "message": "User-Anfrage",
-  "model": "gpt-3.5-turbo",     // DEFAULT (nicht überschreiben!)
-  "temperature": 0.7            // Optional (default: 0.7)
+  "model": "gpt-3.5-turbo", // DEFAULT (nicht überschreiben!)
+  "temperature": 0.7 // Optional (default: 0.7)
 }
 ```
 
@@ -129,7 +129,7 @@ SP<timestamp>_kordp→archivp_LOG.json
   "model": "gpt-3.5-turbo",
   "usage": {
     "prompt_tokens": 25,
-    "completion_tokens": 1500,  // Kann unbegrenzt sein
+    "completion_tokens": 1500, // Kann unbegrenzt sein
     "total_tokens": 1525
   }
 }
@@ -172,6 +172,7 @@ scripts/test_opena20_ai.sh
 ```
 
 **Erwartete Änderungen:**
+
 - ✅ Model: `gpt-3.5-turbo` (nicht mehr `gpt-4`)
 - ✅ Response: Vollständig (keine Token-Truncation)
 - ✅ Usage: Zeigt tatsächlich verwendete Tokens (kann > 500 sein)
@@ -183,6 +184,7 @@ bin/ops.sh e2e
 ```
 
 **MUSS alle Checks bestehen:**
+
 - ✅ Health: opena1 + opena2
 - ✅ Flow: Request akzeptiert
 - ✅ Safepoint: Struktur korrekt (`kordp→archivp_LOG`)
@@ -223,6 +225,6 @@ Vor jedem Deployment:
 
 ---
 
-**Maintainer:** Danijel (ELION Team)  
-**Last Updated:** 28. November 2025  
+**Maintainer:** Danijel (ELION Team)
+**Last Updated:** 28. November 2025
 **Review Cycle:** Bei jedem Major-Update

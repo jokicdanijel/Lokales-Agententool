@@ -1,31 +1,15 @@
-from fastapi import (
-    Depends,
-    FastAPI,
-    File,
-    Form,
-    HTTPException,
-    Request,
-    UploadFile,
-    status,
-    APIRouter,
-)
-import aiohttp
-import os
 import logging
+import os
 import shutil
+
+import aiohttp
 import requests
-from pydantic import BaseModel
-from starlette.responses import FileResponse
-from typing import Optional
-
-from open_webui.env import SRC_LOG_LEVELS, AIOHTTP_CLIENT_SESSION_SSL
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile, status
 from open_webui.config import CACHE_DIR
-from open_webui.constants import ERROR_MESSAGES
-
-
+from open_webui.env import AIOHTTP_CLIENT_SESSION_SSL, SRC_LOG_LEVELS
 from open_webui.routers.openai import get_all_models_responses
-
 from open_webui.utils.auth import get_admin_user
+from pydantic import BaseModel
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MAIN"])
@@ -47,10 +31,7 @@ def get_sorted_filters(model_id, models):
         and model["pipeline"]["type"] == "filter"
         and (
             model["pipeline"]["pipelines"] == ["*"]
-            or any(
-                model_id == target_model_id
-                for target_model_id in model["pipeline"]["pipelines"]
-            )
+            or any(model_id == target_model_id for target_model_id in model["pipeline"]["pipelines"])
         )
     ]
     sorted_filters = sorted(filters, key=lambda x: x["pipeline"]["priority"])
@@ -96,12 +77,8 @@ async def process_pipeline_inlet_filter(request, payload, user, models):
                 ) as response:
                     payload = await response.json()
                     response.raise_for_status()
-            except aiohttp.ClientResponseError as e:
-                res = (
-                    await response.json()
-                    if response.content_type == "application/json"
-                    else {}
-                )
+            except aiohttp.ClientResponseError:
+                res = await response.json() if response.content_type == "application/json" else {}
                 if "detail" in res:
                     raise Exception(response.status, res["detail"])
             except Exception as e:
@@ -149,13 +126,9 @@ async def process_pipeline_outlet_filter(request, payload, user, models):
                 ) as response:
                     payload = await response.json()
                     response.raise_for_status()
-            except aiohttp.ClientResponseError as e:
+            except aiohttp.ClientResponseError:
                 try:
-                    res = (
-                        await response.json()
-                        if "application/json" in response.content_type
-                        else {}
-                    )
+                    res = await response.json() if "application/json" in response.content_type else {}
                     if "detail" in res:
                         raise Exception(response.status, res)
                 except Exception:
@@ -180,11 +153,7 @@ async def get_pipelines_list(request: Request, user=Depends(get_admin_user)):
     responses = await get_all_models_responses(request, user)
     log.debug(f"get_pipelines_list: get_openai_models_responses returned {responses}")
 
-    urlIdxs = [
-        idx
-        for idx, response in enumerate(responses)
-        if response is not None and "pipelines" in response
-    ]
+    urlIdxs = [idx for idx, response in enumerate(responses) if response is not None and "pipelines" in response]
 
     return {
         "data": [
@@ -270,9 +239,7 @@ class AddPipelineForm(BaseModel):
 
 
 @router.post("/add")
-async def add_pipeline(
-    request: Request, form_data: AddPipelineForm, user=Depends(get_admin_user)
-):
+async def add_pipeline(request: Request, form_data: AddPipelineForm, user=Depends(get_admin_user)):
     r = None
     try:
         urlIdx = form_data.urlIdx
@@ -315,9 +282,7 @@ class DeletePipelineForm(BaseModel):
 
 
 @router.delete("/delete")
-async def delete_pipeline(
-    request: Request, form_data: DeletePipelineForm, user=Depends(get_admin_user)
-):
+async def delete_pipeline(request: Request, form_data: DeletePipelineForm, user=Depends(get_admin_user)):
     r = None
     try:
         urlIdx = form_data.urlIdx
@@ -355,9 +320,7 @@ async def delete_pipeline(
 
 
 @router.get("/")
-async def get_pipelines(
-    request: Request, urlIdx: Optional[int] = None, user=Depends(get_admin_user)
-):
+async def get_pipelines(request: Request, urlIdx: int | None = None, user=Depends(get_admin_user)):
     r = None
     try:
         url = request.app.state.config.OPENAI_API_BASE_URLS[urlIdx]
@@ -391,7 +354,7 @@ async def get_pipelines(
 @router.get("/{pipeline_id}/valves")
 async def get_pipeline_valves(
     request: Request,
-    urlIdx: Optional[int],
+    urlIdx: int | None,
     pipeline_id: str,
     user=Depends(get_admin_user),
 ):
@@ -400,9 +363,7 @@ async def get_pipeline_valves(
         url = request.app.state.config.OPENAI_API_BASE_URLS[urlIdx]
         key = request.app.state.config.OPENAI_API_KEYS[urlIdx]
 
-        r = requests.get(
-            f"{url}/{pipeline_id}/valves", headers={"Authorization": f"Bearer {key}"}
-        )
+        r = requests.get(f"{url}/{pipeline_id}/valves", headers={"Authorization": f"Bearer {key}"})
 
         r.raise_for_status()
         data = r.json()
@@ -430,7 +391,7 @@ async def get_pipeline_valves(
 @router.get("/{pipeline_id}/valves/spec")
 async def get_pipeline_valves_spec(
     request: Request,
-    urlIdx: Optional[int],
+    urlIdx: int | None,
     pipeline_id: str,
     user=Depends(get_admin_user),
 ):
@@ -470,7 +431,7 @@ async def get_pipeline_valves_spec(
 @router.post("/{pipeline_id}/valves/update")
 async def update_pipeline_valves(
     request: Request,
-    urlIdx: Optional[int],
+    urlIdx: int | None,
     pipeline_id: str,
     form_data: dict,
     user=Depends(get_admin_user),

@@ -10,7 +10,14 @@
       "type": "string",
       "description": "Action type: test_generation, structure_reorganization, zip_deployment, health_check, code_generation, refactor",
       "required": true,
-      "enum": ["test_generation", "structure_reorganization", "zip_deployment", "health_check", "code_generation", "refactor"]
+      "enum": [
+        "test_generation",
+        "structure_reorganization",
+        "zip_deployment",
+        "health_check",
+        "code_generation",
+        "refactor"
+      ]
     },
     "project_path": {
       "type": "string",
@@ -27,19 +34,22 @@
       "description": "Additional options for the action",
       "required": false,
       "properties": {
-        "coverage": {"type": "boolean"},
-        "format": {"type": "boolean"},
-        "lint": {"type": "boolean"}
+        "coverage": { "type": "boolean" },
+        "format": { "type": "boolean" },
+        "lint": { "type": "boolean" }
       }
     }
   },
   "response": {
     "type": "object",
     "properties": {
-      "status": {"type": "string", "enum": ["success", "error", "in_progress"]},
-      "action": {"type": "string"},
-      "result": {"type": "object"},
-      "timestamp": {"type": "string"}
+      "status": {
+        "type": "string",
+        "enum": ["success", "error", "in_progress"]
+      },
+      "action": { "type": "string" },
+      "result": { "type": "object" },
+      "timestamp": { "type": "string" }
     }
   }
 }

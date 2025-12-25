@@ -29,7 +29,7 @@ HEALTHY=0
 for port in "${ALL_PORTS[@]}"; do
     STATUS=$(curl -s -H "Authorization: Bearer $TOKEN" "http://127.0.0.1:$port/health" 2>/dev/null | jq -r '.status // "offline"' 2>/dev/null)
     SERVICE=$(curl -s -H "Authorization: Bearer $TOKEN" "http://127.0.0.1:$port/health" 2>/dev/null | jq -r '.service // "Unknown"' 2>/dev/null)
-    
+
     if [ "$STATUS" = "healthy" ]; then
         echo "✅ Port $port: $SERVICE [HEALTHY]"
         ((HEALTHY++))

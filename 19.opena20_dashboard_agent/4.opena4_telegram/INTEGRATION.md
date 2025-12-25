@@ -183,16 +183,17 @@ opena4 exportiert Metriken via `/health`:
 ```yaml
 # prometheus.yml
 scrape_configs:
-  - job_name: 'opena4'
+  - job_name: "opena4"
     static_configs:
-      - targets: ['opena4:12346']
-    metrics_path: '/health'
+      - targets: ["opena4:12346"]
+    metrics_path: "/health"
     scrape_interval: 30s
 ```
 
 ### Grafana Dashboard
 
 Erstelle Dashboard mit Panels für:
+
 - Total Messages
 - Messages per Chat
 - Response Time

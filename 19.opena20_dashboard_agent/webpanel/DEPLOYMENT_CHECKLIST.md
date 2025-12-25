@@ -10,23 +10,27 @@
 ## PRE-DEPLOYMENT VERIFICATION
 
 ### ✅ Git-Status
+
 ```bash
 git status  # Clean working tree
 git describe --tags  # v2025.12.24-tracing
 ```
 
 ### ✅ requirements.txt & Dependencies
+
 ```bash
 ls -la requirements.txt  # Sollte existieren (1016 Bytes)
 python3 -m pip check    # Keine Konflikte
 ```
 
 ### ✅ CI/CD Workflow
+
 ```bash
 python3 scripts/preflight_check.py  # Alle 9 Checks ✅
 ```
 
 ### ✅ .gitignore Validierung
+
 ```bash
 # Prüfe dass folgende ignoriert werden:
 - logs/
@@ -55,6 +59,7 @@ echo "✅ Rollback abgeschlossen"
 ```
 
 **Wann verwenden:**
+
 - Lokale schnelle Recovery erforderlich
 - Einfache Revertierung
 
@@ -72,6 +77,7 @@ git describe --tags
 ```
 
 **Wann verwenden:**
+
 - Audit-Trail erforderlich
 - Production-kritisch
 - Multi-Team Rollback
@@ -86,6 +92,7 @@ bash bin/merge_finalize.sh --rollback
 ```
 
 **Output:**
+
 ```
 ✅ File-based Rollback zu main @ 0516dede
 ODER
@@ -145,11 +152,11 @@ git push origin main --force
 
 ## Hybrid Rollback Strategy erklärt
 
-| Methode | Vorteil | Nachteil | Best For |
-|---------|---------|---------|----------|
-| **File-based** | Lokal, schnell, < 1 Min | Nur auf dieser Maschine | Lokale Tests |
-| **Tag-based** | Audit-Trail, reproduzierbar | Etwas langsamer | Production |
-| **Hybrid** | Beste Lösung, automatisch | - | **Go-Live** |
+| Methode        | Vorteil                     | Nachteil                | Best For     |
+| -------------- | --------------------------- | ----------------------- | ------------ |
+| **File-based** | Lokal, schnell, < 1 Min     | Nur auf dieser Maschine | Lokale Tests |
+| **Tag-based**  | Audit-Trail, reproduzierbar | Etwas langsamer         | Production   |
+| **Hybrid**     | Beste Lösung, automatisch   | -                       | **Go-Live**  |
 
 ---
 

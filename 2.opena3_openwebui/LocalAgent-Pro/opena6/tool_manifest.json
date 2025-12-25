@@ -40,20 +40,12 @@
         },
         "return_format": {
           "type": "string",
-          "enum": [
-            "text",
-            "html",
-            "json",
-            "raw"
-          ],
+          "enum": ["text", "html", "json", "raw"],
           "default": "text",
           "description": "Format der Rückgabe"
         }
       },
-      "required": [
-        "action",
-        "url"
-      ]
+      "required": ["action", "url"]
     }
   }
 }

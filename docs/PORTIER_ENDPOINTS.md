@@ -4,21 +4,23 @@
 
 All core Portier services expose standardized endpoints and safepoint logging:
 
-| Service | Port  | Health | Endpoint | Safepoint Type |
-|---------|-------|--------|----------|----------------|
-| opena1  | 12344 | `GET /health` | `POST /log/opena1` | Coordinator logs |
-| kordp   | 12346 | `GET /health` | `POST /dispatch/kordp` | Dispatch events |
-| archivp | 12348 | `GET /health` | `POST /store/archivp` | Data storage |
-| opena2  | 12348 | `GET /health` | `POST /finalize/opena2` | Finalization |
+| Service | Port  | Health        | Endpoint                | Safepoint Type   |
+| ------- | ----- | ------------- | ----------------------- | ---------------- |
+| opena1  | 12344 | `GET /health` | `POST /log/opena1`      | Coordinator logs |
+| kordp   | 12346 | `GET /health` | `POST /dispatch/kordp`  | Dispatch events  |
+| archivp | 12348 | `GET /health` | `POST /store/archivp`   | Data storage     |
+| opena2  | 12348 | `GET /health` | `POST /finalize/opena2` | Finalization     |
 
 ## Health Endpoint
 
 **Request:**
+
 ```bash
 curl http://127.0.0.1:12344/health | jq .
 ```
 
 **Response:**
+
 ```json
 {
   "service": "opena1",
@@ -54,17 +56,20 @@ curl http://127.0.0.1:12344/health | jq .
 ### Safepoint File Format
 
 Files written with **deterministic naming**:
+
 ```
 SP<unix_ms>_src→dst_KIND.json
 ```
 
 **Example:**
+
 ```
 SP1731139430123_bootstrap→opena1_CMD.json
 SP1731139430456_opena1→kordp_RESP.json
 ```
 
 **File Content:**
+
 ```json
 {
   "timestamp": "2025-11-09T04:45:30.123Z",
@@ -80,6 +85,7 @@ SP1731139430456_opena1→kordp_RESP.json
 ### Index Format (index.jsonl)
 
 One line per safepoint:
+
 ```
 {"path": "SP1731139430123_bootstrap→opena1_CMD.json", "ts": "2025-11-09T04:45:30Z", "src": "bootstrap", "dst": "opena1", "kind": "CMD"}
 {"path": "SP1731139430456_opena1→kordp_RESP.json", "ts": "2025-11-09T04:45:31Z", "src": "opena1", "dst": "kordp", "kind": "RESP"}
@@ -182,6 +188,7 @@ Every service operation creates an immutable safepoint file. The complete audit 
 ## Port Policy Enforcement
 
 All services validate port compliance:
+
 - **Allowed Range:** 12344-12399
 - **Exception:** 8080 only for OpenWebUI (2.openwebui/)
 - **Enforcement:** Middleware adds response headers

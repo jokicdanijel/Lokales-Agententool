@@ -9,13 +9,13 @@
 
 ## 1. Port-Policy & Binding
 
-| Eigenschaft | Wert |
-|---|---|
-| **Allowed Range** | 12344–12369 (26 Ports) |
-| **Forbidden** | 8080 (exclusive für opena3) |
-| **Binding** | 127.0.0.1 (loopback only) |
-| **Protocol** | HTTP/REST |
-| **Services** | 20 Agents (opena1–opena20) |
+| Eigenschaft       | Wert                        |
+| ----------------- | --------------------------- |
+| **Allowed Range** | 12344–12369 (26 Ports)      |
+| **Forbidden**     | 8080 (exclusive für opena3) |
+| **Binding**       | 127.0.0.1 (loopback only)   |
+| **Protocol**      | HTTP/REST                   |
+| **Services**      | 20 Agents (opena1–opena20)  |
 
 ---
 
@@ -23,60 +23,60 @@
 
 ### 2.1 Kordinator & Archivator (Infrastruktur)
 
-| Agent | Port | Archiv-Kürzel | Funktion | Endpoint-Basis |
-|---|---|---|---|---|
-| **opena1** | 12344 | `kordp` | Portier-Koordinator (Routing) | `/api/kordp` |
-| **opena2** | 12345 | `archivp` | Archivator (Append-Only Storage) | `/store/archivp` |
+| Agent      | Port  | Archiv-Kürzel | Funktion                         | Endpoint-Basis   |
+| ---------- | ----- | ------------- | -------------------------------- | ---------------- |
+| **opena1** | 12344 | `kordp`       | Portier-Koordinator (Routing)    | `/api/kordp`     |
+| **opena2** | 12345 | `archivp`     | Archivator (Append-Only Storage) | `/store/archivp` |
 
 ### 2.2 Kommunikations-Agenten
 
-| Agent | Port | Archiv-Kürzel | Funktion | Endpoint-Basis |
-|---|---|---|---|---|
-| **opena3** | 8080* | `openweb` | OpenWebUI Terminal Interface | `/api/openweb` |
-| **opena4** | 12347 | `telep` | Telegram Mobile-Anbindung | `/telegram/send` |
-| **opena5** | 12348 | `vscop` | VS Code Programmier-Bridge | `/vscode/task` |
-| **opena6** | 12349 | `browsp` | Browser-Bedienung (Automation) | `/browser/action` |
+| Agent      | Port   | Archiv-Kürzel | Funktion                       | Endpoint-Basis    |
+| ---------- | ------ | ------------- | ------------------------------ | ----------------- |
+| **opena3** | 8080\* | `openweb`     | OpenWebUI Terminal Interface   | `/api/openweb`    |
+| **opena4** | 12347  | `telep`       | Telegram Mobile-Anbindung      | `/telegram/send`  |
+| **opena5** | 12348  | `vscop`       | VS Code Programmier-Bridge     | `/vscode/task`    |
+| **opena6** | 12349  | `browsp`      | Browser-Bedienung (Automation) | `/browser/action` |
 
-*Port 8080 ist exklusiv reserviert (Docker/OpenWebUI)
+\*Port 8080 ist exklusiv reserviert (Docker/OpenWebUI)
 
 ### 2.3 Chatbot-Agenten (Schrift)
 
-| Agent | Port | Archiv-Kürzel | Funktion | Endpoint-Basis |
-|---|---|---|---|---|
-| **opena7** | 12350 | `emailp` | Email-Chatbot (Schrift) | `/chat/email` |
-| **opena8** | 12351 | `whatp` | WhatsApp-Chatbot (Schrift) | `/chat/whatsapp` |
+| Agent      | Port  | Archiv-Kürzel | Funktion                   | Endpoint-Basis   |
+| ---------- | ----- | ------------- | -------------------------- | ---------------- |
+| **opena7** | 12350 | `emailp`      | Email-Chatbot (Schrift)    | `/chat/email`    |
+| **opena8** | 12351 | `whatp`       | WhatsApp-Chatbot (Schrift) | `/chat/whatsapp` |
 
 ### 2.4 Chatbot-Agenten (Ton)
 
-| Agent | Port | Archiv-Kürzel | Funktion | Endpoint-Basis |
-|---|---|---|---|---|
-| **opena9** | 12352 | `calp` | Telefon-Antwort Chatbot (IVR) | `/call/answer` |
-| **opena10** | 12353 | `answp` | Telefon-Anruf Chatbot | `/call/initiate` |
+| Agent       | Port  | Archiv-Kürzel | Funktion                      | Endpoint-Basis   |
+| ----------- | ----- | ------------- | ----------------------------- | ---------------- |
+| **opena9**  | 12352 | `calp`        | Telefon-Antwort Chatbot (IVR) | `/call/answer`   |
+| **opena10** | 12353 | `answp`       | Telefon-Anruf Chatbot         | `/call/initiate` |
 
 ### 2.5 Funktional-Agenten
 
-| Agent | Port | Archiv-Kürzel | Funktion | Endpoint-Basis |
-|---|---|---|---|---|
-| **opena11** | 12354 | `onlockp` | Unlock-Master (Decode) | `/security/unlock` |
-| **opena12** | 12355 | `somep` | Sozialmedia-Automatisierung | `/social/sync` |
-| **opena13** | 12356 | `infmep` | Influencer-Manager | `/influencer/manage` |
-| **opena14** | 12357 | `kalp` | Kalender-Agent | `/calendar/sync` |
+| Agent       | Port  | Archiv-Kürzel | Funktion                    | Endpoint-Basis       |
+| ----------- | ----- | ------------- | --------------------------- | -------------------- |
+| **opena11** | 12354 | `onlockp`     | Unlock-Master (Decode)      | `/security/unlock`   |
+| **opena12** | 12355 | `somep`       | Sozialmedia-Automatisierung | `/social/sync`       |
+| **opena13** | 12356 | `infmep`      | Influencer-Manager          | `/influencer/manage` |
+| **opena14** | 12357 | `kalp`        | Kalender-Agent              | `/calendar/sync`     |
 
 ### 2.6 Content-Creator-Agenten
 
-| Agent | Port | Archiv-Kürzel | Funktion | Endpoint-Basis |
-|---|---|---|---|---|
-| **opena15** | 12358 | `htmlp` | HTML-Creator Tool | `/content/html` |
-| **opena16** | 12359 | `shopp` | Shop-Creator & Service | `/content/shop` |
-| **opena17** | 12360 | `homep` | Homepage-Creator & Service | `/content/homepage` |
+| Agent       | Port  | Archiv-Kürzel | Funktion                   | Endpoint-Basis      |
+| ----------- | ----- | ------------- | -------------------------- | ------------------- |
+| **opena15** | 12358 | `htmlp`       | HTML-Creator Tool          | `/content/html`     |
+| **opena16** | 12359 | `shopp`       | Shop-Creator & Service     | `/content/shop`     |
+| **opena17** | 12360 | `homep`       | Homepage-Creator & Service | `/content/homepage` |
 
 ### 2.7 Datenverwaltungs-Agenten
 
-| Agent | Port | Archiv-Kürzel | Funktion | Endpoint-Basis |
-|---|---|---|---|---|
-| **opena18** | 12361 | `locp` | Lokaler Archiv-Agent | `/archive/local` |
-| **opena19** | 12362 | `aktienp` | Trading-Agent (Aktien/Crypto) | `/trading/execute` |
-| **opena20** | 12363 | `dashp` | Dashboard-Agent (Kunden) | `/dashboard/serve` |
+| Agent       | Port  | Archiv-Kürzel | Funktion                      | Endpoint-Basis     |
+| ----------- | ----- | ------------- | ----------------------------- | ------------------ |
+| **opena18** | 12361 | `locp`        | Lokaler Archiv-Agent          | `/archive/local`   |
+| **opena19** | 12362 | `aktienp`     | Trading-Agent (Aktien/Crypto) | `/trading/execute` |
+| **opena20** | 12363 | `dashp`       | Dashboard-Agent (Kunden)      | `/dashboard/serve` |
 
 ---
 
@@ -305,11 +305,13 @@ OPENA20_PORT=12363  # Dashboard
 ## 10. Quick-Reference: API-Endpoints
 
 ### Health-Checks (alle Agenten)
+
 ```bash
 curl http://127.0.0.1:{PORT}/health
 ```
 
 ### Tool-Dispatch (via Kordinator)
+
 ```bash
 # Beispiel: Telegram-Nachricht
 curl -X POST http://127.0.0.1:12344/api/dispatch \
@@ -323,6 +325,7 @@ curl -X POST http://127.0.0.1:12344/api/dispatch \
 ```
 
 ### Archiv-Query (opena2)
+
 ```bash
 curl http://127.0.0.1:12345/archiv/last?n=5
 ```

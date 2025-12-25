@@ -30,7 +30,7 @@ echo -e "${CYAN}=====================================${NC}"
 # Agent definitions: name, port, script path (aktualisierte Pfade)
 declare -a AGENTS=(
     "opena1:12344:1.opena1&2_portier/main_opena1.py"
-    "opena2:12345:1.opena1&2_portier/main_opena2.py" 
+    "opena2:12345:1.opena1&2_portier/main_opena2.py"
     "opena3:12347:2.opena3_openwebui/main_opena3.py"
     "opena4:12348:3.opena4_telegram/main_opena4.py"
     "opena5:12351:4.opena5_vscode/main_opena5.py"
@@ -56,7 +56,7 @@ start_agent() {
     local name="$1"
     local port="$2"
     local script="$3"
-    
+
     # PID-Check
     local pid_file="$LOGS/${name}.pid"
     if [[ -f "$pid_file" ]]; then
@@ -68,27 +68,27 @@ start_agent() {
             rm -f "$pid_file"
         fi
     fi
-    
+
     # Port-Check
     if lsof -i ":$port" > /dev/null 2>&1; then
         echo -e "${YELLOW}⚠️  $name (port $port): Port already in use${NC}"
         return 1
     fi
-    
+
     # Script-Check
     if [ ! -f "$ROOT/$script" ]; then
         echo -e "${YELLOW}⚠️ $name: Script not found ($script) - skipping${NC}"
         return 1
     fi
-    
+
     # Agent starten
     echo -e "${BLUE}🔄 Starting $name (Port: $port)...${NC}"
-    
+
     log_file="$LOGS/${name}.nohup.log"
     nohup "$VENV" "$ROOT/$script" > "$log_file" 2>&1 &
     local pid=$!
     echo "$pid" > "$pid_file"
-    
+
     # Kurz warten und prüfen
     sleep 1
     if kill -0 "$pid" 2>/dev/null; then
@@ -152,7 +152,7 @@ echo -e "${CYAN}=====================================${NC}"
 if [ $STARTED -gt 0 ]; then
     echo -e "${PURPLE}🏥 Health Check (Core Services):${NC}"
     sleep 3
-    
+
     for check_agent in "opena1:12344" "opena2:12345" "dashboard:12349"; do
         IFS=':' read -r name port <<< "$check_agent"
         if curl -s "http://127.0.0.1:$port/health" > /dev/null 2>&1; then

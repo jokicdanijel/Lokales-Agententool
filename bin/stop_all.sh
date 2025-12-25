@@ -20,13 +20,13 @@ FAILED=0
 
 for pid_file in "$PIDS_DIR"/*.pid; do
     [ -f "$pid_file" ] || continue
-    
+
     service_name="$(basename "$pid_file" .pid)"
     pid="$(cat "$pid_file")"
-    
+
     if ps -p "$pid" > /dev/null 2>&1; then
         kill "$pid" 2>/dev/null || kill -9 "$pid" 2>/dev/null
-        
+
         # Wait for process to stop
         for i in {1..10}; do
             if ! ps -p "$pid" > /dev/null 2>&1; then
@@ -37,7 +37,7 @@ for pid_file in "$PIDS_DIR"/*.pid; do
             fi
             sleep 0.5
         done
-        
+
         if ps -p "$pid" > /dev/null 2>&1; then
             echo "  ❌ $service_name (PID $pid) failed to stop"
             ((FAILED++))

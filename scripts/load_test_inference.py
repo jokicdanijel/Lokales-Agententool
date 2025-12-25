@@ -9,7 +9,8 @@ Load Test: Inference Service
 import asyncio
 import json
 import time
-from typing import Any, Dict, List
+from typing import Any
+
 import httpx
 
 INFERENCE_SERVICE = "http://127.0.0.1:12348"
@@ -17,16 +18,17 @@ TOTAL_REQUESTS = 100
 CONCURRENT_REQUESTS = 5  # Limited due to Ollama inference time
 TIMEOUT = 60.0
 
+
 class Metrics:
     def __init__(self):
         self.total_requests = 0
         self.successful_requests = 0
         self.failed_requests = 0
         self.total_latency = 0.0
-        self.min_latency = float('inf')
+        self.min_latency = float("inf")
         self.max_latency = 0.0
         self.total_tokens = 0
-        self.errors: List[str] = []
+        self.errors: list[str] = []
         self.start_time = time.time()
         self.end_time = 0.0
 
@@ -68,7 +70,7 @@ class Metrics:
             return 0.0
         return self.total_tokens / self.duration
 
-    def summary(self) -> Dict[str, Any]:
+    def summary(self) -> dict[str, Any]:
         return {
             "total_requests": self.total_requests,
             "successful": self.successful_requests,
@@ -102,7 +104,7 @@ async def make_request(req_num: int, test_type: str) -> None:
                 else:
                     metrics.record_error(f"health — HTTP {r.status_code}")
                     print(f"  ❌ {req_num:3d}. health — HTTP {r.status_code}")
-            
+
             elif test_type == "models":
                 r = await client.get(f"{INFERENCE_SERVICE}/models")
                 latency = time.time() - start_time
@@ -112,7 +114,7 @@ async def make_request(req_num: int, test_type: str) -> None:
                 else:
                     metrics.record_error(f"models — HTTP {r.status_code}")
                     print(f"  ❌ {req_num:3d}. models — HTTP {r.status_code}")
-            
+
             elif test_type == "completion":
                 payload = {
                     "model": "llama2",
@@ -130,7 +132,7 @@ async def make_request(req_num: int, test_type: str) -> None:
                 else:
                     metrics.record_error(f"completion — HTTP {r.status_code}")
                     print(f"  ❌ {req_num:3d}. completion — HTTP {r.status_code}")
-    
+
     except Exception as e:
         metrics.record_error(str(e))
         print(f"  ❌ {req_num:3d}. error — {str(e)[:50]}")
@@ -142,7 +144,7 @@ async def load_test() -> None:
     print(f"🚀 INFERENCE LOAD TEST — {TOTAL_REQUESTS} requests, {CONCURRENT_REQUESTS} concurrent")
     print("=" * 80)
     print()
-    
+
     # Distribute requests: 30% health, 20% models, 50% completions
     test_distribution = []
     for i in range(TOTAL_REQUESTS):
@@ -152,32 +154,29 @@ async def load_test() -> None:
             test_distribution.append("models")
         else:
             test_distribution.append("completion")
-    
+
     # Run in batches
     num_batches = TOTAL_REQUESTS // CONCURRENT_REQUESTS
     for batch_num in range(num_batches):
         batch_start = batch_num * CONCURRENT_REQUESTS
         batch_end = batch_start + CONCURRENT_REQUESTS
-        
+
         print(f"📊 Batch {batch_num + 1}/{num_batches}")
-        
-        tasks = [
-            make_request(i + 1, test_distribution[i])
-            for i in range(batch_start, batch_end)
-        ]
-        
+
+        tasks = [make_request(i + 1, test_distribution[i]) for i in range(batch_start, batch_end)]
+
         await asyncio.gather(*tasks)
         print()
-    
+
     metrics.finalize()
 
 
-async def verify_archive() -> Dict[str, Any]:
+async def verify_archive() -> dict[str, Any]:
     """Verify safepoint persistence."""
     try:
-        with open("1.opena1&2_portier/archivp_store/index.jsonl", "r") as f:
+        with open("1.opena1&2_portier/archivp_store/index.jsonl") as f:
             lines = f.readlines()
-        
+
         archive_entries = len(lines)
         entry_types = {}
         for line in lines[-50:]:
@@ -187,7 +186,7 @@ async def verify_archive() -> Dict[str, Any]:
                 entry_types[kind] = entry_types.get(kind, 0) + 1
             except json.JSONDecodeError:
                 pass
-        
+
         return {
             "total_entries": archive_entries,
             "recent_types": entry_types,
@@ -203,14 +202,14 @@ async def verify_archive() -> Dict[str, Any]:
 async def main():
     """Main."""
     await load_test()
-    
+
     print("=" * 80)
     print("📈 RESULTS")
     print("=" * 80)
     summary = metrics.summary()
     for key, value in summary.items():
         print(f"  {key:.<30} {value}")
-    
+
     print()
     print("=" * 80)
     print("📁 ARCHIVE VERIFICATION")
@@ -218,7 +217,7 @@ async def main():
     archive_info = await verify_archive()
     for key, value in archive_info.items():
         print(f"  {key:.<30} {value}")
-    
+
     print()
     print("=" * 80)
     print("✅ INFERENCE LOAD TEST COMPLETE")

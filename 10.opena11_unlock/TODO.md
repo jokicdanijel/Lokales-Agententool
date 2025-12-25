@@ -1,7 +1,7 @@
 # TODO – opena11 Unlock Master Agent
 
-**Port:** 12356  
-**Status:** 🟡 Planned  
+**Port:** 12356
+**Status:** 🟡 Planned
 **Kürzel:** `unlockp`
 
 ---
@@ -97,5 +97,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 27. November 2025  
+**Letzte Aktualisierung:** 27. November 2025
 **Maintainer:** Danijel Jokic (ELION Team)

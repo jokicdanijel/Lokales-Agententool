@@ -2,9 +2,9 @@
 #
 # 🧹 PORTIER 3.0 Cleaner & Inspector Wrapper
 # ==========================================
-# 
+#
 # Vereinfachte CLI-Schnittstelle für das Cleaner & Inspector System
-# 
+#
 # Usage:
 #   ./clean_inspect.sh [inspect|clean|full|help]
 #
@@ -52,7 +52,7 @@ Usage: $0 [COMMAND] [OPTIONS]
 
 COMMANDS:
     inspect     Führt nur Inspektion durch
-    clean       Führt nur Bereinigung durch  
+    clean       Führt nur Bereinigung durch
     full        Führt Inspektion + Bereinigung durch (default)
     help        Zeigt diese Hilfe an
 
@@ -89,12 +89,12 @@ check_dependencies() {
         log_error "python3 nicht gefunden"
         exit 1
     fi
-    
+
     if [[ ! -f "$CLEANER_SCRIPT" ]]; then
         log_error "Cleaner-Skript nicht gefunden: $CLEANER_SCRIPT"
         exit 1
     fi
-    
+
     # Python-Dependencies prüfen
     if ! python3 -c "import json, pathlib, asyncio" 2>/dev/null; then
         log_error "Python-Dependencies fehlen"
@@ -106,21 +106,21 @@ run_operation() {
     local operation="$1"
     shift
     local args=("$@")
-    
+
     log_info "Starte $operation Operation..."
-    
+
     # Timestamp für Report-Datei
     local timestamp=$(date +"%Y%m%d_%H%M%S")
     local default_output="cleaner_inspector_report_${timestamp}.txt"
-    
+
     # Python-Skript ausführen
     if python3 "$CLEANER_SCRIPT" \
         "--${operation}" \
         --project-root "$PROJECT_ROOT" \
         "${args[@]}"; then
-        
+
         log_success "$operation Operation erfolgreich abgeschlossen"
-        
+
         # Report-Datei Info
         for arg in "${args[@]}"; do
             if [[ "$arg" == --output=* ]]; then
@@ -129,7 +129,7 @@ run_operation() {
                 break
             fi
         done
-        
+
         return 0
     else
         log_error "$operation Operation fehlgeschlagen"
@@ -139,14 +139,14 @@ run_operation() {
 
 main() {
     print_header
-    
+
     # Dependency Check
     check_dependencies
-    
+
     # Default Operation
     local operation="full"
     local args=()
-    
+
     # Argument Parsing
     while [[ $# -gt 0 ]]; do
         case $1 in
@@ -186,11 +186,11 @@ main() {
                 ;;
         esac
     done
-    
+
     # Operation ausführen
     log_info "Project Root: $PROJECT_ROOT"
     log_info "Operation: $operation"
-    
+
     if run_operation "$operation" "${args[@]}"; then
         echo
         log_success "🎉 Cleaner & Inspector erfolgreich abgeschlossen!"

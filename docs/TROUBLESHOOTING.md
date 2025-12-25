@@ -5,11 +5,13 @@
 **Problem:** HTTP 401 bei API-Aufrufen
 
 **Ursachen:**
+
 - `.env` Token fehlt oder ist leer
 - Token-Format ungültig
 - Authorization Header nicht gesendet
 
 **Lösung:**
+
 ```bash
 # Token prüfen
 cat .env
@@ -29,11 +31,13 @@ curl -H "Authorization: Bearer $TOK" http://127.0.0.1:12349/api/status/all
 **Problem:** HTTP 404 bei `/store/archivp`
 
 **Ursachen:**
+
 - opena2 läuft nicht
 - Port 12345 falsch
 - Falcher Pfad
 
 **Lösung:**
+
 ```bash
 # Port prüfen
 bin/check_ports.sh | grep 12345
@@ -52,11 +56,13 @@ tail -f logs/opena2.nohup.log
 **Problem:** HTTP 502/503 bei OpenWebUI-Endpunkten
 
 **Ursachen:**
+
 - OpenWebUI läuft nicht (Port 8080)
 - Agent (opena3) läuft nicht (Port 12347)
 - Netzwerk-Fehler
 
 **Lösung:**
+
 ```bash
 # Status prüfen
 bin/openwebui_status.sh
@@ -81,6 +87,7 @@ tail -f logs/opena3.nohup.log
 **Ursache:** Service läuft bereits oder falscher Port
 
 **Lösung:**
+
 ```bash
 # Alle Services stoppen
 bin/ops.sh stop
@@ -105,6 +112,7 @@ bin/ops.sh start
 **Ursache:** Token abgelaufen oder falsch
 
 **Lösung:**
+
 ```bash
 # Neuen Token generieren
 bin/env_bootstrap.sh
@@ -118,6 +126,7 @@ bin/ops.sh agents:register
 ## Logs ansehen
 
 **Schneller Zugriff:**
+
 ```bash
 # Alle Logs
 bin/ops.sh logs
@@ -152,6 +161,7 @@ bin/openwebui_status.sh
 **Problem:** Live-Events funktionieren nicht
 
 **Lösung:**
+
 ```bash
 # SSE-Bus prüfen
 curl -N http://127.0.0.1:12349/api/events/live
@@ -166,6 +176,7 @@ curl -N http://127.0.0.1:12349/api/events/live
 **Problem:** Agent sichtbar aber Status immer "null"
 
 **Lösung:**
+
 ```bash
 # Agent direkt prüfen
 curl http://127.0.0.1:12344/health

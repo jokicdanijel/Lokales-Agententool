@@ -4,12 +4,10 @@
 
 ### Port 8080 ausschliesslich Loopback
 
-
 ```yaml
 ports:
   - "127.0.0.1:8080:8080"
 ```
-
 
 ### Restrictions
 
@@ -18,19 +16,16 @@ ports:
 - Kein 0.0.0.0:8080
 - Security First
 
-
 ### Container-Name
 
 ```yaml
 container_name: openwebui
-
 ```
 
 ### Data-Volume
 
 ```yaml
 volumes:
-
   - ./data:/app/backend/data
 ```
 
@@ -39,7 +34,6 @@ volumes:
 ```yaml
 networks:
   - portier_net
-
 ```
 
 ## 2. Dienste
@@ -65,7 +59,6 @@ services:
       - portier_net
 ```
 
-
 ### Environment-Variables
 
 - **OPENAI_API_KEY** - Aus .env geladen
@@ -74,12 +67,10 @@ services:
 
 ### Restart-Policy
 
-
 - unless-stopped
 - Auto-Restart bei Crash
 - Kein Restart bei manueller Stop
 - Persistent ueber Reboots
-
 
 ## 3. Port-Policy
 
@@ -97,7 +88,6 @@ services:
 - Keine FastAPI auf 8080
 - Keine Agent-Services auf 8080
 
-
 ### Network-Binding
 
 ```
@@ -106,7 +96,6 @@ OpenWebUI: 127.0.0.1:8080 (UI-only)
 ```
 
 ## 4. Daten
-
 
 ### Data-Directory
 
@@ -141,14 +130,12 @@ docker-compose up -d
 
 ### Host-Port-Policy
 
-
 - Kein Host-Port ausser 8080
 - 8080 nur localhost
 - Keine externen Exposes
 - Firewall-Rules enforced
 
 ### Network-Isolation
-
 
 ```yaml
 networks:
@@ -169,7 +156,7 @@ networks:
 ### Complete Configuration
 
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
   openwebui:
@@ -188,18 +175,15 @@ services:
     networks:
       - portier_net
     healthcheck:
-
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 30s
       timeout: 10s
       retries: 3
 
-
 networks:
   portier_net:
     driver: bridge
 ```
-
 
 ## 7. Deployment
 
@@ -209,20 +193,17 @@ networks:
 docker-compose -f docker-compose.prod.yml up -d
 ```
 
-
 ### Stop
 
 ```bash
 docker-compose -f docker-compose.prod.yml down
 ```
 
-
 ### Logs
 
 ```bash
 docker-compose -f docker-compose.prod.yml logs -f openwebui
 ```
-
 
 ### Health-Check
 
@@ -231,7 +212,6 @@ curl -s http://127.0.0.1:8080/health | jq .
 ```
 
 ## 8. Integration mit Portier
-
 
 ### opena3 Agent
 
@@ -254,7 +234,6 @@ curl -s http://127.0.0.1:8080/health | jq .
 - OpenWebUI-Status
 - Chat-Integration
 - SSE-Events
-
 
 ## 9. Troubleshooting
 

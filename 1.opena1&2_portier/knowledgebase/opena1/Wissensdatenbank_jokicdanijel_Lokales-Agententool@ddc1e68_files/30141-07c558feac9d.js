@@ -1,2 +1,1421 @@
-"use strict";(globalThis.webpackChunk_github_ui_github_ui=globalThis.webpackChunk_github_ui_github_ui||[]).push([[30141],{1946:(e,t,i)=>{i.d(t,{oj:()=>j,ZH:()=>g});var n=i(74848),l=i(21728),a=i(38621),r=i(96540),o=i(11196),c=i(84268),s=i(13436),d=i(25556),f=i(35311),m=i(78049),h=i(34535),u=i(81355),p=i(71315);let y=(0,r.memo)(function(e){let t,i=(0,l.c)(3),{changeType:a,isSymlink:r}=e;return i[0]!==a||i[1]!==r?(t=(0,n.jsx)(m.E,{status:a,isSymlink:r}),i[0]=a,i[1]=r,i[2]=t):t=i[2],t});y.displayName="FileStatusIconItem";let g=(0,r.memo)(function(e){let t,i,d,f,m,u,g,x,v,j,b=(0,l.c)(38),{file:S,depth:_,hash:w,onSelect:D}=e,C=(0,r.useRef)(null),N=(0,r.useRef)(null),I=`#diff-${S.diff.pathDigest}`;b[0]===Symbol.for("react.memo_cache_sentinel")?(t={focusRowRef:C,mouseRowRef:C},b[0]=t):t=b[0];let E=(0,h.Z)(t),T=S.diff.totalCommentsCount??0,P=S.diff.highestAnnotationLevel,k=null,O=S.fileName??"This file";switch(T>0&&(O+=` has ${T<10?T:"9+"} ${T>1?"comments":"comment"}`),P){case"WARNING":{let e;O+=`${T>0?" and":""} has warning annotations`,b[1]===Symbol.for("react.memo_cache_sentinel")?(e=(0,n.jsx)("div",{className:"pl-1 fgColor-attention",children:(0,n.jsx)(a.AlertIcon,{})}),b[1]=e):e=b[1],k=e;break}case"NOTICE":{let e;O+=`${T>0?" and":""} has notice annotations`,b[2]===Symbol.for("react.memo_cache_sentinel")?(e=(0,n.jsx)("div",{className:"pl-1 fgColor-default",children:(0,n.jsx)(a.InfoIcon,{})}),b[2]=e):e=b[2],k=e;break}case"FAILURE":{let e;O+=`${T>0?" and":""} has failure annotations`,b[3]===Symbol.for("react.memo_cache_sentinel")?(e=(0,n.jsx)("div",{className:"pl-1 fgColor-danger",children:(0,n.jsx)(a.XCircleFillIcon,{})}),b[3]=e):e=b[3],k=e}}b[4]!==S.diff.pathDigest||b[5]!==w?(i=()=>{if(C.current&&S.diff.pathDigest===w){let e=window.setTimeout(()=>{let e=p.XC?.getElementById("diff_file_tree")?.parentElement,t=C.current.offsetTop,i=p.cg?.innerHeight??0;e&&(e.scrollTop=t-i/2)},0);return()=>{window.clearTimeout(e)}}},d=[S.diff.pathDigest,w],b[4]=S.diff.pathDigest,b[5]=w,b[6]=i,b[7]=d):(i=b[6],d=b[7]),(0,r.useEffect)(i,d),b[8]!==I?(f=e=>{if(e.metaKey||e.ctrlKey||1===e.button){e.preventDefault(),window.open(I,"_blank");return}},b[8]=I,b[9]=f):f=b[9];let R=f;b[10]!==R||b[11]!==D?(m=e=>{if(e.nativeEvent instanceof KeyboardEvent){if(C?.current!==document.activeElement)return void e.preventDefault();if("Enter"===e.key||" "===e.key){e.preventDefault(),D?.(),N?.current?.click();return}}if(e.nativeEvent instanceof MouseEvent){if(e.metaKey||e.ctrlKey||1===e.button){e.preventDefault(),R(e);return}D?.(),N?.current?.click()}},b[10]=R,b[11]=D,b[12]=m):m=b[12];let F=m,$=S.fileName??"";b[13]!==I||b[14]!==$||b[15]!==R?(u=(0,n.jsx)(c.A,{href:I,muted:!0,ref:N,role:"presentation",className:"fgColor-default",tabIndex:-1,onClick:R,children:$}),b[13]=I,b[14]=$,b[15]=R,b[16]=u):u=b[16];let G=u,V=S.diff.pathDigest===w;return b[17]!==S.diff.changeType||b[18]!==S.diff.isSymlink?(g=(0,n.jsx)(s.G.LeadingVisual,{children:(0,n.jsx)(y,{changeType:S.diff.changeType,isSymlink:S.diff.isSymlink})}),b[17]=S.diff.changeType,b[18]=S.diff.isSymlink,b[19]=g):g=b[19],b[20]!==G||b[21]!==$||b[22]!==E?(x=E?(0,n.jsx)(o.m,{text:$,direction:"ne",children:G}):G,b[20]=G,b[21]=$,b[22]=E,b[23]=x):x=b[23],b[24]!==k||b[25]!==P||b[26]!==T?(v=(!!T||P)&&(0,n.jsx)(s.G.TrailingVisual,{children:(0,n.jsxs)("div",{className:"d-flex flex-items-center flex-row",children:[!!T&&(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(a.CommentIcon,{}),(0,n.jsx)("div",{className:"ml-1 text-bold fgColor-default f6",children:T<10?T:"9+"})]}),k]})}),b[24]=k,b[25]=P,b[26]=T,b[27]=v):v=b[27],b[28]!==_||b[29]!==S.diff.path||b[30]!==S.diff.pathDigest||b[31]!==F||b[32]!==O||b[33]!==v||b[34]!==V||b[35]!==g||b[36]!==x?(j=(0,n.jsx)(n.Fragment,{children:(0,n.jsxs)(s.G.Item,{defaultExpanded:!0,"aria-label":O,"aria-level":_,current:V,id:S.diff.path,onSelect:F,ref:C,className:"DiffFileTree-module__file-tree-row--GJi_6",children:[g,x,v]},S.diff.pathDigest)}),b[28]=_,b[29]=S.diff.path,b[30]=S.diff.pathDigest,b[31]=F,b[32]=O,b[33]=v,b[34]=V,b[35]=g,b[36]=x,b[37]=j):j=b[37],j});function x(e){let t,i,a,o,c,f,m,u,p,y,g,j,b=(0,l.c)(43);b[0]!==e?({directory:t,depth:o,leadingPath:c,sortByDiffOrder:a,...i}=e,b[0]=e,b[1]=t,b[2]=i,b[3]=a,b[4]=o,b[5]=c):(t=b[1],i=b[2],a=b[3],o=b[4],c=b[5]);let S=void 0===o?0:o,_=void 0===c?"":c,w=_?`${_}/`:"",D=r.useRef(null),C=r.useRef(null);b[6]===Symbol.for("react.memo_cache_sentinel")?(f={focusRowRef:C,mouseRowRef:D},b[6]=f):f=b[6];let N=(0,h.Z)(f);if(!t.files.length&&1===t.directories.length){let e,l;if(b[7]!==S||b[8]!==t.directories||b[9]!==t.name||b[10]!==i||b[11]!==w||b[12]!==a){let l;b[14]!==S||b[15]!==t.name||b[16]!==i||b[17]!==w||b[18]!==a?(l=e=>(0,n.jsx)(x,{depth:0===S?1:S,directory:e,leadingPath:`${w}${t.name}`,sortByDiffOrder:a,...i},e.path),b[14]=S,b[15]=t.name,b[16]=i,b[17]=w,b[18]=a,b[19]=l):l=b[19],e=t.directories.map(l),b[7]=S,b[8]=t.directories,b[9]=t.name,b[10]=i,b[11]=w,b[12]=a,b[13]=e}else e=b[13];return b[20]!==e?(l=(0,n.jsx)(n.Fragment,{children:e}),b[20]=e,b[21]=l):l=b[21],l}b[22]!==S||b[23]!==t||b[24]!==i||b[25]!==a?(m=function(){return(0,n.jsx)(v,{directory:t,depth:S,sortByDiffOrder:a,...i})},b[22]=S,b[23]=t,b[24]=i,b[25]=a,b[26]=m):m=b[26];let I=m;if(0===S){let e;return b[27]!==I?(e=I(),b[27]=I,b[28]=e):e=b[28],e}b[29]===Symbol.for("react.memo_cache_sentinel")?(u=(0,n.jsx)(s.G.LeadingVisual,{children:(0,n.jsx)(s.G.DirectoryIcon,{})}),b[29]=u):u=b[29];let E=`${w}${t.name}`;return b[30]!==E?(p=(0,n.jsx)("span",{ref:D,children:E}),b[30]=E,b[31]=p):p=b[31],b[32]!==t.name||b[33]!==w||b[34]!==N?(y=N&&(0,n.jsx)(d.m,{"data-testid":`${t.name}-directory-item-tooltip`,id:`${t.name}-directory-item-tooltip`,contentRef:C,"aria-label":`${w}${t.name}`,open:!0,direction:"ne"}),b[32]=t.name,b[33]=w,b[34]=N,b[35]=y):y=b[35],b[36]!==I?(g=(0,n.jsx)(s.G.SubTree,{children:I()}),b[36]=I,b[37]=g):g=b[37],b[38]!==t.path||b[39]!==p||b[40]!==y||b[41]!==g?(j=(0,n.jsxs)(s.G.Item,{ref:C,defaultExpanded:!0,id:t.path,children:[u,p,y,g]},t.path),b[38]=t.path,b[39]=p,b[40]=y,b[41]=g,b[42]=j):j=b[42],j}let v=(0,r.memo)(function(e){let t,i,a=(0,l.c)(4);if(a[0]!==e){let{directory:i,fileNodeRenderer:l,sortByDiffOrder:r,depth:o,...c}=e,s=void 0===o?0:o,d=i.files.map(b).concat(i.directories.map(S));r?d.sort(_):d.sort(w),t=d.map(e=>"file"!==e.pathType?(0,n.jsx)(x,{depth:s+1,directory:e.node,fileNodeRenderer:l,sortByDiffOrder:r,...c},e.path):l?l({...c,file:e.node,depth:s+1}):(0,n.jsx)(g,{depth:s+1,file:e.node,...c},e.path)),a[0]=e,a[1]=t}else t=a[1];return a[2]!==t?(i=(0,n.jsx)(n.Fragment,{children:t}),a[2]=t,a[3]=i):i=a[3],i}),j=(0,r.memo)(function(e){let t,i,a,r,o,c,d,m,h=(0,l.c)(17);h[0]!==e?({diffs:i,fileNodeRenderer:a,sortByDiffOrder:o,className:t,...r}=e,h[0]=e,h[1]=t,h[2]=i,h[3]=a,h[4]=r,h[5]=o):(t=h[1],i=h[2],a=h[3],r=h[4],o=h[5]),h[6]!==i?(c=(0,f.xY)(i),h[6]=i,h[7]=c):c=h[7];let p=c,{selectedPathDigest:y}=(0,u.U)();return h[8]!==a||h[9]!==r||h[10]!==p||h[11]!==y||h[12]!==o?(d=(0,n.jsx)(x,{directory:p,fileNodeRenderer:a,sortByDiffOrder:o,...r,hash:y}),h[8]=a,h[9]=r,h[10]=p,h[11]=y,h[12]=o,h[13]=d):d=h[13],h[14]!==t||h[15]!==d?(m=(0,n.jsx)(s.G,{"aria-label":"File Tree",className:t,children:d}),h[14]=t,h[15]=d,h[16]=m):m=h[16],m});try{g.displayName||(g.displayName="File")}catch{}try{x.displayName||(x.displayName="Directory")}catch{}try{v.displayName||(v.displayName="DirectoryRendering")}catch{}try{j.displayName||(j.displayName="DiffFileTree")}catch{}function b(e){return{path:e.filePath,pathType:"file",node:e,sortOrder:e.sortOrder}}function S(e){return{path:e.path,pathType:"directory",node:e,sortOrder:e.sortOrder}}function _(e,t){return e.sortOrder-t.sortOrder}function w(e,t){return(0,f.wH)(e.path,t.path)}},8624:(e,t,i)=>{i.d(t,{L:()=>c});var n=i(74848),l=i(21728),a=i(38621),r=i(26108),o=i(34164);let c=i(96540).forwardRef((e,t)=>{let i,c,s,d=(0,l.c)(17),{expanded:f,testid:m,ariaLabel:h,ariaControls:u,onToggleExpanded:p,alignment:y,dataHotkey:g,className:x,size:v,tooltipDirection:j,variant:b}=e,S=f?`collapse-${m}`:`expand-${m}`,_=f?"left"===y?a.SidebarExpandIcon:a.SidebarCollapseIcon:"left"===y?a.SidebarCollapseIcon:a.SidebarExpandIcon;d[0]!==p?(i=e=>{p(e)},d[0]=p,d[1]=i):i=d[1];let w=b??"invisible";return d[2]!==x?(c=(0,o.$)(x,"fgColor-muted"),d[2]=x,d[3]=c):c=d[3],d[4]!==u||d[5]!==h||d[6]!==g||d[7]!==f||d[8]!==t||d[9]!==v||d[10]!==S||d[11]!==_||d[12]!==i||d[13]!==w||d[14]!==c||d[15]!==j?(s=(0,n.jsx)(r.K,{"aria-label":h,tooltipDirection:j,ref:t,"data-testid":S,"aria-expanded":f,"aria-controls":u,icon:_,"data-hotkey":g,onClick:i,variant:w,size:v,className:c}),d[4]=u,d[5]=h,d[6]=g,d[7]=f,d[8]=t,d[9]=v,d[10]=S,d[11]=_,d[12]=i,d[13]=w,d[14]=c,d[15]=j,d[16]=s):s=d[16],s});c.displayName="ExpandButton"},27028:(e,t,i)=>{i.d(t,{G:()=>G,Q:()=>F});var n=i(74848),l=i(21728),a=i(38621),r=i(5524),o=i(94236),c=i(26108),s=i(21373),d=i(29295),f=i(96540),m=i(21067),h=i(25407),u=i(96379);function p(e,t){let i,n=(0,l.c)(5),a=(t??[]).filter(e=>!e.dismissed);if(n[0]!==a||n[1]!==e){let t;n[3]!==e?(t=t=>t.name===e,n[3]=e,n[4]=t):t=n[4],i=a.filter(t),n[0]=a,n[1]=e,n[2]=i}else i=n[2];return 0===i.length}var y=i(70719),g=i(34164);let x="compact_diff_lines";function v(e){let t,i,a,r,o,c,v,S,_,w,D,C,N,I,E,T=(0,l.c)(19),{userNotices:P}=e,k=p(x,P),{dismissNotice:O}=(N=(0,l.c)(5),I=p(x,P),N[0]!==I||N[1]!==x?(D=()=>{(0,m.M3)()&&!I&&(0,u.DI)((0,h.VB1)({noticeName:x}),{method:"POST"})},N[0]=I,N[1]=x,N[2]=D):D=N[2],E=D,N[3]!==E?(C={dismissNotice:E},N[3]=E,N[4]=C):C=N[4],C);T[0]===Symbol.for("react.memo_cache_sentinel")?(t={onSuccess:b,onError:j},T[0]=t):t=T[0];let{mutate:R}=(0,y.U)(t),[F,$]=(0,f.useState)(!0);T[1]!==O||T[2]!==R?(i=()=>{R({lineSpacing:"compact"}),$(!1),O()},T[1]=O,T[2]=R,T[3]=i):i=T[3];let G=i;T[4]!==O?(a=()=>{$(!1),O()},T[4]=O,T[5]=a):a=T[5];let V=a;return k?null:(T[6]===Symbol.for("react.memo_cache_sentinel")?(r=(0,g.$)("d-flex flex-column gap-2","DiffCompactLinesPopover-module__PopoverContent--HUydq"),o=(0,n.jsx)("h2",{className:"DiffCompactLinesPopover-module__Heading--hFmwp",children:"Customizable line height"}),c=(0,n.jsx)("p",{children:"The default line height has been increased for improved accessibility. You can choose to enable a more compact line height from the view settings menu."}),T[6]=r,T[7]=o,T[8]=c):(r=T[6],o=T[7],c=T[8]),T[9]!==G?(v=(0,n.jsx)(s.Q,{onClick:G,children:"Enable compact line height"}),T[9]=G,T[10]=v):v=T[10],T[11]!==V?(S=(0,n.jsx)(s.Q,{onClick:V,variant:"invisible",children:"Dismiss"}),T[11]=V,T[12]=S):S=T[12],T[13]!==v||T[14]!==S?(_=(0,n.jsxs)(d.A.Content,{className:r,children:[o,c,(0,n.jsxs)("div",{className:"d-flex gap-2 flex-row w-full flex-wrap",children:[v,S]})]}),T[13]=v,T[14]=S,T[15]=_):_=T[15],T[16]!==F||T[17]!==_?(w=(0,n.jsx)(d.A,{open:F,caret:"top-right",className:"DiffCompactLinesPopover-module__PopoverContainer--A4URR",children:_}),T[16]=F,T[17]=_,T[18]=w):w=T[18],w)}function j(){}function b(){}try{v.displayName||(v.displayName="DiffCompactLinesPopover")}catch{}var S=i(79472);function _(e){let t,i,a,o,c,s=(0,l.c)(16),{whitespacePreferenceAvailable:d,lineSpacingPreferenceAvailable:f,defaultHideWhitespace:m,onUpdateWhitespace:h,reloadOnChange:u}=e,p=void 0===d||d,g=void 0===f||f,{data:x}=(0,S.ID)(),v=(0,S.Qn)(void 0!==m&&m);s[0]===Symbol.for("react.memo_cache_sentinel")?(t={onSuccess:D,onError:w},s[0]=t):t=s[0];let{mutate:j}=(0,y.U)(t);s[1]!==v||s[2]!==h||s[3]!==u?(i=()=>{(0,S.bJ)("w",v?"0":"1"),h?.(!v),void 0!==u&&u()},s[1]=v,s[2]=h,s[3]=u,s[4]=i):i=s[4];let b=i;return x&&(p||g)?(s[5]!==v||s[6]!==b||s[7]!==p?(a=p&&(0,n.jsx)(r.l.Item,{selected:v,onSelect:b,children:"Hide whitespace"}),s[5]=v,s[6]=b,s[7]=p,s[8]=a):a=s[8],s[9]!==x||s[10]!==g||s[11]!==j?(o=g&&(0,n.jsx)(r.l.Item,{selected:"compact"===x.lineSpacing,onSelect:()=>j({lineSpacing:"compact"===x.lineSpacing?"relaxed":"compact"}),children:"Compact line height"}),s[9]=x,s[10]=g,s[11]=j,s[12]=o):o=s[12],s[13]!==a||s[14]!==o?(c=(0,n.jsxs)(r.l.Group,{"aria-label":"Format",selectionVariant:"multiple",variant:"subtle",children:[a,o]}),s[13]=a,s[14]=o,s[15]=c):c=s[15],c):null}function w(){}function D(){}try{_.displayName||(_.displayName="DiffLinePresentationToggles")}catch{}function C(e){let t,i,a,o,c,s,d,f=(0,l.c)(17),{reloadOnChange:m}=e,h=void 0!==m&&m,{data:u}=(0,S.ID)(),p=u?.splitPreference;f[0]===Symbol.for("react.memo_cache_sentinel")?(t={onSuccess:I,onError:N},f[0]=t):t=f[0];let{mutate:g}=(0,y.U)(t);f[1]===Symbol.for("react.memo_cache_sentinel")?(i=(0,n.jsx)(r.l.GroupHeading,{children:"Layout"}),f[1]=i):i=f[1];let x="unified"===p;f[2]!==h||f[3]!==g?(a=()=>{g({splitPreference:"unified"}),(0,S.bJ)("diff","unified"),h&&window.location.reload()},f[2]=h,f[3]=g,f[4]=a):a=f[4],f[5]!==x||f[6]!==a?(o=(0,n.jsx)(r.l.Item,{selected:x,onSelect:a,children:"Unified"}),f[5]=x,f[6]=a,f[7]=o):o=f[7];let v="split"===p;return f[8]!==h||f[9]!==g?(c=()=>{g({splitPreference:"split"}),(0,S.bJ)("diff","split"),h&&window.location.reload()},f[8]=h,f[9]=g,f[10]=c):c=f[10],f[11]!==v||f[12]!==c?(s=(0,n.jsx)(r.l.Item,{selected:v,onSelect:c,children:"Split"}),f[11]=v,f[12]=c,f[13]=s):s=f[13],f[14]!==o||f[15]!==s?(d=(0,n.jsxs)(r.l.Group,{selectionVariant:"single",children:[i,o,s]}),f[14]=o,f[15]=s,f[16]=d):d=f[16],d}function N(){}function I(){}try{C.displayName||(C.displayName="DiffViewPreferenceToggle")}catch{}var E=i(18799);function T(){let e,t,i,a=(0,l.c)(7),{data:o}=(0,S.ID)();a[0]===Symbol.for("react.memo_cache_sentinel")?(e={onSuccess:k,onError:P},a[0]=e):e=a[0];let{mutate:c}=(0,y.U)(e);if(!o)return null;let s=o.commentsPreference===E.sI.Collapsed;return a[1]!==s||a[2]!==c?(t=()=>c({commentsPreference:s?E.sI.Visible:E.sI.Collapsed}),a[1]=s,a[2]=c,a[3]=t):t=a[3],a[4]!==s||a[5]!==t?(i=(0,n.jsx)(r.l.Group,{"aria-label":"Comments",selectionVariant:"single",children:(0,n.jsx)(r.l.Item,{role:"menuitemcheckbox",selected:s,onSelect:t,children:"Minimize comments"})}),a[4]=s,a[5]=t,a[6]=i):i=a[6],i}function P(){}function k(){}try{T.displayName||(T.displayName="DiffCommentsPreferenceToggle")}catch{}var O=i(30459);let R=["layout","comments","whitespace","line-spacing"];function F(e){let t,i,a,o,c,s,d,f,m,h=(0,l.c)(29),{additionalPreferences:u,defaultHideWhitespace:p,enabledDiffViewSettings:y,onUpdateWhitespace:g,reloadOnSplitPreferenceChange:x,reloadOnWhitespaceChange:v}=e,j=void 0===y?R:y,b=void 0!==x&&x,S=void 0!==v&&v;h[0]!==j?(t=j.includes("layout")&&j.includes("comments"),h[0]=j,h[1]=t):t=h[1];let w=t;h[2]!==j?(i=j.includes("line-spacing")||j.includes("whitespace"),h[2]=j,h[3]=i):i=h[3];let D=i;h[4]!==j||h[5]!==D?(a=D&&(j.includes("comments")||j.includes("layout")),h[4]=j,h[5]=D,h[6]=a):a=h[6];let N=a;return h[7]!==j||h[8]!==b?(o=j.includes("layout")&&(0,n.jsx)(C,{reloadOnChange:b}),h[7]=j,h[8]=b,h[9]=o):o=h[9],h[10]!==w?(c=w&&(0,n.jsx)(r.l.Divider,{}),h[10]=w,h[11]=c):c=h[11],h[12]!==j?(s=j.includes("comments")&&(0,n.jsx)(T,{}),h[12]=j,h[13]=s):s=h[13],h[14]!==N?(d=N&&(0,n.jsx)(r.l.Divider,{}),h[14]=N,h[15]=d):d=h[15],h[16]!==p||h[17]!==j||h[18]!==g||h[19]!==S||h[20]!==D?(f=D?(0,n.jsx)(n.Fragment,{children:(0,n.jsx)(_,{defaultHideWhitespace:p,lineSpacingPreferenceAvailable:j.includes("line-spacing"),whitespacePreferenceAvailable:j.includes("whitespace"),onUpdateWhitespace:g,reloadOnChange:S?$:void 0})}):null,h[16]=p,h[17]=j,h[18]=g,h[19]=S,h[20]=D,h[21]=f):f=h[21],h[22]!==u||h[23]!==d||h[24]!==f||h[25]!==o||h[26]!==c||h[27]!==s?(m=(0,n.jsxs)(n.Fragment,{children:[o,c,s,d,f,u]}),h[22]=u,h[23]=d,h[24]=f,h[25]=o,h[26]=c,h[27]=s,h[28]=m):m=h[28],m}function $(){return window.location.reload()}function G(e){let t,i,s,d,f,m,h=(0,l.c)(21),{additionalPreferences:u,invisible:p,defaultHideWhitespace:y,enabledDiffViewSettings:g,onUpdateWhitespace:x,reloadOnSplitPreferenceChange:j,reloadOnWhitespaceChange:b,small:S,userNotices:_}=e,w=void 0===g?R:g,D=void 0!==j&&j,C=void 0!==b&&b,{sendAnalyticsEvent:N}=(0,O.s)();h[0]!==N?(t=()=>{N("diff_view.settings.open","DIFF_VIEW_SETTINGS_BUTTON")},h[0]=N,h[1]=t):t=h[1];let I=t,E=S?"small":"medium",T=void 0===p||p?"invisible":"default";return h[2]!==I||h[3]!==E||h[4]!==T?(i=(0,n.jsx)(o.W.Anchor,{children:(0,n.jsx)(c.K,{"aria-label":"Open diff view settings",icon:a.GearIcon,size:E,variant:T,onClick:I})}),h[2]=I,h[3]=E,h[4]=T,h[5]=i):i=h[5],h[6]!==u||h[7]!==y||h[8]!==w||h[9]!==x||h[10]!==D||h[11]!==C?(s=(0,n.jsx)(o.W.Overlay,{children:(0,n.jsx)(r.l,{children:(0,n.jsx)(F,{additionalPreferences:u,defaultHideWhitespace:y,enabledDiffViewSettings:w,onUpdateWhitespace:x,reloadOnSplitPreferenceChange:D,reloadOnWhitespaceChange:C})})}),h[6]=u,h[7]=y,h[8]=w,h[9]=x,h[10]=D,h[11]=C,h[12]=s):s=h[12],h[13]!==i||h[14]!==s?(d=(0,n.jsxs)(o.W,{children:[i,s]}),h[13]=i,h[14]=s,h[15]=d):d=h[15],h[16]!==_?(f=(0,n.jsx)(v,{userNotices:_}),h[16]=_,h[17]=f):f=h[17],h[18]!==d||h[19]!==f?(m=(0,n.jsxs)(n.Fragment,{children:[d,f]}),h[18]=d,h[19]=f,h[20]=m):m=h[20],m}try{F.displayName||(F.displayName="DiffViewSettingsMenuContent")}catch{}try{G.displayName||(G.displayName="DiffViewSettings")}catch{}},70719:(e,t,i)=>{i.d(t,{U:()=>s});var n=i(21728),l=i(96379),a=i(97665),r=i(94747),o=i(79472),c=i(21067);function s(e){let t,i,l,c,s=(0,n.c)(10),{onSuccess:f,onError:m}=e,h=(0,a.jE)();return s[0]!==h?(t=async e=>{h.setQueryData((0,o.w$)(),t=>({...t,...e}))},s[0]=h,s[1]=t):t=s[1],s[2]!==f?(i=()=>{f()},s[2]=f,s[3]=i):i=s[3],s[4]!==m?(l=e=>{m(e)},s[4]=m,s[5]=l):l=s[5],s[6]!==t||s[7]!==i||s[8]!==l?(c={mutationFn:d,onMutate:t,onSuccess:i,onError:l},s[6]=t,s[7]=i,s[8]=l,s[9]=c):c=s[9],(0,r.n)(c)}async function d(e){let{commentsPreference:t,lineSpacing:i,splitPreference:n}=e;if(!(0,c.M3)())return;let a={};t&&(a={...a,commentsPreference:t}),i&&(a={...a,lineSpacing:i}),n&&(a={...a,diff:n});let r=await (0,l.Sr)("/users/diffview",{method:"POST",headers:{Accept:"application/json"},body:a}),o=await r.json();if(r.ok)return o;throw Error(o.error||"Unknown error occurred",{cause:r.status})}},70843:(e,t,i)=>{i.d(t,{L:()=>l});var n=i(96540);function l(e){(0,n.useEffect)(()=>{if(!e)return;let t=document.querySelector(".footer");if(t)return t.hidden=!0,()=>{t.hidden=!1}},[e])}},71833:(e,t,i)=>{i.d(t,{B:()=>a});var n=i(25407),l=i(96379);async function a(e,t){if(!t)return;let i=new FormData;i.set("file_tree_visible",e?"true":"false"),(0,l.DI)((0,n.h6D)(t),{method:"PUT",body:i,headers:{Accept:"application/json"}})}},78252:(e,t,i)=>{i.d(t,{$:()=>o});var n=i(74848),l=i(38621),a=i(5524),r=i(34720);let o=e=>(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(a.l.Divider,{}),(0,n.jsx)(r.t,{eventContext:{prx:!0},leadingVisual:(0,n.jsx)(l.CopilotIcon,{}),fileDiffReference:e.copilotChatReference})]});try{o.displayName||(o.displayName="CopilotDiffChatBlobActionsMenuItems")}catch{}},81355:(e,t,i)=>{i.d(t,{U:()=>o});var n=i(21728),l=i(96540),a=i(61583),r=i(71315);function o(){let e,t,i,o,c=(0,n.c)(6),[s,d]=(0,l.useState)("");c[0]===Symbol.for("react.memo_cache_sentinel")?(e=()=>{d(((0,a.pd)(r.fV.hash??"")??"").replace("diff-",""))},c[0]=e):e=c[0];let f=e;c[1]===Symbol.for("react.memo_cache_sentinel")?(t=()=>(window.addEventListener("hashchange",f),f(),()=>{window.removeEventListener("hashchange",f)}),i=[f],c[1]=t,c[2]=i):(t=c[1],i=c[2]),(0,l.useEffect)(t,i);let m=s?`diff-${s}`:"";return c[3]!==s||c[4]!==m?(o={selectedPathDigest:s,selectedFullDiffHash:m,setSelectedHash:d},c[3]=s,c[4]=m,c[5]=o):o=c[5],o}}}]);
+"use strict";
+(globalThis.webpackChunk_github_ui_github_ui =
+  globalThis.webpackChunk_github_ui_github_ui || []).push([
+  [30141],
+  {
+    1946: (e, t, i) => {
+      i.d(t, { oj: () => j, ZH: () => g });
+      var n = i(74848),
+        l = i(21728),
+        a = i(38621),
+        r = i(96540),
+        o = i(11196),
+        c = i(84268),
+        s = i(13436),
+        d = i(25556),
+        f = i(35311),
+        m = i(78049),
+        h = i(34535),
+        u = i(81355),
+        p = i(71315);
+      let y = (0, r.memo)(function (e) {
+        let t,
+          i = (0, l.c)(3),
+          { changeType: a, isSymlink: r } = e;
+        return (
+          i[0] !== a || i[1] !== r
+            ? ((t = (0, n.jsx)(m.E, { status: a, isSymlink: r })),
+              (i[0] = a),
+              (i[1] = r),
+              (i[2] = t))
+            : (t = i[2]),
+          t
+        );
+      });
+      y.displayName = "FileStatusIconItem";
+      let g = (0, r.memo)(function (e) {
+        let t,
+          i,
+          d,
+          f,
+          m,
+          u,
+          g,
+          x,
+          v,
+          j,
+          b = (0, l.c)(38),
+          { file: S, depth: _, hash: w, onSelect: D } = e,
+          C = (0, r.useRef)(null),
+          N = (0, r.useRef)(null),
+          I = `#diff-${S.diff.pathDigest}`;
+        b[0] === Symbol.for("react.memo_cache_sentinel")
+          ? ((t = { focusRowRef: C, mouseRowRef: C }), (b[0] = t))
+          : (t = b[0]);
+        let E = (0, h.Z)(t),
+          T = S.diff.totalCommentsCount ?? 0,
+          P = S.diff.highestAnnotationLevel,
+          k = null,
+          O = S.fileName ?? "This file";
+        switch (
+          (T > 0 &&
+            (O += ` has ${T < 10 ? T : "9+"} ${T > 1 ? "comments" : "comment"}`),
+          P)
+        ) {
+          case "WARNING": {
+            let e;
+            ((O += `${T > 0 ? " and" : ""} has warning annotations`),
+              b[1] === Symbol.for("react.memo_cache_sentinel")
+                ? ((e = (0, n.jsx)("div", {
+                    className: "pl-1 fgColor-attention",
+                    children: (0, n.jsx)(a.AlertIcon, {}),
+                  })),
+                  (b[1] = e))
+                : (e = b[1]),
+              (k = e));
+            break;
+          }
+          case "NOTICE": {
+            let e;
+            ((O += `${T > 0 ? " and" : ""} has notice annotations`),
+              b[2] === Symbol.for("react.memo_cache_sentinel")
+                ? ((e = (0, n.jsx)("div", {
+                    className: "pl-1 fgColor-default",
+                    children: (0, n.jsx)(a.InfoIcon, {}),
+                  })),
+                  (b[2] = e))
+                : (e = b[2]),
+              (k = e));
+            break;
+          }
+          case "FAILURE": {
+            let e;
+            ((O += `${T > 0 ? " and" : ""} has failure annotations`),
+              b[3] === Symbol.for("react.memo_cache_sentinel")
+                ? ((e = (0, n.jsx)("div", {
+                    className: "pl-1 fgColor-danger",
+                    children: (0, n.jsx)(a.XCircleFillIcon, {}),
+                  })),
+                  (b[3] = e))
+                : (e = b[3]),
+              (k = e));
+          }
+        }
+        (b[4] !== S.diff.pathDigest || b[5] !== w
+          ? ((i = () => {
+              if (C.current && S.diff.pathDigest === w) {
+                let e = window.setTimeout(() => {
+                  let e = p.XC?.getElementById("diff_file_tree")?.parentElement,
+                    t = C.current.offsetTop,
+                    i = p.cg?.innerHeight ?? 0;
+                  e && (e.scrollTop = t - i / 2);
+                }, 0);
+                return () => {
+                  window.clearTimeout(e);
+                };
+              }
+            }),
+            (d = [S.diff.pathDigest, w]),
+            (b[4] = S.diff.pathDigest),
+            (b[5] = w),
+            (b[6] = i),
+            (b[7] = d))
+          : ((i = b[6]), (d = b[7])),
+          (0, r.useEffect)(i, d),
+          b[8] !== I
+            ? ((f = (e) => {
+                if (e.metaKey || e.ctrlKey || 1 === e.button) {
+                  (e.preventDefault(), window.open(I, "_blank"));
+                  return;
+                }
+              }),
+              (b[8] = I),
+              (b[9] = f))
+            : (f = b[9]));
+        let R = f;
+        b[10] !== R || b[11] !== D
+          ? ((m = (e) => {
+              if (e.nativeEvent instanceof KeyboardEvent) {
+                if (C?.current !== document.activeElement)
+                  return void e.preventDefault();
+                if ("Enter" === e.key || " " === e.key) {
+                  (e.preventDefault(), D?.(), N?.current?.click());
+                  return;
+                }
+              }
+              if (e.nativeEvent instanceof MouseEvent) {
+                if (e.metaKey || e.ctrlKey || 1 === e.button) {
+                  (e.preventDefault(), R(e));
+                  return;
+                }
+                (D?.(), N?.current?.click());
+              }
+            }),
+            (b[10] = R),
+            (b[11] = D),
+            (b[12] = m))
+          : (m = b[12]);
+        let F = m,
+          $ = S.fileName ?? "";
+        b[13] !== I || b[14] !== $ || b[15] !== R
+          ? ((u = (0, n.jsx)(c.A, {
+              href: I,
+              muted: !0,
+              ref: N,
+              role: "presentation",
+              className: "fgColor-default",
+              tabIndex: -1,
+              onClick: R,
+              children: $,
+            })),
+            (b[13] = I),
+            (b[14] = $),
+            (b[15] = R),
+            (b[16] = u))
+          : (u = b[16]);
+        let G = u,
+          V = S.diff.pathDigest === w;
+        return (
+          b[17] !== S.diff.changeType || b[18] !== S.diff.isSymlink
+            ? ((g = (0, n.jsx)(s.G.LeadingVisual, {
+                children: (0, n.jsx)(y, {
+                  changeType: S.diff.changeType,
+                  isSymlink: S.diff.isSymlink,
+                }),
+              })),
+              (b[17] = S.diff.changeType),
+              (b[18] = S.diff.isSymlink),
+              (b[19] = g))
+            : (g = b[19]),
+          b[20] !== G || b[21] !== $ || b[22] !== E
+            ? ((x = E
+                ? (0, n.jsx)(o.m, { text: $, direction: "ne", children: G })
+                : G),
+              (b[20] = G),
+              (b[21] = $),
+              (b[22] = E),
+              (b[23] = x))
+            : (x = b[23]),
+          b[24] !== k || b[25] !== P || b[26] !== T
+            ? ((v =
+                (!!T || P) &&
+                (0, n.jsx)(s.G.TrailingVisual, {
+                  children: (0, n.jsxs)("div", {
+                    className: "d-flex flex-items-center flex-row",
+                    children: [
+                      !!T &&
+                        (0, n.jsxs)(n.Fragment, {
+                          children: [
+                            (0, n.jsx)(a.CommentIcon, {}),
+                            (0, n.jsx)("div", {
+                              className: "ml-1 text-bold fgColor-default f6",
+                              children: T < 10 ? T : "9+",
+                            }),
+                          ],
+                        }),
+                      k,
+                    ],
+                  }),
+                })),
+              (b[24] = k),
+              (b[25] = P),
+              (b[26] = T),
+              (b[27] = v))
+            : (v = b[27]),
+          b[28] !== _ ||
+          b[29] !== S.diff.path ||
+          b[30] !== S.diff.pathDigest ||
+          b[31] !== F ||
+          b[32] !== O ||
+          b[33] !== v ||
+          b[34] !== V ||
+          b[35] !== g ||
+          b[36] !== x
+            ? ((j = (0, n.jsx)(n.Fragment, {
+                children: (0, n.jsxs)(
+                  s.G.Item,
+                  {
+                    defaultExpanded: !0,
+                    "aria-label": O,
+                    "aria-level": _,
+                    current: V,
+                    id: S.diff.path,
+                    onSelect: F,
+                    ref: C,
+                    className: "DiffFileTree-module__file-tree-row--GJi_6",
+                    children: [g, x, v],
+                  },
+                  S.diff.pathDigest,
+                ),
+              })),
+              (b[28] = _),
+              (b[29] = S.diff.path),
+              (b[30] = S.diff.pathDigest),
+              (b[31] = F),
+              (b[32] = O),
+              (b[33] = v),
+              (b[34] = V),
+              (b[35] = g),
+              (b[36] = x),
+              (b[37] = j))
+            : (j = b[37]),
+          j
+        );
+      });
+      function x(e) {
+        let t,
+          i,
+          a,
+          o,
+          c,
+          f,
+          m,
+          u,
+          p,
+          y,
+          g,
+          j,
+          b = (0, l.c)(43);
+        b[0] !== e
+          ? (({
+              directory: t,
+              depth: o,
+              leadingPath: c,
+              sortByDiffOrder: a,
+              ...i
+            } = e),
+            (b[0] = e),
+            (b[1] = t),
+            (b[2] = i),
+            (b[3] = a),
+            (b[4] = o),
+            (b[5] = c))
+          : ((t = b[1]), (i = b[2]), (a = b[3]), (o = b[4]), (c = b[5]));
+        let S = void 0 === o ? 0 : o,
+          _ = void 0 === c ? "" : c,
+          w = _ ? `${_}/` : "",
+          D = r.useRef(null),
+          C = r.useRef(null);
+        b[6] === Symbol.for("react.memo_cache_sentinel")
+          ? ((f = { focusRowRef: C, mouseRowRef: D }), (b[6] = f))
+          : (f = b[6]);
+        let N = (0, h.Z)(f);
+        if (!t.files.length && 1 === t.directories.length) {
+          let e, l;
+          if (
+            b[7] !== S ||
+            b[8] !== t.directories ||
+            b[9] !== t.name ||
+            b[10] !== i ||
+            b[11] !== w ||
+            b[12] !== a
+          ) {
+            let l;
+            (b[14] !== S ||
+            b[15] !== t.name ||
+            b[16] !== i ||
+            b[17] !== w ||
+            b[18] !== a
+              ? ((l = (e) =>
+                  (0, n.jsx)(
+                    x,
+                    {
+                      depth: 0 === S ? 1 : S,
+                      directory: e,
+                      leadingPath: `${w}${t.name}`,
+                      sortByDiffOrder: a,
+                      ...i,
+                    },
+                    e.path,
+                  )),
+                (b[14] = S),
+                (b[15] = t.name),
+                (b[16] = i),
+                (b[17] = w),
+                (b[18] = a),
+                (b[19] = l))
+              : (l = b[19]),
+              (e = t.directories.map(l)),
+              (b[7] = S),
+              (b[8] = t.directories),
+              (b[9] = t.name),
+              (b[10] = i),
+              (b[11] = w),
+              (b[12] = a),
+              (b[13] = e));
+          } else e = b[13];
+          return (
+            b[20] !== e
+              ? ((l = (0, n.jsx)(n.Fragment, { children: e })),
+                (b[20] = e),
+                (b[21] = l))
+              : (l = b[21]),
+            l
+          );
+        }
+        b[22] !== S || b[23] !== t || b[24] !== i || b[25] !== a
+          ? ((m = function () {
+              return (0, n.jsx)(v, {
+                directory: t,
+                depth: S,
+                sortByDiffOrder: a,
+                ...i,
+              });
+            }),
+            (b[22] = S),
+            (b[23] = t),
+            (b[24] = i),
+            (b[25] = a),
+            (b[26] = m))
+          : (m = b[26]);
+        let I = m;
+        if (0 === S) {
+          let e;
+          return (
+            b[27] !== I ? ((e = I()), (b[27] = I), (b[28] = e)) : (e = b[28]),
+            e
+          );
+        }
+        b[29] === Symbol.for("react.memo_cache_sentinel")
+          ? ((u = (0, n.jsx)(s.G.LeadingVisual, {
+              children: (0, n.jsx)(s.G.DirectoryIcon, {}),
+            })),
+            (b[29] = u))
+          : (u = b[29]);
+        let E = `${w}${t.name}`;
+        return (
+          b[30] !== E
+            ? ((p = (0, n.jsx)("span", { ref: D, children: E })),
+              (b[30] = E),
+              (b[31] = p))
+            : (p = b[31]),
+          b[32] !== t.name || b[33] !== w || b[34] !== N
+            ? ((y =
+                N &&
+                (0, n.jsx)(d.m, {
+                  "data-testid": `${t.name}-directory-item-tooltip`,
+                  id: `${t.name}-directory-item-tooltip`,
+                  contentRef: C,
+                  "aria-label": `${w}${t.name}`,
+                  open: !0,
+                  direction: "ne",
+                })),
+              (b[32] = t.name),
+              (b[33] = w),
+              (b[34] = N),
+              (b[35] = y))
+            : (y = b[35]),
+          b[36] !== I
+            ? ((g = (0, n.jsx)(s.G.SubTree, { children: I() })),
+              (b[36] = I),
+              (b[37] = g))
+            : (g = b[37]),
+          b[38] !== t.path || b[39] !== p || b[40] !== y || b[41] !== g
+            ? ((j = (0, n.jsxs)(
+                s.G.Item,
+                {
+                  ref: C,
+                  defaultExpanded: !0,
+                  id: t.path,
+                  children: [u, p, y, g],
+                },
+                t.path,
+              )),
+              (b[38] = t.path),
+              (b[39] = p),
+              (b[40] = y),
+              (b[41] = g),
+              (b[42] = j))
+            : (j = b[42]),
+          j
+        );
+      }
+      let v = (0, r.memo)(function (e) {
+          let t,
+            i,
+            a = (0, l.c)(4);
+          if (a[0] !== e) {
+            let {
+                directory: i,
+                fileNodeRenderer: l,
+                sortByDiffOrder: r,
+                depth: o,
+                ...c
+              } = e,
+              s = void 0 === o ? 0 : o,
+              d = i.files.map(b).concat(i.directories.map(S));
+            (r ? d.sort(_) : d.sort(w),
+              (t = d.map((e) =>
+                "file" !== e.pathType
+                  ? (0, n.jsx)(
+                      x,
+                      {
+                        depth: s + 1,
+                        directory: e.node,
+                        fileNodeRenderer: l,
+                        sortByDiffOrder: r,
+                        ...c,
+                      },
+                      e.path,
+                    )
+                  : l
+                    ? l({ ...c, file: e.node, depth: s + 1 })
+                    : (0, n.jsx)(
+                        g,
+                        { depth: s + 1, file: e.node, ...c },
+                        e.path,
+                      ),
+              )),
+              (a[0] = e),
+              (a[1] = t));
+          } else t = a[1];
+          return (
+            a[2] !== t
+              ? ((i = (0, n.jsx)(n.Fragment, { children: t })),
+                (a[2] = t),
+                (a[3] = i))
+              : (i = a[3]),
+            i
+          );
+        }),
+        j = (0, r.memo)(function (e) {
+          let t,
+            i,
+            a,
+            r,
+            o,
+            c,
+            d,
+            m,
+            h = (0, l.c)(17);
+          (h[0] !== e
+            ? (({
+                diffs: i,
+                fileNodeRenderer: a,
+                sortByDiffOrder: o,
+                className: t,
+                ...r
+              } = e),
+              (h[0] = e),
+              (h[1] = t),
+              (h[2] = i),
+              (h[3] = a),
+              (h[4] = r),
+              (h[5] = o))
+            : ((t = h[1]), (i = h[2]), (a = h[3]), (r = h[4]), (o = h[5])),
+            h[6] !== i
+              ? ((c = (0, f.xY)(i)), (h[6] = i), (h[7] = c))
+              : (c = h[7]));
+          let p = c,
+            { selectedPathDigest: y } = (0, u.U)();
+          return (
+            h[8] !== a ||
+            h[9] !== r ||
+            h[10] !== p ||
+            h[11] !== y ||
+            h[12] !== o
+              ? ((d = (0, n.jsx)(x, {
+                  directory: p,
+                  fileNodeRenderer: a,
+                  sortByDiffOrder: o,
+                  ...r,
+                  hash: y,
+                })),
+                (h[8] = a),
+                (h[9] = r),
+                (h[10] = p),
+                (h[11] = y),
+                (h[12] = o),
+                (h[13] = d))
+              : (d = h[13]),
+            h[14] !== t || h[15] !== d
+              ? ((m = (0, n.jsx)(s.G, {
+                  "aria-label": "File Tree",
+                  className: t,
+                  children: d,
+                })),
+                (h[14] = t),
+                (h[15] = d),
+                (h[16] = m))
+              : (m = h[16]),
+            m
+          );
+        });
+      try {
+        g.displayName || (g.displayName = "File");
+      } catch {}
+      try {
+        x.displayName || (x.displayName = "Directory");
+      } catch {}
+      try {
+        v.displayName || (v.displayName = "DirectoryRendering");
+      } catch {}
+      try {
+        j.displayName || (j.displayName = "DiffFileTree");
+      } catch {}
+      function b(e) {
+        return {
+          path: e.filePath,
+          pathType: "file",
+          node: e,
+          sortOrder: e.sortOrder,
+        };
+      }
+      function S(e) {
+        return {
+          path: e.path,
+          pathType: "directory",
+          node: e,
+          sortOrder: e.sortOrder,
+        };
+      }
+      function _(e, t) {
+        return e.sortOrder - t.sortOrder;
+      }
+      function w(e, t) {
+        return (0, f.wH)(e.path, t.path);
+      }
+    },
+    8624: (e, t, i) => {
+      i.d(t, { L: () => c });
+      var n = i(74848),
+        l = i(21728),
+        a = i(38621),
+        r = i(26108),
+        o = i(34164);
+      let c = i(96540).forwardRef((e, t) => {
+        let i,
+          c,
+          s,
+          d = (0, l.c)(17),
+          {
+            expanded: f,
+            testid: m,
+            ariaLabel: h,
+            ariaControls: u,
+            onToggleExpanded: p,
+            alignment: y,
+            dataHotkey: g,
+            className: x,
+            size: v,
+            tooltipDirection: j,
+            variant: b,
+          } = e,
+          S = f ? `collapse-${m}` : `expand-${m}`,
+          _ = f
+            ? "left" === y
+              ? a.SidebarExpandIcon
+              : a.SidebarCollapseIcon
+            : "left" === y
+              ? a.SidebarCollapseIcon
+              : a.SidebarExpandIcon;
+        d[0] !== p
+          ? ((i = (e) => {
+              p(e);
+            }),
+            (d[0] = p),
+            (d[1] = i))
+          : (i = d[1]);
+        let w = b ?? "invisible";
+        return (
+          d[2] !== x
+            ? ((c = (0, o.$)(x, "fgColor-muted")), (d[2] = x), (d[3] = c))
+            : (c = d[3]),
+          d[4] !== u ||
+          d[5] !== h ||
+          d[6] !== g ||
+          d[7] !== f ||
+          d[8] !== t ||
+          d[9] !== v ||
+          d[10] !== S ||
+          d[11] !== _ ||
+          d[12] !== i ||
+          d[13] !== w ||
+          d[14] !== c ||
+          d[15] !== j
+            ? ((s = (0, n.jsx)(r.K, {
+                "aria-label": h,
+                tooltipDirection: j,
+                ref: t,
+                "data-testid": S,
+                "aria-expanded": f,
+                "aria-controls": u,
+                icon: _,
+                "data-hotkey": g,
+                onClick: i,
+                variant: w,
+                size: v,
+                className: c,
+              })),
+              (d[4] = u),
+              (d[5] = h),
+              (d[6] = g),
+              (d[7] = f),
+              (d[8] = t),
+              (d[9] = v),
+              (d[10] = S),
+              (d[11] = _),
+              (d[12] = i),
+              (d[13] = w),
+              (d[14] = c),
+              (d[15] = j),
+              (d[16] = s))
+            : (s = d[16]),
+          s
+        );
+      });
+      c.displayName = "ExpandButton";
+    },
+    27028: (e, t, i) => {
+      i.d(t, { G: () => G, Q: () => F });
+      var n = i(74848),
+        l = i(21728),
+        a = i(38621),
+        r = i(5524),
+        o = i(94236),
+        c = i(26108),
+        s = i(21373),
+        d = i(29295),
+        f = i(96540),
+        m = i(21067),
+        h = i(25407),
+        u = i(96379);
+      function p(e, t) {
+        let i,
+          n = (0, l.c)(5),
+          a = (t ?? []).filter((e) => !e.dismissed);
+        if (n[0] !== a || n[1] !== e) {
+          let t;
+          (n[3] !== e
+            ? ((t = (t) => t.name === e), (n[3] = e), (n[4] = t))
+            : (t = n[4]),
+            (i = a.filter(t)),
+            (n[0] = a),
+            (n[1] = e),
+            (n[2] = i));
+        } else i = n[2];
+        return 0 === i.length;
+      }
+      var y = i(70719),
+        g = i(34164);
+      let x = "compact_diff_lines";
+      function v(e) {
+        let t,
+          i,
+          a,
+          r,
+          o,
+          c,
+          v,
+          S,
+          _,
+          w,
+          D,
+          C,
+          N,
+          I,
+          E,
+          T = (0, l.c)(19),
+          { userNotices: P } = e,
+          k = p(x, P),
+          { dismissNotice: O } =
+            ((N = (0, l.c)(5)),
+            (I = p(x, P)),
+            N[0] !== I || N[1] !== x
+              ? ((D = () => {
+                  (0, m.M3)() &&
+                    !I &&
+                    (0, u.DI)((0, h.VB1)({ noticeName: x }), {
+                      method: "POST",
+                    });
+                }),
+                (N[0] = I),
+                (N[1] = x),
+                (N[2] = D))
+              : (D = N[2]),
+            (E = D),
+            N[3] !== E
+              ? ((C = { dismissNotice: E }), (N[3] = E), (N[4] = C))
+              : (C = N[4]),
+            C);
+        T[0] === Symbol.for("react.memo_cache_sentinel")
+          ? ((t = { onSuccess: b, onError: j }), (T[0] = t))
+          : (t = T[0]);
+        let { mutate: R } = (0, y.U)(t),
+          [F, $] = (0, f.useState)(!0);
+        T[1] !== O || T[2] !== R
+          ? ((i = () => {
+              (R({ lineSpacing: "compact" }), $(!1), O());
+            }),
+            (T[1] = O),
+            (T[2] = R),
+            (T[3] = i))
+          : (i = T[3]);
+        let G = i;
+        T[4] !== O
+          ? ((a = () => {
+              ($(!1), O());
+            }),
+            (T[4] = O),
+            (T[5] = a))
+          : (a = T[5]);
+        let V = a;
+        return k
+          ? null
+          : (T[6] === Symbol.for("react.memo_cache_sentinel")
+              ? ((r = (0, g.$)(
+                  "d-flex flex-column gap-2",
+                  "DiffCompactLinesPopover-module__PopoverContent--HUydq",
+                )),
+                (o = (0, n.jsx)("h2", {
+                  className: "DiffCompactLinesPopover-module__Heading--hFmwp",
+                  children: "Customizable line height",
+                })),
+                (c = (0, n.jsx)("p", {
+                  children:
+                    "The default line height has been increased for improved accessibility. You can choose to enable a more compact line height from the view settings menu.",
+                })),
+                (T[6] = r),
+                (T[7] = o),
+                (T[8] = c))
+              : ((r = T[6]), (o = T[7]), (c = T[8])),
+            T[9] !== G
+              ? ((v = (0, n.jsx)(s.Q, {
+                  onClick: G,
+                  children: "Enable compact line height",
+                })),
+                (T[9] = G),
+                (T[10] = v))
+              : (v = T[10]),
+            T[11] !== V
+              ? ((S = (0, n.jsx)(s.Q, {
+                  onClick: V,
+                  variant: "invisible",
+                  children: "Dismiss",
+                })),
+                (T[11] = V),
+                (T[12] = S))
+              : (S = T[12]),
+            T[13] !== v || T[14] !== S
+              ? ((_ = (0, n.jsxs)(d.A.Content, {
+                  className: r,
+                  children: [
+                    o,
+                    c,
+                    (0, n.jsxs)("div", {
+                      className: "d-flex gap-2 flex-row w-full flex-wrap",
+                      children: [v, S],
+                    }),
+                  ],
+                })),
+                (T[13] = v),
+                (T[14] = S),
+                (T[15] = _))
+              : (_ = T[15]),
+            T[16] !== F || T[17] !== _
+              ? ((w = (0, n.jsx)(d.A, {
+                  open: F,
+                  caret: "top-right",
+                  className:
+                    "DiffCompactLinesPopover-module__PopoverContainer--A4URR",
+                  children: _,
+                })),
+                (T[16] = F),
+                (T[17] = _),
+                (T[18] = w))
+              : (w = T[18]),
+            w);
+      }
+      function j() {}
+      function b() {}
+      try {
+        v.displayName || (v.displayName = "DiffCompactLinesPopover");
+      } catch {}
+      var S = i(79472);
+      function _(e) {
+        let t,
+          i,
+          a,
+          o,
+          c,
+          s = (0, l.c)(16),
+          {
+            whitespacePreferenceAvailable: d,
+            lineSpacingPreferenceAvailable: f,
+            defaultHideWhitespace: m,
+            onUpdateWhitespace: h,
+            reloadOnChange: u,
+          } = e,
+          p = void 0 === d || d,
+          g = void 0 === f || f,
+          { data: x } = (0, S.ID)(),
+          v = (0, S.Qn)(void 0 !== m && m);
+        s[0] === Symbol.for("react.memo_cache_sentinel")
+          ? ((t = { onSuccess: D, onError: w }), (s[0] = t))
+          : (t = s[0]);
+        let { mutate: j } = (0, y.U)(t);
+        s[1] !== v || s[2] !== h || s[3] !== u
+          ? ((i = () => {
+              ((0, S.bJ)("w", v ? "0" : "1"), h?.(!v), void 0 !== u && u());
+            }),
+            (s[1] = v),
+            (s[2] = h),
+            (s[3] = u),
+            (s[4] = i))
+          : (i = s[4]);
+        let b = i;
+        return x && (p || g)
+          ? (s[5] !== v || s[6] !== b || s[7] !== p
+              ? ((a =
+                  p &&
+                  (0, n.jsx)(r.l.Item, {
+                    selected: v,
+                    onSelect: b,
+                    children: "Hide whitespace",
+                  })),
+                (s[5] = v),
+                (s[6] = b),
+                (s[7] = p),
+                (s[8] = a))
+              : (a = s[8]),
+            s[9] !== x || s[10] !== g || s[11] !== j
+              ? ((o =
+                  g &&
+                  (0, n.jsx)(r.l.Item, {
+                    selected: "compact" === x.lineSpacing,
+                    onSelect: () =>
+                      j({
+                        lineSpacing:
+                          "compact" === x.lineSpacing ? "relaxed" : "compact",
+                      }),
+                    children: "Compact line height",
+                  })),
+                (s[9] = x),
+                (s[10] = g),
+                (s[11] = j),
+                (s[12] = o))
+              : (o = s[12]),
+            s[13] !== a || s[14] !== o
+              ? ((c = (0, n.jsxs)(r.l.Group, {
+                  "aria-label": "Format",
+                  selectionVariant: "multiple",
+                  variant: "subtle",
+                  children: [a, o],
+                })),
+                (s[13] = a),
+                (s[14] = o),
+                (s[15] = c))
+              : (c = s[15]),
+            c)
+          : null;
+      }
+      function w() {}
+      function D() {}
+      try {
+        _.displayName || (_.displayName = "DiffLinePresentationToggles");
+      } catch {}
+      function C(e) {
+        let t,
+          i,
+          a,
+          o,
+          c,
+          s,
+          d,
+          f = (0, l.c)(17),
+          { reloadOnChange: m } = e,
+          h = void 0 !== m && m,
+          { data: u } = (0, S.ID)(),
+          p = u?.splitPreference;
+        f[0] === Symbol.for("react.memo_cache_sentinel")
+          ? ((t = { onSuccess: I, onError: N }), (f[0] = t))
+          : (t = f[0]);
+        let { mutate: g } = (0, y.U)(t);
+        f[1] === Symbol.for("react.memo_cache_sentinel")
+          ? ((i = (0, n.jsx)(r.l.GroupHeading, { children: "Layout" })),
+            (f[1] = i))
+          : (i = f[1]);
+        let x = "unified" === p;
+        (f[2] !== h || f[3] !== g
+          ? ((a = () => {
+              (g({ splitPreference: "unified" }),
+                (0, S.bJ)("diff", "unified"),
+                h && window.location.reload());
+            }),
+            (f[2] = h),
+            (f[3] = g),
+            (f[4] = a))
+          : (a = f[4]),
+          f[5] !== x || f[6] !== a
+            ? ((o = (0, n.jsx)(r.l.Item, {
+                selected: x,
+                onSelect: a,
+                children: "Unified",
+              })),
+              (f[5] = x),
+              (f[6] = a),
+              (f[7] = o))
+            : (o = f[7]));
+        let v = "split" === p;
+        return (
+          f[8] !== h || f[9] !== g
+            ? ((c = () => {
+                (g({ splitPreference: "split" }),
+                  (0, S.bJ)("diff", "split"),
+                  h && window.location.reload());
+              }),
+              (f[8] = h),
+              (f[9] = g),
+              (f[10] = c))
+            : (c = f[10]),
+          f[11] !== v || f[12] !== c
+            ? ((s = (0, n.jsx)(r.l.Item, {
+                selected: v,
+                onSelect: c,
+                children: "Split",
+              })),
+              (f[11] = v),
+              (f[12] = c),
+              (f[13] = s))
+            : (s = f[13]),
+          f[14] !== o || f[15] !== s
+            ? ((d = (0, n.jsxs)(r.l.Group, {
+                selectionVariant: "single",
+                children: [i, o, s],
+              })),
+              (f[14] = o),
+              (f[15] = s),
+              (f[16] = d))
+            : (d = f[16]),
+          d
+        );
+      }
+      function N() {}
+      function I() {}
+      try {
+        C.displayName || (C.displayName = "DiffViewPreferenceToggle");
+      } catch {}
+      var E = i(18799);
+      function T() {
+        let e,
+          t,
+          i,
+          a = (0, l.c)(7),
+          { data: o } = (0, S.ID)();
+        a[0] === Symbol.for("react.memo_cache_sentinel")
+          ? ((e = { onSuccess: k, onError: P }), (a[0] = e))
+          : (e = a[0]);
+        let { mutate: c } = (0, y.U)(e);
+        if (!o) return null;
+        let s = o.commentsPreference === E.sI.Collapsed;
+        return (
+          a[1] !== s || a[2] !== c
+            ? ((t = () =>
+                c({ commentsPreference: s ? E.sI.Visible : E.sI.Collapsed })),
+              (a[1] = s),
+              (a[2] = c),
+              (a[3] = t))
+            : (t = a[3]),
+          a[4] !== s || a[5] !== t
+            ? ((i = (0, n.jsx)(r.l.Group, {
+                "aria-label": "Comments",
+                selectionVariant: "single",
+                children: (0, n.jsx)(r.l.Item, {
+                  role: "menuitemcheckbox",
+                  selected: s,
+                  onSelect: t,
+                  children: "Minimize comments",
+                }),
+              })),
+              (a[4] = s),
+              (a[5] = t),
+              (a[6] = i))
+            : (i = a[6]),
+          i
+        );
+      }
+      function P() {}
+      function k() {}
+      try {
+        T.displayName || (T.displayName = "DiffCommentsPreferenceToggle");
+      } catch {}
+      var O = i(30459);
+      let R = ["layout", "comments", "whitespace", "line-spacing"];
+      function F(e) {
+        let t,
+          i,
+          a,
+          o,
+          c,
+          s,
+          d,
+          f,
+          m,
+          h = (0, l.c)(29),
+          {
+            additionalPreferences: u,
+            defaultHideWhitespace: p,
+            enabledDiffViewSettings: y,
+            onUpdateWhitespace: g,
+            reloadOnSplitPreferenceChange: x,
+            reloadOnWhitespaceChange: v,
+          } = e,
+          j = void 0 === y ? R : y,
+          b = void 0 !== x && x,
+          S = void 0 !== v && v;
+        h[0] !== j
+          ? ((t = j.includes("layout") && j.includes("comments")),
+            (h[0] = j),
+            (h[1] = t))
+          : (t = h[1]);
+        let w = t;
+        h[2] !== j
+          ? ((i = j.includes("line-spacing") || j.includes("whitespace")),
+            (h[2] = j),
+            (h[3] = i))
+          : (i = h[3]);
+        let D = i;
+        h[4] !== j || h[5] !== D
+          ? ((a = D && (j.includes("comments") || j.includes("layout"))),
+            (h[4] = j),
+            (h[5] = D),
+            (h[6] = a))
+          : (a = h[6]);
+        let N = a;
+        return (
+          h[7] !== j || h[8] !== b
+            ? ((o =
+                j.includes("layout") && (0, n.jsx)(C, { reloadOnChange: b })),
+              (h[7] = j),
+              (h[8] = b),
+              (h[9] = o))
+            : (o = h[9]),
+          h[10] !== w
+            ? ((c = w && (0, n.jsx)(r.l.Divider, {})), (h[10] = w), (h[11] = c))
+            : (c = h[11]),
+          h[12] !== j
+            ? ((s = j.includes("comments") && (0, n.jsx)(T, {})),
+              (h[12] = j),
+              (h[13] = s))
+            : (s = h[13]),
+          h[14] !== N
+            ? ((d = N && (0, n.jsx)(r.l.Divider, {})), (h[14] = N), (h[15] = d))
+            : (d = h[15]),
+          h[16] !== p ||
+          h[17] !== j ||
+          h[18] !== g ||
+          h[19] !== S ||
+          h[20] !== D
+            ? ((f = D
+                ? (0, n.jsx)(n.Fragment, {
+                    children: (0, n.jsx)(_, {
+                      defaultHideWhitespace: p,
+                      lineSpacingPreferenceAvailable:
+                        j.includes("line-spacing"),
+                      whitespacePreferenceAvailable: j.includes("whitespace"),
+                      onUpdateWhitespace: g,
+                      reloadOnChange: S ? $ : void 0,
+                    }),
+                  })
+                : null),
+              (h[16] = p),
+              (h[17] = j),
+              (h[18] = g),
+              (h[19] = S),
+              (h[20] = D),
+              (h[21] = f))
+            : (f = h[21]),
+          h[22] !== u ||
+          h[23] !== d ||
+          h[24] !== f ||
+          h[25] !== o ||
+          h[26] !== c ||
+          h[27] !== s
+            ? ((m = (0, n.jsxs)(n.Fragment, { children: [o, c, s, d, f, u] })),
+              (h[22] = u),
+              (h[23] = d),
+              (h[24] = f),
+              (h[25] = o),
+              (h[26] = c),
+              (h[27] = s),
+              (h[28] = m))
+            : (m = h[28]),
+          m
+        );
+      }
+      function $() {
+        return window.location.reload();
+      }
+      function G(e) {
+        let t,
+          i,
+          s,
+          d,
+          f,
+          m,
+          h = (0, l.c)(21),
+          {
+            additionalPreferences: u,
+            invisible: p,
+            defaultHideWhitespace: y,
+            enabledDiffViewSettings: g,
+            onUpdateWhitespace: x,
+            reloadOnSplitPreferenceChange: j,
+            reloadOnWhitespaceChange: b,
+            small: S,
+            userNotices: _,
+          } = e,
+          w = void 0 === g ? R : g,
+          D = void 0 !== j && j,
+          C = void 0 !== b && b,
+          { sendAnalyticsEvent: N } = (0, O.s)();
+        h[0] !== N
+          ? ((t = () => {
+              N("diff_view.settings.open", "DIFF_VIEW_SETTINGS_BUTTON");
+            }),
+            (h[0] = N),
+            (h[1] = t))
+          : (t = h[1]);
+        let I = t,
+          E = S ? "small" : "medium",
+          T = void 0 === p || p ? "invisible" : "default";
+        return (
+          h[2] !== I || h[3] !== E || h[4] !== T
+            ? ((i = (0, n.jsx)(o.W.Anchor, {
+                children: (0, n.jsx)(c.K, {
+                  "aria-label": "Open diff view settings",
+                  icon: a.GearIcon,
+                  size: E,
+                  variant: T,
+                  onClick: I,
+                }),
+              })),
+              (h[2] = I),
+              (h[3] = E),
+              (h[4] = T),
+              (h[5] = i))
+            : (i = h[5]),
+          h[6] !== u ||
+          h[7] !== y ||
+          h[8] !== w ||
+          h[9] !== x ||
+          h[10] !== D ||
+          h[11] !== C
+            ? ((s = (0, n.jsx)(o.W.Overlay, {
+                children: (0, n.jsx)(r.l, {
+                  children: (0, n.jsx)(F, {
+                    additionalPreferences: u,
+                    defaultHideWhitespace: y,
+                    enabledDiffViewSettings: w,
+                    onUpdateWhitespace: x,
+                    reloadOnSplitPreferenceChange: D,
+                    reloadOnWhitespaceChange: C,
+                  }),
+                }),
+              })),
+              (h[6] = u),
+              (h[7] = y),
+              (h[8] = w),
+              (h[9] = x),
+              (h[10] = D),
+              (h[11] = C),
+              (h[12] = s))
+            : (s = h[12]),
+          h[13] !== i || h[14] !== s
+            ? ((d = (0, n.jsxs)(o.W, { children: [i, s] })),
+              (h[13] = i),
+              (h[14] = s),
+              (h[15] = d))
+            : (d = h[15]),
+          h[16] !== _
+            ? ((f = (0, n.jsx)(v, { userNotices: _ })),
+              (h[16] = _),
+              (h[17] = f))
+            : (f = h[17]),
+          h[18] !== d || h[19] !== f
+            ? ((m = (0, n.jsxs)(n.Fragment, { children: [d, f] })),
+              (h[18] = d),
+              (h[19] = f),
+              (h[20] = m))
+            : (m = h[20]),
+          m
+        );
+      }
+      try {
+        F.displayName || (F.displayName = "DiffViewSettingsMenuContent");
+      } catch {}
+      try {
+        G.displayName || (G.displayName = "DiffViewSettings");
+      } catch {}
+    },
+    70719: (e, t, i) => {
+      i.d(t, { U: () => s });
+      var n = i(21728),
+        l = i(96379),
+        a = i(97665),
+        r = i(94747),
+        o = i(79472),
+        c = i(21067);
+      function s(e) {
+        let t,
+          i,
+          l,
+          c,
+          s = (0, n.c)(10),
+          { onSuccess: f, onError: m } = e,
+          h = (0, a.jE)();
+        return (
+          s[0] !== h
+            ? ((t = async (e) => {
+                h.setQueryData((0, o.w$)(), (t) => ({ ...t, ...e }));
+              }),
+              (s[0] = h),
+              (s[1] = t))
+            : (t = s[1]),
+          s[2] !== f
+            ? ((i = () => {
+                f();
+              }),
+              (s[2] = f),
+              (s[3] = i))
+            : (i = s[3]),
+          s[4] !== m
+            ? ((l = (e) => {
+                m(e);
+              }),
+              (s[4] = m),
+              (s[5] = l))
+            : (l = s[5]),
+          s[6] !== t || s[7] !== i || s[8] !== l
+            ? ((c = { mutationFn: d, onMutate: t, onSuccess: i, onError: l }),
+              (s[6] = t),
+              (s[7] = i),
+              (s[8] = l),
+              (s[9] = c))
+            : (c = s[9]),
+          (0, r.n)(c)
+        );
+      }
+      async function d(e) {
+        let { commentsPreference: t, lineSpacing: i, splitPreference: n } = e;
+        if (!(0, c.M3)()) return;
+        let a = {};
+        (t && (a = { ...a, commentsPreference: t }),
+          i && (a = { ...a, lineSpacing: i }),
+          n && (a = { ...a, diff: n }));
+        let r = await (0, l.Sr)("/users/diffview", {
+            method: "POST",
+            headers: { Accept: "application/json" },
+            body: a,
+          }),
+          o = await r.json();
+        if (r.ok) return o;
+        throw Error(o.error || "Unknown error occurred", { cause: r.status });
+      }
+    },
+    70843: (e, t, i) => {
+      i.d(t, { L: () => l });
+      var n = i(96540);
+      function l(e) {
+        (0, n.useEffect)(() => {
+          if (!e) return;
+          let t = document.querySelector(".footer");
+          if (t)
+            return (
+              (t.hidden = !0),
+              () => {
+                t.hidden = !1;
+              }
+            );
+        }, [e]);
+      }
+    },
+    71833: (e, t, i) => {
+      i.d(t, { B: () => a });
+      var n = i(25407),
+        l = i(96379);
+      async function a(e, t) {
+        if (!t) return;
+        let i = new FormData();
+        (i.set("file_tree_visible", e ? "true" : "false"),
+          (0, l.DI)((0, n.h6D)(t), {
+            method: "PUT",
+            body: i,
+            headers: { Accept: "application/json" },
+          }));
+      }
+    },
+    78252: (e, t, i) => {
+      i.d(t, { $: () => o });
+      var n = i(74848),
+        l = i(38621),
+        a = i(5524),
+        r = i(34720);
+      let o = (e) =>
+        (0, n.jsxs)(n.Fragment, {
+          children: [
+            (0, n.jsx)(a.l.Divider, {}),
+            (0, n.jsx)(r.t, {
+              eventContext: { prx: !0 },
+              leadingVisual: (0, n.jsx)(l.CopilotIcon, {}),
+              fileDiffReference: e.copilotChatReference,
+            }),
+          ],
+        });
+      try {
+        o.displayName ||
+          (o.displayName = "CopilotDiffChatBlobActionsMenuItems");
+      } catch {}
+    },
+    81355: (e, t, i) => {
+      i.d(t, { U: () => o });
+      var n = i(21728),
+        l = i(96540),
+        a = i(61583),
+        r = i(71315);
+      function o() {
+        let e,
+          t,
+          i,
+          o,
+          c = (0, n.c)(6),
+          [s, d] = (0, l.useState)("");
+        c[0] === Symbol.for("react.memo_cache_sentinel")
+          ? ((e = () => {
+              d(((0, a.pd)(r.fV.hash ?? "") ?? "").replace("diff-", ""));
+            }),
+            (c[0] = e))
+          : (e = c[0]);
+        let f = e;
+        (c[1] === Symbol.for("react.memo_cache_sentinel")
+          ? ((t = () => (
+              window.addEventListener("hashchange", f),
+              f(),
+              () => {
+                window.removeEventListener("hashchange", f);
+              }
+            )),
+            (i = [f]),
+            (c[1] = t),
+            (c[2] = i))
+          : ((t = c[1]), (i = c[2])),
+          (0, l.useEffect)(t, i));
+        let m = s ? `diff-${s}` : "";
+        return (
+          c[3] !== s || c[4] !== m
+            ? ((o = {
+                selectedPathDigest: s,
+                selectedFullDiffHash: m,
+                setSelectedHash: d,
+              }),
+              (c[3] = s),
+              (c[4] = m),
+              (c[5] = o))
+            : (o = c[5]),
+          o
+        );
+      }
+    },
+  },
+]);
 //# sourceMappingURL=30141-b07092d4f5aa.js.map
