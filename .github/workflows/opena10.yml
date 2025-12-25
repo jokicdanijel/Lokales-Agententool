@@ -4,13 +4,13 @@ on:
   push:
     branches: [ main, develop ]
     paths:
-      - '7.opena10_whatsapp/**'
+      - '9.opena10_call_tracking/**'
       - 'dist/opena10/**'
       - '.github/workflows/opena10.yml'
   pull_request:
     branches: [ main ]
     paths:
-      - '7.opena10_whatsapp/**'
+      - '9.opena10_call_tracking/**'
       - '.github/workflows/opena10.yml'
 
 concurrency:
@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  APP_DIR: 7.opena10_whatsapp
+  APP_DIR: 9.opena10_call_tracking
   DIST_DIR: dist/opena10
   PORT: "12355"
   SERVICE_NAME: opena10
