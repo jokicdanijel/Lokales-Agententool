@@ -1,10 +1,20 @@
+minimum_pre_commit_version: "3.5.0"
+fail_fast: false
+
+# pre-commit runs against staged files by default (surgical)
+default_stages: [pre-commit]
+
+# Global excludes (runtime/build/venv/node etc.)
+exclude: |
+  (?x)^(archivp_store/|dist/|build/|coverage/|\.venv/|venv/|node_modules/|\.pytest_cache/|\.mypy_cache/|\.ruff_cache/|\.tox/|\.git/|.*\.min\.(js|css)$|.*\.lock$)
+
 repos:
   # YAML validation
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
       - id: check-yaml
-        args: ['--unsafe']
+        args: ["--unsafe"]
       - id: check-json
       - id: check-toml
       - id: end-of-file-fixer
@@ -17,7 +27,7 @@ repos:
     rev: 5.12.0
     hooks:
       - id: isort
-        args: ['--profile', 'black', '--line-length', '120']
+        args: ["--profile", "black", "--line-length", "120"]
 
   # Black (code formatting)
   - repo: https://github.com/psf/black
@@ -25,32 +35,34 @@ repos:
     hooks:
       - id: black
         language_version: python3.12
-        args: ['--line-length', '120']
+        args: ["--line-length", "120"]
 
   # Ruff (fast linting)
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.6.8
+    rev: v0.6.9
     hooks:
       - id: ruff
-        args: [--fix, --line-length=120]
+        args: ["--fix"]
+        files: \.py$
       - id: ruff-format
+        files: \.py$
 
   # Flake8 (additional linting)
   - repo: https://github.com/PyCQA/flake8
     rev: 6.0.0
     hooks:
       - id: flake8
-        args: ['--max-line-length=120', '--extend-ignore=E203,W503,E501']
-        stages: [manual]  # Run manually if needed
+        args: ["--max-line-length=120", "--extend-ignore=E203,W503,E501"]
+        stages: [manual] # Run manually if needed
 
   # MyPy (type checking)
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.11.2
     hooks:
       - id: mypy
-        additional_dependencies: ['pydantic', 'fastapi', 'httpx']
+        additional_dependencies: ["pydantic", "fastapi", "httpx"]
         args: ["--ignore-missing-imports", "--no-error-summary"]
-        stages: [manual]  # Run manually if needed
+        stages: [manual] # Run manually if needed
 
   # Local Portier Policy Check
   - repo: local
@@ -60,4 +72,28 @@ repos:
         entry: bash 1.portier_openai/skripte/validate_portier.sh
         language: system
         pass_filenames: false
+        stages: [manual]
+
+  # Actionlint for GitHub workflows (lint only, no reformat)
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.7
+    hooks:
+      - id: actionlint
+        files: ^\.github/workflows/.*\.(yml|yaml)$
+
+  # Prettier for frontend/tooling files (explicitly exclude workflows)
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        files: \.(md|json|yaml|yml|css|js|jsx|ts|tsx)$
+        exclude: ^(\.github/workflows/|archivp_store/)
+
+  # detect-secrets baseline scan
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ["--baseline", ".secrets.baseline"]
+        exclude: ^(archivp_store/|tests/fixtures/)
         stages: [manual]
