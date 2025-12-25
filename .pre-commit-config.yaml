@@ -1,5 +1,5 @@
 default_language_version:
-  python: python3
+  python: python3.12
 
 default_stages: [pre-commit]
 
@@ -42,18 +42,18 @@ repos:
     hooks:
       - id: policy-port-range
         name: "policy: forbid 8080 & enforce host ports 12344-12399"
-        entry: python3 scripts/policy/ports.py
+        entry: python3.12 scripts/policy/ports.py
         language: system
         pass_filenames: false
 
       - id: policy-html-only
         name: "policy: HTML-only (no JS/CSS) for app pages"
-        entry: python3 scripts/policy/html_only.py
+        entry: python3.12 scripts/policy/html_only.py
         language: system
         pass_filenames: false
 
       - id: policy-no-agent-ports-in-ui
         name: "policy: UI must not link to agent ports"
-        entry: python3 scripts/policy/no_agent_ports_in_ui.py
+        entry: python3.12 scripts/policy/no_agent_ports_in_ui.py
         language: system
         pass_filenames: false
