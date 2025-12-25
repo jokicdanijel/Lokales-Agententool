@@ -1,4 +1,4 @@
-.PHONY: venv deps dry apply verify release archive clean scan clean-map help
+.PHONY: venv deps test test-verbose test-fast coverage dry apply verify release archive clean scan clean-map help
 
 # Colors
 BOLD = \033[1m
@@ -25,6 +25,12 @@ help:
 	@echo "  $(GREEN)make verify$(RESET)         - Verify consistency (git, secrets, path_index)"
 	@echo "  $(GREEN)make release$(RESET)        - Create GitHub release with artifacts"
 	@echo "  $(GREEN)make archive$(RESET)        - Sync backups to local archive"
+	@echo ""
+	@echo "$(BOLD)Testing Targets:$(RESET)"
+	@echo "  $(GREEN)make test$(RESET)           - Run tests with coverage (85% threshold)"
+	@echo "  $(GREEN)make test-verbose$(RESET)   - Run tests with verbose output"
+	@echo "  $(GREEN)make test-fast$(RESET)      - Run tests without coverage"
+	@echo "  $(GREEN)make coverage$(RESET)       - Generate coverage report (HTML)"
 	@echo ""
 	@echo "$(BOLD)Scanner Targets:$(RESET)"
 	@echo "  $(GREEN)make scan$(RESET)           - Run project scan → project_map/ (ChatGPT-ready)"
@@ -145,6 +151,29 @@ clean-map:
 	@echo "$(YELLOW)[CLEAN]$(RESET) Removing $(OUT)/"
 	@rm -rf $(OUT)
 	@echo "$(GREEN)✅ Done$(RESET)"
+
+# ========== TESTING TARGETS ==========
+
+test: deps
+	@echo "$(YELLOW)[test]$(RESET) Running tests with coverage (85% threshold)..."
+	@bash scripts/run_tests.sh -v
+	@echo "$(GREEN)✅ Tests complete$(RESET)"
+
+test-verbose: deps
+	@echo "$(YELLOW)[test-verbose]$(RESET) Running tests with verbose output..."
+	@bash scripts/run_tests.sh -vv
+	@echo "$(GREEN)✅ Tests complete$(RESET)"
+
+test-fast: deps
+	@echo "$(YELLOW)[test-fast]$(RESET) Running tests without coverage..."
+	@bash scripts/run_tests.sh --no-cov -v
+	@echo "$(GREEN)✅ Tests complete$(RESET)"
+
+coverage: deps
+	@echo "$(YELLOW)[coverage]$(RESET) Generating coverage report..."
+	@bash scripts/run_tests.sh --cov-report=html --cov-report=term
+	@echo "$(GREEN)✅ Coverage report generated: htmlcov/index.html$(RESET)"
+	@echo "$(YELLOW)Open htmlcov/index.html in your browser to view the report$(RESET)"
 
 # ========== EVALUATION TARGETS ==========
 
