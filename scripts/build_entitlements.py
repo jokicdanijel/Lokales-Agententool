@@ -222,7 +222,14 @@ class EntitlementsBuilder:
             for i, item in enumerate(items):
                 if not isinstance(item, dict):
                     raise TypeError(f"services[{i}] must be object, got {type(item).__name__}")
-                key = item.get("service_name") or item.get("container_name") or item.get("image") or f"service_{i}"
+                # prefer explicit agent_id or service_name
+                key = (
+                    item.get("agent_id")
+                    or item.get("service_name")
+                    or item.get("container_name")
+                    or item.get("image")
+                    or f"service_{i}"
+                )
                 if key in out:
                     key = f"{key}__{i}"
                 out[key] = item
@@ -233,6 +240,12 @@ class EntitlementsBuilder:
             services = raw["services"]
             self.inventory = {**raw}
             self.inventory["agents"] = list_to_dict(services)
+            return
+
+        # Case: raw is dict with 'agents' list
+        if isinstance(raw, dict) and "agents" in raw and isinstance(raw["agents"], list):
+            self.inventory = {**raw}
+            self.inventory["agents"] = list_to_dict(raw["agents"])
             return
 
         # Case: raw is list of services
