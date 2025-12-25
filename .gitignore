@@ -201,3 +201,7 @@ venv/
 
 # node
 node_modules/
+
+# Vendor / local envs
+open-webui-0.6.40/
+.venv-precommit/

@@ -6,7 +6,7 @@ default_stages: [pre-commit]
 fail_fast: true
 
 exclude: |
-  (?x)^(archivp_store/|\.venv/|venv/|dist/|build/|.*\.min\.(js|css)$)
+  (?x)^(archivp_store/|\.venv/|\.venv-precommit/|venv/|dist/|build/|open-webui-0\.6\.40/|.*\.min\.(js|css)$)
 
 repos:
   # Basic hygiene (fast, staged files only)
@@ -36,6 +36,13 @@ repos:
     hooks:
       - id: actionlint
         files: ^\.github/workflows/.*\.(ya?ml)$
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets-hook
+        args: ["--baseline", ".secrets.baseline"]
+        stages: [manual]
 
   # Local policy gates (system hooks) - run on staged content
   - repo: local
