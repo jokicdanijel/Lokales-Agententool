@@ -138,6 +138,7 @@ jobs:
 
       - name: Post PR comment
         uses: actions/github-script@v7
+        continue-on-error: true
         with:
           script: |
             github.rest.issues.createComment({
