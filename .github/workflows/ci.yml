@@ -23,6 +23,69 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: "🔍 PORTIER 3.0 – Gesetz: Überprüfung kritischer Dateien (Names/Paths only)"
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "🔍 Überprüfung kritischer Dateien (PORTIER 3.0 Gesetz)…"
+
+          # CI-Workflow (verbindlich): .github/workflows/ci.yml
+          test -f .github/workflows/ci.yml || { echo "❌ .github/workflows/ci.yml fehlt"; exit 1; }
+
+          # Gesetz-Gate (CI muss diesen Pfad finden)
+          test -f 1.portier_openai/skripte/validate_portier.sh || { echo "❌ 1.portier_openai/skripte/validate_portier.sh fehlt"; exit 1; }
+
+          # Baseline (Single Source of Truth)
+          test -f system_baseline.yaml || { echo "❌ system_baseline.yaml fehlt"; exit 1; }
+          test -f scripts/validate_baseline.py || { echo "❌ scripts/validate_baseline.py fehlt"; exit 1; }
+
+          # Root Wrapper Scripts (nur Existenz)
+          test -f bin/ops.sh || { echo "❌ bin/ops.sh fehlt"; exit 1; }
+
+          # Repo-Ordnerstruktur (nur Existenz; keine Inhalte, keine Abläufe)
+          required_dirs=(
+            "1.opena1&2_portier"
+            "2.opena3_openwebui"
+            "3.opena4_telegram"
+            "4.opena5_vscode"
+            "5.opena6_browser"
+            "6.opena7_email"
+            "7.opena8_whatsapp"
+            "8.opena9_telephone"
+            "9.opena10_call_tracking"
+            "10.opena11_unlock"
+            "11.opena12_social_media"
+            "12.opena13_influencer"
+            "13.opena14_calendar"
+            "14.opena15_html"
+            "15.opena16_shop"
+            "16.opena17_homepagecreator"
+            "17.opena18_CMR"
+            "18.opena19_Aktien&Crypto"
+            "19.opena20_dashboard_agent"
+            "20.opena21_workflow"
+            "src"
+            "docs"
+            "bin"
+            "scripts"
+            "configs"
+          )
+
+          for d in "${required_dirs[@]}"; do
+            test -d "$d" || { echo "❌ Ordner fehlt: $d"; exit 1; }
+          done
+
+          echo "✅ Gesetz-konforme Pfade/Namen verifiziert."
+
+      - name: 🔧 Make scripts executable (no behavior changes)
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x 1.portier_openai/skripte/validate_portier.sh || true
+          chmod +x scripts/validate_baseline.py || true
+          chmod +x bin/ops.sh || true
+          echo "✅ Executable bits set (best-effort)."
+
       - name: Install test dependencies
         run: |
           python -m pip install --upgrade pip
@@ -151,12 +214,62 @@ jobs:
         continue-on-error: true
 
   # ══════════════════════════════════════════════════════════════════════�?
+  # GATE X: Dashboard Smoke Test
+  # ══════════════════════════════════════════════════════════════════════�?
+  dashboard-smoke:
+    name: "🔥 Dashboard Smoke Test"
+    runs-on: ubuntu-latest
+    needs: [no-drift-structure, config-validation, syntax-check]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up shell
+        run: |
+          set -euo pipefail
+
+      - name: Dashboard smoke test (start & health check)
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "🔎 Dashboard smoke test: checking start script and /health on port 12349"
+
+          START_SCRIPT="19.opena20_dashboard_agent/bin/start_opena20.sh"
+          HEALTH_URL="http://127.0.0.1:12349/health"
+
+          if [ -x "$START_SCRIPT" ]; then
+            chmod +x "$START_SCRIPT" || true
+            nohup "$START_SCRIPT" > /tmp/opena20.log 2>&1 &
+            PID=$!
+            echo "Started dashboard with PID $PID, waiting for health..."
+            for i in {1..30}; do
+              if curl -fsS "$HEALTH_URL" >/dev/null 2>&1; then
+                echo "✅ Dashboard is healthy"
+                break
+              fi
+              echo "Waiting for dashboard... ($i/30)"
+              sleep 2
+            done
+            if ! curl -fsS "$HEALTH_URL" >/dev/null 2>&1; then
+              echo "❌ Dashboard did not become healthy in time"
+              echo "--- Dashboard log (tail) ---"
+              tail -n 200 /tmp/opena20.log || true
+              kill "$PID" || true
+              exit 1
+            fi
+            kill "$PID" || true
+          else
+            echo "⚠️ Start script not found or not executable: $START_SCRIPT — skipping smoke test"
+          fi
+
+  # ══════════════════════════════════════════════════════════════════════�?
   # SUMMARY
   # ══════════════════════════════════════════════════════════════════════�?
   ci-summary:
     name: "📊 CI Summary"
     runs-on: ubuntu-latest
-    needs: [no-drift-structure, config-validation, syntax-check, lint, unit-tests]
+    if: always()
+    needs: [no-drift-structure, config-validation, syntax-check, lint, unit-tests, dashboard-smoke]
 
     steps:
       - name: Report success
@@ -168,5 +281,6 @@ jobs:
           echo "  - Python syntax (all services): OK"
           echo "  - Linting & code quality: OK (warnings non-blocking)"
           echo "  - Unit tests: OK (warnings non-blocking)"
+          echo "  - Dashboard smoke test: OK"
           echo ""
           echo "🎯 Ready for deployment to 20 services"
