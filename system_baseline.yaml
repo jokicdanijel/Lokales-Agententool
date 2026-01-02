@@ -1,332 +1,257 @@
-agents_list:
-- id: opena1
-  port: 12345
-  role: coordinator
-  folder_path: agents/opena1
-  visibility: core
-  description: Core coordinator agent
-- id: opena2
-  port: 12346
-  role: coordinator
-  folder_path: agents/opena2
-  visibility: core
-  description: Core system agent
-- id: opena3
-  port: 12347
-  role: agent
-  folder_path: agents/opena3
-  visibility: subscription
-  description: Subscribed agent 3
-- id: opena4
-  port: 12348
-  role: agent
-  folder_path: agents/opena4
-  visibility: subscription
-  description: Subscribed agent 4
-- id: opena5
-  port: 12349
-  role: agent
-  folder_path: agents/opena5
-  visibility: subscription
-  description: Subscribed agent 5
-- id: opena6
-  port: 12350
-  role: agent
-  folder_path: agents/opena6
-  visibility: subscription
-  description: Subscribed agent 6
-- id: opena7
-  port: 12351
-  role: agent
-  folder_path: agents/opena7
-  visibility: subscription
-  description: Subscribed agent 7
-- id: opena8
-  port: 12352
-  role: agent
-  folder_path: agents/opena8
-  visibility: subscription
-  description: Subscribed agent 8
-- id: opena9
-  port: 12353
-  role: agent
-  folder_path: agents/opena9
-  visibility: subscription
-  description: Subscribed agent 9
-- id: opena10
-  port: 12354
-  role: agent
-  folder_path: agents/opena10
-  visibility: subscription
-  description: Subscribed agent 10
-- id: opena11
-  port: 12355
-  role: agent
-  folder_path: agents/opena11
-  visibility: subscription
-  description: Subscribed agent 11
-- id: opena12
-  port: 12356
-  role: agent
-  folder_path: agents/opena12
-  visibility: subscription
-  description: Subscribed agent 12
-- id: opena13
-  port: 12357
-  role: agent
-  folder_path: agents/opena13
-  visibility: subscription
-  description: Subscribed agent 13
-- id: opena14
-  port: 12358
-  role: agent
-  folder_path: agents/opena14
-  visibility: subscription
-  description: Subscribed agent 14
-- id: opena15
-  port: 12359
-  role: agent
-  folder_path: agents/opena15
-  visibility: subscription
-  description: Subscribed agent 15
-- id: opena16
-  port: 12360
-  role: agent
-  folder_path: agents/opena16
-  visibility: subscription
-  description: Subscribed agent 16
-- id: opena17
-  port: 12361
-  role: agent
-  folder_path: agents/opena17
-  visibility: subscription
-  description: Subscribed agent 17
-- id: opena18
-  port: 12362
-  role: agent
-  folder_path: agents/opena18
-  visibility: subscription
-  description: Subscribed agent 18
-- id: opena19
-  port: 12363
-  role: agent
-  folder_path: agents/opena19
-  visibility: subscription
-  description: Subscribed agent 19
-- id: opena20
-  port: 12364
-  role: system
-  folder_path: agents/opena20
-  visibility: system
-  description: System agent 20
-- id: opena21
-  port: 12365
-  role: system
-  folder_path: agents/opena21
-  visibility: system
-  description: System agent 21
+# ============================================================================
+# PORTIER 3.0 | System Baseline (Single Source of Truth)
+# - IDs sind exakt: opena1..opena21 (keine Aliase)
+# - Ports sind fix; Abweichung = FAIL
+# - Jeder Agent hat Frontend+Backend (UI kann minimal sein)
+# - Port-Policy: allow_range 12344-12399, forbidden 8080
+# - Domain-Policy: primary_domain = hyperdashboard-one.de/policy
+# ============================================================================
 
-
-core_agents:
-- opena1
-- opena2
-
-system_agents:
-- opena20
-- opena21
-
-port_policy:
-  allowed_range: "12344-12399"
-  forbidden_ports:
-  - 8080
-  no_deviations: "All ports must be within the allowed_range 12344-12399. Deviations cause CI failure."
+baseline:
+  name: "PORTIER 3.0"
+  version: "1.0.0"
+  generated_at_utc: "2026-01-02T00:00:00Z"
+  repo_root_hint: "Gesamtprojekt"
+  authority: "system_baseline.yaml"
 
 domain_policy:
-  primary_domain: hyperdashboard-one.de
-version: 1.0.0
-generated_at: '2025-12-23T02:00:37.053307'
-agents:
-  opena1:
-    id: opena1
-    name: Agent 1
-    port: 12344
-    role: service
-    visibility: public
-  opena2:
-    id: opena2
-    name: Agent 2
-    port: 12345
-    role: service
-    visibility: public
-  opena3:
-    id: opena3
-    name: Agent 3
-    port: 12346
-    role: service
-    visibility: public
-  opena4:
-    id: opena4
-    name: Agent 4
-    port: 12347
-    role: service
-    visibility: public
-  opena5:
-    id: opena5
-    name: Agent 5
-    port: 12348
-    role: service
-    visibility: public
-  opena6:
-    id: opena6
-    name: Agent 6
-    port: 12349
-    role: service
-    visibility: public
-  opena7:
-    id: opena7
-    name: Agent 7
-    port: 12350
-    role: service
-    visibility: public
-  opena8:
-    id: opena8
-    name: Agent 8
-    port: 12351
-    role: service
-    visibility: public
-  opena9:
-    id: opena9
-    name: Agent 9
-    port: 12352
-    role: service
-    visibility: public
-  opena10:
-    id: opena10
-    name: Agent 10
-    port: 12353
-    role: service
-    visibility: public
-  opena11:
-    id: opena11
-    name: Agent 11
-    port: 12354
-    role: service
-    visibility: public
-  opena12:
-    id: opena12
-    name: Agent 12
-    port: 12355
-    role: service
-    visibility: public
-  opena13:
-    id: opena13
-    name: Agent 13
-    port: 12356
-    role: service
-    visibility: public
-  opena14:
-    id: opena14
-    name: Agent 14
-    port: 12357
-    role: service
-    visibility: public
-  opena15:
-    id: opena15
-    name: Agent 15
-    port: 12358
-    role: service
-    visibility: public
-  opena16:
-    id: opena16
-    name: Agent 16
-    port: 12359
-    role: service
-    visibility: public
-  opena17:
-    id: opena17
-    name: Agent 17
-    port: 12360
-    role: service
-    visibility: public
-  opena18:
-    id: opena18
-    name: Agent 18
-    port: 12361
-    role: service
-    visibility: public
-  opena19:
-    id: opena19
-    name: Agent 19
-    port: 12362
-    role: service
-    visibility: public
-  opena20:
-    id: opena20
-    name: Agent 20
-    port: 12363
-    role: service
-    visibility: system
-  opena21:
-    id: opena21
-    name: Agent 21
-    port: 12364
-    role: service
-    visibility: system
+  primary_domain: "hyperdashboard-one.de/policy"
+  public_domain: "www.hyperdashboard-one.de"
+
+port_policy:
+  allow_range:
+    min: 12344
+    max: 12399
+  forbidden_ports:
+    - 8080
+  rule_text: >
+    Ports müssen innerhalb 12344–12399 liegen.
+    Port 8080 ist verboten.
+    Ports sind eindeutig. Keine Abweichungen und keine Doppelnutzung.
+
 plans:
+  core:
+    - "opena1"
+    - "opena2"
+  system:
+    - "opena20"
+    - "opena21"
   basic:
-    name: Basic Plan
-    description: Communication essentials
-    agents:
-    - opena3
-    - opena4
-    - opena7
-    - opena11
+    - "opena3"
+    - "opena4"
+    - "opena7"
+    - "opena11"
   pro:
-    name: Pro Plan
-    description: Business tools + CRM
-    agents:
-    - opena3
-    - opena4
-    - opena7
-    - opena8
-    - opena11
-    - opena12
-    - opena14
-    - opena18
+    - "opena8"
+    - "opena12"
+    - "opena14"
+    - "opena18"
   premium:
-    name: Premium Plan
-    description: Automation + E-Commerce
-    agents:
-    - opena3
-    - opena4
-    - opena6
-    - opena7
-    - opena8
-    - opena9
-    - opena11
-    - opena12
-    - opena14
-    - opena15
-    - opena16
-    - opena18
+    - "opena6"
+    - "opena9"
+    - "opena15"
+    - "opena16"
   ultimum:
-    name: Ultimum Plan
-    description: Enterprise features + Finance
-    agents:
-    - opena3
-    - opena4
-    - opena5
-    - opena6
-    - opena7
-    - opena8
-    - opena9
-    - opena10
-    - opena11
-    - opena12
-    - opena13
-    - opena14
-    - opena15
-    - opena16
-    - opena17
-    - opena18
-    - opena19
+    - "opena5"
+    - "opena10"
+    - "opena13"
+    - "opena17"
+    - "opena19"
+
+core_agents:
+  - "opena1"
+  - "opena2"
+
+system_agents:
+  - "opena20"
+  - "opena21"
+
+agents:
+  - id: "opena1"
+    port: 12344
+    name: "Koordinator"
+    role: "Routing, Service Discovery"
+    plan: "core"
+    visibility: "core"
+    folder_path: "1.opena1&2_portier"
+    description: "Zentrale Koordination, Dispatch, Entscheidungslogik"
+
+  - id: "opena2"
+    port: 12345
+    name: "Archivar"
+    role: "Protokollierung, Audit Trail"
+    plan: "core"
+    visibility: "core"
+    folder_path: "1.opena1&2_portier"
+    description: "Safepoints CMD/RESP, Audit-Storage-Integration"
+
+  - id: "opena3"
+    port: 12347
+    name: "OpenWebUI"
+    role: "Chat-Schnittstelle"
+    plan: "basic"
+    visibility: "subscription"
+    folder_path: "2.opena3_openwebui"
+    description: "Terminal-/Chat-UI Agent Wrapper + Adapter"
+
+  - id: "opena4"
+    port: 12346
+    name: "Telegramm"
+    role: "Telegram Bot"
+    plan: "basic"
+    visibility: "subscription"
+    folder_path: "3.opena4_telegram"
+    description: "Telegram Bot, Webhook/Send/Receive"
+
+  - id: "opena5"
+    port: 12365
+    name: "VSCode"
+    role: "Code Integration"
+    plan: "ultimum"
+    visibility: "subscription"
+    folder_path: "4.opena5_vscode"
+    description: "Editor/IDE-Bridge, Code-Assist, Repo-Integration"
+
+  - id: "opena6"
+    port: 12351
+    name: "Browser"
+    role: "Browser Automation"
+    plan: "premium"
+    visibility: "subscription"
+    folder_path: "5.opena6_browser"
+    description: "Browser-Automation (z.B. Selenium/Playwright)"
+
+  - id: "opena7"
+    port: 12350
+    name: "E-Mail"
+    role: "SMTP/IMAP"
+    plan: "basic"
+    visibility: "subscription"
+    folder_path: "6.opena7_email"
+    description: "Mail-Client Agent"
+
+  - id: "opena8"
+    port: 12353
+    name: "WhatsApp"
+    role: "WhatsApp Business API"
+    plan: "pro"
+    visibility: "subscription"
+    folder_path: "7.opena8_whatsapp"
+    description: "WhatsApp Automation + Workflows (UI/Backend)"
+
+  - id: "opena9"
+    port: 12354
+    name: "Telefon"
+    role: "VoIP, Transkription"
+    plan: "premium"
+    visibility: "subscription"
+    folder_path: "8.opena9_telephone"
+    description: "Telefonie Agent, Calls, Transkription"
+
+  - id: "opena10"
+    port: 12355
+    name: "Anrufverfolgung"
+    role: "Analytik"
+    plan: "ultimum"
+    visibility: "subscription"
+    folder_path: "9.opena10_call_tracking"
+    description: "Call Tracking, Metriken, Reporting"
+
+  - id: "opena11"
+    port: 12356
+    name: "Zutrittskontrolle"
+    role: "Auth, Berechtigungen"
+    plan: "basic"
+    visibility: "subscription"
+    folder_path: "10.opena11_unlock"
+    description: "AuthN/AuthZ, Entitlements, Tokens"
+
+  - id: "opena12"
+    port: 12357
+    name: "Soziale Medien"
+    role: "Twitter/LinkedIn"
+    plan: "pro"
+    visibility: "subscription"
+    folder_path: "11.opena12_social_media"
+    description: "Posting, Scheduling, Social APIs"
+
+  - id: "opena13"
+    port: 12358
+    name: "Influencer"
+    role: "Kampagne Mgmt"
+    plan: "ultimum"
+    visibility: "subscription"
+    folder_path: "12.opena13_influencer"
+    description: "Influencer-Kampagnen, Tracking, Workflows"
+
+  - id: "opena14"
+    port: 12359
+    name: "Kalender"
+    role: "Kalender-Integration"
+    plan: "pro"
+    visibility: "subscription"
+    folder_path: "13.opena14_calendar"
+    description: "Calendar Agent (Google/ICS), Termine"
+
+  - id: "opena15"
+    port: 12360
+    name: "HTML-Generator"
+    role: "Dynamische HTML"
+    plan: "premium"
+    visibility: "subscription"
+    folder_path: "14.opena15_html"
+    description: "HTML Generator, Templates, Export"
+
+  - id: "opena16"
+    port: 12361
+    name: "Einkaufen"
+    role: "E-Commerce"
+    plan: "premium"
+    visibility: "subscription"
+    folder_path: "15.opena16_shop"
+    description: "Shop/E-Commerce Agent"
+
+  - id: "opena17"
+    port: 12362
+    name: "Homepage-Ersteller"
+    role: "Website-Baumeister"
+    plan: "ultimum"
+    visibility: "subscription"
+    folder_path: "16.opena17_homepagecreator"
+    description: "Homepage Builder + Publishing Workflows"
+
+  - id: "opena18"
+    port: 12363
+    name: "CRM"
+    role: "Kundenmanagement"
+    plan: "pro"
+    visibility: "subscription"
+    folder_path: "17.opena18_CMR"
+    description: "CRM Agent"
+
+  - id: "opena19"
+    port: 12364
+    name: "Finanzen"
+    role: "Aktien/Krypto"
+    plan: "ultimum"
+    visibility: "subscription"
+    folder_path: "18.opena19_Aktien&Crypto"
+    description: "Finanzdaten/Workflows"
+
+  - id: "opena20"
+    port: 12349
+    name: "Dashboard"
+    role: "Kontrollebene"
+    plan: "system"
+    visibility: "system"
+    folder_path: "19.opena20_dashboard_agent"
+    description: "Zentrales UI + Steuerung (Control Plane)"
+
+  - id: "opena21"
+    port: 12368
+    name: "Workflow"
+    role: "Orchestrierung/Workflows"
+    plan: "system"
+    visibility: "system"
+    folder_path: "20.opena21_workflow"
+    description: "Workflow Engine + UI (Production)"
