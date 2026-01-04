@@ -13,7 +13,7 @@ SERVICES=(
     "opena2:12345:/health"
     "kordp:12346:/health"
     "opena3:12347:/health"
-    "telegram:12348:/health"
+    "telegram:12346:/health"
 )
 
 PASSED=0
@@ -40,7 +40,7 @@ echo "📊 Health Check Results: $PASSED passed, $FAILED failed"
 # Port checks
 echo ""
 echo "📍 Port Allocation:"
-for port in 12344 12345 12346 12347 12348; do
+for port in 12344 12345 12346 12347; do
     if lsof -i ":$port" > /dev/null 2>&1; then
         echo "  ✅ Port $port — In use"
     else
