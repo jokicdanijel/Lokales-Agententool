@@ -1,34 +1,74 @@
 # scripts/
 
-Kurzbeschreibung: Kleines Hilfsskript zum Builden/Starten aller Docker Compose Projekte unter `dist/`.
+**Gate System (PORTIER 3.0) – Deterministische Baseline-Validierung & Agent-Discovery**
 
-script: `scripts/compose_all.sh`
+Stand: 4. Januar 2026
 
-Usage:
+## 📋 Überblick
 
-- Basis-Aufruf (iteriert `dist/*` und baut & startet alle Compose-Projekte):
+Zwei komplementäre Python-Scripts für **Enterprise-Hart Validierung** im CI/CD:
 
-  ```bash
-  ./scripts/compose_all.sh
-  ```
+### 1. validate_baseline.py – Schema-Validierung (SSoT)
 
-- Optionen:
-  - `--dist DIR` — Verzeichnis mit den Distribution-Subprojekten (Standard: `dist`)
-  - `--service NAME` — Beschränke `docker compose up` auf einen bestimmten Service
-  - `--no-build` — `up -d` ohne `--build`
-  - `--help` — Hilfe anzeigen
+Validiert `system_baseline.yaml` gegen strenge Anforderungen:
 
-Beispiele:
+```bash
+python3 scripts/validate_baseline.py
+# Output: artifacts/Baseline_validation.json
+# Exit: 0 (OK) | 1 (FAIL)
+```
 
-- Build & Start aller Projekte unter `dist/`:
-  ```bash
-  ./scripts/compose_all.sh
-  ```
+**Prüft:**
+- ✅ Exakt 21 Agents (opena1..opena21)
+- ✅ Port-Eindeutigkeit
+- ✅ Port-Range (12344–12399)
+- ✅ Verbotene Ports (8080)
+- ✅ Folder-Existenz
+- ✅ Deterministische Sortierung
 
-- Nur Service `opena8` in `dist/opena8` neu bauen und starten:
-  ```bash
-  ./scripts/compose_all.sh --dist dist/opena8 --service opena8
-  ```
+### 2. discover_agents.py – Kontext-aware Port-Discovery
+
+Scannt Repository rekursiv und findet Port-Referenzen:
+
+```bash
+python3 scripts/discover_agents.py
+# Output: artifacts/Agent_discovery.json
+# Exit: 0 (OK) | 1 (FAIL)
+```
+
+**Features:**
+- 🔍 **Kontext-aware Scanning**:
+  - `.md/.txt` → Nur verbotene Ports (Doku-Noise vermeiden)
+  - Code/Config → Binding-Patterns (PORT=, --port, host_port:, :port)
+- ✅ **Port-Validierung** gegen Baseline
+- 📊 **Metadaten-Extraktion** (Name, Role, Visibility)
+
+### Legacy Helper Scripts
+
+- `compose_all.sh` — Docker Compose Builder
+- `validate_portier.sh` — Basic Health Checks
+- Weitere Legacy Scripts für Portier 2.x
+
+## 🚀 CI/CD Integration
+
+Gate-Workflow in `.github/workflows/baseline-discovery-gate.yml`:
+
+```yaml
+- name: Validate Baseline
+  run: python3 scripts/validate_baseline.py
+
+- name: Discover Agents
+  run: python3 scripts/discover_agents.py
+```
+
+**Fail-Fast:** Jeder Fehler blockiert den PR.
+
+## 📚 Dokumentation
+
+Siehe `docs/` für Details:
+- `docs/GESETZ-README_PORTIER3_0.txt` — Binding Anforderungen
+- `docs/PORTIER_REPOSITORY_STRUCTURE.md` — Repo-Layout
+- `docs/PORTIER_3.0_SYSTEM_ARCHITECTURE.md` — System-Architektur
 
 - Start ohne Build:
   ```bash

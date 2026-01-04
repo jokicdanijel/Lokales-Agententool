@@ -1,187 +1,216 @@
 #!/usr/bin/env python3
+# ============================================================================
+# validate_baseline.py
+# Deterministische Baseline-Validierung für PORTIER 3.0
+# - Read-only Analyse: keine Codeausführung, kein Netzwerk
+# - Fail fast: Exit-Code 1 bei jeder Verletzung
+#
+# Erwartetes Baseline-Schema (SSoT):
+#   port_policy.allowed_range: {min:int, max:int}
+#   port_policy.forbidden_ports: [int,...]
+#   agents: list[dict] mit:
+#     - id: opena1..opena21 (exakt 21)
+#     - folder_path: str
+#     - ports: list[dict] mit host_port:int (mindestens ein Eintrag)
+#
+# Output:
+#   artifacts/Baseline_validation.json
+# ============================================================================
+from __future__ import annotations
+
 import hashlib
 import json
-import re
 import sys
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-BASE = Path.cwd()
-BASELINE_PATH = BASE / "system_baseline.yaml"
+try:
+    import yaml  # type: ignore
+except Exception:
+    print("ERROR: Missing dependency 'pyyaml'. Install via: pip install pyyaml", file=sys.stderr)
+    sys.exit(1)
 
-PORT_RANGE_MIN_DEFAULT = 12344
-PORT_RANGE_MAX_DEFAULT = 12399
-ALLOWED_PORT_POLICY_KEYS: set[str] = {"allowed_range", "allow_range", "forbidden_ports", "no_deviations", "rule_text"}
+ROOT = Path(__file__).resolve().parent.parent
+BASELINE_PATH = ROOT / "system_baseline.yaml"
+ARTIFACTS_DIR = ROOT / "artifacts"
+ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
+ARTIFACT_PATH = ARTIFACTS_DIR / "Baseline_validation.json"
 
 
-def sha256_of_text(text: str) -> str:
+def utc_now() -> str:
+    return datetime.now(UTC).isoformat().replace("+00:00", "Z")
+
+
+def sha256_text(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
-def parse_allowed_range(port_policy: dict[str, Any], errors: list[str]) -> tuple[int, int]:
-    """Parse port range from BOTH formats:
-    A) allowed_range: "12344-12399" (string)
-    B) allow_range: {min: 12344, max: 12399} (dict)
+def load_yaml(path: Path) -> dict[str, Any]:
+    raw = path.read_text(encoding="utf-8")
+    data = yaml.safe_load(raw) or {}
+    if not isinstance(data, dict):
+        raise ValueError("system_baseline.yaml is not a dict")
+    return data
+
+
+def write_artifact(payload: dict[str, Any]) -> None:
+    ARTIFACT_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def err(errors: list[str], msg: str) -> None:
+    errors.append(msg)
+
+
+def stable_sort_agents(agents: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return sorted(agents, key=lambda a: str(a.get("id", "")).strip())
+
+
+def extract_agent_port(agent: dict[str, Any]) -> tuple[bool, int]:
     """
-    # Format B: allow_range dict
-    if isinstance(port_policy.get("allow_range"), dict):
-        ar = port_policy["allow_range"]
+    Baseline v1 (PORTIER 3.0) stores ports as:
+      ports:
+        - name: backend
+          host_port: 12344
+    We accept:
+      - first ports[].host_port as the agent's canonical port
+    """
+    ports = agent.get("ports")
+    if isinstance(ports, list) and ports:
+        p0 = ports[0]
+        if isinstance(p0, dict) and "host_port" in p0:
+            try:
+                return True, int(p0["host_port"])
+            except Exception:
+                return False, -1
+    # Back-compat: allow legacy flat key "port"
+    if "port" in agent:
         try:
-            mn = int(ar.get("min", PORT_RANGE_MIN_DEFAULT))
-            mx = int(ar.get("max", PORT_RANGE_MAX_DEFAULT))
-            return mn, mx
+            return True, int(agent["port"])
         except Exception:
-            errors.append(f"port_policy.allow_range must contain int min/max, got: {ar!r}")
-            return PORT_RANGE_MIN_DEFAULT, PORT_RANGE_MAX_DEFAULT
+            return False, -1
+    return False, -1
 
-    # Format A: allowed_range string
-    allowed = port_policy.get("allowed_range", f"{PORT_RANGE_MIN_DEFAULT}-{PORT_RANGE_MAX_DEFAULT}")
-    if not isinstance(allowed, str) or "-" not in allowed:
-        errors.append(f"port_policy.allowed_range must be 'min-max' string, got: {allowed!r}")
-        return PORT_RANGE_MIN_DEFAULT, PORT_RANGE_MAX_DEFAULT
 
-    parts = allowed.split("-")
-    if len(parts) != 2:
-        errors.append(f"port_policy.allowed_range must be 'min-max', got: {allowed!r}")
-        return PORT_RANGE_MIN_DEFAULT, PORT_RANGE_MAX_DEFAULT
+def validate() -> tuple[bool, dict[str, Any]]:
+    errors: list[str] = []
+
+    if not BASELINE_PATH.exists():
+        err(errors, f"Missing system_baseline.yaml at: {BASELINE_PATH}")
+        return False, {"errors": errors}
+
+    raw = BASELINE_PATH.read_text(encoding="utf-8")
+    baseline_hash = sha256_text(raw)
 
     try:
-        mn = int(parts[0].strip())
-        mx = int(parts[1].strip())
-        return mn, mx
-    except ValueError:
-        errors.append(f"port_policy.allowed_range contains non-int bounds: {allowed!r}")
-        return PORT_RANGE_MIN_DEFAULT, PORT_RANGE_MAX_DEFAULT
+        data = load_yaml(BASELINE_PATH)
+    except Exception as e:
+        err(errors, f"Failed to parse system_baseline.yaml: {e}")
+        return False, {"errors": errors, "baseline_hash_sha256": baseline_hash}
 
+    port_policy = data.get("port_policy") if isinstance(data.get("port_policy"), dict) else {}
+    allowed_range = port_policy.get("allowed_range") if isinstance(port_policy.get("allowed_range"), dict) else {}
+    forbidden_ports = set(port_policy.get("forbidden_ports") or []) if isinstance(port_policy.get("forbidden_ports"), list) else set()
 
-def load_baseline():
-    import yaml  # type: ignore
-
-    with open(BASELINE_PATH, encoding="utf-8") as f:
-        return yaml.safe_load(f)
-
-
-def load_yaml_simple(path: Path):
-    # Minimal fallback parser if PyYAML is unavailable
-    agents = []
-    current = None
-    in_agents = False
-    with path.open("r", encoding="utf-8") as f:
-        for line in f:
-            s = line.rstrip("\n")
-            if s.strip() == "agents:":
-                in_agents = True
-                continue
-            if in_agents:
-                if s.strip().startswith("- id:"):
-                    if current:
-                        agents.append(current)
-                    key = s.strip()[2:].strip()
-                    current = {}
-                    current["id"] = key.split(":", 1)[1].strip() if ":" in key else None
-                    # next lines will fill in
-                    continue
-                if ":" in s:
-                    k, v = (x.strip() for x in s.split(":", 1))
-                    if current is not None:
-                        current[k] = v
-    if current:
-        agents.append(current)
-    return {"agents": agents}
-
-
-def main():
-    # Load baseline
     try:
-        import yaml
-
-        with open(BASELINE_PATH, encoding="utf-8") as f:
-            baseline = json.loads("")  # intentionally fail to force PyYAML path below
+        min_port = int(allowed_range.get("min", 0))
+        max_port = int(allowed_range.get("max", 0))
     except Exception:
-        pass
-    try:
-        import yaml
+        min_port, max_port = 0, 0
+        err(errors, "port_policy.allowed_range must contain int min/max")
 
-        with open(BASELINE_PATH, encoding="utf-8") as f:
-            data = yaml.safe_load(f)
-            baseline = data
-    except Exception:
-        # Fallback simple parser
-        fallback = load_yaml_simple(BASELINE_PATH)
-        baseline = {"agents": fallback.get("agents", [])}
+    if min_port <= 0 or max_port <= 0 or min_port > max_port:
+        err(errors, f"Invalid allowed_range: min={min_port} max={max_port}")
 
-    if not isinstance(baseline, dict) or "agents" not in baseline:
-        print("[baseline] Ungültiges Baseline-Format; Abbruch", file=sys.stderr)
-        sys.exit(1)
+    agents = data.get("agents") or []
+    if not isinstance(agents, list):
+        err(errors, "agents must be a list")
+        agents = []
 
-    agents = baseline.get("agents", [])
-    errors = []
-    seen_ports = set()
-    ids = set()
+    agents = stable_sort_agents([a for a in agents if isinstance(a, dict)])
 
-    # Validate port_policy if present
-    port_policy = baseline.get("port_policy")
-    if port_policy:
-        if not isinstance(port_policy, dict):
-            errors.append("port_policy must be a dict")
-        else:
-            # Check for unexpected keys
-            unexpected = set(port_policy.keys()) - ALLOWED_PORT_POLICY_KEYS
-            if unexpected:
-                errors.append(f"port_policy contains unexpected keys: {unexpected}")
-            # Parse range (accepts both formats)
-            range_min, range_max = parse_allowed_range(port_policy, errors)
-    else:
-        range_min, range_max = PORT_RANGE_MIN_DEFAULT, PORT_RANGE_MAX_DEFAULT
+    expected_ids = [f"opena{i}" for i in range(1, 22)]
+    got_ids = [str(a.get("id", "")).strip() for a in agents]
 
+    if len(got_ids) != 21:
+        err(errors, f"Expected exactly 21 agents, got {len(got_ids)}")
+
+    missing = [i for i in expected_ids if i not in got_ids]
+    extra = [i for i in got_ids if i not in expected_ids]
+    if missing:
+        err(errors, f"Missing agent IDs: {missing}")
+    if extra:
+        err(errors, f"Unexpected agent IDs: {extra}")
+
+    # Ports: uniqueness + range + forbidden
+    port_map: dict[int, list[str]] = {}
     for a in agents:
-        aid = a.get("id")
-        port = a.get("port")
-        folder = a.get("folder_path") or a.get("folder")
-        # ID checks
-        if not isinstance(aid, str) or not re.match(r"^opena(?:[1-9]|1[0-9]|2[01])$", aid or ""):
-            errors.append(f"Ungültige Agent-ID: {aid}")
-        if not isinstance(port, int) or port < range_min or port > range_max:
-            errors.append(f"Port außerhalb des erlaubten Bereichs ({range_min}-{range_max}): {port}")
-        if aid in ids:
-            errors.append(f"Duplizierte Agent-ID: {aid}")
-        ids.add(aid)
-        if port in seen_ports:
-            errors.append(f"Port bereits verwendet: {port}")
-        seen_ports.add(port)
-        # folder existence check
-        if folder:
-            p = Path(BASE / folder)
-            if not p.exists():
-                errors.append(f"Missing agent folder: {folder}")
-        else:
-            errors.append(f"Missing folder_path for agent {aid}")
+        aid = str(a.get("id", "")).strip()
 
-    # Core/system enforcement
-    core = [a for a in agents if a.get("id") in ("opena1", "opena2")]
-    if not core:
-        errors.append("Core agents missing: opena1 and opena2 required")
+        ok_port, p = extract_agent_port(a)
+        if not ok_port:
+            err(errors, f"{aid}: missing/invalid port (expected ports[0].host_port:int or legacy port:int)")
+            continue
 
-    # Baseline hash
-    with open(BASELINE_PATH, "rb") as f:
-        baseline_bytes = f.read()
-    baseline_hash = hashlib.sha256(baseline_bytes).hexdigest()
+        port_map.setdefault(p, []).append(aid)
 
-    out = {"baseline_hash": baseline_hash, "valid": len(errors) == 0, "errors": errors}
-    artifacts = BASE / "artifacts"
-    artifacts.mkdir(parents=True, exist_ok=True)
-    out_path = artifacts / "baseline_validation.json"
-    with out_path.open("w", encoding="utf-8") as f:
-        json.dump({**out}, f, indent=2)
+        if p in forbidden_ports:
+            err(errors, f"{aid}: port {p} is forbidden")
+        if min_port and max_port and not (min_port <= p <= max_port):
+            err(errors, f"{aid}: port {p} out of allowed_range {min_port}-{max_port}")
 
-    if errors:
-        print("Baseline-Validation fehlgeschlagen:")
-        for e in errors:
-            print("-", e)
+    duplicates = {p: ids for p, ids in port_map.items() if len(ids) > 1}
+    if duplicates:
+        err(errors, f"Duplicate ports detected: {duplicates}")
+
+    # folder_path exists and not empty
+    for a in agents:
+        aid = str(a.get("id", "")).strip()
+        folder_path = str(a.get("folder_path", "")).strip()
+        if not folder_path:
+            err(errors, f"{aid}: folder_path is missing")
+            continue
+
+        abs_path = (ROOT / folder_path).resolve()
+        if not abs_path.exists():
+            err(errors, f"{aid}: folder_path not found: {folder_path}")
+            continue
+        if not abs_path.is_dir():
+            err(errors, f"{aid}: folder_path is not a directory: {folder_path}")
+            continue
+
+        try:
+            has_any = any(abs_path.iterdir())
+        except Exception:
+            has_any = False
+        if not has_any:
+            err(errors, f"{aid}: folder_path is empty: {folder_path}")
+
+    ok = len(errors) == 0
+    result = {
+        "timestamp_utc": utc_now(),
+        "baseline_path": str(BASELINE_PATH),
+        "baseline_hash_sha256": baseline_hash,
+        "success": ok,
+        "errors": errors,
+    }
+    return ok, result
+
+
+def main() -> None:
+    ok, payload = validate()
+    write_artifact(payload)
+
+    if not ok:
+        print("BASELINE VALIDATION: FAIL", file=sys.stderr)
+        for e in payload.get("errors", []):
+            print(f"- {e}", file=sys.stderr)
+        print(f"Artifact written: {ARTIFACT_PATH}", file=sys.stderr)
         sys.exit(1)
-    else:
-        print("Baseline-Validation erfolgreich.")
-        sys.exit(0)
+
+    print("BASELINE VALIDATION: OK")
+    print(f"Artifact written: {ARTIFACT_PATH}")
+    sys.exit(0)
 
 
 if __name__ == "__main__":

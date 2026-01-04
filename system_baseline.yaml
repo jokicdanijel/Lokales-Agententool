@@ -19,15 +19,20 @@ domain_policy:
   public_domain: "www.hyperdashboard-one.de"
 
 port_policy:
-  allow_range:
+  allowed_range:
     min: 12344
     max: 12399
   forbidden_ports:
     - 8080
+  common_reference_agents:
+    - "opena1"
+    - "opena2"
+    - "opena20"
   rule_text: >
     Ports müssen innerhalb 12344–12399 liegen.
     Port 8080 ist verboten.
     Ports sind eindeutig. Keine Abweichungen und keine Doppelnutzung.
+    common_reference_agents dürfen von allen Agenten referenziert werden.
 
 plans:
   core:

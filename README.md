@@ -1,12 +1,25 @@
-## Ausgabe 1/4 — **Korrigierte Projektübersicht (IST/SOLL-Doku für Git)**
+## PORTIER 3.0 – Aktualisierung 4. Januar 2026
 
-*(exakt deine Namen/Ordner – nur bereinigt nach unseren Absprachen: **jeder Agent hat Frontend+Backend**, Port-Policy, Port-Fix **opena8=12353**, und widersprüchliche Port-Stellen im Text harmonisiert)*
+**Status:** ✅ Gate-System Deployment + Datei-Reorganisation
+
+### Was ist neu:
+- ✅ **Gate-System deployed** (`validate_baseline.py`, `discover_agents.py`)
+- ✅ **Dokumentationsdateien reorganisiert** in `docs/`:
+  - `GESETZ-README_PORTIER3_0.txt` (Binding-Anforderungen)
+  - `PORTIER_3.0_SYSTEM_ARCHITECTURE.md`
+  - `PORTIER_INTEGRATION_MANIFEST.md`
+  - `PORTIER_REPOSITORY_STRUCTURE.md`
+  - `README_ENTERPRISE.md`
+- ✅ **Root-Level bereinigt** (nur SSoT + Config bleibt im Root)
+- ✅ **scripts/README.md aktualisiert** (Gate-System Doku)
+
+Siehe `scripts/README.md` für Gate-System Details.
 
 ---
 
 # PORTIER 3.0 – Git-Projektübersicht (korrigiert, verbindlich)
 
-**Stand:** 2025-12-25
+**Stand:** 2025-12-25 (aktualisiert 2026-01-04)
 **Regeln (fix, wie besprochen):**
 
 * **Agent-IDs sind exakt:** `opena1` … `opena21` (keine Aliase, keine Umbenennungen)
@@ -1444,4 +1457,3 @@ jobs:
 > ```
 
 ---
-

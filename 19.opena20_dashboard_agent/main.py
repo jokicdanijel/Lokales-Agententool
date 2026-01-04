@@ -18,6 +18,7 @@ Principles:
 
 import json
 import os
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -39,21 +40,21 @@ load_dotenv()
 
 PORT = int(os.getenv("OPENA20_PORT", "12349"))
 OPENA1_URL = os.getenv("OPENA1_URL", "http://127.0.0.1:12344")
-BEARER_TOKEN = os.getenv("DASHBOARD_ADMIN_TOKEN", "baf54565-9eb3-4349-bdec-bcaf93b16977")
+BEARER_TOKEN = os.getenv("DASHBOARD_ADMIN_TOKEN")
+
+if not BEARER_TOKEN:
+    print("ERROR: DASHBOARD_ADMIN_TOKEN environment variable is required", file=sys.stderr)
+    sys.exit(1)
 
 # API Keys aus .env
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY_OPENA1")
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
 app = FastAPI(
-    title="opena20 - Dashboard Agent", description="HTML-Generator & Control-Plane (with .env support)", version="1.0.1"
+    title="opena20 - Dashboard Agent",
+    description="HTML-Generator & Control-Plane (with .env support)",
+    version="1.0.1"
 )
-
-
-PORT = 12349
-OPENA1_URL = "http://127.0.0.1:12344"  # Koordinator (Option-2-Flow)
-
-app = FastAPI(title="opena20 - Dashboard Agent", description="HTML-Generator & Control-Plane", version="1.0.0")
 
 # ============================================================================
 # DATA LOADERS
@@ -64,10 +65,11 @@ class DataLoader:
     """Lädt alle relevanten Datenquellen"""
 
     def __init__(self):
-        self.root = Path(__file__).parent
+        # 19.opena20_dashboard_agent/main.py -> Gesamtprojekt (repo root)
+        self.root = Path(__file__).resolve().parent
         self.inventory_path = self.root / "artifacts" / "agent_inventory.json"
         self.baseline_path = self.root / "system_baseline.yaml"
-        self.entitlements_path = self.root / "config" / "plan_entitlements.json"
+        self.entitlements_path = self.root / "configs" / "plan_entitlements.json"
 
         self.inventory = None
         self.baseline = None

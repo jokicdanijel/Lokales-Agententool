@@ -189,7 +189,7 @@ This is a **human-readable reference**. The **baseline** remains the authority.
 |---|---:|---:|---|
 | opena1 | Koordinator | 12344 | core |
 | opena2 | Archivar | 12345 | core |
-| kordp | Gateway / Tool-Resolver (core service, not an agent) | 12346 | core-service |
+| kordp | Gateway / Tool-Resolver (core service, not an agent) | 12344 | core-service |
 | opena3 | OpenWebUI Bridge | 12347 | basic |
 | opena4 | Telegram | 12346 | basic |
 | opena20 | Dashboard | 12349 | system |
