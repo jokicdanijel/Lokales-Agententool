@@ -229,7 +229,7 @@ POST /dispatch/kordp
 | **Funktion**       | Development Bridge; Editor-Sync, File-Push zwischen IDE und Portier                                                                 |
 | **Aufgaben**       | • Monitort VS Code für Änderungen<br>• Pusht Datei-Änderungen zu opena1<br>• Zieht Lint/Format-Vorschläge<br>• Speichert Sync-State |
 | **Standort**       | `/home/danijel-jd/.../4.opena5_vscode/`                                                                                             |
-| **Port(e)**        | `12348`                                                                                                                             |
+| **Port(e)**        | `12346`                                                                                                                             |
 | **Endpunkte**      | • `GET /health`                                                                                                                     |
 |                    | • `POST /sync` → Datei-Sync-Trigger                                                                                                 |
 |                    | • `POST /push` → pusht Datei an opena1                                                                                              |
@@ -681,7 +681,7 @@ POST /dispatch/kordp
 | **12345** | opena2 (Archiv-Agent)      | HTTP/REST                     |
 | **12346** | kordp (Transport)          | HTTP/REST                     |
 | **12347** | opena4 (Telegram)          | HTTP/REST + Webhook           |
-| **12348** | opena5 (VS Code)           | HTTP/REST + WebSocket         |
+| **12346** | opena5 (VS Code)           | HTTP/REST + WebSocket         |
 | **12349** | opena6 (Browser)           | HTTP/REST                     |
 | **12350** | opena7 (Mail)              | HTTP/REST                     |
 | **12351** | opena8 (WhatsApp)          | HTTP/REST + Webhook           |
@@ -737,7 +737,7 @@ POST /dispatch/kordp
 │   ├─ bot.py
 │   └─ sessions/
 │
-├─ 4.opena5_vscode/                     (VS Code, 12348)
+├─ 4.opena5_vscode/                     (VS Code, 12346)
 │   ├─ main.py
 │   ├─ sync.py
 │   └─ extension/ (VS Code Extension)

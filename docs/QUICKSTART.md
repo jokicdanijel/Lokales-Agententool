@@ -78,7 +78,7 @@ OpenAI → opena1 (12344) → opena2 (12345) → kordp (12346) → Tools
 | **opena2**    | 12345       | Archivator (Safepoints)         | 1.opena1&2_portier         |
 | **kordp**     | 12346       | Koordinatport (Dispatcher)      | 1.opena1&2_portier         |
 | **opena3**    | 12347       | OpenWebUI Terminal              | 2.opena3_openwebui         |
-| **opena4**    | 12348       | Telegram                        | 3.opena4_telegram          |
+| **opena4**    | 12346       | Telegram                        | 3.opena4_telegram          |
 | **opena5**    | 12349       | VS Code Agent                   | 4.opena5_vscode            |
 | **opena6-20** | 12350-12367 | Browser, E-Mail, WhatsApp, etc. | 5-20.opena\*               |
 | **Dashboard** | 12349       | Hyper-Dashboard (UI)            | 19.opena20_dashboard_agent |

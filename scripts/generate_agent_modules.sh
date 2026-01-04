@@ -8,7 +8,7 @@ BASE_DIR="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt"
 declare -a AGENT_DIRS=(
     "1.opena1&2_portier|opena1,Koordinator Portier,portp,12344;opena2,Archivator,archivp,12345"
     "2.opena3_openwebui|opena3,OpenWebUI Terminal,owuip,12347"
-    "3.opena4_telegram|opena4,Telegram Agent,telep,12348"
+    "3.opena4_telegram|opena4,Telegram Agent,telep,12346"
     "4.opena5_vscode|opena5,VS Code Agent,vscop,12351"
     "5.opena6_browser|opena6,Browser Agent,browsep,12352"
     "6.opena7_email|opena7,Email Agent,emailp,12353"

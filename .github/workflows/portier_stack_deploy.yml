@@ -57,7 +57,7 @@ jobs:
           # PORTIER Agent Registry
           AGENTS=(
             "1.opena1\&2_portier:12344:coordination"
-            "3.opena4_telegram:12348:mobile_communication"
+            "3.opena4_telegram:12346:mobile_communication"
             "5.opena5_vscode:12350:development"
             "6.opena6_browser:12351:browser_automation"
             "7.opena7_email:12352:email_management"
@@ -310,7 +310,7 @@ jobs:
                "http://${{ secrets.STAGING_HOST }}:12344/command" || exit 1
 
           # Test Individual Agents
-          PORTS=(12344 12345 12348 12349 12350)
+          PORTS=(12344 12345 12346 12349 12350)
           for port in "${PORTS[@]}"; do
             echo "Testing agent on port $port..."
             curl -f "http://${{ secrets.STAGING_HOST }}:$port/health" || echo "Port $port not available (OK if agent not deployed)"

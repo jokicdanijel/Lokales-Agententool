@@ -29,7 +29,7 @@
 ### Extended Services
 
 - **opena3 - OpenWebUI Terminal** (Port 12347)
-- **opena4 - Telegram** (Port 12348)
+- **opena4 - Telegram** (Port 12346)
 - **opena5 - VS Code Bridge** (Port 12349)
 - **opena20 - Dashboard** (Port 12362)
 

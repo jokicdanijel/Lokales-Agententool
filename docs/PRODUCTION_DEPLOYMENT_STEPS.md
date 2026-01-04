@@ -168,7 +168,7 @@ server {
 
     # opena4 upstream (Telegram)
     upstream opena4 {
-        server 127.0.0.1:12348;
+        server 127.0.0.1:12346;
     }
 
     # Root path → Dashboard
@@ -390,7 +390,7 @@ sudo tail -50 /var/log/nginx/error.log
 ```bash
 # Check if services running
 curl http://127.0.0.1:12349/health
-curl http://127.0.0.1:12348/health
+curl http://127.0.0.1:12346/health
 
 # Check logs
 tail -50 /var/www/hyperdashboard/logs/dashboard.nohup.log

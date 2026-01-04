@@ -32,7 +32,7 @@ scalable_services:
 
   inference:
     program_target: infer
-    port: 12348
+    port: 12346
     role: inference
     description: llama-stack + Ollama inference gateway
     enabled: true

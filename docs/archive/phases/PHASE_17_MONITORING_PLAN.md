@@ -13,7 +13,7 @@
 | Portier (Coordinator)   | ✅ Online         | 12344       | -       |
 | OpenA2 (Archive)        | ✅ Online         | 12345       | 172     |
 | Telegram (Messaging)    | ✅ Online         | 12346       | -       |
-| Inference (llama-stack) | ✅ Online         | 12348       | -       |
+| Inference (llama-stack) | ✅ Online         | 12346       | -       |
 | Generated Services      | 🟡 Template Ready | 12349-12365 | -       |
 
 **Archive Backup:** ✅ Created at `1.opena1&2_portier/archivp_store.backup.2025-11-11`

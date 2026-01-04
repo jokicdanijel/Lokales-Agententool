@@ -14,7 +14,7 @@ on:
 
 env:
   SERVICE_NAME: opena4_telegram
-  PORT: 12348
+  PORT: 12346
   PYTHON_VERSION: "3.13"
   DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
   DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
@@ -260,7 +260,7 @@ jobs:
             docker run -d \
               --name opena4_telegram_staging \
               --restart unless-stopped \
-              -p 12348:12348 \
+              -p 12346:12346 \
               -e TELEGRAM_TOKEN="${{ secrets.TELEGRAM_TOKEN_STAGING }}" \
               -e BEARER_TOKEN="${{ secrets.BEARER_TOKEN }}" \
               -e ENV=staging \
@@ -270,7 +270,7 @@ jobs:
             sleep 10
 
             # Health check
-            curl -f http://localhost:12348/health || exit 1
+            curl -f http://localhost:12346/health || exit 1
 
   deploy-production:
     name: 🏭 Deploy to Production
@@ -300,7 +300,7 @@ jobs:
             docker run -d \
               --name opena4_telegram_${NEW_COLOR} \
               --restart unless-stopped \
-              -p $([[ "$NEW_COLOR" == "blue" ]] && echo "12349" || echo "12350"):12348 \
+              -p $([[ "$NEW_COLOR" == "blue" ]] && echo "12349" || echo "12350"):12346 \
               -e TELEGRAM_TOKEN="${{ env.TELEGRAM_TOKEN }}" \
               -e BEARER_TOKEN="${{ env.BEARER_TOKEN }}" \
               -e ENV=production \
@@ -339,21 +339,21 @@ jobs:
       - name: 🔍 Comprehensive Health Check
         run: |
           # Health endpoint
-          HEALTH=$(curl -s http://${{ env.DEPLOY_HOST }}:12348/health | jq -r '.status')
+          HEALTH=$(curl -s http://${{ env.DEPLOY_HOST }}:12346/health | jq -r '.status')
           if [[ "$HEALTH" != "ok" ]]; then
             echo "❌ Health check failed: $HEALTH"
             exit 1
           fi
 
           # Metrics endpoint
-          METRICS=$(curl -s http://${{ env.DEPLOY_HOST }}:12348/metrics)
+          METRICS=$(curl -s http://${{ env.DEPLOY_HOST }}:12346/metrics)
           if [[ $? -ne 0 ]]; then
             echo "❌ Metrics endpoint failed"
             exit 1
           fi
 
           # Agent status
-          STATUS=$(curl -s http://${{ env.DEPLOY_HOST }}:12348/status | jq -r '.agent_status')
+          STATUS=$(curl -s http://${{ env.DEPLOY_HOST }}:12346/status | jq -r '.agent_status')
           if [[ "$STATUS" != "active" ]]; then
             echo "❌ Agent not active: $STATUS"
             exit 1
@@ -371,7 +371,7 @@ jobs:
               deployment_id: context.payload.deployment?.id || 'manual',
               state: 'success',
               description: 'Deployment verified and healthy',
-              environment_url: 'https://${{ env.DEPLOY_HOST }}:12348'
+              environment_url: 'https://${{ env.DEPLOY_HOST }}:12346'
             });
 
   cleanup:

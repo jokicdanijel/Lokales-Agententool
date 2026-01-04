@@ -73,7 +73,7 @@
 | 2   | opena2 (Archivator)     | 12345  | Infrastruktur | ✅ Aktiv   | Ja            |
 | 3   | opena3 (OpenWebUI)      | 8080\* | Kommunikation | ✅ Aktiv   | Ja            |
 | 4   | opena4 (Telegram)       | 12347  | Kommunikation | ✅ Aktiv   | Ja            |
-| 5   | opena5 (VS Code)        | 12348  | Kommunikation | 🟡 Geplant | Nein          |
+| 5   | opena5 (VS Code)        | 12346  | Kommunikation | 🟡 Geplant | Nein          |
 | 6   | opena6 (Browser)        | 12349  | Kommunikation | 🔴 Pending | Nein          |
 | 7   | opena7 (Email Chatbot)  | 12350  | Chatbot       | 🔴 Pending | Nein          |
 | 8   | opena8 (WhatsApp)       | 12351  | Chatbot       | 🔴 Pending | Nein          |

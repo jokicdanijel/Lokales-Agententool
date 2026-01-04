@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Fix all PORT conflicts: Reassign agents 3-21 to unique ports 12347-12367.
-Use ports: core (1-2) = 12344-12345, dashboard = 12349, agents 3-21 = 12347-12348, 12350-12348, 12351-12367
+Use ports: core (1-2) = 12344-12345, dashboard = 12349, agents 3-21 = 12347-12346, 12350-12346, 12351-12367
 """
 
 import os
@@ -12,7 +12,7 @@ os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Port assignment (no conflicts!)
 PORT_MAP = {
     "opena3": 12347,
-    "opena4": 12348,
+    "opena4": 12346,
     "opena5": 12350,
     "opena6": 12351,
     "opena7": 12352,

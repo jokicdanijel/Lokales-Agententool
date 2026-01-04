@@ -45,18 +45,18 @@
 
 _Only lines with exactly 1 ID and 1 port are checked_
 
-- main_dashboard_v3.py:60: opena4 found port 12348, expected 12346
-  `{"id": "opena4",  "name": "Telegram Agent",      "kuerzel": "telep",       "port": 12348, "icon": "📱`
-- config.py:117: opena4 found port 12348, expected 12346
-  `AgentInfo(id="opena4",  name="Telegram Agent",          kuerzel="telep",       port=12348),`
-- main_dashboard_final.py:65: opena4 found port 12348, expected 12346
-  `{"id": "opena4", "name": "Telegram Agent", "kuerzel": "telep", "port": 12348},`
-- main_dashboard_agent.py:200: opena4 found port 12348, expected 12346
-  `{"id": "opena4", "name": "Telegram Agent", "kuerzel": "telep", "port": 12348},`
-- hyper_dashboard_fusion.py:84: opena4 found port 12348, expected 12346
-  `{"id": "opena4", "name": "Telegram", "port": 12348, "url": "http://127.0.0.1:12348"},`
-- main_dashboard.py:185: opena4 found port 12348, expected 12346
-  `{"id": "opena4",  "name": "Telegram Agent",            "kuerzel": "telep",      "port": 12348},`
+- main_dashboard_v3.py:60: opena4 found port 12346, expected 12346
+  `{"id": "opena4",  "name": "Telegram Agent",      "kuerzel": "telep",       "port": 12346, "icon": "📱`
+- config.py:117: opena4 found port 12346, expected 12346
+  `AgentInfo(id="opena4",  name="Telegram Agent",          kuerzel="telep",       port=12346),`
+- main_dashboard_final.py:65: opena4 found port 12346, expected 12346
+  `{"id": "opena4", "name": "Telegram Agent", "kuerzel": "telep", "port": 12346},`
+- main_dashboard_agent.py:200: opena4 found port 12346, expected 12346
+  `{"id": "opena4", "name": "Telegram Agent", "kuerzel": "telep", "port": 12346},`
+- hyper_dashboard_fusion.py:84: opena4 found port 12346, expected 12346
+  `{"id": "opena4", "name": "Telegram", "port": 12346, "url": "http://127.0.0.1:12346"},`
+- main_dashboard.py:185: opena4 found port 12346, expected 12346
+  `{"id": "opena4",  "name": "Telegram Agent",            "kuerzel": "telep",      "port": 12346},`
 - main_dashboard_v3.py:61: opena5 found port 12351, expected 12350
   `{"id": "opena5",  "name": "VS Code Agent",       "kuerzel": "vscop",       "port": 12351, "icon": "💻`
 - config.py:118: opena5 found port 12351, expected 12350
@@ -67,10 +67,10 @@ _Only lines with exactly 1 ID and 1 port are checked_
   `{"id": "opena5", "name": "VSCode", "port": 12349, "url": "http://127.0.0.1:12349"},`
 - main_dashboard.py:186: opena5 found port 12351, expected 12350
   `{"id": "opena5",  "name": "VS Code Agent",             "kuerzel": "vscop",      "port": 12351},`
-- docs/SCANNERS.md:146: opena5 found port 12348, expected 12350
-  ```- `agent://opena5:12348````
-- scripts/api_binding_scanner.py:21: opena5 found port 12348, expected 12350
-  `- agent://opena5:12348`
+- docs/SCANNERS.md:146: opena5 found port 12346, expected 12350
+  ```- `agent://opena5:12346````
+- scripts/api_binding_scanner.py:21: opena5 found port 12346, expected 12350
+  `- agent://opena5:12346`
 - main_dashboard_v3.py:62: opena6 found port 12352, expected 12351
   `{"id": "opena6",  "name": "Browser Agent",       "kuerzel": "browsep",     "port": 12352, "icon": "🌐`
 - config.py:119: opena6 found port 12352, expected 12351

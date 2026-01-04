@@ -48,7 +48,7 @@ AGENTS=(
   "opena1:1.opena1&2_portier:12344"
   "opena2:1.opena1&2_portier:12345"
   "opena3:2.opena3_openwebui:12347"
-  "opena4:3.opena4_telegram:12348"
+  "opena4:3.opena4_telegram:12346"
   "opena5:4.opena5_vscode:12351"
   "opena6:5.opena6_browser:12352"
   "opena7:6.opena7_email:12353"
@@ -483,7 +483,7 @@ nano .env
 bin/ops.sh doc:agents
 bin/ops.sh venv:sync opena4
 bin/ops.sh start:agent opena4
-curl -s http://127.0.0.1:12348/health | jq .</code></pre>
+curl -s http://127.0.0.1:12346/health | jq .</code></pre>
   </section>
 
   <section class="card">
@@ -546,7 +546,7 @@ bin/ops.sh venv:sync opena4
 bin/ops.sh start:agent opena4
 
 # Health check
-curl -s http://127.0.0.1:12348/health | jq .
+curl -s http://127.0.0.1:12346/health | jq .
 
 # Logs
 tail -n 200 logs/opena4.nohup.log

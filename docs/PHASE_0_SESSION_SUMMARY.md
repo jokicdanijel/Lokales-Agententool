@@ -64,8 +64,8 @@ Total: +700 lines of governance & specification docs
 
 - opena1 (Koordinator) @ 12344
 - kordp (Koordinator variant) @ 12346
-- opena2 (Archivator) @ 12348
-- archivp (Persistence) @ 12348
+- opena2 (Archivator) @ 12346
+- archivp (Persistence) @ 12346
 
 ✅ **Verification:** Created `bin/health_check.sh` & port-policy validator for CI/CD
 
@@ -96,7 +96,7 @@ Total: +700 lines of governance & specification docs
 
 ✅ **Topology Defined:**
 
-- Port 12348 binding (Loopback 127.0.0.1)
+- Port 12346 binding (Loopback 127.0.0.1)
 - Connections: VS Code ↔ opena5 ↔ opena2
 - Safepoint naming: `SP<ts>_vscode→opena2_EDIT.json`
 
@@ -246,9 +246,9 @@ All infrastructure documentation and governance frameworks established:
 
 ### Decision 1: Port Assignment for opena5
 
-**Option A:** Use 12348 (same as opena2 Archivator, different host)
+**Option A:** Use 12346 (same as opena2 Archivator, different host)
 **Option B:** Use 12347 (unique port)
-**Chosen:** Option A (12348) – allows co-location if needed
+**Chosen:** Option A (12346) – allows co-location if needed
 **Rationale:** Aligns with Safepoint workflow (opena5 → opena2)
 
 ### Decision 2: Safepoint Naming Convention

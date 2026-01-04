@@ -48,7 +48,7 @@ Jeder Prompt folgt dieser Struktur:
 | ID      | Name               | Port  | Status     | Kürzel         | Master-Prompt-Datei                                                                          |
 | ------- | ------------------ | ----- | ---------- | -------------- | -------------------------------------------------------------------------------------------- |
 | opena3  | OpenWebUI Terminal | 12347 | ✅ Running | `owuip`        | [`2.opena3_openwebui/MASTER_PROMPT.md`](2.opena3_openwebui/MASTER_PROMPT.md)                 |
-| opena4  | Telegram Bot       | 12348 | 🟡 Planned | `telep`        | [`3.opena4_telegram/MASTER_PROMPT.md`](3.opena4_telegram/MASTER_PROMPT.md)                   |
+| opena4  | Telegram Bot       | 12346 | 🟡 Planned | `telep`        | [`3.opena4_telegram/MASTER_PROMPT.md`](3.opena4_telegram/MASTER_PROMPT.md)                   |
 | opena5  | VS Code Agent      | 12351 | 🟡 Planned | `vscop`        | [`4.opena5_vscode/MASTER_PROMPT.md`](4.opena5_vscode/MASTER_PROMPT.md)                       |
 | opena6  | Browser Automation | 12350 | 🟡 Planned | `browsep`      | [`5.opena6_browser/MASTER_PROMPT.md`](5.opena6_browser/MASTER_PROMPT.md)                     |
 | opena7  | E-Mail Client      | 12352 | 🟡 Planned | `emailp`       | [`6.opena7_email/MASTER_PROMPT.md`](6.opena7_email/MASTER_PROMPT.md)                         |

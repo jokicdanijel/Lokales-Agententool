@@ -36,7 +36,7 @@ system_prompt: |
   - 1.opena1&2_portier (opena1, opena2, archivp, kordp) → Ports 12344-12346
   - 2.opena3_openwebui (Terminal Agent) → Port 12347
   - 19.opena20_dashboard_agent (Backend, SSE, Security) → Ports 12349-12350
-  - 3-18, 20 (Spezialisierte Agenten) → Ports 12348-12367
+  - 3-18, 20 (Spezialisierte Agenten) → Ports 12346-12367
 
   **Keine neuen Top-Level-Folder. Keine Namensabweichungen.**
 
@@ -56,7 +56,7 @@ system_prompt: |
 
   **Erweiterte Agenten:**
   - opena3 = OpenWebUI Terminal (12347)
-  - opena4 = Telegram (12348)
+  - opena4 = Telegram (12346)
   - opena5 = VS Code Agent
   - opena6+ = Browser, WhatsApp, E-Mail, Social, Telefon, Dashboard
 

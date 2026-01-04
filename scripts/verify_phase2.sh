@@ -13,7 +13,7 @@ echo ""
 # 1. Service Health
 echo "✓ SERVICE HEALTH CHECKS"
 HEALTHY=0
-for port in 12344 12345 12346 12347 12348 12349 12353 12354 12355; do
+for port in 12344 12345 12346 12347 12346 12349 12353 12354 12355; do
     HEALTH=$(curl -s http://127.0.0.1:$port/health 2>/dev/null | jq -r '.status // "error"')
     if [ "$HEALTH" = "healthy" ]; then
         echo "  ✅ Port $port: $HEALTH"

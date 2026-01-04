@@ -22,7 +22,7 @@
 
 | Info          | Wert                                      |
 | ------------- | ----------------------------------------- |
-| **Port**      | 12348                                     |
+| **Port**      | 12346                                     |
 | **File**      | main_opena4_telegram.py (13 KB)           |
 | **Status**    | ✅ LIVE & TESTED                          |
 | **Test Rate** | 8/8 Passed (Nov 8, 18:11)                 |
@@ -168,7 +168,7 @@ Alle KB-Dateien sind getagged für Suchbarkeit:
 | opena2 (Archive)     | 12345 | ✅ Running | Modul 3      | 18:35 UTC      |
 | kordp (Relay)        | 12346 | ✅ Running | Modul 5      | 18:35 UTC      |
 | opena_finance        | 12347 | ✅ Running | (Finance KB) | 17:28 UTC      |
-| opena4_telegram      | 12348 | ✅ Running | Modul 1      | 18:11 UTC      |
+| opena4_telegram      | 12346 | ✅ Running | Modul 1      | 18:11 UTC      |
 | opena19 (Dashboard)  | 12349 | ⏳ Nov 9   | Modul 2      | N/A            |
 
 ---

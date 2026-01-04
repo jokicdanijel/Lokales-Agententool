@@ -667,49 +667,49 @@
         "file": "main_dashboard_v3.py",
         "line": 60,
         "id": "opena4",
-        "found_port": 12348,
+        "found_port": 12346,
         "expected_port": 12346,
-        "snippet": "{\"id\": \"opena4\",  \"name\": \"Telegram Agent\",      \"kuerzel\": \"telep\",       \"port\": 12348, \"icon\": \"📱\"},"
+        "snippet": "{\"id\": \"opena4\",  \"name\": \"Telegram Agent\",      \"kuerzel\": \"telep\",       \"port\": 12346, \"icon\": \"📱\"},"
       },
       {
         "file": "config.py",
         "line": 117,
         "id": "opena4",
-        "found_port": 12348,
+        "found_port": 12346,
         "expected_port": 12346,
-        "snippet": "AgentInfo(id=\"opena4\",  name=\"Telegram Agent\",          kuerzel=\"telep\",       port=12348),"
+        "snippet": "AgentInfo(id=\"opena4\",  name=\"Telegram Agent\",          kuerzel=\"telep\",       port=12346),"
       },
       {
         "file": "main_dashboard_final.py",
         "line": 65,
         "id": "opena4",
-        "found_port": 12348,
+        "found_port": 12346,
         "expected_port": 12346,
-        "snippet": "{\"id\": \"opena4\", \"name\": \"Telegram Agent\", \"kuerzel\": \"telep\", \"port\": 12348},"
+        "snippet": "{\"id\": \"opena4\", \"name\": \"Telegram Agent\", \"kuerzel\": \"telep\", \"port\": 12346},"
       },
       {
         "file": "main_dashboard_agent.py",
         "line": 200,
         "id": "opena4",
-        "found_port": 12348,
+        "found_port": 12346,
         "expected_port": 12346,
-        "snippet": "{\"id\": \"opena4\", \"name\": \"Telegram Agent\", \"kuerzel\": \"telep\", \"port\": 12348},"
+        "snippet": "{\"id\": \"opena4\", \"name\": \"Telegram Agent\", \"kuerzel\": \"telep\", \"port\": 12346},"
       },
       {
         "file": "hyper_dashboard_fusion.py",
         "line": 84,
         "id": "opena4",
-        "found_port": 12348,
+        "found_port": 12346,
         "expected_port": 12346,
-        "snippet": "{\"id\": \"opena4\", \"name\": \"Telegram\", \"port\": 12348, \"url\": \"http://127.0.0.1:12348\"},"
+        "snippet": "{\"id\": \"opena4\", \"name\": \"Telegram\", \"port\": 12346, \"url\": \"http://127.0.0.1:12346\"},"
       },
       {
         "file": "main_dashboard.py",
         "line": 185,
         "id": "opena4",
-        "found_port": 12348,
+        "found_port": 12346,
         "expected_port": 12346,
-        "snippet": "{\"id\": \"opena4\",  \"name\": \"Telegram Agent\",            \"kuerzel\": \"telep\",      \"port\": 12348},"
+        "snippet": "{\"id\": \"opena4\",  \"name\": \"Telegram Agent\",            \"kuerzel\": \"telep\",      \"port\": 12346},"
       },
       {
         "file": "main_dashboard_v3.py",
@@ -755,17 +755,17 @@
         "file": "docs/SCANNERS.md",
         "line": 146,
         "id": "opena5",
-        "found_port": 12348,
+        "found_port": 12346,
         "expected_port": 12350,
-        "snippet": "- `agent://opena5:12348`"
+        "snippet": "- `agent://opena5:12346`"
       },
       {
         "file": "scripts/api_binding_scanner.py",
         "line": 21,
         "id": "opena5",
-        "found_port": 12348,
+        "found_port": 12346,
         "expected_port": 12350,
-        "snippet": "- agent://opena5:12348"
+        "snippet": "- agent://opena5:12346"
       },
       {
         "file": "main_dashboard_v3.py",

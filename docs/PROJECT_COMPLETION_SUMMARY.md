@@ -53,7 +53,7 @@ Design and implement a distributed Python agent system (ELION Hyper-Dashboard) w
 **Status:** ✅ Complete | **Agents:** 3 | **LOC:** ~300
 
 - **opena4 (Telegram - 12347):** Messaging integration
-- **opena5 (Browser - 12348):** Browser automation
+- **opena5 (Browser - 12346):** Browser automation
 - **opena6 (Email - 12349):** Email management
 
 **GitHub Patterns:** Communication protocol implementations

@@ -200,7 +200,7 @@ test_opena20.py::test_12_e2e_trigger PASSED                                     
 ```python
 AGENT_REGISTRY = [
     {"id": "opena3", "name": "OpenWebUI Terminal", "kuerzel": "owuip", "port": 12347},
-    {"id": "opena4", "name": "Telegram Agent", "kuerzel": "telep", "port": 12348},
+    {"id": "opena4", "name": "Telegram Agent", "kuerzel": "telep", "port": 12346},
     # ... 15 more agents
     {"id": "opena19", "name": "Stocks & Crypto", "kuerzel": "stockcryptop", "port": 12365}
 ]

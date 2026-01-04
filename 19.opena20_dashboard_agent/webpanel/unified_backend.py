@@ -2,7 +2,7 @@
 """
 TELEGRAM MOBILE AGENT - UNIFIED BACKEND
 ALLE möglichen Anbindungen vollständig integriert
-Port: 12348
+Port: 12346
 """
 
 import asyncio
@@ -484,7 +484,7 @@ async def get_analytics():
 async def webhook_info():
     """Webhook Informationen"""
     return {
-        "url": "http://localhost:12348/api/webhook",
+        "url": "http://localhost:12346/api/webhook",
         "has_custom_certificate": False,
         "pending_update_count": 0,
         "last_synchronization_error_date": None,
@@ -615,7 +615,7 @@ async def metrics():
 async def get_config():
     """Agent Configuration"""
     return {
-        "agent": {"id": "opena4", "name": "Telegram Mobile Agent", "version": "6.0.0", "port": 12348},
+        "agent": {"id": "opena4", "name": "Telegram Mobile Agent", "version": "6.0.0", "port": 12346},
         "capabilities": 12,
         "workflows": len(workflows),
     }
@@ -835,10 +835,10 @@ if __name__ == "__main__":
     print("=" * 60)
     print("🚀 TELEGRAM MOBILE AGENT - UNIFIED BACKEND")
     print("=" * 60)
-    print("📡 Port: 12348")
-    print("🌐 URL: http://localhost:12348")
+    print("📡 Port: 12346")
+    print("🌐 URL: http://localhost:12346")
     print("📊 Workflows: 20 (10 Telegram + 10 Terminal)")
     print("⚡ ALLE Anbindungen: VOLLSTÄNDIG INTEGRIERT")
     print("=" * 60)
 
-    uvicorn.run(app, host="0.0.0.0", port=12348, log_level="info", reload=False)
+    uvicorn.run(app, host="0.0.0.0", port=12346, log_level="info", reload=False)

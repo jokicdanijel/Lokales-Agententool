@@ -49,7 +49,7 @@ AGENTS=(
   "opena1:1.opena1&2_portier:12344"
   "opena2:1.opena1&2_portier:12345"
   "opena3:2.opena3_openwebui:12347"
-  "opena4:3.opena4_telegram:12348"
+  "opena4:3.opena4_telegram:12346"
   "opena5:4.opena5_vscode:12351"
   "opena6:5.opena6_browser:12352"
   "opena7:6.opena7_email:12353"

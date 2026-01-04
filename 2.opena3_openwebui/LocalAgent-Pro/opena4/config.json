@@ -1,6 +1,6 @@
 {
   "service": "opena4",
-  "port": 12348,
+  "port": 12346,
   "role": "compute",
   "version": "3.1.0",
   "features": {

@@ -44,7 +44,7 @@ declare -a AGENTS=(
     "4|opena2_archivator|opena2|12345|File Storage System|Core"
     "5|kordp_scheduler|kordp|12346|Event Coordination|Core"
     "6|opena4_telegram|opena4|12347|Telegram Integration|Integration"
-    "7|opena5_browser|opena5|12348|Browser Automation|Tools"
+    "7|opena5_browser|opena5|12346|Browser Automation|Tools"
     "8|opena6_email|opena6|12349|Email Management|Tools"
     "9|opena7_whatsapp|opena7|12350|WhatsApp Integration|Integration"
     "10|opena8_telephone|opena8|12351|Telephone System|Integration"

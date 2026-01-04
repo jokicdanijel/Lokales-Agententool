@@ -60,7 +60,7 @@ TOTAL              172     100%
 | **bootstrap**          | 1       | INIT (1)                               |
 | **Services (generic)** | 10      | ECHO (10)                              |
 
-**Note:** Inference service (Port 12348) generates 83% of archive traffic (143/172 entries).
+**Note:** Inference service (Port 12346) generates 83% of archive traffic (143/172 entries).
 
 ---
 

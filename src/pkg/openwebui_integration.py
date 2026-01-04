@@ -194,7 +194,7 @@ class OpenWebUIIntegrationManager:
             Agent(
                 agent_id="opena5",
                 name="Browser",
-                port=12348,
+                port=12346,
                 category=AgentCategory.TOOLS,
                 description="Browser Automation",
             ),

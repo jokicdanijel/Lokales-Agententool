@@ -62,7 +62,7 @@ OPENA2_URL = os.getenv("OPENA2_URL", "http://127.0.0.1:12345")
 # AGENT REGISTRY (17 AGENTS)
 AGENT_REGISTRY = [
     {"id": "opena3", "name": "OpenWebUI Agent", "kuerzel": "owuip", "port": 12347},
-    {"id": "opena4", "name": "Telegram Agent", "kuerzel": "telep", "port": 12348},
+    {"id": "opena4", "name": "Telegram Agent", "kuerzel": "telep", "port": 12346},
     {"id": "opena5", "name": "VSCode Agent", "kuerzel": "vscop", "port": 12350},
     {"id": "opena6", "name": "Browser Agent", "kuerzel": "browp", "port": 12351},
     {"id": "opena7", "name": "Email Agent", "kuerzel": "emailp", "port": 12352},

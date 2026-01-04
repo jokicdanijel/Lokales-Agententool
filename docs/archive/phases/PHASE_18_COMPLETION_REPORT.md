@@ -65,7 +65,7 @@ Phase 18 establishes a **complete 20-service production deployment infrastructur
 ✅ Portier (12344)      — Main orchestrator + metrics
 ✅ Archivator (12345)   — Archive storage + retrieval
 ✅ Telegram (12346)     — Communication service
-✅ Inference (12348)    — Model inference service
+✅ Inference (12346)    — Model inference service
 ```
 
 **Ready to Scale (16 On-Demand):**
@@ -235,7 +235,7 @@ All 20 services have:
 ✓ Portier (12344) — Metrics exported
 ✓ Archivator (12345) — 172 entries tracked
 ✓ Telegram (12346) — Health check passing
-✓ Inference (12348) — Model service running
+✓ Inference (12346) — Model service running
 ```
 
 ✅ **Monitoring Stack**
@@ -386,7 +386,7 @@ Gesamtprojekt/
 | --------------------- | ------ | --------------------- | ------ |
 | Services Deployed     | 20     | 20                    | ✅     |
 | Ports Assigned        | 20     | 20 (12344-12364)      | ✅     |
-| Core Services Running | 4      | 4 (12344-12346,12348) | ✅     |
+| Core Services Running | 4      | 4 (12344-12346,12346) | ✅     |
 | Prometheus Targets    | 22     | 22                    | ✅     |
 | Alert Rules           | 8      | 8                     | ✅     |
 | Grafana Dashboards    | 6      | 6                     | ✅     |

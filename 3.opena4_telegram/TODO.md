@@ -1,6 +1,6 @@
 # TODO – opena4 Telegram Bot Agent
 
-**Port:** 12348
+**Port:** 12346
 **Status:** 🟡 Planned
 **Kürzel:** `telep`
 
@@ -8,7 +8,7 @@
 
 ## 1. Architektur & Setup – Rolle, Config, FastAPI-Entry
 
-- [ ] FastAPI-Service `main_telegram_agent.py` erstellen (Port 12348)
+- [ ] FastAPI-Service `main_telegram_agent.py` erstellen (Port 12346)
 - [ ] Config-Modul für Telegram Bot Token, Webhook-URL, Allowed Users
 - [ ] Health-Endpoint `/health` implementieren
 - [ ] Auth-Middleware (Bearer Token) einrichten

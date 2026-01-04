@@ -1,6 +1,6 @@
 # PLAN: Agent opena9 – Telefon-Anruf Chatbot
 
-**Status:** Production-Ready Plan | **Port:** 12348 | **Modul:** 8.chatbot_ton_opena9
+**Status:** Production-Ready Plan | **Port:** 12346 | **Modul:** 8.chatbot_ton_opena9
 
 ## 📋 Zielsetzung
 

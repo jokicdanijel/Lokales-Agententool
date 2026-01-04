@@ -1,5 +1,5 @@
 """
-ELION opena4_telegram – Telegram-Bridge Agent (Port 12348)
+ELION opena4_telegram – Telegram-Bridge Agent (Port 12346)
 FastAPI-basierter Service für Telegram Bot Webhook + Message Routing.
 
 Architektur:
@@ -7,7 +7,7 @@ Architektur:
 - Routing zu opena_finance (Port 12347) für Financial Commands
 - Alternative Routing zu opena1 (Port 12344) für andere Commands
 - Archiv zu opena2 (Port 12345) für alle Messages
-- Port: 12348
+- Port: 12346
 - Auth: Webhook-Secret (TELEGRAM_WEBHOOK_SECRET aus .env)
 """
 
@@ -23,7 +23,7 @@ from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 # ===== CONFIG =====
-PORT = 12348
+PORT = 12346
 LOG_DIR = Path("logs")
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 ENV_FILE = Path(".env")

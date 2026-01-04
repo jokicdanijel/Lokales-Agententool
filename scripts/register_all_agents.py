@@ -51,8 +51,8 @@ AGENTS_REGISTRY = {
     },
     "opena4": {
         "name": "Telegram Mobile Agent",
-        "port": 12348,
-        "endpoint": "http://127.0.0.1:12348",
+        "port": 12346,
+        "endpoint": "http://127.0.0.1:12346",
         "capabilities": ["telegram", "mobile_chat", "media_handling", "notifications"],
         "directory": "3.opena4_telegram",
         "script": "main_opena4.py",

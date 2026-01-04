@@ -90,7 +90,7 @@
 | opena01.service | 12344 | Koordinator Portier |
 | opena02.service | 12345 | Archivator          |
 | opena03.service | 12347 | OpenWebUI Terminal  |
-| opena04.service | 12348 | Telegram Agent      |
+| opena04.service | 12346 | Telegram Agent      |
 | opena05.service | 12351 | VS Code Agent       |
 | opena06.service | 12352 | Browser Agent       |
 | opena07.service | 12353 | Email Agent         |
@@ -130,8 +130,8 @@
 | Agent   | Korrektur                               |
 | ------- | --------------------------------------- |
 | opena3  | Port 12346 → 12347                      |
-| opena4  | Port 12347 → 12348                      |
-| opena6  | Port 12348 → 12352                      |
+| opena4  | Port 12347 → 12346                      |
+| opena6  | Port 12346 → 12352                      |
 | opena7  | Port 12350 → 12353                      |
 | opena8  | Port 12351 → 12354                      |
 | opena9  | Port 12351 → 12355, Agent-ID korrigiert |
@@ -166,7 +166,7 @@
 | opena1  | 12344 | portp        | 1.opena1&2_portier         |
 | opena2  | 12345 | archivp      | 1.opena1&2_portier         |
 | opena3  | 12347 | owuip        | 2.opena3_openwebui         |
-| opena4  | 12348 | telep        | 3.opena4_telegram          |
+| opena4  | 12346 | telep        | 3.opena4_telegram          |
 | opena5  | 12351 | vscop        | 4.opena5_vscode            |
 | opena6  | 12352 | browsep      | 5.opena6_browser           |
 | opena7  | 12353 | emailp       | 6.opena7_email             |

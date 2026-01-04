@@ -18,7 +18,7 @@ agents_list:
   visibility: subscription
   description: Subscribed agent 3
 - id: opena4
-  port: 12348
+  port: 12346
   role: agent
   folder_path: agents/opena4
   visibility: subscription
@@ -173,7 +173,7 @@ agents:
   opena5:
     id: opena5
     name: Agent 5
-    port: 12348
+    port: 12346
     role: service
     visibility: public
   opena6:

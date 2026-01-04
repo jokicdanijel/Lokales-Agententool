@@ -183,7 +183,7 @@ async def startup_metrics():
         exporter.register_service("portier", 12344)
         exporter.register_service("opena2", 12345)
         exporter.register_service("telegram", 12346)
-        exporter.register_service("inference", 12348)
+        exporter.register_service("inference", 12346)
         print("✅ Metrics exporter initialized (9090 metrics will be available)")
 
 

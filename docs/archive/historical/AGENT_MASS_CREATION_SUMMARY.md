@@ -13,7 +13,7 @@
 | Agent ID    | Name               | Port  | Status      | Implementierung                         |
 | ----------- | ------------------ | ----- | ----------- | --------------------------------------- |
 | **opena3**  | OpenWebUI Terminal | 12347 | ✅ Complete | Chat Management, Conversation History   |
-| **opena4**  | Telegram Mobile    | 12348 | ✅ Complete | Bot Integration, Message Processing     |
+| **opena4**  | Telegram Mobile    | 12346 | ✅ Complete | Bot Integration, Message Processing     |
 | **opena5**  | VSCode Programming | 12351 | ✅ Complete | Code Editing, Project Management, Git   |
 | **opena6**  | Browser Control    | 12350 | ✅ Complete | Selenium Automation, Screenshots        |
 | **opena17** | Homepage Creator   | 12361 | ✅ Complete | Website Generation, Templates           |

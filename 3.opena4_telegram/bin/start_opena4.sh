@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ══════════════════════════════════════════════════════════════════════════════
 # opena4 Start Script (Telegram Agent)
-# Port: 12348 | Kürzel: telep
+# Port: 12346 | Kürzel: telep
 # ══════════════════════════════════════════════════════════════════════════════
 
 set -euo pipefail
@@ -29,7 +29,7 @@ NOHUP_LOG="$LOG_DIR/opena4.nohup.log"
 mkdir -p "$LOG_DIR"
 
 # Port & Service (PORTIER 3.0 Range: 12344-12399)
-PORT=12348
+PORT=12346
 SERVICE_NAME="opena4"
 KUERZEL="tgap"
 

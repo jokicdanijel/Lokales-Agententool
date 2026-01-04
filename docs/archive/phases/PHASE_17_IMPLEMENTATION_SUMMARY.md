@@ -78,7 +78,7 @@ async def health_metrics():
   - Portier (12344) - Dashboard/Coordinator
   - OpenA2 (12345) - Archive
   - Telegram (12346) - Messaging
-  - Inference (12348) - LLM Service
+  - Inference (12346) - LLM Service
   - Generic services (12349-12365) - Template services
 - ✅ Alert rules file reference
 - ✅ Relabel configs for service identification

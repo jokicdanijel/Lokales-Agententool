@@ -114,7 +114,7 @@
 └── requirements.txt
 ```
 
-**Port:** 12348
+**Port:** 12346
 **Status:** 🟡 Planned (Struktur vorhanden)
 
 ---

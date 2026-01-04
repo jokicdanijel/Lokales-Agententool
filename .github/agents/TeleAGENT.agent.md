@@ -22,7 +22,7 @@ tools:
 
 TeleAGENT specializes in managing telecommunication tasks within the ELION Hyper-Dashboard system, specifically:
 
-- Telegram bot integration (opena4, port 12348)
+- Telegram bot integration (opena4, port 12346)
 - Telephone system integration (opena9, port 12355)
 - Call tracking and monitoring (opena10, port 12356)
 - WhatsApp integration (opena8, port 12354)

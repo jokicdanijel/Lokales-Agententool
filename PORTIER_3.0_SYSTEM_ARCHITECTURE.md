@@ -92,7 +92,7 @@ digraph PORTIER_3_0_ARCHITECTURE {
         fontname="Arial Bold";
 
         opena3  [label="opena3\nOpenWebUI Terminal\nPort 12347", fillcolor="#d9edf7"];
-        opena4  [label="opena4\nTelegram Bot\nPort 12348\n🟡 Planned", fillcolor="#fcf8e3"];
+        opena4  [label="opena4\nTelegram Bot\nPort 12346\n🟡 Planned", fillcolor="#fcf8e3"];
         opena5  [label="opena5\nVS Code Agent\nPort 12349\n🟡 Planned", fillcolor="#fcf8e3"];
         opena6  [label="opena6\nBrowser Automation\nPort 12350 (Adapter)\n✅ Running", fillcolor="#d9edf7"];
         opena7  [label="opena7\nE-Mail Client\nPort 12351\n🟡 Planned", fillcolor="#fcf8e3"];
@@ -257,7 +257,7 @@ flowchart TB
     %% =====================
     subgraph Agents["🔧 Operational Agents (opena3-opena19 + opena21)"]
         opena3["opena3<br>OpenWebUI Terminal<br>Port 12347<br>✅ Running"]
-        opena4["opena4<br>Telegram Bot<br>Port 12348<br>🟡 Planned"]
+        opena4["opena4<br>Telegram Bot<br>Port 12346<br>🟡 Planned"]
         opena5["opena5<br>VS Code Agent<br>Port 12349<br>🟡 Planned"]
         opena6["opena6<br>Browser Automation<br>Port 12350 (Adapter)<br>✅ Running"]
         opena7["opena7<br>E-Mail Client<br>Port 12351<br>🟡 Planned"]
@@ -381,7 +381,7 @@ flowchart TB
 | **kordp**        | 12346      | `1.opena1&2_portier/kordp/`         | ✅ Running | Dispatch Gateway — Tool Routing        |
 | **archivp**      | Filesystem | `1.opena1&2_portier/archivp_store/` | ✅ Active  | Local Archive — YYYY/MM/DD Structure   |
 | **opena3**       | 12347      | `2.opena3_openwebui/`               | ✅ Running | OpenWebUI Terminal Agent               |
-| **opena4**       | 12348      | `3.opena4_telegram/`                | 🟡 Planned | Telegram Bot                           |
+| **opena4**       | 12346      | `3.opena4_telegram/`                | 🟡 Planned | Telegram Bot                           |
 | **opena5**       | 12349      | `4.opena5_vscode/`                  | 🟡 Planned | VS Code Agent                          |
 | **opena6**       | 12350      | `5.opena6_browser/`                 | ✅ Adapter | Browser Automation / OpenWebUI Adapter |
 | **opena7**       | 12351      | `6.opena7_email/`                   | 🟡 Planned | E-Mail Client                          |

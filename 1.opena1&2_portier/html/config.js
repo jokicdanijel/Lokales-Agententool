@@ -167,7 +167,7 @@ const PortierConfig = {
   },
   registeredAgents: [
     { id: "opena3", name: "OpenWebUI", port: 12347 },
-    { id: "opena4", name: "Telegram", port: 12348 },
+    { id: "opena4", name: "Telegram", port: 12346 },
     { id: "opena5", name: "VSCode", port: 12351 },
     { id: "opena6", name: "Browser", port: 12350 },
     { id: "opena7", name: "Email", port: 12351 },

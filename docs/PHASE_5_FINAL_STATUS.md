@@ -187,7 +187,7 @@ GET  /status                       → Agent-Status
 12345: opena2 (Archivator)            [Phase 1]
 12346: kordp (Scheduler)              [Phase 1]
 12347: opena4 (Telegram)              [Phase 2]
-12348: opena5 (Browser)               [Phase 2]
+12346: opena5 (Browser)               [Phase 2]
 12349: opena6 (Email)                 [Phase 2]
 12350: opena7 (WhatsApp)              [Phase 3]
 12351: opena8 (Telephone)             [Phase 3]

@@ -16,7 +16,7 @@
 - ✅ opena2 (Archivator) – Port 12345 [HEALTHY]
 - ⏳ kordp (Relay) – Port 12346 [Starting]
 - ✅ opena_finance – Port 12347 [HEALTHY]
-- ✅ opena4_telegram – Port 12348 [HEALTHY]
+- ✅ opena4_telegram – Port 12346 [HEALTHY]
 - ✅ opena19 (Dashboard) – Port 12349 [HEALTHY]
 
 **Phase 2 (Communication - 3):**

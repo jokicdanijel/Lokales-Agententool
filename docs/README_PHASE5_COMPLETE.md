@@ -102,7 +102,7 @@ pytest tests/test_phase5.py -v
 ### Phase 2: Communication Layer (3 Agents)
 
 - **opena4** (12347): Telegram integration
-- **opena5** (12348): Browser automation
+- **opena5** (12346): Browser automation
 - **opena6** (12349): Email management
 
 ### Phase 3: Messaging Expansion (4 Agents)

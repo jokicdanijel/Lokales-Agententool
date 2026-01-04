@@ -15,7 +15,7 @@
 
 - ✅ Port 8080 Blockierung mit intelligenten Ausschlüssen (venv*, docker-compose, openwebui*)
 - ✅ Muss-Dateien Prüfung (8 kritische Dateien)
-- ✅ Port-Zuordnungs-Validierung (telegram/12347, vscode/12348, mail/12349, whatsapp/12350)
+- ✅ Port-Zuordnungs-Validierung (telegram/12347, vscode/12346, mail/12349, whatsapp/12350)
 - ✅ Bereichsprüfung (12344–12399 Policy-Einhaltung)
 - ✅ Ausführbarkeits-Checks (validate_portier.sh, bin/ops.sh)
 - ✅ tools_registry.json JSON-Validierung mit Kernschlüssel-Prüfung
@@ -177,7 +177,7 @@ cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 bash 1.opena1&2_portier/skripte/validate_portier.sh
 
 # Port-Zuordnungen prüfen
-for port in 12347 12348 12349 12350; do
+for port in 12347 12346 12349 12350; do
   grep -q "PORT = $port" [4567].*_agent/main_agent.py && echo "✅ Port $port found"
 done
 

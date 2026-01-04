@@ -90,8 +90,8 @@ Created comprehensive audit trail:
 ```
 Window:     [12344, 12399] (56 ports available)
 Forbidden:  [8080]         (Reserved for OpenWebUI)
-Services:   opena1 (12344), kordp (12346), archivp (12348), opena2 (12348)
-Agents:     telegram (12347), vscode (12348), mail (12349), whatsapp (12350)
+Services:   opena1 (12344), kordp (12346), archivp (12346), opena2 (12346)
+Agents:     telegram (12347), vscode (12346), mail (12349), whatsapp (12350)
 ```
 
 ### Health-Endpoint Format

@@ -9,7 +9,7 @@ echo "Aktualisiere alle Agent-READMEs..."
 
 # Define agent mapping
 declare -A AGENTS=(
-    ["3.opena4_telegram"]="opena4:12348:telep:Telegram Bot"
+    ["3.opena4_telegram"]="opena4:12346:telep:Telegram Bot"
     ["4.opena5_vscode"]="opena5:12351:vscop:VS Code Agent"
     ["6.opena7_email"]="opena7:12353:emailp:E-Mail Client"
     ["7.opena8_whatsapp"]="opena8:12354:whatsappp:WhatsApp API"

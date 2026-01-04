@@ -9,7 +9,7 @@ All 20 agents configured with strict bearer token authentication.
 | opena1  | Coordinator | 12344 | sk_opena1_coord_12344_strict_v1  |
 | opena2  | Archivator  | 12345 | sk_opena2_arch_12345_strict_v1   |
 | opena3  | WebUI       | 12347 | sk_opena3_web_12347_strict_v1    |
-| opena4  | Telegram    | 12348 | sk_opena4_tele_12348_strict_v1   |
+| opena4  | Telegram    | 12346 | sk_opena4_tele_12346_strict_v1   |
 | opena5  | VSCode      | 12350 | sk_opena5_vsc_12350_strict_v1    |
 | opena6  | Browser     | 12351 | sk_opena6_brow_12351_strict_v1   |
 | opena7  | Email       | 12352 | sk_opena7_mail_12352_strict_v1   |

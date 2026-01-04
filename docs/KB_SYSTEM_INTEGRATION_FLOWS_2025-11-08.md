@@ -18,7 +18,7 @@
                      │
                      ▼ HTTPS (Telegram Bot API)
 ┌─────────────────────────────────────────────────────────────┐
-│ OPENA4_TELEGRAM (Port 12348)                                │
+│ OPENA4_TELEGRAM (Port 12346)                                │
 │ 1. Webhook Handler receives message                         │
 │ 2. Validate: X-Telegram-Bot-Api-Secret-Token header         │
 │ 3. Parse: Extract command = "balance"                       │
@@ -148,7 +148,7 @@ done
 
 ```bash
 curl -s http://127.0.0.1:12347/health | jq .status
-curl -s http://127.0.0.1:12348/health | jq .status
+curl -s http://127.0.0.1:12346/health | jq .status
 curl -s http://127.0.0.1:12344/agent/registry | jq '.agents | length'
 ```
 
@@ -380,7 +380,7 @@ Load balancer distributes:
 ### 9:05-9:10 AM – Application Check
 
 - [ ] opena_finance health: `curl -s http://127.0.0.1:12347/health | jq .status` = "healthy"
-- [ ] opena4_telegram health: `curl -s http://127.0.0.1:12348/health | jq .status` = "healthy"
+- [ ] opena4_telegram health: `curl -s http://127.0.0.1:12346/health | jq .status` = "healthy"
 - [ ] Both registered in opena1 registry
 - [ ] opena_finance has 2 accounts & 3 transactions from Nov 8
 

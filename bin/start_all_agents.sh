@@ -32,7 +32,7 @@ declare -a AGENTS=(
     "opena1:12344:1.opena1&2_portier/main_opena1.py"
     "opena2:12345:1.opena1&2_portier/main_opena2.py"
     "opena3:12347:2.opena3_openwebui/main_opena3.py"
-    "opena4:12348:3.opena4_telegram/main_opena4.py"
+    "opena4:12346:3.opena4_telegram/main_opena4.py"
     "opena5:12351:4.opena5_vscode/main_opena5.py"
     "opena6:12350:5.opena6_browser/main_opena6.py"
     "opena7:12352:6.opena7_email/main_opena7.py"

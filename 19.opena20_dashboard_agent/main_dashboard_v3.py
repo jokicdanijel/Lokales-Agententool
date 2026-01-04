@@ -51,7 +51,7 @@ AGENT_REGISTRY: list[dict[str, Any]] = [
     {"id": "opena1", "name": "Koordinator", "kuerzel": "kordp", "port": 12344, "icon": "🎯"},
     {"id": "opena2", "name": "Archivator", "kuerzel": "archivp", "port": 12345, "icon": "📦"},
     {"id": "opena3", "name": "OpenWebUI Terminal", "kuerzel": "owuip", "port": 12347, "icon": "🖥️"},
-    {"id": "opena4", "name": "Telegram Agent", "kuerzel": "telep", "port": 12348, "icon": "📱"},
+    {"id": "opena4", "name": "Telegram Agent", "kuerzel": "telep", "port": 12346, "icon": "📱"},
     {"id": "opena5", "name": "VS Code Agent", "kuerzel": "vscop", "port": 12351, "icon": "💻"},
     {"id": "opena6", "name": "Browser Agent", "kuerzel": "browsep", "port": 12352, "icon": "🌐"},
     {"id": "opena7", "name": "Email Agent", "kuerzel": "emailp", "port": 12353, "icon": "📧"},

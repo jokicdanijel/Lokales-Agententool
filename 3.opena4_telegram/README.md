@@ -3,7 +3,7 @@
 ## 🎯 Überblick
 
 **Agent:** Telegram Mobile
-**Port:** 12348
+**Port:** 12346
 **Spezialisierung:** mobile_communication
 **Status:** ✅ Enterprise-Ready
 
@@ -36,7 +36,7 @@ Mobile Telegram Anbindung
 ## 🖥️ Dashboard Access
 
 **HTML Dashboard:** `file:///home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/3.opena4_telegram/html/index.html`
-**Web Access:** `http://127.0.0.1:12348/`
+**Web Access:** `http://127.0.0.1:12346/`
 
 ## 🔧 Installation & Setup
 
@@ -55,7 +55,7 @@ cp .env.example .env
 python3 main.py
 
 # 4. Health Check
-curl http://127.0.0.1:12348/health
+curl http://127.0.0.1:12346/health
 
 # 5. Dashboard öffnen
 open html/index.html
@@ -69,7 +69,7 @@ TELEGRAM_TOKEN=bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11
 BEARER_TOKEN=c899b90d-faf8-485b-afa4-078357cf5313
 PORTIER_MODE=production
 LOG_LEVEL=INFO
-PORT=12348
+PORT=12346
 
 # Optional: PORTIER Stack Integration
 OPENA1_URL=http://127.0.0.1:12344
@@ -95,7 +95,7 @@ from telegram import Bot
 # Environment Variables
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 BEARER_TOKEN = os.getenv("BEARER_TOKEN")
-PORT = int(os.getenv("PORT", 12348))
+PORT = int(os.getenv("PORT", 12346))
 
 # Telegram Bot Instance
 bot = Bot(token=TELEGRAM_TOKEN)
@@ -188,7 +188,7 @@ docker build -t opena4_telegram .
 # Run Container
 docker run -d \
   --name opena4_telegram \
-  -p 12348:12348 \
+  -p 12346:12346 \
   -e TELEGRAM_TOKEN="your_bot_token" \
   -e BEARER_TOKEN="c899b90d-faf8-485b-afa4-078357cf5313" \
   -e PORTIER_MODE="production" \
@@ -196,7 +196,7 @@ docker run -d \
   opena4_telegram
 
 # Health Check
-curl http://127.0.0.1:12348/health
+curl http://127.0.0.1:12346/health
 
 # View Logs
 docker logs -f opena4_telegram
@@ -211,7 +211,7 @@ services:
   opena4_telegram:
     build: .
     ports:
-      - "12348:12348"
+      - "12346:12346"
     environment:
       - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
       - BEARER_TOKEN=${BEARER_TOKEN}
@@ -220,7 +220,7 @@ services:
       - portier_network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:12348/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:12346/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -246,7 +246,7 @@ on:
 
 env:
   SERVICE_NAME: opena4_telegram
-  PORT: 12348
+  PORT: 12346
   REGISTRY: ghcr.io
 
 jobs:
@@ -295,7 +295,7 @@ import requests
 def register_with_portier():
     registration_data = {
         "agent_id": "opena4_telegram",
-        "port": 12348,
+        "port": 12346,
         "specialization": "mobile_communication",
         "capabilities": [
             "telegram_messaging",
@@ -390,8 +390,8 @@ async def metrics():
 ### Port Conflicts
 
 ```bash
-# Check if port 12348 is in use
-lsof -i :12348
+# Check if port 12346 is in use
+lsof -i :12346
 
 # Kill existing process
 pkill -f "main.py" || pkill -f "opena4"
@@ -429,7 +429,7 @@ curl http://127.0.0.1:12345/health  # opena2
 curl http://127.0.0.1:12349/health  # dashboard
 
 # Test Local Agent
-curl http://127.0.0.1:12348/health  # opena4_telegram
+curl http://127.0.0.1:12346/health  # opena4_telegram
 ```
 
 ## 📞 Support
@@ -437,9 +437,9 @@ curl http://127.0.0.1:12348/health  # opena4_telegram
 Bei Fragen oder Problemen:
 
 - **🎯 HYPER-DASHBOARD:** http://127.0.0.1:12349/
-- **📊 Agent Dashboard:** http://127.0.0.1:12348/
+- **📊 Agent Dashboard:** http://127.0.0.1:12346/
 - **📋 Logs:** `tail -f logs/agent.log`
-- **🔍 Health Check:** `curl http://127.0.0.1:12348/health`
+- **🔍 Health Check:** `curl http://127.0.0.1:12346/health`
 - **🚀 Stack Status:** `curl http://127.0.0.1:12349/api/status/all`
 - **⚙️ PORTIER Docs:** `docs/PORTIER_3.0_INTEGRATION.md`
 

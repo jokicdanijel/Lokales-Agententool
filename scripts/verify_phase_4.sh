@@ -26,7 +26,7 @@ declare -A AGENTS=(
     ["opena2"]="12345|Archive"
     ["kordp"]="12346|Relay"
     ["opena_finance"]="12347|Finance"
-    ["opena4_telegram"]="12348|Telegram"
+    ["opena4_telegram"]="12346|Telegram"
     ["opena19"]="12349|Dashboard"
 
     # Phase 2

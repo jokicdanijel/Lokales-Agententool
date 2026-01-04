@@ -55,7 +55,7 @@
    ┌────────┐   ┌────────┐     ┌────────┐  ┌─────┐       ┌─────────┐
    │ opena3 │   │ opena4 │     │ opena5 │  │ ... │       │ opena20 │
    │ WebUI  │   │Telegram│     │VSCode  │  │     │       │Dashboard│
-   │ 12347  │   │ 12348  │     │ 12350  │  │     │       │ 12365   │
+   │ 12347  │   │ 12346  │     │ 12350  │  │     │       │ 12365   │
    └────────┘   └────────┘     └────────┘  └─────┘       └─────────┘
 
           AGENT LAYER (LocalAgent-Pro Instances)
@@ -174,10 +174,10 @@
 
 ---
 
-#### opena4-telegram (Port 12348)
+#### opena4-telegram (Port 12346)
 
 **Rolle:** Telegram Bot Integration
-**Bearer Token:** `sk_opena4_tele_12348_strict_v1`
+**Bearer Token:** `sk_opena4_tele_12346_strict_v1`
 **Status:** 🚀 Ready for Deployment
 
 **Functionality:**
@@ -442,7 +442,7 @@ VALID_BEARER_TOKENS = {
     "opena1-coordinator": "sk_opena1_coord_12344_strict_v1",
     "opena2-archivator": "sk_opena2_arch_12345_strict_v1",
     "opena3-webui": "sk_opena3_web_12347_strict_v1",
-    "opena4-telegram": "sk_opena4_tele_12348_strict_v1",
+    "opena4-telegram": "sk_opena4_tele_12346_strict_v1",
     # ... (18 more agents)
     "opena20-dashboard": "sk_opena20_dash_12365_strict_v1",
     "test-harness": "sk_test_harness_phase15_strict_v1",
@@ -780,7 +780,7 @@ VALID_BEARER_TOKENS = {
 
     # Interface Agents
     "opena3-webui": "sk_opena3_web_12347_strict_v1",
-    "opena4-telegram": "sk_opena4_tele_12348_strict_v1",
+    "opena4-telegram": "sk_opena4_tele_12346_strict_v1",
     "opena5-vscode": "sk_opena5_vsc_12350_strict_v1",
     "opena6-browser": "sk_opena6_brow_12351_strict_v1",
     "opena7-email": "sk_opena7_mail_12352_strict_v1",

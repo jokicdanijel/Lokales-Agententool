@@ -19,7 +19,7 @@ BLUE = "\033[0;34m"
 NC = "\033[0m"  # No Color
 
 # Config
-BASE_URL = "http://127.0.0.1:12348"
+BASE_URL = "http://127.0.0.1:12346"
 BEARER_TOKEN = os.getenv("BEARER_TOKEN", "")
 
 if not BEARER_TOKEN:
@@ -47,7 +47,7 @@ def test_health():
 
         assert data.get("status") == "ok", f"Unexpected status: {data.get('status')}"
         assert data.get("agent") == "opena4", f"Unexpected agent: {data.get('agent')}"
-        assert data.get("port") == 12348, f"Unexpected port: {data.get('port')}"
+        assert data.get("port") == 12346, f"Unexpected port: {data.get('port')}"
 
         print(f"{GREEN}✅ Health OK: {json.dumps(data, ensure_ascii=False)}{NC}")
         return True
@@ -66,7 +66,7 @@ def test_root():
 
         assert data.get("kuerzel") == "telep", f"Unexpected kuerzel: {data.get('kuerzel')}"
         assert data.get("agent") == "opena4", f"Unexpected agent: {data.get('agent')}"
-        assert data.get("port") == 12348, f"Unexpected port: {data.get('port')}"
+        assert data.get("port") == 12346, f"Unexpected port: {data.get('port')}"
 
         print(f"{GREEN}✅ Root OK: {json.dumps(data, ensure_ascii=False)}{NC}")
         return True

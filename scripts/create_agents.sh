@@ -6,7 +6,7 @@ AGENTS=(
   "opena2_archivator|12345|File-based storage and archiving system"
   "kordp_scheduler|12346|Event coordination and scheduling"
   "opena4_telegram|12347|Telegram integration and messaging"
-  "opena5_browser|12348|Web browser automation"
+  "opena5_browser|12346|Web browser automation"
   "opena6_email|12349|Email client and management"
   "opena7_whatsapp|12350|WhatsApp integration"
   "opena8_telephone|12351|Telephone system integration"

@@ -58,7 +58,7 @@ Zentral-Dashboard mit KPI-Views, Patch-Delivery-Alerts, Real-Time-Monitoring und
   - opena2 (Archivator): Port 12345 ✅
   - kordp (Relay): Port 12346 ✅
   - opena_finance: Port 12347 ✅
-  - opena4_telegram: Port 12348 ✅
+  - opena4_telegram: Port 12346 ✅
 
 ### 🔧 Recent Fixes
 

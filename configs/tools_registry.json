@@ -6,7 +6,7 @@
     "description": "Telegram messaging"
   },
   "tool_vscode": {
-    "path": "http://127.0.0.1:12348/message",
+    "path": "http://127.0.0.1:12346/message",
     "status": "active",
     "agent": "opena5",
     "description": "VSCode integration"

@@ -23,7 +23,7 @@
     │              │              │
 ┌───▼────┐   ┌────▼─────┐   ┌───▼──────┐
 │OpenA2  │   │Telegram  │   │Inference │
-│12345   │   │12346     │   │12348     │
+│12345   │   │12346     │   │12346     │
 │Archiv  │   │Messaging │   │llama2    │
 └────────┘   └──────────┘   └──────────┘
     │              │              │
@@ -46,7 +46,7 @@
 | **12344** | **Portier**   | Koordinator/Dispatcher       | `portierp`     | `/route/update`, `/dispatch/kordp` | ✅ Online |
 | **12345** | **OpenA2**    | Archivator/JSONL Safepoints  | `archp`        | `/store/archivp`, `/query/archivp` | ✅ Online |
 | **12346** | **Telegram**  | Messaging ChatOps            | `telep`        | `/send_message`, `/poll_updates`   | ✅ Online |
-| **12348** | **Inference** | Llama2/Ollama ChatCompletion | `inferp`       | `/chat/completions`                | ✅ Online |
+| **12346** | **Inference** | Llama2/Ollama ChatCompletion | `inferp`       | `/chat/completions`                | ✅ Online |
 
 ---
 
@@ -109,7 +109,7 @@ OpenA2 CMD (12345) ← Safepoint: SP<n>_src→dst_CMD.json
     ↓
 kordp/Dispatcher (intern, Portier-Modul)
     ↓
-Zielservice (12346 Telegram / 12348 Inference / 12349-12368 Pool)
+Zielservice (12346 Telegram / 12346 Inference / 12349-12368 Pool)
     ↓
 OpenA2 RESP (12345) ← Safepoint: SP<n>_dst→src_RESP.json
     ↓
@@ -214,7 +214,7 @@ Client/UI (3000)
 
 ### 4. **Inference Completion** (Llama2/Ollama)
 
-**Endpoint:** `POST http://127.0.0.1:12348/chat/completions`
+**Endpoint:** `POST http://127.0.0.1:12346/chat/completions`
 
 ```json
 {
@@ -302,7 +302,7 @@ scrape_configs:
           - "127.0.0.1:12344" # Portier
           - "127.0.0.1:12345" # OpenA2
           - "127.0.0.1:12346" # Telegram
-          - "127.0.0.1:12348" # Inference
+          - "127.0.0.1:12346" # Inference
           - "127.0.0.1:12350" # Mini-Orchestrator
 ```
 
@@ -369,7 +369,7 @@ Gesamtprojekt/
 │   │   ├── portier/        (12344)
 │   │   ├── opena2/         (12345)
 │   │   ├── telegram/       (12346)
-│   │   ├── inference/      (12348)
+│   │   ├── inference/      (12346)
 │   │   └── pool/
 │   │       ├── agent01/    (12349)
 │   │       ├── agent02/    (12350) ← Mini-Orchestrator

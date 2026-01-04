@@ -67,7 +67,7 @@ nano .env
 bin/ops.sh doc:agents
 bin/ops.sh venv:sync opena4
 bin/ops.sh start:agent opena4
-curl -s http://127.0.0.1:12348/health | jq .</code></pre>
+curl -s http://127.0.0.1:12346/health | jq .</code></pre>
   </section>
 
   <section class="card">
@@ -116,8 +116,8 @@ curl -s http://127.0.0.1:12348/health | jq .</code></pre>
         <tr>
           <td class="mono">opena4</td>
           <td class="mono">3.opena4_telegram</td>
-          <td class="mono">12348</td>
-          <td class="mono"><a href="http://127.0.0.1:12348/health">http://127.0.0.1:12348/health</a></td>
+          <td class="mono">12346</td>
+          <td class="mono"><a href="http://127.0.0.1:12346/health">http://127.0.0.1:12346/health</a></td>
           <td class="mono"><a href="https://hyperdashboard-one.de/opena4/">https://hyperdashboard-one.de/opena4/</a></td>
           <td class="mono">bin/ops.sh start:agent opena4</td>
         </tr>
@@ -283,7 +283,7 @@ bin/ops.sh venv:sync opena4
 bin/ops.sh start:agent opena4
 
 # Health check
-curl -s http://127.0.0.1:12348/health | jq .
+curl -s http://127.0.0.1:12346/health | jq .
 
 # Logs
 tail -n 200 logs/opena4.nohup.log

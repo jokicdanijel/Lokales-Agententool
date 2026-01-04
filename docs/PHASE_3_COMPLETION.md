@@ -130,7 +130,7 @@ Phase 3 successfully deployed **3 new agents** (Telephone, Call-Tracking, Accoun
 - ✅ opena2 (Archivator) – Port 12345
 - ✅ kordp (Relay) – Port 12346
 - ✅ opena_finance – Port 12347
-- ✅ opena4_telegram – Port 12348
+- ✅ opena4_telegram – Port 12346
 - ✅ opena19 (Dashboard) – Port 12349
 
 **Phase 2 (Communication – 3 services):**

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 🔀 OpenA4 Reverse Proxy - Optimierte Version
-Port: 12349 → 12348
-Route: /agent/opena4 → http://127.0.0.1:12348/
+Port: 12349 → 12346
+Route: /agent/opena4 → http://127.0.0.1:12346/
 """
 
 import logging
@@ -19,13 +19,13 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(level
 logger = logging.getLogger("reverse_proxy")
 
 # Konfiguration
-TARGET_URL = os.getenv("TARGET_URL", "http://127.0.0.1:12348")
+TARGET_URL = os.getenv("TARGET_URL", "http://127.0.0.1:12346")
 PROXY_PORT = int(os.getenv("PROXY_PORT", "12349"))
 BIND_HOST = os.getenv("BIND_HOST", "0.0.0.0")
 REQUEST_TIMEOUT = 30.0
 
 # FastAPI App
-app = FastAPI(title="OpenA4 Reverse Proxy", description="Leitet /agent/opena4 zu Port 12348 weiter", version="1.0.0")
+app = FastAPI(title="OpenA4 Reverse Proxy", description="Leitet /agent/opena4 zu Port 12346 weiter", version="1.0.0")
 
 # HTTP Client mit Connection Pooling
 http_client = httpx.AsyncClient(
@@ -64,7 +64,7 @@ async def root():
 @app.api_route("/agent/opena4", methods=["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"])
 async def proxy_opena4(request: Request, path: str = ""):
     """
-    🔀 Leitet /agent/opena4 zu Port 12348 weiter
+    🔀 Leitet /agent/opena4 zu Port 12346 weiter
     """
     stats["requests"] += 1
 

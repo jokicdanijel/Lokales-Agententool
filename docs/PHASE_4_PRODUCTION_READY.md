@@ -14,7 +14,7 @@
 | Component            | Files                            | Status             | Ports       |
 | -------------------- | -------------------------------- | ------------------ | ----------- |
 | **opena4**           | main_agent.py, start_agent.sh    | ✅ Ready           | 12347       |
-| **opena5**           | main_agent.py, start_agent.sh    | ✅ Ready           | 12348       |
+| **opena5**           | main_agent.py, start_agent.sh    | ✅ Ready           | 12346       |
 | **opena6**           | main_agent.py, start_agent.sh    | ✅ Ready           | 12349       |
 | **opena7**           | main_agent.py, start_agent.sh    | ✅ Ready           | 12350       |
 | **CLI Suite**        | 20 scripts in bin/               | ✅ Ready           | N/A         |
@@ -70,7 +70,7 @@
 
 ```
 ✅ opena4 (Telegram):  12347 ← Within pool [12344-12399]
-✅ opena5 (VSCode):    12348 ← Within pool [12344-12399]
+✅ opena5 (VSCode):    12346 ← Within pool [12344-12399]
 ✅ opena6 (Mail):      12349 ← Within pool [12344-12399]
 ✅ opena7 (WhatsApp):  12350 ← Within pool [12344-12399]
 ✅ Dashboard:          12349 ← Coordinated with opena6
@@ -100,7 +100,7 @@
 │  FastAPI Dashboard (main_dashboard.py)      │
 ├──────────┬──────────┬──────────┬──────────┤
 │ opena4   │ opena5   │ opena6   │ opena7   │
-│ :12347   │ :12348   │ :12349   │ :12350   │
+│ :12347   │ :12346   │ :12349   │ :12350   │
 └──────────┴──────────┴──────────┴──────────┘
          ↓
     ┌─────────────┐

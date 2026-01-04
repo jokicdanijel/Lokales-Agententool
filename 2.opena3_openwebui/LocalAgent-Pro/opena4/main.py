@@ -59,10 +59,10 @@ class ConfigManager:
                 logger.info(f"✅ Config loaded from {config_file}")
             else:
                 logger.warning(f"Config file not found: {config_file}")
-                config = {"service": "opena4", "port": 12348}
+                config = {"service": "opena4", "port": 12346}
 
             # Override with environment variables
-            config["port"] = int(os.getenv("OPENA4_PORT", config.get("port", 12348)))
+            config["port"] = int(os.getenv("OPENA4_PORT", config.get("port", 12346)))
             config["bearer_token"] = os.getenv(
                 "OPENA4_BEARER_TOKEN", os.getenv("BEARER_TOKEN", "sk_opena4_compute_v3_production")
             )

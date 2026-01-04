@@ -138,7 +138,7 @@ jobs:
         run: |
           echo "🔍 Checking port allocations…"
           grep -q "PORT = 12347" 4.telegram_agent/main_agent.py || { echo "❌ Port 12347 not found in telegram_agent"; exit 1; }
-          grep -q "PORT = 12348" 5.vscode_agent/main_agent.py || { echo "❌ Port 12348 not found in vscode_agent"; exit 1; }
+          grep -q "PORT = 12346" 5.vscode_agent/main_agent.py || { echo "❌ Port 12346 not found in vscode_agent"; exit 1; }
           grep -q "PORT = 12349" 6.mail_agent/main_agent.py || { echo "❌ Port 12349 not found in mail_agent"; exit 1; }
           grep -q "PORT = 12350" 7.whatsapp_agent/main_agent.py || { echo "❌ Port 12350 not found in whatsapp_agent"; exit 1; }
           echo "✅ All ports within policy range (12344–12399)."
@@ -178,7 +178,7 @@ jobs:
 
           ### Agents Deployed
           - Port 12347: telegram_agent ✅
-          - Port 12348: vscode_agent ✅
+          - Port 12346: vscode_agent ✅
           - Port 12349: mail_agent ✅
           - Port 12350: whatsapp_agent ✅
 
@@ -353,7 +353,7 @@ bash 1.opena1&2_portier/skripte/validate_portier.sh
 echo "✅ Policy validator erfolgreich"
 
 # 2. Teste Port-Zuordnungen
-for port in 12347 12348 12349 12350; do
+for port in 12347 12346 12349 12350; do
   grep -q "PORT = $port" *.py 2>/dev/null && echo "✅ Port $port found" || echo "❌ Port $port missing"
 done
 

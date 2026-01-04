@@ -77,7 +77,7 @@
                 </div>
                 <div class="info-card">
                     <h3>Port</h3>
-                    <div class="value">12348</div>
+                    <div class="value">12346</div>
                 </div>
                 <div class="info-card">
                     <h3>Kürzel</h3>
@@ -95,7 +95,7 @@
             <button class="btn" onclick="checkHealth()">❤️ Health Check</button>
             <button class="btn" onclick="checkStatus()">📊 Status abrufen</button>
             <button class="btn" onclick="location.href='http://127.0.0.1:12349'">🏠 Zum Dashboard</button>
-            <button class="btn" onclick="location.href='http://127.0.0.1:12348/health'">🔗 Direkt öffnen</button>
+            <button class="btn" onclick="location.href='http://127.0.0.1:12346/health'">🔗 Direkt öffnen</button>
         </div>
 
         <div class="controls">
@@ -109,7 +109,7 @@
             const response = document.getElementById('response');
             response.textContent = 'Prüfe Health-Status...';
             try {
-                const res = await fetch('http://127.0.0.1:12348/health');
+                const res = await fetch('http://127.0.0.1:12346/health');
                 const data = await res.json();
                 response.textContent = JSON.stringify(data, null, 2);
                 document.getElementById('status').textContent = data.status || 'OK';
@@ -123,7 +123,7 @@
             const response = document.getElementById('response');
             response.textContent = 'Rufe Status ab...';
             try {
-                const res = await fetch('http://127.0.0.1:12348/status');
+                const res = await fetch('http://127.0.0.1:12346/status');
                 const data = await res.json();
                 response.textContent = JSON.stringify(data, null, 2);
             } catch(e) {

@@ -166,7 +166,7 @@ curl -s http://127.0.0.1:12346/health | jq .status
 curl -s http://127.0.0.1:12347/health | jq .status
 
 # Check opena4_telegram (Optional but recommended)
-curl -s http://127.0.0.1:12348/health | jq .status
+curl -s http://127.0.0.1:12346/health | jq .status
 ```
 
 **Expected:** All return `"status": "healthy"`
@@ -369,7 +369,7 @@ Authorization: Bearer <token_from_.env>
     },
     {
       "name": "opena4_telegram",
-      "port": 12348,
+      "port": 12346,
       "status": "healthy",
       "last_check": "2025-11-08T18:35:00Z"
     }
@@ -597,7 +597,7 @@ watch -n 5 'curl -s http://127.0.0.1:12349/health | jq .'
 watch -n 5 'cat agent_registry.json | jq .agents | head -20'
 
 # Monitor all services
-watch -n 2 'for port in 12344 12345 12346 12347 12348 12349; do echo "Port $port:"; curl -s http://127.0.0.1:$port/health | jq .status; done'
+watch -n 2 'for port in 12344 12345 12346 12347 12346 12349; do echo "Port $port:"; curl -s http://127.0.0.1:$port/health | jq .status; done'
 ```
 
 ---
@@ -622,7 +622,7 @@ contextlib           # Context managers (used for SSE)
 | opena1 (Coordinator) | 12344 | Agent coordination (optional)   |
 | opena2 (Archive)     | 12345 | Event logging (optional)        |
 | opena_finance        | 12347 | Finance widget data (optional)  |
-| opena4_telegram      | 12348 | Telegram widget data (optional) |
+| opena4_telegram      | 12346 | Telegram widget data (optional) |
 | kordp (Relay)        | 12346 | Message routing (optional)      |
 
 **All optional:** Dashboard works with or without them, but data won't populate.
@@ -635,7 +635,7 @@ contextlib           # Context managers (used for SSE)
 
 - [ ] All 5 existing services running:
   ```bash
-  for svc in 12344 12345 12346 12347 12348; do
+  for svc in 12344 12345 12346 12347 12346; do
     echo "Port $svc: $(curl -s http://127.0.0.1:$svc/health | jq .status)"
   done
   ```
@@ -688,7 +688,7 @@ contextlib           # Context managers (used for SSE)
   ```bash
   curl -X POST http://127.0.0.1:12349/api/agent/register \
     -H "Authorization: Bearer $TOKEN" \
-    -d '{"service": "opena4_telegram", "port": 12348}' | jq .
+    -d '{"service": "opena4_telegram", "port": 12346}' | jq .
   ```
 - [ ] Register opena1, opena2, kordp (same pattern)
 

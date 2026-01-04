@@ -13,7 +13,7 @@ Dieses Guide zeigt den kompletten Lifecycle am Beispiel **opena5 (VSCode Agent)*
 - **Port:** 12350 (siehe [AGENT_STRUCTURE.md](AGENT_STRUCTURE.md))
 - **Kategorie:** Connector-Agent
 - **Deployment-Ziel:** `www.hyperdashboard-one.de/opena5/`
-- **Dashboard:** opena20 (Port 12348)
+- **Dashboard:** opena20 (Port 12346)
 
 ### Voraussetzungen
 
@@ -682,7 +682,7 @@ pytest tests/ --cov=. --cov-report=term-missing
 cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 
 # Starte Dashboard (opena20) falls nicht läuft
-if ! lsof -i :12348 &> /dev/null; then
+if ! lsof -i :12346 &> /dev/null; then
     echo "🚀 Starte Dashboard opena20..."
     cd 19.opena20_dashboard_agent
     nohup python3 main_dashboard_v3.py > logs/dashboard.log 2>&1 &
@@ -691,7 +691,7 @@ if ! lsof -i :12348 &> /dev/null; then
 fi
 
 # Prüfe Dashboard-Agent-Discovery
-curl -s http://localhost:12348/api/agents | jq '.agents[] | select(.name=="opena5")'
+curl -s http://localhost:12346/api/agents | jq '.agents[] | select(.name=="opena5")'
 
 # Erwartete Ausgabe:
 # {
@@ -927,7 +927,7 @@ cat >> docker-compose.yml << 'YAML'
       - agents-network
     environment:
       - AGENT_NAME=opena5
-      - DASHBOARD_URL=http://opena20:12348
+      - DASHBOARD_URL=http://opena20:12346
     volumes:
       - ./4.opena5_vscode:/app
       - opena5-logs:/app/logs

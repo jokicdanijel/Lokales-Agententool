@@ -34,7 +34,7 @@
 | ---------- | ------ | ------------- | ------------------------------ | ----------------- |
 | **opena3** | 8080\* | `openweb`     | OpenWebUI Terminal Interface   | `/api/openweb`    |
 | **opena4** | 12347  | `telep`       | Telegram Mobile-Anbindung      | `/telegram/send`  |
-| **opena5** | 12348  | `vscop`       | VS Code Programmier-Bridge     | `/vscode/task`    |
+| **opena5** | 12346  | `vscop`       | VS Code Programmier-Bridge     | `/vscode/task`    |
 | **opena6** | 12349  | `browsp`      | Browser-Bedienung (Automation) | `/browser/action` |
 
 \*Port 8080 ist exklusiv reserviert (Docker/OpenWebUI)
@@ -278,7 +278,7 @@ OPENA1_PORT=12344   # Koordinator
 OPENA2_PORT=12345   # Archivator
 OPENA3_PORT=8080    # OpenWebUI (exclusive)
 OPENA4_PORT=12347   # Telegram
-OPENA5_PORT=12348   # VS Code
+OPENA5_PORT=12346   # VS Code
 OPENA6_PORT=12349   # Browser
 OPENA7_PORT=12350   # Email Chatbot
 OPENA8_PORT=12351   # WhatsApp

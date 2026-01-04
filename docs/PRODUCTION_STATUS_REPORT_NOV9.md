@@ -28,7 +28,7 @@ The **ELION Hyper-Dashboard System** has successfully completed Phase 1 implemen
 | Archivator (opena2)        | 12345     | ✅ Running     | ✅ ok     | Audit trail, safepoint storage |
 | Relay (kordp)              | 12346     | ✅ Running     | ✅ ok     | Message relay                  |
 | Finance DB (opena_finance) | 12347     | ✅ Running     | ✅ ok     | €6,050 balance, 2 accounts     |
-| Telegram Bridge (opena4)   | 12348     | ✅ Running     | ✅ ok     | 5 endpoints, 8/8 tests passing |
+| Telegram Bridge (opena4)   | 12346     | ✅ Running     | ✅ ok     | 5 endpoints, 8/8 tests passing |
 | **Dashboard (opena19)**    | **12349** | **✅ Running** | **✅ ok** | **Central orchestrator**       |
 
 ### Agent Registry (opena19 Dashboard)

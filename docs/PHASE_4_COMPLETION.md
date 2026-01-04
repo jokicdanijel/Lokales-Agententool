@@ -187,7 +187,7 @@ $ for port in 12359 12360 12361 12362 12363; do
 │  ├─ opena2 (Archive - 12345) ✅               │
 │  ├─ kordp (Relay - 12346)                      │
 │  ├─ opena_finance (DB - 12347) ✅             │
-│  ├─ opena4_telegram (Messaging - 12348) ✅    │
+│  ├─ opena4_telegram (Messaging - 12346) ✅    │
 │  └─ opena19_dashboard (API - 12349) ✅        │
 │                                                 │
 │  Phase 2 (Communication - 3)                    │

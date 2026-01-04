@@ -36,7 +36,7 @@
 
 ### 4. Telegram-Bridge (17:00-18:11) 🎉
 
-- **Service:** `main_opena4_telegram.py` (Port 12348)
+- **Service:** `main_opena4_telegram.py` (Port 12346)
 - **Webhook:** Telegram Bot message handler (secret-validated)
 - **Routing:**
   - `/balance` → opena_finance dashboard
@@ -58,7 +58,7 @@
 | 12345 | opena2          | Archivator  | ✅     | `bin/start_opena2.sh`          | curl health                  |
 | 12346 | kordp           | Relay       | ✅     | `bin/start_kordp.sh`           | curl health                  |
 | 12347 | opena_finance   | Finance     | ✅     | `bin/start_opena_finance.sh`   | bash test_opena_finance.sh   |
-| 12348 | opena4_telegram | Telegram    | ✅     | `bin/start_opena4_telegram.sh` | bash test_opena4_telegram.sh |
+| 12346 | opena4_telegram | Telegram    | ✅     | `bin/start_opena4_telegram.sh` | bash test_opena4_telegram.sh |
 | 12349 | opena19         | Dashboard   | ⏳     | `bin/start_opena19.sh`         | (broken, debug nov 9)        |
 
 ---
@@ -99,7 +99,7 @@
 ### Infrastructure
 
 - **Services Deployed:** 4 (opena1, 2, finance, telegram)
-- **Ports Used:** 12344, 12345, 12346, 12347, 12348
+- **Ports Used:** 12344, 12345, 12346, 12347, 12346
 - **Database:** SQLite (finance.db, auto-initialized)
 
 ---
@@ -195,7 +195,7 @@ bash 19.dashboard_agent/tests/test_opena4_telegram.sh
 
 # Check status
 curl -s http://127.0.0.1:12347/health | jq .
-curl -s http://127.0.0.1:12348/health | jq .
+curl -s http://127.0.0.1:12346/health | jq .
 ```
 
 ---

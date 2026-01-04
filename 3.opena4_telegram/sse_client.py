@@ -2,7 +2,7 @@
 """
 opena4 - SSE Client Module
 
-Port: 12348
+Port: 12346
 Kürzel: telep
 
 SSE Client für opena20 Dashboard Events

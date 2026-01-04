@@ -36,7 +36,7 @@ INDEX_FILE = ARCHIVE_DIR / "index.jsonl"
 
 # Services
 OPENA2_URL = os.getenv("OPENA2_URL", "http://127.0.0.1:12345")
-OPENA4_URL = os.getenv("OPENA4_URL", "http://127.0.0.1:12348")
+OPENA4_URL = os.getenv("OPENA4_URL", "http://127.0.0.1:12346")
 OPENWEBUI_URL = os.getenv("OPENWEBUI_URL", "http://localhost:8080")
 GITHUB_WEBHOOK_SECRET = os.getenv("GITHUB_WEBHOOK_SECRET", "")
 

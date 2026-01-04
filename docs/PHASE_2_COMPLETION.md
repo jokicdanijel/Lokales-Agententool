@@ -29,7 +29,7 @@ Successfully deployed **Phase 2** of ELION Hyper-Dashboard spanning Communicatio
 - opena2 (Archivator) – Port 12345
 - kordp (Relay) – Port 12346
 - opena_finance (Finance DB) – Port 12347
-- opena4_telegram (Telegram Bridge) – Port 12348
+- opena4_telegram (Telegram Bridge) – Port 12346
 - opena19 (Dashboard) – Port 12349
 
 ### Layer 2: Communication Agents (Nov 9)
@@ -124,7 +124,7 @@ Port 12344 (opena1):      ✅ healthy
 Port 12345 (opena2):      ✅ healthy
 Port 12346 (kordp):       ✅ healthy
 Port 12347 (opena_finance):✅ healthy
-Port 12348 (opena4_telegram):✅ healthy
+Port 12346 (opena4_telegram):✅ healthy
 Port 12349 (opena19):     ✅ healthy
 Port 12353 (opena5_browser):✅ healthy
 Port 12354 (opena6_email):✅ healthy

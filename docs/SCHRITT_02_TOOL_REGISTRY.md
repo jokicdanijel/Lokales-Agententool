@@ -103,10 +103,10 @@ Request: POST /api/dispatch
 | Agent ID | Name           | Port  | Role        | Enabled | Tools                                 |
 | -------- | -------------- | ----- | ----------- | ------- | ------------------------------------- |
 | opena1   | Koordinator    | 12344 | Koordinator | ✅      | status, invoke, log                   |
-| opena2   | Archivator     | 12348 | Persistence | ✅      | store, query, dedupe                  |
+| opena2   | Archivator     | 12346 | Persistence | ✅      | store, query, dedupe                  |
 | opena3   | OpenWebUI      | 8080  | UI          | ✅      | browse, chat, display                 |
 | opena4   | Telegram Agent | 12347 | Messenger   | ✅      | send_message, receive_message, notify |
-| opena5   | VS Code Bridge | 12348 | Editor      | ⏸️      | edit_file, diff, apply_patch          |
+| opena5   | VS Code Bridge | 12346 | Editor      | ⏸️      | edit_file, diff, apply_patch          |
 | opena20  | Monitoring     | 12349 | Monitoring  | ⏸️      | health_check, metrics, alert          |
 
 ### 3.2 Tool Categories

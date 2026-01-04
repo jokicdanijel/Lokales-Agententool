@@ -2,7 +2,7 @@
 """
 opena4 - Pydantic Models
 
-Port: 12348
+Port: 12346
 Kürzel: telep
 
 PORTIER 3.0 Strict JSON Schemas

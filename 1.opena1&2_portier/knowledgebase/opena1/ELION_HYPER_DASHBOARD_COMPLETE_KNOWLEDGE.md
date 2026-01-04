@@ -71,7 +71,7 @@ Gesamtprojekt/
 │   └── main_openwebui_agent.py  # opena3 (Port 12347)
 │
 ├── 3.opena4_telegram/           # Telegram Bot Agent
-│   └── main.py                  # opena4 (Port 12348)
+│   └── main.py                  # opena4 (Port 12346)
 │
 ├── 19.opena20_dashboard_agent/  # Dashboard Backend
 │   ├── src/pkg/
@@ -123,7 +123,7 @@ Gesamtprojekt/
 ┌───▼──────┐  ┌──────▼──────┐  ┌────▼─────┐
 │opena3    │  │opena4       │  │Dashboard │
 │OpenWebUI │  │Telegram     │  │(opena20) │
-│12347     │  │12348        │  │12349     │
+│12347     │  │12346        │  │12349     │
 └──────────┘  └─────────────┘  └──────────┘
     │              │                │
     └──────────────┼────────────────┘
@@ -168,7 +168,7 @@ Gesamtprojekt/
 | **opena2**  | 12345 | Archivator (Safepoints)   | ✅ Online   | `/api/agent/opena2`  |
 | **kordp**   | 12346 | Koordinatport (Scheduler) | ✅ Online   | `/api/agent/kordp`   |
 | **opena3**  | 12347 | OpenWebUI Terminal        | ✅ Online   | `/api/agent/opena3`  |
-| **opena4**  | 12348 | Telegram Bot              | ✅ Online   | `/api/agent/opena4`  |
+| **opena4**  | 12346 | Telegram Bot              | ✅ Online   | `/api/agent/opena4`  |
 | **opena5**  | 12351 | VS Code Agent             | ⏳ Template | `/api/agent/opena5`  |
 | **opena6**  | 12352 | Browser Automation        | ⏳ Template | `/api/agent/opena6`  |
 | **opena7**  | 12353 | E-Mail Manager            | ⏳ Template | `/api/agent/opena7`  |

@@ -158,7 +158,7 @@ curl -X POST http://127.0.0.1:12344/log/opena1 \
 | 12344       | Portier              | Koordinator/Dispatcher  | ✅ Online         |
 | 12345       | OpenA2               | Archiv (JSONL-Speicher) | ✅ Online         |
 | 12346       | Kordp                | Messaging-Agent         | ✅ Online         |
-| 12348       | Inferenz             | Llama-Stack + Ollama    | ✅ Online         |
+| 12346       | Inferenz             | Llama-Stack + Ollama    | ✅ Online         |
 | 12349-12364 | Skalierbare Services | Agent Pool              | ⏳ Template-Ready |
 | 12365-12399 | Reserviert           | Zukünftige Expansion    | 📅 Verfügbar      |
 
@@ -252,7 +252,7 @@ curl http://127.0.0.1:12345/archiv/last?n=5 | jq .
 Chat-Completion:
 
 ```bash
-curl -X POST http://127.0.0.1:12348/chat/completions \
+curl -X POST http://127.0.0.1:12346/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
     "model": "llama2",
@@ -475,7 +475,7 @@ python3 scripts/openwebui_inference_bridge.py
 ### Service Gesundheit
 
 ```bash
-for port in 12344 12345 12346 12348; do
+for port in 12344 12345 12346 12346; do
   echo "Port $port:"
   curl -s http://127.0.0.1:$port/health | jq '.status'
 done
@@ -886,7 +886,7 @@ find . -maxdepth 2 -name "*_DEPRECATED.md" -type f
 | ---------------------------- | ----- | ------------------------ | -------- |
 | **Koordinator & Archivator** | 12344 | workflow_coordination    | ✅ Ready |
 | **OpenWebUI Terminal**       | 12347 | ui_integration           | ✅ Ready |
-| **Telegram Mobile**          | 12348 | mobile_communication     | ✅ Ready |
+| **Telegram Mobile**          | 12346 | mobile_communication     | ✅ Ready |
 | **VSCode Programmierung**    | 12349 | development_tools        | ✅ Ready |
 | **Browser Bedienung**        | 12350 | browser_automation       | ✅ Ready |
 | **Email Chatbot**            | 12351 | email_automation         | ✅ Ready |
@@ -997,7 +997,7 @@ Das System folgt dem **Option-2-Flow** Architekturprinzip, bei dem jede Anfrage 
 | **opena2**  | 12345      | -            | Archivator (CMD/RESP Safepoints)   | ✅ Running     |
 | **kordp**   | 12346      | -            | Gateway (Tool Dispatch)            | ✅ Running     |
 | **opena3**  | 12347      | owuip        | OpenWebUI Terminal Agent           | ✅ **Online**  |
-| **opena4**  | 12348      | telep        | Telegram Bot                       | ❌ **Offline** |
+| **opena4**  | 12346      | telep        | Telegram Bot                       | ❌ **Offline** |
 | **opena5**  | 12351      | vscop        | VS Code Agent                      | ✅ Online      |
 | **opena6**  | 12352      | browsep      | Browser Automation                 | ✅ Online      |
 | **opena7**  | 12353      | emailp       | E-Mail Client                      | ✅ Online      |
@@ -1210,7 +1210,7 @@ flowchart TB
     %% =====================
     subgraph Agents["🔧 Operational Agents (opena3-opena19 + opena21)"]
         opena3["opena3<br>OpenWebUI Terminal<br>Port 12347<br>✅ Online"]
-        opena4["opena4<br>Telegram Bot<br>Port 12348<br>❌ Offline"]
+        opena4["opena4<br>Telegram Bot<br>Port 12346<br>❌ Offline"]
         opena5["opena5<br>VS Code Agent<br>Port 12351<br>✅ Online"]
         opena6["opena6<br>Browser Automation<br>Port 12352<br>✅ Online"]
         opena7["opena7<br>E-Mail Client<br>Port 12353<br>✅ Online"]
@@ -1370,7 +1370,7 @@ OpenAI → opena1:12344 → opena2:12345 → kordp:12346 → Tools
 | **12345**       | **opena2**         | Archivator (CMD/RESP Safepoints)   | ✅ Running     |
 | **12346**       | **kordp**          | Gateway (Tool Dispatch)            | ✅ Running     |
 | **12347**       | **opena3**         | OpenWebUI Terminal (owuip)         | ✅ **Online**  |
-| **12348**       | **opena4**         | Telegram Bot (telep)               | ❌ Offline     |
+| **12346**       | **opena4**         | Telegram Bot (telep)               | ❌ Offline     |
 | **12349**       | **opena20**        | Dashboard (Live Monitoring UI)     | ✅ Running     |
 | **12350**       | **opena6 Adapter** | OpenWebUI Adapter                  | ✅ Running     |
 | **12351**       | **opena5**         | VS Code Agent (vscop)              | ❌ Offline     |
@@ -1481,7 +1481,7 @@ curl http://127.0.0.1:12345/archiv/last?n=5 | jq .
 **Chat Completion:**
 
 ```bash
-curl -X POST http://127.0.0.1:12348/chat/completions \
+curl -X POST http://127.0.0.1:12346/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
     "model": "llama2",
@@ -1536,7 +1536,7 @@ Gesamtprojekt/  (PORTIER 3.0 Root)
 │       ├── start_opena3.sh
 │       └── start_openwebui_adapter.sh
 │
-├── 3.opena4_telegram/                       # 🟡 Telegram Bot (Port 12348)
+├── 3.opena4_telegram/                       # 🟡 Telegram Bot (Port 12346)
 │   ├── api/
 │   ├── bin/
 │   ├── config/
@@ -1727,7 +1727,7 @@ python3 scripts/openwebui_inference_bridge.py
 ### Service Health
 
 ```bash
-for port in 12344 12345 12346 12348; do
+for port in 12344 12345 12346 12346; do
   echo "Port $port:"
   curl -s http://127.0.0.1:$port/health | jq '.status'
 done

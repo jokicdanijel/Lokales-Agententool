@@ -43,7 +43,7 @@
    - [ ] Testverfahren (test_opena_finance.sh)
    - **Größe:** ~5-10 KB Text
 
-2. **Telegram-Bridge Integration** (opena4_telegram/Port 12348)
+2. **Telegram-Bridge Integration** (opena4_telegram/Port 12346)
    - [ ] Webhook-Handler Logik
    - [ ] Routing zu Finance API
    - [ ] Secret-Validierung
@@ -433,7 +433,7 @@ bash bin/verify_archive.sh
 
 User (Telegram)
 ↓ /balance command
-opena4_telegram (Port 12348)
+opena4_telegram (Port 12346)
 ↓ Webhook Handler validates secret
 Parse command, extract /balance
 ↓
@@ -475,7 +475,7 @@ User (Telegram) receives: "💰 Your Portfolio: 2 Accounts, €6,050.00"
    - Register with opena1
    - Listen for account/transaction requests
 
-5. **opena4_telegram** (Port 12348) – Telegram Bridge
+5. **opena4_telegram** (Port 12346) – Telegram Bridge
    - Load .env token (including TELEGRAM_WEBHOOK_SECRET)
    - Initialize message queue
    - Register with opena1
@@ -512,7 +512,7 @@ curl -s http://127.0.0.1:12344/health
 curl -s http://127.0.0.1:12345/health
 curl -s http://127.0.0.1:12346/health
 curl -s http://127.0.0.1:12347/health
-curl -s http://127.0.0.1:12348/health
+curl -s http://127.0.0.1:12346/health
 curl -s http://127.0.0.1:12349/health
 ````
 

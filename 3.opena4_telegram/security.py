@@ -2,7 +2,7 @@
 """
 opena4 - Security Module
 
-Port: 12348
+Port: 12346
 Kürzel: telep
 
 PORTIER 3.0 Security Layer

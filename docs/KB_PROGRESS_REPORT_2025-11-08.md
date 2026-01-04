@@ -29,7 +29,7 @@
 
 - ✅ Grundstruktur robust
 - ✅ Services diskretisiert (opena1-4 + kordp)
-- ✅ Ports policy beachtet (12344-12348)
+- ✅ Ports policy beachtet (12344-12346)
 - ✅ Archive-System funktional
 
 ---
@@ -55,7 +55,7 @@
 ### Telegram Bridge (opena4_telegram)
 
 - ✅ Webhook Handler live
-- ✅ Port 12348 LIVE
+- ✅ Port 12346 LIVE
 - ✅ 5 REST Endpoints
 - ✅ Finance Routing (3 commands)
 - ✅ Archive Integration
@@ -148,7 +148,7 @@ KB Quality:             Production-ready
 | opena2          | 12345 | ✅ Online | 7h+    | N/A    | 15+ entries |
 | kordp           | 12346 | ✅ Online | 7h+    | N/A    | N/A         |
 | opena_finance   | 12347 | ✅ Online | 2h+    | 9/9 ✅ | 6 entries   |
-| opena4_telegram | 12348 | ✅ Online | 1h+    | 8/8 ✅ | 2+ entries  |
+| opena4_telegram | 12346 | ✅ Online | 1h+    | 8/8 ✅ | 2+ entries  |
 | opena19         | 12349 | ⏳ Ready  | -      | -      | -           |
 
 **Online:** 5/6 (83%)

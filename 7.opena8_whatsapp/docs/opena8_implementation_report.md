@@ -321,7 +321,7 @@ if not META_ACCESS_TOKEN:
 | Agent      | Port  | Kürzel    | Status     | Compliance |
 | ---------- | ----- | --------- | ---------- | ---------- |
 | **opena3** | 12347 | owuip     | ✅ Running | 💯 100%    |
-| **opena4** | 12348 | telep     | ✅ Running | 91%        |
+| **opena4** | 12346 | telep     | ✅ Running | 91%        |
 | **opena5** | 12351 | vscop     | ✅ Running | 💯 100%    |
 | **opena6** | 12350 | browsep   | ✅ Running | 💯 100%    |
 | **opena7** | 12352 | emailp    | ✅ Running | 💯 100%    |

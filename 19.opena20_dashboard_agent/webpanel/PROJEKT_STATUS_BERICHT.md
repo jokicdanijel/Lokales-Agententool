@@ -63,7 +63,7 @@ Gesamt:           ~4500 Zeilen Code
 
 ### 1. Backend Services
 
-#### Unified Backend (Port 12348)
+#### Unified Backend (Port 12346)
 
 - **Status:** 🟢 RUNNING
 - **PID:** 151001
@@ -108,7 +108,7 @@ Gesamt:           ~4500 Zeilen Code
 #### Routing
 
 ```
-http://127.0.0.1:12349/agent/opena4 → http://127.0.0.1:12348/
+http://127.0.0.1:12349/agent/opena4 → http://127.0.0.1:12346/
 ```
 
 ---
@@ -239,7 +239,7 @@ http://127.0.0.1:12349/agent/opena4 → http://127.0.0.1:12348/
 ### Backend Configuration
 
 ```python
-PORT = 12348
+PORT = 12346
 HOST = "0.0.0.0"
 BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  # Aus Umgebungsvariable
 WORKFLOWS_DIR = "../3.opena4_telegram/"
@@ -249,7 +249,7 @@ WORKFLOWS_LOADED = 20
 ### Frontend Configuration
 
 ```javascript
-api.baseUrl = "http://127.0.0.1:12348";
+api.baseUrl = "http://127.0.0.1:12346";
 capabilities = 12;
 rateLimit = {
   messages_per_second: 30,
@@ -261,7 +261,7 @@ rateLimit = {
 ### Reverse Proxy Configuration
 
 ```python
-TARGET_URL = "http://127.0.0.1:12348"
+TARGET_URL = "http://127.0.0.1:12346"
 PROXY_PORT = 12349
 BIND_HOST = "0.0.0.0"
 REQUEST_TIMEOUT = 30.0
@@ -406,10 +406,10 @@ Errors:            0
 ### URLs
 
 ```
-Backend:           http://127.0.0.1:12348
-Dashboard:         http://127.0.0.1:12348/
-API:               http://127.0.0.1:12348/api/*
-WebSocket:         ws://127.0.0.1:12348/ws
+Backend:           http://127.0.0.1:12346
+Dashboard:         http://127.0.0.1:12346/
+API:               http://127.0.0.1:12346/api/*
+WebSocket:         ws://127.0.0.1:12346/ws
 
 Reverse Proxy:     http://127.0.0.1:12349/agent/opena4
 Health Check:      http://127.0.0.1:12349/health
@@ -495,7 +495,7 @@ docker compose -f docker-compose.proxy.yml up -d
 
 ```bash
 # Backend
-curl http://127.0.0.1:12348/api/status
+curl http://127.0.0.1:12346/api/status
 
 # Reverse Proxy
 curl http://127.0.0.1:12349/health
@@ -516,7 +516,7 @@ firefox http://127.0.0.1:12349/agent/opena4
 
 **Run locally:**
 
-python3 scripts/preflight_webpanel.py --root 19.opena20_dashboard_agent/webpanel --out-dir 19.opena20_dashboard_agent/webpanel/artifacts --port 12348 --static-dir 19.opena20_dashboard_agent/webpanel --static-mount / --require-backend
+python3 scripts/preflight_webpanel.py --root 19.opena20_dashboard_agent/webpanel --out-dir 19.opena20_dashboard_agent/webpanel/artifacts --port 12346 --static-dir 19.opena20_dashboard_agent/webpanel --static-mount / --require-backend
 
 **Note:** Security gate flagged sensitive patterns (e.g. in `.env`) — rotate or remove real secrets from repository and use environment variables.
 

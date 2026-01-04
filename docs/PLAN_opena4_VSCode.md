@@ -1,6 +1,6 @@
 # PLAN: Agent opena4 – VSCode Integration
 
-**Status:** Production-Ready Plan | **Port:** 12348 | **Modul:** 4.browser_opena5
+**Status:** Production-Ready Plan | **Port:** 12346 | **Modul:** 4.browser_opena5
 
 ---
 

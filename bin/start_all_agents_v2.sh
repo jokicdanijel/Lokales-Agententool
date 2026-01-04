@@ -72,7 +72,7 @@ Date:   Tue Nov 11 19:35:44 2025 +0100
       * Removed unused imports (json, List, WebhookMessageEvent)
       * Added comprehensive docstrings
 
-    Status: All core services healthy (12344-12348), Grafana running (3001)
+    Status: All core services healthy (12344-12346), Grafana running (3001)
 
 commit e5553eb3fb5aa850736a4764d7d4c62f37e18ac6
 Author: jokicdanijel <xxjokic01@gmail.com>
@@ -125,7 +125,7 @@ Date:   Tue Nov 11 14:35:44 2025 +0100
     - Enhanced deployment_check.py validation
 
     Infrastructure Status:
-    ✅ 4 core services running (12344-12348)
+    ✅ 4 core services running (12344-12346)
     ✅ Prometheus/Grafana monitoring live
     ✅ 6 dashboards configured (System, Services, Archive, Performance, Alerts)
     ✅ 20-service framework ready for scaling
@@ -245,7 +245,7 @@ commit df3321aed06b09ac3b007ee9d0df79d89d208955
 Author: jokicdanijel <xxjokic01@gmail.com>
 Date:   Tue Nov 11 05:22:54 2025 +0100
 
-    feat(Phase 14): llama-stack Integration — Inference Service (Port 12348) + OpenWebUI Bridge + Load-Test (0.87 req/s, 100% Success)
+    feat(Phase 14): llama-stack Integration — Inference Service (Port 12346) + OpenWebUI Bridge + Load-Test (0.87 req/s, 100% Success)
 
 commit bfee4ad7dc086f722724d875dc755769a1e2c6dc
 Author: jokicdanijel <xxjokic01@gmail.com>
@@ -723,7 +723,7 @@ Date:   Sun Nov 9 05:23:11 2025 +0100
         • Owner-Informationen, Version-Pinning
 
       ✅ 4 HTTP-Agent-Server (telegram/vscode/mail/whatsapp)
-        • Port 12347, 12348, 12349, 12350 korrekt
+        • Port 12347, 12346, 12349, 12350 korrekt
         • GET /health endpoints
         • Production-ready, nicht nur stubs
 

@@ -83,7 +83,7 @@
   - Endpoints: `POST /query`, `POST /archive`, `GET /statement`
 - **Kritikalität:** 🔴 USER'S IMMEDIATE NEED
 
-### opena4 (Telegram Bridge) – Port 12348?
+### opena4 (Telegram Bridge) – Port 12346?
 
 - **Status:** 0% – Dokumentiert (5 Parts), kein Code
 - **Bedarf:**
@@ -267,7 +267,7 @@ docs/
 | 12345 | opena2        | ✅     | Archivator                             |
 | 12346 | kordp         | ✅     | Relay                                  |
 | 12347 | opena_finance | ⏳     | Finance (TODO)                         |
-| 12348 | opena4        | ⏳     | Telegram (TODO)                        |
+| 12346 | opena4        | ⏳     | Telegram (TODO)                        |
 | 12349 | opena19       | ⚠️     | Dashboard (ready, not started)         |
 | 12350 | (reserved)    | -      | -                                      |
 | 12351 | opena3        | ⚠️     | OpenWebUI adapter (ready, not started) |

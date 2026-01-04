@@ -60,7 +60,7 @@
 | Service | Port  | Host      | Protocol | Purpose            |
 | ------- | ----- | --------- | -------- | ------------------ |
 | opena4  | 12347 | 127.0.0.1 | HTTP     | Telegram Interface |
-| opena2  | 12348 | 127.0.0.1 | HTTP     | Archivator         |
+| opena2  | 12346 | 127.0.0.1 | HTTP     | Archivator         |
 | opena1  | 12344 | 127.0.0.1 | HTTP     | Koordinator        |
 
 ### Port-Policy Enforcement
@@ -105,7 +105,7 @@ Health-check with port-policy.
   "status": "ok",
   "timestamp": "2025-11-10T12:34:56.789Z",
   "port_policy": {
-    "window": [12344, 12345, 12346, 12347, 12348, 12349],
+    "window": [12344, 12345, 12346, 12347, 12346, 12349],
     "forbidden": [8080]
   },
   "uptime_seconds": 3661.23
@@ -213,7 +213,7 @@ Service status with recent safepoints.
     "host": "127.0.0.1",
     "port": 12347,
     "port_policy": {
-      "allowed": [12344, 12345, 12346, 12347, 12348, 12349],
+      "allowed": [12344, 12345, 12346, 12347, 12346, 12349],
       "forbidden": [8080]
     },
     "telegram": {
@@ -222,7 +222,7 @@ Service status with recent safepoints.
       "webhook_url": "(none)"
     },
     "endpoints": {
-      "opena2": "http://127.0.0.1:12348/store/archivp",
+      "opena2": "http://127.0.0.1:12346/store/archivp",
       "opena1": "http://127.0.0.1:12344/invoke"
     },
     "archive_dir": "/path/to/4.opena4_telegram/archivp",
@@ -326,11 +326,11 @@ PORTIER_HOST=127.0.0.1
 PORTIER_BASE_DIR=/path/to/4.opena4_telegram
 
 # Port-Policy
-PORTIER_ALLOWED_PORTS=12344,12345,12346,12347,12348,12349
+PORTIER_ALLOWED_PORTS=12344,12345,12346,12347,12346,12349
 PORTIER_FORBIDDEN_PORTS=8080
 
 # Integration Endpoints
-OPENA2_URL=http://127.0.0.1:12348/store/archivp
+OPENA2_URL=http://127.0.0.1:12346/store/archivp
 OPENA1_URL=http://127.0.0.1:12344/invoke
 
 # Logging
@@ -459,7 +459,7 @@ TELEGRAM_WEBHOOK_URL=https://yourdomain.com/telegram/webhook
     "code": "FORWARD_ERROR",
     "message": "Failed to forward to opena2: Connection refused",
     "details": {
-      "opena2_url": "http://127.0.0.1:12348/store/archivp",
+      "opena2_url": "http://127.0.0.1:12346/store/archivp",
       "timeout_seconds": 30
     }
   },

@@ -190,7 +190,7 @@ LOGS_DIR.mkdir(exist_ok=True)
 # Agent Registry (opena3-opena19)
 AGENT_REGISTRY: list[dict[str, Any]] = [
     {"id": "opena3", "name": "OpenWebUI Terminal", "kuerzel": "owuip", "port": 12347},
-    {"id": "opena4", "name": "Telegram Agent", "kuerzel": "telep", "port": 12348},
+    {"id": "opena4", "name": "Telegram Agent", "kuerzel": "telep", "port": 12346},
     {"id": "opena5", "name": "VS Code Agent", "kuerzel": "vscop", "port": 12351},
     {"id": "opena6", "name": "Browser Agent", "kuerzel": "browsep", "port": 12352},
     {"id": "opena7", "name": "Email Agent", "kuerzel": "emailp", "port": 12353},

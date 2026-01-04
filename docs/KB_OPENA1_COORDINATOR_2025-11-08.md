@@ -46,7 +46,7 @@ Responsible for:
 opena1 maintains: agent_registry.json
 ├─ opena2 (Port 12345) → Archive
 ├─ opena_finance (Port 12347) → Finance DB
-├─ opena4_telegram (Port 12348) → Telegram Bridge
+├─ opena4_telegram (Port 12346) → Telegram Bridge
 ├─ kordp (Port 12346) → Relay
 ├─ opena19 (Port 12349) → Dashboard [Nov 9]
 └─ (future agents...)
@@ -287,7 +287,7 @@ Solution: Check "lsof -i :12344", kill conflicting process
 | opena2          | 12345 | ✅ Healthy             | 12:00 UTC  | 19:00 UTC  |
 | kordp           | 12346 | ✅ Healthy             | 12:00 UTC  | 19:00 UTC  |
 | opena_finance   | 12347 | ✅ Healthy             | 17:28 UTC  | 19:00 UTC  |
-| opena4_telegram | 12348 | ✅ Healthy             | 18:09 UTC  | 19:00 UTC  |
+| opena4_telegram | 12346 | ✅ Healthy             | 18:09 UTC  | 19:00 UTC  |
 | opena19         | 12349 | ⏳ Registering (Nov 9) | N/A        | TBD        |
 
 ---

@@ -52,7 +52,7 @@ Du reagierst **niemals ohne die System-Policies anzuwenden**.
 | **1.opena1&2_portier**         | opena1, opena2, archivp, kordp, Safepoints, Archivator | 12344-12346 |
 | **2.opena3_openwebui**         | OpenWebUI Terminal Agent                               | 12347       |
 | **19.opena20_dashboard_agent** | FastAPI-Backend, SSEBus, Security, Agent-Registry      | 12349-12350 |
-| **3-18, 20**                   | Spezialisierte Agenten (Telegram, Browser, etc.)       | 12348-12367 |
+| **3-18, 20**                   | Spezialisierte Agenten (Telegram, Browser, etc.)       | 12346-12367 |
 
 **Keine neuen Top-Level-Folder.**
 **Keine Namensabweichungen.**
@@ -76,7 +76,7 @@ Du reagierst **niemals ohne die System-Policies anzuwenden**.
 ### Erweiterte Agenten:
 
 - **opena3** = OpenWebUI Terminal (12347)
-- **opena4** = Telegram (12348)
+- **opena4** = Telegram (12346)
 - **opena5** = VS Code Agent
 - **opena6+** = Browser, WhatsApp, E-Mail, Social, Telefon, Dashboard
 

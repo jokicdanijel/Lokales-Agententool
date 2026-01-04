@@ -55,7 +55,7 @@ AGENTS_CONFIG = [
     {"id": "opena1", "name": "Koordinator", "port": 12344, "url": "http://127.0.0.1:12344"},
     {"id": "opena2", "name": "Archivator", "port": 12345, "url": "http://127.0.0.1:12345"},
     {"id": "opena3", "name": "OpenWebUI", "port": 12347, "url": "http://127.0.0.1:12347"},
-    {"id": "opena4", "name": "Telegram", "port": 12348, "url": "http://127.0.0.1:12348"},
+    {"id": "opena4", "name": "Telegram", "port": 12346, "url": "http://127.0.0.1:12346"},
     {"id": "opena5", "name": "VSCode", "port": 12349, "url": "http://127.0.0.1:12349"},
     {"id": "opena6", "name": "Browser", "port": 12350, "url": "http://127.0.0.1:12350"},
     {"id": "opena7", "name": "Email", "port": 12351, "url": "http://127.0.0.1:12351"},

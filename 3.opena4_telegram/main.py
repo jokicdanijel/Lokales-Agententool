@@ -34,7 +34,7 @@ class Config:
     # Core Settings
     TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "")
     BEARER_TOKEN = os.getenv("BEARER_TOKEN", "c899b90d-faf8-485b-afa4-078357cf5313")
-    PORT = int(os.getenv("PORT", 12348))
+    PORT = int(os.getenv("PORT", 12346))
     PORTIER_MODE = os.getenv("PORTIER_MODE", "production")
     LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 

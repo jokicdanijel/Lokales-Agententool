@@ -27,7 +27,7 @@ Diese Registry dient als **zentrale Quelle der Wahrheit** für:
 | **2**  | **opena3**  | 3000\* | `openweb` | OpenWebUI Terminal    | [2.opena3_openwebui](../2.opena3_openwebui/)                 | `/opena3/kordp/archivp/openweb`  | `/openweb/archivp/opena3`  |
 | **3**  | **opena4**  | 12346  | `telep`   | Telegram Mobile       | [3.opena4_telegram](../3.opena4_telegram/)                   | `/opena4/kordp/archivp/telep`    | `/telep/archivp/opena4`    |
 | **4**  | **opena5**  | 12347  | `vscop`   | VS Code Bridge        | [4.opena5_vscode](../4.opena5_vscode/)                       | `/opena5/kordp/archivp/vscop`    | `/vscop/archivp/opena5`    |
-| **5**  | **opena6**  | 12348  | `browsp`  | Browser Automation    | [5.opena6_browser](../5.opena6_browser/)                     | `/opena6/kordp/archivp/browsp`   | `/browsp/archivp/opena6`   |
+| **5**  | **opena6**  | 12346  | `browsp`  | Browser Automation    | [5.opena6_browser](../5.opena6_browser/)                     | `/opena6/kordp/archivp/browsp`   | `/browsp/archivp/opena6`   |
 | **6**  | **opena7**  | 12349  | `emailp`  | E-Mail Chatbot        | [6.opena7_email](../6.opena7_email/)                         | `/opena7/kordp/archivp/emailp`   | `/emailp/archivp/opena7`   |
 | **7**  | **opena8**  | 12350  | `whatp`   | WhatsApp Chatbot      | [7.opena8_whatsapp](../7.opena8_whatsapp/)                   | `/opena8/kordp/archivp/whatp`    | `/whatp/archivp/opena8`    |
 | **8**  | **opena9**  | 12351  | `calp`    | Telefon Antwort       | [8.opena9_telephone](../8.opena9_telephone/)                 | `/opena9/kordp/archivp/calp`     | `/calp/archivp/opena9`     |

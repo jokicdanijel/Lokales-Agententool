@@ -138,7 +138,7 @@
 | opena1  | 12344           | `kordp`        | 🟩                           |
 | opena2  | 12345           | `archivp`      | 🟩                           |
 | opena3  | 12347           | `owuip`        | 🟩                           |
-| opena4  | 12348           | `telep`        | 🟩                           |
+| opena4  | 12346           | `telep`        | 🟩                           |
 | opena5  | 12351           | `vscop`        | 🟩                           |
 | opena6  | 12352           | `browsep`      | 🟩                           |
 | opena7  | 12353           | `emailp`       | 🟩                           |

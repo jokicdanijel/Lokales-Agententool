@@ -2815,13 +2815,13 @@ tail -n 80 logs/opena2.nohup.log || true
 tail -n 80 logs/kordp.nohup.log  || true
 tail -n 80 logs/opena1_registry.log || true
 
-Wenn :12345 nicht zu opena2 gehört oder leer ist, gehen wir jetzt auf 12348 ausweichend (Policy-konform 12344–12399).
-1) Fix: opena2 auf Port 12348, kordp darauf einstellen
+Wenn :12345 nicht zu opena2 gehört oder leer ist, gehen wir jetzt auf 12346 ausweichend (Policy-konform 12344–12399).
+1) Fix: opena2 auf Port 12346, kordp darauf einstellen
 
 /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_opena2.py
 
 """
-Portier-Archivator (opena2) – FastAPI-Service auf Port 12348
+Portier-Archivator (opena2) – FastAPI-Service auf Port 12346
 
 Aufgaben:
 - Entgegennahme, Persistenz und Ausgabe von Safepoints (archivp)
@@ -3038,7 +3038,7 @@ async def finalize(
 if __name__ == "__main__":
     import uvicorn
     Path("logs").mkdir(parents=True, exist_ok=True)
-    uvicorn.run("main_opena2:app", host="127.0.0.1", port=12348, reload=False)
+    uvicorn.run("main_opena2:app", host="127.0.0.1", port=12346, reload=False)
 
 /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent/main_kordp.py
 
@@ -3064,7 +3064,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from security import verify_token, RateLimiter, _read_env_token
 
-OPENA2_URL = "http://127.0.0.1:12348"  # Archivator NEU: 12348
+OPENA2_URL = "http://127.0.0.1:12346"  # Archivator NEU: 12346
 
 ALLOWED_PORT_MIN = 12344
 ALLOWED_PORT_MAX = 12399
@@ -3187,7 +3187,7 @@ if __name__ == "__main__":
 set -Eeuo pipefail
 BASE="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent"
 VENV="/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/1.opena1&2_portier/venv313/bin/activate"
-PORT=12348
+PORT=12346
 
 cd "$BASE"
 source "$VENV"
@@ -3209,7 +3209,7 @@ chmod +x bin/*.sh
 
 Soll jetzt:
 
-    #1 Health-Checks: alle vier (opena19, opena1, opena2 auf 12348, kordp) zeigen healthy.
+    #1 Health-Checks: alle vier (opena19, opena1, opena2 auf 12346, kordp) zeigen healthy.
 
     #5 Test-Dispatch: kein 404/502; stattdessen JSON mit accepted: true und safepoint.path → Datei in 1.opena1&2_portier/archivp/YYYY/MM/DD/….
 
@@ -3245,7 +3245,7 @@ Wenn dieser Durchlauf grün ist, steht die Kette:
 
     Dashboard listet opena1.
 
-    kordp schreibt CMD-Safepoints zu opena2 (jetzt auf 12348).
+    kordp schreibt CMD-Safepoints zu opena2 (jetzt auf 12346).
 
     Safepoints landen im Archivpfad und sind via /store/archivp?path=… lesbar.
 
@@ -3509,7 +3509,7 @@ Alles klar — zwei klare Fixes:
 
     Im Dashboard fehlte der Endpoint /api/command/register. Deswegen kam “Agent register nicht registriert”.
 
-    Dein Verify-Script prüft opena2 noch auf 12345, wir haben ihn aber auf 12348 gelegt.
+    Dein Verify-Script prüft opena2 noch auf 12345, wir haben ihn aber auf 12346 gelegt.
 
 Hier sind die vollständigen Dateien mit den Korrekturen.
 
@@ -3791,7 +3791,7 @@ TOKEN="$(cat "$BASE/.env")"
 echo "# 1) Health-Checks"
 curl -s http://127.0.0.1:12349/health | jq .
 curl -s http://127.0.0.1:12344/health | jq . || true
-curl -s http://127.0.0.1:12348/health | jq . || true   # opena2 -> 12348 (FIX)
+curl -s http://127.0.0.1:12346/health | jq . || true   # opena2 -> 12346 (FIX)
 curl -s http://127.0.0.1:12346/health | jq . || true
 
 echo "# 2) Dashboard-Status leer/gefüllt?"
@@ -3805,7 +3805,7 @@ curl -s -X POST http://127.0.0.1:12349/api/command/register \
 echo "# 4) Status erneut prüfen"
 curl -s -H "Authorization: Bearer $TOKEN" http://127.0.0.1:12349/api/status/all | jq .
 
-echo "# 5) Test-Dispatch via kordp -> Safepoint bei opena2 (12348)"
+echo "# 5) Test-Dispatch via kordp -> Safepoint bei opena2 (12346)"
 curl -s -X POST http://127.0.0.1:12346/dispatch/kordp \
   -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
   -d '{"command":"PING","params":{"x":1}}' | jq .
@@ -3825,7 +3825,7 @@ cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agen
 
 Erwartung jetzt:
 
-    Schritt 1: Health → alle OK, inklusive opena2 auf 12348.
+    Schritt 1: Health → alle OK, inklusive opena2 auf 12346.
 
     Schritt 3: Registrierung → { "status": "registered", ... }.
 
@@ -5275,7 +5275,7 @@ bash: Syntaxfehler beim unerwarteten Wort »newline«
 (venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$ tail -n 80 logs/kordp.nohup.log
 INFO:     Started server process [324148]
 INFO:     Waiting for application startup.
-2025-11-06 09:34:04,484 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12348
+2025-11-06 09:34:04,484 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12346
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:12346 (Press CTRL+C to quit)
 (venv313) danijel-jd@danijeljd-ESPRIMO-P920:~/Dokumente/Workspace/Projekte/Gesamtprojekt/19.dashboard_agent$ # Ports
@@ -5425,7 +5425,7 @@ INFO:     Waiting for application shutdown.
 INFO:     Application shutdown complete.
 INFO:     Started server process [324148]
 INFO:     Waiting for application startup.
-2025-11-06 09:34:04,484 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12348
+2025-11-06 09:34:04,484 - kordp - INFO - kordp gestartet. Ziel-Archivator: http://127.0.0.1:12346
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:12346 (Press CTRL+C to quit)
 2025-11-06 05:55:36,609 - WARNING - Handshake Dashboard Status 500: {"detail":"Agent register nicht registriert"}
@@ -5464,7 +5464,7 @@ Was gerade schief läuft (kurz & klar)
 
     kordp zeigt auf falschen Port
 
-        In deinen Logs: kordp gestartet. Ziel-Archivator: http://127.0.0.1:12348.
+        In deinen Logs: kordp gestartet. Ziel-Archivator: http://127.0.0.1:12346.
 
         Richtig wäre: http://127.0.0.1:12345
 
@@ -8882,7 +8882,7 @@ Was gerade schief läuft (kurz & klar)
 
     kordp zeigt auf falschen Port
 
-        In deinen Logs: kordp gestartet. Ziel-Archivator: http://127.0.0.1:12348.
+        In deinen Logs: kordp gestartet. Ziel-Archivator: http://127.0.0.1:12346.
 
         Richtig wäre: http://127.0.0.1:12345
 

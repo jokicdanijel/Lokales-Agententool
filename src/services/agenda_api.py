@@ -203,7 +203,7 @@ async def api_registry(token: str = Depends(verify_token)):
         "portier": 12344,
         "archivator": 12345,
         "telegram": 12346,
-        "inference": 12348,
+        "inference": 12346,
         "browser": 12349,
         "vscode": 12350,
         "email": 12351,

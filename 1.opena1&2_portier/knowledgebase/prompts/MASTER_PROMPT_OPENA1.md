@@ -220,10 +220,10 @@ Leitplanken gemäß README / PORTIER-Dokumentation:
 {
   "error": {
     "code": "AGENT_UNREACHABLE",
-    "message": "opena4_telegram nicht erreichbar auf Port 12348",
+    "message": "opena4_telegram nicht erreichbar auf Port 12346",
     "details": {
       "target": "opena4_telegram",
-      "port": 12348,
+      "port": 12346,
       "timestamp": "2025-11-27T14:30:00Z"
     }
   }

@@ -5,13 +5,13 @@
 ### 📁 Original-Dateien (aus /3.opena4_telegram/html/)
 
 - ✅ `index.html` - Hauptdashboard (37K)
-- ✅ `config.js` - Konfiguration mit Port 12348 (6K)
+- ✅ `config.js` - Konfiguration mit Port 12346 (6K)
 - ✅ `app.js` - Anwendungslogik (41K)
 - ✅ `style.css` - Styling (21K)
 
 ### 🔧 Backend (unified_backend.py - 23K)
 
-- **Port:** 12348
+- **Port:** 12346
 - **PID:** Läuft aktiv
 - **Workflows:** 20 geladen (10 Telegram + 10 Terminal)
 
@@ -132,9 +132,9 @@
 
 ### 🚀 Zugriff
 
-**Dashboard:** http://localhost:12348
-**API Docs:** http://localhost:12348/docs
-**Health:** http://localhost:12348/health
+**Dashboard:** http://localhost:12346
+**API Docs:** http://localhost:12346/docs
+**Health:** http://localhost:12346/health
 
 ### 📊 Statistiken
 

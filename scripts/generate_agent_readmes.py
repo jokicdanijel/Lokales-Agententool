@@ -6,7 +6,7 @@ Generiert README.md Dateien für alle ELION Agenten basierend auf der CSV-Mappin
 AGENTS = [
     # Nr, Agent, Port, Kürzel, Rolle, Ordner
     (4, "opena5", 12347, "vscop", "VS Code Programmier-Bridge", "4.opena5_vscode"),
-    (5, "opena6", 12348, "browsp", "Browser-Bedienung (Automation)", "5.opena6_browser"),
+    (5, "opena6", 12346, "browsp", "Browser-Bedienung (Automation)", "5.opena6_browser"),
     (6, "opena7", 12349, "emailp", "E-Mail Chatbot", "6.opena7_email"),
     (7, "opena8", 12350, "whatp", "WhatsApp Chatbot", "7.opena8_whatsapp"),
     (8, "opena9", 12351, "calp", "Telefon Antwort Chatbot (Ton)", "8.opena9_telephone"),

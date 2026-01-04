@@ -22,7 +22,7 @@
       "openwebui_url": "http://127.0.0.1:3000"
     },
     "opena4": {
-      "port": 12348,
+      "port": 12346,
       "folder": "3.opena4_telegram",
       "role": "Telegram Agent"
     },

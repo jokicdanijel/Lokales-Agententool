@@ -141,10 +141,10 @@ services:
       dockerfile: src/services/inference/Dockerfile
     container_name: inference
     ports:
-      - "12348:12348"
+      - "12346:12346"
     environment:
       - SERVICE_NAME=inference
-      - PORT=12348
+      - PORT=12346
       - PYTHONUNBUFFERED=1
     volumes:
       - ./src/services/inference:/app
@@ -152,7 +152,7 @@ services:
       - elion
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:12348/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:12346/health"]
       interval: 10s
       timeout: 5s
       retries: 3

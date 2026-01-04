@@ -28,7 +28,7 @@ const AGENTS_CONFIG = [
     id: "opena4",
     name: "Telegram Agent",
     kuerzel: "telep",
-    port: 12348,
+    port: 12346,
     icon: "📱",
     color: "blue",
   },

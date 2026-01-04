@@ -23,7 +23,7 @@ CORE_SERVICES=(
 # Extended services (optional)
 EXTENDED_SERVICES=(
     "2.opena3_openwebui/main_openwebui_bridge_v2.py:12347:opena3"
-    "src/services/telegram/main.py:12348:telegram"
+    "src/services/telegram/main.py:12346:telegram"
     "5.opena6_browser/main.py:12349:browser"
     "6.opena7_email/main.py:12351:email"
     "7.opena8_whatsapp/main.py:12352:whatsapp"

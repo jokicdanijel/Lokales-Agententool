@@ -167,7 +167,7 @@ OPENWEBUI_PORT=3000
 | opena2   | Archivator    | 12345 | Core        |
 | kordp    | Scheduler     | 12346 | Core        |
 | opena4   | Telegram      | 12347 | Integration |
-| opena5   | Browser       | 12348 | Tools       |
+| opena5   | Browser       | 12346 | Tools       |
 | opena6   | Email         | 12349 | Tools       |
 | opena7   | WhatsApp      | 12350 | Integration |
 | opena8   | Telephone     | 12351 | Integration |

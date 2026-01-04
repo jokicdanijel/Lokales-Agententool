@@ -43,7 +43,7 @@ VALID_BEARER_TOKENS = {
     "opena2-archivator": "sk_opena2_arch_12345_strict_v1",
     # Agent Services (opena3-opena20)
     "opena3-webui": "sk_opena3_web_12347_strict_v1",
-    "opena4-telegram": "sk_opena4_tele_12348_strict_v1",
+    "opena4-telegram": "sk_opena4_tele_12346_strict_v1",
     "opena5-vscode": "sk_opena5_vsc_12350_strict_v1",
     "opena6-browser": "sk_opena6_brow_12351_strict_v1",
     "opena7-email": "sk_opena7_mail_12352_strict_v1",

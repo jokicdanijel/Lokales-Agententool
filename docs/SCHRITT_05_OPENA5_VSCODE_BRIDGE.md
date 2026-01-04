@@ -45,9 +45,9 @@
 
 ### Port-Binding
 
-- **opena5 API-Port:** Typischerweise im Bereich 12344–12349 (z.B. **12348**)
+- **opena5 API-Port:** Typischerweise im Bereich 12344–12349 (z.B. **12346**)
 - **Keine** Bindung auf Port 8080 erlaubt (ausschließlich für opena3 UI)
-- **Loopback-Binding:** 127.0.0.1:12348 (nur lokal im Workspace-Container)
+- **Loopback-Binding:** 127.0.0.1:12346 (nur lokal im Workspace-Container)
 
 ### Port-Leases
 
@@ -58,7 +58,7 @@ In `.runtime/port_leases.json` wird eingetragen:
   "leases": [
     {
       "agent": "opena5",
-      "port": 12348,
+      "port": 12346,
       "ts": "2025-11-09T12:00:00Z",
       "state": "ide-bridge",
       "owner": "vscode-integration"
@@ -74,12 +74,12 @@ In `.runtime/port_leases.json` wird eingetragen:
 ```
 VS Code (local)
     │
-    ├─ Extension Hook → http://127.0.0.1:12348/tasks/apply
+    ├─ Extension Hook → http://127.0.0.1:12346/tasks/apply
     │
     └─ CLI Integration: `vscode-agent --patch <file>`
               │
               ▼
-    opena5 API Server (Port 12348)
+    opena5 API Server (Port 12346)
               │
               ├─ Safepoint CMD → opena2/archiv/...
               │
@@ -169,7 +169,7 @@ Jedes Event wird in `index.jsonl` logarithmisch festgehalten (Append-Only):
 
 ```http
 GET /tasks/poll
-Host: 127.0.0.1:12348
+Host: 127.0.0.1:12346
 Authorization: Bearer <token>
 Content-Type: application/json
 ```
@@ -203,7 +203,7 @@ Content-Type: application/json
 
 ```http
 POST /tasks/apply
-Host: 127.0.0.1:12348
+Host: 127.0.0.1:12346
 Authorization: Bearer <token>
 Content-Type: application/json
 ```
@@ -263,7 +263,7 @@ Content-Type: application/json
 
 ```http
 GET /tasks/status/<request_id>
-Host: 127.0.0.1:12348
+Host: 127.0.0.1:12346
 Authorization: Bearer <token>
 ```
 
@@ -287,7 +287,7 @@ Authorization: Bearer <token>
 
 ```http
 GET /health
-Host: 127.0.0.1:12348
+Host: 127.0.0.1:12346
 ```
 
 **Response (200):**

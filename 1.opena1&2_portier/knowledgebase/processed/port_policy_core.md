@@ -16,7 +16,7 @@
 | opena2 (Archivator)   | 12345 |
 | kordp (Koordinatport) | 12346 |
 | opena3 (OpenWebUI)    | 12347 |
-| opena4 (Telegram)     | 12348 |
+| opena4 (Telegram)     | 12346 |
 | Dashboard             | 12349 |
 | OpenWebUI Adapter     | 12350 |
 
@@ -84,7 +84,7 @@ app.add_middleware(
     "kordp": { "port": 12346, "type": "dispatcher" }
   },
   "ports": {
-    "allowed": [12344, 12345, 12346, 12347, 12348, 12349, 12350],
+    "allowed": [12344, 12345, 12346, 12347, 12346, 12349, 12350],
     "forbidden": [8080]
   }
 }

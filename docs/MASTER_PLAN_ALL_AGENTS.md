@@ -23,7 +23,7 @@ Alle 16 Agenten sind in einzelne, vollständig dokumentierte 5-Stufen-Pläne unt
 📄 `PLAN_opena4_VSCode.md`
 
 - **Modul:** 4.browser_opena5
-- **Port:** 12348
+- **Port:** 12346
 - **Funktion:** Code-Snippet-Generator, Patch-Delivery-Suggestions
 - **Deliverables:** `openwebui_opena4.py`, Tests, Runbook
 - **Status:** Ready for Implementation
@@ -33,7 +33,7 @@ Alle 16 Agenten sind in einzelne, vollständig dokumentierte 5-Stufen-Pläne unt
 📄 `PLAN_opena5_Browser.md`
 
 - **Modul:** 4.browser_opena5
-- **Port:** 12348
+- **Port:** 12346
 - **Funktion:** UI-Template-Generator, Patch-Delivery-Logik
 - **Deliverables:** `openwebui_opena5.py`, Tests, Runbook
 - **Status:** Ready for Implementation
@@ -43,7 +43,7 @@ Alle 16 Agenten sind in einzelne, vollständig dokumentierte 5-Stufen-Pläne unt
 📄 `PLAN_opena6_Email.md`
 
 - **Modul:** 5.chatbot_schrift_opena6
-- **Port:** 12348
+- **Port:** 12346
 - **Funktion:** Email-basierter Chatbot, Konversations-Abstrahierung
 - **Deliverables:** `openwebui_opena6.py`, Tests, Runbook
 - **Status:** Ready for Implementation
@@ -53,7 +53,7 @@ Alle 16 Agenten sind in einzelne, vollständig dokumentierte 5-Stufen-Pläne unt
 📄 `PLAN_opena7_WhatsApp.md`
 
 - **Modul:** 7.chatbot_schrift_opena7
-- **Port:** 12348
+- **Port:** 12346
 - **Funktion:** WhatsApp-Webhook-Handler, Message-Routing
 - **Deliverables:** `openwebui_opena7.py`, Tests, Runbook
 - **Status:** Ready for Implementation
@@ -63,7 +63,7 @@ Alle 16 Agenten sind in einzelne, vollständig dokumentierte 5-Stufen-Pläne unt
 📄 `PLAN_opena8_Telephone.md`
 
 - **Modul:** 7.chatbot_ton_opena8
-- **Port:** 12348
+- **Port:** 12346
 - **Funktion:** STT (Speech-to-Text), Audio-Processing
 - **Deliverables:** `openwebui_opena8.py`, Tests, Runbook
 - **Status:** Ready for Implementation
@@ -73,7 +73,7 @@ Alle 16 Agenten sind in einzelne, vollständig dokumentierte 5-Stufen-Pläne unt
 📄 `PLAN_opena9_TelephoneCall.md`
 
 - **Modul:** 8.chatbot_ton_opena9
-- **Port:** 12348
+- **Port:** 12346
 - **Funktion:** Anruf-Flow, Callback-Handling, IVR-Menu
 - **Deliverables:** `openwebui_opena9.py`, Tests, Runbook
 - **Status:** Ready for Implementation
@@ -83,7 +83,7 @@ Alle 16 Agenten sind in einzelne, vollständig dokumentierte 5-Stufen-Pläne unt
 📄 `PLAN_opena10_Unlock.md`
 
 - **Modul:** 9.unlock_master_opena10
-- **Port:** 12348
+- **Port:** 12346
 - **Funktion:** Patch-Lock-Verwaltung, Access-Control, Permission-Management
 - **Deliverables:** `openwebui_opena10.py`, Tests, Runbook
 - **Status:** Ready for Implementation
@@ -93,7 +93,7 @@ Alle 16 Agenten sind in einzelne, vollständig dokumentierte 5-Stufen-Pläne unt
 📄 `PLAN_opena11_SocialMedia.md`
 
 - **Modul:** 10.sozialmedia_opena11
-- **Port:** 12348
+- **Port:** 12346
 - **Funktion:** Multi-Channel-Posting (Instagram, Twitter, LinkedIn)
 - **Deliverables:** `openwebui_opena11.py`, Tests, Runbook
 - **Status:** Ready for Implementation
@@ -103,7 +103,7 @@ Alle 16 Agenten sind in einzelne, vollständig dokumentierte 5-Stufen-Pläne unt
 📄 `PLAN_opena12_Influencer.md`
 
 - **Modul:** 11.influenz_opena12
-- **Port:** 12348
+- **Port:** 12346
 - **Funktion:** Influencer-Überwachung, Posting-Automation, Performance-Tracking
 - **Deliverables:** `openwebui_opena12.py`, Tests, Runbook
 - **Status:** Ready for Implementation
@@ -113,7 +113,7 @@ Alle 16 Agenten sind in einzelne, vollständig dokumentierte 5-Stufen-Pläne unt
 📄 `PLAN_opena13_Calendar.md`
 
 - **Modul:** 12.calendar_agent_opena13
-- **Port:** 12348
+- **Port:** 12346
 - **Funktion:** Calendar-Sync (Google, Outlook), Event-Management
 - **Deliverables:** `openwebui_opena13.py`, Tests, Runbook
 - **Status:** Ready for Implementation
@@ -123,7 +123,7 @@ Alle 16 Agenten sind in einzelne, vollständig dokumentierte 5-Stufen-Pläne unt
 📄 `PLAN_opena14_HTML.md`
 
 - **Modul:** 13.html_creator_opena14
-- **Port:** 12348
+- **Port:** 12346
 - **Funktion:** HTML-Component-Generator, Template-Engine, Preview
 - **Deliverables:** `openwebui_opena14.py`, Tests, Runbook
 - **Status:** Ready for Implementation
@@ -133,7 +133,7 @@ Alle 16 Agenten sind in einzelne, vollständig dokumentierte 5-Stufen-Pläne unt
 📄 `PLAN_opena15_Shop.md`
 
 - **Modul:** 14.shop_creator_opena15
-- **Port:** 12348
+- **Port:** 12346
 - **Funktion:** E-Commerce-UI-Generator, Product-Management
 - **Deliverables:** `openwebui_opena15.py`, Tests, Runbook
 - **Status:** Ready for Implementation
@@ -143,7 +143,7 @@ Alle 16 Agenten sind in einzelne, vollständig dokumentierte 5-Stufen-Pläne unt
 📄 `PLAN_opena16_Homepage.md`
 
 - **Modul:** 15.homepage_creator_opena16
-- **Port:** 12348
+- **Port:** 12346
 - **Funktion:** Homepage-Module-Generator, Section-Templates, SEO-Integration
 - **Deliverables:** `openwebui_opena16.py`, Tests, Runbook
 - **Status:** Ready for Implementation
@@ -153,7 +153,7 @@ Alle 16 Agenten sind in einzelne, vollständig dokumentierte 5-Stufen-Pläne unt
 📄 `PLAN_opena17_LocalArchive.md`
 
 - **Modul:** 16.local_archiv_agent_opena17
-- **Port:** 12348
+- **Port:** 12346
 - **Funktion:** SQLite-Archive, Patch-Safepoint-Management
 - **Deliverables:** `openwebui_opena17.py`, Tests, Runbook
 - **Status:** Ready for Implementation
@@ -163,7 +163,7 @@ Alle 16 Agenten sind in einzelne, vollständig dokumentierte 5-Stufen-Pläne unt
 📄 `PLAN_opena18_Trading.md`
 
 - **Modul:** 17.aktien_crypto_opena18
-- **Port:** 12348
+- **Port:** 12346
 - **Funktion:** Market-Data-Integration, Trading-Alerts, Portfolio-Management
 - **Deliverables:** `openwebui_opena18.py`, Tests, Runbook
 - **Status:** Ready for Implementation

@@ -30,7 +30,7 @@ Phase 1        Phase 2   Phase 3   │  Phase 4   │  Phase 5
 └─────────┘    └──────┘   └──────┘ │ │:12359 │ │ ├────────┐
 │              │            │  │ Media │ │ope17   │
 │ opena2  │    │ope5  │   │ope8  │ │ │        │ │:12365  │ Analytics
-│:12345   │    │:12348│   │:12351│ │ │├───────┐ │ │        │
+│:12345   │    │:12346│   │:12351│ │ │├───────┐ │ │        │
 │Archivator│   │Browser│  │Teleph.│ │ │ope12  │ │ ├────────┐
 └─────────┘    └──────┘   └──────┘ │ │:12360 │ │ │ope18   │ Dashboard
 │              │            │  │Influencer│ │:12366 │
@@ -375,7 +375,7 @@ Workflow│ CRM     │ Analyt. │ Dashbrd │ ✅
        │
 12347 ─┼─ opena4 (Telegram)
        │
-12348 ─┼─ opena5 (Browser)
+12346 ─┼─ opena5 (Browser)
        │
 12349 ─┼─ opena6 (Email)
        │

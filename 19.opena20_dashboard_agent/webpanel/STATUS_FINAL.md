@@ -6,14 +6,14 @@
 
 - ✅ `index.html` (37K) - Hauptdashboard von `/3.opena4_telegram/html/`
 - ✅ `style.css` (21K) - Telegram Blue Theme
-- ✅ `config.js` (6K) - Konfiguration Port 12348
+- ✅ `config.js` (6K) - Konfiguration Port 12346
 - ✅ `app.js` (41K) - TelegramDashboard Klasse
 
 **Alle Dateien HTTP 200 ✅**
 
 ### 🔧 Backend vollständig integriert
 
-- **Port:** 12348
+- **Port:** 12346
 - **PID:** Aktiv
 - **Status:** Online
 - **Workflows:** 20 geladen (10 Telegram + 10 Terminal)
@@ -151,10 +151,10 @@
 
 ### 🌐 Zugriff
 
-**Dashboard:** http://localhost:12348
-**API Docs:** http://localhost:12348/docs
-**API Test:** http://localhost:12348/test_api.html
-**Health:** http://localhost:12348/health
+**Dashboard:** http://localhost:12346
+**API Docs:** http://localhost:12346/docs
+**API Test:** http://localhost:12346/test_api.html
+**Health:** http://localhost:12346/health
 
 ---
 
@@ -182,7 +182,7 @@
    - Multi-Tab Navigation
 
 5. ✅ **Backend stabil**
-   - Port 12348 aktiv
+   - Port 12346 aktiv
    - Niedriger CPU-Verbrauch (3-5%)
    - Alle Workflows geladen
 

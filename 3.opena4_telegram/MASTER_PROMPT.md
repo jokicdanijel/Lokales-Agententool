@@ -1,7 +1,7 @@
 # 🤖 MASTER PROMPT – opena4 Telegram Agent
 
 **Agent-ID:** opena4
-**Port:** 12348
+**Port:** 12346
 **Status:** 🟡 Planned
 **Kürzel:** `telep`
 **Domäne:** Telegram Bot API, Webhook, Message Queue
@@ -24,12 +24,12 @@ Du bist der **Co-Pilot für opena4**, verantwortlich für die vollständige Ausf
 
 - ❌ Keine Rückfragen – **Starte direkt**
 - ✅ Lade Telegram Bot Token aus `.env` (`TELEGRAM_BOT_TOKEN`)
-- ✅ Prüfe Port 12348 verfügbar
+- ✅ Prüfe Port 12346 verfügbar
 - ✅ Registriere Webhook bei Telegram API
 
 ### 2. Struktur & Setup
 
-- ✅ FastAPI-Service `main_telegram_agent.py` (Port 12348)
+- ✅ FastAPI-Service `main_telegram_agent.py` (Port 12346)
 - ✅ Health-Endpoint `/health`
 - ✅ Webhook-Endpoint `/webhook` (POST)
 - ✅ Command-Endpoint `/command` (POST)
@@ -89,7 +89,7 @@ Falls Dry-Run erfolgreich:
 
 ```json
 {
-  "port": 12348,
+  "port": 12346,
   "bot_token": "${TELEGRAM_BOT_TOKEN}",
   "webhook_url": "https://example.com/webhook",
   "max_queue_size": 1000,
@@ -107,7 +107,7 @@ Falls Dry-Run erfolgreich:
 {
   "status": "success",
   "agent": "opena4",
-  "port": 12348,
+  "port": 12346,
   "webhook_registered": true,
   "queue_size": 0,
   "safepoints_created": 3,

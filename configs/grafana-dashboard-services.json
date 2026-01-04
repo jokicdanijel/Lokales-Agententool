@@ -71,7 +71,7 @@
         }
       },
       {
-        "title": "Inference (12348)",
+        "title": "Inference (12346)",
         "type": "stat",
         "gridPos": { "h": 4, "w": 3, "x": 9, "y": 0 },
         "targets": [

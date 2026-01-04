@@ -126,7 +126,7 @@ RESP Payload
 **Involvierte Ordner:**
 
 - `2.opena3_openwebui/` — OpenWebUI Terminal (12347) ✅
-- `3.opena4_telegram/` — Telegram Bot (12348) 🟡
+- `3.opena4_telegram/` — Telegram Bot (12346) 🟡
 - `4.opena5_vscode/` — VS Code Integration (12349→12365) 🟡
 - `5-21.opena6-opena21/` — 16 weitere Agenten 🟡
 
@@ -297,7 +297,7 @@ bin/ops.sh logs     # Tail alle Logs
 | **12345** | opena2 (Archivator)                 | 1.opena1&2_portier/opena2/  | ✅ Running |
 | **12346** | kordp (Gateway)                     | 1.opena1&2_portier/kordp/   | ✅ Running |
 | **12347** | opena3 (OpenWebUI)                  | 2.opena3_openwebui/         | ✅ Running |
-| **12348** | opena4 (Telegram)                   | 3.opena4_telegram/          | 🟡 Planned |
+| **12346** | opena4 (Telegram)                   | 3.opena4_telegram/          | 🟡 Planned |
 | **12349** | opena20 (Dashboard)                 | 19.opena20_dashboard_agent/ | ✅ Running |
 | **12350** | OpenWebUI Adapter                   | 2.opena3_openwebui/         | ✅ Running |
 | **12351** | opena7 (E-Mail)                     | 6.opena7_email/             | 🟡 Planned |

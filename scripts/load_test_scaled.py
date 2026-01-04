@@ -45,7 +45,7 @@ SERVICES = [import time
 
     "http://127.0.0.1:12346",  # Telegram
 
-    "http://127.0.0.1:12348",  # Inferenceimport sysimport json
+    "http://127.0.0.1:12346",  # Inferenceimport sysimport json
 
     "http://127.0.0.1:12349",  # Dashboard
 
@@ -88,7 +88,7 @@ class LoadTester:
 
     async def make_request(self, url: str) -> tuple:
 
-        """Make single request and return (success, latency_ms, status)"""    "http://127.0.0.1:12348",  # Inference    ("http://127.0.0.1:12348", "inference"),
+        """Make single request and return (success, latency_ms, status)"""    "http://127.0.0.1:12346",  # Inference    ("http://127.0.0.1:12346", "inference"),
 
         try:
 

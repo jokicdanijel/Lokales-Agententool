@@ -97,10 +97,10 @@ communication:
   vscode_bridge:
     agent_id: "opena5"
     name: "VS Code Programmier-Bridge"
-    port: 12348
+    port: 12346
     archive_key: "vscop"
     description: "IDE integration, code tasks, debugging"
-    api_base: "http://127.0.0.1:12348"
+    api_base: "http://127.0.0.1:12346"
     endpoints:
       - path: "/health"
         method: "GET"

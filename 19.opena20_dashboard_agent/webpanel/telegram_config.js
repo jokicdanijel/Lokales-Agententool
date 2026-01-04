@@ -1,6 +1,6 @@
 // Telegram Mobile Agent Configuration
 const CONFIG = {
-  API_BASE: "http://localhost:12348",
+  API_BASE: "http://localhost:12346",
   TELEGRAM_TOKEN: localStorage.getItem("telegram_token") || "",
   UPDATE_INTERVAL: 5000, // 5 seconds
   AUTO_REFRESH: true,
@@ -8,7 +8,7 @@ const CONFIG = {
     opena1: "http://127.0.0.1:12344", // Koordinator
     opena2: "http://127.0.0.1:12345", // Archivator
     opena3: "http://127.0.0.1:12347", // OpenWebUI Terminal
-    opena4: "http://127.0.0.1:12348", // Telegram Agent (this)
+    opena4: "http://127.0.0.1:12346", // Telegram Agent (this)
   },
 };
 

@@ -10,13 +10,13 @@ const CONFIG = {
     id: "opena4",
     name: "Telegram Mobile Agent",
     version: "6.0.0",
-    port: 12348,
+    port: 12346,
     type: "messaging",
   },
 
   // API Endpoints
   api: {
-    baseUrl: "http://127.0.0.1:12348",
+    baseUrl: "http://127.0.0.1:12346",
     timeout: 30000,
     retryAttempts: 3,
     retryDelay: 1000,

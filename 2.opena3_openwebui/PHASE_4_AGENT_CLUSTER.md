@@ -18,7 +18,7 @@
 │ Coord.   │ Archive │ Gateway │ Dashboard   │
 ├─────────────────────────────────────────────┤
 │ opena4-19 (16 Scalable Agents)              │
-│ Ports 12348-12363                           │
+│ Ports 12346-12363                           │
 │ Each with: Health Check, API, Config       │
 ├─────────────────────────────────────────────┤
 │ Load Balancer: Round-robin across cluster  │
@@ -44,7 +44,7 @@ bash bin/start_agents.sh
 
 # 3. Verify
 ps aux | grep opena | grep -v grep | wc -l
-curl http://127.0.0.1:12348/health
+curl http://127.0.0.1:12346/health
 ```
 
 ### Expected Output
@@ -64,7 +64,7 @@ LocalAgent-Pro/
 ├── opena4/
 │   ├── __init__.py
 │   ├── config.json
-│   └── main.py (Port 12348)
+│   └── main.py (Port 12346)
 ├── opena5/
 │   ├── __init__.py
 │   ├── config.json
@@ -84,7 +84,7 @@ LocalAgent-Pro/
 ```json
 {
   "service": "opena4",
-  "port": 12348,
+  "port": 12346,
   "role": "scalable-compute",
   "version": "3.0.0",
   "features": {
@@ -107,7 +107,7 @@ Each agent includes:
 1. **Health Check Endpoint**
 
    ```
-   GET /health → {"status": "online", "service": "opena4", "port": 12348}
+   GET /health → {"status": "online", "service": "opena4", "port": 12346}
    ```
 
 2. **Metrics Endpoint**
@@ -141,7 +141,7 @@ Each agent includes:
 
 ```nginx
 upstream portier_agents {
-    server 127.0.0.1:12348;
+    server 127.0.0.1:12346;
     server 127.0.0.1:12349;
     server 127.0.0.1:12350;
     server 127.0.0.1:12351;
@@ -175,7 +175,7 @@ server {
 import random
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
-AGENTS = [f"http://127.0.0.1:{12348+i}" for i in range(16)]
+AGENTS = [f"http://127.0.0.1:{12346+i}" for i in range(16)]
 
 class LoadBalancer(BaseHTTPRequestHandler):
     def do_POST(self):
@@ -212,7 +212,7 @@ for i in {20..25}; do
 }
 EOF
   cp LocalAgent-Pro/opena4/main.py LocalAgent-Pro/opena$i/main.py
-  sed -i "s/12348/$port/g" LocalAgent-Pro/opena$i/main.py
+  sed -i "s/12346/$port/g" LocalAgent-Pro/opena$i/main.py
 done
 ```
 
@@ -246,7 +246,7 @@ done
 ```bash
 #!/bin/bash
 echo "🔍 Cluster Health Check"
-for port in {12348..12363}; do
+for port in {12346..12363}; do
   status=$(curl -s http://127.0.0.1:$port/health | jq -r '.status' 2>/dev/null)
   if [ "$status" == "online" ]; then
     echo "✅ Port $port: Online"
@@ -360,9 +360,9 @@ services:
       dockerfile: Dockerfile
     environment:
       - AGENT_ID=4
-      - PORT=12348
+      - PORT=12346
     ports:
-      - "12348:12348"
+      - "12346:12346"
     restart: unless-stopped
 
   # ... repeat for opena5-opena19 ...
@@ -385,7 +385,7 @@ services:
 ## ✅ Deployment Checklist
 
 - [x] All 16 agents generated (opena4-opena19)
-- [x] Each agent running on assigned port (12348-12363)
+- [x] Each agent running on assigned port (12346-12363)
 - [x] Health check endpoints responding
 - [x] Bearer tokens configured
 - [x] Metrics endpoints functional
@@ -412,7 +412,7 @@ services:
 ## 📊 Cluster Statistics
 
 - **Total Agents**: 16 (opena4-opena19)
-- **Port Range**: 12348-12363
+- **Port Range**: 12346-12363
 - **Total Compute Power**: 16x parallel processing
 - **Memory Footprint**: ~800MB (50MB per agent)
 - **Startup Time**: ~90 seconds for full cluster
@@ -423,4 +423,4 @@ services:
 
 **Status**: ✨ Phase 4 Complete
 **Dashboard**: http://127.0.0.1:8000
-**Cluster Endpoint**: http://127.0.0.1:12348-12363
+**Cluster Endpoint**: http://127.0.0.1:12346-12363

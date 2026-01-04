@@ -188,7 +188,7 @@ AGENT_PORT_MAPPING = {
     "opena2": 12345,
     "kordp": 12346,
     "opena3": 12347,
-    "opena4": 12348,
+    "opena4": 12346,
     "opena5": 12351,
     "opena6": 12352,
     "opena7": 12353,

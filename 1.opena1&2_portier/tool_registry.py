@@ -167,12 +167,12 @@ class ToolRegistry:
             )
         )
 
-        # opena4 – Telegram Agent (Port 12348, RUNNING)
+        # opena4 – Telegram Agent (Port 12346, RUNNING)
         self.register_agent(
             Agent(
                 id="opena4",
                 name="Telegram Mobile-Anbindung",
-                port=12348,
+                port=12346,
                 description="Telegram messenger integration (telep)",
                 role="Communication",
                 tools=["send_message", "receive_message", "webhook"],
@@ -609,7 +609,7 @@ class ToolRegistry:
                 category=ToolCategory.EDIT,
                 description="Edit file in VS Code",
                 agent_id="opena5",
-                port=12348,
+                port=12346,
                 endpoint="/tasks/apply",
                 params={"file": "string (required)", "edits": "list (required)"},
                 timeout_seconds=120,
@@ -626,7 +626,7 @@ class ToolRegistry:
                 category=ToolCategory.STORE,
                 description="Store data in Archivator",
                 agent_id="opena2",
-                port=12348,
+                port=12346,
                 endpoint="/store/archivp",
                 params={"data": "dict (required)", "src": "string (required)", "dst": "string (required)"},
                 timeout_seconds=30,
@@ -642,7 +642,7 @@ class ToolRegistry:
                 category=ToolCategory.QUERY,
                 description="Query data from Archivator",
                 agent_id="opena2",
-                port=12348,
+                port=12346,
                 endpoint="/archiv/last",
                 params={"n": "int (optional)", "filter": "string (optional)"},
                 timeout_seconds=30,

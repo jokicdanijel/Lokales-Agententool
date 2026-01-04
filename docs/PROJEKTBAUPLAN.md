@@ -37,7 +37,7 @@
    - Editor-Integration
    - Code-Verwaltung
 
-5. **Browser** (Port 12348)
+5. **Browser** (Port 12346)
    - Web-Scraping
    - Recherche
 

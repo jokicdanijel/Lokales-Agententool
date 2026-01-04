@@ -27,7 +27,7 @@
 | opena2 (Archivator)  | 12345 | ✅ healthy | 100%   |
 | kordp (Relay)        | 12346 | ✅ healthy | 100%   |
 | opena_finance        | 12347 | ✅ healthy | 100%   |
-| opena4_telegram      | 12348 | ✅ healthy | 100%   |
+| opena4_telegram      | 12346 | ✅ healthy | 100%   |
 | opena19 (Dashboard)  | 12349 | ✅ healthy | 100%   |
 
 **System Uptime:** 18+ hours (since Nov 8, 18:00 UTC)
@@ -286,7 +286,7 @@ curl -H "Authorization: Bearer MEIN_SUPER_TOKEN_123" \
 
    ```bash
    cd /Gesamtprojekt
-   for port in 12344 12345 12346 12347 12348 12349; do
+   for port in 12344 12345 12346 12347 12346 12349; do
      curl -s http://127.0.0.1:$port/health | jq .
    done
    ```

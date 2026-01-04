@@ -78,7 +78,7 @@
 
 ## ⏳ NEXT PRIORITIES (Next 24h)
 
-### 1. Telegram-Bridge (opena4) – Port 12348
+### 1. Telegram-Bridge (opena4) – Port 12346
 
 - **Estimated Time:** 2-3 hours
 - **Scope:** Webhook receiver for Telegram

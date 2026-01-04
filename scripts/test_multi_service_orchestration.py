@@ -21,7 +21,7 @@ SERVICES = [
     (12344, "kordp", "portier"),
     (12345, "archivp", "opena2"),
     (12346, "telep", "telegram"),
-    (12348, "infer", "inference"),
+    (12346, "infer", "inference"),
     (12349, "browsp", "browser"),
     (12350, "vscop", "vscode"),
     (12351, "emailp", "email"),

@@ -10,7 +10,7 @@ declare -A AGENTS=(
     [12344]="opena1|Koordinator"
     [12345]="opena2|Archivator"
     [12347]="opena3|OpenWebUI"
-    [12348]="opena4|Telegram"
+    [12346]="opena4|Telegram"
     [12349]="opena20|Dashboard"
     [12351]="opena5|VSCode"
     [12352]="opena6|Browser"
@@ -36,7 +36,7 @@ offline=0
 printf "║ %-6s │ %-10s │ %-25s │ %-10s ║\n" "PORT" "AGENT" "NAME" "STATUS"
 echo "╠══════════════════════════════════════════════════════════════════════════╣"
 
-for port in 12344 12345 12347 12348 12349 12351 12352 12353 12354 12355 12356 12357 12358 12359 12360 12361 12362 12363 12365 12366 12367; do
+for port in 12344 12345 12347 12346 12349 12351 12352 12353 12354 12355 12356 12357 12358 12359 12360 12361 12362 12363 12365 12366 12367; do
     info="${AGENTS[$port]}"
     agent="${info%|*}"
     name="${info#*|}"

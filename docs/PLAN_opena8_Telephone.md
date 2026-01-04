@@ -1,6 +1,6 @@
 # PLAN: Agent opena8 – Telefon-Antwort Chatbot
 
-**Status:** Production-Ready Plan | **Port:** 12348 | **Modul:** 7.chatbot_ton_opena8
+**Status:** Production-Ready Plan | **Port:** 12346 | **Modul:** 7.chatbot_ton_opena8
 
 ## 📋 Zielsetzung
 

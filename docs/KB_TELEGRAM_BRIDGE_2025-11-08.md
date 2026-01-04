@@ -11,7 +11,7 @@
 
 | Eigenschaft    | Wert                                                 |
 | -------------- | ---------------------------------------------------- |
-| **Port**       | 12348                                                |
+| **Port**       | 12346                                                |
 | **File**       | `19.dashboard_agent/main_opena4_telegram.py` (13 KB) |
 | **Runtime**    | Python 3.13 + FastAPI + Uvicorn                      |
 | **Status**     | ✅ LIVE & TESTED                                     |
@@ -33,7 +33,7 @@
                  │
                  ▼ Message + Secret
 ┌────────────────────────────────────────────┐
-│  opena4_telegram (Port 12348)              │
+│  opena4_telegram (Port 12346)              │
 │  ┌──────────────────────────────────────┐  │
 │  │ 1. Webhook Handler                   │  │
 │  │    - Validate X-Telegram-Bot-Api-... │  │
@@ -188,7 +188,7 @@ Content-Type: application/json
 **Full URL Example:**
 
 ```
-POST http://127.0.0.1:12348/message/send?chat_id=123456789&message=Hello%20World
+POST http://127.0.0.1:12346/message/send?chat_id=123456789&message=Hello%20World
 ```
 
 **Response:**
@@ -215,7 +215,7 @@ POST http://127.0.0.1:12348/message/send?chat_id=123456789&message=Hello%20World
 **Full URL Example:**
 
 ```
-GET http://127.0.0.1:12348/messages/recent?limit=5
+GET http://127.0.0.1:12346/messages/recent?limit=5
 ```
 
 **Response:**
@@ -253,7 +253,7 @@ GET http://127.0.0.1:12348/messages/recent?limit=5
 {
   "status": "healthy",
   "service": "opena4_telegram",
-  "port": 12348,
+  "port": 12346,
   "bot_token": "123456:ABC...",
   "webhook_secret_length": 31,
   "timestamp": "2025-11-08T18:09:50Z"
@@ -271,7 +271,7 @@ GET http://127.0.0.1:12348/messages/recent?limit=5
 ```json
 {
   "service": "opena4_telegram",
-  "port": 12348,
+  "port": 12346,
   "webhook_path": "/webhook/telegram",
   "finance_api": "http://127.0.0.1:12347",
   "archive_api": "http://127.0.0.1:12345",
@@ -378,7 +378,7 @@ curl -s http://127.0.0.1:12345/archiv/last?n=5 | jq .
 
 | Test # | Name                    | Status  | Details                       |
 | ------ | ----------------------- | ------- | ----------------------------- |
-| 1      | Health Check            | ✅ PASS | Service responds, port 12348  |
+| 1      | Health Check            | ✅ PASS | Service responds, port 12346  |
 | 2      | Configuration           | ✅ PASS | Config endpoint accessible    |
 | 3      | /help Webhook           | ✅ PASS | Command parsed & logged       |
 | 4      | /balance Webhook        | ✅ PASS | Finance routing works         |
@@ -451,10 +451,10 @@ grep ERROR logs/opena4_telegram.nohup.log
 
 ```bash
 # Check health (once)
-curl -s http://127.0.0.1:12348/health | jq .
+curl -s http://127.0.0.1:12346/health | jq .
 
 # Monitor continuously (every 2s)
-watch -n 2 'curl -s http://127.0.0.1:12348/health | jq .'
+watch -n 2 'curl -s http://127.0.0.1:12346/health | jq .'
 
 # Check process status
 ps aux | grep main_opena4_telegram
@@ -467,7 +467,7 @@ pkill -f "python3.*main_opena4_telegram"
 
 ## ⚠️ Troubleshooting
 
-### Problem: Port 12348 already in use
+### Problem: Port 12346 already in use
 
 **Symptoms:**
 
@@ -479,7 +479,7 @@ Address already in use
 
 ```bash
 # Find what's using the port
-lsof -i :12348
+lsof -i :12346
 
 # Kill the process
 kill -9 <PID>
@@ -504,7 +504,7 @@ All webhook calls return 401 Unauthorized
 2. Min length is 16 chars (currently 31)
 3. Verify curl header includes it:
    ```bash
-   curl -X POST http://127.0.0.1:12348/webhook/telegram \
+   curl -X POST http://127.0.0.1:12346/webhook/telegram \
      -H "X-Telegram-Bot-Api-Secret-Token: $(cat .env | grep TELEGRAM_WEBHOOK_SECRET | cut -d= -f2)"
    ```
 

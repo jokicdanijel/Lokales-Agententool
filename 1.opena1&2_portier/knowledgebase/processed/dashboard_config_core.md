@@ -145,7 +145,7 @@ Port 12344 [opena1]     : ● Online  (Response: 45ms)
 Port 12345 [opena2]     : ● Online  (Response: 32ms)
 Port 12346 [kordp]      : ● Online  (Response: 28ms)
 Port 12347 [opena3]     : ● Online  (Response: 51ms)
-Port 12348 [opena4]     : ○ Offline
+Port 12346 [opena4]     : ○ Offline
 Port 12349 [Dashboard]  : ● Online  (Response: 12ms)
 Port 12350 [Adapter]    : ● Online  (Response: 18ms)
 ```

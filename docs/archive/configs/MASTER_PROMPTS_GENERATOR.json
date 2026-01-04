@@ -15,7 +15,7 @@
     {
       "id": "opena4",
       "folder": "3.opena4_telegram",
-      "port": 12348,
+      "port": 12346,
       "status": "🟡 Planned",
       "kuerzel": "telep",
       "domain": "Telegram Bot API, Webhook, Message Queue",

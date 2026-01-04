@@ -2,7 +2,7 @@
 
 **Agent:** opena4 (Telegram Agent)
 **Kürzel:** telep
-**Port:** 12348
+**Port:** 12346
 **Datum:** 27. November 2025
 **Status:** ✅ DEPLOYED & OPERATIONAL
 
@@ -10,7 +10,7 @@
 
 ## 📊 Zusammenfassung
 
-opena4 wurde vollständig implementiert und ist **produktionsbereit**. Der Service läuft stabil auf Port 12348 mit voller PORTIER 3.0 Compliance.
+opena4 wurde vollständig implementiert und ist **produktionsbereit**. Der Service läuft stabil auf Port 12346 mit voller PORTIER 3.0 Compliance.
 
 ### Kern-Metriken
 
@@ -19,7 +19,7 @@ opena4 wurde vollständig implementiert und ist **produktionsbereit**. Der Servi
 - **Tests:** 4/5 bestanden (Health ✅, Root ✅, Command ✅, Safepoints ✅)
 - **PID:** 1615821
 - **Uptime:** 22+ Sekunden (zum Testzeitpunkt)
-- **Port:** 12348 (Policy-konform)
+- **Port:** 12346 (Policy-konform)
 
 ---
 
@@ -29,7 +29,7 @@ opena4 wurde vollständig implementiert und ist **produktionsbereit**. Der Servi
 
 ✅ **main_telegram_agent.py** (600+ Zeilen)
 
-- FastAPI-Service auf Port 12348
+- FastAPI-Service auf Port 12346
 - Endpoints: `/`, `/health`, `/command`, `/telegram/message`, `/github/webhook`, `/status`
 - Bearer-Token-Auth via HTTPBearer
 - Safepoint-Archivierung mit Unicode-Pfeil `→`
@@ -40,7 +40,7 @@ opena4 wurde vollständig implementiert und ist **produktionsbereit**. Der Servi
 
 ✅ **config.py** (150+ Zeilen)
 
-- Port 12348 (opena4)
+- Port 12346 (opena4)
 - Port-Policy: 12344-12399 erlaubt, 8080 verboten
 - ENV-only Secrets (TELEGRAM_BOT_TOKEN, BEARER_TOKEN)
 - Shared archivp: `1.opena1&2_portier/archivp_store`
@@ -63,7 +63,7 @@ opena4 wurde vollständig implementiert und ist **produktionsbereit**. Der Servi
 ✅ **bin/start_opena4.sh** (80 Zeilen)
 
 - PID-basiertes Start-Skript
-- Port 12348 Availability-Check
+- Port 12346 Availability-Check
 - .env Loading (Projekt-Root oder lokal)
 - BEARER_TOKEN Validation
 - venv Activation (venv313 / venv)
@@ -84,7 +84,7 @@ opena4 wurde vollständig implementiert und ist **produktionsbereit**. Der Servi
 
 ✅ **test_opena4.py** (150 Zeilen)
 
-- test_health(): GET /health → status=ok, agent=opena4, port=12348 ✅
+- test_health(): GET /health → status=ok, agent=opena4, port=12346 ✅
 - test_root(): GET / → kuerzel=telep ✅
 - test_command(): POST /command mit Bearer-Auth ✅
 - test_invalid_json(): Strict JSON Validation ⚠️ (akzeptiert extra fields)
@@ -99,7 +99,7 @@ opena4 wurde vollständig implementiert und ist **produktionsbereit**. Der Servi
 | Policy                 | Status | Details                                                          |
 | ---------------------- | ------ | ---------------------------------------------------------------- |
 | **Option-2-Flow**      | ✅     | opena4 → opena2 → kordp (via write_safepoint)                    |
-| **Port-Policy**        | ✅     | 12348 in Range 12344-12399                                       |
+| **Port-Policy**        | ✅     | 12346 in Range 12344-12399                                       |
 | **Port 8080 verboten** | ✅     | Nicht verwendet                                                  |
 | **Safepoint-Format**   | ✅     | SP<ts>_src→dst_{CMD\|RESP}.json                                  |
 | **Unicode-Pfeil**      | ✅     | → (U+2192)                                                       |
@@ -123,7 +123,7 @@ opena4 wurde vollständig implementiert und ist **produktionsbereit**. Der Servi
 {
   "status": "ok",
   "agent": "opena4",
-  "port": 12348,
+  "port": 12346,
   "uptime": 22.35,
   "telegram_available": false,
   "telegram_users_configured": 0
@@ -136,7 +136,7 @@ opena4 wurde vollständig implementiert und ist **produktionsbereit**. Der Servi
 {
   "agent": "opena4",
   "kuerzel": "telep",
-  "port": 12348,
+  "port": 12346,
   "status": "running",
   "description": "Telegram Agent mit Webhook-Support, Message-Queue, Option-2-Flow-Compliance",
   "version": "1.0.0"
@@ -173,20 +173,20 @@ Letzte Einträge in `index.jsonl`:
 ### Service-Info
 
 - **PID:** 1615821
-- **Port:** 12348
+- **Port:** 12346
 - **Host:** 127.0.0.1
 - **Logs:** `logs/opena4.nohup.log`
-- **Health:** http://127.0.0.1:12348/health
+- **Health:** http://127.0.0.1:12346/health
 
 ### Startup-Logs
 
 ```
-2025-11-27 11:25:33,672 [INFO] opena4 – Starting opena4 @ 127.0.0.1:12348
-2025-11-27 11:25:33,672 [INFO] opena4 – Starting FastAPI server @ 127.0.0.1:12348
+2025-11-27 11:25:33,672 [INFO] opena4 – Starting opena4 @ 127.0.0.1:12346
+2025-11-27 11:25:33,672 [INFO] opena4 – Starting FastAPI server @ 127.0.0.1:12346
 INFO:     Started server process [1615821]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-INFO:     Uvicorn running on http://127.0.0.1:12348 (Press CTRL+C to quit)
+INFO:     Uvicorn running on http://127.0.0.1:12346 (Press CTRL+C to quit)
 ```
 
 **Status:** ✅ Operational
@@ -197,7 +197,7 @@ INFO:     Uvicorn running on http://127.0.0.1:12348 (Press CTRL+C to quit)
 
 Aus `TODO.md`:
 
-- [x] FastAPI-Service `main_telegram_agent.py` erstellen (Port 12348)
+- [x] FastAPI-Service `main_telegram_agent.py` erstellen (Port 12346)
 - [x] Config-Modul für Telegram Bot Token, Webhook-URL, Allowed Users
 - [x] Health-Endpoint `/health` implementieren
 - [x] Auth-Middleware (Bearer Token) einrichten
@@ -277,7 +277,7 @@ python3 test_opena4.py
 ### Health-Check
 
 ```bash
-curl -s http://127.0.0.1:12348/health | jq .
+curl -s http://127.0.0.1:12346/health | jq .
 ```
 
 ### Command senden
@@ -286,7 +286,7 @@ curl -s http://127.0.0.1:12348/health | jq .
 curl -s -H "Authorization: Bearer $BEARER_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"request_id":"test_123","command":"test","payload":{}}' \
-  http://127.0.0.1:12348/command | jq .
+  http://127.0.0.1:12346/command | jq .
 ```
 
 ---

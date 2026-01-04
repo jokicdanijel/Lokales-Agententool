@@ -12,7 +12,7 @@ from pathlib import Path
 
 
 class AgentGenerator:
-    def __init__(self, base_dir, start_id=4, end_id=19, base_port=12348):
+    def __init__(self, base_dir, start_id=4, end_id=19, base_port=12346):
         self.base_dir = Path(base_dir)
         self.start_id = start_id
         self.end_id = end_id
@@ -236,7 +236,7 @@ sleep 2
 echo "✅ All agents started!"
 echo ""
 echo "🔍 Verify with:"
-for port in {{{{12348..12364}}}}; do
+for port in {{{{12346..12364}}}}; do
   curl -s http://127.0.0.1:$port/health > /dev/null && echo "✅ Port $port online" || echo "❌ Port $port offline"
 done
 """
@@ -274,7 +274,7 @@ def main():
     """Main entry point"""
     base_dir = Path(__file__).parent.parent
 
-    parser_args = {"--start": 4, "--end": 19, "--base-port": 12348}
+    parser_args = {"--start": 4, "--end": 19, "--base-port": 12346}
 
     # Parse arguments
     for arg, default in parser_args.items():
@@ -304,7 +304,7 @@ def main():
     print(f"\n{'='*70}")
     print(f"  ✅ Generated {success} agents successfully!")
     print("  🚀 Start them with: bash bin/start_agents.sh")
-    print("  📊 Check status: curl http://127.0.0.1:12348/health")
+    print("  📊 Check status: curl http://127.0.0.1:12346/health")
     print(f"{'='*70}\n")
 
 

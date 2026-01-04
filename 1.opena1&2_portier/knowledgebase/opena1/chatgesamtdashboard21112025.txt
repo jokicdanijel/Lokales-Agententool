@@ -1270,7 +1270,7 @@ instructions: |
   - 1.opena1&2_portier → Ports 12344-12346
   - 2.opena3_openwebui → Port 12347
   - 19.opena20_dashboard_agent → Ports 12349-12350
-  - 3-18, 20 (Spezialisierte Agenten) → Ports 12348-12367
+  - 3-18, 20 (Spezialisierte Agenten) → Ports 12346-12367
 
   **Externe Dienste:**
   - OpenWebUI: Port 8080 (exklusiv UI)
@@ -9863,7 +9863,7 @@ Perfekt! Ich führe jetzt eine **abschließende Validierung** durch und erstelle
 | **kordp** | kordp | 12346 | ✅ |
 | **archivp** | archivp | Filesystem | ✅ |
 | **opena3** | 2.opena3_openwebui | 12347 | ✅ |
-| **opena4-21** | `3-20.*` | 12348-12367 | ✅ |
+| **opena4-21** | `3-20.*` | 12346-12367 | ✅ |
 
 **Top-Level-Struktur:** 23 Verzeichnisse gefunden (inkl. Duplikate 6.opena7_mail, 8.opena8_whatsapp, 9.opena9_telephone).
 
@@ -10339,7 +10339,7 @@ Ran terminal command: wc -l /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamt
 
 **Nicht aktiv (normal):**
 - `kordp` (12346) — startet on-demand
-- `telegram` (12348) — optional
+- `telegram` (12346) — optional
 
 ---
 
@@ -10453,7 +10453,7 @@ bin/ops.sh stop
 ✅ 12345 — opena2 (Archivator)
 ⚪ 12346 — kordp (on-demand)
 ✅ 12347 — opena3 (OpenWebUI)
-⚪ 12348 — telegram (optional)
+⚪ 12346 — telegram (optional)
 ✅ 12349 — Dashboard
 ⚪ 8080  — OpenWebUI UI (nicht aktiv)
 ```
@@ -11803,7 +11803,7 @@ scrape_configs:
     metrics_path: '/metrics'
     scrape_interval: 30s
     static_configs:
-      - targets: ['localhost:12348']
+      - targets: ['localhost:12346']
     relabel_configs:
       - source_labels: [__address__]
         target_label: service
@@ -12305,7 +12305,7 @@ Kern-Architektur:
     20 Service-Slots (Ports 12344-12365)
     Zentral-Koordinator (Portier, Port 12344)
     Persistentes Archiv (OpenA2, Port 12345)
-    llama-stack Integration (Inferenz, Port 12348)
+    llama-stack Integration (Inferenz, Port 12346)
     OpenWebUI Integration (Port 3000)
 
 Leistung:
@@ -12362,7 +12362,7 @@ Service-Topologie
     │                │                │
 ┌───▼──────┐  ┌──────▼──────┐  ┌────▼─────┐
 │OpenA2    │  │Telegram     │  │Inference │
-│(12345)   │  │(12346)      │  │(12348)   │
+│(12345)   │  │(12346)      │  │(12346)   │
 │Archive   │  │Messaging    │  │llama2    │
 └──────────┘  └─────────────┘  └──────────┘
     │              │                │
@@ -12378,7 +12378,7 @@ Hafen 	Service 	Rolle 	Status
 12344 	Portier 	Koordinator/Dispatcher 	✅ Online
 12345 	OpenA2 	Archiv (JSONL-Speicher) 	✅ Online
 12346 	Telegramm 	Messaging-Agent 	✅ Online
-12348 	Inferenz 	Lama-Stack + Ollama 	✅ Online
+12346 	Inferenz 	Lama-Stack + Ollama 	✅ Online
 12349-12364 	Skalierbare Dienstleistungen 	Agent Pool 	⏳ Vorlage-Ready
 12365-12399 	Reserviert 	Zukünftige Expansion 	📅 Verfügbar
 📊 Phasenabschlussstatus
@@ -12449,7 +12449,7 @@ curl http://127.0.0.1:12345/archiv/last?n=5 | jq .
 
 Chat-Abschluss:
 
-curl -X POST http://127.0.0.1:12348/chat/completions \
+curl -X POST http://127.0.0.1:12346/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
     "model": "llama2",
@@ -12463,7 +12463,7 @@ Gesamtprojekt/
 ├── src/services/
 │   ├── portier/                 ← Coordinator (12344)
 │   ├── telegram/                ← Messaging (12346)
-│   ├── inference/               ← Inference (12348)
+│   ├── inference/               ← Inference (12346)
 │   ├── template/                ← Generic Service Template
 │   ├── whatsapp/                ← Generated Service (12352)
 │   ├── phone/                   ← Generated Service (12353)
@@ -12560,7 +12560,7 @@ python3 scripts/openwebui_inference_bridge.py
 📊 Überwachung & Protokolle
 Service Gesundheit
 
-for port in 12344 12345 12346 12348; do
+for port in 12344 12345 12346 12346; do
   echo "Port $port:"
   curl -s http://127.0.0.1:$port/health | jq '.status'
 done

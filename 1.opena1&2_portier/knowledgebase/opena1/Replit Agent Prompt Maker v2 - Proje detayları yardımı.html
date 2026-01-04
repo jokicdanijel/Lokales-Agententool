@@ -325,7 +325,7 @@ Alle Aktionen laufen über opena2 als Wahrheit („Archivator“) und opena1 als
 
 ### 2) Port‐ &amp; Bindings‐Politik
 
-* opena5 bindet typischerweise einen **internen API‑Port** im erlaubten Bereich z. B. <code>12348</code>.
+* opena5 bindet typischerweise einen **internen API‑Port** im erlaubten Bereich z. B. <code>12346</code>.
 * **Keine** Bindung auf Port 8080 erlaubt (dies bleibt ausschließlich opena3).
 * Änderungen durch VS Code (z. B. über eine Extension oder CLI Hook) dürfen nicht außerhalb des Pools arbeiten.
 * In <code>.runtime/port_leases.json</code> wird eingetragen:
@@ -333,7 +333,7 @@ Alle Aktionen laufen über opena2 als Wahrheit („Archivator“) und opena1 als
   <pre class="overflow-x-auto"><code>json
   {
     "leases":[
-      {"agent":"opena5","port":12348,"ts":"2025-10‑22T12:00:00Z","state":"ide‑bridge"}
+      {"agent":"opena5","port":12346,"ts":"2025-10‑22T12:00:00Z","state":"ide‑bridge"}
     ],
     "pool":"12344‑12399"
   }</code></pre>
@@ -353,7 +353,7 @@ Wenn z. B. über UI (opena3) oder Bot (opena4) eine Edit/DIFF Aufgabe generier
 
 #### 3.2 VS Code Bridge nimmt entgegen
 
-* VS Code (opena5) holt sich die Aufgabe (z. B. via local API Port 12348 <code>/tasks/poll</code>)
+* VS Code (opena5) holt sich die Aufgabe (z. B. via local API Port 12346 <code>/tasks/poll</code>)
 * Öffnet das angegebene <code>file_path</code> im Workspace, zeigt Diff/Anweisung
 * Entwickler übernimmt: ändert Code, speichert, ggf. commit &amp; push (oder automatisiert)
 * Nach Abschluss schreibt opena5:
@@ -494,7 +494,7 @@ Hier ist eine robuste und CI-fähige Verzeichnisstruktur für Schritt 5 – **op
     │   └── HEALTH_RECORDS.jsonl
     │
     ├── .runtime/
-    │   └── port_leases.json        # Portbindung (z. B. 12348 für opena5)
+    │   └── port_leases.json        # Portbindung (z. B. 12346 für opena5)
     │
     ├── .github/
     │   └── workflows/

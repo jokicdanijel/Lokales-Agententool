@@ -112,7 +112,7 @@ AGENT_REGISTRY: list[AgentInfo] = [
     AgentInfo(id="opena1", name="Koordinator (Portier)", kuerzel="kordp", port=12344),
     AgentInfo(id="opena2", name="Archivator", kuerzel="archivp", port=12345),
     AgentInfo(id="opena3", name="OpenWebUI Terminal", kuerzel="owuip", port=12347),
-    AgentInfo(id="opena4", name="Telegram Agent", kuerzel="telep", port=12348),
+    AgentInfo(id="opena4", name="Telegram Agent", kuerzel="telep", port=12346),
     AgentInfo(id="opena5", name="VS Code Agent", kuerzel="vscop", port=12351),
     AgentInfo(id="opena6", name="Browser Agent", kuerzel="browsep", port=12352),
     AgentInfo(id="opena7", name="Email Agent", kuerzel="emailp", port=12353),

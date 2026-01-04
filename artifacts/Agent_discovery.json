@@ -1,8 +1,8 @@
 {
-  "timestamp_utc": "2026-01-02T10:08:22.631460Z",
+  "timestamp_utc": "2026-01-04T03:33:31.955943Z",
   "success": false,
   "baseline_hash_sha256": "71edb4c5b304bc75c2e867ba879ece00ed91ea3d33d7e4890ced9e772c7c3f5a",
-  "discovery_hash_sha256": "6106d40e3b038ab64dfb14a6237624348aa0da810071639c1db6a419d1d3e53e",
+  "discovery_hash_sha256": "948a2a520e6d9bde096c115f16fea48e1f1e693bade26e542881b7768b735f0c",
   "repo_root": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt",
   "agents_discovered_count": 21,
   "agents_expected": [
@@ -34,7 +34,7 @@
       "folder_path": "1.opena1&2_portier",
       "baseline_port": 12344,
       "inventory_count": 1050,
-      "folder_hash_sha256": "74af79658341246313e57d04642ee393ef1e686cbe21c11a95874f3aa54405a7",
+      "folder_hash_sha256": "9b7d7a4bd24032ecc02d7595ee9ae506d2076f40c3c0e730cf7282ab75ddb13c",
       "inventory_files": [
         "1.opena1&2_portier/.env",
         "1.opena1&2_portier/.env.sanitized",
@@ -1093,7 +1093,7 @@
           12345,
           12346,
           12347,
-          12348,
+          12346,
           12349,
           12350,
           12351,
@@ -1315,7 +1315,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12350,
               12351,
               12352,
@@ -1353,7 +1353,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349
             ]
           },
@@ -1364,7 +1364,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12362
             ]
@@ -1403,7 +1403,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12399
@@ -1416,7 +1416,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12399
             ]
@@ -1428,7 +1428,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12399
             ]
@@ -1440,7 +1440,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -1467,7 +1467,7 @@
             "ports": [
               12344,
               12347,
-              12348,
+              12346,
               12399
             ]
           },
@@ -1487,7 +1487,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349
             ]
           },
@@ -1496,7 +1496,7 @@
             "ports": [
               12344,
               12347,
-              12348,
+              12346,
               12399
             ]
           },
@@ -1532,7 +1532,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -1576,7 +1576,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -1637,7 +1637,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -1698,7 +1698,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -1766,7 +1766,7 @@
               12344,
               12345,
               12346,
-              12348,
+              12346,
               12349,
               12350,
               12399
@@ -1798,7 +1798,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12399
             ]
           },
@@ -1808,7 +1808,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12399
             ]
           },
@@ -1819,7 +1819,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349
             ]
           },
@@ -1855,7 +1855,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350
             ]
@@ -1921,7 +1921,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -1943,7 +1943,7 @@
               12344,
               12345,
               12347,
-              12348
+              12346
             ]
           },
           {
@@ -1952,7 +1952,7 @@
               12344,
               12345,
               12346,
-              12348,
+              12346,
               12349,
               12399
             ]
@@ -1982,7 +1982,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -2158,7 +2158,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -2185,8 +2185,8 @@
       "id": "opena10",
       "folder_path": "9.opena10_call_tracking",
       "baseline_port": 12355,
-      "inventory_count": 27,
-      "folder_hash_sha256": "83a0e07bdcfe3c4b572734ee2eebccdf18acbdcb8717124f7e65db30d266b7d2",
+      "inventory_count": 28,
+      "folder_hash_sha256": "2ed176b8f6a63fcc42400e5528d98321b2fbb376a51356cc61872ee961b5a2f0",
       "inventory_files": [
         "9.opena10_call_tracking/.env",
         "9.opena10_call_tracking/.env.sanitized",
@@ -2202,6 +2202,7 @@
         "9.opena10_call_tracking/data/.gitkeep",
         "9.opena10_call_tracking/data/calltracking.db",
         "9.opena10_call_tracking/docs/IMPLEMENTATION_REPORT.md",
+        "9.opena10_call_tracking/frontend/index.html",
         "9.opena10_call_tracking/html/app.js",
         "9.opena10_call_tracking/html/config.js",
         "9.opena10_call_tracking/html/index.html",
@@ -2280,6 +2281,12 @@
               12344,
               12355,
               12399
+            ]
+          },
+          {
+            "file": "9.opena10_call_tracking/frontend/index.html",
+            "ports": [
+              12355
             ]
           },
           {
@@ -2540,7 +2547,7 @@
       "folder_path": "11.opena12_social_media",
       "baseline_port": 12357,
       "inventory_count": 48,
-      "folder_hash_sha256": "e6e2be39e4e5690bd0e31c72e9cdec40de166adfae59b2d68468e6d817feb383",
+      "folder_hash_sha256": "609006d9bd882cbc448571e240ab0fcbfda659f9b58aa61220c5eb5ec0ec2f27",
       "inventory_files": [
         "11.opena12_social_media/.env",
         "11.opena12_social_media/.env.sanitized",
@@ -2595,7 +2602,7 @@
         "ports_used": [
           12344,
           12345,
-          12348,
+          12346,
           12349,
           12357,
           12358,
@@ -2636,13 +2643,13 @@
           {
             "file": "11.opena12_social_media/artifacts/start_proof_report.json",
             "ports": [
-              12348
+              12346
             ]
           },
           {
             "file": "11.opena12_social_media/artifacts/start_proof_report.md",
             "ports": [
-              12348
+              12346
             ]
           },
           {
@@ -2747,7 +2754,7 @@
       "folder_path": "12.opena13_influencer",
       "baseline_port": 12358,
       "inventory_count": 30,
-      "folder_hash_sha256": "2ef9c7437d12cb25a58a6e296014edf6afba45d7e2ab15187f7d29d013977ad9",
+      "folder_hash_sha256": "d70fc74b7143b26b9630237e87fb17a4c8ae74670fd448f93121e386d7230221",
       "inventory_files": [
         "12.opena13_influencer/.env",
         "12.opena13_influencer/.env.sanitized",
@@ -2820,7 +2827,7 @@
           {
             "file": "12.opena13_influencer/bin/start_opena13.sh",
             "ports": [
-              12358
+              12359
             ]
           },
           {
@@ -2857,6 +2864,7 @@
             "ports": [
               12344,
               12358,
+              12359,
               12399
             ]
           },
@@ -2901,8 +2909,8 @@
       "id": "opena14",
       "folder_path": "13.opena14_calendar",
       "baseline_port": 12359,
-      "inventory_count": 27,
-      "folder_hash_sha256": "777d824c427282b036d7dfc65d8fbf8b9cf29430bf890fb4991851f4367d6a45",
+      "inventory_count": 28,
+      "folder_hash_sha256": "808e8cfa7d2c9ff7f30830e4c3bea2f78173a9ec238feddc6a36f1157e807840",
       "inventory_files": [
         "13.opena14_calendar/.env",
         "13.opena14_calendar/.env.sanitized",
@@ -2919,6 +2927,7 @@
         "13.opena14_calendar/data/calendars.json",
         "13.opena14_calendar/data/event_history.jsonl",
         "13.opena14_calendar/data/events.json",
+        "13.opena14_calendar/frontend/index.html",
         "13.opena14_calendar/html/app.js",
         "13.opena14_calendar/html/config.js",
         "13.opena14_calendar/html/index.html",
@@ -2989,6 +2998,12 @@
             ]
           },
           {
+            "file": "13.opena14_calendar/frontend/index.html",
+            "ports": [
+              12359
+            ]
+          },
+          {
             "file": "13.opena14_calendar/html/config.js",
             "ports": [
               12359
@@ -3049,39 +3064,36 @@
       "id": "opena15",
       "folder_path": "14.opena15_html",
       "baseline_port": 12360,
-      "inventory_count": 227,
-      "folder_hash_sha256": "a7344d44abde10826485f06255589de8a5d044536eaed80af4803e03f4f96f0a",
+      "inventory_count": 219,
+      "folder_hash_sha256": "eddab9dd6678b558746a4a311bccb3460bf2815dafae56e0d7a5694599434a18",
       "inventory_files": [
+        "14.opena15_html/.backup_20260103/.env",
+        "14.opena15_html/.backup_20260103/.env.template",
+        "14.opena15_html/.backup_20260103/README.md",
+        "14.opena15_html/.backup_20260103/config.py",
+        "14.opena15_html/.backup_20260103/main_html_agent.py",
+        "14.opena15_html/.backup_20260103/models.py",
+        "14.opena15_html/.backup_20260103/requirements.txt",
+        "14.opena15_html/.backup_20260103/safepoint_client.py",
+        "14.opena15_html/.backup_20260103/security.py",
+        "14.opena15_html/.backup_20260103/sse_client.py",
         "14.opena15_html/.env",
-        "14.opena15_html/.env.sanitized",
         "14.opena15_html/.env.template",
-        "14.opena15_html/COMPLETION_REPORT.md",
-        "14.opena15_html/MASTER_PROMPT.md",
-        "14.opena15_html/PRODUCTION_PROMPT.md",
-        "14.opena15_html/PRODUCTION_STATUS.md",
         "14.opena15_html/README.md",
-        "14.opena15_html/README.md.backup",
-        "14.opena15_html/TODO.md",
-        "14.opena15_html/UI_PROFILE_SYSTEM.md",
-        "14.opena15_html/assets/css/base.css",
-        "14.opena15_html/assets/css/components.css",
-        "14.opena15_html/assets/css/layout.css",
-        "14.opena15_html/assets/css/themes.css",
-        "14.opena15_html/assets/js/api_client.js",
-        "14.opena15_html/assets/js/router.js",
-        "14.opena15_html/assets/js/state.js",
-        "14.opena15_html/assets/js/telemetry.js",
+        "14.opena15_html/backend/app.py",
+        "14.opena15_html/backend/app.py.clean",
+        "14.opena15_html/backend/config.py",
+        "14.opena15_html/backend/models.py",
+        "14.opena15_html/backend/requirements.txt",
+        "14.opena15_html/backend/safepoint_client.py",
+        "14.opena15_html/backend/security.py",
+        "14.opena15_html/backend/sse_client.py",
         "14.opena15_html/bin/start_opena15.sh",
         "14.opena15_html/bin/stop_opena15.sh",
-        "14.opena15_html/components/control_bar.html",
-        "14.opena15_html/components/jobs_table.html",
-        "14.opena15_html/components/json_viewer.html",
-        "14.opena15_html/components/log_console.html",
-        "14.opena15_html/components/stat_card.html",
-        "14.opena15_html/config.py",
         "14.opena15_html/config/agent.conf",
         "14.opena15_html/data/.gitkeep",
         "14.opena15_html/data/html_history.jsonl",
+        "14.opena15_html/data/output/02c19a98_default.html",
         "14.opena15_html/data/output/035c4a4c_agent_dashboard.html.j2",
         "14.opena15_html/data/output/0563cdf4_telegram_dashboard.html.j2",
         "14.opena15_html/data/output/075137e5_agent_dashboard.html.j2",
@@ -3097,24 +3109,31 @@
         "14.opena15_html/data/output/173f8dd0_agent_dashboard.html.j2",
         "14.opena15_html/data/output/17c23f04_agent_dashboard.html.j2",
         "14.opena15_html/data/output/1824189d_agent_dashboard.html.j2",
+        "14.opena15_html/data/output/182c9abd_default.html",
         "14.opena15_html/data/output/1a07018e_agent_dashboard.html.j2",
         "14.opena15_html/data/output/1e84280c_agent_dashboard.html.j2",
+        "14.opena15_html/data/output/1e8ec800_default.html",
         "14.opena15_html/data/output/1eac76f5_agent_dashboard_v2.html.j2",
         "14.opena15_html/data/output/21ada559_agent_dashboard.html.j2",
         "14.opena15_html/data/output/247db647_agent_dashboard.html.j2",
         "14.opena15_html/data/output/2524b1da_agent_dashboard.html.j2",
         "14.opena15_html/data/output/254a32aa_agent_dashboard.html.j2",
+        "14.opena15_html/data/output/25942ad9_default.html",
         "14.opena15_html/data/output/28763406_agent_dashboard.html.j2",
         "14.opena15_html/data/output/28f873ce_agent_dashboard.html.j2",
+        "14.opena15_html/data/output/2a799b7e_default.html",
         "14.opena15_html/data/output/2c6a51f3_agent_dashboard.html.j2",
         "14.opena15_html/data/output/2e111a95_agent_dashboard.html.j2",
         "14.opena15_html/data/output/314f0e49_agent_dashboard.html.j2",
+        "14.opena15_html/data/output/34d45418_agent_dashboard.html.j2",
         "14.opena15_html/data/output/38c6b436_agent_dashboard.html.j2",
         "14.opena15_html/data/output/3a2b878f_telegram_dashboard.html.j2",
+        "14.opena15_html/data/output/3a797280_default.html",
         "14.opena15_html/data/output/403204e5_agent_dashboard.html.j2",
         "14.opena15_html/data/output/4044b0e0_agent_dashboard.html.j2",
         "14.opena15_html/data/output/40db831e_agent_dashboard.html.j2",
         "14.opena15_html/data/output/42755c85_agent_dashboard.html.j2",
+        "14.opena15_html/data/output/448d5253_default.html",
         "14.opena15_html/data/output/44afcb8f_agent_dashboard.html.j2",
         "14.opena15_html/data/output/46f72979_agent_dashboard.html.j2",
         "14.opena15_html/data/output/47d5d6ad_agent_dashboard.html.j2",
@@ -3159,14 +3178,18 @@
         "14.opena15_html/data/output/7beb6b2c_agent_dashboard_v2.html.j2",
         "14.opena15_html/data/output/80e00c5c_agent_dashboard.html.j2",
         "14.opena15_html/data/output/828c4606_agent_dashboard.html.j2",
+        "14.opena15_html/data/output/8394c388_default.html",
         "14.opena15_html/data/output/843953ed_agent_dashboard.html.j2",
         "14.opena15_html/data/output/85a5fcb9_default.html",
         "14.opena15_html/data/output/862ccae0_agent_dashboard.html.j2",
         "14.opena15_html/data/output/87dc6766_agent_dashboard.html.j2",
         "14.opena15_html/data/output/90e07f9f_default.html",
         "14.opena15_html/data/output/93e6f838_agent_dashboard.html.j2",
+        "14.opena15_html/data/output/965b202f_default.html",
+        "14.opena15_html/data/output/969e5167_default.html",
         "14.opena15_html/data/output/96dbcee2_agent_dashboard.html.j2",
         "14.opena15_html/data/output/97f0ef50_agent_dashboard.html.j2",
+        "14.opena15_html/data/output/9818445b_default.html",
         "14.opena15_html/data/output/9a98c75f_agent_dashboard.html.j2",
         "14.opena15_html/data/output/9ac6d3cb_agent_dashboard.html.j2",
         "14.opena15_html/data/output/a1083369_agent_dashboard_v2.html.j2",
@@ -3209,6 +3232,7 @@
         "14.opena15_html/data/output/ba4d058d_agent_dashboard.html.j2",
         "14.opena15_html/data/output/bd9a3fa4_agent_dashboard.html.j2",
         "14.opena15_html/data/output/be942cab_agent_dashboard.html.j2",
+        "14.opena15_html/data/output/be96dd3e_agent_dashboard_v2.html.j2",
         "14.opena15_html/data/output/bf3c7a0f_agent_dashboard_v2.html.j2",
         "14.opena15_html/data/output/c04fe0ea_agent_dashboard.html.j2",
         "14.opena15_html/data/output/c11c6e2a_agent_dashboard.html.j2",
@@ -3221,19 +3245,26 @@
         "14.opena15_html/data/output/c9409cc7_agent_dashboard.html.j2",
         "14.opena15_html/data/output/ca001204_agent_dashboard.html.j2",
         "14.opena15_html/data/output/cbaec09a_agent_dashboard.html.j2",
+        "14.opena15_html/data/output/cf05d247_agent_dashboard_v2.html.j2",
         "14.opena15_html/data/output/d0ba09ba_agent_dashboard.html.j2",
+        "14.opena15_html/data/output/d49a2b15_agent_dashboard.html.j2",
         "14.opena15_html/data/output/d564cb87_agent_dashboard.html.j2",
         "14.opena15_html/data/output/d7279754_agent_dashboard.html.j2",
         "14.opena15_html/data/output/d930f009_agent_dashboard.html.j2",
+        "14.opena15_html/data/output/d9a82aae_default.html",
         "14.opena15_html/data/output/dbadb35d_agent_dashboard.html.j2",
         "14.opena15_html/data/output/dc6808bf_agent_dashboard.html.j2",
+        "14.opena15_html/data/output/ddfb1504_default.html",
         "14.opena15_html/data/output/dfd02d45_agent_dashboard.html.j2",
         "14.opena15_html/data/output/e0739f4e_agent_dashboard.html.j2",
         "14.opena15_html/data/output/e1860ae6_agent_dashboard.html.j2",
+        "14.opena15_html/data/output/e4c74a98_agent_dashboard_v2.html.j2",
         "14.opena15_html/data/output/e5a91fa3_agent_dashboard.html.j2",
+        "14.opena15_html/data/output/e6ddbf83_agent_dashboard_v2.html.j2",
         "14.opena15_html/data/output/eb2ac572_agent_dashboard.html.j2",
         "14.opena15_html/data/output/eb623760_agent_dashboard.html.j2",
         "14.opena15_html/data/output/edc5fba1_agent_dashboard_v2.html.j2",
+        "14.opena15_html/data/output/f0e69e6b_agent_dashboard_v2.html.j2",
         "14.opena15_html/data/output/f2a99099_agent_dashboard.html.j2",
         "14.opena15_html/data/output/f3440740_email_dashboard.html.j2",
         "14.opena15_html/data/output/f572a6be_agent_dashboard.html.j2",
@@ -3251,34 +3282,10 @@
         "14.opena15_html/data/templates/partials/email_agent_dashboard.html.j2",
         "14.opena15_html/data/templates/partials/generic_agent_dashboard.html.j2",
         "14.opena15_html/data/templates/partials/telegram_agent_dashboard.html.j2",
-        "14.opena15_html/html/app.js",
-        "14.opena15_html/html/config.js",
-        "14.opena15_html/html/index.html",
-        "14.opena15_html/html/style.css",
-        "14.opena15_html/index.html",
-        "14.opena15_html/main_html_agent.py",
-        "14.opena15_html/models.py",
-        "14.opena15_html/pages/agent_opena5.html",
-        "14.opena15_html/pages/agent_opena5_config.html",
-        "14.opena15_html/pages/agent_opena5_logs.html",
-        "14.opena15_html/partials/agent_opena5_header.html",
-        "14.opena15_html/production_batch.py",
-        "14.opena15_html/production_reports/batch_report_20251127_170337.json",
-        "14.opena15_html/production_reports/batch_report_20251127_170654.json",
-        "14.opena15_html/production_reports/batch_report_20251127_171709.json",
-        "14.opena15_html/production_reports/batch_report_20251127_172038.json",
-        "14.opena15_html/production_reports/batch_report_20251127_172449.json",
-        "14.opena15_html/production_reports/batch_report_20251127_175442.json",
-        "14.opena15_html/production_reports/batch_report_20251127_175520.json",
-        "14.opena15_html/requirements.txt",
-        "14.opena15_html/safepoint_client.py",
-        "14.opena15_html/security.py",
-        "14.opena15_html/sse_client.py",
-        "14.opena15_html/test_opena15.py",
-        "14.opena15_html/tests/accessibility_checklist.md",
-        "14.opena15_html/tests/performance_budget.md",
-        "14.opena15_html/tests/test_agent.py",
-        "14.opena15_html/tests/test_ids.md"
+        "14.opena15_html/frontend/app.js",
+        "14.opena15_html/frontend/config.js",
+        "14.opena15_html/frontend/index.html",
+        "14.opena15_html/frontend/style.css"
       ],
       "port_references": {
         "ports_used": [
@@ -3286,7 +3293,7 @@
           12345,
           12346,
           12347,
-          12348,
+          12346,
           12349,
           12351,
           12352,
@@ -3309,39 +3316,7 @@
         ],
         "files": [
           {
-            "file": "14.opena15_html/COMPLETION_REPORT.md",
-            "ports": [
-              12360,
-              12362
-            ]
-          },
-          {
-            "file": "14.opena15_html/MASTER_PROMPT.md",
-            "ports": [
-              12344,
-              12360,
-              12399
-            ]
-          },
-          {
-            "file": "14.opena15_html/PRODUCTION_PROMPT.md",
-            "ports": [
-              12345,
-              12347,
-              12348,
-              12360,
-              12362
-            ]
-          },
-          {
-            "file": "14.opena15_html/PRODUCTION_STATUS.md",
-            "ports": [
-              12360,
-              12362
-            ]
-          },
-          {
-            "file": "14.opena15_html/README.md",
+            "file": "14.opena15_html/.backup_20260103/README.md",
             "ports": [
               12344,
               12345,
@@ -3352,17 +3327,103 @@
             ]
           },
           {
-            "file": "14.opena15_html/TODO.md",
+            "file": "14.opena15_html/.backup_20260103/config.py",
+            "ports": [
+              12344,
+              12345,
+              12349,
+              12361
+            ]
+          },
+          {
+            "file": "14.opena15_html/.backup_20260103/main_html_agent.py",
+            "ports": [
+              12360,
+              12368
+            ]
+          },
+          {
+            "file": "14.opena15_html/.backup_20260103/models.py",
+            "ports": [
+              12361
+            ]
+          },
+          {
+            "file": "14.opena15_html/.backup_20260103/safepoint_client.py",
+            "ports": [
+              12345,
+              12349
+            ]
+          },
+          {
+            "file": "14.opena15_html/.backup_20260103/security.py",
+            "ports": [
+              12344,
+              12361
+            ]
+          },
+          {
+            "file": "14.opena15_html/.backup_20260103/sse_client.py",
+            "ports": [
+              12345,
+              12349,
+              12361
+            ]
+          },
+          {
+            "file": "14.opena15_html/README.md",
+            "ports": [
+              12344,
+              12345,
+              12349,
+              12357,
+              12360,
+              12361,
+              12368,
+              12399
+            ]
+          },
+          {
+            "file": "14.opena15_html/backend/app.py",
             "ports": [
               12360
             ]
           },
           {
-            "file": "14.opena15_html/UI_PROFILE_SYSTEM.md",
+            "file": "14.opena15_html/backend/config.py",
             "ports": [
-              12348,
+              12344,
+              12345,
               12349,
-              12360
+              12361
+            ]
+          },
+          {
+            "file": "14.opena15_html/backend/models.py",
+            "ports": [
+              12361
+            ]
+          },
+          {
+            "file": "14.opena15_html/backend/safepoint_client.py",
+            "ports": [
+              12345,
+              12349
+            ]
+          },
+          {
+            "file": "14.opena15_html/backend/security.py",
+            "ports": [
+              12344,
+              12361
+            ]
+          },
+          {
+            "file": "14.opena15_html/backend/sse_client.py",
+            "ports": [
+              12345,
+              12349,
+              12361
             ]
           },
           {
@@ -3378,15 +3439,6 @@
             ]
           },
           {
-            "file": "14.opena15_html/config.py",
-            "ports": [
-              12344,
-              12345,
-              12349,
-              12361
-            ]
-          },
-          {
             "file": "14.opena15_html/config/agent.conf",
             "ports": [
               12345,
@@ -3397,8 +3449,9 @@
           {
             "file": "14.opena15_html/data/html_history.jsonl",
             "ports": [
+              12344,
               12347,
-              12348,
+              12346,
               12351,
               12352,
               12353,
@@ -3414,6 +3467,18 @@
               12363,
               12364,
               12365
+            ]
+          },
+          {
+            "file": "14.opena15_html/data/output/182c9abd_default.html",
+            "ports": [
+              12360
+            ]
+          },
+          {
+            "file": "14.opena15_html/data/output/2a799b7e_default.html",
+            "ports": [
+              12360
             ]
           },
           {
@@ -3530,7 +3595,7 @@
           {
             "file": "14.opena15_html/data/output/agent_dashboards/opena4_dashboard.html",
             "ports": [
-              12348,
+              12346,
               12349
             ]
           },
@@ -3570,237 +3635,13 @@
             ]
           },
           {
-            "file": "14.opena15_html/html/config.js",
+            "file": "14.opena15_html/frontend/config.js",
             "ports": [
               12360
             ]
           },
           {
-            "file": "14.opena15_html/html/index.html",
-            "ports": [
-              12360
-            ]
-          },
-          {
-            "file": "14.opena15_html/main_html_agent.py",
-            "ports": [
-              12360,
-              12368
-            ]
-          },
-          {
-            "file": "14.opena15_html/models.py",
-            "ports": [
-              12361
-            ]
-          },
-          {
-            "file": "14.opena15_html/production_batch.py",
-            "ports": [
-              12347,
-              12348,
-              12351,
-              12352,
-              12353,
-              12354,
-              12355,
-              12356,
-              12357,
-              12358,
-              12359,
-              12360,
-              12361,
-              12362,
-              12363,
-              12364,
-              12365
-            ]
-          },
-          {
-            "file": "14.opena15_html/production_reports/batch_report_20251127_170337.json",
-            "ports": [
-              12347,
-              12348,
-              12349,
-              12351,
-              12352,
-              12353,
-              12354,
-              12355,
-              12356,
-              12357,
-              12358,
-              12359,
-              12360,
-              12361,
-              12362,
-              12363,
-              12364,
-              12365
-            ]
-          },
-          {
-            "file": "14.opena15_html/production_reports/batch_report_20251127_170654.json",
-            "ports": [
-              12347,
-              12348,
-              12349,
-              12351,
-              12352,
-              12353,
-              12354,
-              12355,
-              12356,
-              12357,
-              12358,
-              12359,
-              12360,
-              12361,
-              12362,
-              12363,
-              12364,
-              12365
-            ]
-          },
-          {
-            "file": "14.opena15_html/production_reports/batch_report_20251127_171709.json",
-            "ports": [
-              12347,
-              12348,
-              12349,
-              12351,
-              12352,
-              12353,
-              12354,
-              12355,
-              12356,
-              12357,
-              12358,
-              12359,
-              12360,
-              12361,
-              12362,
-              12363,
-              12364,
-              12365
-            ]
-          },
-          {
-            "file": "14.opena15_html/production_reports/batch_report_20251127_172038.json",
-            "ports": [
-              12347,
-              12348,
-              12349,
-              12351,
-              12352,
-              12353,
-              12354,
-              12355,
-              12356,
-              12357,
-              12358,
-              12359,
-              12360,
-              12361,
-              12362,
-              12363,
-              12364,
-              12365
-            ]
-          },
-          {
-            "file": "14.opena15_html/production_reports/batch_report_20251127_172449.json",
-            "ports": [
-              12347,
-              12348,
-              12349,
-              12351,
-              12352,
-              12353,
-              12354,
-              12355,
-              12356,
-              12357,
-              12358,
-              12359,
-              12360,
-              12361,
-              12362,
-              12363,
-              12364,
-              12365
-            ]
-          },
-          {
-            "file": "14.opena15_html/production_reports/batch_report_20251127_175442.json",
-            "ports": [
-              12347,
-              12348,
-              12349,
-              12351,
-              12352,
-              12353,
-              12354,
-              12355,
-              12356,
-              12357,
-              12358,
-              12359,
-              12360,
-              12361,
-              12362,
-              12363,
-              12364,
-              12365
-            ]
-          },
-          {
-            "file": "14.opena15_html/production_reports/batch_report_20251127_175520.json",
-            "ports": [
-              12347,
-              12348,
-              12349,
-              12351,
-              12352,
-              12353,
-              12354,
-              12355,
-              12356,
-              12357,
-              12358,
-              12359,
-              12360,
-              12361,
-              12362,
-              12363,
-              12364,
-              12365
-            ]
-          },
-          {
-            "file": "14.opena15_html/safepoint_client.py",
-            "ports": [
-              12345,
-              12349
-            ]
-          },
-          {
-            "file": "14.opena15_html/security.py",
-            "ports": [
-              12344,
-              12361
-            ]
-          },
-          {
-            "file": "14.opena15_html/sse_client.py",
-            "ports": [
-              12345,
-              12349,
-              12361
-            ]
-          },
-          {
-            "file": "14.opena15_html/test_opena15.py",
+            "file": "14.opena15_html/frontend/index.html",
             "ports": [
               12360
             ]
@@ -3812,8 +3653,8 @@
       "id": "opena16",
       "folder_path": "15.opena16_shop",
       "baseline_port": 12361,
-      "inventory_count": 29,
-      "folder_hash_sha256": "32b5b3eab22a2b097a6dd4ed158a18cab438a61f887b09803c0df121bc86ef55",
+      "inventory_count": 30,
+      "folder_hash_sha256": "a939610801b523de8465caedff6172c98ac3f1b4de579a4e2427b0396906163a",
       "inventory_files": [
         "15.opena16_shop/.env",
         "15.opena16_shop/.env.sanitized",
@@ -3832,6 +3673,7 @@
         "15.opena16_shop/data/orders.json",
         "15.opena16_shop/data/products.json",
         "15.opena16_shop/data/shop_history.jsonl",
+        "15.opena16_shop/frontend/index.html",
         "15.opena16_shop/html/app.js",
         "15.opena16_shop/html/config.js",
         "15.opena16_shop/html/index.html",
@@ -3918,6 +3760,12 @@
             ]
           },
           {
+            "file": "15.opena16_shop/frontend/index.html",
+            "ports": [
+              12361
+            ]
+          },
+          {
             "file": "15.opena16_shop/html/config.js",
             "ports": [
               12361
@@ -3978,7 +3826,7 @@
       "folder_path": "16.opena17_homepagecreator",
       "baseline_port": 12362,
       "inventory_count": 37,
-      "folder_hash_sha256": "a22648f80a2ed10d50a9ef9aa92b52300a01271fc9358048f5e79c6dc2d696ba",
+      "folder_hash_sha256": "af12ed657573b25598eb71037b410822da8a195fdcc2e534fd03977e5bce9544",
       "inventory_files": [
         "16.opena17_homepagecreator/.env",
         "16.opena17_homepagecreator/.env.sanitized",
@@ -4026,6 +3874,7 @@
           12360,
           12362,
           12363,
+          12366,
           12399
         ],
         "files": [
@@ -4056,7 +3905,7 @@
           {
             "file": "16.opena17_homepagecreator/bin/start_opena17.sh",
             "ports": [
-              12362
+              12366
             ]
           },
           {
@@ -4093,7 +3942,8 @@
           {
             "file": "16.opena17_homepagecreator/main_homepage_agent.py",
             "ports": [
-              12362
+              12362,
+              12366
             ]
           },
           {
@@ -4137,8 +3987,8 @@
       "id": "opena18",
       "folder_path": "17.opena18_CMR",
       "baseline_port": 12363,
-      "inventory_count": 31,
-      "folder_hash_sha256": "a5e2ce655c071ee08c20747a13c281e37ee7815f24c43d5dcf9000adef84871c",
+      "inventory_count": 32,
+      "folder_hash_sha256": "fea4b3dac5d1ffd1a34696c1382ea00a5012897ca242b0dc13fc06f967a0df78",
       "inventory_files": [
         "17.opena18_CMR/.env",
         "17.opena18_CMR/.env.sanitized",
@@ -4158,6 +4008,7 @@
         "17.opena18_CMR/data/crm_history.jsonl",
         "17.opena18_CMR/data/deals.json",
         "17.opena18_CMR/data/organizations.json",
+        "17.opena18_CMR/frontend/index.html",
         "17.opena18_CMR/html/app.js",
         "17.opena18_CMR/html/config.js",
         "17.opena18_CMR/html/index.html",
@@ -4231,6 +4082,12 @@
             ]
           },
           {
+            "file": "17.opena18_CMR/frontend/index.html",
+            "ports": [
+              12363
+            ]
+          },
+          {
             "file": "17.opena18_CMR/html/config.js",
             "ports": [
               12344,
@@ -4296,8 +4153,8 @@
       "id": "opena19",
       "folder_path": "18.opena19_Aktien&Crypto",
       "baseline_port": 12364,
-      "inventory_count": 26,
-      "folder_hash_sha256": "fe07eace985f9cfad968979822347e81124e7d0249a89ed522d4ecb18994c9c8",
+      "inventory_count": 27,
+      "folder_hash_sha256": "1371fc61c688167631c881a28a75cdeda20991cf14778371267382065a3ba744",
       "inventory_files": [
         "18.opena19_Aktien&Crypto/.env",
         "18.opena19_Aktien&Crypto/.env.sanitized",
@@ -4315,6 +4172,7 @@
         "18.opena19_Aktien&Crypto/data/portfolio.json",
         "18.opena19_Aktien&Crypto/data/prices_cache.json",
         "18.opena19_Aktien&Crypto/data/stockcrypto_history.jsonl",
+        "18.opena19_Aktien&Crypto/frontend/index.html",
         "18.opena19_Aktien&Crypto/main_stocks_crypto_agent.py",
         "18.opena19_Aktien&Crypto/models.py",
         "18.opena19_Aktien&Crypto/opena19.service",
@@ -4385,6 +4243,12 @@
             ]
           },
           {
+            "file": "18.opena19_Aktien&Crypto/frontend/index.html",
+            "ports": [
+              12364
+            ]
+          },
+          {
             "file": "18.opena19_Aktien&Crypto/main_stocks_crypto_agent.py",
             "ports": [
               12365
@@ -4430,7 +4294,7 @@
       "folder_path": "1.opena1&2_portier",
       "baseline_port": 12345,
       "inventory_count": 1050,
-      "folder_hash_sha256": "74af79658341246313e57d04642ee393ef1e686cbe21c11a95874f3aa54405a7",
+      "folder_hash_sha256": "9b7d7a4bd24032ecc02d7595ee9ae506d2076f40c3c0e730cf7282ab75ddb13c",
       "inventory_files": [
         "1.opena1&2_portier/.env",
         "1.opena1&2_portier/.env.sanitized",
@@ -5489,7 +5353,7 @@
           12345,
           12346,
           12347,
-          12348,
+          12346,
           12349,
           12350,
           12351,
@@ -5711,7 +5575,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12350,
               12351,
               12352,
@@ -5749,7 +5613,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349
             ]
           },
@@ -5760,7 +5624,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12362
             ]
@@ -5799,7 +5663,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12399
@@ -5812,7 +5676,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12399
             ]
@@ -5824,7 +5688,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12399
             ]
@@ -5836,7 +5700,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -5863,7 +5727,7 @@
             "ports": [
               12344,
               12347,
-              12348,
+              12346,
               12399
             ]
           },
@@ -5883,7 +5747,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349
             ]
           },
@@ -5892,7 +5756,7 @@
             "ports": [
               12344,
               12347,
-              12348,
+              12346,
               12399
             ]
           },
@@ -5928,7 +5792,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -5972,7 +5836,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -6033,7 +5897,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -6094,7 +5958,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -6162,7 +6026,7 @@
               12344,
               12345,
               12346,
-              12348,
+              12346,
               12349,
               12350,
               12399
@@ -6194,7 +6058,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12399
             ]
           },
@@ -6204,7 +6068,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12399
             ]
           },
@@ -6215,7 +6079,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349
             ]
           },
@@ -6251,7 +6115,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350
             ]
@@ -6317,7 +6181,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -6339,7 +6203,7 @@
               12344,
               12345,
               12347,
-              12348
+              12346
             ]
           },
           {
@@ -6348,7 +6212,7 @@
               12344,
               12345,
               12346,
-              12348,
+              12346,
               12349,
               12399
             ]
@@ -6378,7 +6242,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -6554,7 +6418,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -6581,8 +6445,8 @@
       "id": "opena20",
       "folder_path": "19.opena20_dashboard_agent",
       "baseline_port": 12349,
-      "inventory_count": 224,
-      "folder_hash_sha256": "3f81bb2b3e1c6847258c7455e22210c2fb657e494512a7537804fdd4d805a706",
+      "inventory_count": 262,
+      "folder_hash_sha256": "492eb86f40c34d242b30061dacb298dbeab9aecaf9b8a1f837b542e360675d48",
       "inventory_files": [
         "19.opena20_dashboard_agent/.env",
         "19.opena20_dashboard_agent/.gitignore",
@@ -6655,6 +6519,16 @@
         "19.opena20_dashboard_agent/bin/stop_opena20.sh",
         "19.opena20_dashboard_agent/compiler/generate_html.py",
         "19.opena20_dashboard_agent/config.py",
+        "19.opena20_dashboard_agent/data/dashboard_pages/opena10_dashboard.html",
+        "19.opena20_dashboard_agent/data/dashboard_pages/opena12_dashboard.html",
+        "19.opena20_dashboard_agent/data/dashboard_pages/opena14_dashboard.html",
+        "19.opena20_dashboard_agent/data/dashboard_pages/opena15_dashboard.html",
+        "19.opena20_dashboard_agent/data/dashboard_pages/opena16_dashboard.html",
+        "19.opena20_dashboard_agent/data/dashboard_pages/opena18_dashboard.html",
+        "19.opena20_dashboard_agent/data/dashboard_pages/opena19_dashboard.html",
+        "19.opena20_dashboard_agent/data/dashboard_pages/opena21_dashboard.html",
+        "19.opena20_dashboard_agent/data/dashboard_pages/opena6_dashboard.html",
+        "19.opena20_dashboard_agent/data/dashboard_pages/opena8_dashboard.html",
         "19.opena20_dashboard_agent/demo_safepoint_writer_30.py",
         "19.opena20_dashboard_agent/docker-compose.otel.yml",
         "19.opena20_dashboard_agent/docker-compose.yml",
@@ -6726,6 +6600,34 @@
         "19.opena20_dashboard_agent/security.py",
         "19.opena20_dashboard_agent/sse_client.py",
         "19.opena20_dashboard_agent/static/css/dashboard.css",
+        "19.opena20_dashboard_agent/static/generated/opena10.html",
+        "19.opena20_dashboard_agent/static/generated/opena10_dashboard.html",
+        "19.opena20_dashboard_agent/static/generated/opena11.html",
+        "19.opena20_dashboard_agent/static/generated/opena12.html",
+        "19.opena20_dashboard_agent/static/generated/opena12_dashboard.html",
+        "19.opena20_dashboard_agent/static/generated/opena13.html",
+        "19.opena20_dashboard_agent/static/generated/opena14.html",
+        "19.opena20_dashboard_agent/static/generated/opena14_dashboard.html",
+        "19.opena20_dashboard_agent/static/generated/opena15.html",
+        "19.opena20_dashboard_agent/static/generated/opena15_dashboard.html",
+        "19.opena20_dashboard_agent/static/generated/opena16.html",
+        "19.opena20_dashboard_agent/static/generated/opena16_dashboard.html",
+        "19.opena20_dashboard_agent/static/generated/opena17.html",
+        "19.opena20_dashboard_agent/static/generated/opena18.html",
+        "19.opena20_dashboard_agent/static/generated/opena18_dashboard.html",
+        "19.opena20_dashboard_agent/static/generated/opena19.html",
+        "19.opena20_dashboard_agent/static/generated/opena19_dashboard.html",
+        "19.opena20_dashboard_agent/static/generated/opena21.html",
+        "19.opena20_dashboard_agent/static/generated/opena21_dashboard.html",
+        "19.opena20_dashboard_agent/static/generated/opena3.html",
+        "19.opena20_dashboard_agent/static/generated/opena4.html",
+        "19.opena20_dashboard_agent/static/generated/opena5.html",
+        "19.opena20_dashboard_agent/static/generated/opena6.html",
+        "19.opena20_dashboard_agent/static/generated/opena6_dashboard.html",
+        "19.opena20_dashboard_agent/static/generated/opena7.html",
+        "19.opena20_dashboard_agent/static/generated/opena8.html",
+        "19.opena20_dashboard_agent/static/generated/opena8_dashboard.html",
+        "19.opena20_dashboard_agent/static/generated/opena9.html",
         "19.opena20_dashboard_agent/static/index.html",
         "19.opena20_dashboard_agent/static/js/dashboard.js",
         "19.opena20_dashboard_agent/system_baseline.yaml",
@@ -6815,7 +6717,7 @@
           12345,
           12346,
           12347,
-          12348,
+          12346,
           12349,
           12350,
           12351,
@@ -6931,7 +6833,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -6961,7 +6863,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -6991,7 +6893,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -7018,7 +6920,7 @@
             "file": "19.opena20_dashboard_agent/artifacts/scans/ports_ids_scan.json",
             "ports": [
               12346,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -7043,7 +6945,7 @@
             "file": "19.opena20_dashboard_agent/artifacts/scans/ports_ids_scan.md",
             "ports": [
               12346,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -7102,7 +7004,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12351,
               12352,
@@ -7119,6 +7021,66 @@
               12363,
               12364,
               12365
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/data/dashboard_pages/opena10_dashboard.html",
+            "ports": [
+              12355
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/data/dashboard_pages/opena12_dashboard.html",
+            "ports": [
+              12357
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/data/dashboard_pages/opena14_dashboard.html",
+            "ports": [
+              12359
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/data/dashboard_pages/opena15_dashboard.html",
+            "ports": [
+              12360
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/data/dashboard_pages/opena16_dashboard.html",
+            "ports": [
+              12361
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/data/dashboard_pages/opena18_dashboard.html",
+            "ports": [
+              12363
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/data/dashboard_pages/opena19_dashboard.html",
+            "ports": [
+              12364
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/data/dashboard_pages/opena21_dashboard.html",
+            "ports": [
+              12368
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/data/dashboard_pages/opena6_dashboard.html",
+            "ports": [
+              12351
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/data/dashboard_pages/opena8_dashboard.html",
+            "ports": [
+              12353
             ]
           },
           {
@@ -7172,7 +7134,7 @@
             "ports": [
               12344,
               12345,
-              12348,
+              12346,
               12399
             ]
           },
@@ -7182,7 +7144,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12349,
               12351,
               12352,
@@ -7216,7 +7178,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -7268,7 +7230,7 @@
             "file": "19.opena20_dashboard_agent/main_dashboard.py",
             "ports": [
               12347,
-              12348,
+              12346,
               12349,
               12351,
               12352,
@@ -7291,7 +7253,7 @@
             "file": "19.opena20_dashboard_agent/main_dashboard_agent.py",
             "ports": [
               12347,
-              12348,
+              12346,
               12349,
               12351,
               12352,
@@ -7316,7 +7278,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -7342,7 +7304,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12349,
               12351,
               12352,
@@ -7380,7 +7342,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12349
             ]
           },
@@ -7447,7 +7409,7 @@
             "ports": [
               12344,
               12345,
-              12348
+              12346
             ]
           },
           {
@@ -7472,6 +7434,174 @@
             ]
           },
           {
+            "file": "19.opena20_dashboard_agent/static/generated/opena10.html",
+            "ports": [
+              12355
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena10_dashboard.html",
+            "ports": [
+              12355
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena11.html",
+            "ports": [
+              12356
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena12.html",
+            "ports": [
+              12357
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena12_dashboard.html",
+            "ports": [
+              12357
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena13.html",
+            "ports": [
+              12358
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena14.html",
+            "ports": [
+              12359
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena14_dashboard.html",
+            "ports": [
+              12359
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena15.html",
+            "ports": [
+              12360
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena15_dashboard.html",
+            "ports": [
+              12360
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena16.html",
+            "ports": [
+              12361
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena16_dashboard.html",
+            "ports": [
+              12361
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena17.html",
+            "ports": [
+              12362
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena18.html",
+            "ports": [
+              12363
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena18_dashboard.html",
+            "ports": [
+              12363
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena19.html",
+            "ports": [
+              12364
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena19_dashboard.html",
+            "ports": [
+              12364
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena21.html",
+            "ports": [
+              12368
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena21_dashboard.html",
+            "ports": [
+              12368
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena3.html",
+            "ports": [
+              12347
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena4.html",
+            "ports": [
+              12346
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena5.html",
+            "ports": [
+              12365
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena6.html",
+            "ports": [
+              12351
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena6_dashboard.html",
+            "ports": [
+              12351
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena7.html",
+            "ports": [
+              12350
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena8.html",
+            "ports": [
+              12353
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena8_dashboard.html",
+            "ports": [
+              12353
+            ]
+          },
+          {
+            "file": "19.opena20_dashboard_agent/static/generated/opena9.html",
+            "ports": [
+              12354
+            ]
+          },
+          {
             "file": "19.opena20_dashboard_agent/static/index.html",
             "ports": [
               12349
@@ -7483,7 +7613,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12349,
               12351,
               12352,
@@ -7535,7 +7665,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12349,
               12351,
               12352,
@@ -7576,13 +7706,13 @@
           {
             "file": "19.opena20_dashboard_agent/webpanel/INTEGRATION_STATUS.md",
             "ports": [
-              12348
+              12346
             ]
           },
           {
             "file": "19.opena20_dashboard_agent/webpanel/PROJEKT_STATUS_BERICHT.md",
             "ports": [
-              12348,
+              12346,
               12349
             ]
           },
@@ -7604,7 +7734,7 @@
           {
             "file": "19.opena20_dashboard_agent/webpanel/STATUS_FINAL.md",
             "ports": [
-              12348
+              12346
             ]
           },
           {
@@ -7632,7 +7762,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -7662,7 +7792,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -7692,7 +7822,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -7719,7 +7849,7 @@
             "file": "19.opena20_dashboard_agent/webpanel/artifacts/scans/ports_ids_scan.json",
             "ports": [
               12346,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -7744,7 +7874,7 @@
             "file": "19.opena20_dashboard_agent/webpanel/artifacts/scans/ports_ids_scan.md",
             "ports": [
               12346,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -7769,7 +7899,7 @@
             "ports": [
               12344,
               12345,
-              12348,
+              12346,
               12349
             ]
           },
@@ -7784,62 +7914,62 @@
             "ports": [
               12344,
               12345,
-              12348,
+              12346,
               12349
             ]
           },
           {
             "file": "19.opena20_dashboard_agent/webpanel/js/19.opena20_dashboard_agent/webpanel/19.opena20_dashboard_agent/webpanel/artifacts/consistency_gate_report.json",
             "ports": [
-              12348
+              12346
             ]
           },
           {
             "file": "19.opena20_dashboard_agent/webpanel/js/19.opena20_dashboard_agent/webpanel/19.opena20_dashboard_agent/webpanel/artifacts/consistency_gate_report.md",
             "ports": [
-              12348
+              12346
             ]
           },
           {
             "file": "19.opena20_dashboard_agent/webpanel/js/19.opena20_dashboard_agent/webpanel/19.opena20_dashboard_agent/webpanel/artifacts/start_proof_report.json",
             "ports": [
-              12348
+              12346
             ]
           },
           {
             "file": "19.opena20_dashboard_agent/webpanel/js/19.opena20_dashboard_agent/webpanel/19.opena20_dashboard_agent/webpanel/artifacts/start_proof_report.md",
             "ports": [
-              12348
+              12346
             ]
           },
           {
             "file": "19.opena20_dashboard_agent/webpanel/js/artifacts/consistency_gate_report.json",
             "ports": [
-              12348
+              12346
             ]
           },
           {
             "file": "19.opena20_dashboard_agent/webpanel/js/artifacts/consistency_gate_report.md",
             "ports": [
-              12348
+              12346
             ]
           },
           {
             "file": "19.opena20_dashboard_agent/webpanel/js/artifacts/start_proof_report.json",
             "ports": [
-              12348
+              12346
             ]
           },
           {
             "file": "19.opena20_dashboard_agent/webpanel/js/artifacts/start_proof_report.md",
             "ports": [
-              12348
+              12346
             ]
           },
           {
             "file": "19.opena20_dashboard_agent/webpanel/reverse_proxy.py",
             "ports": [
-              12348,
+              12346,
               12349
             ]
           },
@@ -7849,13 +7979,13 @@
               12344,
               12345,
               12347,
-              12348
+              12346
             ]
           },
           {
             "file": "19.opena20_dashboard_agent/webpanel/telegram_dashboard.html",
             "ports": [
-              12348
+              12346
             ]
           },
           {
@@ -7863,26 +7993,26 @@
             "ports": [
               12344,
               12345,
-              12348,
+              12346,
               12349
             ]
           },
           {
             "file": "19.opena20_dashboard_agent/webpanel/test_api.html",
             "ports": [
-              12348
+              12346
             ]
           },
           {
             "file": "19.opena20_dashboard_agent/webpanel/unified_backend.py",
             "ports": [
-              12348
+              12346
             ]
           },
           {
             "file": "19.opena20_dashboard_agent/webpanel/unified_dashboard.html",
             "ports": [
-              12348
+              12346
             ]
           }
         ]
@@ -7892,8 +8022,8 @@
       "id": "opena21",
       "folder_path": "20.opena21_workflow",
       "baseline_port": 12368,
-      "inventory_count": 24,
-      "folder_hash_sha256": "f09157647fd95a946f61f745b3eceabe4e4cea57296431007db332b448021da5",
+      "inventory_count": 25,
+      "folder_hash_sha256": "975c27806d9576d2a56b244c794d4c1a1acabe9db21241616ba05727440f2fe8",
       "inventory_files": [
         "20.opena21_workflow/.env",
         "20.opena21_workflow/.env.sanitized",
@@ -7908,6 +8038,7 @@
         "20.opena21_workflow/config.py",
         "20.opena21_workflow/config/agent.conf",
         "20.opena21_workflow/data/.gitkeep",
+        "20.opena21_workflow/frontend/index.html",
         "20.opena21_workflow/html/index.html",
         "20.opena21_workflow/main.py",
         "20.opena21_workflow/models.py",
@@ -7926,7 +8057,7 @@
           12345,
           12346,
           12347,
-          12348,
+          12346,
           12349,
           12351,
           12352,
@@ -7944,6 +8075,7 @@
           12364,
           12365,
           12367,
+          12368,
           12399
         ],
         "files": [
@@ -8008,6 +8140,12 @@
             ]
           },
           {
+            "file": "20.opena21_workflow/frontend/index.html",
+            "ports": [
+              12368
+            ]
+          },
+          {
             "file": "20.opena21_workflow/html/index.html",
             "ports": [
               12349,
@@ -8021,7 +8159,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12351,
               12352,
@@ -8091,8 +8229,8 @@
       "id": "opena3",
       "folder_path": "2.opena3_openwebui",
       "baseline_port": 12347,
-      "inventory_count": 368,
-      "folder_hash_sha256": "4a0af92f9055cda6660e42c0bd714b4a05e51e6c3700e1aecf21aba4631eec8c",
+      "inventory_count": 367,
+      "folder_hash_sha256": "1435b4b576586f718d813b6710a8468b167994cda086d334fd2fe5ba40b30c37",
       "inventory_files": [
         "2.opena3_openwebui/.env",
         "2.opena3_openwebui/.env.sanitized",
@@ -8339,7 +8477,6 @@
         "2.opena3_openwebui/docs/opena3_implementation_report.md",
         "2.opena3_openwebui/docs/opena3_status.html",
         "2.opena3_openwebui/elion_auto_indexer.py",
-        "2.opena3_openwebui/git-error-1764188842724",
         "2.opena3_openwebui/html/app.js",
         "2.opena3_openwebui/html/config.js",
         "2.opena3_openwebui/html/index.html",
@@ -8469,7 +8606,7 @@
           12345,
           12346,
           12347,
-          12348,
+          12346,
           12349,
           12350,
           12351,
@@ -8494,7 +8631,7 @@
           {
             "file": "2.opena3_openwebui/ARCHIVE_ANALYSIS_2025-11-11.md",
             "ports": [
-              12348
+              12346
             ]
           },
           {
@@ -8521,7 +8658,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12350,
               12351,
               12352,
@@ -8723,13 +8860,13 @@
           {
             "file": "2.opena3_openwebui/LocalAgent-Pro/opena4/config.json",
             "ports": [
-              12348
+              12346
             ]
           },
           {
             "file": "2.opena3_openwebui/LocalAgent-Pro/opena4/main.py",
             "ports": [
-              12348
+              12346
             ]
           },
           {
@@ -8936,7 +9073,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349
             ]
           },
@@ -8954,7 +9091,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12350,
               12351,
               12352,
@@ -9001,7 +9138,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -9077,7 +9214,7 @@
             "file": "2.opena3_openwebui/README_V2.md",
             "ports": [
               12347,
-              12348,
+              12346,
               12349
             ]
           },
@@ -9216,7 +9353,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12399
             ]
           },
@@ -9249,7 +9386,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12364
             ]
@@ -9273,7 +9410,7 @@
             "ports": [
               12345,
               12346,
-              12348,
+              12346,
               12364
             ]
           },
@@ -9290,7 +9427,7 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12350,
               12351,
               12352,
@@ -9329,7 +9466,7 @@
               12345,
               12346,
               12347,
-              12348,
+              12346,
               12349,
               12350,
               12351,
@@ -9377,8 +9514,8 @@
       "id": "opena4",
       "folder_path": "3.opena4_telegram",
       "baseline_port": 12346,
-      "inventory_count": 116,
-      "folder_hash_sha256": "41b480d588f9f1f7532248635f0689c3dde1285dd71695c08765de4caae356d4",
+      "inventory_count": 117,
+      "folder_hash_sha256": "a8a8f0d0a2b05844a21fd91c6344f0fa901ff4a38b1f0723f1bafc60032d5424",
       "inventory_files": [
         "3.opena4_telegram/.dockerignore",
         "3.opena4_telegram/.env",
@@ -9423,6 +9560,7 @@
         "3.opena4_telegram/main.py",
         "3.opena4_telegram/main_agent.py",
         "3.opena4_telegram/main_telegram_agent.py",
+        "3.opena4_telegram/main_telegram_agent.py.bak",
         "3.opena4_telegram/models.py",
         "3.opena4_telegram/requirements.txt",
         "3.opena4_telegram/safepoint_client.py",
@@ -9503,7 +9641,7 @@
           12345,
           12346,
           12347,
-          12348,
+          12346,
           12349,
           12358,
           12399
@@ -9512,7 +9650,7 @@
           {
             "file": "3.opena4_telegram/MASTER_PROMPT.md",
             "ports": [
-              12348
+              12346
             ]
           },
           {
@@ -9521,7 +9659,7 @@
               12344,
               12345,
               12346,
-              12348,
+              12346,
               12349,
               12358
             ]
@@ -9529,7 +9667,7 @@
           {
             "file": "3.opena4_telegram/TODO.md",
             "ports": [
-              12348
+              12346
             ]
           },
           {
@@ -9545,7 +9683,6 @@
             "ports": [
               12344,
               12346,
-              12348,
               12399
             ]
           },
@@ -9588,7 +9725,7 @@
               12344,
               12345,
               12346,
-              12348,
+              12346,
               12399
             ]
           },
@@ -9606,7 +9743,7 @@
             "ports": [
               12344,
               12345,
-              12348,
+              12346,
               12349
             ]
           },
@@ -9615,7 +9752,7 @@
             "ports": [
               12344,
               12345,
-              12348,
+              12346,
               12349
             ]
           },
@@ -9625,7 +9762,7 @@
               12344,
               12345,
               12346,
-              12348,
+              12346,
               12349
             ]
           },
@@ -9638,7 +9775,7 @@
           {
             "file": "3.opena4_telegram/models.py",
             "ports": [
-              12348
+              12346
             ]
           },
           {
@@ -9651,14 +9788,14 @@
             "file": "3.opena4_telegram/security.py",
             "ports": [
               12344,
-              12348
+              12346
             ]
           },
           {
             "file": "3.opena4_telegram/sse_client.py",
             "ports": [
               12345,
-              12348,
+              12346,
               12349
             ]
           },
@@ -9785,7 +9922,7 @@
           {
             "file": "3.opena4_telegram/test_opena4.py",
             "ports": [
-              12348
+              12346
             ]
           },
           {
@@ -10043,8 +10180,8 @@
       "id": "opena5",
       "folder_path": "4.opena5_vscode",
       "baseline_port": 12365,
-      "inventory_count": 42,
-      "folder_hash_sha256": "ea025e15d475bc32da96f32894b4b6cd6c9f66ab4ba73c8b83b888a21d686d2a",
+      "inventory_count": 43,
+      "folder_hash_sha256": "f283305aa856a17906f30a41e834617a9f167df3419a9ce8c90815a0fee0eaa5",
       "inventory_files": [
         "4.opena5_vscode/.dockerignore",
         "4.opena5_vscode/.env",
@@ -10069,6 +10206,7 @@
         "4.opena5_vscode/main_agent.py",
         "4.opena5_vscode/main_opena5.py",
         "4.opena5_vscode/main_vscode_agent.py",
+        "4.opena5_vscode/main_vscode_agent.py.bak",
         "4.opena5_vscode/models.py",
         "4.opena5_vscode/requirements.lock",
         "4.opena5_vscode/requirements.txt",
@@ -10094,10 +10232,11 @@
           12344,
           12345,
           12346,
-          12348,
+          12346,
           12349,
           12350,
           12351,
+          12365,
           12399
         ],
         "files": [
@@ -10175,7 +10314,7 @@
           {
             "file": "4.opena5_vscode/main_agent.py",
             "ports": [
-              12348
+              12346
             ]
           },
           {
@@ -10191,7 +10330,7 @@
               12344,
               12345,
               12346,
-              12350
+              12365
             ]
           },
           {
@@ -10294,8 +10433,8 @@
       "id": "opena6",
       "folder_path": "5.opena6_browser",
       "baseline_port": 12351,
-      "inventory_count": 58,
-      "folder_hash_sha256": "a3ae459edca7832467f27d11ec5be54b19f6c716c27ee9050bef5319e4f377ac",
+      "inventory_count": 59,
+      "folder_hash_sha256": "7aee43fe60dda39b35f29270ded8197df15a874c8497eba908a24706cbf946f6",
       "inventory_files": [
         "5.opena6_browser/.env",
         "5.opena6_browser/.env.example",
@@ -10322,6 +10461,7 @@
         "5.opena6_browser/docs/opena6_dev.html",
         "5.opena6_browser/docs/opena6_implementation_report.md",
         "5.opena6_browser/docs/opena6_status.html",
+        "5.opena6_browser/frontend/index.html",
         "5.opena6_browser/html/app.js",
         "5.opena6_browser/html/config.js",
         "5.opena6_browser/html/dom.js",
@@ -10361,7 +10501,7 @@
           12344,
           12345,
           12347,
-          12348,
+          12346,
           12349,
           12350,
           12351,
@@ -10380,7 +10520,7 @@
           {
             "file": "5.opena6_browser/README.md",
             "ports": [
-              12348,
+              12346,
               12349,
               12350
             ]
@@ -10418,7 +10558,7 @@
             "file": "5.opena6_browser/config/agent.conf",
             "ports": [
               12345,
-              12348,
+              12346,
               12349
             ]
           },
@@ -10443,7 +10583,7 @@
             "ports": [
               12344,
               12347,
-              12348,
+              12346,
               12350,
               12351,
               12399
@@ -10453,6 +10593,12 @@
             "file": "5.opena6_browser/docs/opena6_status.html",
             "ports": [
               12350
+            ]
+          },
+          {
+            "file": "5.opena6_browser/frontend/index.html",
+            "ports": [
+              12351
             ]
           },
           {
@@ -10524,13 +10670,13 @@
           {
             "file": "5.opena6_browser/vscode-extension/README.md",
             "ports": [
-              12348
+              12346
             ]
           },
           {
             "file": "5.opena6_browser/vscode-extension/extension.js",
             "ports": [
-              12348,
+              12346,
               12349
             ]
           },
@@ -10539,20 +10685,20 @@
             "ports": [
               12344,
               12345,
-              12348
+              12346
             ]
           },
           {
             "file": "5.opena6_browser/vscode-extension/package.json",
             "ports": [
-              12348,
+              12346,
               12349
             ]
           },
           {
             "file": "5.opena6_browser/vscode-extension/src/api.js",
             "ports": [
-              12348
+              12346
             ]
           }
         ]
@@ -10562,8 +10708,8 @@
       "id": "opena7",
       "folder_path": "6.opena7_email",
       "baseline_port": 12350,
-      "inventory_count": 51,
-      "folder_hash_sha256": "7f5bd3f4bf872796e7806455fa81de1602ba3016f8548a9f95effffe9f3eb7d1",
+      "inventory_count": 52,
+      "folder_hash_sha256": "d2dcd6e3c491c6841b5e070666c29975b31024a62fad7b7669d48eff1fb8edea",
       "inventory_files": [
         "6.opena7_email/.dockerignore",
         "6.opena7_email/.env",
@@ -10603,6 +10749,7 @@
         "6.opena7_email/html/index.html",
         "6.opena7_email/html/style.css",
         "6.opena7_email/main_email_agent.py",
+        "6.opena7_email/main_email_agent.py.bak",
         "6.opena7_email/models.py",
         "6.opena7_email/modules/ai_reply_engine.py",
         "6.opena7_email/modules/email_core.py",
@@ -10622,7 +10769,7 @@
           12344,
           12345,
           12347,
-          12348,
+          12346,
           12349,
           12350,
           12351,
@@ -10714,7 +10861,7 @@
             "ports": [
               12344,
               12347,
-              12348,
+              12346,
               12350,
               12351,
               12352,
@@ -10794,8 +10941,8 @@
       "id": "opena8",
       "folder_path": "7.opena8_whatsapp",
       "baseline_port": 12353,
-      "inventory_count": 41,
-      "folder_hash_sha256": "d59c9a3763b7610c3c63a4ceb3180d30f4b98998dd2937ac3d7ea7fa2522232e",
+      "inventory_count": 42,
+      "folder_hash_sha256": "48682190b70d4ae4de172bedddbc2362cbcc20f430fa2c4d9ca1b7ed6ab80ecd",
       "inventory_files": [
         "7.opena8_whatsapp/.env",
         "7.opena8_whatsapp/.env.example",
@@ -10822,6 +10969,7 @@
         "7.opena8_whatsapp/deploy/opena8_whatsapp.service",
         "7.opena8_whatsapp/docker-compose.yml",
         "7.opena8_whatsapp/docs/opena8_implementation_report.md",
+        "7.opena8_whatsapp/frontend/index.html",
         "7.opena8_whatsapp/html/app.js",
         "7.opena8_whatsapp/html/config.js",
         "7.opena8_whatsapp/html/index.html",
@@ -10844,7 +10992,7 @@
           12344,
           12345,
           12347,
-          12348,
+          12346,
           12349,
           12350,
           12351,
@@ -10928,13 +11076,19 @@
               12344,
               12345,
               12347,
-              12348,
+              12346,
               12350,
               12351,
               12352,
               12353,
               12354,
               12399
+            ]
+          },
+          {
+            "file": "7.opena8_whatsapp/frontend/index.html",
+            "ports": [
+              12353
             ]
           },
           {
@@ -11017,8 +11171,8 @@
       "id": "opena9",
       "folder_path": "8.opena9_telephone",
       "baseline_port": 12354,
-      "inventory_count": 50,
-      "folder_hash_sha256": "0562ef293bb745c4098851313ab78ff67d47abff7fc2d37abd513855145677a9",
+      "inventory_count": 51,
+      "folder_hash_sha256": "e777d94fc990ff6f6a052330f9a567cefcccef5c7078c6775bc22e120db0bfad",
       "inventory_files": [
         "8.opena9_telephone/.env",
         "8.opena9_telephone/.env.sanitized",
@@ -11062,6 +11216,7 @@
         "8.opena9_telephone/html/style.css",
         "8.opena9_telephone/main.py",
         "8.opena9_telephone/main_telephone_agent.py",
+        "8.opena9_telephone/main_telephone_agent.py.bak",
         "8.opena9_telephone/models.py",
         "8.opena9_telephone/requirements.txt",
         "8.opena9_telephone/safepoint_client.py",
@@ -11160,7 +11315,7 @@
           {
             "file": "8.opena9_telephone/bin/start_opena9.sh",
             "ports": [
-              12354
+              12355
             ]
           },
           {
@@ -11260,26 +11415,26 @@
   ],
   "warnings": [],
   "errors": [
-    "opena1: found port references not in allowed set. allowed=[12344, 12345, 12349] found=[12344, 12345, 12346, 12347, 12348, 12349, 12350, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12366, 12367, 12368, 12369, 12370, 12371, 12372, 12373, 12374, 12375, 12376, 12377, 12378, 12379, 12380, 12381, 12382, 12383, 12384, 12385, 12386, 12387, 12388, 12389, 12390, 12391, 12392, 12393, 12394, 12395, 12396, 12397, 12398, 12399] bad=[12346, 12347, 12348, 12350, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12366, 12367, 12368, 12369, 12370, 12371, 12372, 12373, 12374, 12375, 12376, 12377, 12378, 12379, 12380, 12381, 12382, 12383, 12384, 12385, 12386, 12387, 12388, 12389, 12390, 12391, 12392, 12393, 12394, 12395, 12396, 12397, 12398, 12399]",
-    "opena2: found port references not in allowed set. allowed=[12344, 12345, 12349] found=[12344, 12345, 12346, 12347, 12348, 12349, 12350, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12366, 12367, 12368, 12369, 12370, 12371, 12372, 12373, 12374, 12375, 12376, 12377, 12378, 12379, 12380, 12381, 12382, 12383, 12384, 12385, 12386, 12387, 12388, 12389, 12390, 12391, 12392, 12393, 12394, 12395, 12396, 12397, 12398, 12399] bad=[12346, 12347, 12348, 12350, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12366, 12367, 12368, 12369, 12370, 12371, 12372, 12373, 12374, 12375, 12376, 12377, 12378, 12379, 12380, 12381, 12382, 12383, 12384, 12385, 12386, 12387, 12388, 12389, 12390, 12391, 12392, 12393, 12394, 12395, 12396, 12397, 12398, 12399]",
-    "opena3: found port references not in allowed set. allowed=[12344, 12345, 12347, 12349] found=[12344, 12345, 12346, 12347, 12348, 12349, 12350, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12369, 12399] bad=[12346, 12348, 12350, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12369, 12399]",
-    "opena4: found port references not in allowed set. allowed=[12344, 12345, 12346, 12349] found=[12344, 12345, 12346, 12347, 12348, 12349, 12358, 12399] bad=[12347, 12348, 12358, 12399]",
-    "opena5: found port references not in allowed set. allowed=[12344, 12345, 12349, 12365] found=[12344, 12345, 12346, 12348, 12349, 12350, 12351, 12399] bad=[12346, 12348, 12350, 12351, 12399]",
-    "opena6: found port references not in allowed set. allowed=[12344, 12345, 12349, 12351] found=[12344, 12345, 12347, 12348, 12349, 12350, 12351, 12352, 12399] bad=[12347, 12348, 12350, 12352, 12399]",
-    "opena7: found port references not in allowed set. allowed=[12344, 12345, 12349, 12350] found=[12344, 12345, 12347, 12348, 12349, 12350, 12351, 12352, 12353, 12399] bad=[12347, 12348, 12351, 12352, 12353, 12399]",
-    "opena8: found port references not in allowed set. allowed=[12344, 12345, 12349, 12353] found=[12344, 12345, 12347, 12348, 12349, 12350, 12351, 12352, 12353, 12354, 12370, 12399] bad=[12347, 12348, 12350, 12351, 12352, 12354, 12370, 12399]",
+    "opena1: found port references not in allowed set. allowed=[12344, 12345, 12349] found=[12344, 12345, 12346, 12347, 12346, 12349, 12350, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12366, 12367, 12368, 12369, 12370, 12371, 12372, 12373, 12374, 12375, 12376, 12377, 12378, 12379, 12380, 12381, 12382, 12383, 12384, 12385, 12386, 12387, 12388, 12389, 12390, 12391, 12392, 12393, 12394, 12395, 12396, 12397, 12398, 12399] bad=[12346, 12347, 12346, 12350, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12366, 12367, 12368, 12369, 12370, 12371, 12372, 12373, 12374, 12375, 12376, 12377, 12378, 12379, 12380, 12381, 12382, 12383, 12384, 12385, 12386, 12387, 12388, 12389, 12390, 12391, 12392, 12393, 12394, 12395, 12396, 12397, 12398, 12399]",
+    "opena2: found port references not in allowed set. allowed=[12344, 12345, 12349] found=[12344, 12345, 12346, 12347, 12346, 12349, 12350, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12366, 12367, 12368, 12369, 12370, 12371, 12372, 12373, 12374, 12375, 12376, 12377, 12378, 12379, 12380, 12381, 12382, 12383, 12384, 12385, 12386, 12387, 12388, 12389, 12390, 12391, 12392, 12393, 12394, 12395, 12396, 12397, 12398, 12399] bad=[12346, 12347, 12346, 12350, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12366, 12367, 12368, 12369, 12370, 12371, 12372, 12373, 12374, 12375, 12376, 12377, 12378, 12379, 12380, 12381, 12382, 12383, 12384, 12385, 12386, 12387, 12388, 12389, 12390, 12391, 12392, 12393, 12394, 12395, 12396, 12397, 12398, 12399]",
+    "opena3: found port references not in allowed set. allowed=[12344, 12345, 12347, 12349] found=[12344, 12345, 12346, 12347, 12346, 12349, 12350, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12369, 12399] bad=[12346, 12346, 12350, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12369, 12399]",
+    "opena4: found port references not in allowed set. allowed=[12344, 12345, 12346, 12349] found=[12344, 12345, 12346, 12347, 12346, 12349, 12358, 12399] bad=[12347, 12346, 12358, 12399]",
+    "opena5: found port references not in allowed set. allowed=[12344, 12345, 12349, 12365] found=[12344, 12345, 12346, 12346, 12349, 12350, 12351, 12365, 12399] bad=[12346, 12346, 12350, 12351, 12399]",
+    "opena6: found port references not in allowed set. allowed=[12344, 12345, 12349, 12351] found=[12344, 12345, 12347, 12346, 12349, 12350, 12351, 12352, 12399] bad=[12347, 12346, 12350, 12352, 12399]",
+    "opena7: found port references not in allowed set. allowed=[12344, 12345, 12349, 12350] found=[12344, 12345, 12347, 12346, 12349, 12350, 12351, 12352, 12353, 12399] bad=[12347, 12346, 12351, 12352, 12353, 12399]",
+    "opena8: found port references not in allowed set. allowed=[12344, 12345, 12349, 12353] found=[12344, 12345, 12347, 12346, 12349, 12350, 12351, 12352, 12353, 12354, 12370, 12399] bad=[12347, 12346, 12350, 12351, 12352, 12354, 12370, 12399]",
     "opena9: found port references not in allowed set. allowed=[12344, 12345, 12349, 12354] found=[12344, 12345, 12349, 12351, 12352, 12354, 12355, 12399] bad=[12351, 12352, 12355, 12399]",
     "opena10: found port references not in allowed set. allowed=[12344, 12345, 12349, 12355] found=[12344, 12345, 12349, 12352, 12355, 12356, 12399] bad=[12352, 12356, 12399]",
     "opena11: found port references not in allowed set. allowed=[12344, 12345, 12349, 12356] found=[12344, 12345, 12349, 12353, 12356, 12357, 12367, 12399] bad=[12353, 12357, 12367, 12399]",
-    "opena12: found port references not in allowed set. allowed=[12344, 12345, 12349, 12357] found=[12344, 12345, 12348, 12349, 12357, 12358, 12359, 12399] bad=[12348, 12358, 12359, 12399]",
+    "opena12: found port references not in allowed set. allowed=[12344, 12345, 12349, 12357] found=[12344, 12345, 12346, 12349, 12357, 12358, 12359, 12399] bad=[12346, 12358, 12359, 12399]",
     "opena13: found port references not in allowed set. allowed=[12344, 12345, 12349, 12358] found=[12344, 12345, 12349, 12355, 12358, 12359, 12360, 12399] bad=[12355, 12359, 12360, 12399]",
     "opena14: found port references not in allowed set. allowed=[12344, 12345, 12349, 12359] found=[12344, 12345, 12349, 12358, 12359, 12360, 12361, 12399] bad=[12358, 12360, 12361, 12399]",
-    "opena15: found port references not in allowed set. allowed=[12344, 12345, 12349, 12360] found=[12344, 12345, 12346, 12347, 12348, 12349, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12366, 12368, 12399] bad=[12346, 12347, 12348, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12361, 12362, 12363, 12364, 12365, 12366, 12368, 12399]",
+    "opena15: found port references not in allowed set. allowed=[12344, 12345, 12349, 12360] found=[12344, 12345, 12346, 12347, 12346, 12349, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12366, 12368, 12399] bad=[12346, 12347, 12346, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12361, 12362, 12363, 12364, 12365, 12366, 12368, 12399]",
     "opena16: found port references not in allowed set. allowed=[12344, 12345, 12349, 12361] found=[12344, 12345, 12349, 12358, 12361, 12362, 12363, 12399] bad=[12358, 12362, 12363, 12399]",
-    "opena17: found port references not in allowed set. allowed=[12344, 12345, 12349, 12362] found=[12344, 12345, 12349, 12360, 12362, 12363, 12399] bad=[12360, 12363, 12399]",
+    "opena17: found port references not in allowed set. allowed=[12344, 12345, 12349, 12362] found=[12344, 12345, 12349, 12360, 12362, 12363, 12366, 12399] bad=[12360, 12363, 12366, 12399]",
     "opena18: found port references not in allowed set. allowed=[12344, 12345, 12349, 12363] found=[12344, 12345, 12349, 12363, 12364, 12399] bad=[12364, 12399]",
     "opena19: found port references not in allowed set. allowed=[12344, 12345, 12349, 12364] found=[12344, 12345, 12349, 12364, 12365, 12399] bad=[12365, 12399]",
-    "opena20: found port references not in allowed set. allowed=[12344, 12345, 12349] found=[12344, 12345, 12346, 12347, 12348, 12349, 12350, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12366, 12367, 12368, 12370, 12371, 12372, 12390, 12399] bad=[12346, 12347, 12348, 12350, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12366, 12367, 12368, 12370, 12371, 12372, 12390, 12399]",
-    "opena21: found port references not in allowed set. allowed=[12344, 12345, 12349, 12368] found=[12344, 12345, 12346, 12347, 12348, 12349, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12367, 12399] bad=[12346, 12347, 12348, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12367, 12399]"
+    "opena20: found port references not in allowed set. allowed=[12344, 12345, 12349] found=[12344, 12345, 12346, 12347, 12346, 12349, 12350, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12366, 12367, 12368, 12370, 12371, 12372, 12390, 12399] bad=[12346, 12347, 12346, 12350, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12366, 12367, 12368, 12370, 12371, 12372, 12390, 12399]",
+    "opena21: found port references not in allowed set. allowed=[12344, 12345, 12349, 12368] found=[12344, 12345, 12346, 12347, 12346, 12349, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12367, 12368, 12399] bad=[12346, 12347, 12346, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12367, 12399]"
   ]
 }

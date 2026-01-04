@@ -67,7 +67,7 @@ async def startup_metrics():
         exporter.register_service("portier", 12344)
         exporter.register_service("opena2", 12345)
         exporter.register_service("telegram", 12346)
-        exporter.register_service("inference", 12348)
+        exporter.register_service("inference", 12346)
 
 # Line 203-210: Added /metrics endpoint
 @app.get("/metrics")

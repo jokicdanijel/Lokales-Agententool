@@ -337,7 +337,7 @@ curl -s http://127.0.0.1:12346/health | jq .
 cp -r LocalAgent-Pro/opena3 LocalAgent-Pro/opena4
 
 # Config anpassen
-sed -i 's/12347/12348/g' LocalAgent-Pro/opena4/config.json
+sed -i 's/12347/12346/g' LocalAgent-Pro/opena4/config.json
 sed -i 's/opena3/opena4/g' LocalAgent-Pro/opena4/config.json
 
 # Starten
@@ -350,7 +350,7 @@ python3 LocalAgent-Pro/opena4/main.py &
 # Script zur Auto-Generation
 python3 scripts/generate_scalable_services.py \
   --agents 4-19 \
-  --base-port 12348 \
+  --base-port 12346 \
   --template LocalAgent-Pro/opena3
 ```
 
@@ -358,7 +358,7 @@ python3 scripts/generate_scalable_services.py \
 
 ```bash
 # Loop über alle neuen Agents
-for port in $(seq 12348 12364); do
+for port in $(seq 12346 12364); do
   curl -s http://127.0.0.1:$port/health || echo "Port $port offline"
 done
 ```
