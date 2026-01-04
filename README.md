@@ -17,6 +17,44 @@ Siehe `scripts/README.md` für Gate-System Details.
 
 ---
 
+## 📂 Root-Level Dateien (Referenzübersicht)
+
+### Single Source of Truth (SSoT)
+| Datei | Ordner | Zweck |
+|-------|--------|-------|
+| **system_baseline.yaml** | root | **SSoT für Agents** (IDs, Ports, Pläne, Visibility). Authoritative Quelle für alle Konfiguration. |
+
+### Konfigurationsdateien (Secrets & Umgebung)
+| Datei | Ordner | Zweck |
+|-------|--------|-------|
+| **.env** | root | **Secrets & Environment Variables** (API-Keys, Tokens, DB-Connection Strings). Niemals in Git. |
+| **.env.example** | root | **Vorlage** für .env-Datei. Zeigt erforderliche/optionale Variablen. |
+
+### GitHub Copilot & AI Agent Konfiguration
+| Datei | Ordner | Zweck |
+|-------|--------|-------|
+| **.copilot-system.yaml** | root | **System-Prompts für GitHub Copilot**. Definiert, wie Copilot Anfragen beantwortet. |
+| **.copilot-agent-manifest.json** | root | **Manifest für Custom Copilot Agents**. Listet verfügbare Agent-Tools und deren APIs. |
+| **.assistant.json** | root | **VS Code Assistant Konfiguration**. Definiert das AI-Assistant-Verhalten im Editor. |
+
+### Docker Compose & Orchestrierung
+| Datei | Ordner | Zweck |
+|-------|--------|-------|
+| **docker-compose.yml** | root | **Standard Docker-Stack** (Entwicklung). Startet alle Services lokal. |
+| **docker-compose.production.yml** | root | **Produktions-Stack** mit Skalierung, Load-Balancing, Health-Checks. |
+| **docker-compose.agents-workflow.yml** | root | **Spezial-Stack für Agent-Workflows** (z. B. Webhook-Orchestrierung). |
+
+### Dokumentation (in docs/)
+| Datei | Ordner | Zweck |
+|-------|--------|-------|
+| **GESETZ-README_PORTIER3_0.txt** | docs/ | **Binding-Anforderungen & Gesetze** (Agent-IDs, Port-Policy, Message-Flow). Authoritative Regeln. |
+| **PORTIER_3.0_SYSTEM_ARCHITECTURE.md** | docs/ | **System-Architektur-Übersicht** (Komponenten, Message-Flows, Integration). |
+| **PORTIER_REPOSITORY_STRUCTURE.md** | docs/ | **Repo-Struktur & Ordner-Hierarchie** (Welche Datei gehört wohin?). |
+| **PORTIER_INTEGRATION_MANIFEST.md** | docs/ | **Integration-Anforderungen & Schnittstellen** (API-Contracts, Daten-Flows). |
+| **README_ENTERPRISE.md** | docs/ | **Enterprise-Features & Deployment** (HA, Clustering, SLA, Lizenzierung). |
+
+---
+
 # PORTIER 3.0 – Git-Projektübersicht (korrigiert, verbindlich)
 
 **Stand:** 2025-12-25 (aktualisiert 2026-01-04)
