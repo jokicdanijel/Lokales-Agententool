@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # ============================================================================
 # verify_baseline_and_discovery.sh
-# Gate für PORTIER / ELION Hyper-Dashboard
+# Gate für PORTIER 3.0 / ELION Hyper-Dashboard
 #
 # Aufgaben:
 # - Prüft Existenz der system_baseline.yaml
-# - Führt die deterministische Agenten-Validierung aus
+# - Führt deterministische Agenten-Discovery aus
 # - Bricht bei JEDEM Fehler hart ab (Exit 1)
 # - Erzeugt reproduzierbare Artefakte
 # ============================================================================
@@ -13,7 +13,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BASELINE="${ROOT}/system_baseline.yaml"
-VALIDATE="${ROOT}/scripts/validate_baseline.py"
+DISCOVER="${ROOT}/scripts/discover_agents.py"
 ARTIFACTS="${ROOT}/artifacts"
 
 echo "[GATE] ROOT=${ROOT}"
@@ -23,14 +23,14 @@ if [[ ! -f "${BASELINE}" ]]; then
   exit 1
 fi
 
-if [[ ! -f "${VALIDATE}" ]]; then
-  echo "[GATE][FAIL] Missing validate script at ${VALIDATE}" >&2
+if [[ ! -f "${DISCOVER}" ]]; then
+  echo "[GATE][FAIL] Missing discovery script at ${DISCOVER}" >&2
   exit 1
 fi
 
 mkdir -p "${ARTIFACTS}"
 
-echo "[GATE] Running deterministic baseline validation…"
-python3 "${VALIDATE}"
+echo "[GATE] Running deterministic agent discovery…"
+python3 "${DISCOVER}"
 
-echo "[GATE] OK — Baseline verified"
+echo "[GATE] OK — Baseline & Discovery verified"
