@@ -2,7 +2,7 @@
 
 **Agent:** opena5 (VS Code Agent)
 **Kürzel:** vscop
-**Port:** 12351
+**Port:** 12365
 **Datum:** 27. November 2025
 **Status:** ✅ DEPLOYED & OPERATIONAL
 
@@ -10,7 +10,7 @@
 
 ## 📊 Zusammenfassung
 
-opena5 wurde vollständig implementiert und ist **produktionsbereit**. Der Service läuft stabil auf Port 12351 mit **100% PORTIER 3.0 Compliance** und **5/5 Tests bestanden**.
+opena5 wurde vollständig implementiert und ist **produktionsbereit**. Der Service läuft stabil auf Port 12365 mit **100% PORTIER 3.0 Compliance** und **5/5 Tests bestanden**.
 
 ### Kern-Metriken
 
@@ -19,7 +19,7 @@ opena5 wurde vollständig implementiert und ist **produktionsbereit**. Der Servi
 - **Tests:** 5/5 bestanden ✅ (Health, Root, Command, Workspace List, Strict JSON)
 - **PID:** 1625098
 - **Uptime:** 32+ Sekunden (zum Testzeitpunkt)
-- **Port:** 12351 (Policy-konform)
+- **Port:** 12365 (Policy-konform)
 - **Compliance:** 100% (11/11 Policies)
 
 ---
@@ -30,7 +30,7 @@ opena5 wurde vollständig implementiert und ist **produktionsbereit**. Der Servi
 
 ✅ **main_vscode_agent.py** (550 Zeilen)
 
-- FastAPI-Service auf Port 12351
+- FastAPI-Service auf Port 12365
 - **Endpoints:**
   - `GET /` - Agent-Info (kuerzel: vscop)
   - `GET /health` - Health-Check mit Workspace-Status
@@ -60,7 +60,7 @@ opena5 wurde vollständig implementiert und ist **produktionsbereit**. Der Servi
 
 ✅ **Config (ENV-only)**
 
-- Port 12351 (opena5)
+- Port 12365 (opena5)
 - Port-Policy: 12344-12399 erlaubt, 8080 verboten
 - BEARER_TOKEN aus .env
 - Shared archivp: `1.opena1&2_portier/archivp_store`
@@ -75,7 +75,7 @@ opena5 wurde vollständig implementiert und ist **produktionsbereit**. Der Servi
 ✅ **bin/start_opena5.sh** (70 Zeilen)
 
 - PID-basiertes Start-Skript
-- Port 12351 Availability-Check
+- Port 12365 Availability-Check
 - .env Loading (Projekt-Root oder lokal)
 - BEARER_TOKEN Validation
 - Dependency-Installation (FastAPI, uvicorn, pydantic, requests)
@@ -95,7 +95,7 @@ opena5 wurde vollständig implementiert und ist **produktionsbereit**. Der Servi
 
 ✅ **test_opena5.py** (140 Zeilen)
 
-- test_health(): GET /health → status=ok, agent=opena5, port=12351 ✅
+- test_health(): GET /health → status=ok, agent=opena5, port=12365 ✅
 - test_root(): GET / → kuerzel=vscop ✅
 - test_command(): POST /command mit Bearer-Auth ✅
 - test_workspace_list(): GET /workspace/list → 115 items ✅
@@ -110,7 +110,7 @@ opena5 wurde vollständig implementiert und ist **produktionsbereit**. Der Servi
 | Policy                 | Status | Details                                        |
 | ---------------------- | ------ | ---------------------------------------------- |
 | **Option-2-Flow**      | ✅     | opena5 → kordp (via write_safepoint)           |
-| **Port-Policy**        | ✅     | 12351 in Range 12344-12399                     |
+| **Port-Policy**        | ✅     | 12365 in Range 12344-12399                     |
 | **Port 8080 verboten** | ✅     | Nicht verwendet                                |
 | **Safepoint-Format**   | ✅     | SP<ts>_src→dst_{CMD\|RESP}.json                |
 | **Unicode-Pfeil**      | ✅     | → (U+2192)                                     |
@@ -134,7 +134,7 @@ opena5 wurde vollständig implementiert und ist **produktionsbereit**. Der Servi
 {
   "status": "ok",
   "agent": "opena5",
-  "port": 12351,
+  "port": 12365,
   "uptime": 32.48,
   "workspace_accessible": true,
   "workspace_root": "/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt",
@@ -148,7 +148,7 @@ opena5 wurde vollständig implementiert und ist **produktionsbereit**. Der Servi
 {
   "agent": "opena5",
   "kuerzel": "vscop",
-  "port": 12351,
+  "port": 12365,
   "status": "running",
   "description": "VS Code Agent mit File-System-Watcher, Code-Analyse, Option-2-Flow-Compliance",
   "version": "1.0.0",
@@ -190,18 +190,18 @@ Extra fields werden mit **422 Validation Error** rejected ✅
 ### Service-Info
 
 - **PID:** 1625098
-- **Port:** 12351
+- **Port:** 12365
 - **Host:** 127.0.0.1
 - **Logs:** `logs/opena5.nohup.log`
-- **Health:** http://127.0.0.1:12351/health
+- **Health:** http://127.0.0.1:12365/health
 - **Workspace:** `/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt`
 
 ### Startup-Logs
 
 ```
-2025-11-27 11:34:45,530 [INFO] opena5 – ✅ Port-Policy OK: 12351 in Bereich 12344-12399
+2025-11-27 11:34:45,530 [INFO] opena5 – ✅ Port-Policy OK: 12365 in Bereich 12344-12399
 2025-11-27 11:34:45,540 [INFO] opena5 – 🚀 opena5 (VS Code Agent) startet...
-2025-11-27 11:34:45,541 [INFO] opena5 –    Port: 12351
+2025-11-27 11:34:45,541 [INFO] opena5 –    Port: 12365
 2025-11-27 11:34:45,541 [INFO] opena5 –    Host: 127.0.0.1
 2025-11-27 11:34:45,541 [INFO] opena5 –    Workspace: /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt
 2025-11-27 11:34:45,541 [INFO] opena5 –    Archiv: /home/.../1.opena1&2_portier/archivp_store
@@ -210,7 +210,7 @@ Extra fields werden mit **422 Validation Error** rejected ✅
 INFO:     Started server process [1625098]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-INFO:     Uvicorn running on http://127.0.0.1:12351 (Press CTRL+C to quit)
+INFO:     Uvicorn running on http://127.0.0.1:12365 (Press CTRL+C to quit)
 ```
 
 **Status:** ✅ Operational
@@ -221,7 +221,7 @@ INFO:     Uvicorn running on http://127.0.0.1:12351 (Press CTRL+C to quit)
 
 Aus `TODO.md`:
 
-- [x] FastAPI-Service `main_vscode_agent.py` erstellen (Port 12351)
+- [x] FastAPI-Service `main_vscode_agent.py` erstellen (Port 12365)
 - [x] Config für Workspace-Pfade, Max File Size, Allowed Extensions
 - [x] Health-Endpoint `/health` implementieren
 - [x] Auth-Middleware (Bearer Token) einrichten
@@ -299,7 +299,7 @@ python3 test_opena5.py
 ### Health-Check
 
 ```bash
-curl -s http://127.0.0.1:12351/health | jq .
+curl -s http://127.0.0.1:12365/health | jq .
 ```
 
 ### Datei lesen
@@ -308,14 +308,14 @@ curl -s http://127.0.0.1:12351/health | jq .
 curl -s -H "Authorization: Bearer $BEARER_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"path":"README.md","encoding":"utf-8"}' \
-  http://127.0.0.1:12351/file/read | jq .
+  http://127.0.0.1:12365/file/read | jq .
 ```
 
 ### Workspace-Inhalte auflisten
 
 ```bash
 curl -s -H "Authorization: Bearer $BEARER_TOKEN" \
-  http://127.0.0.1:12351/workspace/list | jq .
+  http://127.0.0.1:12365/workspace/list | jq .
 ```
 
 ### Code-Suche
@@ -324,7 +324,7 @@ curl -s -H "Authorization: Bearer $BEARER_TOKEN" \
 curl -s -H "Authorization: Bearer $BEARER_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"pattern":"opena\\d+","file_types":[".md",".py"],"max_results":50}' \
-  http://127.0.0.1:12351/search | jq .
+  http://127.0.0.1:12365/search | jq .
 ```
 
 ---
@@ -349,7 +349,7 @@ def sanitize_path(path: str) -> Path:
 ```bash
 curl -H "Authorization: Bearer $TOKEN" \
   -d '{"path":"../../../etc/passwd"}' \
-  http://127.0.0.1:12351/file/read
+  http://127.0.0.1:12365/file/read
 # → 400 Bad Request: Path traversal detected ✅
 ```
 

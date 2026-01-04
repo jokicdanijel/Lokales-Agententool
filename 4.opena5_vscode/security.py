@@ -2,7 +2,7 @@
 """
 opena5 - Security Module
 
-Port: 12351
+Port: 12365
 Kürzel: vscop
 
 PORTIER 3.0 Security Layer

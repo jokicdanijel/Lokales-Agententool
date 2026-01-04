@@ -4,12 +4,12 @@ const CONFIG = {
     id: "opena5",
     name: "VSCode Programmierung",
     shortName: "vscodep",
-    port: 12351,
+    port: 12365,
     version: "6.0.0",
     type: "development_tools",
   },
   api: {
-    baseUrl: "http://127.0.0.1:12351",
+    baseUrl: "http://127.0.0.1:12365",
     endpoints: {
       health: "/health",
       status: "/status",

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ══════════════════════════════════════════════════════════════════════════════
 # opena5 Start Script (VS Code Agent)
-# Port: 12351 | Kürzel: vscop
+# Port: 12365 | Kürzel: vscop
 # ══════════════════════════════════════════════════════════════════════════════
 
 set -euo pipefail
@@ -27,7 +27,7 @@ NOHUP_LOG="$LOG_DIR/opena5.nohup.log"
 
 mkdir -p "$LOG_DIR"
 
-PORT=12351
+PORT=12365
 SERVICE_NAME="opena5"
 
 # PID-Check

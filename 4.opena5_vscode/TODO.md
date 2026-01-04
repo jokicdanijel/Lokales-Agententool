@@ -1,6 +1,6 @@
 # TODO – opena5 VS Code Agent
 
-**Port:** 12351
+**Port:** 12365
 **Status:** 🟡 Planned
 **Kürzel:** `vscop`
 
@@ -8,7 +8,7 @@
 
 ## 1. Architektur & Setup – Rolle, Config, FastAPI-Entry
 
-- [ ] FastAPI-Service `main_vscode_agent.py` erstellen (Port 12351)
+- [ ] FastAPI-Service `main_vscode_agent.py` erstellen (Port 12365)
 - [ ] Config-Modul für Workspace-Pfade, Allowed Extensions, Max File Size
 - [ ] Health-Endpoint `/health` implementieren
 - [ ] Auth-Middleware (Bearer Token) einrichten

@@ -2,7 +2,7 @@
 """
 opena5 - SSE Client Module
 
-Port: 12351
+Port: 12365
 Kürzel: vscop
 
 SSE Client für opena20 Dashboard Events

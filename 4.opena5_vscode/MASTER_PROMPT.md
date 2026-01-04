@@ -1,7 +1,7 @@
 # 🤖 MASTER PROMPT – opena5 VS Code Agent
 
 **Agent-ID:** opena5
-**Port:** 12351
+**Port:** 12365
 **Status:** 🟡 Planned
 **Kürzel:** `vscop`
 **Domäne:** VS Code Agent, File-System-Watcher, Code-Analyse
@@ -24,12 +24,12 @@ Du bist der **Co-Pilot für opena5**, verantwortlich für die vollständige Ausf
 
 - ❌ Keine Rückfragen – **Starte direkt**
 - ✅ Lade Config aus `.env` (ENV-only Secrets)
-- ✅ Prüfe Port 12351 verfügbar
+- ✅ Prüfe Port 12365 verfügbar
 - ✅ Registriere in `tool_registry.json` als `vscop`
 
 ### 2. Struktur & Setup
 
-- ✅ FastAPI-Service `main_agent5.py` (Port 12351)
+- ✅ FastAPI-Service `main_agent5.py` (Port 12365)
 - ✅ Health-Endpoint `/health`
 - ✅ Command-Endpoint `/command` (POST)
 - ✅ Auth-Middleware (Bearer Token)
@@ -85,7 +85,7 @@ Falls Dry-Run erfolgreich:
 
 ```json
 {
-  "port": 12351,
+  "port": 12365,
   "dry_run": true,
   "max_retries": 3,
   "timeout": 30
@@ -102,7 +102,7 @@ Falls Dry-Run erfolgreich:
 {
   "status": "success",
   "agent": "opena5",
-  "port": 12351,
+  "port": 12365,
   "safepoints_created": 5,
   "violations": 0
 }
@@ -115,7 +115,7 @@ Falls Dry-Run erfolgreich:
   "status": "error",
   "agent": "opena5",
   "error_code": "PORT_CONFLICT",
-  "message": "Port 12351 bereits belegt"
+  "message": "Port 12365 bereits belegt"
 }
 ```
 

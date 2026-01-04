@@ -3,7 +3,7 @@
 opena5 - VS Code Agent
 Konfigurationsmodul
 
-Port: 12351
+Port: 12365
 Kürzel: vscop
 
 PORTIER 3.0 konform
@@ -39,7 +39,7 @@ class ServiceConfig(BaseSettings):
 
     service_name: str = "opena5"
     kuerzel: str = "vscop"
-    port: int = 12351
+    port: int = 12365
     version: str = "3.0"
 
     bearer_token: str = Field(default="c899b90d-faf8-485b-afa4-078357cf5313", alias="BEARER_TOKEN")

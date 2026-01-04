@@ -10,7 +10,7 @@ Funktionen:
 - Code-Analyse und Refactoring
 - IntelliSense und Auto-Completion
 
-Port: 12351
+Port: 12365
 Autor: ELION Team
 Version: 2.0
 Datum: 29. November 2025
@@ -34,7 +34,7 @@ from pydantic import BaseModel, ConfigDict
 # ===== CONFIGURATION =====
 class Config:
     AGENT_NAME = "opena5"
-    AGENT_PORT = 12351
+    AGENT_PORT = 12365
     DASHBOARD_URL = "http://127.0.0.1:12349"
     BEARER_TOKEN = os.getenv("BEARER_TOKEN", "c899b90d-faf8-485b-afa4-078357cf5313")
 

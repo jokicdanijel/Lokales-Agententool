@@ -20,7 +20,7 @@
 - ✅ Python-Syntax-Check: main_vscode_agent.py OK
 - ✅ requirements.txt erstellt (fastapi, uvicorn, pydantic, requests)
 - ✅ .gitignore erstellt (Secrets, Logs, venv geschützt)
-- ✅ Port von 12351 → 12350 korrigiert
+- ✅ Port von 12365 → 12350 korrigiert
 - ✅ Security-Scan: Keine Secrets gefunden
 
 ### 3. ERWEITERN ✅

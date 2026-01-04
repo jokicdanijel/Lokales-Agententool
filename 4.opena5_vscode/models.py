@@ -2,7 +2,7 @@
 """
 opena5 - Pydantic Models
 
-Port: 12351
+Port: 12365
 Kürzel: vscop
 
 PORTIER 3.0 Strict JSON Schemas
