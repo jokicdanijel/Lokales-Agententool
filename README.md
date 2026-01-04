@@ -4,6 +4,7 @@
 
 ### Was ist neu:
 - ✅ **Gate-System deployed** (`validate_baseline.py`, `discover_agents.py`)
+- ✅ **GitHub Copilot Instructions aktualisiert** (`.github/copilot-instructions.md`)
 - ✅ **Dokumentationsdateien reorganisiert** in `docs/`:
   - `GESETZ-README_PORTIER3_0.txt` (Binding-Anforderungen)
   - `PORTIER_3.0_SYSTEM_ARCHITECTURE.md`
@@ -13,7 +14,10 @@
 - ✅ **Root-Level bereinigt** (nur SSoT + Config bleibt im Root)
 - ✅ **scripts/README.md aktualisiert** (Gate-System Doku)
 
-Siehe `scripts/README.md` für Gate-System Details.
+### 📖 Wichtige Dokumente
+- **[`.github/copilot-instructions.md`](.github/copilot-instructions.md)** — Authoritative Regeln für GitHub Copilot + Developers (Authority Stack, Port-Policy, Message-Flow, Pydantic-Rules, etc.)
+- **[`scripts/README.md`](scripts/README.md)** — Gate-System Dokumentation (`validate_baseline.py`, `discover_agents.py`)
+- **[`docs/GESETZ-README_PORTIER3_0.txt`](docs/GESETZ-README_PORTIER3_0.txt)** — Binding-Anforderungen & Gesetze
 
 ---
 
@@ -33,6 +37,7 @@ Siehe `scripts/README.md` für Gate-System Details.
 ### GitHub Copilot & AI Agent Konfiguration
 | Datei | Ordner | Zweck |
 |-------|--------|-------|
+| **[.github/copilot-instructions.md](.github/copilot-instructions.md)** | .github/ | **Authoritative Copilot-Regeln** (Authority Stack, Governance, Port-Policy, Message-Flow, Code-Style, Pydantic-Rules). Die Master-Anleitung für alle Entwickler. |
 | **.copilot-system.yaml** | root | **System-Prompts für GitHub Copilot**. Definiert, wie Copilot Anfragen beantwortet. |
 | **.copilot-agent-manifest.json** | root | **Manifest für Custom Copilot Agents**. Listet verfügbare Agent-Tools und deren APIs. |
 | **.assistant.json** | root | **VS Code Assistant Konfiguration**. Definiert das AI-Assistant-Verhalten im Editor. |
