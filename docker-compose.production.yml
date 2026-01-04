@@ -7,10 +7,10 @@ services:
 
   postgres:
     image: postgres:16-alpine
-    container_name: eden-postgres
+    container_name: portier-postgres
     environment:
-      POSTGRES_DB: eden
-      POSTGRES_USER: eden_user
+      POSTGRES_DB: portier
+      POSTGRES_USER: portier_user
       POSTGRES_PASSWORD: ${DB_PASSWORD:-change_me_in_production}
     ports:
       - "5432:5432"
@@ -18,17 +18,17 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./infrastructure/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U eden_user -d eden"]
+      test: ["CMD-SHELL", "pg_isready -U portier_user -d portier"]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - eden-network
+      - portier_network
     restart: unless-stopped
 
   redis:
     image: redis:7-alpine
-    container_name: eden-redis
+    container_name: portier-redis
     ports:
       - "6379:6379"
     volumes:
@@ -40,12 +40,12 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - eden-network
+      - portier_network
     restart: unless-stopped
 
   vault:
     image: hashicorp/vault:1.15
-    container_name: eden-vault
+    container_name: portier-vault
     ports:
       - "8200:8200"
     environment:
@@ -57,7 +57,7 @@ services:
       - vault_data:/vault/data
       - vault_logs:/vault/logs
     networks:
-      - eden-network
+      - portier_network
     restart: unless-stopped
 
   # ============================================================================
@@ -70,7 +70,7 @@ services:
       dockerfile: infrastructure/docker/Dockerfile.agent
       args:
         AGENT_ID: opena1
-    container_name: eden-opena1
+    container_name: portier-opena1
     ports:
       - "12344:12344"
     environment:
@@ -78,8 +78,8 @@ services:
       PORT: 12344
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_NAME: eden
-      DB_USER: eden_user
+      DB_NAME: portier
+      DB_USER: portier_user
       DB_PASSWORD: ${DB_PASSWORD:-change_me_in_production}
       REDIS_HOST: redis
       REDIS_PORT: 6379
@@ -90,7 +90,7 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - eden-network
+      - portier_network
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:12344/health"]
@@ -104,7 +104,7 @@ services:
       dockerfile: infrastructure/docker/Dockerfile.agent
       args:
         AGENT_ID: opena2
-    container_name: eden-opena2
+    container_name: portier-opena2
     ports:
       - "12345:12345"
     environment:
@@ -112,8 +112,8 @@ services:
       PORT: 12345
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_NAME: eden
-      DB_USER: eden_user
+      DB_NAME: portier
+      DB_USER: portier_user
       DB_PASSWORD: ${DB_PASSWORD:-change_me_in_production}
       REDIS_HOST: redis
       REDIS_PORT: 6379
@@ -124,7 +124,7 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - eden-network
+      - portier_network
     restart: unless-stopped
 
   auth:
@@ -133,15 +133,15 @@ services:
       dockerfile: infrastructure/docker/Dockerfile.service
       args:
         SERVICE_NAME: auth
-    container_name: eden-auth
+    container_name: portier-auth
     ports:
       - "12370:12370"
     environment:
       PORT: 12370
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_NAME: eden
-      DB_USER: eden_user
+      DB_NAME: portier
+      DB_USER: portier_user
       DB_PASSWORD: ${DB_PASSWORD:-change_me_in_production}
       REDIS_HOST: redis
       REDIS_PORT: 6379
@@ -154,7 +154,7 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - eden-network
+      - portier_network
     restart: unless-stopped
 
   billing:
@@ -163,22 +163,22 @@ services:
       dockerfile: infrastructure/docker/Dockerfile.service
       args:
         SERVICE_NAME: billing
-    container_name: eden-billing
+    container_name: portier-billing
     ports:
       - "12371:12371"
     environment:
       PORT: 12371
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_NAME: eden
-      DB_USER: eden_user
+      DB_NAME: portier
+      DB_USER: portier_user
       DB_PASSWORD: ${DB_PASSWORD:-change_me_in_production}
       AUTH_SERVICE_URL: http://auth:12370
     depends_on:
       - postgres
       - auth
     networks:
-      - eden-network
+      - portier_network
     restart: unless-stopped
 
   website:
@@ -187,14 +187,14 @@ services:
       dockerfile: infrastructure/docker/Dockerfile.service
       args:
         SERVICE_NAME: website
-    container_name: eden-website
+    container_name: portier-website
     ports:
       - "12372:12372"
     environment:
       PORT: 12372
       DOMAIN: hyperdashboard-one.de
     networks:
-      - eden-network
+      - portier_network
     restart: unless-stopped
 
   dashboard:
@@ -203,7 +203,7 @@ services:
       dockerfile: infrastructure/docker/Dockerfile.agent
       args:
         AGENT_ID: opena20
-    container_name: eden-dashboard
+    container_name: portier-dashboard
     ports:
       - "12349:12349"
     environment:
@@ -215,7 +215,7 @@ services:
       - opena1
       - auth
     networks:
-      - eden-network
+      - portier_network
     restart: unless-stopped
 
   workflow:
@@ -224,7 +224,7 @@ services:
       dockerfile: infrastructure/docker/Dockerfile.agent
       args:
         AGENT_ID: opena21
-    container_name: eden-workflow
+    container_name: portier-workflow
     ports:
       - "12368:12368"
     environment:
@@ -234,15 +234,15 @@ services:
       OPENA2_URL: http://opena2:12345
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_NAME: eden
-      DB_USER: eden_user
+      DB_NAME: portier
+      DB_USER: portier_user
       DB_PASSWORD: ${DB_PASSWORD:-change_me_in_production}
     depends_on:
       - postgres
       - opena1
       - opena2
     networks:
-      - eden-network
+      - portier_network
     restart: unless-stopped
 
   # ============================================================================
@@ -251,7 +251,7 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: eden-nginx
+    container_name: portier-nginx
     ports:
       - "80:80"
       - "443:443"
@@ -265,7 +265,7 @@ services:
       - auth
       - billing
     networks:
-      - eden-network
+      - portier_network
     restart: unless-stopped
 
   # ============================================================================
@@ -274,7 +274,7 @@ services:
 
   prometheus:
     image: prom/prometheus:latest
-    container_name: eden-prometheus
+    container_name: portier-prometheus
     ports:
       - "9090:9090"
     volumes:
@@ -286,12 +286,12 @@ services:
       - "--web.console.libraries=/etc/prometheus/console_libraries"
       - "--web.console.templates=/etc/prometheus/consoles"
     networks:
-      - eden-network
+      - portier_network
     restart: unless-stopped
 
   grafana:
     image: grafana/grafana:latest
-    container_name: eden-grafana
+    container_name: portier-grafana
     ports:
       - "3000:3000"
     environment:
@@ -304,7 +304,7 @@ services:
     depends_on:
       - prometheus
     networks:
-      - eden-network
+      - portier_network
     restart: unless-stopped
 
 # ============================================================================
@@ -312,7 +312,7 @@ services:
 # ============================================================================
 
 networks:
-  eden-network:
+  portier_network:
     driver: bridge
 
 volumes:

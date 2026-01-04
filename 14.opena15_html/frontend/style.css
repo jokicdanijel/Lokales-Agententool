@@ -1,0 +1,252 @@
+/* opena15 Frontend Styles */
+:root {
+    --primary: #3b82f6;
+    --secondary: #6b7280;
+    --success: #10b981;
+    --danger: #ef4444;
+    --dark: #1f2937;
+    --light: #f9fafb;
+    --border: #e5e7eb;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 2rem;
+    color: var(--dark);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+}
+
+.subtitle {
+    color: var(--secondary);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.badge {
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.badge.online {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.badge.offline {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.port {
+    font-size: 0.9rem;
+    color: var(--secondary);
+}
+
+.templates, .last-checked {
+    font-size: 0.9rem;
+    color: var(--secondary);
+}
+
+.result-meta {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: var(--dark);
+    text-align: center;
+}
+
+main {
+    display: grid;
+    gap: 2rem;
+}
+
+.card {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--dark);
+}
+
+.card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--dark);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.input-field {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--border);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+textarea.input-field {
+    resize: vertical;
+    font-family: inherit;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}
+
+.btn-secondary {
+    background: var(--secondary);
+    color: white;
+    margin-right: 0.5rem;
+}
+
+.btn-secondary:hover {
+    background: #4b5563;
+}
+
+.result-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.code-block {
+    background: #1f2937;
+    color: #10b981;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    max-height: 400px;
+}
+
+.api-status ul {
+    list-style: none;
+}
+
+.api-status li {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: var(--light);
+    border-radius: 0.5rem;
+    border-left: 4px solid var(--primary);
+}
+
+.api-status code {
+    font-family: 'Courier New', monospace;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* Token Section */
+.token-section {
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+}
+
+.token-section .form-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.token-section .input-field {
+    flex: 1;
+}
+
+.token-section .hint {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--secondary);
+}
+
+footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1rem;
+    color: white;
+    opacity: 0.8;
+}
+
+/* Loading Animation */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.loading {
+    animation: pulse 2s infinite;
+}

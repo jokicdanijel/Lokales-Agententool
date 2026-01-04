@@ -1,0 +1,115 @@
+{
+  "id": "agent-html-generator-gesetz",
+  "name": "PORTIER Agent HTML Generator (gesetz + local + hetzner)",
+  "active": true,
+  "version": 1,
+  "createdAt": "2026-01-04T00:00:00.000Z",
+  "updatedAt": "2026-01-04T00:00:00.000Z",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "start",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "command": "cd {{$env.LOCAL_PROJECT_ROOT}} && docker compose -f docker-compose.prod.yml up -d opena20"
+      },
+      "id": "local-start-opena20",
+      "name": "Local: Start opena20 (idempotent)",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "command": "cat {{$env.LOCAL_PROJECT_ROOT}}/system_baseline.yaml"
+      },
+      "id": "read-baseline",
+      "name": "Read system_baseline.yaml",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [660, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const yaml = require('js-yaml');\n\nconst baselineText = $input.first().json.stdout;\nconst baseline = yaml.load(baselineText);\n\n// ---- gesetz: validate IDs/ports from baseline (Single Source of Truth)\nconst allowMin = baseline.port_policy?.allow_range?.min ?? 12344;\nconst allowMax = baseline.port_policy?.allow_range?.max ?? 12399;\nconst forbidden = new Set(baseline.port_policy?.forbidden_ports ?? [8080]);\n\nconst agents = baseline.agents || [];\n\n// validate unique ports\nconst portSet = new Set();\nfor (const a of agents) {\n  if (!a.id || !/^opena\\d+$/.test(a.id)) {\n    throw new Error(`INVALID_ID: ${a.id}`);\n  }\n  if (typeof a.port !== 'number') {\n    throw new Error(`INVALID_PORT_TYPE: ${a.id} -> ${a.port}`);\n  }\n  if (a.port < allowMin || a.port > allowMax) {\n    throw new Error(`PORT_OUT_OF_RANGE: ${a.id} -> ${a.port}`);\n  }\n  if (forbidden.has(a.port)) {\n    throw new Error(`FORBIDDEN_PORT: ${a.id} -> ${a.port}`);\n  }\n  if (portSet.has(a.port)) {\n    throw new Error(`PORT_CONFLICT: ${a.id} -> ${a.port}`);\n  }\n  portSet.add(a.port);\n}\n\n// target agents for dashboards (feature + workflow + system, but skip core opena1/2)\nconst targetAgents = [\n  'opena3','opena4','opena5','opena6','opena7','opena8','opena9','opena10',\n  'opena11','opena12','opena13','opena14','opena15','opena16','opena17','opena18','opena19','opena21'\n];\n\nconst picked = agents.filter(a => targetAgents.includes(a.id));\n\nreturn picked.map(a => ({\n  json: {\n    id: a.id,\n    name: a.name,\n    port: a.port,\n    role: a.role,\n    plan: a.plan,\n    folder_path: a.folder_path,\n    description: a.description || ''\n  }\n}));"
+      },
+      "id": "parse-validate",
+      "name": "Parse + Validate Baseline (gesetz)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const agent = $input.item.json;\n\nconst html = `<!DOCTYPE html>\n<html lang=\"de\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n  <title>${agent.name} (${agent.id}) – PORTIER Dashboard</title>\n  <style>\n    *{box-sizing:border-box;margin:0;padding:0}\n    body{font-family:system-ui,Segoe UI,Roboto,sans-serif;background:#0b1220;color:#e8eefc;padding:24px}\n    .wrap{max-width:1200px;margin:0 auto}\n    .card{background:#121b2f;border:1px solid #223056;border-radius:16px;padding:20px;margin-bottom:16px}\n    .h{display:flex;align-items:center;justify-content:space-between;gap:12px}\n    h1{font-size:22px}\n    .meta{opacity:.85;font-size:13px}\n    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}\n    .kpi{background:#0f1730;border:1px solid #223056;border-radius:14px;padding:14px}\n    .kpi .l{opacity:.8;font-size:12px;margin-bottom:6px}\n    .kpi .v{font-size:18px;font-weight:700}\n    a{color:#8bb2ff;text-decoration:none}\n    code{background:#0f1730;padding:3px 6px;border-radius:8px}\n  </style>\n</head>\n<body>\n  <div class=\"wrap\">\n    <div class=\"card\">\n      <div class=\"h\">\n        <div>\n          <h1>${agent.name} <span class=\"meta\">(${agent.id})</span></h1>\n          <div class=\"meta\">${agent.role} · Plan: <b>${String(agent.plan||'').toUpperCase()}</b></div>\n          <div class=\"meta\">Port: <b>${agent.port}</b> · Ordner: <code>${agent.folder_path}</code></div>\n        </div>\n        <div class=\"meta\">Hosted by <b>opena20</b> (Control Plane)</div>\n      </div>\n      <div class=\"grid\">\n        <div class=\"kpi\"><div class=\"l\">Health</div><div class=\"v\"><a href=\"http://localhost:${agent.port}/health\" target=\"_blank\">/health</a></div></div>\n        <div class=\"kpi\"><div class=\"l\">Status</div><div class=\"v\"><a href=\"http://localhost:${agent.port}/status\" target=\"_blank\">/status</a></div></div>\n        <div class=\"kpi\"><div class=\"l\">Capabilities</div><div class=\"v\"><a href=\"http://localhost:${agent.port}/api/capabilities\" target=\"_blank\">/api/capabilities</a></div></div>\n        <div class=\"kpi\"><div class=\"l\">Execute</div><div class=\"v\"><code>POST /api/execute</code></div></div>\n      </div>\n    </div>\n\n    <div class=\"card\">\n      <div class=\"meta\">Beschreibung</div>\n      <div style=\"margin-top:10px;line-height:1.5\">${agent.description || '—'}</div>\n    </div>\n  </div>\n</body>\n</html>`;\n\nconst html_b64 = Buffer.from(html, 'utf8').toString('base64');\n\nreturn [{ json: { agent_id: agent.id, html_b64 } }];"
+      },
+      "id": "generate-html",
+      "name": "Generate HTML (base64-safe)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1140, 300]
+    },
+    {
+      "parameters": {
+        "command": "set -euo pipefail\nROOT=\"{{$env.LOCAL_PROJECT_ROOT}}\"\nOUTDIR=\"$ROOT/19.opena20_dashboard_agent/static/generated\"\nmkdir -p \"$OUTDIR\"\nTARGET=\"$OUTDIR/{{$json.agent_id}}.html\"\nprintf %s \"{{$json.html_b64}}\" | base64 -d > \"$TARGET\"\necho \"✅ Local saved: $TARGET\""
+      },
+      "id": "save-local",
+      "name": "Save Local → opena20/static/generated",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1380, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: { ok: true } }];"
+      },
+      "id": "collapse",
+      "name": "Collapse to 1 item (deploy once)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1560, 300]
+    },
+    {
+      "parameters": {
+        "command": "set -euo pipefail\nROOT=\"{{$env.LOCAL_PROJECT_ROOT}}\"\nSRC=\"$ROOT/19.opena20_dashboard_agent/static/generated/\"\nDST=\"{{$env.HETZNER_PROJECT_ROOT}}/19.opena20_dashboard_agent/static/generated/\"\nHOST=\"{{$env.HETZNER_SSH_HOST}}\"\n\n# 1) sync generated dashboards\nrsync -az --delete \"$SRC\" \"$HOST:$DST\"\n\n# 2) ensure opena20 is up on hetzner\nssh \"$HOST\" \"cd '{{$env.HETZNER_PROJECT_ROOT}}' && docker compose -f docker-compose.prod.yml up -d opena20\"\n\n# 3) smoke test\nssh \"$HOST\" \"curl -fsS http://127.0.0.1:12349/health >/dev/null && echo '✅ Hetzner opena20 healthy (12349)'\""
+      },
+      "id": "deploy-hetzner",
+      "name": "Deploy to Hetzner (rsync + compose + health)",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1760, 300]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [[{ "node": "Local: Start opena20 (idempotent)", "type": "main", "index": 0 }]]
+    },
+    "Local: Start opena20 (idempotent)": {
+      "main": [[{ "node": "Read system_baseline.yaml", "type": "main", "index": 0 }]]
+    },
+    "Read system_baseline.yaml": {
+      "main": [[{ "node": "Parse + Validate Baseline (gesetz)", "type": "main", "index": 0 }]]
+    },
+    "Parse + Validate Baseline (gesetz)": {
+      "main": [[{ "node": "Generate HTML (base64-safe)", "type": "main", "index": 0 }]]
+    },
+    "Generate HTML (base64-safe)": {
+      "main": [[{ "node": "Save Local → opena20/static/generated", "type": "main", "index": 0 }]]
+    },
+    "Save Local → opena20/static/generated": {
+      "main": [[{ "node": "Collapse to 1 item (deploy once)", "type": "main", "index": 0 }]]
+    },
+    "Collapse to 1 item (deploy once)": {
+      "main": [[{ "node": "Deploy to Hetzner (rsync + compose + health)", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" }
+}

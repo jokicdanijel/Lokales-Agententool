@@ -1,0 +1,67 @@
+{
+  "name": "Telegram Remove Chat ID",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "telegram-remove-chat",
+        "httpMethod": "POST",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "Webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://127.0.0.1:12347/config/remove_chat",
+        "method": "POST",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "{\n  \"chat_id\": \"{{$json.chat_id}}\"\n}"
+      },
+      "id": "Remove Chat",
+      "name": "Remove Chat",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [400, 300]
+    },
+    {
+      "parameters": {},
+      "id": "Return",
+      "name": "Return",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [600, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Remove Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Chat": {
+      "main": [
+        [
+          {
+            "node": "Return",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "createdAt": "2025-12-12T00:00:00.000Z",
+  "updatedAt": "2025-12-12T00:00:00.000Z"
+}

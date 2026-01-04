@@ -1,3 +1,0 @@
-echo 'export OPENAI_API_KEY="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"' >> ~/.bashrc
-echo 'export VECTOR_STORE_ID="vs_68f83f7a06c081919e537be849be121e"' >> ~/.bashrc
-source ~/.bashrc

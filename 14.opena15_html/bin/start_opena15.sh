@@ -18,7 +18,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 PID_FILE="$PROJECT_DIR/logs/opena15.pid"
 LOG_FILE="$PROJECT_DIR/logs/opena15.nohup.log"
-MAIN_SCRIPT="$PROJECT_DIR/main_html_agent.py"
+MAIN_SCRIPT="$PROJECT_DIR/backend/app.py"
 
 # Config
 PORT=12360

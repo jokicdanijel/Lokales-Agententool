@@ -1,0 +1,211 @@
+{
+  "name": "PORTIER Agent HTML Generator (gesetz + local + hetzner)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "start",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "command": "cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt && docker-compose -f docker-compose.prod.yml up -d opena3 opena4 opena5 opena6 opena7 opena8 opena9 opena10 opena12 opena13 opena14 opena16 opena17 opena18 opena21"
+      },
+      "id": "docker-start",
+      "name": "Docker Compose Start",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "command": "cat /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/system_baseline.yaml"
+      },
+      "id": "read-baseline",
+      "name": "Read Baseline",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const yaml = require('js-yaml');\nconst baseline = yaml.load($input.first().json.stdout);\n\nconst targetAgents = ['opena3', 'opena4', 'opena5', 'opena6', 'opena7', 'opena8', 'opena9', 'opena10', 'opena12', 'opena13', 'opena14', 'opena16', 'opena17', 'opena18', 'opena21'];\n\nconst agents = baseline.agents.filter(a => targetAgents.includes(a.id));\n\nreturn agents.map(agent => ({\n  json: {\n    id: agent.id,\n    name: agent.name,\n    port: agent.port,\n    role: agent.role,\n    capabilities: agent.capabilities || [],\n    plan: agent.plan\n  }\n}));"
+      },
+      "id": "parse-baseline",
+      "name": "Parse Baseline",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const agent = $input.item.json;\n\nconst capabilityMap = {\n  opena3: ['chat_interface', 'ai_models', 'prompt_library', 'conversation_history', 'file_upload', 'code_interpreter'],\n  opena4: ['bot_commands', 'message_handler', 'inline_keyboard', 'media_sender', 'webhook_support', 'group_admin'],\n  opena5: ['code_editor', 'file_explorer', 'terminal', 'git_integration', 'extensions', 'debugging'],\n  opena6: ['page_automation', 'screenshot', 'form_filling', 'data_scraping', 'navigation', 'cookie_management'],\n  opena7: ['inbox_manager', 'smtp_sender', 'imap_receiver', 'email_parser', 'attachment_handler', 'spam_filter'],\n  opena8: ['message_sender', 'media_handler', 'business_api', 'webhook_receiver', 'qr_auth', 'group_messaging'],\n  opena9: ['incoming_handler', 'outgoing_dialer', 'voicemail_system', 'ivr_menu', 'call_recording', 'stt_engine', 'tts_engine', 'caller_id', 'call_routing', 'conference', 'sms_gateway', 'ai_assistant'],\n  opena10: ['call_analytics', 'kpi_dashboard', 'call_logs', 'recording_player', 'report_generator', 'alert_system'],\n  opena12: ['post_scheduler', 'account_manager', 'analytics', 'content_library', 'engagement_tracker', 'hashtag_generator'],\n  opena13: ['campaign_manager', 'collaboration_tools', 'contract_tracking', 'portfolio', 'analytics', 'payment_integration'],\n  opena14: ['event_list', 'appointment_scheduler', 'google_sync', 'ics_export', 'reminder_system', 'timezone_support'],\n  opena16: ['product_catalog', 'order_management', 'payment_gateway', 'inventory_tracker', 'customer_portal', 'shipping_integration'],\n  opena17: ['template_selector', 'page_builder', 'seo_optimizer', 'publishing', 'domain_manager', 'analytics'],\n  opena18: ['contact_list', 'pipeline_manager', 'deal_tracker', 'email_integration', 'task_automation', 'reporting'],\n  opena21: ['flow_builder', 'trigger_manager', 'execution_logs', 'webhook_handler', 'scheduler', 'error_handler']\n};\n\nconst capabilities = capabilityMap[agent.id] || agent.capabilities || [];\n\nconst template = `<!DOCTYPE html>\n<html lang=\"de\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>${agent.name} Dashboard - PORTIER 3.0</title>\n    <style>\n        * { margin: 0; padding: 0; box-sizing: border-box; }\n        body { font-family: 'Segoe UI', system-ui, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #333; min-height: 100vh; padding: 20px; }\n        .container { max-width: 1400px; margin: 0 auto; }\n        .header { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 30px; }\n        .header h1 { color: #667eea; font-size: 2.5em; margin-bottom: 10px; }\n        .header .subtitle { color: #666; font-size: 1.2em; }\n        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }\n        .metric-card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }\n        .metric-card .label { color: #666; font-size: 0.9em; margin-bottom: 8px; }\n        .metric-card .value { color: #667eea; font-size: 2em; font-weight: bold; }\n        .capabilities { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 30px; }\n        .capabilities h2 { color: #333; margin-bottom: 20px; }\n        .capability-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }\n        .capability-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; cursor: pointer; transition: transform 0.2s; }\n        .capability-card:hover { transform: translateY(-5px); }\n        .capability-card .icon { font-size: 2em; margin-bottom: 10px; }\n        .capability-card .title { font-size: 1.1em; font-weight: bold; margin-bottom: 5px; }\n        .capability-card .desc { font-size: 0.9em; opacity: 0.9; }\n        .api-console { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }\n        .api-console h2 { margin-bottom: 20px; }\n        .endpoint { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #667eea; }\n        .endpoint .method { display: inline-block; background: #667eea; color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.9em; margin-right: 10px; }\n        .endpoint .path { font-family: monospace; color: #333; }\n        .status { display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; background: #4ade80; color: white; }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <div class=\"header\">\n            <h1>📊 ${agent.name}</h1>\n            <p class=\"subtitle\">${agent.role} | Port ${agent.port} | <span class=\"status\">ONLINE</span></p>\n        </div>\n\n        <div class=\"metrics\">\n            <div class=\"metric-card\">\n                <div class=\"label\">Status</div>\n                <div class=\"value\" style=\"color: #4ade80;\">✓ AKTIV</div>\n            </div>\n            <div class=\"metric-card\">\n                <div class=\"label\">Port</div>\n                <div class=\"value\">${agent.port}</div>\n            </div>\n            <div class=\"metric-card\">\n                <div class=\"label\">Plan</div>\n                <div class=\"value\" style=\"font-size: 1.5em;\">${agent.plan.toUpperCase()}</div>\n            </div>\n            <div class=\"metric-card\">\n                <div class=\"label\">Capabilities</div>\n                <div class=\"value\">${capabilities.length}</div>\n            </div>\n        </div>\n\n        <div class=\"capabilities\">\n            <h2>🚀 Capabilities</h2>\n            <div class=\"capability-grid\">\n                ${capabilities.map(cap => `\n                <div class=\"capability-card\">\n                    <div class=\"icon\">⚙️</div>\n                    <div class=\"title\">${cap.replace(/_/g, ' ').toUpperCase()}</div>\n                    <div class=\"desc\">Verfügbar</div>\n                </div>\n                `).join('')}\n            </div>\n        </div>\n\n        <div class=\"api-console\">\n            <h2>🔌 API Endpoints</h2>\n            <div class=\"endpoint\">\n                <span class=\"method\">GET</span>\n                <span class=\"path\">http://localhost:${agent.port}/health</span>\n            </div>\n            <div class=\"endpoint\">\n                <span class=\"method\">GET</span>\n                <span class=\"path\">http://localhost:${agent.port}/api/status</span>\n            </div>\n            <div class=\"endpoint\">\n                <span class=\"method\">POST</span>\n                <span class=\"path\">http://localhost:${agent.port}/api/execute</span>\n            </div>\n            <div class=\"endpoint\">\n                <span class=\"method\">GET</span>\n                <span class=\"path\">http://localhost:${agent.port}/api/capabilities</span>\n            </div>\n        </div>\n    </div>\n</body>\n</html>`;\n\n// Base64 encode für sichere Übertragung (keine Quote/Newline-Probleme)\nconst htmlB64 = Buffer.from(template, 'utf8').toString('base64');\n\n// Zielpfad: opena20 hostet alle Agent-Dashboards\nconst targetPath = `/home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.opena20_dashboard_agent/data/dashboard_pages/${agent.id}_dashboard.html`;\n\nreturn [{\n  json: {\n    agent_id: agent.id,\n    html_b64: htmlB64,\n    target_path: targetPath\n  }\n}];"
+      },
+      "id": "generate-html",
+      "name": "Generate HTML",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1050, 300]
+    },
+    {
+      "parameters": {
+        "command": "=python3 - <<'PY'\nimport base64, os\nhtml_b64 = '''{{ $json.html_b64 }}'''\npath = '''{{ $json.target_path }}'''\nos.makedirs(os.path.dirname(path), exist_ok=True)\nwith open(path, 'wb') as f:\n    f.write(base64.b64decode(html_b64))\nprint(f\"✅ Saved: {path}\")\nPY"
+      },
+      "id": "save-html",
+      "name": "Save HTML to opena20",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1250, 300]
+    },
+    {
+      "parameters": {
+        "command": "cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt && bash bin/ops.sh restart opena20"
+      },
+      "id": "restart-opena20",
+      "name": "Restart opena20 (Local)",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1450, 300]
+    },
+    {
+      "parameters": {
+        "command": "cd /home/danijel-jd/Dokumente/Workspace/Projekte/Gesamtprojekt/19.opena20_dashboard_agent && tar -czf /tmp/portier_dashboards_$(date +%Y%m%d_%H%M%S).tar.gz data/dashboard_pages/*.html && ls -lh /tmp/portier_dashboards_*.tar.gz | tail -1 | awk '{print $NF}'"
+      },
+      "id": "create-tar",
+      "name": "Package Dashboards",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1650, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=scp {{ $json.stdout.trim() }} root@{{ $credentials.hetzner_server.host }}:/tmp/portier_dashboards.tar.gz && echo '✅ Upload complete'"
+      },
+      "id": "upload-hetzner",
+      "name": "Upload to Hetzner",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1850, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=ssh root@{{ $credentials.hetzner_server.host }} '\ncd /opt/Gesamtprojekt/19.opena20_dashboard_agent && \ntar -xzf /tmp/portier_dashboards.tar.gz -C . && \necho \"✅ Extracted to opena20\" && \ncd /opt/Gesamtprojekt && \ndocker-compose -f docker-compose.prod.yml restart opena20 && \necho \"✅ opena20 restarted on Hetzner\" && \nrm /tmp/portier_dashboards.tar.gz\n'"
+      },
+      "id": "deploy-hetzner",
+      "name": "Deploy & Restart on Hetzner",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [2050, 300]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Docker Compose Start",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Docker Compose Start": {
+      "main": [
+        [
+          {
+            "node": "Read Baseline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Baseline": {
+      "main": [
+        [
+          {
+            "node": "Parse Baseline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Baseline": {
+      "main": [
+        [
+          {
+            "node": "Generate HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate HTML": {
+      "main": [
+        [
+          {
+            "node": "Save HTML to opena20",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save HTML to opena20": {
+      "main": [
+        [
+          {
+            "node": "Restart opena20 (Local)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Restart opena20 (Local)": {
+      "main": [
+        [
+          {
+            "node": "Package Dashboards",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Package Dashboards": {
+      "main": [
+        [
+          {
+            "node": "Upload to Hetzner",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to Hetzner": {
+      "main": [
+        [
+          {
+            "node": "Deploy & Restart on Hetzner",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

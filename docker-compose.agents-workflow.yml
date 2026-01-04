@@ -1,0 +1,190 @@
+version: '3.8'
+
+services:
+  # Basic Plan
+  opena3:
+    build: ./2.opena3_openwebui
+    container_name: portier_opena3
+    ports:
+      - "12347:12347"
+    environment:
+      - OPENA3_PORT=12347
+      - BEARER_TOKEN=${OPENA3_BEARER_TOKEN}
+    networks:
+      - portier_network
+    restart: unless-stopped
+
+  opena4:
+    build: ./3.opena4_telegram
+    container_name: portier_opena4
+    ports:
+      - "12346:12346"
+    environment:
+      - OPENA4_PORT=12346
+      - BEARER_TOKEN=${OPENA4_BEARER_TOKEN}
+    networks:
+      - portier_network
+    restart: unless-stopped
+
+  # Premium Plan
+  opena5:
+    build: ./4.opena5_vscode
+    container_name: portier_opena5
+    ports:
+      - "12365:12365"
+    environment:
+      - OPENA5_PORT=12365
+      - BEARER_TOKEN=${OPENA5_BEARER_TOKEN}
+    networks:
+      - portier_network
+    restart: unless-stopped
+
+  opena6:
+    build: ./5.opena6_browser
+    container_name: portier_opena6
+    ports:
+      - "12351:12351"
+    environment:
+      - OPENA6_PORT=12351
+      - BEARER_TOKEN=${OPENA6_BEARER_TOKEN}
+    networks:
+      - portier_network
+    restart: unless-stopped
+
+  opena7:
+    build: ./6.opena7_email
+    container_name: portier_opena7
+    ports:
+      - "12350:12350"
+    environment:
+      - OPENA7_PORT=12350
+      - BEARER_TOKEN=${OPENA7_BEARER_TOKEN}
+    networks:
+      - portier_network
+    restart: unless-stopped
+
+  # Pro Plan
+  opena8:
+    build: ./7.opena8_whatsapp
+    container_name: portier_opena8
+    ports:
+      - "12353:12353"
+    environment:
+      - OPENA8_PORT=12353
+      - BEARER_TOKEN=${OPENA8_BEARER_TOKEN}
+    networks:
+      - portier_network
+    restart: unless-stopped
+
+  opena9:
+    build: ./8.opena9_telephone
+    container_name: portier_opena9
+    ports:
+      - "12354:12354"
+    environment:
+      - OPENA9_PORT=12354
+      - BEARER_TOKEN=${OPENA9_BEARER_TOKEN}
+    networks:
+      - portier_network
+    restart: unless-stopped
+
+  opena10:
+    build: ./9.opena10_call_tracking
+    container_name: portier_opena10
+    ports:
+      - "12355:12355"
+    environment:
+      - OPENA10_PORT=12355
+      - BEARER_TOKEN=${OPENA10_BEARER_TOKEN}
+    networks:
+      - portier_network
+    restart: unless-stopped
+
+  opena12:
+    build: ./11.opena12_social_media
+    container_name: portier_opena12
+    ports:
+      - "12357:12357"
+    environment:
+      - OPENA12_PORT=12357
+      - BEARER_TOKEN=${OPENA12_BEARER_TOKEN}
+    networks:
+      - portier_network
+    restart: unless-stopped
+
+  opena13:
+    build: ./12.opena13_influencer
+    container_name: portier_opena13
+    ports:
+      - "12358:12358"
+    environment:
+      - OPENA13_PORT=12358
+      - BEARER_TOKEN=${OPENA13_BEARER_TOKEN}
+    networks:
+      - portier_network
+    restart: unless-stopped
+
+  opena14:
+    build: ./13.opena14_calendar
+    container_name: portier_opena14
+    ports:
+      - "12359:12359"
+    environment:
+      - OPENA14_PORT=12359
+      - BEARER_TOKEN=${OPENA14_BEARER_TOKEN}
+    networks:
+      - portier_network
+    restart: unless-stopped
+
+  opena16:
+    build: ./15.opena16_shop
+    container_name: portier_opena16
+    ports:
+      - "12361:12361"
+    environment:
+      - OPENA16_PORT=12361
+      - BEARER_TOKEN=${OPENA16_BEARER_TOKEN}
+    networks:
+      - portier_network
+    restart: unless-stopped
+
+  opena17:
+    build: ./16.opena17_homepagecreator
+    container_name: portier_opena17
+    ports:
+      - "12362:12362"
+    environment:
+      - OPENA17_PORT=12362
+      - BEARER_TOKEN=${OPENA17_BEARER_TOKEN}
+    networks:
+      - portier_network
+    restart: unless-stopped
+
+  opena18:
+    build: ./17.opena18_CMR
+    container_name: portier_opena18
+    ports:
+      - "12363:12363"
+    environment:
+      - OPENA18_PORT=12363
+      - BEARER_TOKEN=${OPENA18_BEARER_TOKEN}
+    networks:
+      - portier_network
+    restart: unless-stopped
+
+  # System Plan
+  opena21:
+    build: ./20.opena21_workflow
+    container_name: portier_opena21
+    ports:
+      - "12368:12368"
+    environment:
+      - OPENA21_PORT=12368
+      - BEARER_TOKEN=${OPENA21_BEARER_TOKEN}
+    networks:
+      - portier_network
+    restart: unless-stopped
+
+networks:
+  portier_network:
+    driver: bridge

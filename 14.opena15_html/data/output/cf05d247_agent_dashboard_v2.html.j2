@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Production Ready  (PORTIER 3.0 compliant)</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<style>
+        :root {
+            --primary: #dc2626;
+            --secondary: #991b1b;
+            --dark-bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --surface: #262626;
+            --text-primary: #f5f5f5;
+            --text-secondary: #a3a3a3;
+            --border: #404040;
+        }
+        body {
+            background: var(--dark-bg);
+            background-image: radial-gradient(circle at 20% 80%, rgba(24, 24, 24, 0.3) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 20%, rgba(24, 24, 24, 0.3) 0%, transparent 50%);
+            min-height: 100vh;
+            padding: 40px 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text-primary);
+        }
+        .main-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+            padding: 40px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+        }
+        .agent-icon {
+            font-size: 6em;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .agent-title {
+            color: var(--text-primary);
+            font-size: 3.2em;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.025em;
+        }
+        .section-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--primary);
+            padding: 24px;
+            border-radius: 8px;
+            margin: 20px 0;
+            transition: all 0.2s ease;
+        }
+        .section-card h3 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            letter-spacing: -0.01em;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            color: var(--text-secondary);
+        }
+        .feature-list li:before {
+            content: "●";
+            color: var(--primary);
+            font-size: 0.8em;
+            margin-right: 12px;
+            opacity: 0.8;
+        }
+        .status-dot {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-right: 12px;
+            animation: pulse-dot 2s infinite;
+        }
+        .status-online { background: #131a17ff; }
+        .status-offline { background: #ef4444; }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+        .btn-primary-custom {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.95em;
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+        .btn-primary-custom:hover {
+            border-color: var(--primary);
+            background: rgba(39, 9, 9, 0.1);
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
+            color: var(--primary);
+        }
+        .info-badge {
+            background: var(--surface);
+            color: var(--text-primary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+            font-size: 0.85em;
+            font-weight: 500;
+            margin: 4px 2px;
+            display: inline-block;
+            border: 1px solid var(--border);
+        }
+        .api-endpoint {
+            background: var(--dark-bg);
+            color: var(--text-secondary);
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+            margin: 8px 0;
+            border: 1px solid var(--border);
+            font-size: 0.9em;
+        }
+
+        /* ===== OpenAI Key Panel Styles ===== */
+        .api-key-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--primary);
+        }
+        .api-key-card .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5em;
+        }
+        .api-key-card .badge {
+            padding: 8px 16px;
+            font-size: 0.9em;
+        }
+        .api-key-card .badge[data-status="active"] {
+            background: rgba(20, 20, 59, 0.8);
+            color: #22c55e;
+            border: 1px solid rgba(0, 0, 0, 0.71);
+        }
+        .api-key-card .badge[data-status="paused"] {
+            background: rgba(105, 68, 3, 0.92);
+            color: #f3ececff;
+            border: 1px solid rgba(8, 8, 8, 1);
+        }
+        .api-key-card .badge[data-status="none"] {
+            background: var(--surface);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        .settings-grid {
+            display: grid;
+            gap: 20px;
+        }
+        .field label {
+            font-weight: 500;
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        .field input, .field textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            transition: border-color 0.15s ease;
+        }
+        .field input:focus, .field textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(240, 13, 13, 0.97);
+        }
+        .field small {
+            display: block;
+            margin-top: 6px;
+            color: var(--text-secondary);
+            font-size: 0.85em;
+        }
+        .btn-icon {
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 8px;
+        }
+        .settings-footer {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+        .mono {
+            font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+            font-size: 0.85em;
+            color: var(--text-secondary);
+        }
+    </style>
+<meta content="Generiert mit opena15 HTML Creator" name="description"/><meta content="html, opena15, bulma" name="keywords"/><link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet"/></head>
+<body data-agent-id="" data-agent-slug="">
+<div class="container">
+<div class="main-card text-center">
+<div class="agent-icon">🤖</div>
+<h1 class="agent-title"></h1>
+<p class="lead text-muted fs-4"></p>
+<div class="mt-4">
+<span class="status-dot status-offline" id="statusDot"></span>
+<span class="fw-bold fs-5" id="statusText">Status wird geprüft...</span>
+</div>
+</div>
+<div class="main-card">
+<section class="section-card api-key-card">
+<div class="card-header">
+<div class="card-title">
+<span class="icon">🔑</span>
+<span>OpenAI API Key</span>
+</div>
+<span class="badge" data-status="none" id="openaiKeyStatusBadge">kein Key gesetzt</span>
+</div>
+<p class="card-subtitle mb-4">
+                    Dieser Key wird ausschließlich lokal im Browser (localStorage) gespeichert und für OpenAI-Aufrufe dieses Agents verwendet.
+                </p>
+<div class="settings-grid">
+<div class="field">
+<label for="openaiKeyInput">API Key</label>
+<div style="display:flex; gap:6px; align-items:center;">
+<input autocomplete="off" id="openaiKeyInput" placeholder="sk-..." type="password"/>
+<button class="btn btn-icon" id="openaiKeyToggleVisibility" title="Anzeigen/Verbergen" type="button">
+                                👁
+                            </button>
+</div>
+<small>Key wird nicht geloggt, nicht an den Server gesendet und bleibt nur in diesem Browser gespeichert.</small>
+</div>
+<div class="field">
+<label> </label>
+<div style="display:flex; flex-wrap:wrap; gap:6px;">
+<button class="btn btn-primary-custom" id="openaiKeySaveBtn" style="padding:12px 30px; font-size:1em;" type="button">Speichern / Aktualisieren</button>
+<button class="btn btn-secondary" id="openaiKeyTogglePauseBtn" style="padding:12px 30px;" type="button">Pausieren</button>
+<button class="btn btn-danger" id="openaiKeyDeleteBtn" style="padding:12px 30px;" type="button">Löschen</button>
+</div>
+</div>
+</div>
+<div class="settings-footer">
+<span class="mono" id="openaiKeyInfo"></span>
+</div>
+</section>
+</div>
+<div class="row">
+<div class="col-lg-6">
+<div class="main-card">
+<div class="section-card">
+<h3>📋 Agent-Details</h3>
+<table class="table table-borderless fs-6" style="color: var(--text-secondary);">
+<tr>
+<td class="fw-bold">Agent-ID:</td>
+<td><code class="fs-5"></code></td>
+</tr>
+<tr>
+<td class="fw-bold">Kürzel:</td>
+<td><code class="fs-5"></code></td>
+</tr>
+<tr>
+<td class="fw-bold">Port:</td>
+<td><code class="fs-5"></code></td>
+</tr>
+<tr>
+<td class="fw-bold">UI-Profile:</td>
+<td><code class="fs-6"></code></td>
+</tr>
+<tr>
+<td class="fw-bold">Health-URL:</td>
+<td><code class="fs-6">http://127.0.0.1:/health</code></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="col-lg-6">
+<div class="main-card">
+<div class="section-card">
+<h3>⚡ Kernfunktionen</h3>
+<ul class="feature-list">
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- ===== GENERIC AGENT UI (FALLBACK) ===== -->
+<div class="row">
+<div class="col-lg-6">
+<div class="main-card">
+<div class="section-card">
+<h3>📋 Agent-Details</h3>
+<table class="table table-borderless fs-5">
+<tr>
+<td class="fw-bold">Agent-ID:</td>
+<td><code class="fs-5"></code></td>
+</tr>
+<tr>
+<td class="fw-bold">Kürzel:</td>
+<td><code class="fs-5"></code></td>
+</tr>
+<tr>
+<td class="fw-bold">Port:</td>
+<td><code class="fs-5"></code></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="col-lg-6">
+<div class="main-card">
+<div class="section-card">
+<h3>⚡ Kernfunktionen</h3>
+<ul class="feature-list">
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="main-card">
+<div class="section-card">
+<h3>🔗 API-Endpoints</h3>
+<div class="mt-3">
+<span class="info-badge">GET /health</span>
+<span class="info-badge">POST /command</span>
+</div>
+</div>
+</div>
+<div class="main-card">
+<h3 class="mb-4">📊 Live Health Status</h3>
+<div class="alert alert-info fs-5" id="healthOutput">
+        Klicke auf "Status prüfen" um Live-Daten zu laden
+    </div>
+<button class="btn btn-primary-custom w-100" onclick="checkHealth()">
+        🔄 Status prüfen
+    </button>
+</div>
+<div class="text-center mt-5">
+<a class="btn btn-secondary btn-lg px-5 py-3" href="http://127.0.0.1:12349/">
+                ← Zurück zum Haupt-Dashboard
+            </a>
+</div>
+</div>
+<script>
+    (function () {
+        "use strict";
+
+        // ===== OpenAI API Key – State & Storage =====
+        const agentSlug = document.body.dataset.agentSlug || "unknown";
+        const KEY_STORAGE_KEY = `opena_${agentSlug}_openai_api_key`;
+        const STATUS_STORAGE_KEY = `opena_${agentSlug}_openai_api_key_status`;
+
+        const elsOpenAI = {
+            input: document.getElementById("openaiKeyInput"),
+            toggleVisibility: document.getElementById("openaiKeyToggleVisibility"),
+            saveBtn: document.getElementById("openaiKeySaveBtn"),
+            togglePauseBtn: document.getElementById("openaiKeyTogglePauseBtn"),
+            deleteBtn: document.getElementById("openaiKeyDeleteBtn"),
+            statusBadge: document.getElementById("openaiKeyStatusBadge"),
+            info: document.getElementById("openaiKeyInfo"),
+        };
+
+        function loadOpenAIState() {
+            let key = null;
+            let status = "none";
+            try {
+                key = window.localStorage.getItem(KEY_STORAGE_KEY);
+                status = window.localStorage.getItem(STATUS_STORAGE_KEY) || "none";
+            } catch (e) {
+                // localStorage disabled
+            }
+            if (!key) {
+                status = "none";
+            }
+            return { key, status };
+        }
+
+        function saveOpenAIState(key, status) {
+            try {
+                if (key) {
+                    window.localStorage.setItem(KEY_STORAGE_KEY, key);
+                    window.localStorage.setItem(STATUS_STORAGE_KEY, status || "active");
+                } else {
+                    window.localStorage.removeItem(KEY_STORAGE_KEY);
+                    window.localStorage.removeItem(STATUS_STORAGE_KEY);
+                }
+            } catch (e) {
+                console.warn("localStorage not available for OpenAI key", e);
+            }
+        }
+
+        function updateOpenAIUI() {
+            const { key, status } = loadOpenAIState();
+            if (!elsOpenAI.statusBadge) return;
+
+            let label = "kein Key gesetzt";
+            if (status === "active" && key) {
+                label = "aktiv";
+            } else if (status === "paused" && key) {
+                label = "pausiert";
+            }
+
+            elsOpenAI.statusBadge.textContent = label;
+            elsOpenAI.statusBadge.dataset.status = status;
+
+            if (elsOpenAI.input) {
+                elsOpenAI.input.value = key ? "••••••••••" : "";
+            }
+
+            if (elsOpenAI.togglePauseBtn) {
+                elsOpenAI.togglePauseBtn.textContent = (status === "paused" ? "Fortsetzen" : "Pausieren");
+            }
+
+            if (elsOpenAI.info) {
+                const ts = new Date().toLocaleTimeString();
+                elsOpenAI.info.textContent = `Status: ${label} · Agent: ${agentSlug} · ${ts}`;
+            }
+        }
+
+        function attachOpenAIEvents() {
+            if (!elsOpenAI.input) return; // Panel existiert nicht
+
+            elsOpenAI.toggleVisibility.addEventListener("click", function () {
+                const currentType = elsOpenAI.input.type;
+                elsOpenAI.input.type = currentType === "password" ? "text" : "password";
+            });
+
+            elsOpenAI.saveBtn.addEventListener("click", function () {
+                const raw = elsOpenAI.input.value.trim();
+                if (!raw || raw === "••••••••••") {
+                    elsOpenAI.info.textContent = "Kein Key eingegeben oder Key bereits gespeichert.";
+                    return;
+                }
+                saveOpenAIState(raw, "active");
+                updateOpenAIUI();
+                elsOpenAI.info.textContent = "✅ Key gespeichert!";
+            });
+
+            elsOpenAI.togglePauseBtn.addEventListener("click", function () {
+                const current = loadOpenAIState();
+                if (!current.key) {
+                    elsOpenAI.info.textContent = "Kein Key vorhanden – nichts zu pausieren.";
+                    return;
+                }
+                const newStatus = current.status === "paused" ? "active" : "paused";
+                saveOpenAIState(current.key, newStatus);
+                updateOpenAIUI();
+            });
+
+            elsOpenAI.deleteBtn.addEventListener("click", function () {
+                if (confirm("OpenAI API Key wirklich löschen?")) {
+                    saveOpenAIState(null, "none");
+                    if (elsOpenAI.input) elsOpenAI.input.value = "";
+                    updateOpenAIUI();
+                    elsOpenAI.info.textContent = "🗑️ Key gelöscht";
+                }
+            });
+        }
+
+        // Helper, den du überall für OpenAI-Aufrufe verwendest
+        window.withOpenAIKey = function (fnIfAvailable) {
+            const { key, status } = loadOpenAIState();
+            if (!key) {
+                alert("Kein OpenAI API Key gesetzt. Bitte im OpenAI-Panel hinterlegen.");
+                return;
+            }
+            if (status === "paused") {
+                alert("OpenAI API Key ist pausiert. Bitte im Panel fortsetzen.");
+                return;
+            }
+            return fnIfAvailable(key);
+        };
+
+        // ===== Health Check =====
+        async function checkHealth() {
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            const output = document.getElementById('healthOutput');
+
+            if (!output) return; // Generic partial might not have healthOutput
+
+            statusText.textContent = 'Prüfe Status...';
+            output.className = 'alert alert-warning fs-5';
+            output.textContent = 'Verbinde mit Agent...';
+
+            try {
+                const response = await fetch('http://127.0.0.1:/health');
+
+                if (response.ok) {
+                    const data = await response.json();
+                    statusDot.className = 'status-dot status-online';
+                    statusText.textContent = '✅ Online & Erreichbar';
+                    output.className = 'alert alert-success fs-5';
+                    output.innerHTML = '<h5 class="mb-3">✅ Agent antwortet!</h5><pre class="bg-dark text-light p-3 rounded">' +
+                                      JSON.stringify(data, null, 2) + '</pre>';
+                } else {
+                    throw new Error('HTTP ' + response.status);
+                }
+            } catch (error) {
+                statusDot.className = 'status-dot status-offline';
+                statusText.textContent = '❌ Offline / Nicht erreichbar';
+                output.className = 'alert alert-danger fs-5';
+                output.innerHTML = '<h5>❌ Agent antwortet nicht</h5><p class="mb-0">Fehler: ' + error.message + '</p>' +
+                                  '<p class="mt-3 mb-0"><small>Stelle sicher dass der Agent läuft: <code>./bin/start_.sh</code></small></p>';
+            }
+        }
+
+        window.checkHealth = checkHealth;
+
+        document.addEventListener("DOMContentLoaded", function () {
+            attachOpenAIEvents();
+            updateOpenAIUI();
+            checkHealth();
+        });
+    })();
+    </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

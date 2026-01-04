@@ -521,6 +521,18 @@ async def root(request: Request):
     )
 
 
+
+@app.get("/dashboard/{agent_id}", response_class=HTMLResponse)
+async def dashboard_generated(agent_id: str):
+    """Serve generated agent dashboard from static/generated/"""
+    from fastapi.responses import FileResponse
+
+    dashboard_path = STATIC_DIR / "generated" / f"{agent_id}.html"
+    if dashboard_path.exists():
+        return FileResponse(dashboard_path, media_type="text/html")
+
+    raise HTTPException(status_code=404, detail=f"Dashboard für {agent_id} nicht gefunden in static/generated/")
+
 @app.get("/agent/{agent_id}", response_class=HTMLResponse)
 async def agent_detail(request: Request, agent_id: str):
     """Agent Detail Page - Serviert generierte HTML-Seiten"""
@@ -535,6 +547,11 @@ async def agent_detail(request: Request, agent_id: str):
     opena15_page = DATA_DIR / "opena15_generated" / f"{agent_id}_dashboard.html"
     if opena15_page.exists():
         return FileResponse(opena15_page, media_type="text/html")
+
+    # Priorität 0: N8N-generierte Seiten (static/generated)
+    generated_page = STATIC_DIR / "generated" / f"{agent_id}.html"
+    if generated_page.exists():
+        return FileResponse(generated_page, media_type="text/html")
 
     # Priorität 2: Basis-Dashboard-Seiten
     dashboard_page = DATA_DIR / "dashboard_pages" / f"{agent_id}_dashboard.html"

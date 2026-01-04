@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homepage-Ersteller (opena17) – PORTIER Dashboard</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:system-ui,Segoe UI,Roboto,sans-serif;background:#0b1220;color:#e8eefc;padding:24px}
+    .wrap{max-width:1200px;margin:0 auto}
+    .card{background:#121b2f;border:1px solid #223056;border-radius:16px;padding:20px;margin-bottom:16px}
+    .h{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    h1{font-size:26px;margin-bottom:8px}
+    .meta{opacity:.85;font-size:13px;margin:4px 0}
+    .badge{display:inline-block;background:#1e3a5f;padding:4px 10px;border-radius:8px;font-size:11px;margin:2px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}
+    .kpi{background:#0f1730;border:1px solid #223056;border-radius:14px;padding:14px}
+    .kpi .l{opacity:.8;font-size:12px;margin-bottom:6px}
+    .kpi .v{font-size:18px;font-weight:700}
+    .caps{margin-top:14px}
+    .cap-item{background:#0f1730;border:1px solid #2a4066;border-radius:10px;padding:10px 14px;margin:6px 0;font-size:13px}
+    a{color:#8bb2ff;text-decoration:none}
+    a:hover{text-decoration:underline}
+    code{background:#0f1730;padding:3px 6px;border-radius:8px;font-size:12px}
+    .footer{text-align:center;opacity:.6;margin-top:24px;font-size:12px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="h">
+        <div>
+          <h1>Homepage-Ersteller <span class="meta">(opena17)</span></h1>
+          <div class="meta">Website-Baumeister · Plan: <span class="badge">ULTIMUM</span></div>
+          <div class="meta">Port: <b>12362</b> · Hosted by <b>opena20</b></div>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="kpi">
+          <div class="l">Health</div>
+          <div class="v"><a href="http://localhost:12362/health" target="_blank">/health</a></div>
+        </div>
+        <div class="kpi">
+          <div class="l">Status</div>
+          <div class="v"><a href="http://localhost:12362/status" target="_blank">/status</a></div>
+        </div>
+        <div class="kpi">
+          <div class="l">Capabilities</div>
+          <div class="v"><a href="http://localhost:12362/api/capabilities" target="_blank">/api/capabilities</a></div>
+        </div>
+        <div class="kpi">
+          <div class="l">Execute</div>
+          <div class="v"><code>POST /api/execute</code></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="font-size:18px;margin-bottom:12px">🎯 Capabilities</h2>
+      <div class="caps">
+        <div class="cap-item">Keine Capabilities definiert</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="font-size:18px;margin-bottom:12px">📡 API Console</h2>
+      <div style="background:#0f1730;border:1px solid #223056;border-radius:10px;padding:16px;font-family:monospace;font-size:13px">
+        <div style="opacity:.8;margin-bottom:8px">Base URL:</div>
+        <code style="display:block;background:#1e3a5f;padding:8px;border-radius:6px;margin-bottom:12px">http://localhost:12362</code>
+
+        <div style="opacity:.8;margin-bottom:8px">Execute Endpoint:</div>
+        <code style="display:block;background:#1e3a5f;padding:8px;border-radius:6px">POST /api/execute</code>
+
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid #223056">
+          <div style="opacity:.8;font-size:11px">Test Command:</div>
+          <code style="display:block;background:#1e3a5f;padding:8px;border-radius:6px;margin-top:6px;overflow-x:auto">
+curl -X POST http://localhost:12362/api/execute \<br>
+  -H "Authorization: Bearer ${OPENA17_BEARER_TOKEN}" \<br>
+  -H "Content-Type: application/json" \<br>
+  -d '{"capability": "...", "parameters": {}}'
+          </code>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Generiert via N8N Workflow · PORTIER 3.0 · opena17 @ Port 12362
+    </div>
+  </div>
+</body>
+</html>

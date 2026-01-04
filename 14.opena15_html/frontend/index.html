@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>opena15 - HTML Creator Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 opena15 - HTML Creator</h1>
+            <p class="subtitle">PORTIER 3.0 HTML Generator Agent</p>
+            <div class="status">
+                <span class="badge" id="status-badge">Checking...</span>
+                <span class="port">Port: <strong id="port-number">12360</strong></span>
+                <span class="templates">Templates: <strong id="templates-count">--</strong></span>
+                <span class="last-checked">Letzte Prüfung: <strong id="last-checked">--</strong></span>
+            </div>
+        </header>
+
+        <main>
+            <!-- Bearer Token Input -->
+            <section class="card token-section">
+                <h2>🔒 Bearer Token</h2>
+                <div class="form-group">
+                    <input type="text" id="token-input" class="input-field"
+                           placeholder="c899b90d-faf8-485b-afa4-078357cf5313"
+                           value="">
+                    <button id="save-token" class="btn btn-primary">💾 Token speichern</button>
+                    <button id="clear-token" class="btn btn-secondary">🗑️ Löschen</button>
+                </div>
+                <p class="hint">Token wird in localStorage gespeichert für alle API-Calls (außer /health)</p>
+            </section>
+
+            <!-- Template Selector -->
+            <section class="card">
+                <h2>📄 Template auswählen</h2>
+                <select id="template-select" class="input-field">
+                    <option value="">Lade Templates...</option>
+                </select>
+                <button id="refresh-templates" class="btn btn-secondary">↻ Aktualisieren</button>
+            </section>
+
+            <!-- HTML Generator -->
+            <section class="card">
+                <h2>🚀 HTML generieren</h2>
+                <form id="generate-form">
+                    <div class="form-group">
+                        <label for="title">Titel:</label>
+                        <input type="text" id="title" class="input-field" placeholder="Meine Seite" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="heading">Überschrift:</label>
+                        <input type="text" id="heading" class="input-field" placeholder="Willkommen">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="content">Inhalt:</label>
+                        <textarea id="content" class="input-field" rows="5" placeholder="Hauptinhalt hier..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="css-framework">CSS Framework:</label>
+                        <select id="css-framework" class="input-field">
+                            <option value="bootstrap">Bootstrap</option>
+                            <option value="tailwind">Tailwind CSS</option>
+                            <option value="bulma">Bulma</option>
+                            <option value="none">Kein Framework</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">✨ HTML generieren</button>
+                </form>
+            </section>
+
+            <!-- Result Preview -->
+            <section class="card" id="result-section" style="display: none;">
+                <h2>✅ Ergebnis</h2>
+                <div class="result-meta">Template: <strong id="template-used">—</strong></div>
+                <div class="result-actions">
+                    <button id="copy-html" class="btn btn-secondary">📋 HTML kopieren</button>
+                    <button id="download-html" class="btn btn-secondary">💾 Herunterladen</button>
+                    <button id="preview-html" class="btn btn-primary">👁️ Vorschau</button>
+                </div>
+                <pre id="html-output" class="code-block"></pre>
+            </section>
+
+            <!-- API Status -->
+            <section class="card api-status">
+                <h3>🔗 API Endpoints</h3>
+                <ul id="endpoints-list">
+                    <li><code>GET /health</code> - Health Check</li>
+                    <li><code>GET /templates/list</code> - Templates auflisten</li>
+                    <li><code>POST /generate</code> - HTML generieren</li>
+                    <li><code>POST /validate</code> - HTML validieren</li>
+                    <li><code>POST /preview</code> - Vorschau rendern</li>
+                    <li><code>POST /export</code> - HTML exportieren</li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <p>PORTIER 3.0 Agent | opena15 | Port 12360</p>
+        </footer>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
