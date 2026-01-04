@@ -18,6 +18,7 @@
 - **[`.github/copilot-instructions.md`](.github/copilot-instructions.md)** — Authoritative Regeln für GitHub Copilot + Developers (Authority Stack, Port-Policy, Message-Flow, Pydantic-Rules, etc.)
 - **[`scripts/README.md`](scripts/README.md)** — Gate-System Dokumentation (`validate_baseline.py`, `discover_agents.py`)
 - **[`docs/GESETZ-README_PORTIER3_0.txt`](docs/GESETZ-README_PORTIER3_0.txt)** — Binding-Anforderungen & Gesetze
+- **[`docs/OPENA6_BROWSER_AGENT_OPERATIONS.md`](docs/OPENA6_BROWSER_AGENT_OPERATIONS.md)** — opena6 Betriebsanleitung (Monitoring → Diagnose → Fix mit Approval)
 
 ---
 
