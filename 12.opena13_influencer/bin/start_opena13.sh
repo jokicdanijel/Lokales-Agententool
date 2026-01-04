@@ -4,7 +4,7 @@
 # ================================================================
 #
 # Agent:   opena13
-# Port:    12358
+# Port:    12359
 # Kürzel:  influp
 # Status:  Production
 #
@@ -30,7 +30,7 @@ LOGS_DIR="$PROJECT_ROOT/logs"
 PID_FILE="$LOGS_DIR/opena13.pid"
 NOHUP_LOG="$LOGS_DIR/opena13.nohup.log"
 MAIN_SCRIPT="$PROJECT_ROOT/main_influencer_agent.py"
-PORT=12358
+PORT=12359
 
 # ============================================================================
 # FUNCTIONS

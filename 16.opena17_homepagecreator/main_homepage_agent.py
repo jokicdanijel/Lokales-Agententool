@@ -25,7 +25,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 # ================== CONFIG ==================
 
-PORT = 12362
+PORT = 12366
 SERVICE_NAME = "opena17"
 KUERZEL = "hpcreatep"
 VERSION = "1.0"

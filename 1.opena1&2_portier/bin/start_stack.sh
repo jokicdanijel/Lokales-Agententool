@@ -7,7 +7,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 LOGS_DIR="$PROJECT_DIR/logs"
-VENV_PYTHON="$PROJECT_DIR/venv313/bin/python3"
+VENV_PYTHON="$PROJECT_DIR/venv312/bin/python3"
 
 mkdir -p "$LOGS_DIR"
 

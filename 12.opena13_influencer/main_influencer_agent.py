@@ -26,7 +26,7 @@ Option-2-Flow:
   OpenAI → opena1 → opena2 → kordp → opena13 → opena2 → opena1 → OpenAI
 
 Port Policy:
-  - Backend: 12344-12399 (✓ 12358)
+  - Backend: 12344-12399 (✓ 12359)
   - UI-only: 8080 (verboten)
 
 Security:
@@ -81,7 +81,7 @@ MATCHES_FILE = DATA_DIR / "matches.json"
 AUDIT_LOG_FILE = DATA_DIR / "audit.jsonl"
 
 # Port Policy Enforcement
-PORT = 12358
+PORT = 12359
 ALLOWED_PORTS = range(12344, 12400)
 FORBIDDEN_PORTS = [8080]
 

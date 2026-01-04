@@ -24,7 +24,7 @@ from pydantic import BaseModel, ConfigDict, Field
 # Configuration
 # ──────────────────────────────────────────────────────────────────────────────
 
-PORT = int(os.getenv("OPENA5_PORT", "12350"))
+PORT = int(os.getenv("OPENA5_PORT", "12365"))
 HOST = os.getenv("OPENA5_HOST", "127.0.0.1")
 BEARER_TOKEN = os.getenv("BEARER_TOKEN", "")
 

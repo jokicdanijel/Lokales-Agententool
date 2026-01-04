@@ -4,7 +4,7 @@ set -euo pipefail
 # =======================================
 # opena17 - Homepage Creator Agent START
 # =======================================
-# Port: 12362
+# Port: 12366
 # Kürzel: hpcreatep
 # Service: Homepage-Generator, CMS, Deployment
 
@@ -13,7 +13,7 @@ PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 ROOT_DIR="$(dirname "$PROJECT_DIR")"
 
 SERVICE_NAME="opena17"
-PORT=12362
+PORT=12366
 MAIN_FILE="$PROJECT_DIR/main_homepage_agent.py"
 PID_FILE="$PROJECT_DIR/logs/opena17.pid"
 LOG_FILE="$PROJECT_DIR/logs/opena17.nohup.log"

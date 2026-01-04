@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Start-Skript für opena9 (Telefonie Agent)
-# Port: 12354
+# Port: 12355
 
 set -euo pipefail
 # Robustes .env-Parsing (safe für Keys mit = Zeichen)
@@ -10,7 +10,7 @@ AGENT_DIR="$(dirname "$SCRIPT_DIR")"
 PROJECT_ROOT="$(dirname "$AGENT_DIR")"
 
 AGENT_NAME="opena9"
-AGENT_PORT=12354
+AGENT_PORT=12355
 AGENT_SCRIPT="main_telephone_agent.py"
 
 PID_FILE="$AGENT_DIR/logs/${AGENT_NAME}.pid"
