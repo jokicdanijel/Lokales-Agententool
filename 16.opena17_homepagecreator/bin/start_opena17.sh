@@ -4,7 +4,7 @@ set -euo pipefail
 # =======================================
 # opena17 - Homepage Creator Agent START
 # =======================================
-# Port: 12366
+# Port: 12362
 # Kürzel: hpcreatep
 # Service: Homepage-Generator, CMS, Deployment
 
@@ -13,7 +13,9 @@ PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 ROOT_DIR="$(dirname "$PROJECT_DIR")"
 
 SERVICE_NAME="opena17"
-PORT=12366
+DEFAULT_PORT=12362
+PORT="${PORT:-$DEFAULT_PORT}"
+
 MAIN_FILE="$PROJECT_DIR/main_homepage_agent.py"
 PID_FILE="$PROJECT_DIR/logs/opena17.pid"
 LOG_FILE="$PROJECT_DIR/logs/opena17.nohup.log"
@@ -69,10 +71,10 @@ echo -e "${GREEN}[INFO]${NC} ✅ Alle Dependencies vorhanden"
 
 echo -e "${YELLOW}[INFO]${NC} Prüfe Port $PORT..."
 
-if lsof -i :$PORT >/dev/null 2>&1; then
+if lsof -i :"$PORT" >/dev/null 2>&1; then
     echo -e "${RED}[ERROR]${NC} Port $PORT ist bereits belegt!"
     echo -e "${YELLOW}[INFO]${NC} Aktive Prozesse auf Port $PORT:"
-    lsof -i :$PORT
+    lsof -i :"$PORT"
     exit 1
 fi
 
@@ -94,14 +96,22 @@ if [ -f "$PID_FILE" ]; then
 fi
 
 # =======================================
-# 5. Service-Umgebung vorbereiten
+# 5. .env laden (Bearer Token)
 # =======================================
 
-# BEARER_TOKEN sollte von ops.sh durchgereicht werden
-if [ -z "${BEARER_TOKEN:-}" ]; then
-    echo -e "${YELLOW}[WARN]${NC} BEARER_TOKEN nicht gesetzt - verwende Standard"
+ENV_FILE="$ROOT_DIR/.env"
+if [ -f "$ENV_FILE" ]; then
+    set -a
+    source "$ENV_FILE"
+    set +a
+    echo -e "${GREEN}[INFO]${NC} ✅ .env geladen"
+else
+    echo -e "${YELLOW}[WARN]${NC} .env nicht gefunden - verwende Standard-Token"
     export BEARER_TOKEN="c899b90d-faf8-485b-afa4-078357cf5313"
 fi
+
+# Optional: dem Python-Service den Port als ENV mitgeben (falls er das ausliest)
+export PORT
 
 # =======================================
 # 6. Service starten

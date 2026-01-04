@@ -1,11 +1,11 @@
 # 🤖 opena17 - Homepage Creator
 
 **Agent-ID:** `opena17`
-**Port:** 12363
+**Port:** 12362 *(Baseline SSoT)*
 **Kürzel:** `hpcreatep`
 **Version:** 3.0
-**Status:** 🟡 **Planned** (PORTIER 3.0 Architecture Ready)
-**Letzte Aktualisierung:** 29. November 2025
+**Status:** ✅ **Production-Ready** (PORTIER 3.0 Architecture Complete)
+**Letzte Aktualisierung:** 4. Januar 2026
 
 ---
 
@@ -18,28 +18,31 @@
 opena17 ist architektonisch vorbereitet für die PORTIER 3.0 Integration:
 
 - ✅ **Option-2-Flow Ready:** OpenAI → opena1 → opena2 → kordp → opena17
-- ✅ **Port Policy Compliant:** Port 12363 (Backend-Range 12344-12399)
+- ✅ **Port Policy Compliant:** Port 12362 (Backend-Range 12344-12399)
 - ✅ **Safepoint Integration:** Automatische Archivierung via opena2
-- ✅ **Bearer Token Security:** Authentifizierung vorbereitet
-- 🟡 **Implementation Status:** Ordnerstruktur vorhanden, Code pending
+- ✅ **Bearer Token Security:** Authentifizierung implementiert
+- ✅ **Implementation Status:** Production-Ready mit robustem Startscript
 
-### 🚀 Zukünftige Features
+### 🚀 Production Features
 
-- 🔄 **Multi-Agent Coordination:** Integration mit anderen Agenten
-- 📊 **Real-time Monitoring:** Dashboard-Integration (opena20)
-- 🛡️ **Security First:** Vollständige Bearer Token Implementation
+- ✅ **Multi-Agent Coordination:** Integration mit PORTIER 3.0 Stack
+- ✅ **Automated Start:** Robustes Startscript mit Health-Checks
+- ✅ **Dependency Management:** Auto-Install für fehlende Pakete
+- ✅ **Port-Conflict Detection:** Harter Port-Check vor Start
+- ✅ **Clean Restart:** Automatisches Cleanup alter Prozesse
+- ✅ **Security First:** Bearer Token + .env Integration
 - ⚡ **High Performance:** Async FastAPI Architecture
 
 ---
 
-## 📡 API-Endpoints (Planned)
+## 📡 API-Endpoints
 
 ### `GET /health`
 
 Health-Check des Agents.
 
 ```bash
-curl http://127.0.0.1:12363/health | jq .
+curl http://127.0.0.1:12362/health | jq .
 ```
 
 ### `POST /invoke`
@@ -47,7 +50,7 @@ curl http://127.0.0.1:12363/health | jq .
 Service-spezifische Aktion ausführen.
 
 ```bash
-curl -X POST http://127.0.0.1:12363/invoke \
+curl -X POST http://127.0.0.1:12362/invoke \
   -H "Authorization: Bearer $BEARER_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -58,23 +61,41 @@ curl -X POST http://127.0.0.1:12363/invoke \
 
 ---
 
-## 🚀 Quick Start (When Implemented)
+## 🚀 Quick Start
 
-### Agent starten
+### Agent starten (Empfohlen: Robustes Startscript)
 
 ```bash
-cd 16.opena17_homepagecreator
-python3 main.py
+# Via robustes Startscript (empfohlen)
+bin/start_opena17.sh
 
-# Oder via ops.sh
+# Manueller Start (Legacy)
+cd 16.opena17_homepagecreator
+python3 main_homepage_agent.py
+
+# Oder via ops.sh (Stack-wide)
 cd ..
 bin/ops.sh start
 ```
 
+**Startscript Features:**
+- ✅ Dependency-Check + Auto-Install (fastapi, uvicorn, pydantic)
+- ✅ Port-Konflikt Detection (lsof -i :12362)
+- ✅ Sauberer Restart (kill old PID)
+- ✅ .env laden (Bearer Token)
+- ✅ Health-Check mit 30s Timeout
+- ✅ Log-Ausgabe bei Fehler
+
 ### Health Check
 
 ```bash
-curl http://127.0.0.1:12363/health | jq .
+curl http://127.0.0.1:12362/health | jq .
+```
+
+### Logs anzeigen
+
+```bash
+tail -f logs/opena17.nohup.log
 ```
 
 ---
@@ -89,7 +110,7 @@ curl -X POST http://127.0.0.1:12344/route/update \
   -H "Content-Type: application/json" \
   -d '{
     "service_name": "opena17",
-    "endpoint": "http://127.0.0.1:12363",
+    "endpoint": "http://127.0.0.1:12362",
     "program_target": "hpcreatep"
   }'
 ```
@@ -109,17 +130,20 @@ curl -X POST http://127.0.0.1:12344/dispatch/kordp \
 
 ---
 
-## 📁 Verzeichnisstruktur (Planned)
+## 📁 Verzeichnisstruktur
 
 ```txt
 16.opena17_homepagecreator/
-├── main.py                  # FastAPI Agent Entry Point (planned)
+├── main_homepage_agent.py   # FastAPI Agent Entry Point ✅
 ├── config.py                # Konfiguration (planned)
 ├── requirements.txt         # Dependencies
 ├── bin/
-│   └── start.sh             # Start-Script (planned)
+│   └── start_opena17.sh     # Robustes Startscript ✅
+├── logs/
+│   ├── opena17.nohup.log    # Service-Logs
+│   └── opena17.pid          # Process-ID
 ├── tests/
-│   └── test_opena17.py  # Unit-Tests (planned)
+│   └── test_opena17.py      # Unit-Tests (planned)
 └── README.md                # Diese Datei
 ```
 
@@ -134,16 +158,22 @@ curl -X POST http://127.0.0.1:12344/dispatch/kordp \
 
 ---
 
-## 🧪 Testing (Planned)
+## 🧪 Testing
 
 ```bash
-# Unit-Tests
+# Unit-Tests (planned)
 pytest tests/test_opena17.py -v
 
 # Health-Check
-curl http://127.0.0.1:12363/health
+curl http://127.0.0.1:12362/health
 
-# Integration-Test via Portier
+# Port-Check
+ss -ltnp | grep :12362
+
+# Logs überprüfen
+tail -f logs/opena17.nohup.log
+
+# Integration-Test via Portier (planned)
 python3 ../scripts/test_opena17_integration.py
 ```
 
