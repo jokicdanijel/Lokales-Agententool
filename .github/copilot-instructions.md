@@ -147,11 +147,13 @@ Each agent has its own folder with standardized structure:
 
 - `1.opena1&2_portier/` - Coordinator (12344) + Archivator (12345)
 - `2.opena3_openwebui/` - OpenWebUI Bridge (12347)
-- `3.opena4_telegram/` - Telegram Agent (12348)
+- `3.opena4_telegram/` - Telegram Agent (12346)  # Baseline SSoT
 - `4.opena5_vscode/` through `20.opena21_workflow/` - Specialized agents
 - `19.opena20_dashboard_agent/` - Dashboard Backend (12349) - NOTE: opena20 IS the Dashboard service
 
 **NEVER create new top-level agent folders without explicit approval.**
+
+> **Port Authority:** If any port number in this document conflicts with `system_baseline.yaml`, the baseline wins. Always align docs/code to baseline.
 
 ### Important Files
 

@@ -4,13 +4,54 @@ import json
 import re
 import sys
 from pathlib import Path
+from typing import Any
 
 BASE = Path.cwd()
 BASELINE_PATH = BASE / "system_baseline.yaml"
 
+PORT_RANGE_MIN_DEFAULT = 12344
+PORT_RANGE_MAX_DEFAULT = 12399
+ALLOWED_PORT_POLICY_KEYS: set[str] = {"allowed_range", "allow_range", "forbidden_ports", "no_deviations", "rule_text"}
+
 
 def sha256_of_text(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def parse_allowed_range(port_policy: dict[str, Any], errors: list[str]) -> tuple[int, int]:
+    """Parse port range from BOTH formats:
+    A) allowed_range: "12344-12399" (string)
+    B) allow_range: {min: 12344, max: 12399} (dict)
+    """
+    # Format B: allow_range dict
+    if isinstance(port_policy.get("allow_range"), dict):
+        ar = port_policy["allow_range"]
+        try:
+            mn = int(ar.get("min", PORT_RANGE_MIN_DEFAULT))
+            mx = int(ar.get("max", PORT_RANGE_MAX_DEFAULT))
+            return mn, mx
+        except Exception:
+            errors.append(f"port_policy.allow_range must contain int min/max, got: {ar!r}")
+            return PORT_RANGE_MIN_DEFAULT, PORT_RANGE_MAX_DEFAULT
+
+    # Format A: allowed_range string
+    allowed = port_policy.get("allowed_range", f"{PORT_RANGE_MIN_DEFAULT}-{PORT_RANGE_MAX_DEFAULT}")
+    if not isinstance(allowed, str) or "-" not in allowed:
+        errors.append(f"port_policy.allowed_range must be 'min-max' string, got: {allowed!r}")
+        return PORT_RANGE_MIN_DEFAULT, PORT_RANGE_MAX_DEFAULT
+
+    parts = allowed.split("-")
+    if len(parts) != 2:
+        errors.append(f"port_policy.allowed_range must be 'min-max', got: {allowed!r}")
+        return PORT_RANGE_MIN_DEFAULT, PORT_RANGE_MAX_DEFAULT
+
+    try:
+        mn = int(parts[0].strip())
+        mx = int(parts[1].strip())
+        return mn, mx
+    except ValueError:
+        errors.append(f"port_policy.allowed_range contains non-int bounds: {allowed!r}")
+        return PORT_RANGE_MIN_DEFAULT, PORT_RANGE_MAX_DEFAULT
 
 
 def load_baseline():
@@ -77,6 +118,22 @@ def main():
     errors = []
     seen_ports = set()
     ids = set()
+
+    # Validate port_policy if present
+    port_policy = baseline.get("port_policy")
+    if port_policy:
+        if not isinstance(port_policy, dict):
+            errors.append("port_policy must be a dict")
+        else:
+            # Check for unexpected keys
+            unexpected = set(port_policy.keys()) - ALLOWED_PORT_POLICY_KEYS
+            if unexpected:
+                errors.append(f"port_policy contains unexpected keys: {unexpected}")
+            # Parse range (accepts both formats)
+            range_min, range_max = parse_allowed_range(port_policy, errors)
+    else:
+        range_min, range_max = PORT_RANGE_MIN_DEFAULT, PORT_RANGE_MAX_DEFAULT
+
     for a in agents:
         aid = a.get("id")
         port = a.get("port")
@@ -84,8 +141,8 @@ def main():
         # ID checks
         if not isinstance(aid, str) or not re.match(r"^opena(?:[1-9]|1[0-9]|2[01])$", aid or ""):
             errors.append(f"Ungültige Agent-ID: {aid}")
-        if not isinstance(port, int) or port < 12344 or port > 12399:
-            errors.append(f"Port außerhalb des erlaubten Bereichs (12344-12399): {port}")
+        if not isinstance(port, int) or port < range_min or port > range_max:
+            errors.append(f"Port außerhalb des erlaubten Bereichs ({range_min}-{range_max}): {port}")
         if aid in ids:
             errors.append(f"Duplizierte Agent-ID: {aid}")
         ids.add(aid)

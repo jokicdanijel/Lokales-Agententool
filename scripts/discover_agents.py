@@ -85,6 +85,33 @@ def sha256_text(t: str) -> str:
     return sha256_bytes(t.encode("utf-8"))
 
 
+def parse_allowed_range(port_policy: dict[str, Any]) -> tuple[int, int]:
+    """Parse port range from BOTH formats:
+    A) allowed_range: \"12344-12399\" (string)
+    B) allow_range: {min: 12344, max: 12399} (dict)
+    """
+    # Format B: allow_range dict
+    if isinstance(port_policy.get("allow_range"), dict):
+        ar = port_policy["allow_range"]
+        try:
+            return int(ar.get("min", PORT_RANGE_MIN)), int(ar.get("max", PORT_RANGE_MAX))
+        except Exception:
+            print(f"ERROR: port_policy.allow_range must contain int min/max, got: {ar}", file=sys.stderr)
+            sys.exit(1)
+
+    # Format A: allowed_range string
+    allowed = str(port_policy.get("allowed_range", f"{PORT_RANGE_MIN}-{PORT_RANGE_MAX}"))
+    parts = allowed.split("-")
+    if len(parts) != 2:
+        print(f"ERROR: port_policy.allowed_range must be 'min-max', got: {allowed}", file=sys.stderr)
+        sys.exit(1)
+    try:
+        return int(parts[0].strip()), int(parts[1].strip())
+    except ValueError:
+        print(f"ERROR: port_policy.allowed_range must be ints, got: {allowed}", file=sys.stderr)
+        sys.exit(1)
+
+
 def read_text_safe(path: Path) -> str | None:
     try:
         return path.read_text(encoding="utf-8", errors="replace")
