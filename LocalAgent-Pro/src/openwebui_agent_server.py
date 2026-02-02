@@ -19,15 +19,15 @@ from typing import Dict, Any, List, Optional
 from prometheus_client import Counter, Histogram, Gauge, generate_latest, CONTENT_TYPE_LATEST
 
 # Logging-System importieren
-from logging_config import get_logging_manager, mask_sensitive_data, truncate_long_content
+from logging_config import get_logging_manager, mask_sensitive_data, truncate_long_content # pyright: ignore[reportUnknownVariableType]
 
-# Ollama-Integration importieren
+# Import Ollama integration
 from ollama_integration import create_ollama_client
 
 # Logging-Manager initialisieren (früh initialisieren!)
 logging_manager = get_logging_manager(
     app_name="LocalAgent-Pro",
-    log_level="DEBUG",  # Kann auf INFO/WARNING für Production gesetzt werden
+    log_level="DEBUG",  # Kann auf INFO/WARNING für production gesetzt werden
     console_output=True
 )
 

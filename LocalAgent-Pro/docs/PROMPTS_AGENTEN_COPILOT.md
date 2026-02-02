@@ -82,7 +82,7 @@ Diese Seite definiert **alle Regeln und Standards** für die Arbeit mit:
 
 **Zweck:** Copilot verhält sich wie ein **kontrollierter Junior-Dev**, nicht wie ein hyperaktiver Skript-Kid.
 
-### Verbindlicher Copilot-Prompt:
+### Verbindlicher Copilot-Prompt
 
 ```markdown
 **Rolle:**
@@ -117,7 +117,7 @@ Du arbeitest im Repository „LocalAgent-Pro" / „Hyper Dashboard" als vorsicht
 
 ## 🔒 No-Go-Liste für Copilot
 
-### Kritische Dateien (NICHT ANFASSEN):
+### Kritische Dateien (NICHT ANFASSEN)
 
 ```
 LocalAgent-Pro/config/config.yaml
@@ -129,7 +129,7 @@ LocalAgent-Pro/src/ollama_integration.py (nur mit Review)
 .env (falls vorhanden)
 ```
 
-### Verbotene Patterns:
+### Verbotene Patterns
 
 ```
 **/__pycache__/**
@@ -141,7 +141,7 @@ LocalAgent-Pro/src/ollama_integration.py (nur mit Review)
 *.tmp
 ```
 
-### Verbotene Operationen:
+### Verbotene Operationen
 
 - ❌ `git commit` ohne Review
 - ❌ `rm -rf` oder destruktive Shell-Commands
@@ -154,7 +154,7 @@ LocalAgent-Pro/src/ollama_integration.py (nur mit Review)
 
 **Jede Copilot-Änderung durchläuft:**
 
-### 1. Pre-Commit-Check:
+### 1. Pre-Commit-Check
 
 ```bash
 # Diff anzeigen
@@ -169,14 +169,14 @@ git diff --cached
 # ✅ Commit-Message ist präzise (Conventional Commits)
 ```
 
-### 2. Commit nur wenn ALLE Checks grün:
+### 2. Commit nur wenn ALLE Checks grün
 
 ```bash
 git add <files>
 git commit -m "feat(scope): Beschreibung"
 ```
 
-### 3. Push-Strategie:
+### 3. Push-Strategie
 
 ```bash
 # Lokal testen
@@ -260,7 +260,7 @@ model: gpt-5-nano
 
 **Für jeden Agenten im Wissensspeicher:**
 
-### Template:
+### Template
 
 ```markdown
 ## Agent: [NAME]
@@ -413,7 +413,7 @@ Wenn du einen neuen Agenten erstellst:
 
 **Wenn Copilot kritische Dateien geändert hat:**
 
-### 1. Sofort-Stop:
+### 1. Sofort-Stop
 
 ```bash
 # Alle Änderungen verwerfen
@@ -423,7 +423,7 @@ git checkout -- .
 git checkout -- LocalAgent-Pro/config/config.yaml
 ```
 
-### 2. Damage-Assessment:
+### 2. Damage-Assessment
 
 ```bash
 # Was wurde geändert?
@@ -433,7 +433,7 @@ git diff HEAD
 git status --short
 ```
 
-### 3. Selective Restore:
+### 3. Selective Restore
 
 ```bash
 # Nur sichere Änderungen behalten
@@ -441,7 +441,7 @@ git add <safe_files>
 git checkout -- <critical_files>
 ```
 
-### 4. Post-Mortem:
+### 4. Post-Mortem
 
 - Dokumentiere: Was lief schief?
 - Update: Copilot-Prompt/No-Go-Liste

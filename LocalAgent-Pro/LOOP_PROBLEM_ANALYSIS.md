@@ -23,9 +23,8 @@
 
 Der LocalAgent-Pro **interpretiert automatisch Text als Shell-Befehle**, wenn:
 
-2. Text Sonderzeichen enthält (`/`, `>`, `|`, `<`, etc.)
-3. Text Leerzeichen enthält (typisch für Commands)
-
+1. Text Sonderzeichen enthält (`/`, `>`, `|`, `<`, etc.)
+2. Text Leerzeichen enthält (typisch für Commands)
 3. Keine expliziten Tool-Trigger erkannt werden
 
 **Resultat:** Fehlgeschlagene Shell-Execution → Retry → Fehlgeschlagene Shell-Execution → Loop
@@ -41,6 +40,8 @@ Der LocalAgent-Pro **interpretiert automatisch Text als Shell-Befehle**, wenn:
 
 ### Problematischer Code-Abschnitt
 
+**Aktueller Code (Zeilen ~675-720):**
+
 ```python
 def analyze_and_execute(prompt: str) -> str:
     """Analysiert Prompt und führt Tools aus"""
@@ -50,10 +51,7 @@ def analyze_and_execute(prompt: str) -> str:
     # === KEINE LOOP-PROTECTION! ===
     # === KEINE AUTO-DETECT-FILTER! ===
     
-    **Aktueller Code (Zeilen ~675-720):**
-
-   ```python
-   # Shell-Command-Detection (PROBLEMATISCH!)
+    # Shell-Command-Detection (PROBLEMATISCH!)
     cmd_patterns = [
         r'(?:führe|execute|run)\s+["\']([^"\']+)["\']',  # ✅ OK
         r'kommando[\s:]*["\']([^"\']+)["\']',            # ✅ OK
@@ -163,22 +161,22 @@ def analyze_and_execute(prompt: str) -> str:
     prompt_lower = prompt.lower()
     results = []
     
-    # === NEUE KONFIGURATION LADEN ===
+    # Neue Konfiguration laden
     config_safe = config.get("shell_execution", {})
     shell_enabled = config_safe.get("enabled", False)
     require_explicit_trigger = config_safe.get("require_explicit_trigger", True)
     
-    # === SHELL-KOMMANDO MIT STRIKTE VALIDIERUNG ===
+    # Shell-Kommando mit strikter Validierung
     if shell_enabled:
-        # Nur bei EXPLIZITEN Triggern
+        # Nur bei expliziten Triggern
         explicit_triggers = ['führe aus', 'execute', 'run command', 'kommando ausführen']
         has_trigger = any(trigger in prompt_lower for trigger in explicit_triggers)
         
         if has_trigger or not require_explicit_trigger:
-            # Pattern: Nur Backticks ODER explizite Quotes
+            # Pattern: Nur Backticks oder explizite Quotes
             cmd_patterns = [
                 r'(?:führe|execute|run)\s+(?:kommando\s+)?["\']([^"\']+)["\']',
-                r'`([^`]+)`'  # NUR wenn Trigger vorhanden!
+                r'`([^`]+)`'  # Nur wenn Trigger vorhanden
             ]
             
             for pattern in cmd_patterns:
@@ -186,12 +184,9 @@ def analyze_and_execute(prompt: str) -> str:
                 if cmd_match:
                     cmd = cmd_match.group(1)
                     
-                    # === VALIDIERUNG: IST DAS EIN GÜLTIGER BEFEHL? ===
+                    # Validierung: Ist das ein gültiger Befehl?
                     if _is_valid_command(cmd):
-                                       result = run_shell(cmd)
-   ```
-
-**Warum ist das fatal?**
+                        result = run_shell(cmd)
                         results.append(f"💻 Shell-Kommando:\n{result}")
                         break
                     else:
@@ -199,8 +194,8 @@ def analyze_and_execute(prompt: str) -> str:
     else:
         tool_logger.debug("🔒 Shell-Kommandos deaktiviert (config.shell_execution.enabled=false)")
 
-    # ... (Rest der Funktion)
-
+    # Rest der Funktion
+    return "\n\n".join(results) if results else "Keine Tools erkannt"
 ```
 
 #### Fix 2: Command-Validierung
@@ -338,15 +333,9 @@ class LoopDetector:
         
         if cmd_count >= 3:
             # 3+ identische Commands in 10s → LOOP!
-               return True
-```
-
-### Betroffene Komponente
-
-**Datei:** `src/openwebui_agent_server.py`
-
+            return True
+        
         return False
-
 ```
 
 ---
@@ -474,4 +463,4 @@ Bei Fragen oder Problemen:
 - Test-Endpoint: `curl -X POST http://127.0.0.1:8001/test -d '{"prompt": "test"}'`
 
 **Status:** ✅ GELÖST  
-**Letztes Update:** 19.11.2025 01:10 CET
+**Letztes Update:** 20.11.2025 11:30 CET
