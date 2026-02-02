@@ -37,11 +37,13 @@ ask_before_new_domain: false  # false = alle erlauben, true = nachfragen
 ## 🚀 Funktionsweise
 
 ### 1. **Wildcard aktiv** (`allowed_domains: ["*"]`)
+
 - ✅ Alle Domains sind erlaubt
 - ✅ Keine Blockierung
 - ✅ Sofortiger Zugriff
 
 ### 2. **Auto-Whitelist speichert**
+
 Jede aufgerufene Domain wird automatisch in `config/domain_whitelist.yaml` gespeichert:
 
 ```yaml
@@ -53,11 +55,13 @@ approved_domains:
 ```
 
 ### 3. **Whitelist abrufen**
+
 ```bash
 curl http://127.0.0.1:8001/whitelist
 ```
 
 **Response:**
+
 ```json
 {
   "auto_whitelist_enabled": true,
@@ -87,11 +91,13 @@ auto_whitelist_enabled: true
 ```
 
 **Verhalten:**
+
 - ✅ Alle Domains erlaubt
 - ✅ Domains werden automatisch geloggt
 - ✅ Keine Unterbrechungen
 
 **Beispiel:**
+
 ```bash
 # Irgendeine Domain aufrufen
 curl -X POST http://127.0.0.1:8001/test \
@@ -108,11 +114,13 @@ curl -X POST http://127.0.0.1:8001/test \
 Nach dem Arbeiten kannst du die Whitelist prüfen und Wildcard deaktivieren:
 
 1. **Whitelist prüfen:**
+
    ```bash
    curl http://127.0.0.1:8001/whitelist | jq '.approved_domains'
    ```
 
 2. **Unerwünschte Domains entfernen:**
+
    ```bash
    # Editiere config/domain_whitelist.yaml
    vim config/domain_whitelist.yaml
@@ -122,6 +130,7 @@ Nach dem Arbeiten kannst du die Whitelist prüfen und Wildcard deaktivieren:
    ```
 
 3. **Wildcard deaktivieren:**
+
    ```yaml
    # config/config.yaml
    allowed_domains:
@@ -131,6 +140,7 @@ Nach dem Arbeiten kannst du die Whitelist prüfen und Wildcard deaktivieren:
    ```
 
 4. **Server neu starten:**
+
    ```bash
    cd /path/to/LocalAgent-Pro
    ps aux | grep openwebui_agent_server | awk '{print $2}' | xargs kill
@@ -147,11 +157,13 @@ Nach dem Arbeiten kannst du die Whitelist prüfen und Wildcard deaktivieren:
 Basierend auf der Auto-Whitelist kannst du eine Blocklist erstellen:
 
 1. **Whitelist exportieren:**
+
    ```bash
    curl http://127.0.0.1:8001/whitelist | jq -r '.approved_domains[]' > all_domains.txt
    ```
 
 2. **Unerwünschte Domains markieren:**
+
    ```bash
    # Erstelle blocklist.yaml
    cat > config/blocklist.yaml << EOF
@@ -163,6 +175,7 @@ Basierend auf der Auto-Whitelist kannst du eine Blocklist erstellen:
    ```
 
 3. **In config.yaml einbinden:**
+
    ```yaml
    # config/config.yaml
    allowed_domains:
@@ -179,11 +192,13 @@ Basierend auf der Auto-Whitelist kannst du eine Blocklist erstellen:
 ## 🔧 API-Endpoints
 
 ### 1. Health Check (mit Whitelist-Info)
+
 ```bash
 curl http://127.0.0.1:8001/health
 ```
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -195,11 +210,13 @@ curl http://127.0.0.1:8001/health
 ```
 
 ### 2. Whitelist abrufen
+
 ```bash
 curl http://127.0.0.1:8001/whitelist
 ```
 
 **Response:**
+
 ```json
 {
   "auto_whitelist_enabled": true,
@@ -211,6 +228,7 @@ curl http://127.0.0.1:8001/whitelist
 ```
 
 ### 3. Test-Endpoint (Domain wird automatisch gespeichert)
+
 ```bash
 curl -X POST http://127.0.0.1:8001/test \
   -H "Content-Type: application/json" \
@@ -218,6 +236,7 @@ curl -X POST http://127.0.0.1:8001/test \
 ```
 
 **Ergebnis:**
+
 - Domain wird geladen
 - Domain wird in `domain_whitelist.yaml` gespeichert
 - Whitelist-Count erhöht sich
@@ -227,6 +246,7 @@ curl -X POST http://127.0.0.1:8001/test \
 ## 📊 Monitoring
 
 ### Whitelist-Größe überwachen
+
 ```bash
 # Anzahl Domains in Whitelist
 curl -s http://127.0.0.1:8001/whitelist | jq '.count'
@@ -239,6 +259,7 @@ cat config/domain_whitelist.yaml
 ```
 
 ### Logs checken
+
 ```bash
 # Auto-Whitelist-Aktivitäten
 tail -f logs/tool_executions.log | grep "Domain automatisch zur Whitelist"
@@ -252,14 +273,17 @@ tail -f logs/tool_executions.log | grep "Domain automatisch zur Whitelist"
 ## 🔒 Sicherheitshinweise
 
 ### ⚠️ Wildcard-Modus
+
 - **Aktuell aktiv:** Alle Domains erlaubt
 - **Risiko:** Potenziell unsichere Domains können aufgerufen werden
 - **Empfehlung:** Nur für Entwicklung/Testing verwenden
 
 ### ✅ Produktiv-Modus
+
 Für Produktiv-Umgebungen:
 
 1. **Wildcard deaktivieren:**
+
    ```yaml
    allowed_domains:
      - "example.com"
@@ -268,11 +292,13 @@ Für Produktiv-Umgebungen:
    ```
 
 2. **Auto-Whitelist optional:**
+
    ```yaml
    auto_whitelist_enabled: false  # Keine automatische Speicherung
    ```
 
 3. **Regelmäßig prüfen:**
+
    ```bash
    # Jeden Tag prüfen welche Domains aufgerufen wurden
    curl http://127.0.0.1:8001/whitelist | jq '.approved_domains'
@@ -283,17 +309,20 @@ Für Produktiv-Umgebungen:
 ## 🛠️ Erweiterte Konfiguration
 
 ### Whitelist-Datei wechseln
+
 ```yaml
 # config/config.yaml
 auto_whitelist_file: "config/custom_whitelist.yaml"
 ```
 
 ### Rückfrage-Modus (geplant)
+
 ```yaml
 ask_before_new_domain: true
 ```
 
 **Verhalten (wenn implementiert):**
+
 - Neue Domain wird erkannt
 - System fragt: "Domain XYZ aufrufen? (ja/nein)"
 - Bei "ja": Domain wird geladen UND gespeichert
@@ -306,6 +335,7 @@ ask_before_new_domain: true
 ## 📝 Workflow-Beispiel
 
 ### Tag 1: Freies Arbeiten
+
 ```bash
 # 1. Config prüfen
 cat config/config.yaml | grep "allowed_domains" -A3
@@ -320,6 +350,7 @@ curl http://127.0.0.1:8001/whitelist | jq '.approved_domains'
 ```
 
 ### Tag 2: Einschränken
+
 ```bash
 # 1. Whitelist exportieren
 curl http://127.0.0.1:8001/whitelist | jq -r '.approved_domains[]' > domains.txt
@@ -369,4 +400,3 @@ curl -X POST http://127.0.0.1:8001/test \
 **Status:** ✅ Auto-Whitelist aktiv  
 **Whitelist-Datei:** `config/domain_whitelist.yaml`  
 **API-Endpoint:** `GET /whitelist`
-
